@@ -1,0 +1,7 @@
+.fill {
+    fill: var(--normal-pen-color, black);
+}
+
+.stroke {
+    stroke: var(--normal-pen-color, black);
+}
