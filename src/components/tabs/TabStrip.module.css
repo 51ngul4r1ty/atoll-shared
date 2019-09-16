@@ -1,0 +1,21 @@
+.tabs {
+    display: inline-flex;
+    align-items: flex-end;
+    padding: 0.5rem 0.85rem 0.12rem 0.7rem;
+}
+
+.tab {
+    cursor: pointer;
+    user-select: none;
+    padding-bottom: 0.38rem;
+    border-bottom: 0.2rem solid transparent;
+}
+
+.active {
+    font-weight: bold;
+    border-bottom: 0.2rem solid var(--normal-pen-color, black);
+}
+
+.tab + .tab {
+    margin-left: 0.8rem;
+}

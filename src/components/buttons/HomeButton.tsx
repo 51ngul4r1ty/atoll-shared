@@ -12,12 +12,13 @@ import css from "./HomeButton.module.css";
 
 /* exported interfaces/types */
 
-export interface HomeButtonAttributeProps {}
-
-export interface HomeButtonEventProps {
+export interface HomeButtonAttributeProps {
     forceStateActive?: boolean;
     forceStateFocus?: boolean;
     forceStateHover?: boolean;
+}
+
+export interface HomeButtonEventProps {
     onClick?: { () };
 }
 
