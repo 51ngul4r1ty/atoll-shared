@@ -2,7 +2,7 @@
     display: inline-flex;
     align-items: flex-end;
     padding: 0.5rem 0.85rem 0.12rem 0.7rem;
-    font-size: var(--large-font-size, 1.3rem);
+    font-size: var(--large-font-size, 1.25rem);
 }
 
 .tabs:focus {
