@@ -8,7 +8,8 @@ the various entry-point modules that make up the atoll project ("atoll" client &
 Important
 =========
 
-* Do not add issues to this repo, instead use the "atoll-core" repo for issues related to this repo's code.
+* Do not add issues to this repo, instead use the "atoll-core" or "atoll-electron" repos for issues related to those projects.
+  - In general the issues should be allocated to one of these hosting projects.
 
 Getting Started
 ===============
