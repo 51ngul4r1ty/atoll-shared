@@ -5,6 +5,11 @@ See `atoll` repo for an overview of the full project.  This repo is just for the
 the various entry-point modules that make up the atoll project ("atoll" client & server and
 "atoll-electron" to start but there may also be others later).
 
+Important
+=========
+
+* Do not add issues to this repo, instead use the "atoll-core" repo for issues related to this repo's code.
+
 Getting Started
 ===============
 
