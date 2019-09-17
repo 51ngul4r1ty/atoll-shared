@@ -26,7 +26,7 @@
 
 .buttonCaption {
     color: var(--inverted-pen-color, white);
-    font-size: var(--large-font-size, 1.3rem);
+    font-size: var(--large-font-size, 1.25rem);
     font-weight: var(--primary-bold-font-weight, 700);
 }
 
