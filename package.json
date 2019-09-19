@@ -20,7 +20,10 @@
   "scripts": {
     "transpile": "tsc",
     "build": "rollup -c",
-    "watch": "rollup -cw"
+    "watch": "rollup -cw",
+    "test": "jest --env=jsdom --coverage",
+    "test:update": "cross-env CI=true yarn-or-npm test --updateSnapshot",
+    "test:report": "open-cli ./coverage/lcov-report/index.html"
   },
   "dependencies": {
     "@csstools/normalize.css": "10.1.0",
@@ -40,9 +43,13 @@
   "devDependencies": {
     "@modular-css/rollup": "24.2.2",
     "@types/history": "4.7.3",
+    "@types/jest": "24.0.18",
     "@types/node": "12.7.4",
     "@types/react": "16.9.2",
     "autoprefixer": "9.6.1",
+    "cross-env": "6.0.0",
+    "jest": "24.9.0",
+    "open-cli": "5.0.0",
     "postcss-assets": "5.0.0",
     "postcss-custom-properties": "9.0.2",
     "postcss-flexbugs-fixes": "4.1.0",
@@ -54,6 +61,7 @@
     "rollup-plugin-jsx": "1.0.3",
     "rollup-plugin-postcss-modules": "2.0.1",
     "rollup-plugin-typescript2": "0.24.0",
+    "ts-jest": "24.1.0",
     "typescript": "3.6.2"
   }
 }
