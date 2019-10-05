@@ -13,6 +13,9 @@ export { configureStore } from "./store";
 import { MainLayout } from "./layouts/MainLayout";
 export { default as createHistory } from "./store/history";
 
+// themes
+export { themeList } from "./themes/all";
+
 export const layouts = {
     MainLayout
 };
