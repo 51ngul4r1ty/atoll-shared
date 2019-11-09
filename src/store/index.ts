@@ -1,32 +1,20 @@
 import thunk from "redux-thunk";
 import { createStore, applyMiddleware, compose } from "redux";
+import { routerMiddleware } from "connected-react-router";
 import createRootReducer from "./rootReducer";
 
 type StoreParams = {
     initialState?: { [key: string]: any };
     middleware?: any[];
+    history: any;
 };
 
-export const configureStore = ({ initialState, middleware = [] }: StoreParams) => {
-    const devtools =
-        typeof window !== "undefined" &&
-        typeof window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ === "function" &&
-        window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ actionsBlacklist: [] });
+export const configureStore = ({ initialState, middleware = [], history }: StoreParams) => {
+    const rootReducer = createRootReducer(history);
 
-    const composeEnhancers = devtools || compose;
+    const allMiddleware = [thunk, routerMiddleware(history)].concat(...middleware);
 
-    const store = createStore(
-        createRootReducer(),
-        initialState,
-        composeEnhancers(applyMiddleware(...[thunk].concat(...middleware)))
-    );
-
-    // TODO: Figure this out later
-    // if (process.env.NODE_ENV !== "production") {
-    //     if (module.hot) {
-    //         module.hot.accept("./rootReducer", () => store.replaceReducer(require("./rootReducer").default));
-    //     }
-    // }
+    const store = createStore(rootReducer, initialState, compose(applyMiddleware(...allMiddleware)));
 
     return store;
 };

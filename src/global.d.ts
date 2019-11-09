@@ -70,10 +70,3 @@ interface Window {
 }
 
 declare module "express-manifest-helpers";
-
-// NOTE: Used our own defn and reverted back to 12.x to get it working with TypeScript
-declare module "i18next" {
-    let languages;
-    const init: { (obj: any): void };
-    const changeLanguage: { (locale: any): void };
-}

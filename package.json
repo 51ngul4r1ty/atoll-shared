@@ -1,6 +1,6 @@
 {
   "name": "@atoll/shared",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.3",
   "author": {
     "name": "Kevin Berry",
     "email": "41717340+51ngul4r1ty@users.noreply.github.com"
@@ -20,17 +20,21 @@
   "scripts": {
     "transpile": "tsc",
     "build": "rollup -c",
-    "watch": "rollup -cw"
+    "watch": "rollup -cw",
+    "clean": "npx rimraf dist",
+    "prelocal-publish": "npm run build",
+    "local-publish": "npx yalc publish",
+    "sync:core": "cd .. && cd atoll-core && npx yalc add @atoll/shared && cd .. && cd atoll-shared",
+    "sync": "npm run local-publish && npm run sync:core"
   },
   "dependencies": {
     "@csstools/normalize.css": "10.1.0",
+    "connected-react-router": "6.5.2",
     "history": "4.9.0",
-    "i18next": "12.1.0",
     "immer": "3.2.0",
     "react": "16.9.0",
     "react-dom": "16.9.0",
     "react-helmet": "5.2.1",
-    "react-i18next": "10.12.2",
     "react-redux": "7.1.1",
     "react-router-dom": "5.0.1",
     "redux": "4.0.4",
@@ -40,9 +44,14 @@
   "devDependencies": {
     "@modular-css/rollup": "24.2.2",
     "@types/history": "4.7.3",
+    "@types/jest": "24.0.17",
     "@types/node": "12.7.4",
     "@types/react": "16.9.2",
+    "@types/react-redux": "7.1.1",
+    "@types/react-router-dom": "5.1.0",
     "autoprefixer": "9.6.1",
+    "jest": "24.9.0",
+    "jest-cli": "24.9.0",
     "postcss-assets": "5.0.0",
     "postcss-custom-properties": "9.0.2",
     "postcss-flexbugs-fixes": "4.1.0",
@@ -52,8 +61,10 @@
     "rollup-plugin-image": "1.0.2",
     "rollup-plugin-json": "4.0.0",
     "rollup-plugin-jsx": "1.0.3",
+    "rollup-plugin-node-resolve": "5.2.0",
     "rollup-plugin-postcss-modules": "2.0.1",
     "rollup-plugin-typescript2": "0.24.0",
-    "typescript": "3.6.2"
+    "typescript": "3.6.2",
+    "yalc": "1.0.0-pre.34"
   }
 }
