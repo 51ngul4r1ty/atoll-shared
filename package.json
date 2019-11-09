@@ -25,7 +25,7 @@
     "prelocal-publish": "npm run build",
     "local-publish": "npx yalc publish",
     "sync:core": "cd .. && cd atoll-core && npx yalc add @atoll/shared && cd .. && cd atoll-shared",
-    "sync": "npm run local-publish && npm run sync:core"
+    "sync": "npm run local-publish && npm run sync:core",
     "test": "jest --watch --env=jsdom --coverage",
     "test:ci": "jest --env=jsdom --coverage",
     "test:update": "cross-env CI=true yarn-or-npm test --updateSnapshot",
@@ -71,7 +71,7 @@
     "rollup-plugin-postcss-modules": "2.0.1",
     "rollup-plugin-typescript2": "0.24.0",
     "ts-jest": "24.1.0",
-    "typescript": "3.6.2"
+    "typescript": "3.6.2",
     "yalc": "1.0.0-pre.34"
   }
 }
