@@ -25,7 +25,11 @@ export const TopMenuPanel: React.FC<TopMenuPanelProps> = (props) => (
         <HomeButton />
         <TabStrip
             activeTab={(props && props.activeTabId) || "plan"}
-            tabs={[{ id: "plan", caption: "Plan" }, { id: "sprint", caption: "Sprint" }, { id: "review", caption: "Review" }]}
+            tabs={[
+                { id: "plan", caption: "Plan" },
+                { id: "sprint", caption: "Sprint" },
+                { id: "review", caption: "Review" }
+            ]}
             onChange={(tabId) => {
                 if (props && props.onChangeTab) {
                     props.onChangeTab(tabId);
