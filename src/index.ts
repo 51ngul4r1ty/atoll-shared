@@ -7,7 +7,7 @@ export { TabStrip } from "./components/tabs/TabStrip";
 
 // containers
 export { configureStore } from "./store";
-// export { default as IntlProvider } from "./i18n/IntlProvider";
+export { default as IntlProvider } from "./i18n/IntlProvider";
 import { MainLayout } from "./layouts/MainLayout";
 export { createClientHistory, createServerHistory } from "./store/history";
 
