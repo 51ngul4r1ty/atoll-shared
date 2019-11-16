@@ -1,15 +1,11 @@
 // externals
 import * as React from "react";
-import Helmet from "react-helmet";
 
 // libraries
 import { themeList } from "./themes/all";
 
-// components
-import { TopMenuPanel } from "./components/panels/TopMenuPanel";
-
-// style
-import css from "./App.module.css";
+// components/containers
+import InnerAppContainer from "./InnerAppContainer";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
@@ -93,15 +89,9 @@ export class App extends React.Component<{}, {}> {
         this.lastThemeName = themeName;
     }
     render() {
-        const topMenuPanel = <TopMenuPanel />;
         return (
-            <div className={css.app}>
-                {/* <Helmet
-                    defaultTitle="Atoll"
-                    titleTemplate="Atoll – %s"
-                    link={[{ rel: "icon", type: "image/png", href: favicon }]}
-                /> */}
-                {topMenuPanel}
+            <div>
+                <InnerAppContainer />
             </div>
         );
     }

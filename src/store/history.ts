@@ -4,15 +4,14 @@ type HistoryParams = {
     initialEntries?: any[];
 };
 
-export const createUniversalHistory = ({ initialEntries = [] }: HistoryParams = {}) => {
-    if (__BROWSER__) {
-        const history = window.browserHistory || createBrowserHistory();
-        if (process.env.NODE_ENV === "development" && !window.browserHistory) {
-            window.browserHistory = history;
-        }
-        return history;
+export const createClientHistory = ({ initialEntries = [] }: HistoryParams = {}) => {
+    const history = window.browserHistory || createBrowserHistory();
+    if (process.env.NODE_ENV === "development" && !window.browserHistory) {
+        window.browserHistory = history;
     }
-    return createMemoryHistory({ initialEntries });
+    return history;
 };
 
-export default createUniversalHistory;
+export const createServerHistory = ({ initialEntries = [] }: HistoryParams = {}) => {
+    return createMemoryHistory({ initialEntries });
+};
