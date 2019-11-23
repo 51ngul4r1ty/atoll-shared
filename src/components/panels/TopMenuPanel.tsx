@@ -1,5 +1,6 @@
 // externals
 import * as React from "react";
+import { withTranslation, WithTranslation } from "react-i18next";
 
 // components
 import { HomeButton } from "../buttons/HomeButton";
@@ -16,19 +17,19 @@ export interface TopMenuPanelEventProps {
     onChangeTab?: { (selectedTabId: string) };
 }
 
-export type TopMenuPanelProps = TopMenuPanelAttributeProps & TopMenuPanelEventProps;
+export type TopMenuPanelProps = TopMenuPanelAttributeProps & TopMenuPanelEventProps & WithTranslation;
 
 /* exported components */
 
-export const TopMenuPanel: React.FC<TopMenuPanelProps> = (props) => (
+export const RawTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => (
     <div className={css.topMenuPanel}>
         <HomeButton />
         <TabStrip
             activeTab={(props && props.activeTabId) || "plan"}
             tabs={[
-                { id: "plan", caption: "Plan" },
-                { id: "sprint", caption: "Sprint" },
-                { id: "review", caption: "Review" }
+                { id: "plan", caption: props.t("Plan") },
+                { id: "sprint", caption: props.t("Sprint") },
+                { id: "review", caption: props.t("Review") }
             ]}
             onChange={(tabId) => {
                 if (props && props.onChangeTab) {
@@ -38,3 +39,5 @@ export const TopMenuPanel: React.FC<TopMenuPanelProps> = (props) => (
         />
     </div>
 );
+
+export const TopMenuPanel = withTranslation()(RawTopMenuPanel);

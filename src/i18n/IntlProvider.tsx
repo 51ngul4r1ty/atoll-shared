@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as i18next from "i18next";
+import i18next from "i18next";
 import { withRouter } from "react-router-dom";
 import { I18nextProvider } from "react-i18next";
 import { connect } from "react-redux";
@@ -25,8 +25,7 @@ i18next.init({
     }
 });
 
-// NOTE: This didn't work with TypeScript ("Error: Illegal reassignment to import 'i18next'") so used fallbackLng instead
-// (i18next as any).languages = ["de_DE", "en_US"];
+i18next.languages = ["de_DE", "en_US"];
 
 type Props = {
     children: React.ReactNode;
@@ -45,11 +44,4 @@ const mapStateToProps = (state: any) => ({
     locale: getLocale(state)
 });
 
-export default withRouter<any, any>(
-    connect(
-        mapStateToProps,
-        null,
-        null,
-        { pure: false }
-    )(React.memo(I18N))
-);
+export default withRouter<any, any>(connect(mapStateToProps, null, null, { pure: false })(React.memo(I18N)));

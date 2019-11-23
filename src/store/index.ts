@@ -2,6 +2,11 @@ import thunk from "redux-thunk";
 import { createStore, applyMiddleware, compose } from "redux";
 import { routerMiddleware } from "connected-react-router";
 import createRootReducer from "./rootReducer";
+import { composeWithDevTools } from "redux-devtools-extension";
+
+const composeEnhancers = composeWithDevTools({
+    // Specify name here, actionsBlacklist, actionsCreators and other options if needed
+});
 
 type StoreParams = {
     initialState?: { [key: string]: any };
@@ -14,7 +19,7 @@ export const configureStore = ({ initialState, middleware = [], history }: Store
 
     const allMiddleware = [thunk, routerMiddleware(history)].concat(...middleware);
 
-    const store = createStore(rootReducer, initialState, compose(applyMiddleware(...allMiddleware)));
+    const store = createStore(rootReducer, initialState, composeEnhancers(applyMiddleware(...allMiddleware)));
 
     return store;
 };
