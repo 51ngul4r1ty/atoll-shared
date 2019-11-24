@@ -14,15 +14,15 @@ Important
 Getting Started
 ===============
 
-Once again- start with `atoll` repo for the main "Getting Started" info.  To get this repo set up
+Once again- start with `atoll-core` repo for the main "Getting Started" info.  To get this repo set up
 and building please follow the requirements and steps below.
 
 
 Tools Used
 ----------
 
-1. See `atoll` repo for Node & NPM versions to use.
-2. See `atoll` repo for current version of VS Code that's recommended.
+1. See `atoll-core` repo for Node & NPM versions to use.
+2. See `atoll-core` repo for current version of VS Code that's recommended.
   - Make sure you install the recommended workspace extensions.
 
 Steps after Cloning Repo
