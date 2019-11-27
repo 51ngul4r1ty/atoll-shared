@@ -17,7 +17,16 @@ import css from "./InnerApp.module.css";
 
 /* exported interface */
 
-export interface InnerAppAttributeProps {}
+export interface BacklogItem {
+    id: number;
+    storyPhrase: string;
+    rolePhrase: string;
+    reasonPhrase: string;
+}
+
+export interface InnerAppAttributeProps {
+    backlogItems: BacklogItem[];
+}
 
 export interface InnerAppEventProps {
     onLoaded: { () };
@@ -36,6 +45,7 @@ export class InnerApp extends React.Component<InnerAppProps, {}> {
     }
     render() {
         const topMenuPanel = <TopMenuPanel />;
+        const backlogItemElts = this.props.backlogItems.map((item) => <div>{item.storyPhrase}</div>);
         return (
             <div className={css.app}>
                 {/* <Helmet
@@ -44,6 +54,7 @@ export class InnerApp extends React.Component<InnerAppProps, {}> {
                     link={[{ rel: "icon", type: "image/png", href: favicon }]}
                 /> */}
                 {topMenuPanel}
+                {backlogItemElts}
             </div>
         );
     }

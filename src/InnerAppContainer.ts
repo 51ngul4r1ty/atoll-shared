@@ -3,17 +3,26 @@ import { connect } from "react-redux";
 
 // components
 import { InnerApp, InnerAppEventProps, InnerAppAttributeProps } from "./InnerApp";
-import { AppState } from "./types";
+import { StateTree } from "./types";
 
 // actions
 import { getBacklogItems } from "./actions/backlogItems";
 import { Dispatch } from "redux";
 
-const mapStateToProps = (state: AppState): InnerAppAttributeProps => {
-    return {};
+const mapStateToProps = (state: StateTree): InnerAppAttributeProps => {
+    const backlogItems = state.backlogItems.items.map((item) => ({
+        id: item.id,
+        storyPhrase: item.storyPhrase,
+        rolePhrase: item.rolePhrase,
+        reasonPhrase: item.reasonPhrase
+    }));
+    let result: InnerAppAttributeProps = {
+        backlogItems
+    };
+    return result;
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>): InnerAppEventProps => {
+const mapDispatchToProps = (dispatch: Dispatch): InnerAppEventProps => {
     return {
         onLoaded: () => dispatch(getBacklogItems())
     };

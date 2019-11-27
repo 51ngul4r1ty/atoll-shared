@@ -2,6 +2,11 @@ import { Action } from "redux";
 
 export type Locale = "en_US" | "de_DE";
 
+export interface StateTree {
+    app: AppState;
+    backlogItems: BacklogItemsState;
+}
+
 export type AppState = Readonly<{
     locale: Locale;
 }>;
