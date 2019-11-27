@@ -1,22 +1,21 @@
 // externals
 import { connect } from "react-redux";
-import { Dispatch } from "redux";
 
 // components
-import { InnerApp } from "./InnerApp";
-import { AppState } from "./store/app/types";
+import { InnerApp, InnerAppEventProps, InnerAppAttributeProps } from "./InnerApp";
+import { AppState } from "./types";
 
-const mapStateToProps = (state: AppState) => {
-    return {
-        something: "to make it happy"
-    };
+// actions
+import { getBacklogItems } from "./actions/backlogItems";
+import { Dispatch } from "redux";
+
+const mapStateToProps = (state: AppState): InnerAppAttributeProps => {
+    return {};
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch<any>): InnerAppEventProps => {
     return {
-        onClick: (itemId: string) => {
-            /* dispatch goes here */
-        }
+        onLoaded: () => dispatch(getBacklogItems())
     };
 };
 
@@ -27,7 +26,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 //     )(App)
 // ); // withTranslation()<any>(App));
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(InnerApp);
+export default connect(mapStateToProps, mapDispatchToProps)(InnerApp);

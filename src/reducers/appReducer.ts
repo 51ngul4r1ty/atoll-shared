@@ -1,12 +1,17 @@
+// externals
 import { produce } from "immer";
-import { ActionTypes } from "./actions";
-import { Action, AppState } from "./types";
+
+// consts/enums
+import * as ActionTypes from "../actions/actionTypes";
+
+// interfaces/types
+import { AppState, AnyFSA } from "../types";
 
 export const initialState = Object.freeze<AppState>({
     locale: "en_US"
 });
 
-export default (state: AppState = initialState, action: Action): AppState =>
+export default (state: AppState = initialState, action: AnyFSA): AppState =>
     produce(state, (draft) => {
         const { type, payload } = action;
 

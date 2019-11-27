@@ -19,7 +19,9 @@ import css from "./InnerApp.module.css";
 
 export interface InnerAppAttributeProps {}
 
-export interface InnerAppEventProps {}
+export interface InnerAppEventProps {
+    onLoaded: { () };
+}
 
 export type InnerAppProps = InnerAppAttributeProps & InnerAppEventProps;
 
@@ -28,6 +30,9 @@ export type InnerAppProps = InnerAppAttributeProps & InnerAppEventProps;
 export class InnerApp extends React.Component<InnerAppProps, {}> {
     constructor(props) {
         super(props);
+    }
+    componentDidMount() {
+        this.props.onLoaded();
     }
     render() {
         const topMenuPanel = <TopMenuPanel />;

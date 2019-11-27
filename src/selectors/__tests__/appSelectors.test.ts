@@ -1,7 +1,7 @@
 import "jest";
 
-import { getLocale } from "../selectors";
-import { initialState } from "../reducer";
+import { getLocale } from "../appSelectors";
+import { initialState } from "../../reducers/appReducer";
 
 const state = {
     app: initialState

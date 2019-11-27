@@ -1,12 +1,17 @@
+// externals
 import { combineReducers } from "redux";
-import app from "./app/reducer";
 import { connectRouter } from "connected-react-router";
+
+// reducers
+import app from "./appReducer";
+import backlogItems from "./backlogItemsReducer";
 
 const createRootReducer = (history: any) => {
     const router = connectRouter(history);
     return combineReducers({
         router,
-        app
+        app,
+        backlogItems
     });
 };
 

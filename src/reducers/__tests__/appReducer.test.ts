@@ -1,7 +1,7 @@
 import "jest";
 
-import reducer, { initialState } from "../reducer";
-import { ActionTypes } from "../actions";
+import reducer, { initialState } from "../appReducer";
+import * as ActionTypes from "../../actions/actionTypes";
 
 describe("App Reducer", () => {
     it("sets the locale", () => {
