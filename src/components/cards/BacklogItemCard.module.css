@@ -1,0 +1,36 @@
+.backlogItemCard {
+    display: flex;
+}
+
+.backlogItemCard + .backlogItemCard {
+    padding-top: 0.1875rem;
+}
+
+.backlogItemType {
+    padding: 0.3rem 0.5rem; /* TODO: Use constants??? */
+    display: flex;
+    flex-grow: 0;
+    color: white; /* TODO: Use theme??? */
+    background-color: black; /* TODO: Use theme??? */
+}
+
+.backlogItemText {
+    padding: 0.25rem 0.375rem; /* TODO: Use constants??? */
+    flex-grow: 1;
+    border-top: 0.0625rem solid #ddd; /* TODO: Use constants??? */
+    border-right: 0.0625rem solid #ddd; /* TODO: Use constants??? */
+    border-bottom: 0.0625rem solid #ddd; /* TODO: Use constants??? */
+}
+
+.backlogItemIcon {
+    line-height: 0;
+}
+
+.backlogItemIcon svg {
+    width: 1.3rem;
+    height: 1.3rem;
+}
+
+.backlogItemId {
+    padding-left: 0.375rem;
+}

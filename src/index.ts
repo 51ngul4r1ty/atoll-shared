@@ -4,6 +4,7 @@ export { HomeButton } from "./components/buttons/HomeButton";
 export { SimpleButton } from "./components/buttons/SimpleButton";
 export { SimpleText } from "./components/text/SimpleText";
 export { TabStrip } from "./components/tabs/TabStrip";
+export { BacklogItemCard, BacklogItemTypeEnum } from "./components/cards/BacklogItemCard";
 
 // containers
 export { configureStore } from "./store";

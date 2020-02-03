@@ -11,10 +11,12 @@ import { Dispatch } from "redux";
 
 const mapStateToProps = (state: StateTree): InnerAppAttributeProps => {
     const backlogItems = state.backlogItems.items.map((item) => ({
+        externalId: item.externalId,
         id: item.id,
         storyPhrase: item.storyPhrase,
         rolePhrase: item.rolePhrase,
-        reasonPhrase: item.reasonPhrase
+        reasonPhrase: item.reasonPhrase,
+        type: item.type
     }));
     let result: InnerAppAttributeProps = {
         backlogItems

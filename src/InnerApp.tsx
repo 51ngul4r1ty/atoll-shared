@@ -10,19 +10,14 @@ import { TopMenuPanel } from "./components/panels/TopMenuPanel";
 
 // style
 import css from "./InnerApp.module.css";
+import { BacklogItemType, BacklogItemCard } from "./components/cards/BacklogItemCard";
+import { BacklogItem, BacklogItemPlanningPanel } from "./components/panels/BacklogItemPlanningPanel";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
 // import favicon from "./assets/favicon.png";
 
 /* exported interface */
-
-export interface BacklogItem {
-    id: number;
-    storyPhrase: string;
-    rolePhrase: string;
-    reasonPhrase: string;
-}
 
 export interface InnerAppAttributeProps {
     backlogItems: BacklogItem[];
@@ -44,8 +39,10 @@ export class InnerApp extends React.Component<InnerAppProps, {}> {
         this.props.onLoaded();
     }
     render() {
-        const topMenuPanel = <TopMenuPanel />;
-        const backlogItemElts = this.props.backlogItems.map((item) => <div>{item.storyPhrase}</div>);
+        // const topMenuPanel = <TopMenuPanel />;
+        // const backlogItemElts = this.props.backlogItems.map((item) => (
+        //     <BacklogItemCard itemId={`${item.externalId}`} itemType={BacklogItemType.Bug} titleText={item.storyPhrase} />
+        // ));
         return (
             <div className={css.app}>
                 {/* <Helmet
@@ -53,8 +50,9 @@ export class InnerApp extends React.Component<InnerAppProps, {}> {
                     titleTemplate="Atoll – %s"
                     link={[{ rel: "icon", type: "image/png", href: favicon }]}
                 /> */}
-                {topMenuPanel}
-                {backlogItemElts}
+                <TopMenuPanel />
+                <BacklogItemPlanningPanel backlogItems={this.props.backlogItems} />
+                {/* {backlogItemElts} */}
             </div>
         );
     }

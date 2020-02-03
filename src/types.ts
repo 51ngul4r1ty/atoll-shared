@@ -11,15 +11,18 @@ export type AppState = Readonly<{
     locale: Locale;
 }>;
 
+export type BacklogItemType = "story" | "issue";
+
 export interface BacklogItem {
     creationDateTime: Date;
     displayIndex: number;
     estimate: number | null;
+    externalId: string | null;
     id: number;
     reasonPhrase: string | null;
     rolePhrase: string | null;
     storyPhrase: string;
-    type: "story" | "issue";
+    type: BacklogItemType;
 }
 
 export type BacklogItemsState = Readonly<{
