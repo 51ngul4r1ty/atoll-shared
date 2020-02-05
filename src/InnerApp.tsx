@@ -10,7 +10,6 @@ import { TopMenuPanel } from "./components/panels/TopMenuPanel";
 
 // style
 import css from "./InnerApp.module.css";
-import { BacklogItemType, BacklogItemCard } from "./components/cards/BacklogItemCard";
 import { BacklogItem, BacklogItemPlanningPanel } from "./components/panels/BacklogItemPlanningPanel";
 
 // images
@@ -39,10 +38,6 @@ export class InnerApp extends React.Component<InnerAppProps, {}> {
         this.props.onLoaded();
     }
     render() {
-        // const topMenuPanel = <TopMenuPanel />;
-        // const backlogItemElts = this.props.backlogItems.map((item) => (
-        //     <BacklogItemCard itemId={`${item.externalId}`} itemType={BacklogItemType.Bug} titleText={item.storyPhrase} />
-        // ));
         return (
             <div className={css.app}>
                 {/* <Helmet
@@ -52,7 +47,6 @@ export class InnerApp extends React.Component<InnerAppProps, {}> {
                 /> */}
                 <TopMenuPanel />
                 <BacklogItemPlanningPanel backlogItems={this.props.backlogItems} />
-                {/* {backlogItemElts} */}
             </div>
         );
     }

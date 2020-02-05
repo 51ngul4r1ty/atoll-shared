@@ -10,6 +10,7 @@ import { BacklogItemType } from "../../types";
 /* exported interfaces */
 
 export interface BacklogItem {
+    estimate: number | null;
     externalId: string;
     id: number;
     storyPhrase: string;
@@ -33,6 +34,7 @@ export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelAttributePro
 export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps> = (props) => {
     const backlogItemElts = props.backlogItems.map((item) => (
         <BacklogItemCard
+            estimate={item.estimate}
             itemId={`${item.externalId}`}
             itemType={item.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
             titleText={item.storyPhrase}

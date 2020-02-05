@@ -16,6 +16,7 @@ export enum BacklogItemTypeEnum {
 }
 
 export interface BacklogItemCardAttributeProps {
+    estimate: number | null;
     itemId: string;
     itemType: BacklogItemTypeEnum;
     titleText: string;
@@ -39,15 +40,27 @@ export const abbreviateId = (id: string): string => {
     return `${prefix}..${suffix}`;
 };
 
+export const formatEstimateForDisplay = (estimate: number | null): string => {
+    return estimate ? `${estimate}` : "-";
+};
+
+export const titleForItemId = (id: string): string | undefined => {
+    const abbreviatedId = abbreviateId(id);
+    return abbreviatedId === id ? undefined : id;
+};
+
 export const RawBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => (
     <div className={css.backlogItemCard}>
         <div className={css.backlogItemType}>
             <div className={css.backlogItemIcon}>
                 {props.itemType === BacklogItemTypeEnum.Story ? <StoryIcon /> : <IssueIcon />}
             </div>
-            <div className={css.backlogItemId}>{abbreviateId(props.itemId)}</div>
+            <div className={css.backlogItemId} title={titleForItemId(props.itemId)}>
+                {abbreviateId(props.itemId)}
+            </div>
         </div>
         <div className={css.backlogItemText}>{props.titleText}</div>
+        <div className={css.backlogItemEstimate}>{formatEstimateForDisplay(props.estimate)}</div>
     </div>
 );
 
