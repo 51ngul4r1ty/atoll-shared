@@ -12,6 +12,7 @@
     flex-grow: 0;
     color: white; /* TODO: Use theme??? */
     background-color: black; /* TODO: Use theme??? */
+    width: 5rem;
 }
 
 .backlogItemText {
@@ -24,6 +25,7 @@
 
 .backlogItemIcon {
     line-height: 0;
+    flex-grow: 0;
 }
 
 .backlogItemIcon svg {
@@ -33,4 +35,6 @@
 
 .backlogItemId {
     padding-left: 0.375rem;
+    flex-grow: 1;
+    text-align: center;
 }

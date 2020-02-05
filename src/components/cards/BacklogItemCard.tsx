@@ -27,13 +27,25 @@ export type BacklogItemCardProps = BacklogItemCardAttributeProps & BacklogItemCa
 
 /* exported components */
 
+export const abbreviateId = (id: string): string => {
+    if (!id) {
+        return id;
+    }
+    if (id.length <= 5) {
+        return id;
+    }
+    const prefix = id.substr(0, 1);
+    const suffix = id.substr(id.length - 3, 3);
+    return `${prefix}..${suffix}`;
+};
+
 export const RawBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => (
     <div className={css.backlogItemCard}>
         <div className={css.backlogItemType}>
             <div className={css.backlogItemIcon}>
                 {props.itemType === BacklogItemTypeEnum.Story ? <StoryIcon /> : <IssueIcon />}
             </div>
-            <div className={css.backlogItemId}>{props.itemId}</div>
+            <div className={css.backlogItemId}>{abbreviateId(props.itemId)}</div>
         </div>
         <div className={css.backlogItemText}>{props.titleText}</div>
     </div>
