@@ -1,7 +1,12 @@
 .backlogItemCard {
     display: flex;
     height: 2rem;
-    line-height: 2rem;
+}
+
+.backlogItemCard > * {
+    line-height: 1.4rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
 }
 
 .backlogItemCard + .backlogItemCard {
