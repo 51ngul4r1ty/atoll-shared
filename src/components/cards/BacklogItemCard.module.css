@@ -18,8 +18,8 @@
     padding-right: 0.3rem; /* TODO: Use constants??? */
     display: flex;
     flex-grow: 0;
-    color: white; /* TODO: Use theme??? */
-    background-color: black; /* TODO: Use theme??? */
+    color: var(--normal-page-color, white);
+    background-color: var(--normal-pen-color, black);
     min-width: 5rem; /* TODO: Use constants/theme?? */
     align-items: center;
     user-select: none;

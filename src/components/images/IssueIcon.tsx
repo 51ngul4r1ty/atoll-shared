@@ -2,7 +2,6 @@
 import * as React from "react";
 
 // style
-import css from "./IssueIcon.module.css";
 import baseCss from "./common/base.module.css";
 
 /* exported components */

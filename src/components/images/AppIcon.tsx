@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import css from "./AppIcon.module.css";
+import css from "./common/base.module.css";
 
 interface AppIconProps {
     className?: string;

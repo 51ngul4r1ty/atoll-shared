@@ -3,13 +3,13 @@
 }
 
 .fillInverted {
-    fill: var(--normal-page-color, white);
-}
-
-.strokeInverted {
-    stroke: var(--normal-page-color, white);
+    fill: var(--inverted-pen-color, white);
 }
 
 .stroke {
     stroke: var(--normal-pen-color, black);
+}
+
+.strokeInverted {
+    stroke: var(--inverted-pen-color, white);
 }

@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // style
-import css from "./HamburgerIcon.module.css";
+import css from "./common/base.module.css";
 
 /* exported components */
 
