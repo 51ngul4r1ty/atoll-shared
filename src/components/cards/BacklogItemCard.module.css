@@ -22,6 +22,7 @@
     background-color: black; /* TODO: Use theme??? */
     min-width: 5rem; /* TODO: Use constants/theme?? */
     align-items: center;
+    user-select: none;
 }
 
 .backlogItemText {
@@ -41,6 +42,7 @@
     min-width: 2rem; /* TODO: Use constant */
     background-color: black; /* TODO: Use theme??? */
     color: white; /* TODO: Use theme??? */
+    user-select: none;
 }
 
 .backlogItemIcon {
