@@ -1,5 +1,6 @@
 // externals
 import * as React from "react";
+import { useState } from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 
 // atoms
@@ -26,32 +27,35 @@ export type TopMenuPanelProps = TopMenuPanelAttributeProps & TopMenuPanelEventPr
 
 /* exported components */
 
-export const RawTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => (
-    <div className={css.topMenuPanel}>
-        <HomeButton />
-        <TabStrip
-            activeTab={(props && props.activeTabId) || "plan"}
-            tabs={[
-                { id: "plan", caption: props.t("Plan") },
-                { id: "sprint", caption: props.t("Sprint") },
-                { id: "review", caption: props.t("Review") }
-            ]}
-            onChange={(tabId) => {
-                if (props && props.onChangeTab) {
-                    props.onChangeTab(tabId);
-                }
-            }}
-        />
-        <div className={css.fillSpaceAvailable}></div>
-        <div className={css.actionButtonPanel}>
-            <EditButton
-                mode={EditMode.VIEW}
-                onClick={() => {
-                    alert("test");
+export const RawTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
+    const [editMode, setEditMode] = useState(EditMode.View);
+    return (
+        <div className={css.topMenuPanel}>
+            <HomeButton />
+            <TabStrip
+                activeTab={(props && props.activeTabId) || "plan"}
+                tabs={[
+                    { id: "plan", caption: props.t("Plan") },
+                    { id: "sprint", caption: props.t("Sprint") },
+                    { id: "review", caption: props.t("Review") }
+                ]}
+                onChange={(tabId) => {
+                    if (props && props.onChangeTab) {
+                        props.onChangeTab(tabId);
+                    }
                 }}
             />
+            <div className={css.fillSpaceAvailable}></div>
+            <div className={css.actionButtonPanel}>
+                <EditButton
+                    mode={editMode}
+                    onClick={() => {
+                        setEditMode(editMode === EditMode.View ? EditMode.Edit : EditMode.View);
+                    }}
+                />
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 export const TopMenuPanel = withTranslation()(RawTopMenuPanel);
