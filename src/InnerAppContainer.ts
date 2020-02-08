@@ -8,7 +8,7 @@ import { StateTree } from "./types";
 // actions
 import { getBacklogItems } from "./actions/backlogItems";
 import { Dispatch } from "redux";
-import { BacklogItem } from "./components/panels/BacklogItemPlanningPanel";
+import { BacklogItem } from "./components/organisms/panels/BacklogItemPlanningPanel";
 
 const mapStateToProps = (state: StateTree): InnerAppAttributeProps => {
     const backlogItems: BacklogItem[] = state.backlogItems.items.map((item) => {

@@ -2,10 +2,10 @@
 import * as React from "react";
 
 // images
-import { AppIcon } from "../images/AppIcon";
+import { AppIcon } from "../../atoms/icons/AppIcon";
 
 // consts/enums
-import { APP_NAME } from "../../constants";
+import { APP_NAME } from "../../../constants";
 
 // style
 import css from "./HomeButton.module.css";

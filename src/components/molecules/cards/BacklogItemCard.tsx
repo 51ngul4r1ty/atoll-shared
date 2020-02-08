@@ -4,8 +4,8 @@ import { withTranslation, WithTranslation } from "react-i18next";
 
 // components
 import css from "./BacklogItemCard.module.css";
-import { StoryIcon } from "../images/StoryIcon";
-import { IssueIcon } from "../images/IssueIcon";
+import { StoryIcon } from "../../atoms/icons/StoryIcon";
+import { IssueIcon } from "../../atoms/icons/IssueIcon";
 
 /* exported interfaces */
 

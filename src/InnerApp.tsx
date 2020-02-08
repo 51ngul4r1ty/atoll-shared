@@ -6,11 +6,11 @@ import * as React from "react";
 import { themeList } from "./themes/all";
 
 // components
-import { TopMenuPanel } from "./components/panels/TopMenuPanel";
+import { TopMenuPanel } from "./components/organisms/panels/TopMenuPanel";
 
 // style
 import css from "./InnerApp.module.css";
-import { BacklogItem, BacklogItemPlanningPanel } from "./components/panels/BacklogItemPlanningPanel";
+import { BacklogItem, BacklogItemPlanningPanel } from "./components/organisms/panels/BacklogItemPlanningPanel";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build

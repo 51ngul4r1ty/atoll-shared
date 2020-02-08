@@ -4,8 +4,8 @@ import { withTranslation, WithTranslation } from "react-i18next";
 
 // components
 import css from "./BacklogItemPlanningPanel.module.css";
-import { BacklogItemCard, BacklogItemTypeEnum } from "../cards/BacklogItemCard";
-import { BacklogItemType } from "../../types";
+import { BacklogItemCard, BacklogItemTypeEnum } from "../../molecules/cards/BacklogItemCard";
+import { BacklogItemType } from "../../../types";
 
 /* exported interfaces */
 

@@ -2,14 +2,15 @@
 import * as React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 
-// components
-import { HomeButton } from "../buttons/HomeButton";
-import { SimpleButton } from "../buttons/SimpleButton";
-import { TabStrip } from "../tabs/TabStrip";
+// atoms
+import { TabStrip } from "../../atoms/tabs/TabStrip";
+
+// molecules
+import { HomeButton } from "../../molecules/buttons/HomeButton";
+import { EditButton, EditMode } from "../../molecules/buttons/EditButton";
 
 // style
 import css from "./TopMenuPanel.module.css";
-import { EditIcon } from "../images/EditIcon";
 
 /* exported interfaces */
 
@@ -43,15 +44,12 @@ export const RawTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => (
         />
         <div className={css.fillSpaceAvailable}></div>
         <div className={css.actionButtonPanel}>
-            <SimpleButton
-                iconOnLeft
-                icon={<EditIcon />}
+            <EditButton
+                mode={EditMode.VIEW}
                 onClick={() => {
                     alert("test");
                 }}
-            >
-                Edit
-            </SimpleButton>
+            />
         </div>
     </div>
 );

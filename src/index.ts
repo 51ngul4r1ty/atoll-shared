@@ -1,11 +1,12 @@
 export { App } from "./App";
-export { EditIcon } from "./components/images/EditIcon";
-export { HamburgerIcon } from "./components/images/HamburgerIcon";
-export { HomeButton } from "./components/buttons/HomeButton";
-export { SimpleButton } from "./components/buttons/SimpleButton";
-export { SimpleText } from "./components/text/SimpleText";
-export { TabStrip } from "./components/tabs/TabStrip";
-export { BacklogItemCard, BacklogItemTypeEnum } from "./components/cards/BacklogItemCard";
+export { EditButton, EditMode } from "./components/molecules/buttons/EditButton";
+export { EditIcon } from "./components/atoms/icons/EditIcon";
+export { HamburgerIcon } from "./components/atoms/icons/HamburgerIcon";
+export { HomeButton } from "./components/molecules/buttons/HomeButton";
+export { SimpleButton } from "./components/atoms/buttons/SimpleButton";
+export { SimpleText } from "./components/atoms/text/SimpleText";
+export { TabStrip } from "./components/atoms/tabs/TabStrip";
+export { BacklogItemCard, BacklogItemTypeEnum } from "./components/molecules/cards/BacklogItemCard";
 
 // containers
 export { configureStore } from "./store";
