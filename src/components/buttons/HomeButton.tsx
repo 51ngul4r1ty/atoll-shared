@@ -16,6 +16,7 @@ export interface HomeButtonAttributeProps {
     forceStateActive?: boolean;
     forceStateFocus?: boolean;
     forceStateHover?: boolean;
+    tabIndex: number;
 }
 
 export interface HomeButtonEventProps {
@@ -40,7 +41,7 @@ export const HomeButton: React.FC<HomeButtonProps> = (props) => {
     return (
         <div
             className={className}
-            tabIndex={0}
+            tabIndex={props.tabIndex}
             onClick={() => {
                 if (props && props.onClick) {
                     props.onClick();

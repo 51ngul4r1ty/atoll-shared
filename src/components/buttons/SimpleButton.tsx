@@ -5,6 +5,7 @@ import css from "./SimpleButton.module.css";
 export interface SimpleButtonAttributeProps {
     icon?: any; // TODO: Define type
     iconOnLeft?: boolean;
+    tabIndex: number;
 }
 
 export interface SimpleButtonEventProps {
@@ -33,7 +34,7 @@ export const SimpleButton: React.FC<SimpleButtonProps> = (props) => {
         </>
     );
     return (
-        <div className={className} tabIndex={0} onClick={props.onClick}>
+        <div className={className} tabIndex={props.tabIndex} onClick={props.onClick}>
             {contents}
         </div>
     );

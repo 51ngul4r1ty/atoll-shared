@@ -14,6 +14,7 @@ export interface Tab {
 export interface TabStripAttributeProps {
     activeTab: string;
     tabs: Tab[];
+    tabIndex: number;
 }
 
 export interface TabStripEventProps {
@@ -25,7 +26,7 @@ export type TabStripProps = TabStripAttributeProps & TabStripEventProps;
 /* exported components */
 
 export const TabStrip: React.FC<TabStripProps> = (props) => {
-    let tabIndex = 1;
+    let idx = 1;
     const handleTabClick = (tabId: string) => {
         if (props.onChange) {
             props.onChange(tabId);
@@ -33,10 +34,13 @@ export const TabStrip: React.FC<TabStripProps> = (props) => {
     };
     const tabs = props.tabs.map((tab) => {
         const className = css.tab + (tab.id === props.activeTab ? ` ${css.active}` : "");
+        const oldIdx = idx;
+        idx++;
         return (
             <div
-                key={`tab-${tabIndex++}`}
+                key={`tab-${idx}`}
                 className={className}
+                tabIndex={oldIdx}
                 onClick={() => {
                     handleTabClick(tab.id);
                 }}
@@ -46,7 +50,7 @@ export const TabStrip: React.FC<TabStripProps> = (props) => {
         );
     });
     return (
-        <div className={css.tabs} tabIndex={0}>
+        <div className={css.tabs} tabIndex={props.tabIndex}>
             {tabs}
         </div>
     );

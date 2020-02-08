@@ -27,8 +27,9 @@ export type TopMenuPanelProps = TopMenuPanelAttributeProps & TopMenuPanelEventPr
 
 export const RawTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => (
     <div className={css.topMenuPanel}>
-        <HomeButton />
+        <HomeButton tabIndex={0} />
         <TabStrip
+            tabIndex={1}
             activeTab={(props && props.activeTabId) || "plan"}
             tabs={[
                 { id: "plan", caption: props.t("Plan") },
@@ -44,6 +45,7 @@ export const RawTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => (
         <div className={css.fillSpaceAvailable}></div>
         <div className={css.actionButtonPanel}>
             <SimpleButton
+                tabIndex={2}
                 iconOnLeft
                 icon={<EditIcon />}
                 onClick={() => {
