@@ -14,7 +14,6 @@ export interface Tab {
 export interface TabStripAttributeProps {
     activeTab: string;
     tabs: Tab[];
-    tabIndex: number;
 }
 
 export interface TabStripEventProps {
@@ -34,13 +33,12 @@ export const TabStrip: React.FC<TabStripProps> = (props) => {
     };
     const tabs = props.tabs.map((tab) => {
         const className = css.tab + (tab.id === props.activeTab ? ` ${css.active}` : "");
-        const oldIdx = idx;
         idx++;
         return (
             <div
                 key={`tab-${idx}`}
                 className={className}
-                tabIndex={oldIdx}
+                tabIndex={0}
                 onClick={() => {
                     handleTabClick(tab.id);
                 }}
@@ -49,9 +47,5 @@ export const TabStrip: React.FC<TabStripProps> = (props) => {
             </div>
         );
     });
-    return (
-        <div className={css.tabs} tabIndex={props.tabIndex}>
-            {tabs}
-        </div>
-    );
+    return <div className={css.tabs}>{tabs}</div>;
 };

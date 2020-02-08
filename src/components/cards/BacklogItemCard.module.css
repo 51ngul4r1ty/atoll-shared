@@ -10,7 +10,7 @@
 }
 
 .backlogItemCard + .backlogItemCard {
-    padding-top: 0.1875rem;
+    margin-top: 0.1875rem;
 }
 
 .backlogItemType {

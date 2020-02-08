@@ -50,7 +50,7 @@ export const titleForItemId = (id: string): string | undefined => {
 };
 
 export const RawBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => (
-    <div className={css.backlogItemCard}>
+    <div className={css.backlogItemCard} tabIndex={0}>
         <div className={css.backlogItemType}>
             <div className={css.backlogItemIcon}>
                 {props.itemType === BacklogItemTypeEnum.Story ? <StoryIcon /> : <IssueIcon />}
