@@ -1,4 +1,5 @@
 export { App } from "./App";
+export { EditIcon } from "./components/images/EditIcon";
 export { HamburgerIcon } from "./components/images/HamburgerIcon";
 export { HomeButton } from "./components/buttons/HomeButton";
 export { SimpleButton } from "./components/buttons/SimpleButton";

@@ -74,8 +74,11 @@ export interface Theme {
     "--inverted-pen-color": string;
     "--inverted-active-page-color": string;
     "--inverted-focus-page-color": string;
+    "--x-small-font-size": string;
+    "--small-font-size": string;
     "--medium-font-size": string;
     "--large-font-size": string;
+    "--xlarge-font-size": string;
 }
 
 export const defaultTheme: Theme = {
@@ -90,8 +93,11 @@ export const defaultTheme: Theme = {
     "--inverted-pen-color": "white",
     "--inverted-active-page-color": "#555",
     "--inverted-focus-page-color": "#444",
+    "--x-small-font-size": "0.5rem",
+    "--small-font-size": "0.75rem",
     "--medium-font-size": "1.0rem",
-    "--large-font-size": "1.25rem"
+    "--large-font-size": "1.25rem",
+    "--xlarge-font-size": "1.5rem"
 };
 
 export const darkTheme: Theme = {
@@ -106,8 +112,11 @@ export const darkTheme: Theme = {
     "--inverted-pen-color": "black",
     "--inverted-active-page-color": "#ddd",
     "--inverted-focus-page-color": "#eee",
+    "--x-small-font-size": "0.5rem",
+    "--small-font-size": "0.75rem",
     "--medium-font-size": "1.0rem",
-    "--large-font-size": "1.25rem"
+    "--large-font-size": "1.25rem",
+    "--xlarge-font-size": "1.5rem"
 };
 
 export interface ThemeListItem {
@@ -115,4 +124,7 @@ export interface ThemeListItem {
     theme: Theme;
 }
 
-export const themeList: ThemeListItem[] = [{ name: "default", theme: defaultTheme }, { name: "dark", theme: darkTheme }];
+export const themeList: ThemeListItem[] = [
+    { name: "default", theme: defaultTheme },
+    { name: "dark", theme: darkTheme }
+];

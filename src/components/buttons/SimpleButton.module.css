@@ -4,8 +4,16 @@
     border: 0.125rem solid var(--normal-pen-color, black);
     cursor: pointer;
     display: inline-flex;
-    padding: 0.3rem 0.4rem 0.3rem 0.8rem;
     user-select: none;
+    padding: 0.3rem;
+}
+
+.button.iconOnLeft {
+    padding-right: 0.8rem;
+}
+
+.button.iconOnRight {
+    padding-left: 0.8rem;
 }
 
 .button:focus {
@@ -23,12 +31,16 @@
 
 .buttonCaption {
     color: var(--normal-pen-color);
-    font-size: var(--medium-font-size, 0.95rem);
+    font-size: var(--small-font-size, 0.75rem);
     font-weight: var(--primary-bold-font-weight, 700);
     text-transform: uppercase;
 }
 
 .buttonCaption + .buttonIcon {
+    padding-left: 0.3rem;
+}
+
+.buttonIcon + .buttonCaption {
     padding-left: 0.4rem;
 }
 
@@ -37,8 +49,8 @@
 }
 
 .buttonIcon > * {
-    height: 1.9rem;
-    width: 1.9rem;
+    height: 1.425rem;
+    width: 1.425rem;
 }
 
 .buttonIcon * {
