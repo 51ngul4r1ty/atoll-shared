@@ -3,7 +3,7 @@ import i18next from "i18next";
 import { withRouter } from "react-router-dom";
 import { I18nextProvider } from "react-i18next";
 import { connect } from "react-redux";
-import { getLocale } from "../store/app/selectors";
+import { getLocale } from "../selectors/appSelectors";
 
 import deDE from "./locales/de_DE/translation.json";
 import enUS from "./locales/en_US/translation.json";

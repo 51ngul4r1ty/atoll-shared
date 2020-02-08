@@ -1,0 +1,15 @@
+.fill {
+    fill: var(--normal-pen-color, black);
+}
+
+.fillInverted {
+    fill: var(--inverted-pen-color, white);
+}
+
+.stroke {
+    stroke: var(--normal-pen-color, black);
+}
+
+.strokeInverted {
+    stroke: var(--inverted-pen-color, white);
+}

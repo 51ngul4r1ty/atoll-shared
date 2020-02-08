@@ -1,22 +1,37 @@
 // externals
 import { connect } from "react-redux";
-import { Dispatch } from "redux";
 
 // components
-import { InnerApp } from "./InnerApp";
-import { AppState } from "./store/app/types";
+import { InnerApp, InnerAppEventProps, InnerAppAttributeProps } from "./InnerApp";
+import { StateTree } from "./types";
 
-const mapStateToProps = (state: AppState) => {
-    return {
-        something: "to make it happy"
+// actions
+import { getBacklogItems } from "./actions/backlogItems";
+import { Dispatch } from "redux";
+import { BacklogItem } from "./components/organisms/panels/BacklogItemPlanningPanel";
+
+const mapStateToProps = (state: StateTree): InnerAppAttributeProps => {
+    const backlogItems: BacklogItem[] = state.backlogItems.items.map((item) => {
+        const result: BacklogItem = {
+            estimate: item.estimate,
+            externalId: item.externalId,
+            id: item.id,
+            storyPhrase: item.storyPhrase,
+            rolePhrase: item.rolePhrase,
+            reasonPhrase: item.reasonPhrase,
+            type: item.type
+        };
+        return result;
+    });
+    let result: InnerAppAttributeProps = {
+        backlogItems
     };
+    return result;
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch): InnerAppEventProps => {
     return {
-        onClick: (itemId: string) => {
-            /* dispatch goes here */
-        }
+        onLoaded: () => dispatch(getBacklogItems())
     };
 };
 
@@ -27,7 +42,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 //     )(App)
 // ); // withTranslation()<any>(App));
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(InnerApp);
+export default connect(mapStateToProps, mapDispatchToProps)(InnerApp);

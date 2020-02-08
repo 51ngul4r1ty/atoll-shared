@@ -1,0 +1,14 @@
+.topMenuPanel {
+    display: flex;
+    border-bottom: 1px solid var(--normal-divider-color, #f4f4f4);
+}
+
+.fillSpaceAvailable {
+    flex-grow: 1;
+}
+
+.actionButtonPanel {
+    display: flex;
+    align-items: center;
+    padding-right: 0.3rem;
+}

@@ -25,7 +25,8 @@ export default {
     external: [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})],
     plugins: [
         resolve({
-            // pass custom options to the resolve plugin
+            browser: true,
+            dedupe: ["react", "react-dom"],
             customResolveOptions: {
                 moduleDirectory: "node_modules"
             }
