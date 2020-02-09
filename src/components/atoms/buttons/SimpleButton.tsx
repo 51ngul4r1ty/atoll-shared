@@ -2,16 +2,16 @@ import * as React from "react";
 
 import css from "./SimpleButton.module.css";
 
-export interface SimpleButtonAttributeProps {
+export interface SimpleButtonStateProps {
     icon?: any; // TODO: Define type
     iconOnLeft?: boolean;
 }
 
-export interface SimpleButtonEventProps {
+export interface SimpleButtonDispatchProps {
     onClick: { () };
 }
 
-export type SimpleButtonProps = SimpleButtonAttributeProps & SimpleButtonEventProps;
+export type SimpleButtonProps = SimpleButtonStateProps & SimpleButtonDispatchProps;
 
 export const SimpleButton: React.FC<SimpleButtonProps> = (props) => {
     const icon = props.icon && <div className={css.buttonIcon}>{props.icon}</div>;

@@ -15,16 +15,16 @@ export enum BacklogItemTypeEnum {
     Story
 }
 
-export interface BacklogItemCardAttributeProps {
+export interface BacklogItemCardStateProps {
     estimate: number | null;
     itemId: string;
     itemType: BacklogItemTypeEnum;
     titleText: string;
 }
 
-export interface BacklogItemCardEventProps {}
+export interface BacklogItemCardDispatchProps {}
 
-export type BacklogItemCardProps = BacklogItemCardAttributeProps & BacklogItemCardEventProps & WithTranslation;
+export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDispatchProps & WithTranslation;
 
 /* exported components */
 

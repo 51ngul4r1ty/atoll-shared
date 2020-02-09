@@ -18,15 +18,16 @@ import { BacklogItem, BacklogItemPlanningPanel } from "./components/organisms/pa
 
 /* exported interface */
 
-export interface InnerAppAttributeProps {
+export interface InnerAppStateProps {
     backlogItems: BacklogItem[];
 }
 
-export interface InnerAppEventProps {
+export interface InnerAppDispatchProps {
     onLoaded: { () };
+    onChangeTab: { (tabId: string) };
 }
 
-export type InnerAppProps = InnerAppAttributeProps & InnerAppEventProps;
+export type InnerAppProps = InnerAppStateProps & InnerAppDispatchProps;
 
 /* exported component */
 
@@ -45,7 +46,13 @@ export class InnerApp extends React.Component<InnerAppProps, {}> {
                     titleTemplate="Atoll – %s"
                     link={[{ rel: "icon", type: "image/png", href: favicon }]}
                 /> */}
-                <TopMenuPanel />
+                <TopMenuPanel
+                    onChangeTab={(tabId: string) => {
+                        if (this.props.onChangeTab) {
+                            this.props.onChangeTab(tabId);
+                        }
+                    }}
+                />
                 <BacklogItemPlanningPanel backlogItems={this.props.backlogItems} />
             </div>
         );

@@ -14,15 +14,15 @@ export enum EditMode {
     Edit
 }
 
-export interface EditButtonAttributeProps {
+export interface EditButtonStateProps {
     mode: EditMode;
 }
 
-export interface EditButtonEventProps {
+export interface EditButtonDispatchProps {
     onClick: { () };
 }
 
-export type EditButtonProps = EditButtonAttributeProps & EditButtonEventProps;
+export type EditButtonProps = EditButtonStateProps & EditButtonDispatchProps;
 
 export const EditButton: React.FC<EditButtonProps> = (props) => {
     const icon = props.mode === EditMode.View ? <EditIcon /> : <EditCancelIcon />;

@@ -15,15 +15,15 @@ import css from "./TopMenuPanel.module.css";
 
 /* exported interfaces */
 
-export interface TopMenuPanelAttributeProps {
+export interface TopMenuPanelStateProps {
     activeTabId?: string;
 }
 
-export interface TopMenuPanelEventProps {
+export interface TopMenuPanelDispatchProps {
     onChangeTab?: { (selectedTabId: string) };
 }
 
-export type TopMenuPanelProps = TopMenuPanelAttributeProps & TopMenuPanelEventProps & WithTranslation;
+export type TopMenuPanelProps = TopMenuPanelStateProps & TopMenuPanelDispatchProps & WithTranslation;
 
 /* exported components */
 

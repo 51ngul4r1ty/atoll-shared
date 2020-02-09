@@ -11,16 +11,16 @@ export interface Tab {
     caption: string;
 }
 
-export interface TabStripAttributeProps {
+export interface TabStripStateProps {
     activeTab: string;
     tabs: Tab[];
 }
 
-export interface TabStripEventProps {
+export interface TabStripDispatchProps {
     onChange?: { (tabId: string) };
 }
 
-export type TabStripProps = TabStripAttributeProps & TabStripEventProps;
+export type TabStripProps = TabStripStateProps & TabStripDispatchProps;
 
 /* exported components */
 

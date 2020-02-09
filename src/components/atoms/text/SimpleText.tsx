@@ -8,13 +8,13 @@ import css from "./SimpleText.module.css";
 
 export type FontSize = "xsmall" | "small" | "medium" | "large" | "xlarge";
 
-export interface SimpleTextAttributeProps {
+export interface SimpleTextStateProps {
     size: FontSize;
 }
 
-export interface SimpleTextEventProps {}
+export interface SimpleTextDispatchProps {}
 
-export type SimpleTextProps = SimpleTextAttributeProps & SimpleTextEventProps;
+export type SimpleTextProps = SimpleTextStateProps & SimpleTextDispatchProps;
 
 /* exported components */
 
