@@ -19,14 +19,14 @@ export interface BacklogItem {
     type: BacklogItemType;
 }
 
-export interface BacklogItemPlanningPanelAttributeProps {
+export interface BacklogItemPlanningPanelStateProps {
     backlogItems: BacklogItem[];
 }
 
-export interface BacklogItemPlanningPanelEventProps {}
+export interface BacklogItemPlanningPanelDispatchProps {}
 
-export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelAttributeProps &
-    BacklogItemPlanningPanelEventProps &
+export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
+    BacklogItemPlanningPanelDispatchProps &
     WithTranslation;
 
 /* exported components */

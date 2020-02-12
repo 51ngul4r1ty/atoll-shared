@@ -2,15 +2,16 @@
 import { connect } from "react-redux";
 
 // components
-import { InnerApp, InnerAppEventProps, InnerAppAttributeProps } from "./InnerApp";
+import { InnerApp, InnerAppDispatchProps, InnerAppStateProps } from "./InnerApp";
 import { StateTree } from "./types";
 
 // actions
 import { getBacklogItems } from "./actions/backlogItems";
 import { Dispatch } from "redux";
 import { BacklogItem } from "./components/organisms/panels/BacklogItemPlanningPanel";
+import { getHistoryInstance } from "./config";
 
-const mapStateToProps = (state: StateTree): InnerAppAttributeProps => {
+const mapStateToProps = (state: StateTree): InnerAppStateProps => {
     const backlogItems: BacklogItem[] = state.backlogItems.items.map((item) => {
         const result: BacklogItem = {
             estimate: item.estimate,
@@ -23,15 +24,29 @@ const mapStateToProps = (state: StateTree): InnerAppAttributeProps => {
         };
         return result;
     });
-    let result: InnerAppAttributeProps = {
+    let result: InnerAppStateProps = {
         backlogItems
     };
     return result;
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): InnerAppEventProps => {
+const mapDispatchToProps = (dispatch: Dispatch): InnerAppDispatchProps => {
     return {
-        onLoaded: () => dispatch(getBacklogItems())
+        onLoaded: () => dispatch(getBacklogItems()),
+        onChangeTab: (tabId: string) => {
+            const history = getHistoryInstance();
+            switch (tabId) {
+                case "plan":
+                    dispatch(history.push("/plan"));
+                    break;
+                case "sprint":
+                    dispatch(history.push("/sprint"));
+                    break;
+                case "review":
+                    dispatch(history.push("/review"));
+                    break;
+            }
+        }
     };
 };
 
