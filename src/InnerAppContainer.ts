@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { push } from "connected-react-router";
 
 // components
-
 import { InnerApp, InnerAppDispatchProps, InnerAppStateProps } from "./InnerApp";
 import { StateTree } from "./types";
 
