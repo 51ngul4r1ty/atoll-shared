@@ -32,8 +32,9 @@ export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
 /* exported components */
 
 export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps> = (props) => {
-    const backlogItemElts = props.backlogItems.map((item) => (
+    const backlogItemElts = props.backlogItems.map((item: BacklogItem) => (
         <BacklogItemCard
+            key={item.id}
             estimate={item.estimate}
             itemId={`${item.externalId}`}
             itemType={item.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
