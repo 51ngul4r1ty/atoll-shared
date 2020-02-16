@@ -1,7 +1,8 @@
 // externals
 import { connect } from "react-redux";
-
+import { push } from "connected-react-router";
 // components
+
 import { InnerApp, InnerAppDispatchProps, InnerAppStateProps } from "./InnerApp";
 import { StateTree } from "./types";
 
@@ -9,7 +10,6 @@ import { StateTree } from "./types";
 import { getBacklogItems } from "./actions/backlogItems";
 import { Dispatch } from "redux";
 import { BacklogItem } from "./components/organisms/panels/BacklogItemPlanningPanel";
-import { getHistoryInstance } from "./config";
 
 const mapStateToProps = (state: StateTree): InnerAppStateProps => {
     const backlogItems: BacklogItem[] = state.backlogItems.items.map((item) => {
@@ -34,16 +34,15 @@ const mapDispatchToProps = (dispatch: Dispatch): InnerAppDispatchProps => {
     return {
         onLoaded: () => dispatch(getBacklogItems()),
         onChangeTab: (tabId: string) => {
-            const history = getHistoryInstance();
             switch (tabId) {
                 case "plan":
-                    dispatch(history.push("/plan"));
+                    dispatch(push("/plan"));
                     break;
                 case "sprint":
-                    dispatch(history.push("/sprint"));
+                    dispatch(push("/sprint"));
                     break;
                 case "review":
-                    dispatch(history.push("/review"));
+                    dispatch(push("/review"));
                     break;
             }
         }
