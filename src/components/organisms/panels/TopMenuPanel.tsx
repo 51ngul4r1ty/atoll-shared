@@ -1,6 +1,7 @@
 // externals
 import * as React from "react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { withTranslation, WithTranslation } from "react-i18next";
 
 // atoms
@@ -12,6 +13,7 @@ import { EditButton, EditMode } from "../../molecules/buttons/EditButton";
 
 // style
 import css from "./TopMenuPanel.module.css";
+import { routePlanView, routeSprintView, routeReviewView } from "../../../actions/routeActions";
 
 /* exported interfaces */
 
@@ -29,6 +31,7 @@ export type TopMenuPanelProps = TopMenuPanelStateProps & TopMenuPanelDispatchPro
 
 export const RawTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
     const [editMode, setEditMode] = useState(EditMode.View);
+    const dispatch = useDispatch();
     return (
         <div className={css.topMenuPanel}>
             <HomeButton />
@@ -40,8 +43,16 @@ export const RawTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
                     { id: "review", caption: props.t("Review") }
                 ]}
                 onChange={(tabId) => {
-                    if (props && props.onChangeTab) {
-                        props.onChangeTab(tabId);
+                    switch (tabId) {
+                        case "plan":
+                            dispatch(routePlanView());
+                            break;
+                        case "sprint":
+                            dispatch(routeSprintView());
+                            break;
+                        case "review":
+                            dispatch(routeReviewView());
+                            break;
                     }
                 }}
             />

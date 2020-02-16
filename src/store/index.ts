@@ -9,6 +9,7 @@ import createRootReducer from "../reducers/rootReducer";
 
 // middleware
 import { apiMiddleware } from "../middleware/apiMiddleware";
+import { routingMiddleware } from "../middleware/routingMiddleware";
 
 const composeEnhancers = composeWithDevTools({
     // Specify name here, actionsBlacklist, actionsCreators and other options if needed
@@ -23,7 +24,7 @@ type StoreParams = {
 export const configureStore = ({ initialState, middleware = [], history }: StoreParams) => {
     const rootReducer = createRootReducer(history);
 
-    const allMiddleware = [thunk, routerMiddleware(history), apiMiddleware].concat(...middleware);
+    const allMiddleware = [thunk, routerMiddleware(history), apiMiddleware, routingMiddleware].concat(...middleware);
 
     const store = createStore(rootReducer, initialState, composeEnhancers(applyMiddleware(...allMiddleware)));
 

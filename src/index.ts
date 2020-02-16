@@ -1,4 +1,5 @@
 export { App } from "./App";
+export { ReviewViewContainer } from "./ReviewViewContainer";
 export { SprintViewContainer } from "./SprintViewContainer";
 export { EditButton, EditMode } from "./components/molecules/buttons/EditButton";
 export { EditIcon } from "./components/atoms/icons/EditIcon";
