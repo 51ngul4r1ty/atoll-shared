@@ -30,5 +30,4 @@ Steps after Cloning Repo
 
 1. `npm ci` to install locked down dependency tree.
 2. `npm run build` to build this library for the first time.
-3. `npm link` to ensure that this library is available for linking from the main repo.
-4. `npm run watch` to build this library and wait for changes to rebuild automatically.
+3. `npm run watch` to build this library and wait for changes to rebuild automatically.
