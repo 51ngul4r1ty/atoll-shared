@@ -66,7 +66,7 @@ interface Window {
     browserHistory: any;
     store: any;
     __PRELOADED_STATE__: any;
-    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: any; //typeof compose; - TODO: Find out whyt this didn't work
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: any; //typeof compose; - TODO: Find out why this didn't work
 }
 
 declare module "express-manifest-helpers";
