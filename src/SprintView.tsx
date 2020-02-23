@@ -20,13 +20,13 @@ export type SprintViewProps = SprintViewStateProps & SprintViewDispatchProps;
 
 export const SprintView: React.FC<SprintViewProps> = (props) => {
     return (
-        <div className={css.app}>
+        <>
             {/* <Helmet
                     defaultTitle="Atoll"
                     titleTemplate="Atoll � %s"
                     link={[{ rel: "icon", type: "image/png", href: favicon }]}
                 /> */}
             <TopMenuPanelContainer activeTabId="sprint" />
-        </div>
+        </>
     );
 };

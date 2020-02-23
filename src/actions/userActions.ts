@@ -9,9 +9,9 @@ export const getUserPreferences = (): ApiAction<undefined> => ({
         method: "GET",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         types: [
-            ActionTypes.API_GET_BACKLOG_ITEMS_REQUEST,
-            ActionTypes.API_GET_BACKLOG_ITEMS_SUCCESS,
-            ActionTypes.API_GET_BACKLOG_ITEMS_FAILURE
+            ActionTypes.API_GET_USER_PREFS_REQUEST,
+            ActionTypes.API_GET_USER_PREFS_SUCCESS,
+            ActionTypes.API_GET_USER_PREFS_FAILURE
         ]
     }
 });

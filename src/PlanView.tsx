@@ -40,7 +40,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
     }
     render() {
         return (
-            <div className={css.app}>
+            <>
                 {/* <Helmet
                     defaultTitle="Atoll"
                     titleTemplate="Atoll – %s"
@@ -48,7 +48,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                 /> */}
                 <TopMenuPanelContainer activeTabId="plan" />
                 <BacklogItemPlanningPanel backlogItems={this.props.backlogItems} editMode={this.props.editMode} />
-            </div>
+            </>
         );
     }
 }
