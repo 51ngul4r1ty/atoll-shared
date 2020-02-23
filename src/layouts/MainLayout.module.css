@@ -1,0 +1,4 @@
+.fullPage {
+    color: var(--normal-pen-color, black);
+    background-color: var(--normal-page-color, white);
+}

@@ -7,7 +7,9 @@ import { SprintView, SprintViewDispatchProps, SprintViewStateProps } from "./Spr
 import { StateTree } from "./types";
 
 const mapStateToProps = (state: StateTree): SprintViewStateProps => {
-    let result: SprintViewStateProps = {};
+    let result: SprintViewStateProps = {
+        editMode: state.app.editMode
+    };
     return result;
 };
 

@@ -1,6 +1,5 @@
 // externals
 import * as React from "react";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { withTranslation, WithTranslation } from "react-i18next";
 
@@ -19,10 +18,12 @@ import { routePlanView, routeSprintView, routeReviewView } from "../../../action
 
 export interface TopMenuPanelStateProps {
     activeTabId?: string;
+    editMode: EditMode;
 }
 
 export interface TopMenuPanelDispatchProps {
     onChangeTab?: { (selectedTabId: string) };
+    setEditMode: { (editMode: EditMode) };
 }
 
 export type TopMenuPanelProps = TopMenuPanelStateProps & TopMenuPanelDispatchProps & WithTranslation;
@@ -30,8 +31,18 @@ export type TopMenuPanelProps = TopMenuPanelStateProps & TopMenuPanelDispatchPro
 /* exported components */
 
 export const RawTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
-    const [editMode, setEditMode] = useState(EditMode.View);
     const dispatch = useDispatch();
+    const buttons = [];
+    buttons.push(
+        <EditButton
+            key="edit-button"
+            mode={props.editMode}
+            onClick={() => {
+                props.setEditMode(props.editMode === EditMode.View ? EditMode.Edit : EditMode.View);
+            }}
+        />
+    );
+
     return (
         <div className={css.topMenuPanel}>
             <HomeButton />
@@ -57,14 +68,7 @@ export const RawTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
                 }}
             />
             <div className={css.fillSpaceAvailable}></div>
-            <div className={css.actionButtonPanel}>
-                <EditButton
-                    mode={editMode}
-                    onClick={() => {
-                        setEditMode(editMode === EditMode.View ? EditMode.Edit : EditMode.View);
-                    }}
-                />
-            </div>
+            <div className={css.actionButtonPanel}>{buttons}</div>
         </div>
     );
 };

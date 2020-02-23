@@ -6,27 +6,9 @@ import { withTranslation, WithTranslation } from "react-i18next";
 import css from "./BacklogItemCard.module.css";
 import { StoryIcon } from "../../atoms/icons/StoryIcon";
 import { IssueIcon } from "../../atoms/icons/IssueIcon";
+import { DragIcon } from "../../atoms/icons/DragIcon";
 
-/* exported interfaces */
-
-// TODO: See if this is defined elsewhere:
-export enum BacklogItemTypeEnum {
-    Bug,
-    Story
-}
-
-export interface BacklogItemCardStateProps {
-    estimate: number | null;
-    itemId: string;
-    itemType: BacklogItemTypeEnum;
-    titleText: string;
-}
-
-export interface BacklogItemCardDispatchProps {}
-
-export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDispatchProps & WithTranslation;
-
-/* exported components */
+/* exported functions */
 
 export const abbreviateId = (id: string): string => {
     if (!id) {
@@ -49,6 +31,28 @@ export const titleForItemId = (id: string): string | undefined => {
     return abbreviatedId === id ? undefined : id;
 };
 
+/* exported interfaces */
+
+// TODO: See if this is defined elsewhere:
+export enum BacklogItemTypeEnum {
+    Bug,
+    Story
+}
+
+export interface BacklogItemCardStateProps {
+    estimate: number | null;
+    itemId: string;
+    itemType: BacklogItemTypeEnum;
+    titleText: string;
+    isDraggable?: boolean;
+}
+
+export interface BacklogItemCardDispatchProps {}
+
+export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDispatchProps & WithTranslation;
+
+/* exported components */
+
 export const RawBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => (
     <div className={css.backlogItemCard} tabIndex={0}>
         <div className={css.backlogItemType}>
@@ -61,6 +65,11 @@ export const RawBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => (
         </div>
         <div className={css.backlogItemText}>{props.titleText}</div>
         <div className={css.backlogItemEstimate}>{formatEstimateForDisplay(props.estimate)}</div>
+        {props.isDraggable ? (
+            <div className={css.backlogItemDragButton}>
+                <DragIcon />
+            </div>
+        ) : null}
     </div>
 );
 

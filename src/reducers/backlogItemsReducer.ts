@@ -11,7 +11,7 @@ export const initialState = Object.freeze<BacklogItemsState>({
     items: []
 });
 
-export default (state: BacklogItemsState = initialState, action: AnyFSA): BacklogItemsState =>
+export const backlogItemsReducer = (state: BacklogItemsState = initialState, action: AnyFSA): BacklogItemsState =>
     produce(state, (draft) => {
         const { type, payload } = action;
 

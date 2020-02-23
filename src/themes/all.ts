@@ -65,6 +65,7 @@
 export interface Theme {
     "--normal-page-color": string;
     "--normal-pen-color": string;
+    "--normal-light-border-color": string;
     "--normal-divider-color": string;
     "--normal-active-page-color": string;
     "--normal-focus-page-color": string;
@@ -85,6 +86,7 @@ export const defaultTheme: Theme = {
     "--normal-page-color": "white",
     "--normal-pen-color": "black",
     "--normal-divider-color": "#f4f4f4",
+    "--normal-light-border-color": "#ddd",
     "--normal-active-page-color": "#ddd",
     "--normal-focus-page-color": "#eee",
     "--normal-hover-shadow": "rgba(0, 0, 0, 0.4)",
@@ -104,6 +106,7 @@ export const darkTheme: Theme = {
     "--normal-page-color": "black",
     "--normal-pen-color": "white",
     "--normal-divider-color": "#0b0b0b",
+    "--normal-light-border-color": "#555",
     "--normal-active-page-color": "#555",
     "--normal-focus-page-color": "#444",
     "--normal-hover-shadow": "rgba(255, 255, 255, 1.0)",
