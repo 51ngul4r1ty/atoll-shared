@@ -5,6 +5,9 @@ import * as React from "react";
 // import { BacklogItem, BacklogItemPlanningPanel } from "./components/organisms/panels/BacklogItemPlanningPanel";
 // import { TopMenuPanelContainer } from "./containers/TopMenuPanelContainer";
 
+// utils
+import { ThemeHelper } from "./utils/themeHelper";
+
 // style
 import css from "./App.module.css";
 
@@ -17,7 +20,9 @@ import css from "./App.module.css";
 
 /* exported interface */
 
-export interface AppStateProps {}
+export interface AppStateProps {
+    detectBrowserDarkMode: boolean;
+}
 
 export interface AppDispatchProps {
     onLoaded: { () };
@@ -28,11 +33,19 @@ export type AppProps = AppStateProps & AppDispatchProps;
 /* exported component */
 
 export class App extends React.Component<AppProps, {}> {
+    private themeHelper = new ThemeHelper();
     constructor(props) {
         super(props);
     }
     componentDidMount() {
+        this.themeHelper.init();
         this.props.onLoaded();
+    }
+    componentDidUpdate(prevProps: Readonly<AppProps>) {
+        const detectBrowserDarkMode = this.props.detectBrowserDarkMode;
+        if (prevProps.detectBrowserDarkMode !== detectBrowserDarkMode) {
+            this.themeHelper.detectBrowserDarkMode = detectBrowserDarkMode;
+        }
     }
     render() {
         return (

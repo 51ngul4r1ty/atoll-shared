@@ -9,12 +9,27 @@ export type Locale = "en_US" | "de_DE";
 export interface StateTree {
     app: AppState;
     backlogItems: BacklogItemsState;
+    user: UserState;
 }
+
+/* App state related */
 
 export type AppState = Readonly<{
     locale: Locale;
     editMode: EditMode;
 }>;
+
+/* User state related */
+
+export interface UserPreferences {
+    detectBrowserDarkMode: boolean;
+}
+
+export type UserState = Readonly<{
+    preferences: UserPreferences;
+}>;
+
+/* Backlog Item state related */
 
 export type BacklogItemType = "story" | "issue";
 
@@ -33,6 +48,8 @@ export interface BacklogItem {
 export type BacklogItemsState = Readonly<{
     items: BacklogItem[];
 }>;
+
+/* Flux Standard Action related */
 
 export interface AnyFSA extends FSAWithMeta<any, any, any> {}
 

@@ -6,13 +6,16 @@ import { Dispatch } from "redux";
 import { App, AppStateProps, AppDispatchProps } from "./App";
 
 // state
-import { StateTree } from "./types";
+import { StateTree, UserPreferences } from "./types";
 
 // actions
 import { getUserPreferences } from "./actions/userActions";
 
 const mapStateToProps = (state: StateTree): AppStateProps => {
-    return {};
+    const userPreferences = (state.user && state.user.preferences) || ({} as UserPreferences);
+    return {
+        detectBrowserDarkMode: userPreferences.detectBrowserDarkMode
+    };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): AppDispatchProps => {

@@ -13,7 +13,7 @@ export const initialState = Object.freeze<AppState>({
     editMode: EditMode.View
 });
 
-export default (state: AppState = initialState, action: AnyFSA): AppState =>
+export const appReducer = (state: AppState = initialState, action: AnyFSA): AppState =>
     produce(state, (draft) => {
         const { type, payload } = action;
 
