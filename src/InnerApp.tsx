@@ -41,7 +41,6 @@ export class InnerApp extends React.Component<InnerAppProps, {}> {
         this.props.onLoaded();
     }
     render() {
-        //        const [state, dispatch] = useReducer(appReducer, initialState);
         return (
             <div className={css.app}>
                 {/* <Helmet
