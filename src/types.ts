@@ -1,4 +1,8 @@
+// externals
 import { Action } from "redux";
+
+// consts/enums
+import { EditMode } from "./components/molecules/buttons/EditButton";
 
 export type Locale = "en_US" | "de_DE";
 
@@ -9,6 +13,7 @@ export interface StateTree {
 
 export type AppState = Readonly<{
     locale: Locale;
+    editMode: EditMode;
 }>;
 
 export type BacklogItemType = "story" | "issue";
@@ -34,9 +39,9 @@ export interface AnyFSA extends FSAWithMeta<any, any, any> {}
 export interface SimpleFSA<T> extends Action<T> {}
 
 export interface FSA<T, P> extends SimpleFSA<T> {
-    payload: P;
+    payload?: P;
 }
 
 export interface FSAWithMeta<T, P, M> extends FSA<T, P> {
-    meta: M;
+    meta?: M;
 }

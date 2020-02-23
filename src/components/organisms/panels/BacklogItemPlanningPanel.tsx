@@ -7,6 +7,9 @@ import css from "./BacklogItemPlanningPanel.module.css";
 import { BacklogItemCard, BacklogItemTypeEnum } from "../../molecules/cards/BacklogItemCard";
 import { BacklogItemType } from "../../../types";
 
+// consts/enums
+import { EditMode } from "../../molecules/buttons/EditButton";
+
 /* exported interfaces */
 
 export interface BacklogItem {
@@ -21,6 +24,7 @@ export interface BacklogItem {
 
 export interface BacklogItemPlanningPanelStateProps {
     backlogItems: BacklogItem[];
+    editMode: EditMode;
 }
 
 export interface BacklogItemPlanningPanelDispatchProps {}
@@ -39,6 +43,7 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
             itemId={`${item.externalId}`}
             itemType={item.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
             titleText={item.storyPhrase}
+            isDraggable={props.editMode === EditMode.Edit}
         />
     ));
 

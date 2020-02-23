@@ -1,4 +1,5 @@
-export const SETLOCALE = "app/set-locale";
+export const SET_LOCALE = "app/set-locale";
+export const SET_EDIT_MODE = "app/set-edit-mode";
 
 export const API_GET_BACKLOG_ITEMS_REQUEST = "API_GET_BACKLOG_ITEMS_REQUEST";
 export const API_GET_BACKLOG_ITEMS_SUCCESS = "API_GET_BACKLOG_ITEMS_SUCCESS";

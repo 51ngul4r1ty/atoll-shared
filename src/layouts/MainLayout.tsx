@@ -4,6 +4,9 @@ import * as React from "react";
 // libraries
 import { themeList } from "../themes/all";
 
+// style
+import css from "./MainLayout.module.css";
+
 /* executed on initialization only */
 
 /* exported component */
@@ -32,6 +35,26 @@ export class MainLayout extends React.Component<{}, {}> {
         if (!result) {
             result = "default";
         }
+        return result;
+    }
+    setThemeAttribute(fullThemeName: string) {
+        const prefix = "theme-";
+        let result = null;
+        let html = document.querySelector("html");
+        const themesToRemove = [];
+        html.classList.forEach((item) => {
+            if (item.indexOf(prefix) === 0) {
+                themesToRemove.push(item);
+            }
+        });
+        if (themesToRemove.indexOf(fullThemeName) < 0) {
+            html.classList.add(fullThemeName);
+        }
+        themesToRemove.forEach((theme) => {
+            if (theme !== fullThemeName) {
+                html.classList.remove(theme);
+            }
+        });
         return result;
     }
     setThemeVars(themeName) {
@@ -69,6 +92,7 @@ export class MainLayout extends React.Component<{}, {}> {
     }
     setupNextCheck() {
         setTimeout(() => {
+            this.checkForBrowserDarkMode();
             this.checkForThemeChange();
         }, 500);
     }
@@ -80,10 +104,18 @@ export class MainLayout extends React.Component<{}, {}> {
         }
         this.setupNextCheck();
     }
+    checkForBrowserDarkMode() {
+        if (matchMedia("(prefers-color-scheme: dark)").matches) {
+            this.setThemeAttribute("theme-dark");
+        }
+        if (matchMedia("(prefers-color-scheme: light)").matches) {
+            this.setThemeAttribute("theme-default");
+        }
+    }
     storeLastThemeName(themeName: string) {
         this.lastThemeName = themeName;
     }
     render() {
-        return <div className="app-layout">{this.props.children}</div>;
+        return <div className={`app-layout ${css.fullPage}`}>{this.props.children}</div>;
     }
 }
