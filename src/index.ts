@@ -1,4 +1,4 @@
-export { App } from "./App";
+export { PlanViewContainer } from "./PlanViewContainer";
 export { ReviewViewContainer } from "./ReviewViewContainer";
 export { SprintViewContainer } from "./SprintViewContainer";
 export { EditButton, EditMode } from "./components/molecules/buttons/EditButton";
@@ -10,6 +10,7 @@ export { SimpleText } from "./components/atoms/text/SimpleText";
 export { TabStrip } from "./components/atoms/tabs/TabStrip";
 export { BacklogItemCard, BacklogItemTypeEnum } from "./components/molecules/cards/BacklogItemCard";
 export { storeHistoryInstance, getHistoryInstance } from "./config";
+export { APPLICATION_JSON } from "./constants";
 
 // containers
 export { configureStore } from "./store";

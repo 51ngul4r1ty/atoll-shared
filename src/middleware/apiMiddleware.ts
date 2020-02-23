@@ -2,6 +2,9 @@
 import axios from "axios";
 import { Action, Dispatch } from "redux";
 
+// consts/enums
+import { APPLICATION_JSON } from "../constants";
+
 export interface ApiHeaders {
     [name: string]: string;
 }
@@ -76,7 +79,7 @@ export const apiMiddleware = ({ dispatch }) => (next) => (action: Action) => {
     const dataOrParams = ["GET", "DELETE"].includes(method) ? "params" : "data";
 
     axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || "";
-    axios.defaults.headers.common["Content-Type"] = "application/json";
+    axios.defaults.headers.common["Content-Type"] = APPLICATION_JSON;
     //    axios.defaults.headers.common["Authorization"] = `Bearer  ${token}`;
     dispatchRequest(dispatch, getRequestType(types), data);
     axios

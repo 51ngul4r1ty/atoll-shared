@@ -1,31 +1,32 @@
 // externals
 import * as React from "react";
 
-export interface SprintViewStateProps {}
+// components
+import { TopMenuPanelContainer } from "./containers/TopMenuPanelContainer";
+
+// consts/enums
+import { EditMode } from "./components/molecules/buttons/EditButton";
+
+// style
+import css from "./App.module.css";
+
+export interface SprintViewStateProps {
+    editMode: EditMode;
+}
 
 export interface SprintViewDispatchProps {}
 
-export interface SprintViewProps {}
-
-import css from "./InnerApp.module.css";
-import { TopMenuPanel } from "./components/organisms/panels/TopMenuPanel";
+export type SprintViewProps = SprintViewStateProps & SprintViewDispatchProps;
 
 export const SprintView: React.FC<SprintViewProps> = (props) => {
     return (
         <div className={css.app}>
             {/* <Helmet
                     defaultTitle="Atoll"
-                    titleTemplate="Atoll – %s"
+                    titleTemplate="Atoll ï¿½ %s"
                     link={[{ rel: "icon", type: "image/png", href: favicon }]}
                 /> */}
-            <TopMenuPanel
-                activeTabId="sprint"
-                onChangeTab={(tabId: string) => {
-                    // if (props.onChangeTab) {
-                    //     props.onChangeTab(tabId);
-                    // }
-                }}
-            />
+            <TopMenuPanelContainer activeTabId="sprint" />
         </div>
     );
 };

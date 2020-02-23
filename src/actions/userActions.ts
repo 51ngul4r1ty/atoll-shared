@@ -2,10 +2,10 @@
 import { API, ApiAction } from "../middleware/apiMiddleware";
 import * as ActionTypes from "./actionTypes";
 
-export const getBacklogItems = (): ApiAction<undefined> => ({
+export const getUserPreferences = (): ApiAction<undefined> => ({
     type: API,
     payload: {
-        endpoint: "http://localhost:8500/api/v1/backlog-items",
+        endpoint: "http://localhost:8500/api/v1/users/{self}/preferences",
         method: "GET",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         types: [
