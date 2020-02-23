@@ -23,7 +23,7 @@ export const SprintView: React.FC<SprintViewProps> = (props) => {
         <>
             {/* <Helmet
                     defaultTitle="Atoll"
-                    titleTemplate="Atoll � %s"
+                    titleTemplate="Atoll - %s"
                     link={[{ rel: "icon", type: "image/png", href: favicon }]}
                 /> */}
             <TopMenuPanelContainer activeTabId="sprint" />
