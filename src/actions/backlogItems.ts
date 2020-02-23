@@ -1,13 +1,18 @@
 // middleware
 import { API, ApiAction } from "../middleware/apiMiddleware";
+
+// actions
 import * as ActionTypes from "./actionTypes";
+
+// consts/enums
+import { APPLICATION_JSON } from "../constants";
 
 export const getBacklogItems = (): ApiAction<undefined> => ({
     type: API,
     payload: {
         endpoint: "http://localhost:8500/api/v1/backlog-items",
         method: "GET",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
         types: [
             ActionTypes.API_GET_BACKLOG_ITEMS_REQUEST,
             ActionTypes.API_GET_BACKLOG_ITEMS_SUCCESS,
