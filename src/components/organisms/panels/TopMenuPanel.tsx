@@ -2,6 +2,7 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { withTranslation, WithTranslation } from "react-i18next";
+import { ToggleFeature } from "@flopflip/react-broadcast";
 
 // atoms
 import { TabStrip } from "../../atoms/tabs/TabStrip";
@@ -13,6 +14,9 @@ import { EditButton, EditMode } from "../../molecules/buttons/EditButton";
 // style
 import css from "./TopMenuPanel.module.css";
 import { routePlanView, routeSprintView, routeReviewView } from "../../../actions/routeActions";
+
+// utils
+import * as flopFlipAdapter from "../../../utils/flopFlipAdapter";
 
 /* exported interfaces */
 
@@ -34,13 +38,15 @@ export const RawTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
     const dispatch = useDispatch();
     const buttons = [];
     buttons.push(
-        <EditButton
-            key="edit-button"
-            mode={props.editMode}
-            onClick={() => {
-                props.setEditMode(props.editMode === EditMode.View ? EditMode.Edit : EditMode.View);
-            }}
-        />
+        <ToggleFeature flag="showEditButton">
+            <EditButton
+                key="edit-button"
+                mode={props.editMode}
+                onClick={() => {
+                    props.setEditMode(props.editMode === EditMode.View ? EditMode.Edit : EditMode.View);
+                }}
+            />
+        </ToggleFeature>
     );
 
     return (
