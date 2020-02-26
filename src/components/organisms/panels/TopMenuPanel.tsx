@@ -2,6 +2,7 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { withTranslation, WithTranslation } from "react-i18next";
+import { ToggleFeature } from "@flopflip/react-broadcast";
 
 // atoms
 import { TabStrip } from "../../atoms/tabs/TabStrip";
@@ -34,13 +35,15 @@ export const RawTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
     const dispatch = useDispatch();
     const buttons = [];
     buttons.push(
-        <EditButton
-            key="edit-button"
-            mode={props.editMode}
-            onClick={() => {
-                props.setEditMode(props.editMode === EditMode.View ? EditMode.Edit : EditMode.View);
-            }}
-        />
+        <ToggleFeature flag="showEditButton">
+            <EditButton
+                key="edit-button"
+                mode={props.editMode}
+                onClick={() => {
+                    props.setEditMode(props.editMode === EditMode.View ? EditMode.Edit : EditMode.View);
+                }}
+            />
+        </ToggleFeature>
     );
 
     return (

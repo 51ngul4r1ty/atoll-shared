@@ -6,6 +6,7 @@ import { connectRouter } from "connected-react-router";
 import { appReducer } from "./appReducer";
 import { backlogItemsReducer } from "./backlogItemsReducer";
 import { userReducer } from "./userReducer";
+import { featureTogglesReducer } from "./featureTogglesReducer";
 
 const createRootReducer = (history: any) => {
     const router = connectRouter(history);
@@ -13,7 +14,8 @@ const createRootReducer = (history: any) => {
         router,
         app: appReducer,
         backlogItems: backlogItemsReducer,
-        user: userReducer
+        user: userReducer,
+        featureToggles: featureTogglesReducer
     });
 };
 

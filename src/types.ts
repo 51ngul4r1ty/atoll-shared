@@ -10,6 +10,7 @@ export interface StateTree {
     app: AppState;
     backlogItems: BacklogItemsState;
     user: UserState;
+    featureToggles: FeatureTogglesState;
 }
 
 /* App state related */
@@ -47,6 +48,22 @@ export interface BacklogItem {
 
 export type BacklogItemsState = Readonly<{
     items: BacklogItem[];
+}>;
+
+/* Feature Toggles state related */
+
+export interface FeatureToggle {
+    enabled: boolean;
+    createdDateTime: Date;
+    modifiedDateTime: Date;
+}
+
+export type FeatureToggles = {
+    [key: string]: FeatureToggle;
+};
+
+export type FeatureTogglesState = Readonly<{
+    toggles: FeatureToggles;
 }>;
 
 /* Flux Standard Action related */
