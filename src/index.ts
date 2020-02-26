@@ -26,7 +26,6 @@ export { SprintViewContainer } from "./SprintViewContainer";
 export { configureStore } from "./store";
 export { createClientHistory, createServerHistory } from "./store/history";
 export { storeHistoryInstance, getHistoryInstance } from "./config";
-export { default as flopFlipAdapter } from "./utils/flopFlipAdapter";
 
 // themes
 export { themeList } from "./themes/all";

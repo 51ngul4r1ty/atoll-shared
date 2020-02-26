@@ -15,9 +15,6 @@ import { EditButton, EditMode } from "../../molecules/buttons/EditButton";
 import css from "./TopMenuPanel.module.css";
 import { routePlanView, routeSprintView, routeReviewView } from "../../../actions/routeActions";
 
-// utils
-import * as flopFlipAdapter from "../../../utils/flopFlipAdapter";
-
 /* exported interfaces */
 
 export interface TopMenuPanelStateProps {
