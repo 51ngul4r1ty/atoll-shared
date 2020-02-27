@@ -2,7 +2,7 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { withTranslation, WithTranslation } from "react-i18next";
-import { ToggleFeature } from "@flopflip/react-broadcast";
+import { useFeatureToggle, ToggleFeature } from "@flopflip/react-broadcast";
 
 // atoms
 import { TabStrip } from "../../atoms/tabs/TabStrip";
@@ -32,6 +32,8 @@ export type TopMenuPanelProps = TopMenuPanelStateProps & TopMenuPanelDispatchPro
 /* exported components */
 
 export const RawTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
+    const enableSprintTab = useFeatureToggle("enableSprintTab");
+    const enableReviewTab = useFeatureToggle("enableReviewTab");
     const dispatch = useDispatch();
     const buttons = [];
     buttons.push(
@@ -46,16 +48,20 @@ export const RawTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
         </ToggleFeature>
     );
 
+    const tabs = [{ id: "plan", caption: props.t("Plan") }];
+    if (enableSprintTab) {
+        tabs.push({ id: "sprint", caption: props.t("Sprint") });
+    }
+    if (enableReviewTab) {
+        tabs.push({ id: "review", caption: props.t("Review") });
+    }
+
     return (
         <div className={css.topMenuPanel}>
             <HomeButton />
             <TabStrip
                 activeTab={(props && props.activeTabId) || "plan"}
-                tabs={[
-                    { id: "plan", caption: props.t("Plan") },
-                    { id: "sprint", caption: props.t("Sprint") },
-                    { id: "review", caption: props.t("Review") }
-                ]}
+                tabs={tabs}
                 onChange={(tabId) => {
                     switch (tabId) {
                         case "plan":
