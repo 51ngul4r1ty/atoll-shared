@@ -5,6 +5,7 @@ import * as React from "react";
 // components
 import { BacklogItem, BacklogItemPlanningPanel } from "./components/organisms/panels/BacklogItemPlanningPanel";
 import { TopMenuPanelContainer } from "./containers/TopMenuPanelContainer";
+import { UserStoryDetailForm } from "./components/organisms/forms/UserStoryDetailForm";
 
 // style
 import css from "./App.module.css";
@@ -48,6 +49,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                 /> */}
                 <TopMenuPanelContainer activeTabId="plan" />
                 <BacklogItemPlanningPanel backlogItems={this.props.backlogItems} editMode={this.props.editMode} />
+                <UserStoryDetailForm />
             </>
         );
     }

@@ -1,0 +1,24 @@
+.input {
+    position: relative;
+}
+
+.input > input {
+    background-color: #ddd; /* switch to var(--xyz) */
+    border-width: 0;
+    height: 2.4rem;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+}
+
+.input > label {
+    position: absolute;
+    top: 0.08rem;
+    left: 0.08rem;
+    font-size: 0.5833rem; /* 7pt */
+    opacity: 0.3;
+    text-transform: uppercase;
+}
+
+.input + .input {
+    margin-top: 0.5rem;
+}
