@@ -86,7 +86,7 @@ export const defaultTheme: Theme = {
     "--normal-page-color": "white",
     "--normal-pen-color": "black",
     "--normal-divider-color": "#f4f4f4",
-    "--normal-light-border-color": "#ddd",
+    "--normal-light-border-color": "#ccc",
     "--normal-active-page-color": "#ddd",
     "--normal-focus-page-color": "#eee",
     "--normal-hover-shadow": "rgba(0, 0, 0, 0.4)",

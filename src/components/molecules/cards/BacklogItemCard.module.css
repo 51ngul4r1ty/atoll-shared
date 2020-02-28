@@ -30,9 +30,9 @@
     padding-left: 0.25rem; /* TODO: Use constants??? */
     padding-right: 0.25rem; /* TODO: Use constants??? */
     flex-grow: 1;
-    border-top: 0.0625rem solid var(--normal-light-border-color, #ddd); /* TODO: Use constants??? */
-    border-right: 0.0625rem solid var(--normal-light-border-color, #ddd); /* TODO: Use constants??? */
-    border-bottom: 0.0625rem solid var(--normal-light-border-color, #ddd); /* TODO: Use constants??? */
+    border-top: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
+    border-right: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
+    border-bottom: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
