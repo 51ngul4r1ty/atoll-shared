@@ -22,5 +22,6 @@
     ],
     "coverage-gutters.lcovname": "lcov.info",
     "coverage-gutters.coverageReportFileName": "coverage/**/index.html",
-    "coverage-gutters.showLineCoverage": false
+    "coverage-gutters.showLineCoverage": false,
+    "typescript.tsdk": "node_modules\\typescript\\lib"
 }
