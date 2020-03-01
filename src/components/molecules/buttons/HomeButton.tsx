@@ -10,6 +10,9 @@ import { APP_NAME } from "../../../constants";
 // style
 import css from "./HomeButton.module.css";
 
+// utils
+import { buildClassName } from "../../../utils/classNameBuilder";
+
 /* exported interfaces/types */
 
 export interface HomeButtonStateProps {
@@ -27,16 +30,13 @@ export type HomeButtonProps = HomeButtonStateProps & HomeButtonDispatchProps;
 /* exported components */
 
 export const HomeButton: React.FC<HomeButtonProps> = (props) => {
-    let className = css.button;
-    if (props && props.forceStateActive) {
-        className += ` ${css.buttonActive}`;
-    }
-    if (props && props.forceStateFocus) {
-        className += ` ${css.buttonFocus}`;
-    }
-    if (props && props.forceStateHover) {
-        className += ` ${css.buttonHover}`;
-    }
+    const className = buildClassName(
+        css.button,
+        // TODO: Update eslint plugins so that it handles optional chaining in TS
+        props?.forceStateActive ? css.buttonActive : "",
+        props?.forceStateFocus ? css.buttonFocus : "",
+        props?.forceStateHover ? css.buttonHover : ""
+    );
     return (
         <div
             className={className}

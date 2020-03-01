@@ -11,6 +11,7 @@ export { HomeButton } from "./components/molecules/buttons/HomeButton";
 export { SimpleButton } from "./components/atoms/buttons/SimpleButton";
 export { SimpleText } from "./components/atoms/text/SimpleText";
 export { TabStrip } from "./components/atoms/tabs/TabStrip";
+export { UserStoryDetailForm } from "./components/organisms/forms/UserStoryDetailForm";
 
 // interfaces/types
 export { StateTree, BacklogItem, BacklogItemsState, FeatureToggle, FeatureTogglesState } from "./types";

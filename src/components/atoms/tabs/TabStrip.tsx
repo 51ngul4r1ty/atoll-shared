@@ -3,6 +3,7 @@ import * as React from "react";
 
 // style
 import css from "./TabStrip.module.css";
+import { buildClassName } from "../../../utils/classNameBuilder";
 
 /* exported interfaces/types */
 
@@ -32,7 +33,7 @@ export const TabStrip: React.FC<TabStripProps> = (props) => {
         }
     };
     const tabs = props.tabs.map((tab) => {
-        const className = css.tab + (tab.id === props.activeTab ? ` ${css.active}` : "");
+        const className = buildClassName(css.tab, tab.id === props.activeTab ? css.active : "");
         idx++;
         return (
             <div

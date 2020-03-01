@@ -8,6 +8,8 @@
     height: 2.4rem;
     padding-left: 0.4rem;
     padding-right: 0.4rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .input > label {
@@ -19,6 +21,6 @@
     text-transform: uppercase;
 }
 
-.input + .input {
-    margin-top: 0.5rem;
+.input > input::placeholder {
+    color: #666; /* TODO: need to assign theme color var for this */
 }
