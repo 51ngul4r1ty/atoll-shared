@@ -7,6 +7,9 @@ import * as ActionTypes from "./actionTypes";
 // consts/enums
 import { APPLICATION_JSON } from "../constants";
 
+// interfaces/types
+import { BacklogItemType } from "../types";
+
 export const getBacklogItems = (): ApiAction<undefined> => ({
     type: API,
     payload: {
@@ -18,5 +21,12 @@ export const getBacklogItems = (): ApiAction<undefined> => ({
             ActionTypes.API_GET_BACKLOG_ITEMS_SUCCESS,
             ActionTypes.API_GET_BACKLOG_ITEMS_FAILURE
         ]
+    }
+});
+
+export const addNewBacklogItem = (type: BacklogItemType) => ({
+    type: ActionTypes.ADD_BACKLOGITEM,
+    payload: {
+        type
     }
 });

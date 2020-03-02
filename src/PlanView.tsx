@@ -3,16 +3,15 @@ import * as React from "react";
 // import Helmet from "react-helmet";
 
 // components
-import { AddButton } from "./components/molecules/buttons/AddButton";
-import { BacklogItem, BacklogItemPlanningPanel } from "./components/organisms/panels/BacklogItemPlanningPanel";
+import { PlanningPanelBacklogItem, BacklogItemPlanningPanel } from "./components/organisms/panels/BacklogItemPlanningPanel";
 import { TopMenuPanelContainer } from "./containers/TopMenuPanelContainer";
-import { UserStoryDetailForm } from "./components/organisms/forms/UserStoryDetailForm";
 
 // style
 import css from "./App.module.css";
 
 // interfaces/types
 import { EditMode } from "./components/molecules/buttons/EditButton";
+import { BacklogItemType } from "./types";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
@@ -21,12 +20,14 @@ import { EditMode } from "./components/molecules/buttons/EditButton";
 /* exported interface */
 
 export interface PlanViewStateProps {
-    backlogItems: BacklogItem[];
+    addedBacklogItems: PlanningPanelBacklogItem[];
+    backlogItems: PlanningPanelBacklogItem[];
     editMode: EditMode;
 }
 
 export interface PlanViewDispatchProps {
     onLoaded: { () };
+    onAddNewBacklogItem: { (type: BacklogItemType) };
 }
 
 export type PlanViewProps = PlanViewStateProps & PlanViewDispatchProps;
@@ -49,8 +50,14 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     link={[{ rel: "icon", type: "image/png", href: favicon }]}
                 /> */}
                 <TopMenuPanelContainer activeTabId="plan" />
-                <BacklogItemPlanningPanel backlogItems={this.props.backlogItems} editMode={this.props.editMode} />
-                <UserStoryDetailForm />
+                <BacklogItemPlanningPanel
+                    addedBacklogItems={this.props.addedBacklogItems}
+                    backlogItems={this.props.backlogItems}
+                    editMode={this.props.editMode}
+                    onAddNewBacklogItem={(type: BacklogItemType) => {
+                        this.props.onAddNewBacklogItem(type);
+                    }}
+                />
             </>
         );
     }

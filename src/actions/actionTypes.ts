@@ -12,3 +12,5 @@ export const API_GET_USER_PREFS_FAILURE = "app/api:get-user-prefs:failure";
 export const ROUTE_PLAN_VIEW = "app/route:plan-view";
 export const ROUTE_SPRINT_VIEW = "app/route:sprint-view";
 export const ROUTE_REVIEW_VIEW = "app/route:review-view";
+
+export const ADD_BACKLOGITEM = "app/add:backlog-item";

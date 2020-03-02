@@ -47,6 +47,7 @@ export interface BacklogItem {
 }
 
 export type BacklogItemsState = Readonly<{
+    addedItems: BacklogItem[];
     items: BacklogItem[];
 }>;
 

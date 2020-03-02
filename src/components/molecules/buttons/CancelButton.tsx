@@ -5,24 +5,24 @@ import * as React from "react";
 import { SimpleButton, SimpleButtonCommonProps } from "../../atoms/buttons/SimpleButton";
 
 // icons
-import { AddIcon } from "../../atoms/icons/AddIcon";
+import { CancelIcon } from "../../atoms/icons/CancelIcon";
 
 // style
-import css from "./AddButton.module.css";
+import css from "./CancelButton.module.css";
 
-export interface AddButtonStateProps {
+export interface CancelButtonStateProps {
     itemName?: string;
 }
 
-export interface AddButtonDispatchProps {
+export interface CancelButtonDispatchProps {
     onClick: { () };
 }
 
-export type AddButtonProps = SimpleButtonCommonProps & AddButtonStateProps & AddButtonDispatchProps;
+export type CancelButtonProps = SimpleButtonCommonProps & CancelButtonStateProps & CancelButtonDispatchProps;
 
-export const AddButton: React.FC<AddButtonProps> = (props) => {
-    const icon = <AddIcon />;
-    let text = "Add";
+export const CancelButton: React.FC<CancelButtonProps> = (props) => {
+    const icon = <CancelIcon />;
+    let text = "Cancel";
     if (props.itemName) {
         text += ` ${props.itemName}`;
     }

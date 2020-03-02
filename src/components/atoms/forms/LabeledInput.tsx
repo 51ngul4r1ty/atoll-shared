@@ -14,6 +14,7 @@ export interface LabeledInputProps {
     inputName?: string;
     placeHolder?: string;
     size?: number;
+    inputValue: string;
 }
 
 export const LabeledInput: FC<LabeledInputProps> = (props) => {
@@ -21,7 +22,14 @@ export const LabeledInput: FC<LabeledInputProps> = (props) => {
     const classToUse = buildClassName(css.input, props.className);
     return (
         <div className={classToUse}>
-            <input id={props.inputId} name={nameToUse} type="text" placeholder={props.placeHolder} size={props.size}></input>
+            <input
+                id={props.inputId}
+                name={nameToUse}
+                type="text"
+                placeholder={props.placeHolder}
+                size={props.size}
+                value={props.inputValue}
+            />
             <label htmlFor={props.inputName}>{props.labelText}</label>
         </div>
     );

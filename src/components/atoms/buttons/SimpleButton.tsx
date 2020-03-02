@@ -3,6 +3,10 @@ import * as React from "react";
 import css from "./SimpleButton.module.css";
 import { buildClassName } from "../../../utils/classNameBuilder";
 
+export interface SimpleButtonCommonProps {
+    className?: string;
+}
+
 export interface SimpleButtonStateProps {
     icon?: any; // TODO: Define type
     iconOnLeft?: boolean;
@@ -12,7 +16,7 @@ export interface SimpleButtonDispatchProps {
     onClick: { () };
 }
 
-export type SimpleButtonProps = SimpleButtonStateProps & SimpleButtonDispatchProps;
+export type SimpleButtonProps = SimpleButtonCommonProps & SimpleButtonStateProps & SimpleButtonDispatchProps;
 
 export const SimpleButton: React.FC<SimpleButtonProps> = (props) => {
     const icon = props.icon && <div className={css.buttonIcon}>{props.icon}</div>;
@@ -24,7 +28,7 @@ export const SimpleButton: React.FC<SimpleButtonProps> = (props) => {
     } else {
         classNameToAdd = "";
     }
-    const className = buildClassName(css.button, classNameToAdd);
+    const className = buildClassName(css.button, props.className, classNameToAdd);
     const contents = props.iconOnLeft ? (
         <>
             {icon}

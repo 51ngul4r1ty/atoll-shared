@@ -13,10 +13,21 @@
 
 .userStoryExtraFields {
     display: grid;
-    grid-template-columns: 3.5rem 8rem;
+    grid-template-columns: 3.5rem 8rem auto;
     grid-column-gap: 0.7rem;
 }
 
 .formRow + .formRow {
     margin-top: 0.7rem;
+}
+
+.actionButtonPanel {
+    display: grid;
+    grid-template-columns: auto max-content max-content;
+    grid-column-gap: 0.4rem;
+}
+
+.centerCell {
+    display: flex;
+    align-items: center;
 }

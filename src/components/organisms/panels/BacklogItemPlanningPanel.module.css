@@ -8,3 +8,7 @@
     grid-column-gap: 0.4rem;
     padding-bottom: 0.5rem;
 }
+
+.backlogItemUserStoryFormRow {
+    margin-bottom: 0.5rem;
+}

@@ -5,24 +5,24 @@ import * as React from "react";
 import { SimpleButton, SimpleButtonCommonProps } from "../../atoms/buttons/SimpleButton";
 
 // icons
-import { AddIcon } from "../../atoms/icons/AddIcon";
+import { DoneIcon } from "../../atoms/icons/DoneIcon";
 
 // style
-import css from "./AddButton.module.css";
+import css from "./DoneButton.module.css";
 
-export interface AddButtonStateProps {
+export interface DoneButtonStateProps {
     itemName?: string;
 }
 
-export interface AddButtonDispatchProps {
+export interface DoneButtonDispatchProps {
     onClick: { () };
 }
 
-export type AddButtonProps = SimpleButtonCommonProps & AddButtonStateProps & AddButtonDispatchProps;
+export type DoneButtonProps = SimpleButtonCommonProps & DoneButtonStateProps & DoneButtonDispatchProps;
 
-export const AddButton: React.FC<AddButtonProps> = (props) => {
-    const icon = <AddIcon />;
-    let text = "Add";
+export const DoneButton: React.FC<DoneButtonProps> = (props) => {
+    const icon = <DoneIcon />;
+    let text = "Done";
     if (props.itemName) {
         text += ` ${props.itemName}`;
     }
