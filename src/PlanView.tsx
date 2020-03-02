@@ -3,6 +3,7 @@ import * as React from "react";
 // import Helmet from "react-helmet";
 
 // components
+import { AddButton } from "./components/molecules/buttons/AddButton";
 import { BacklogItem, BacklogItemPlanningPanel } from "./components/organisms/panels/BacklogItemPlanningPanel";
 import { TopMenuPanelContainer } from "./containers/TopMenuPanelContainer";
 import { UserStoryDetailForm } from "./components/organisms/forms/UserStoryDetailForm";

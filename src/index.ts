@@ -4,7 +4,9 @@ export { APPLICATION_JSON } from "./constants";
 // components
 export { App } from "./App";
 export { BacklogItemCard, BacklogItemTypeEnum } from "./components/molecules/cards/BacklogItemCard";
+export { AddButton } from "./components/molecules/buttons/AddButton";
 export { EditButton, EditMode } from "./components/molecules/buttons/EditButton";
+export { AddIcon } from "./components/atoms/icons/AddIcon";
 export { EditIcon } from "./components/atoms/icons/EditIcon";
 export { HamburgerIcon } from "./components/atoms/icons/HamburgerIcon";
 export { HomeButton } from "./components/molecules/buttons/HomeButton";

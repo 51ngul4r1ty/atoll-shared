@@ -2,8 +2,11 @@
 import * as React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 
-// components
+// style
 import css from "./BacklogItemPlanningPanel.module.css";
+
+// components
+import { AddButton } from "../../molecules/buttons/AddButton";
 import { BacklogItemCard, BacklogItemTypeEnum } from "../../molecules/cards/BacklogItemCard";
 import { BacklogItemType } from "../../../types";
 
@@ -47,7 +50,19 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
         />
     ));
 
-    return <div className={css.backlogItemPlanningPanel}>{backlogItemElts}</div>;
+    const actionButtons =
+        props.editMode === EditMode.View ? null : (
+            <div className={css.backlogItemPlanningActionPanel}>
+                <AddButton itemName="story" onClick={() => {}} />
+                <AddButton itemName="issue" onClick={() => {}} />
+            </div>
+        );
+    return (
+        <div className={css.backlogItemPlanningPanel}>
+            {actionButtons}
+            {backlogItemElts}
+        </div>
+    );
 };
 
 export const BacklogItemPlanningPanel = withTranslation()(RawBacklogItemPlanningPanel);
