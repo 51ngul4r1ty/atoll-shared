@@ -10,6 +10,7 @@
     padding-right: 0.4rem;
     width: 100%;
     box-sizing: border-box;
+    color: var(--normal-pen-color, black);
 }
 
 .input > label {
