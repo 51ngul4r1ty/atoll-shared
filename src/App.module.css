@@ -9,6 +9,7 @@
     margin: 0;
     padding: 0;
     background-color: var(--normal-page-color, white);
+    color: var(--normal-pen-color, black);
 }
 
 :global(input) {

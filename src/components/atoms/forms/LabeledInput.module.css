@@ -3,7 +3,7 @@
 }
 
 .input > input {
-    background-color: #ffffff; /* switch to var(--xyz) */
+    background-color: var(--normal-input-page-color, white);
     border-width: 0;
     height: 2.4rem;
     padding-left: 0.4rem;
@@ -17,10 +17,10 @@
     top: 0.08rem;
     left: 0.08rem;
     font-size: 0.5833rem; /* 7pt */
-    opacity: 0.3;
+    opacity: 0.6;
     text-transform: uppercase;
 }
 
 .input > input::placeholder {
-    color: #666; /* TODO: need to assign theme color var for this */
+    color: var(--normal-placeholder-color, #777);
 }
