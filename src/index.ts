@@ -29,6 +29,9 @@ export { PlanViewContainer } from "./PlanViewContainer";
 export { ReviewViewContainer } from "./ReviewViewContainer";
 export { SprintViewContainer } from "./SprintViewContainer";
 
+// contexts
+export { AppContext, AppProvider, AppConsumer } from "./contexts/appContextUtil";
+
 // utils
 export { configureStore } from "./store";
 export { createClientHistory, createServerHistory } from "./store/history";

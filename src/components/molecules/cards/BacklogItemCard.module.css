@@ -3,6 +3,11 @@
     height: 2rem;
 }
 
+.backlogItemCard.mobile {
+    height: auto;
+    flex-wrap: wrap;
+}
+
 .backlogItemCard > * {
     line-height: 1.4rem;
     padding-top: 0.3rem;
@@ -23,6 +28,7 @@
     min-width: 5rem; /* TODO: Use constants/theme?? */
     align-items: center;
     user-select: none;
+    order: 0;
 }
 
 .backlogItemText {
@@ -36,6 +42,15 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    order: 1;
+}
+
+.backlogItemCard.mobile .backlogItemText {
+    white-space: normal;
+    order: 2;
+    height: 4.15rem;
+    flex-basis: 100%;
+    border-left: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
 }
 
 .backlogItemEstimate {
@@ -44,6 +59,14 @@
     background-color: var(--inverted-page-color, black);
     color: var(--inverted-pen-color, white);
     user-select: none;
+    order: 2;
+}
+
+.backlogItemCard.mobile .backlogItemEstimate {
+    order: 1;
+    flex-grow: 1;
+    text-align: right;
+    padding-right: 0.6rem;
 }
 
 .backlogItemIcon {
@@ -68,6 +91,8 @@
     cursor: grab;
     display: flex;
     justify-content: center;
+    flex-shrink: 0;
+    order: 3;
 }
 
 .backlogItemDragButton svg {

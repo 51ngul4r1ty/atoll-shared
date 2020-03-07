@@ -10,7 +10,8 @@ import { EditMode } from "../components/molecules/buttons/EditButton";
 
 export const initialState = Object.freeze<AppState>({
     locale: "en_US",
-    editMode: EditMode.View
+    editMode: EditMode.View,
+    executingOnClient: false
 });
 
 export const appReducer = (state: AppState = initialState, action: AnyFSA): AppState =>

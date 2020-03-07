@@ -13,6 +13,7 @@ import { BacklogItemType } from "../../../types";
 // consts/enums
 import { EditMode } from "../../molecules/buttons/EditButton";
 import { UserStoryDetailForm } from "../forms/UserStoryDetailForm";
+import { buildClassName } from "../../../utils/classNameBuilder";
 
 /* exported interfaces */
 
@@ -31,6 +32,7 @@ export interface BacklogItemPlanningPanelStateProps {
     addedBacklogItems: PlanningPanelBacklogItem[];
     backlogItems: PlanningPanelBacklogItem[];
     editMode: EditMode;
+    renderMobile?: boolean;
 }
 
 export interface BacklogItemPlanningPanelDispatchProps {
@@ -43,7 +45,7 @@ export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
 
 /* exported components */
 
-const buildBacklogItemElts = (editMode: EditMode, backlogItems: PlanningPanelBacklogItem[]) => {
+const buildBacklogItemElts = (editMode: EditMode, backlogItems: PlanningPanelBacklogItem[], renderMobile: boolean) => {
     return backlogItems.map((item: PlanningPanelBacklogItem) => {
         if (item.editing) {
             return (
@@ -67,6 +69,7 @@ const buildBacklogItemElts = (editMode: EditMode, backlogItems: PlanningPanelBac
                     itemType={item.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
                     titleText={item.storyPhrase}
                     isDraggable={editMode === EditMode.Edit}
+                    renderMobile={renderMobile}
                 />
             );
         }
@@ -74,8 +77,9 @@ const buildBacklogItemElts = (editMode: EditMode, backlogItems: PlanningPanelBac
 };
 
 export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps> = (props) => {
-    const addedBacklogItemElts = buildBacklogItemElts(props.editMode, props.addedBacklogItems);
-    const backlogItemElts = buildBacklogItemElts(props.editMode, props.backlogItems);
+    const classNameToUse = buildClassName(css.backlogItemPlanningPanel, props.renderMobile ? css.mobile : null);
+    const addedBacklogItemElts = buildBacklogItemElts(props.editMode, props.addedBacklogItems, props.renderMobile);
+    const backlogItemElts = buildBacklogItemElts(props.editMode, props.backlogItems, props.renderMobile);
     const actionButtons =
         props.editMode === EditMode.View ? null : (
             <div className={css.backlogItemPlanningActionPanel}>
@@ -94,7 +98,7 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
             </div>
         );
     return (
-        <div className={css.backlogItemPlanningPanel}>
+        <div className={classNameToUse}>
             {addedBacklogItemElts}
             {actionButtons}
             {backlogItemElts}

@@ -18,6 +18,7 @@ export interface StateTree {
 export type AppState = Readonly<{
     locale: Locale;
     editMode: EditMode;
+    executingOnClient: boolean;
 }>;
 
 /* User state related */

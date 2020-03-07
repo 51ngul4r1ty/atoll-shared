@@ -6,6 +6,9 @@ import * as React from "react";
 import { PlanningPanelBacklogItem, BacklogItemPlanningPanel } from "./components/organisms/panels/BacklogItemPlanningPanel";
 import { TopMenuPanelContainer } from "./containers/TopMenuPanelContainer";
 
+// contexts
+import { AppContext } from "./contexts/appContextUtil";
+
 // style
 import css from "./App.module.css";
 
@@ -35,6 +38,7 @@ export type PlanViewProps = PlanViewStateProps & PlanViewDispatchProps;
 /* exported component */
 
 export class PlanView extends React.Component<PlanViewProps, {}> {
+    static contextType = AppContext;
     constructor(props) {
         super(props);
     }
@@ -42,13 +46,9 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
         this.props.onLoaded();
     }
     render() {
+        console.log(`rendering ${JSON.stringify(this.context)}`);
         return (
             <>
-                {/* <Helmet
-                    defaultTitle="Atoll"
-                    titleTemplate="Atoll – %s"
-                    link={[{ rel: "icon", type: "image/png", href: favicon }]}
-                /> */}
                 <TopMenuPanelContainer activeTabId="plan" />
                 <BacklogItemPlanningPanel
                     addedBacklogItems={this.props.addedBacklogItems}
@@ -57,6 +57,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     onAddNewBacklogItem={(type: BacklogItemType) => {
                         this.props.onAddNewBacklogItem(type);
                     }}
+                    renderMobile={this.context.state?.isMobile}
                 />
             </>
         );
