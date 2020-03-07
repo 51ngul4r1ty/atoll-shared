@@ -61,7 +61,7 @@ export const RawBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
         <div className={classNameToUse} tabIndex={0}>
             <div className={css.backlogItemType}>
                 <div className={css.backlogItemIcon}>
-                    {props.itemType === BacklogItemTypeEnum.Story ? <StoryIcon /> : <IssueIcon />}
+                    {props.itemType === BacklogItemTypeEnum.Story ? <StoryIcon invertColors /> : <IssueIcon invertColors />}
                 </div>
                 <div className={css.backlogItemId} title={titleForItemId(props.itemId)}>
                     {abbreviateId(props.itemId)}
@@ -71,7 +71,7 @@ export const RawBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
             <div className={css.backlogItemEstimate}>{formatEstimateForDisplay(props.estimate)}</div>
             {props.isDraggable ? (
                 <div className={css.backlogItemDragButton}>
-                    <DragIcon invertColors />
+                    <DragIcon />
                 </div>
             ) : null}
         </div>
