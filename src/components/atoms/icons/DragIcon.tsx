@@ -45,12 +45,12 @@ export const DragIcon: React.FC<DragIconProps> = (props) => {
                 <g id="Layer 1" transform="scale(1 -1)">
                     <g
                         id="Group"
-                        className={strokeClass}
+                        className={fillClass}
                         strokeLinejoin="miter"
                         strokeLinecap="round"
                         stroke="none"
                         strokeWidth="5.348"
-                        fill={fillClass}
+                        fill="black"
                     >
                         <rect x="-2.355" y="-22.499" width="4.71" height="44.998" transform="translate(37.501 51.646) rotate(90)" />
                         <rect x="-2.355" y="-22.499" width="4.71" height="44.998" transform="translate(37.501 37.502) rotate(90)" />
