@@ -71,7 +71,7 @@ export const RawBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
             <div className={css.backlogItemEstimate}>{formatEstimateForDisplay(props.estimate)}</div>
             {props.isDraggable ? (
                 <div className={css.backlogItemDragButton}>
-                    <DragIcon />
+                    <DragIcon invertColors />
                 </div>
             ) : null}
         </div>
