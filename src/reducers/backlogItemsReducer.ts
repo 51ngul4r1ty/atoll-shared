@@ -6,7 +6,7 @@ import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
 import { AnyFSA } from "../types";
-import { AddNewBacklogItemAction, UpdateBacklogItemFieldsAction } from "../actions/backlogItems";
+import { AddNewBacklogItemAction, UpdateBacklogItemFieldsAction, CancelUnsavedBacklogItemAction } from "../actions/backlogItems";
 
 export type BacklogItemType = "story" | "issue";
 
@@ -45,13 +45,32 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
             }
             case ActionTypes.ADD_BACKLOG_ITEM: {
                 const actionTyped = action as AddNewBacklogItemAction;
+                const topIndex = draft.items.length ? draft.items[0].displayIndex : 1.0;
+                let newTopIndex = topIndex - draft.addedItems.length - 1.0;
+                draft.addedItems.forEach((addedItem) => {
+                    addedItem.displayIndex = newTopIndex;
+                    newTopIndex = newTopIndex + 1.0;
+                });
                 draft.addedItems = [
                     ...draft.addedItems,
                     {
                         type: actionTyped.payload.type,
-                        instanceId: actionTyped.payload.instanceId
+                        instanceId: actionTyped.payload.instanceId,
+                        displayIndex: newTopIndex
                     } as BacklogItem
                 ];
+                return;
+            }
+            case ActionTypes.CANCEL_UNSAVED_BACKLOG_ITEM: {
+                const actionTyped = action as CancelUnsavedBacklogItemAction;
+                const newItems = [];
+                draft.addedItems.forEach((addedItem) => {
+                    if (addedItem.instanceId !== actionTyped.payload.instanceId) {
+                        newItems.push(addedItem);
+                    }
+                });
+                draft.addedItems = newItems;
+                return;
             }
             case ActionTypes.UPDATE_BACKLOG_ITEM_FIELDS: {
                 const actionTyped = action as UpdateBacklogItemFieldsAction;

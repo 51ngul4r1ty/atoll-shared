@@ -44,6 +44,22 @@ export const addNewBacklogItem = (type: BacklogItemType): AddNewBacklogItemActio
     }
 });
 
+export interface CancelUnsavedBacklogItemActionPayload {
+    instanceId: number;
+}
+
+export interface CancelUnsavedBacklogItemAction {
+    type: typeof ActionTypes.CANCEL_UNSAVED_BACKLOG_ITEM;
+    payload: CancelUnsavedBacklogItemActionPayload;
+}
+
+export const cancelUnsavedBacklogItem = (instanceId: number): CancelUnsavedBacklogItemAction => ({
+    type: ActionTypes.CANCEL_UNSAVED_BACKLOG_ITEM,
+    payload: {
+        instanceId
+    }
+});
+
 export interface UpdateBacklogItemFieldsAction {
     type: typeof ActionTypes.UPDATE_BACKLOG_ITEM_FIELDS;
     payload: BacklogItemDetailFormEditableFieldsWithInstanceId;

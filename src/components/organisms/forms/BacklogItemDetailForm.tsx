@@ -34,6 +34,8 @@ export interface BacklogItemDetailFormStateProps extends BacklogItemDetailFormEd
 }
 
 export interface BacklogItemDetailFormDispatchProps {
+    onDoneClick?: { (instanceId: number) };
+    onCancelClick?: { (instanceId: number) };
     onDataUpdate?: { (props: BacklogItemDetailFormEditableFieldsWithInstanceId) };
 }
 
@@ -46,6 +48,16 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
     handleDataUpdate = (fields: BacklogItemDetailFormEditableFieldsWithInstanceId) => {
         if (this.props.onDataUpdate) {
             this.props.onDataUpdate(fields);
+        }
+    };
+    handleDoneClick = () => {
+        if (this.props.onDoneClick) {
+            this.props.onDoneClick(this.props.instanceId);
+        }
+    };
+    handleCancelClick = () => {
+        if (this.props.onCancelClick) {
+            this.props.onCancelClick(this.props.instanceId);
         }
     };
     render() {
@@ -99,10 +111,18 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                     <div className={css.actionButtonPanel}>
                         <div />
                         <div className={css.centerCell}>
-                            <DoneButton onClick={() => {}} />
+                            <DoneButton
+                                onClick={() => {
+                                    this.handleDoneClick();
+                                }}
+                            />
                         </div>
                         <div className={css.centerCell}>
-                            <CancelButton onClick={() => {}} />
+                            <CancelButton
+                                onClick={() => {
+                                    this.handleCancelClick();
+                                }}
+                            />
                         </div>
                     </div>
                 </div>
