@@ -17,7 +17,7 @@ import { useDispatch } from "react-redux";
 import { BacklogItemType } from "../../../reducers/backlogItemsReducer";
 
 // actions
-import { updateBacklogItemFields, cancelUnsavedBacklogItem } from "../../../actions/backlogItems";
+import { updateBacklogItemFields, cancelUnsavedBacklogItem, saveBacklogItem } from "../../../actions/backlogItems";
 
 /* exported interfaces */
 
@@ -70,7 +70,9 @@ const buildBacklogItemElts = (editMode: EditMode, backlogItems: PlanningPanelBac
                     onDataUpdate={(fields) => {
                         dispatch(updateBacklogItemFields(fields));
                     }}
-                    onDoneClick={(instanceId) => {}}
+                    onDoneClick={(instanceId) => {
+                        dispatch(saveBacklogItem(instanceId));
+                    }}
                     onCancelClick={(instanceId) => {
                         dispatch(cancelUnsavedBacklogItem(instanceId));
                     }}
