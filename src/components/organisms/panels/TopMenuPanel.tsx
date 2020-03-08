@@ -37,7 +37,7 @@ export const RawTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
     const dispatch = useDispatch();
     const buttons = [];
     buttons.push(
-        <ToggleFeature flag="showEditButton">
+        <ToggleFeature key="edit-button-key" flag="showEditButton">
             <EditButton
                 key="edit-button"
                 mode={props.editMode}

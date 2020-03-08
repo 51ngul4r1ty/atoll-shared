@@ -9,12 +9,13 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 
 export interface LabeledInputStateProps {
     className?: string;
-    labelText: string;
     inputId: string;
     inputName?: string;
-    placeHolder?: string;
-    size?: number;
     inputValue: string;
+    labelText: string;
+    placeHolder?: string;
+    required?: boolean;
+    size?: number;
 }
 
 export interface LabeledInputDispatchProps {
@@ -47,6 +48,7 @@ export class LabeledInput extends Component<LabeledInputProps> {
                     onChange={(e) => {
                         this.handleChange(e);
                     }}
+                    required={this.props.required}
                 />
                 <label htmlFor={this.props.inputName}>{this.props.labelText}</label>
             </div>

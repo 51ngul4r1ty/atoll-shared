@@ -51,8 +51,14 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
         }
     };
     handleDoneClick = () => {
-        if (this.props.onDoneClick) {
-            this.props.onDoneClick(this.props.instanceId);
+        const matchingForms = document.querySelectorAll(`[data-instance-id="${this.props.instanceId}"]`);
+        if (matchingForms.length === 1) {
+            const matchingForm = matchingForms[0] as HTMLFormElement;
+            if (matchingForm.reportValidity()) {
+                if (this.props.onDoneClick) {
+                    this.props.onDoneClick(this.props.instanceId);
+                }
+            }
         }
     };
     handleCancelClick = () => {
@@ -74,7 +80,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
             reasonPhrase: this.props.reasonPhrase
         };
         return (
-            <form className={buildClassName(css.form, this.props.className)}>
+            <form data-instance-id={this.props.instanceId} className={buildClassName(css.form, this.props.className)}>
                 <div className={buildClassName(css.userStoryDescription, css.formRow)}>
                     <LabeledInput
                         inputId="userStoryRolePhrase"
@@ -87,6 +93,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                         labelText="Story phrase"
                         placeHolder="I can <something>"
                         inputValue={this.props.storyPhrase}
+                        required
                     />
                     <LabeledInput
                         inputId="userStoryReasonPhrase"

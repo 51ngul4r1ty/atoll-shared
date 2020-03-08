@@ -52,10 +52,12 @@ export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
 
 const buildBacklogItemElts = (editMode: EditMode, backlogItems: PlanningPanelBacklogItem[], renderMobile: boolean) => {
     const dispatch = useDispatch();
+    let key = 1;
     return backlogItems.map((item: PlanningPanelBacklogItem) => {
         if (item.editing) {
             return (
                 <BacklogItemDetailForm
+                    key={`unsaved-form-${key++}`}
                     className={css.backlogItemUserStoryFormRow}
                     instanceId={item.instanceId}
                     externalId={item.externalId}
@@ -68,6 +70,7 @@ const buildBacklogItemElts = (editMode: EditMode, backlogItems: PlanningPanelBac
                     onDataUpdate={(fields) => {
                         dispatch(updateBacklogItemFields(fields));
                     }}
+                    onDoneClick={(instanceId) => {}}
                     onCancelClick={(instanceId) => {
                         dispatch(cancelUnsavedBacklogItem(instanceId));
                     }}
