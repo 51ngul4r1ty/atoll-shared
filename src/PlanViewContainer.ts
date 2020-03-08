@@ -7,7 +7,7 @@ import { PlanView, PlanViewStateProps, PlanViewDispatchProps } from "./PlanView"
 import { PlanningPanelBacklogItem } from "./components/organisms/panels/BacklogItemPlanningPanel";
 
 // state
-import { StateTree, BacklogItemType, BacklogItem } from "./types";
+import { StateTree } from "./types";
 
 // actions
 import { getBacklogItems, addNewBacklogItem } from "./actions/backlogItems";
@@ -15,12 +15,14 @@ import { setEditMode } from "./actions/appActions";
 
 // interfaces/types
 import { EditMode } from "./components/molecules/buttons/EditButton";
+import { BacklogItem, BacklogItemType } from "./reducers/backlogItemsReducer";
 
 const buildBacklogItem = (item: BacklogItem): PlanningPanelBacklogItem => {
     const result: PlanningPanelBacklogItem = {
         estimate: item.estimate,
         externalId: item.externalId,
         id: item.id,
+        instanceId: item.instanceId,
         storyPhrase: item.storyPhrase,
         rolePhrase: item.rolePhrase,
         reasonPhrase: item.reasonPhrase,

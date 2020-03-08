@@ -14,7 +14,7 @@ import css from "./App.module.css";
 
 // interfaces/types
 import { EditMode } from "./components/molecules/buttons/EditButton";
-import { BacklogItemType } from "./types";
+import { BacklogItemType } from "./reducers/backlogItemsReducer";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
@@ -46,7 +46,6 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
         this.props.onLoaded();
     }
     render() {
-        console.log(`rendering ${JSON.stringify(this.context)}`);
         return (
             <>
                 <TopMenuPanelContainer activeTabId="plan" />

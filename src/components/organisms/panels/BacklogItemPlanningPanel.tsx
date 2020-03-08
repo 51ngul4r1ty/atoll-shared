@@ -8,12 +8,16 @@ import css from "./BacklogItemPlanningPanel.module.css";
 // components
 import { AddButton } from "../../molecules/buttons/AddButton";
 import { BacklogItemCard, BacklogItemTypeEnum } from "../../molecules/cards/BacklogItemCard";
-import { BacklogItemType } from "../../../types";
 
 // consts/enums
 import { EditMode } from "../../molecules/buttons/EditButton";
-import { UserStoryDetailForm } from "../forms/UserStoryDetailForm";
+import { BacklogItemDetailForm } from "../forms/BacklogItemDetailForm";
 import { buildClassName } from "../../../utils/classNameBuilder";
+import { useDispatch } from "react-redux";
+import { BacklogItemType } from "../../../reducers/backlogItemsReducer";
+
+// actions
+import { updateBacklogItemFields } from "../../../actions/backlogItems";
 
 /* exported interfaces */
 
@@ -21,6 +25,7 @@ export interface PlanningPanelBacklogItem {
     estimate: number | null;
     externalId: string;
     id: number;
+    instanceId: number | null;
     storyPhrase: string;
     rolePhrase: string;
     reasonPhrase: string;
@@ -46,11 +51,13 @@ export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
 /* exported components */
 
 const buildBacklogItemElts = (editMode: EditMode, backlogItems: PlanningPanelBacklogItem[], renderMobile: boolean) => {
+    const dispatch = useDispatch();
     return backlogItems.map((item: PlanningPanelBacklogItem) => {
         if (item.editing) {
             return (
-                <UserStoryDetailForm
+                <BacklogItemDetailForm
                     className={css.backlogItemUserStoryFormRow}
+                    instanceId={item.instanceId}
                     externalId={item.externalId}
                     editing
                     estimate={item.estimate}
@@ -58,6 +65,9 @@ const buildBacklogItemElts = (editMode: EditMode, backlogItems: PlanningPanelBac
                     storyPhrase={item.storyPhrase}
                     reasonPhrase={item.reasonPhrase}
                     type={item.type}
+                    onDataUpdate={(fields) => {
+                        dispatch(updateBacklogItemFields(fields));
+                    }}
                 />
             );
         } else {

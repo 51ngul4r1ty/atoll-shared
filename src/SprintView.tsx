@@ -31,7 +31,6 @@ export const SprintView: React.FC<SprintViewProps> = (props) => {
                 /> */}
             <AppConsumer>
                 {(props) => {
-                    console.log(`PROPS: ${JSON.stringify(props)}`);
                     return <TopMenuPanelContainer activeTabId="sprint" />;
                 }}
             </AppConsumer>

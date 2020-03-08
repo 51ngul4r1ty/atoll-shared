@@ -77,9 +77,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
     updateIsMobile = (value: boolean) => {
-        console.log(`UPDATING IS MOBILE TO ${value}`);
         if (this.state?.isMobile !== value) {
-            console.log(`${this.state?.isMobile} !== ${value}`);
             this.setState({ isMobile: value });
         }
     };

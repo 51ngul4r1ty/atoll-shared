@@ -8,7 +8,8 @@ import * as ActionTypes from "./actionTypes";
 import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
-import { BacklogItemType } from "../types";
+import { BacklogItemType } from "../reducers/backlogItemsReducer";
+import { BacklogItemDetailFormEditableFieldsWithInstanceId } from "../components/organisms/forms/BacklogItemDetailForm";
 
 export const getBacklogItems = (): ApiAction<undefined> => ({
     type: API,
@@ -24,9 +25,33 @@ export const getBacklogItems = (): ApiAction<undefined> => ({
     }
 });
 
-export const addNewBacklogItem = (type: BacklogItemType) => ({
-    type: ActionTypes.ADD_BACKLOGITEM,
+let lastInstanceId = 0;
+
+export interface AddNewBacklogItemActionPayload {
+    type: BacklogItemType;
+    instanceId: number;
+}
+export interface AddNewBacklogItemAction {
+    type: typeof ActionTypes.ADD_BACKLOG_ITEM;
+    payload: AddNewBacklogItemActionPayload;
+}
+
+export const addNewBacklogItem = (type: BacklogItemType): AddNewBacklogItemAction => ({
+    type: ActionTypes.ADD_BACKLOG_ITEM,
     payload: {
-        type
+        type,
+        instanceId: ++lastInstanceId
     }
+});
+
+export interface UpdateBacklogItemFieldsAction {
+    type: typeof ActionTypes.UPDATE_BACKLOG_ITEM_FIELDS;
+    payload: BacklogItemDetailFormEditableFieldsWithInstanceId;
+}
+
+export const updateBacklogItemFields = (
+    fields: BacklogItemDetailFormEditableFieldsWithInstanceId
+): UpdateBacklogItemFieldsAction => ({
+    type: ActionTypes.UPDATE_BACKLOG_ITEM_FIELDS,
+    payload: fields
 });

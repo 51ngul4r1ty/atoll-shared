@@ -17,11 +17,12 @@ export { HomeButton } from "./components/molecules/buttons/HomeButton";
 export { SimpleButton } from "./components/atoms/buttons/SimpleButton";
 export { SimpleText } from "./components/atoms/text/SimpleText";
 export { TabStrip } from "./components/atoms/tabs/TabStrip";
-export { UserStoryDetailForm } from "./components/organisms/forms/UserStoryDetailForm";
+export { BacklogItemDetailForm } from "./components/organisms/forms/BacklogItemDetailForm";
 export * from "./components/atoms/icons";
 
 // interfaces/types
-export { StateTree, BacklogItem, BacklogItemsState, FeatureToggle, FeatureTogglesState } from "./types";
+export { StateTree, FeatureToggle, FeatureTogglesState } from "./types";
+export { BacklogItem, BacklogItemsState } from "./reducers/backlogItemsReducer";
 
 // containers
 export { default as IntlProvider } from "./i18n/IntlProvider";
