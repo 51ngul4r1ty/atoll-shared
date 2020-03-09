@@ -46,6 +46,19 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                 draft.items = payload.response.data.items;
                 return;
             }
+            case ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS: {
+                // TODO: Add `const actionTyped = ` to make this type-safe
+                const { payload, meta } = action;
+                const updatedBacklogItem = payload.response.data.item;
+                const instanceId = meta.instanceId;
+                draft.addedItems.forEach((addedItem) => {
+                    if (addedItem.instanceId === instanceId) {
+                        addedItem.id = updatedBacklogItem.id;
+                        console.log("TODO: switch from editable to non-editable");
+                    }
+                });
+                return;
+            }
             case ActionTypes.ADD_BACKLOG_ITEM: {
                 const actionTyped = action as AddNewBacklogItemAction;
                 const topIndex = draft.items.length ? draft.items[0].displayIndex : 1.0;

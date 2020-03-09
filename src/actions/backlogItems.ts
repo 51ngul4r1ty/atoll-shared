@@ -78,7 +78,7 @@ export const saveBacklogItem = (instanceId: number): SaveBacklogItemAction => ({
 
 export interface SaveBacklogItemPayload {}
 
-export const postBacklogItem = (backlogItem: BacklogItemModel): ApiAction<SaveBacklogItemPayload> => {
+export const postBacklogItem = (backlogItem: BacklogItemModel, meta: any): ApiAction<SaveBacklogItemPayload> => {
     return {
         type: API,
         payload: {
@@ -91,7 +91,8 @@ export const postBacklogItem = (backlogItem: BacklogItemModel): ApiAction<SaveBa
                 ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS,
                 ActionTypes.API_POST_BACKLOG_ITEM_FAILURE
             ]
-        }
+        },
+        meta
     };
 };
 

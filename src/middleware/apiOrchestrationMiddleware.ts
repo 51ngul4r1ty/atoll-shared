@@ -1,9 +1,19 @@
 // externals
 import { Action, Store } from "redux";
+
+// consts/enums
 import * as ActionTypes from "../actions/actionTypes";
+
+// selectors
 import { getBacklogItemByInstanceId } from "../selectors/backlogItemSelectors";
+
+// actions
 import { postBacklogItem, SaveBacklogItemAction } from "../actions/backlogItems";
+
+// state
 import { StateTree } from "../types";
+
+// utils
 import { convertToBacklogItemModel } from "../utils/apiPayloadHelper";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
@@ -13,10 +23,11 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
         case ActionTypes.SAVE_BACKLOG_ITEM:
             const actionTyped = action as SaveBacklogItemAction;
             const state = storeToUse.getState();
-            const backlogItem = getBacklogItemByInstanceId(state, actionTyped.payload.instanceId);
+            const instanceId = actionTyped.payload.instanceId;
+            const backlogItem = getBacklogItemByInstanceId(state, instanceId);
             if (backlogItem) {
                 const model = convertToBacklogItemModel(backlogItem);
-                storeToUse.dispatch(postBacklogItem(model));
+                storeToUse.dispatch(postBacklogItem(model, { instanceId }));
             }
             break;
     }
