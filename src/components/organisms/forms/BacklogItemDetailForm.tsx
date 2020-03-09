@@ -87,6 +87,9 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                         labelText="Role phrase"
                         placeHolder="As a <role>"
                         inputValue={this.props.rolePhrase}
+                        onChange={(value) => {
+                            this.handleDataUpdate({ ...prevData, rolePhrase: value });
+                        }}
                     />
                     <LabeledInput
                         inputId="userStoryStoryPhrase"
@@ -94,12 +97,18 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                         placeHolder="I can <something>"
                         inputValue={this.props.storyPhrase}
                         required
+                        onChange={(value) => {
+                            this.handleDataUpdate({ ...prevData, storyPhrase: value });
+                        }}
                     />
                     <LabeledInput
                         inputId="userStoryReasonPhrase"
                         labelText="Reason phrase"
                         placeHolder={placeholderText}
                         inputValue={this.props.reasonPhrase}
+                        onChange={(value) => {
+                            this.handleDataUpdate({ ...prevData, reasonPhrase: value });
+                        }}
                     />
                 </div>
                 <div className={buildClassName(css.userStoryExtraFields, css.formRow)}>
@@ -110,11 +119,18 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                         inputValue={estimateValue}
                         onChange={(value) => {
                             const valueToUse = value.trim();
-                            const newValue = valueToUse ? parseInt(valueToUse) : null;
-                            this.handleDataUpdate({ ...prevData, estimate: newValue });
+                            const estimate = valueToUse ? parseInt(valueToUse) : null;
+                            this.handleDataUpdate({ ...prevData, estimate });
                         }}
                     />
-                    <LabeledInput inputId="userStoryExternalId" labelText="External ID" inputValue={this.props.externalId} />
+                    <LabeledInput
+                        inputId="userStoryExternalId"
+                        labelText="External ID"
+                        inputValue={this.props.externalId}
+                        onChange={(value) => {
+                            this.handleDataUpdate({ ...prevData, externalId: value });
+                        }}
+                    />
                     <div className={css.actionButtonPanel}>
                         <div />
                         <div className={css.centerCell}>

@@ -80,6 +80,10 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                 draft.addedItems.forEach((addedItem) => {
                     if (addedItem.instanceId === actionTyped.payload.instanceId) {
                         addedItem.estimate = actionTyped.payload.estimate;
+                        addedItem.externalId = actionTyped.payload.externalId;
+                        addedItem.storyPhrase = actionTyped.payload.storyPhrase;
+                        addedItem.reasonPhrase = actionTyped.payload.reasonPhrase;
+                        addedItem.rolePhrase = actionTyped.payload.rolePhrase;
                     }
                 });
                 return;
