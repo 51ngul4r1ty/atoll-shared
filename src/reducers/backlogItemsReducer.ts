@@ -10,17 +10,20 @@ import { AddNewBacklogItemAction, UpdateBacklogItemFieldsAction, CancelUnsavedBa
 
 export type BacklogItemType = "story" | "issue";
 
-export interface BacklogItem {
+export interface BacklogItemModel {
     creationDateTime: Date;
     displayIndex: number;
     estimate: number | null;
     externalId: string | null;
     id: number;
-    instanceId: number | null;
     reasonPhrase: string | null;
     rolePhrase: string | null;
     storyPhrase: string;
     type: BacklogItemType;
+}
+
+export interface BacklogItem extends BacklogItemModel {
+    instanceId: number | null;
 }
 
 export type BacklogItemsState = Readonly<{

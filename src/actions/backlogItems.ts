@@ -8,7 +8,7 @@ import * as ActionTypes from "./actionTypes";
 import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
-import { BacklogItemType } from "../reducers/backlogItemsReducer";
+import { BacklogItemType, BacklogItemModel } from "../reducers/backlogItemsReducer";
 import { BacklogItemDetailFormEditableFieldsWithInstanceId } from "../components/organisms/forms/BacklogItemDetailForm";
 
 export const getBacklogItems = (): ApiAction<undefined> => ({
@@ -75,6 +75,25 @@ export const saveBacklogItem = (instanceId: number): SaveBacklogItemAction => ({
         instanceId
     }
 });
+
+export interface SaveBacklogItemPayload {}
+
+export const postBacklogItem = (backlogItem: BacklogItemModel): ApiAction<SaveBacklogItemPayload> => {
+    return {
+        type: API,
+        payload: {
+            endpoint: "http://localhost:8500/api/v1/backlog-items",
+            method: "POST",
+            headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+            data: backlogItem,
+            types: [
+                ActionTypes.API_POST_BACKLOG_ITEM_REQUEST,
+                ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS,
+                ActionTypes.API_POST_BACKLOG_ITEM_FAILURE
+            ]
+        }
+    };
+};
 
 export interface UpdateBacklogItemFieldsAction {
     type: typeof ActionTypes.UPDATE_BACKLOG_ITEM_FIELDS;

@@ -13,11 +13,16 @@ import { BacklogItemCard, BacklogItemTypeEnum } from "../../molecules/cards/Back
 import { EditMode } from "../../molecules/buttons/EditButton";
 import { BacklogItemDetailForm } from "../forms/BacklogItemDetailForm";
 import { buildClassName } from "../../../utils/classNameBuilder";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BacklogItemType } from "../../../reducers/backlogItemsReducer";
 
 // actions
 import { updateBacklogItemFields, cancelUnsavedBacklogItem, saveBacklogItem } from "../../../actions/backlogItems";
+
+// selectors
+import { getBacklogItemByInstanceId } from "../../../selectors/backlogItemSelectors";
+import { StateTree } from "../../../types";
+import { useState } from "react";
 
 /* exported interfaces */
 
@@ -52,6 +57,7 @@ export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
 
 const buildBacklogItemElts = (editMode: EditMode, backlogItems: PlanningPanelBacklogItem[], renderMobile: boolean) => {
     const dispatch = useDispatch();
+    const state = (useState() as unknown) as StateTree;
     let key = 1;
     return backlogItems.map((item: PlanningPanelBacklogItem) => {
         if (item.editing) {
