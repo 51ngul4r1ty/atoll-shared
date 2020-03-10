@@ -26,8 +26,12 @@ export interface BacklogItem extends BacklogItemModel {
     instanceId: number | null;
 }
 
+export interface SaveableBacklogItem extends BacklogItem {
+    saved?: boolean;
+}
+
 export type BacklogItemsState = Readonly<{
-    addedItems: BacklogItem[];
+    addedItems: SaveableBacklogItem[];
     items: BacklogItem[];
 }>;
 
@@ -54,6 +58,7 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                 draft.addedItems.forEach((addedItem) => {
                     if (addedItem.instanceId === instanceId) {
                         addedItem.id = updatedBacklogItem.id;
+                        addedItem.saved = true;
                         console.log("TODO: switch from editable to non-editable");
                     }
                 });
@@ -72,8 +77,9 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                     {
                         type: actionTyped.payload.type,
                         instanceId: actionTyped.payload.instanceId,
-                        displayIndex: newTopIndex
-                    } as BacklogItem
+                        displayIndex: newTopIndex,
+                        saved: false
+                    } as SaveableBacklogItem
                 ];
                 return;
             }

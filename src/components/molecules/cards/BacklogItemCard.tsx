@@ -42,11 +42,12 @@ export enum BacklogItemTypeEnum {
 
 export interface BacklogItemCardStateProps {
     estimate: number | null;
+    isDraggable?: boolean;
     itemId: string;
     itemType: BacklogItemTypeEnum;
-    titleText: string;
-    isDraggable?: boolean;
+    marginBelowItem?: boolean;
     renderMobile?: boolean;
+    titleText: string;
 }
 
 export interface BacklogItemCardDispatchProps {}
@@ -56,7 +57,11 @@ export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDi
 /* exported components */
 
 export const RawBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
-    const classNameToUse = buildClassName(css.backlogItemCard, props.renderMobile ? css.mobile : null);
+    const classNameToUse = buildClassName(
+        css.backlogItemCard,
+        props.renderMobile ? css.mobile : null,
+        props.marginBelowItem ? css.marginBelowItem : null
+    );
     return (
         <div className={classNameToUse} tabIndex={0}>
             <div className={css.backlogItemType}>

@@ -19,11 +19,6 @@ import { BacklogItemType } from "../../../reducers/backlogItemsReducer";
 // actions
 import { updateBacklogItemFields, cancelUnsavedBacklogItem, saveBacklogItem } from "../../../actions/backlogItems";
 
-// selectors
-import { getBacklogItemByInstanceId } from "../../../selectors/backlogItemSelectors";
-import { StateTree } from "../../../types";
-import { useState } from "react";
-
 /* exported interfaces */
 
 export interface PlanningPanelBacklogItem {
@@ -35,7 +30,7 @@ export interface PlanningPanelBacklogItem {
     rolePhrase: string;
     reasonPhrase: string;
     type: BacklogItemType;
-    editing: boolean;
+    saved: boolean;
 }
 
 export interface BacklogItemPlanningPanelStateProps {
@@ -57,13 +52,11 @@ export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
 
 const buildBacklogItemElts = (editMode: EditMode, backlogItems: PlanningPanelBacklogItem[], renderMobile: boolean) => {
     const dispatch = useDispatch();
-    const state = (useState() as unknown) as StateTree;
-    let key = 1;
     return backlogItems.map((item: PlanningPanelBacklogItem) => {
-        if (item.editing) {
+        if (!item.saved) {
             return (
                 <BacklogItemDetailForm
-                    key={`unsaved-form-${key++}`}
+                    key={`unsaved-form-${item.instanceId}`}
                     className={css.backlogItemUserStoryFormRow}
                     instanceId={item.instanceId}
                     externalId={item.externalId}
@@ -94,6 +87,7 @@ const buildBacklogItemElts = (editMode: EditMode, backlogItems: PlanningPanelBac
                     titleText={item.storyPhrase}
                     isDraggable={editMode === EditMode.Edit}
                     renderMobile={renderMobile}
+                    marginBelowItem
                 />
             );
         }

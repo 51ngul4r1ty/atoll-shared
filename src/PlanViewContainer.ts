@@ -15,9 +15,20 @@ import { setEditMode } from "./actions/appActions";
 
 // interfaces/types
 import { EditMode } from "./components/molecules/buttons/EditButton";
-import { BacklogItem, BacklogItemType } from "./reducers/backlogItemsReducer";
+import { BacklogItemType, SaveableBacklogItem } from "./reducers/backlogItemsReducer";
 
-const buildBacklogItem = (item: BacklogItem): PlanningPanelBacklogItem => {
+const convertSaved = (saved: boolean | undefined): boolean => {
+    if (saved === true) {
+        return true;
+    } else if (saved === false) {
+        return false;
+    } else {
+        // default to saved if it isn't provided
+        return true;
+    }
+};
+
+const buildBacklogItem = (item: SaveableBacklogItem): PlanningPanelBacklogItem => {
     const result: PlanningPanelBacklogItem = {
         estimate: item.estimate,
         externalId: item.externalId,
@@ -27,7 +38,7 @@ const buildBacklogItem = (item: BacklogItem): PlanningPanelBacklogItem => {
         rolePhrase: item.rolePhrase,
         reasonPhrase: item.reasonPhrase,
         type: item.type,
-        editing: false
+        saved: convertSaved(item.saved)
     };
     return result;
 };
