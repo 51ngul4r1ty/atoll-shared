@@ -4,16 +4,25 @@ export { APPLICATION_JSON } from "./constants";
 // components
 export { App } from "./App";
 export { BacklogItemCard, BacklogItemTypeEnum } from "./components/molecules/cards/BacklogItemCard";
+export { AddButton } from "./components/molecules/buttons/AddButton";
+export { CancelButton } from "./components/molecules/buttons/CancelButton";
+export { DoneButton } from "./components/molecules/buttons/DoneButton";
 export { EditButton, EditMode } from "./components/molecules/buttons/EditButton";
+export { AddIcon } from "./components/atoms/icons/AddIcon";
+export { CancelIcon } from "./components/atoms/icons/CancelIcon";
+export { DoneIcon } from "./components/atoms/icons/DoneIcon";
 export { EditIcon } from "./components/atoms/icons/EditIcon";
 export { HamburgerIcon } from "./components/atoms/icons/HamburgerIcon";
 export { HomeButton } from "./components/molecules/buttons/HomeButton";
 export { SimpleButton } from "./components/atoms/buttons/SimpleButton";
 export { SimpleText } from "./components/atoms/text/SimpleText";
 export { TabStrip } from "./components/atoms/tabs/TabStrip";
+export { BacklogItemDetailForm } from "./components/organisms/forms/BacklogItemDetailForm";
+export * from "./components/atoms/icons";
 
 // interfaces/types
-export { StateTree, BacklogItem, BacklogItemsState, FeatureToggle, FeatureTogglesState } from "./types";
+export { StateTree, FeatureToggle, FeatureTogglesState } from "./types";
+export { BacklogItem, BacklogItemsState } from "./reducers/backlogItemsReducer";
 
 // containers
 export { default as IntlProvider } from "./i18n/IntlProvider";
@@ -21,6 +30,9 @@ export { AppContainer } from "./AppContainer";
 export { PlanViewContainer } from "./PlanViewContainer";
 export { ReviewViewContainer } from "./ReviewViewContainer";
 export { SprintViewContainer } from "./SprintViewContainer";
+
+// contexts
+export { AppContext, AppProvider, AppConsumer } from "./contexts/appContextUtil";
 
 // utils
 export { configureStore } from "./store";

@@ -30,6 +30,10 @@
     font-weight: var(--primary-bold-font-weight, 700);
 }
 
+.app.buttonCaption {
+    display: none;
+}
+
 .buttonIcon + .buttonCaption {
     padding-left: 0.5rem;
 }

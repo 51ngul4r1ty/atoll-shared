@@ -1,15 +1,25 @@
+// externals
 import * as React from "react";
 
-import css from "./common/base.module.css";
+// style
+import baseCss from "../../common/base.module.css";
 
-interface AppIconProps {
-    className?: string;
-    invertColors?: boolean;
-}
+// interfaces/types
+import { StandardInvertibleComponentProps } from "../../common/types";
+
+// utils
+import { getFillAndStrokeClassNames } from "../../common/propUtils";
+
+export type AppIconProps = StandardInvertibleComponentProps;
 
 export const AppIcon: React.FC<AppIconProps> = (props) => {
-    const fillClass = props.invertColors ? css.fillInverted : css.fill;
-    const strokeClass = props.invertColors ? css.strokeInverted : css.stroke;
+    const { fillClass, strokeClass } = getFillAndStrokeClassNames(
+        props,
+        baseCss.fillInverted,
+        baseCss.fill,
+        baseCss.strokeInverted,
+        baseCss.stroke
+    );
     return (
         <svg
             className={props.className}

@@ -22,6 +22,7 @@ export interface ApiAction<T> extends Action {
         data?: T;
         types: ApiActionType[];
     };
+    meta?: any;
 }
 
 export const API = "API";
@@ -41,30 +42,55 @@ const getFailureType = (types: ApiActionType[]) => {
     return types[2];
 };
 
-const dispatchRequest = (dispatch: Dispatch<any>, requestType: ApiActionType, data: any) => {
+const dispatchRequest = (dispatch: Dispatch<any>, requestType: ApiActionType, data: any, requestBody: any, meta: any) => {
     dispatch({
         type: requestType,
         payload: {
             response: data
+        },
+        meta: {
+            ...{
+                requestBody
+            },
+            ...meta
         }
     });
 };
 
-const dispatchSuccess = (dispatch: Dispatch<any>, requestType: ApiActionType, data: any) => {
+const dispatchSuccess = (dispatch: Dispatch<any>, requestType: ApiActionType, data: any, requestBody: any, meta: any) => {
     dispatch({
         type: requestType,
         payload: {
             response: data
+        },
+        meta: {
+            ...{
+                requestBody
+            },
+            ...meta
         }
     });
 };
 
-const dispatchFailure = (dispatch: Dispatch<any>, requestType: ApiActionType, data: any, error: any) => {
+const dispatchFailure = (
+    dispatch: Dispatch<any>,
+    requestType: ApiActionType,
+    data: any,
+    requestBody: any,
+    meta: any,
+    error: any
+) => {
     dispatch({
         type: requestType,
         payload: {
             response: data,
             error
+        },
+        meta: {
+            ...{
+                requestBody
+            },
+            ...meta
         }
     });
 };
@@ -81,19 +107,20 @@ export const apiMiddleware = ({ dispatch }) => (next) => (action: Action) => {
     axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || "";
     axios.defaults.headers.common["Content-Type"] = APPLICATION_JSON;
     //    axios.defaults.headers.common["Authorization"] = `Bearer  ${token}`;
-    dispatchRequest(dispatch, getRequestType(types), data);
+    const requestBody = {
+        url: endpoint,
+        method,
+        headers,
+        [dataOrParams]: data
+    };
+    dispatchRequest(dispatch, getRequestType(types), data, requestBody, apiAction.meta);
     axios
-        .request({
-            url: endpoint,
-            method,
-            headers,
-            [dataOrParams]: data
-        })
+        .request(requestBody)
         .then(({ data }) => {
-            dispatchSuccess(dispatch, getSuccessType(types), data);
+            dispatchSuccess(dispatch, getSuccessType(types), data, requestBody, apiAction.meta);
         })
         .catch((error) => {
-            dispatchFailure(dispatch, getFailureType(types), data, error);
+            dispatchFailure(dispatch, getFailureType(types), data, requestBody, apiAction.meta, error);
 
             // if (error.response && error.response.status === 403) {
             //     dispatch(accessDenied(window.location.pathname));

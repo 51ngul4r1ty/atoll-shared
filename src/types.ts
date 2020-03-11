@@ -4,6 +4,9 @@ import { Action } from "redux";
 // consts/enums
 import { EditMode } from "./components/molecules/buttons/EditButton";
 
+// interfaces/types
+import { BacklogItemsState } from "./reducers/backlogItemsReducer";
+
 export type Locale = "en_US" | "de_DE";
 
 export interface StateTree {
@@ -13,11 +16,18 @@ export interface StateTree {
     featureToggles: FeatureTogglesState;
 }
 
+/* Data model related */
+
+export interface BaseModelItem {
+    id: string;
+}
+
 /* App state related */
 
 export type AppState = Readonly<{
     locale: Locale;
     editMode: EditMode;
+    executingOnClient: boolean;
 }>;
 
 /* User state related */
@@ -28,26 +38,6 @@ export interface UserPreferences {
 
 export type UserState = Readonly<{
     preferences: UserPreferences;
-}>;
-
-/* Backlog Item state related */
-
-export type BacklogItemType = "story" | "issue";
-
-export interface BacklogItem {
-    creationDateTime: Date;
-    displayIndex: number;
-    estimate: number | null;
-    externalId: string | null;
-    id: number;
-    reasonPhrase: string | null;
-    rolePhrase: string | null;
-    storyPhrase: string;
-    type: BacklogItemType;
-}
-
-export type BacklogItemsState = Readonly<{
-    items: BacklogItem[];
 }>;
 
 /* Feature Toggles state related */

@@ -14,7 +14,8 @@ import { getUserPreferences } from "./actions/userActions";
 const mapStateToProps = (state: StateTree): AppStateProps => {
     const userPreferences = (state.user && state.user.preferences) || ({} as UserPreferences);
     return {
-        detectBrowserDarkMode: userPreferences.detectBrowserDarkMode
+        detectBrowserDarkMode: userPreferences.detectBrowserDarkMode,
+        executingOnClient: state.app.executingOnClient || false
     };
 };
 

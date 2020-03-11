@@ -4,13 +4,22 @@
 /* @import-normalize; */
 
 :global(body) {
-  font-family: "Open Sans", Arial, Sans-Serif;
-  font-size: var(--font-size-base);
-  margin: 0;
-  padding: 0;
-  background-color: var(--normal-page-color, white);
+    font-family: "Open Sans", Arial, Sans-Serif;
+    font-size: var(--font-size-base);
+    margin: 0;
+    padding: 0;
+    background-color: var(--normal-page-color, white);
+    color: var(--normal-pen-color, black);
+}
+
+:global(input) {
+    font-family: "Open Sans", Arial, Sans-Serif;
+    font-size: var(--font-size-base);
 }
 
 .app {
-  /* add top-level style for app here */
+    /* add top-level style for app here */
+}
+
+.mobile {
 }

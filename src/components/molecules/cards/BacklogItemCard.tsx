@@ -7,6 +7,7 @@ import css from "./BacklogItemCard.module.css";
 import { StoryIcon } from "../../atoms/icons/StoryIcon";
 import { IssueIcon } from "../../atoms/icons/IssueIcon";
 import { DragIcon } from "../../atoms/icons/DragIcon";
+import { buildClassName } from "../../../utils/classNameBuilder";
 
 /* exported functions */
 
@@ -41,10 +42,12 @@ export enum BacklogItemTypeEnum {
 
 export interface BacklogItemCardStateProps {
     estimate: number | null;
+    isDraggable?: boolean;
     itemId: string;
     itemType: BacklogItemTypeEnum;
+    marginBelowItem?: boolean;
+    renderMobile?: boolean;
     titleText: string;
-    isDraggable?: boolean;
 }
 
 export interface BacklogItemCardDispatchProps {}
@@ -53,24 +56,31 @@ export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDi
 
 /* exported components */
 
-export const RawBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => (
-    <div className={css.backlogItemCard} tabIndex={0}>
-        <div className={css.backlogItemType}>
-            <div className={css.backlogItemIcon}>
-                {props.itemType === BacklogItemTypeEnum.Story ? <StoryIcon /> : <IssueIcon />}
+export const RawBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
+    const classNameToUse = buildClassName(
+        css.backlogItemCard,
+        props.renderMobile ? css.mobile : null,
+        props.marginBelowItem ? css.marginBelowItem : null
+    );
+    return (
+        <div className={classNameToUse} tabIndex={0}>
+            <div className={css.backlogItemType}>
+                <div className={css.backlogItemIcon}>
+                    {props.itemType === BacklogItemTypeEnum.Story ? <StoryIcon invertColors /> : <IssueIcon invertColors />}
+                </div>
+                <div className={css.backlogItemId} title={titleForItemId(props.itemId)}>
+                    {abbreviateId(props.itemId)}
+                </div>
             </div>
-            <div className={css.backlogItemId} title={titleForItemId(props.itemId)}>
-                {abbreviateId(props.itemId)}
-            </div>
+            <div className={css.backlogItemText}>{props.titleText}</div>
+            <div className={css.backlogItemEstimate}>{formatEstimateForDisplay(props.estimate)}</div>
+            {props.isDraggable ? (
+                <div className={css.backlogItemDragButton}>
+                    <DragIcon />
+                </div>
+            ) : null}
         </div>
-        <div className={css.backlogItemText}>{props.titleText}</div>
-        <div className={css.backlogItemEstimate}>{formatEstimateForDisplay(props.estimate)}</div>
-        {props.isDraggable ? (
-            <div className={css.backlogItemDragButton}>
-                <DragIcon />
-            </div>
-        ) : null}
-    </div>
-);
+    );
+};
 
 export const BacklogItemCard = withTranslation()(RawBacklogItemCard);
