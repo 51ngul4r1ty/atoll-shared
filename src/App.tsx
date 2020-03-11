@@ -82,9 +82,6 @@ export class App extends React.Component<AppProps, AppState> {
         }
     };
     render() {
-        // // TODO: This seems unnecessary... it will already be initialized to this
-        // const contextValue = setAppContextValue({ mobile: false });
-
         const classNameToUse = this.state?.isMobile ? `${css.app} ${css.mobile}` : css.app;
         return (
             <AppProvider value={{ state: this.state, updateIsMobile: this.updateIsMobile }}>
