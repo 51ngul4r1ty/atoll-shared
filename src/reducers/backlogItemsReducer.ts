@@ -5,17 +5,16 @@ import { produce } from "immer";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { AnyFSA } from "../types";
+import { AnyFSA, BaseModelItem } from "../types";
 import { AddNewBacklogItemAction, UpdateBacklogItemFieldsAction, CancelUnsavedBacklogItemAction } from "../actions/backlogItems";
 
 export type BacklogItemType = "story" | "issue";
 
-export interface BacklogItemModel {
+export interface BacklogItemModel extends BaseModelItem {
     creationDateTime: Date;
     displayIndex: number;
     estimate: number | null;
     externalId: string | null;
-    id: number;
     reasonPhrase: string | null;
     rolePhrase: string | null;
     storyPhrase: string;

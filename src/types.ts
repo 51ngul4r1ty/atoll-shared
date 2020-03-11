@@ -16,6 +16,12 @@ export interface StateTree {
     featureToggles: FeatureTogglesState;
 }
 
+/* Data model related */
+
+export interface BaseModelItem {
+    id: string;
+}
+
 /* App state related */
 
 export type AppState = Readonly<{

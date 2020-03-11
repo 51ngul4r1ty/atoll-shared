@@ -50,10 +50,15 @@ export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
 
 /* exported components */
 
-const buildBacklogItemElts = (editMode: EditMode, backlogItems: PlanningPanelBacklogItem[], renderMobile: boolean) => {
+const buildCommonBacklogItemElts = (
+    editMode: EditMode,
+    backlogItems: PlanningPanelBacklogItem[],
+    renderMobile: boolean,
+    addedItems: boolean
+) => {
     const dispatch = useDispatch();
     return backlogItems.map((item: PlanningPanelBacklogItem) => {
-        if (!item.saved) {
+        if (!item.saved && editMode === EditMode.Edit) {
             return (
                 <BacklogItemDetailForm
                     key={`unsaved-form-${item.instanceId}`}
@@ -77,7 +82,8 @@ const buildBacklogItemElts = (editMode: EditMode, backlogItems: PlanningPanelBac
                     }}
                 />
             );
-        } else {
+        }
+        if (item.saved) {
             return (
                 <BacklogItemCard
                     key={item.id}
@@ -94,9 +100,17 @@ const buildBacklogItemElts = (editMode: EditMode, backlogItems: PlanningPanelBac
     });
 };
 
+const buildAddedBacklogItemElts = (editMode: EditMode, backlogItems: PlanningPanelBacklogItem[], renderMobile: boolean) => {
+    return buildCommonBacklogItemElts(editMode, backlogItems, renderMobile, true);
+};
+
+const buildBacklogItemElts = (editMode: EditMode, backlogItems: PlanningPanelBacklogItem[], renderMobile: boolean) => {
+    return buildCommonBacklogItemElts(editMode, backlogItems, renderMobile, false);
+};
+
 export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps> = (props) => {
     const classNameToUse = buildClassName(css.backlogItemPlanningPanel, props.renderMobile ? css.mobile : null);
-    const addedBacklogItemElts = buildBacklogItemElts(props.editMode, props.addedBacklogItems, props.renderMobile);
+    const addedBacklogItemElts = buildAddedBacklogItemElts(props.editMode, props.addedBacklogItems, props.renderMobile);
     const backlogItemElts = buildBacklogItemElts(props.editMode, props.backlogItems, props.renderMobile);
     const actionButtons =
         props.editMode === EditMode.View ? null : (
