@@ -24,7 +24,7 @@ import { updateBacklogItemFields, cancelUnsavedBacklogItem, saveBacklogItem } fr
 export interface PlanningPanelBacklogItem {
     estimate: number | null;
     externalId: string;
-    id: number;
+    id: string;
     instanceId: number | null;
     storyPhrase: string;
     rolePhrase: string;
