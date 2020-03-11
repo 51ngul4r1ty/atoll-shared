@@ -24,10 +24,23 @@ export interface BaseModelItem {
 
 /* App state related */
 
+export enum PushNotificationType {
+    None = 0,
+    ModifiedBacklogItems = 1
+}
+
+export interface BasePushNotification {
+    type: PushNotificationType;
+}
+export interface PushNotification<T> extends BasePushNotification {
+    data: T;
+}
+
 export type AppState = Readonly<{
     locale: Locale;
     editMode: EditMode;
     executingOnClient: boolean;
+    pushNotifications: PushNotification<any>[];
 }>;
 
 /* User state related */
