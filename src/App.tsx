@@ -39,8 +39,8 @@ export interface AppState {
     isMobile: boolean;
 }
 
-// const client = new W3CWebSocket("ws://127.0.0.1:8500/echo");
-const client = new W3CWebSocket("ws://127.0.0.1:8515/");
+const client = new W3CWebSocket("ws://127.0.0.1:8500/ws");
+// const client = new W3CWebSocket("ws://127.0.0.1:8515/");
 
 /* exported component */
 
