@@ -1,5 +1,6 @@
 // externals
 import * as React from "react";
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 // components
 import { AppContext, AppProvider } from "./contexts/appContextUtil";
@@ -38,6 +39,9 @@ export interface AppState {
     isMobile: boolean;
 }
 
+// const client = new W3CWebSocket("ws://127.0.0.1:8500/echo");
+const client = new W3CWebSocket("ws://127.0.0.1:8515/");
+
 /* exported component */
 
 export class App extends React.Component<AppProps, AppState> {
@@ -47,6 +51,15 @@ export class App extends React.Component<AppProps, AppState> {
         super(props);
     }
     componentDidMount() {
+        client.onopen = () => {
+            console.log("WebSocket Client Connected");
+        };
+        client.onclose = () => {
+            console.log("WebSocket Client Disconnected");
+        };
+        client.onmessage = (message) => {
+            console.log(message);
+        };
         this.themeHelper.init();
         this.props.onLoaded();
         window.addEventListener("resize", this.handleResize);
@@ -78,6 +91,12 @@ export class App extends React.Component<AppProps, AppState> {
     }
     updateIsMobile = (value: boolean) => {
         if (this.state?.isMobile !== value) {
+            console.log("sending message");
+            try {
+                client.send(JSON.stringify({ ...{ isMobile: value }, type: "userevent" }));
+            } catch {
+                console.log("unable to send - socket probably not open yet");
+            }
             this.setState({ isMobile: value });
         }
     };
