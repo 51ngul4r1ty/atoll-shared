@@ -35,6 +35,7 @@ export class LabeledInput extends Component<LabeledInputProps> {
     }
     render() {
         const nameToUse = this.props.inputName || this.props.inputId;
+        const valueToUse = this.props.inputValue || "";
         const classToUse = buildClassName(css.input, this.props.className);
         return (
             <div className={classToUse}>
@@ -44,7 +45,7 @@ export class LabeledInput extends Component<LabeledInputProps> {
                     type="text"
                     placeholder={this.props.placeHolder}
                     size={this.props.size}
-                    value={this.props.inputValue}
+                    value={valueToUse}
                     onChange={(e) => {
                         this.handleChange(e);
                     }}
