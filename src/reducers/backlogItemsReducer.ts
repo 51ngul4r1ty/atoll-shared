@@ -10,7 +10,8 @@ import {
     AddNewBacklogItemAction,
     UpdateBacklogItemFieldsAction,
     CancelUnsavedBacklogItemAction,
-    ApiPostBacklogItemSuccessAction
+    ApiPostBacklogItemSuccessAction,
+    ReceivePushedBacklogItemAction
 } from "../actions/backlogItems";
 
 export type BacklogItemType = "story" | "issue";
@@ -36,11 +37,13 @@ export interface SaveableBacklogItem extends BacklogItem {
 
 export type BacklogItemsState = Readonly<{
     addedItems: SaveableBacklogItem[];
+    pushedItems: BacklogItem[];
     items: BacklogItem[];
 }>;
 
 export const initialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
+    pushedItems: [],
     items: []
 });
 
@@ -63,7 +66,6 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                     if (addedItem.instanceId === instanceId) {
                         addedItem.id = updatedBacklogItem.id;
                         addedItem.saved = true;
-                        console.log("TODO: switch from editable to non-editable");
                     }
                 });
                 return;
@@ -110,6 +112,10 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                     }
                 });
                 return;
+            }
+            case ActionTypes.RECEIVE_PUSHED_BACKLOG_ITEM: {
+                const actionTyped = action as ReceivePushedBacklogItemAction;
+                draft.pushedItems.push(actionTyped.payload);
             }
         }
     });

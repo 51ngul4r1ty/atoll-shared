@@ -8,8 +8,9 @@ import * as ActionTypes from "./actionTypes";
 import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
-import { BacklogItemType, BacklogItemModel } from "../reducers/backlogItemsReducer";
+import { BacklogItemType, BacklogItemModel, BacklogItem } from "../reducers/backlogItemsReducer";
 import { BacklogItemDetailFormEditableFieldsWithInstanceId } from "../components/organisms/forms/BacklogItemDetailForm";
+import { PushNotification } from "../types";
 
 export const getBacklogItems = (): ApiAction<undefined> => ({
     type: API,
@@ -78,18 +79,10 @@ export const saveBacklogItem = (instanceId: number): SaveBacklogItemAction => ({
 
 export interface SaveBacklogItemPayload {}
 
-export interface ApiPostBacklogItemSuccessResponseItem {
-    displayIndex: number;
-    externalId: string;
-    storyPhrase: string;
-    type: string;
-    id: string;
-}
-
 export interface ApiPostBacklogItemSuccessResponse {
     status: number;
     data: {
-        item: ApiPostBacklogItemSuccessResponseItem;
+        item: BacklogItem;
     };
 }
 
@@ -134,3 +127,15 @@ export const updateBacklogItemFields = (
     type: ActionTypes.UPDATE_BACKLOG_ITEM_FIELDS,
     payload: fields
 });
+
+export interface ReceivePushedBacklogItemAction {
+    type: typeof ActionTypes.RECEIVE_PUSHED_BACKLOG_ITEM;
+    payload: BacklogItem;
+}
+
+export const receivePushedBacklogItem = (item: BacklogItem): ReceivePushedBacklogItemAction => {
+    return {
+        type: ActionTypes.RECEIVE_PUSHED_BACKLOG_ITEM,
+        payload: item
+    };
+};

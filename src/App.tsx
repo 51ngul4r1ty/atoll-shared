@@ -1,22 +1,15 @@
 // externals
 import * as React from "react";
-import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 // components
 import { AppContext, AppProvider } from "./contexts/appContextUtil";
 
-// // components
-// import { BacklogItem, BacklogItemPlanningPanel } from "./components/organisms/panels/BacklogItemPlanningPanel";
-// import { TopMenuPanelContainer } from "./containers/TopMenuPanelContainer";
-
 // utils
 import { ThemeHelper } from "./utils/themeHelper";
+import * as wsClient from "./utils/wsClient";
 
 // style
 import css from "./App.module.css";
-
-// // interfaces/types
-// import { EditMode } from "./components/molecules/buttons/EditButton";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
@@ -31,6 +24,7 @@ export interface AppStateProps {
 
 export interface AppDispatchProps {
     onLoaded: { () };
+    onWebSocketMessageReceived: { (data: any) };
 }
 
 export type AppProps = AppStateProps & AppDispatchProps;
@@ -38,9 +32,6 @@ export type AppProps = AppStateProps & AppDispatchProps;
 export interface AppState {
     isMobile: boolean;
 }
-
-const client = new W3CWebSocket("ws://127.0.0.1:8500/ws");
-// const client = new W3CWebSocket("ws://127.0.0.1:8515/");
 
 /* exported component */
 
@@ -51,15 +42,9 @@ export class App extends React.Component<AppProps, AppState> {
         super(props);
     }
     componentDidMount() {
-        client.onopen = () => {
-            console.log("WebSocket Client Connected");
-        };
-        client.onclose = () => {
-            console.log("WebSocket Client Disconnected");
-        };
-        client.onmessage = (message) => {
-            console.log(message);
-        };
+        wsClient.init((data: any) => {
+            this.props.onWebSocketMessageReceived(data);
+        });
         this.themeHelper.init();
         this.props.onLoaded();
         window.addEventListener("resize", this.handleResize);
@@ -93,7 +78,7 @@ export class App extends React.Component<AppProps, AppState> {
         if (this.state?.isMobile !== value) {
             console.log("sending message");
             try {
-                client.send(JSON.stringify({ ...{ isMobile: value }, type: "userevent" }));
+                wsClient.send({ ...{ isMobile: value }, type: "userevent" });
             } catch {
                 console.log("unable to send - socket probably not open yet");
             }

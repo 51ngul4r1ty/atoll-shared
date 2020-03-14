@@ -14,12 +14,12 @@
     padding-bottom: 0.3rem;
 }
 
-.backlogItemCard + .backlogItemCard {
+/* .backlogItemCard + .backlogItemCard {
     margin-top: 0.1875rem;
-}
+} */
 
 .backlogItemCard.marginBelowItem {
-    margin-bottom: 0.1875rem;
+    margin-bottom: 0.0625rem;
 }
 
 .backlogItemCard.marginBelowItem + .backlogItemCard.marginBelowItem {

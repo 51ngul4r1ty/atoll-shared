@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // atoms
-import { SimpleButton, SimpleButtonCommonProps } from "../../atoms/buttons/SimpleButton";
+import { SimpleButton } from "../../atoms/buttons/SimpleButton";
 
 // icons
 import { AddIcon } from "../../atoms/icons/AddIcon";
@@ -10,7 +10,10 @@ import { AddIcon } from "../../atoms/icons/AddIcon";
 // style
 import css from "./AddButton.module.css";
 
-export interface AddButtonStateProps {
+// interfaces/types
+import { PropsWithClassName } from "../../common/types";
+
+export interface AddButtonStateProps extends PropsWithClassName {
     itemName?: string;
 }
 
@@ -18,7 +21,7 @@ export interface AddButtonDispatchProps {
     onClick: { () };
 }
 
-export type AddButtonProps = SimpleButtonCommonProps & AddButtonStateProps & AddButtonDispatchProps;
+export type AddButtonProps = AddButtonStateProps & AddButtonDispatchProps;
 
 export const AddButton: React.FC<AddButtonProps> = (props) => {
     const icon = <AddIcon />;

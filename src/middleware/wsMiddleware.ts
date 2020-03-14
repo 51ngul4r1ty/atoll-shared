@@ -1,18 +1,31 @@
 // externals
-import { Action } from "redux";
+import { Action, Dispatch } from "redux";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
 
+// utils
+import * as wsClient from "../utils/wsClient";
+
 // interfaces/types
-import { ApiPostBacklogItemSuccessAction, ApiPostBacklogItemSuccessResponseItem } from "../actions/backlogItems";
+import { ApiPostBacklogItemSuccessAction, receivePushedBacklogItem } from "../actions/backlogItems";
+import { PushNotification, PushNotificationType } from "../types";
+import { ReceiveWebsocketMessageAction } from "../actions/wsActions";
+import { BacklogItemModel } from "../reducers/backlogItemsReducer";
 
 // TODO: May be best to move this out of here
-const pushBacklogItemSaved = (item: ApiPostBacklogItemSuccessResponseItem) => {
+const pushBacklogItemSaved = (item: BacklogItemModel) => {
+    const payload: PushNotification<BacklogItemModel> = {
+        type: PushNotificationType.ModifiedBacklogItems,
+        data: item
+    };
+    // TODO: Figure out a good way to trigger websockets from here
+    wsClient.send(payload);
     console.log("SEND MESSAGE TO SERVER");
 };
 
-export const wsMiddleware = ({ dispatch }) => (next) => (action: Action) => {
+export const wsMiddleware = (store) => (next) => (action: Action) => {
+    const dispatch = store.dispatch as Dispatch<any>;
     next(action);
     switch (action.type) {
         case ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS: {
@@ -20,6 +33,14 @@ export const wsMiddleware = ({ dispatch }) => (next) => (action: Action) => {
             if (actionTyped.payload.response?.status === 201) {
                 const item = actionTyped.payload.response.data?.item;
                 pushBacklogItemSaved(item);
+            }
+            break;
+        }
+        case ActionTypes.RECEIVE_WEBSOCKET_MESSAGE: {
+            const actionTyped = action as ReceiveWebsocketMessageAction;
+            const msgDecoded = JSON.parse(actionTyped.payload || "{}");
+            if (msgDecoded.type === PushNotificationType.ModifiedBacklogItems) {
+                dispatch(receivePushedBacklogItem(msgDecoded.data || {}));
             }
             break;
         }

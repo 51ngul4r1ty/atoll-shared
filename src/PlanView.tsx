@@ -25,6 +25,7 @@ import { BacklogItemType } from "./reducers/backlogItemsReducer";
 export interface PlanViewStateProps {
     addedBacklogItems: PlanningPanelBacklogItem[];
     backlogItems: PlanningPanelBacklogItem[];
+    highlightedDividers: number[];
     editMode: EditMode;
 }
 
@@ -52,6 +53,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                 <BacklogItemPlanningPanel
                     addedBacklogItems={this.props.addedBacklogItems}
                     backlogItems={this.props.backlogItems}
+                    highlightedDividers={this.props.highlightedDividers}
                     editMode={this.props.editMode}
                     onAddNewBacklogItem={(type: BacklogItemType) => {
                         this.props.onAddNewBacklogItem(type);

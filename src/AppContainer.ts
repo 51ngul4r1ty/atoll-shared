@@ -10,6 +10,7 @@ import { StateTree, UserPreferences } from "./types";
 
 // actions
 import { getUserPreferences } from "./actions/userActions";
+import { receiveWebSocketMessage } from "./actions/wsActions";
 
 const mapStateToProps = (state: StateTree): AppStateProps => {
     const userPreferences = (state.user && state.user.preferences) || ({} as UserPreferences);
@@ -23,6 +24,9 @@ const mapDispatchToProps = (dispatch: Dispatch): AppDispatchProps => {
     return {
         onLoaded: () => {
             dispatch(getUserPreferences());
+        },
+        onWebSocketMessageReceived: (data: any) => {
+            dispatch(receiveWebSocketMessage(data));
         }
     };
 };

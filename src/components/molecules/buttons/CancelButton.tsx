@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // atoms
-import { SimpleButton, SimpleButtonCommonProps } from "../../atoms/buttons/SimpleButton";
+import { SimpleButton } from "../../atoms/buttons/SimpleButton";
 
 // icons
 import { CancelIcon } from "../../atoms/icons/CancelIcon";
@@ -10,7 +10,10 @@ import { CancelIcon } from "../../atoms/icons/CancelIcon";
 // style
 import css from "./CancelButton.module.css";
 
-export interface CancelButtonStateProps {
+// interfaces/types
+import { PropsWithClassName } from "../../common/types";
+
+export interface CancelButtonStateProps extends PropsWithClassName {
     itemName?: string;
 }
 
@@ -18,7 +21,7 @@ export interface CancelButtonDispatchProps {
     onClick: { () };
 }
 
-export type CancelButtonProps = SimpleButtonCommonProps & CancelButtonStateProps & CancelButtonDispatchProps;
+export type CancelButtonProps = CancelButtonStateProps & CancelButtonDispatchProps;
 
 export const CancelButton: React.FC<CancelButtonProps> = (props) => {
     const icon = <CancelIcon />;
