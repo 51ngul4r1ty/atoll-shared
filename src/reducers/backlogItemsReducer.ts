@@ -6,7 +6,12 @@ import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
 import { AnyFSA, BaseModelItem } from "../types";
-import { AddNewBacklogItemAction, UpdateBacklogItemFieldsAction, CancelUnsavedBacklogItemAction } from "../actions/backlogItems";
+import {
+    AddNewBacklogItemAction,
+    UpdateBacklogItemFieldsAction,
+    CancelUnsavedBacklogItemAction,
+    ApiPostBacklogItemSuccessAction
+} from "../actions/backlogItems";
 
 export type BacklogItemType = "story" | "issue";
 
@@ -50,8 +55,8 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                 return;
             }
             case ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS: {
-                // TODO: Add `const actionTyped = ` to make this type-safe
-                const { payload, meta } = action;
+                const actionTyped = action as ApiPostBacklogItemSuccessAction;
+                const { payload, meta } = actionTyped;
                 const updatedBacklogItem = payload.response.data.item;
                 const instanceId = meta.instanceId;
                 draft.addedItems.forEach((addedItem) => {

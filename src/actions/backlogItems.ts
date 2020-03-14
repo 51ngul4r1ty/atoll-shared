@@ -1,5 +1,5 @@
 // middleware
-import { API, ApiAction } from "../middleware/apiMiddleware";
+import { API, ApiAction, ApiActionSuccessPayload, ApiActionMetaDataRequestBody } from "../middleware/apiMiddleware";
 
 // actions
 import * as ActionTypes from "./actionTypes";
@@ -77,6 +77,33 @@ export const saveBacklogItem = (instanceId: number): SaveBacklogItemAction => ({
 });
 
 export interface SaveBacklogItemPayload {}
+
+export interface ApiPostBacklogItemSuccessResponseItem {
+    displayIndex: number;
+    externalId: string;
+    storyPhrase: string;
+    type: string;
+    id: string;
+}
+
+export interface ApiPostBacklogItemSuccessResponse {
+    status: number;
+    data: {
+        item: ApiPostBacklogItemSuccessResponseItem;
+    };
+}
+
+export type ApiPostBacklogItemSuccessActionPayload = ApiActionSuccessPayload<ApiPostBacklogItemSuccessResponse>;
+
+export interface ApiPostBacklogItemSuccessActionMeta extends ApiActionMetaDataRequestBody<BacklogItemModel> {
+    instanceId: number;
+}
+
+export interface ApiPostBacklogItemSuccessAction {
+    type: typeof ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS;
+    payload: ApiPostBacklogItemSuccessActionPayload;
+    meta: ApiPostBacklogItemSuccessActionMeta;
+}
 
 export const postBacklogItem = (backlogItem: BacklogItemModel, meta: any): ApiAction<SaveBacklogItemPayload> => {
     return {
