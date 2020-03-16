@@ -30,7 +30,6 @@ const convertSaved = (saved: boolean | undefined): boolean => {
 
 const buildBacklogItem = (item: SaveableBacklogItem): PlanningPanelBacklogItem => {
     const result: PlanningPanelBacklogItem = {
-        displayIndex: item.displayIndex,
         estimate: item.estimate,
         externalId: item.externalId,
         id: item.id,
@@ -49,11 +48,11 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
         return { ...buildBacklogItem(item), editing: true };
     });
     const backlogItems: PlanningPanelBacklogItem[] = state.backlogItems.items.map((item) => buildBacklogItem(item));
-    const highlightedDividers = state.backlogItems.pushedItems.map((item) => item.displayIndex);
+    // const highlightedDividers = state.backlogItems.pushedItems.map((item) => item.displayIndex);
     let result: PlanViewStateProps = {
         addedBacklogItems,
         backlogItems,
-        highlightedDividers,
+        highlightedDividers: [],
         editMode: state.app.editMode
     };
     return result;

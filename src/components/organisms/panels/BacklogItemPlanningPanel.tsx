@@ -23,7 +23,6 @@ import { SimpleDivider } from "../../atoms/dividers/SimpleDivider";
 /* exported interfaces */
 
 export interface PlanningPanelBacklogItem {
-    displayIndex?: number;
     estimate: number | null;
     externalId: string;
     id: string;
@@ -98,17 +97,18 @@ const buildCommonBacklogItemElts = (
             console.log(`CURRENT DIVIDER = ${currentHighlightedDivider}, idx = ${currentHighlightedDividerIdx}`);
             let highlighted: boolean;
             if (lastDisplayIndex === null) {
-                highlighted = currentHighlightedDivider < item.displayIndex;
+                // highlighted = currentHighlightedDivider < item.displayIndex;
                 console.log("top logic");
             } else {
-                highlighted = lastDisplayIndex < currentHighlightedDivider && currentHighlightedDivider < item.displayIndex;
+                // highlighted = lastDisplayIndex < currentHighlightedDivider && currentHighlightedDivider < item.displayIndex;
                 console.log("bottom logic");
             }
-            console.log(`HIGHLIGHTED = ${highlighted} - ${lastDisplayIndex} vs ${item.displayIndex}`);
+            highlighted = false;
+            //            console.log(`HIGHLIGHTED = ${highlighted} - ${lastDisplayIndex} vs ${item.displayIndex}`);
             if (highlighted) {
                 currentHighlightedDividerIdx++;
             }
-            lastDisplayIndex = item.displayIndex;
+            //            lastDisplayIndex = item.displayIndex;
             return (
                 <>
                     <SimpleDivider key={`divider-${item.id}`} highlighted={highlighted} />

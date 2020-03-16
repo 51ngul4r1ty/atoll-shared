@@ -18,7 +18,6 @@ export type BacklogItemType = "story" | "issue";
 
 export interface BacklogItemModel extends BaseModelItem {
     creationDateTime: Date;
-    displayIndex: number;
     estimate: number | null;
     externalId: string | null;
     reasonPhrase: string | null;
@@ -72,18 +71,18 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
             }
             case ActionTypes.ADD_BACKLOG_ITEM: {
                 const actionTyped = action as AddNewBacklogItemAction;
-                const topIndex = draft.items.length ? draft.items[0].displayIndex : 1.0;
-                let newTopIndex = topIndex - draft.addedItems.length - 1.0;
-                draft.addedItems.forEach((addedItem) => {
-                    addedItem.displayIndex = newTopIndex;
-                    newTopIndex = newTopIndex + 1.0;
-                });
+                //                const topIndex = draft.items.length ? draft.items[0].displayIndex : 1.0;
+                // let newTopIndex = topIndex - draft.addedItems.length - 1.0;
+                // draft.addedItems.forEach((addedItem) => {
+                //     addedItem.displayIndex = newTopIndex;
+                //     newTopIndex = newTopIndex + 1.0;
+                // });
                 draft.addedItems = [
                     ...draft.addedItems,
                     {
                         type: actionTyped.payload.type,
                         instanceId: actionTyped.payload.instanceId,
-                        displayIndex: newTopIndex,
+                        // displayIndex: newTopIndex,
                         saved: false
                     } as SaveableBacklogItem
                 ];

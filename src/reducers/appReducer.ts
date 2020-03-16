@@ -11,7 +11,7 @@ import { BacklogItemModel } from "./backlogItemsReducer";
 
 const backlogItem1: BacklogItemModel = {
     creationDateTime: new Date(),
-    displayIndex: -100.0,
+    // displayIndex: -100.0,
     estimate: 13,
     externalId: "B1000032",
     id: "920581ae222e4fa2ab24117664cda3fb",
