@@ -13,15 +13,12 @@ import { PushNotification, PushNotificationType } from "../types";
 import { ReceiveWebsocketMessageAction } from "../actions/wsActions";
 import { BacklogItemModel } from "../reducers/backlogItemsReducer";
 
-// TODO: May be best to move this out of here
 const pushBacklogItemSaved = (item: BacklogItemModel) => {
     const payload: PushNotification<BacklogItemModel> = {
         type: PushNotificationType.ModifiedBacklogItems,
         data: item
     };
-    // TODO: Figure out a good way to trigger websockets from here
     wsClient.send(payload);
-    console.log("SEND MESSAGE TO SERVER");
 };
 
 export const wsMiddleware = (store) => (next) => (action: Action) => {

@@ -13,16 +13,22 @@ export const getBacklogItemByInstanceId = (state: StateTree, instanceId: number)
 };
 
 export const getPrevSavedBacklogItemByInstanceId = (state: StateTree, instanceId: number): BacklogItem | null => {
+    console.log(`getPrevSavedBacklogItemByInstanceId: for instance ${instanceId}`);
     let prevItem = null;
     let foundPrevItem = null;
     state.backlogItems.addedItems.forEach((addedItem) => {
         if (addedItem.instanceId === instanceId) {
+            console.log(`instance found, found prev item ${JSON.stringify(prevItem)}`);
             foundPrevItem = prevItem;
             return;
         }
         if (addedItem.saved) {
+            console.log(`item is saved, ${JSON.stringify(addedItem)}`);
             prevItem = addedItem;
+        } else {
+            console.log(`item not saved, ${JSON.stringify(addedItem)}`);
         }
     });
+    console.log(`getPrevSavedBacklogItemByInstanceId: result ${JSON.stringify(prevItem)}`);
     return prevItem;
 };
