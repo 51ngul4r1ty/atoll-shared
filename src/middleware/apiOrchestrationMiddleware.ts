@@ -5,7 +5,7 @@ import { Action, Store } from "redux";
 import * as ActionTypes from "../actions/actionTypes";
 
 // selectors
-import { getBacklogItemByInstanceId } from "../selectors/backlogItemSelectors";
+import { getBacklogItemByInstanceId, getPrevSavedBacklogItemByInstanceId } from "../selectors/backlogItemSelectors";
 
 // actions
 import { postBacklogItem, SaveBacklogItemAction } from "../actions/backlogItems";
@@ -25,9 +25,11 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const state = storeToUse.getState();
             const instanceId = actionTyped.payload.instanceId;
             const backlogItem = getBacklogItemByInstanceId(state, instanceId);
+            const prevBacklogItem = getPrevSavedBacklogItemByInstanceId(state, instanceId);
             if (backlogItem) {
+                const prevItemId = prevBacklogItem ? prevBacklogItem.id : null;
                 const model = convertToBacklogItemModel(backlogItem);
-                storeToUse.dispatch(postBacklogItem(model, { instanceId }));
+                storeToUse.dispatch(postBacklogItem(model, prevItemId, { instanceId }));
             }
             break;
     }

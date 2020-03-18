@@ -98,14 +98,19 @@ export interface ApiPostBacklogItemSuccessAction {
     meta: ApiPostBacklogItemSuccessActionMeta;
 }
 
-export const postBacklogItem = (backlogItem: BacklogItemModel, meta: any): ApiAction<SaveBacklogItemPayload> => {
+export const postBacklogItem = (
+    backlogItem: BacklogItemModel,
+    prevBacklogItemId: string,
+    meta: any
+): ApiAction<SaveBacklogItemPayload> => {
     return {
         type: API,
         payload: {
             endpoint: "http://localhost:8500/api/v1/backlog-items",
             method: "POST",
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
-            data: backlogItem,
+            // TODO: Define a type for this?
+            data: { ...backlogItem, prevBacklogItemId },
             types: [
                 ActionTypes.API_POST_BACKLOG_ITEM_REQUEST,
                 ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS,
