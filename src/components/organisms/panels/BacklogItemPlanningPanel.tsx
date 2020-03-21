@@ -94,15 +94,15 @@ const buildCommonBacklogItemElts = (
             );
         }
         if (item.saved) {
-            console.log(`CURRENT DIVIDER = ${currentHighlightedDivider}, idx = ${currentHighlightedDividerIdx}`);
+            // console.log(`CURRENT DIVIDER = ${currentHighlightedDivider}, idx = ${currentHighlightedDividerIdx}`);
             let highlighted: boolean;
-            if (lastDisplayIndex === null) {
-                // highlighted = currentHighlightedDivider < item.displayIndex;
-                console.log("top logic");
-            } else {
-                // highlighted = lastDisplayIndex < currentHighlightedDivider && currentHighlightedDivider < item.displayIndex;
-                console.log("bottom logic");
-            }
+            // if (lastDisplayIndex === null) {
+            //     // highlighted = currentHighlightedDivider < item.displayIndex;
+            //     console.log("top logic");
+            // } else {
+            //     // highlighted = lastDisplayIndex < currentHighlightedDivider && currentHighlightedDivider < item.displayIndex;
+            //     console.log("bottom logic");
+            // }
             highlighted = false;
             //            console.log(`HIGHLIGHTED = ${highlighted} - ${lastDisplayIndex} vs ${item.displayIndex}`);
             if (highlighted) {

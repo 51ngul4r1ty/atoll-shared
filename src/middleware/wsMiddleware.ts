@@ -16,7 +16,7 @@ import { BacklogItemModel } from "../reducers/backlogItemsReducer";
 // selectors
 import { getPrevNextAndCurrentById } from "../selectors/backlogItemSelectors";
 
-interface PushBacklogItemModel extends BacklogItemModel {
+export interface PushBacklogItemModel extends BacklogItemModel {
     prevBacklogItemId: string | null;
     nextBacklogItemId: string | null;
 }
@@ -50,7 +50,7 @@ export const wsMiddleware = (store) => (next) => (action: Action) => {
             const actionTyped = action as ReceiveWebsocketMessageAction;
             const msgDecoded = JSON.parse(actionTyped.payload || "{}");
             if (msgDecoded.type === PushNotificationType.ModifiedBacklogItems) {
-                dispatch(receivePushedBacklogItem(msgDecoded.data || {}));
+                dispatch(receivePushedBacklogItem(msgDecoded.data || ({} as Partial<PushBacklogItemModel>)));
             }
             break;
         }

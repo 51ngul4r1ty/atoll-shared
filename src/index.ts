@@ -19,6 +19,7 @@ export { SimpleText } from "./components/atoms/text/SimpleText";
 export { TabStrip } from "./components/atoms/tabs/TabStrip";
 export { BacklogItemDetailForm } from "./components/organisms/forms/BacklogItemDetailForm";
 export * from "./components/atoms/icons";
+export * from "./utils/linkedList";
 
 // interfaces/types
 export { StateTree, FeatureToggle, FeatureTogglesState } from "./types";

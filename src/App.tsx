@@ -76,12 +76,12 @@ export class App extends React.Component<AppProps, AppState> {
     }
     updateIsMobile = (value: boolean) => {
         if (this.state?.isMobile !== value) {
-            console.log("sending message");
-            try {
-                wsClient.send({ ...{ isMobile: value }, type: "userevent" });
-            } catch {
-                console.log("unable to send - socket probably not open yet");
-            }
+            // console.log("sending message");
+            // try {
+            //     wsClient.send({ ...{ isMobile: value }, type: "userevent" });
+            // } catch {
+            //     console.log("unable to send - socket probably not open yet");
+            // }
             this.setState({ isMobile: value });
         }
     };

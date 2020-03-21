@@ -10,7 +10,7 @@ import { APPLICATION_JSON } from "../constants";
 // interfaces/types
 import { BacklogItemType, BacklogItemModel, BacklogItem } from "../reducers/backlogItemsReducer";
 import { BacklogItemDetailFormEditableFieldsWithInstanceId } from "../components/organisms/forms/BacklogItemDetailForm";
-import { PushNotification } from "../types";
+import { PushBacklogItemModel } from "../middleware/wsMiddleware";
 
 export const getBacklogItems = (): ApiAction<undefined> => ({
     type: API,
@@ -135,10 +135,10 @@ export const updateBacklogItemFields = (
 
 export interface ReceivePushedBacklogItemAction {
     type: typeof ActionTypes.RECEIVE_PUSHED_BACKLOG_ITEM;
-    payload: BacklogItem;
+    payload: Partial<PushBacklogItemModel>;
 }
 
-export const receivePushedBacklogItem = (item: BacklogItem): ReceivePushedBacklogItemAction => {
+export const receivePushedBacklogItem = (item: Partial<PushBacklogItemModel>): ReceivePushedBacklogItemAction => {
     return {
         type: ActionTypes.RECEIVE_PUSHED_BACKLOG_ITEM,
         payload: item

@@ -13,6 +13,8 @@ import {
     ApiPostBacklogItemSuccessAction,
     ReceivePushedBacklogItemAction
 } from "../actions/backlogItems";
+import { PushBacklogItemModel } from "../middleware/wsMiddleware";
+import { LinkedList } from "../utils/linkedList";
 
 export type BacklogItemType = "story" | "issue";
 
@@ -34,17 +36,48 @@ export interface SaveableBacklogItem extends BacklogItem {
     saved?: boolean;
 }
 
+export enum BacklogItemSource {
+    Added,
+    Loaded,
+    Pushed
+}
+
+export interface BacklogItemWithSource extends SaveableBacklogItem {
+    source: BacklogItemSource;
+}
+
 export type BacklogItemsState = Readonly<{
     addedItems: SaveableBacklogItem[];
-    pushedItems: BacklogItem[];
+    pushedItems: Partial<PushBacklogItemModel>[];
     items: BacklogItem[];
+    allItems: BacklogItemWithSource[];
 }>;
 
 export const initialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
     pushedItems: [],
-    items: []
+    items: [],
+    allItems: []
 });
+
+export const addSource = <T>(item: T, source: BacklogItemSource) => ({ ...item, source });
+export const addSourceAndId = (item: BacklogItem, source: BacklogItemSource) => {
+    let result = addSource(item, source);
+    if (!result.id && result.source === BacklogItemSource.Added) {
+        result.id = buildUnsavedItemId(result.instanceId);
+    }
+    return result;
+};
+
+export const UNSAVED_ITEM_ID_PREFIX = "unsaved-";
+
+export const buildUnsavedItemId = (instanceId: number): string => {
+    return `${UNSAVED_ITEM_ID_PREFIX}${instanceId}`;
+};
+
+export const isUnsavedItemId = (id: string): boolean => {
+    return id?.startsWith(UNSAVED_ITEM_ID_PREFIX) || false;
+};
 
 export const backlogItemsReducer = (state: BacklogItemsState = initialState, action: AnyFSA): BacklogItemsState =>
     produce(state, (draft) => {
@@ -113,8 +146,22 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                 return;
             }
             case ActionTypes.RECEIVE_PUSHED_BACKLOG_ITEM: {
+                // 1. add new item to pushedItems list
                 const actionTyped = action as ReceivePushedBacklogItemAction;
                 draft.pushedItems.push(actionTyped.payload);
+                // 2. rebuild allItems list (to determine "highlighted divider" positions)
+                const allItems = new LinkedList<BacklogItemWithSource>();
+                const addedItems = draft.addedItems.map((item) => addSourceAndId(item, BacklogItemSource.Added));
+                allItems.addArray("id", addedItems);
+                console.log(`Kevin - AFTER ADDED ITEMS: ${allItems.getStatusText()}`);
+                const loadedItems = draft.items.map((item) => addSource(item, BacklogItemSource.Loaded));
+                allItems.addArray("id", loadedItems);
+                console.log(`Kevin - AFTER LOADED ITEMS: ${allItems.getStatusText()}`);
+                const pushedItems = draft.pushedItems.map((item) => addSource(item, BacklogItemSource.Pushed));
+                allItems.addArray("id", pushedItems);
+                console.log(`Kevin - AFTER PUSHED ITEMS: ${allItems.getStatusText()}`);
+                draft.allItems = allItems.toArray();
+                return;
             }
         }
     });
