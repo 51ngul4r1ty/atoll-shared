@@ -55,17 +55,18 @@ export const getPrevNextAndCurrentById = (state: StateTree, id: string): PrevNex
     let resultNextItem: BacklogItem | null = null;
     let previousItem: BacklogItem | null = null;
     allItems.some((item) => {
-        let result = false;
-        if (resultPrevItem && !resultNextItem) {
+        let exitLoop = false;
+        if (resultCurrItem) {
             resultNextItem = item;
-            result = true;
+            exitLoop = true;
         } else if (item.id === id) {
             resultCurrItem = item;
             resultPrevItem = previousItem;
-        } else if (item.saved) {
+        }
+        if (item.saved) {
             previousItem = item;
         }
-        return result;
+        return exitLoop;
     });
     return {
         prev: resultPrevItem,

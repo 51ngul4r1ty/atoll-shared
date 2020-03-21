@@ -152,18 +152,17 @@ export const apiMiddleware = ({ dispatch }) => (next) => (action: Action) => {
     axios
         .request(requestBody)
         .then(({ data }) => {
-            dispatchSuccess(dispatch, getSuccessType(types), data, requestBody, apiAction.meta);
+            try {
+                dispatchSuccess(dispatch, getSuccessType(types), data, requestBody, apiAction.meta);
+            } catch (err) {
+                console.error(`Error occurred while dispatching success: ${err}`);
+            }
         })
         .catch((error) => {
             dispatchFailure(dispatch, getFailureType(types), data, requestBody, apiAction.meta, error);
 
             // if (error.response && error.response.status === 403) {
             //     dispatch(accessDenied(window.location.pathname));
-            // }
-        })
-        .finally(() => {
-            // if (label) {
-            //     dispatch(apiEnd(label));
             // }
         });
 };

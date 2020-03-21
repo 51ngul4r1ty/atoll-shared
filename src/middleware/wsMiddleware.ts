@@ -41,7 +41,7 @@ export const wsMiddleware = (store) => (next) => (action: Action) => {
                 const meta = actionTyped.meta as any;
                 const prevBacklogItemId = meta?.requestBody?.data?.prevBacklogItemId || null;
                 const prevNextAndCurrent = getPrevNextAndCurrentById(state, item.id);
-                const nextBacklogItemId = prevNextAndCurrent.next.id;
+                const nextBacklogItemId = prevNextAndCurrent.next?.id;
                 pushBacklogItemSaved(item, prevBacklogItemId, nextBacklogItemId);
             }
             break;
