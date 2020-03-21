@@ -32,3 +32,44 @@ export const getPrevSavedBacklogItemByInstanceId = (state: StateTree, instanceId
     console.log(`getPrevSavedBacklogItemByInstanceId: result ${JSON.stringify(prevItem)}`);
     return prevItem;
 };
+
+interface PrevNextAndCurrentBacklogItem {
+    prev: BacklogItem | null;
+    curr: BacklogItem | null;
+    next: BacklogItem | null;
+}
+
+export const getPrevNextAndCurrentById = (state: StateTree, id: string): PrevNextAndCurrentBacklogItem => {
+    const addedSavedItems = state.backlogItems.addedItems.filter((item) => item.saved);
+    const addedItems = addedSavedItems.map((item) => ({
+        ...item,
+        addedItem: true
+    }));
+    const items = state.backlogItems.items.map((item) => ({
+        ...item,
+        addedItem: false
+    }));
+    const allItems = addedItems.concat(items);
+    let resultPrevItem: BacklogItem | null = null;
+    let resultCurrItem: BacklogItem | null = null;
+    let resultNextItem: BacklogItem | null = null;
+    let previousItem: BacklogItem | null = null;
+    allItems.some((item) => {
+        let result = false;
+        if (resultPrevItem && !resultNextItem) {
+            resultNextItem = item;
+            result = true;
+        } else if (item.id === id) {
+            resultCurrItem = item;
+            resultPrevItem = previousItem;
+        } else if (item.saved) {
+            previousItem = item;
+        }
+        return result;
+    });
+    return {
+        prev: resultPrevItem,
+        curr: resultCurrItem,
+        next: resultNextItem
+    };
+};

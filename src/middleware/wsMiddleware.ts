@@ -13,10 +13,18 @@ import { PushNotification, PushNotificationType } from "../types";
 import { ReceiveWebsocketMessageAction } from "../actions/wsActions";
 import { BacklogItemModel } from "../reducers/backlogItemsReducer";
 
-const pushBacklogItemSaved = (item: BacklogItemModel) => {
-    const payload: PushNotification<BacklogItemModel> = {
+// selectors
+import { getPrevNextAndCurrentById } from "../selectors/backlogItemSelectors";
+
+interface PushBacklogItemModel extends BacklogItemModel {
+    prevBacklogItemId: string | null;
+    nextBacklogItemId: string | null;
+}
+
+const pushBacklogItemSaved = (item: BacklogItemModel, prevBacklogItemId: string | null, nextBacklogItemId: string | null) => {
+    const payload: PushNotification<PushBacklogItemModel> = {
         type: PushNotificationType.ModifiedBacklogItems,
-        data: item
+        data: { ...item, prevBacklogItemId, nextBacklogItemId }
     };
     wsClient.send(payload);
 };
@@ -26,10 +34,15 @@ export const wsMiddleware = (store) => (next) => (action: Action) => {
     next(action);
     switch (action.type) {
         case ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS: {
+            const state = store.getState();
             const actionTyped = action as ApiPostBacklogItemSuccessAction;
             if (actionTyped.payload.response?.status === 201) {
                 const item = actionTyped.payload.response.data?.item;
-                pushBacklogItemSaved(item);
+                const meta = actionTyped.meta as any;
+                const prevBacklogItemId = meta?.requestBody?.data?.prevBacklogItemId || null;
+                const prevNextAndCurrent = getPrevNextAndCurrentById(state, item.id);
+                const nextBacklogItemId = prevNextAndCurrent.next.id;
+                pushBacklogItemSaved(item, prevBacklogItemId, nextBacklogItemId);
             }
             break;
         }
