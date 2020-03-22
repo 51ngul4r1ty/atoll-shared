@@ -14,7 +14,12 @@ import { EditMode } from "../../molecules/buttons/EditButton";
 import { BacklogItemDetailForm } from "../forms/BacklogItemDetailForm";
 import { buildClassName } from "../../../utils/classNameBuilder";
 import { useDispatch, useSelector } from "react-redux";
-import { BacklogItemType } from "../../../reducers/backlogItemsReducer";
+import {
+    BacklogItemType,
+    BacklogItemWithSource,
+    BacklogItemSource,
+    SaveableBacklogItem
+} from "../../../reducers/backlogItemsReducer";
 
 // actions
 import { updateBacklogItemFields, cancelUnsavedBacklogItem, saveBacklogItem } from "../../../actions/backlogItems";
@@ -35,8 +40,9 @@ export interface PlanningPanelBacklogItem {
 }
 
 export interface BacklogItemPlanningPanelStateProps {
-    addedBacklogItems: PlanningPanelBacklogItem[];
-    backlogItems: PlanningPanelBacklogItem[];
+    allItems: BacklogItemWithSource[];
+    //    addedBacklogItems: PlanningPanelBacklogItem[];
+    backlogItems: SaveableBacklogItem[]; // PlanningPanelBacklogItem[];
     highlightedDividers: number[];
     editMode: EditMode;
     renderMobile?: boolean;
@@ -54,7 +60,7 @@ export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
 
 const buildCommonBacklogItemElts = (
     editMode: EditMode,
-    backlogItems: PlanningPanelBacklogItem[],
+    backlogItems: SaveableBacklogItem[], // PlanningPanelBacklogItem[],
     renderMobile: boolean,
     addedItems: boolean,
     sortedHighlightedDividers: number[]
@@ -62,7 +68,7 @@ const buildCommonBacklogItemElts = (
     const dispatch = useDispatch();
     let currentHighlightedDividerIdx = 0;
     let lastDisplayIndex: number = null;
-    return backlogItems.map((item: PlanningPanelBacklogItem) => {
+    return backlogItems.map((item: SaveableBacklogItem /*PlanningPanelBacklogItem*/) => {
         const currentHighlightedDivider = sortedHighlightedDividers[currentHighlightedDividerIdx];
 
         if (!item.saved && editMode === EditMode.Edit) {
@@ -130,7 +136,7 @@ const buildCommonBacklogItemElts = (
 
 const buildAddedBacklogItemElts = (
     editMode: EditMode,
-    backlogItems: PlanningPanelBacklogItem[],
+    backlogItems: BacklogItemWithSource[], // PlanningPanelBacklogItem[],
     renderMobile: boolean,
     sortedHighlightedDividers: number[]
 ) => {
@@ -139,7 +145,7 @@ const buildAddedBacklogItemElts = (
 
 const buildBacklogItemElts = (
     editMode: EditMode,
-    backlogItems: PlanningPanelBacklogItem[],
+    backlogItems: SaveableBacklogItem[], // PlanningPanelBacklogItem[],
     renderMobile: boolean,
     sortedHighlightedDividers: number[]
 ) => {
@@ -153,7 +159,8 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
         console.log(`ITEM ${++count}: ${item}`);
     });
     const classNameToUse = buildClassName(css.backlogItemPlanningPanel, props.renderMobile ? css.mobile : null);
-    const addedBacklogItemElts = buildAddedBacklogItemElts(props.editMode, props.addedBacklogItems, props.renderMobile, []);
+    const addedBacklogItems = props.allItems.filter((item) => item.source === BacklogItemSource.Added);
+    const addedBacklogItemElts = buildAddedBacklogItemElts(props.editMode, addedBacklogItems, props.renderMobile, []);
     // let firstDisplayIndex: number;
     // if (props.addedBacklogItems.length) {
     //     const lastAddedBacklogItem = props.addedBacklogItems[props.addedBacklogItems.length - 1];

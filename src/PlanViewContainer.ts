@@ -28,8 +28,9 @@ const convertSaved = (saved: boolean | undefined): boolean => {
     }
 };
 
-const buildBacklogItem = (item: SaveableBacklogItem): PlanningPanelBacklogItem => {
-    const result: PlanningPanelBacklogItem = {
+const buildBacklogItem = (item: SaveableBacklogItem): SaveableBacklogItem /*PlanningPanelBacklogItem*/ => {
+    const result: SaveableBacklogItem /*PlanningPanelBacklogItem*/ = {
+        creationDateTime: undefined,
         estimate: item.estimate,
         externalId: item.externalId,
         id: item.id,
@@ -44,13 +45,18 @@ const buildBacklogItem = (item: SaveableBacklogItem): PlanningPanelBacklogItem =
 };
 
 const mapStateToProps = (state: StateTree): PlanViewStateProps => {
-    const addedBacklogItems: PlanningPanelBacklogItem[] = state.backlogItems.addedItems.map((item) => {
-        return { ...buildBacklogItem(item), editing: true };
-    });
-    const backlogItems: PlanningPanelBacklogItem[] = state.backlogItems.items.map((item) => buildBacklogItem(item));
+    // const addedBacklogItems: PlanningPanelBacklogItem[] = state.backlogItems.addedItems.map((item) => {
+    //     return { ...buildBacklogItem(item), editing: true };
+    // });
+    // TODO: Switch to using selectors?
+    const backlogItems: SaveableBacklogItem[] /*PlanningPanelBacklogItem[]*/ = state.backlogItems.items.map((item) =>
+        buildBacklogItem(item)
+    );
+    const allItems = state.backlogItems.allItems;
     // const highlightedDividers = state.backlogItems.pushedItems.map((item) => item.displayIndex);
     let result: PlanViewStateProps = {
-        addedBacklogItems,
+        allItems,
+        //        addedBacklogItems,
         backlogItems,
         highlightedDividers: [],
         editMode: state.app.editMode
