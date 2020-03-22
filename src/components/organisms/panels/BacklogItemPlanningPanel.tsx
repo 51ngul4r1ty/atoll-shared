@@ -1,5 +1,6 @@
 // externals
 import * as React from "react";
+import { Dispatch } from "redux";
 import { withTranslation, WithTranslation } from "react-i18next";
 
 // style
@@ -56,8 +57,12 @@ export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
 
 /* exported components */
 
-// TODO: Get right type for "dispatch"
-export const buildBacklogItemElt = (editMode: EditMode, item: SaveableBacklogItem, renderMobile: boolean, dispatch: any) => {
+export const buildBacklogItemElt = (
+    editMode: EditMode,
+    item: SaveableBacklogItem,
+    renderMobile: boolean,
+    dispatch: Dispatch<any>
+) => {
     if (!item.saved && editMode === EditMode.Edit) {
         return (
             <>
@@ -152,16 +157,7 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
         renderElts.push(<SimpleDivider />);
     }
 
-    return (
-        <div className={classNameToUse}>
-            {renderElts}
-            {/* {addedBacklogItemElts}
-            {addedBacklogItemEltsDivider}
-            {actionButtons}
-            {backlogItemElts}
-            {backlogItemEltsDivider} */}
-        </div>
-    );
+    return <div className={classNameToUse}>{renderElts}</div>;
 };
 
 export const BacklogItemPlanningPanel = withTranslation()(RawBacklogItemPlanningPanel);
