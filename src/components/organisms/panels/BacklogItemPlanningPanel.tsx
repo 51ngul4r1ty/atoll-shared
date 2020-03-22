@@ -8,12 +8,13 @@ import css from "./BacklogItemPlanningPanel.module.css";
 // components
 import { AddButton } from "../../molecules/buttons/AddButton";
 import { BacklogItemCard, BacklogItemTypeEnum } from "../../molecules/cards/BacklogItemCard";
+import { SimpleDivider } from "../../atoms/dividers/SimpleDivider";
 
 // consts/enums
 import { EditMode } from "../../molecules/buttons/EditButton";
 import { BacklogItemDetailForm } from "../forms/BacklogItemDetailForm";
 import { buildClassName } from "../../../utils/classNameBuilder";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
     BacklogItemType,
     BacklogItemWithSource,
@@ -23,7 +24,6 @@ import {
 
 // actions
 import { updateBacklogItemFields, cancelUnsavedBacklogItem, saveBacklogItem } from "../../../actions/backlogItems";
-import { SimpleDivider } from "../../atoms/dividers/SimpleDivider";
 
 /* exported interfaces */
 
@@ -56,116 +56,60 @@ export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
 
 /* exported components */
 
-const buildCommonBacklogItemElts = (
-    editMode: EditMode,
-    backlogItems: SaveableBacklogItem[],
-    renderMobile: boolean,
-    addedItems: boolean,
-    sortedHighlightedDividers: number[]
-) => {
-    const dispatch = useDispatch();
-    let currentHighlightedDividerIdx = 0;
-    let lastDisplayIndex: number = null;
-    return backlogItems.map((item: SaveableBacklogItem) => {
-        const currentHighlightedDivider = sortedHighlightedDividers[currentHighlightedDividerIdx];
-
-        if (!item.saved && editMode === EditMode.Edit) {
-            return (
-                <>
-                    <BacklogItemDetailForm
-                        key={`unsaved-form-${item.instanceId}`}
-                        className={css.backlogItemUserStoryFormRow}
-                        instanceId={item.instanceId}
-                        externalId={item.externalId}
-                        editing
-                        estimate={item.estimate}
-                        rolePhrase={item.rolePhrase}
-                        storyPhrase={item.storyPhrase}
-                        reasonPhrase={item.reasonPhrase}
-                        type={item.type}
-                        onDataUpdate={(fields) => {
-                            dispatch(updateBacklogItemFields(fields));
-                        }}
-                        onDoneClick={(instanceId) => {
-                            dispatch(saveBacklogItem(instanceId));
-                        }}
-                        onCancelClick={(instanceId) => {
-                            dispatch(cancelUnsavedBacklogItem(instanceId));
-                        }}
-                    />
-                    <SimpleDivider />
-                </>
-            );
-        }
-        if (item.saved) {
-            // console.log(`CURRENT DIVIDER = ${currentHighlightedDivider}, idx = ${currentHighlightedDividerIdx}`);
-            let highlighted: boolean;
-            // if (lastDisplayIndex === null) {
-            //     // highlighted = currentHighlightedDivider < item.displayIndex;
-            //     console.log("top logic");
-            // } else {
-            //     // highlighted = lastDisplayIndex < currentHighlightedDivider && currentHighlightedDivider < item.displayIndex;
-            //     console.log("bottom logic");
-            // }
-            highlighted = false;
-            //            console.log(`HIGHLIGHTED = ${highlighted} - ${lastDisplayIndex} vs ${item.displayIndex}`);
-            if (highlighted) {
-                currentHighlightedDividerIdx++;
-            }
-            //            lastDisplayIndex = item.displayIndex;
-            return (
-                <>
-                    <SimpleDivider key={`divider-${item.id}`} highlighted={highlighted} />
-                    <BacklogItemCard
-                        key={item.id}
-                        estimate={item.estimate}
-                        itemId={`${item.externalId}`}
-                        itemType={item.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
-                        titleText={item.storyPhrase}
-                        isDraggable={editMode === EditMode.Edit}
-                        renderMobile={renderMobile}
-                        marginBelowItem
-                    />
-                </>
-            );
-        }
-    });
-};
-
-const buildAddedBacklogItemElts = (
-    editMode: EditMode,
-    backlogItems: BacklogItemWithSource[],
-    renderMobile: boolean,
-    sortedHighlightedDividers: number[]
-) => {
-    return buildCommonBacklogItemElts(editMode, backlogItems, renderMobile, true, sortedHighlightedDividers);
-};
-
-const buildBacklogItemElts = (
-    editMode: EditMode,
-    backlogItems: SaveableBacklogItem[],
-    renderMobile: boolean,
-    sortedHighlightedDividers: number[]
-) => {
-    return buildCommonBacklogItemElts(editMode, backlogItems, renderMobile, false, sortedHighlightedDividers);
+// TODO: Get right type for "dispatch"
+export const buildBacklogItemElt = (editMode: EditMode, item: SaveableBacklogItem, renderMobile: boolean, dispatch: any) => {
+    if (!item.saved && editMode === EditMode.Edit) {
+        return (
+            <>
+                <BacklogItemDetailForm
+                    key={`unsaved-form-${item.instanceId}`}
+                    className={css.backlogItemUserStoryFormRow}
+                    instanceId={item.instanceId}
+                    externalId={item.externalId}
+                    editing
+                    estimate={item.estimate}
+                    rolePhrase={item.rolePhrase}
+                    storyPhrase={item.storyPhrase}
+                    reasonPhrase={item.reasonPhrase}
+                    type={item.type}
+                    onDataUpdate={(fields) => {
+                        dispatch(updateBacklogItemFields(fields));
+                    }}
+                    onDoneClick={(instanceId) => {
+                        dispatch(saveBacklogItem(instanceId));
+                    }}
+                    onCancelClick={(instanceId) => {
+                        dispatch(cancelUnsavedBacklogItem(instanceId));
+                    }}
+                />
+                <SimpleDivider />
+            </>
+        );
+    }
+    if (item.saved) {
+        let highlighted: boolean;
+        highlighted = false;
+        return (
+            <>
+                <SimpleDivider key={`divider-${item.id}`} highlighted={highlighted} />
+                <BacklogItemCard
+                    key={item.id}
+                    estimate={item.estimate}
+                    itemId={`${item.externalId}`}
+                    itemType={item.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
+                    titleText={item.storyPhrase}
+                    isDraggable={editMode === EditMode.Edit}
+                    renderMobile={renderMobile}
+                    marginBelowItem
+                />
+            </>
+        );
+    }
 };
 
 export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps> = (props) => {
-    const sortedHighlightedDividers = props.highlightedDividers.sort((a, b) => b - a);
-    let count = 0;
-    sortedHighlightedDividers.forEach((item) => {
-        console.log(`ITEM ${++count}: ${item}`);
-    });
+    const dispatch = useDispatch();
     const classNameToUse = buildClassName(css.backlogItemPlanningPanel, props.renderMobile ? css.mobile : null);
-    const addedBacklogItems = props.allItems.filter((item) => item.source === BacklogItemSource.Added);
-    const addedBacklogItemElts = buildAddedBacklogItemElts(props.editMode, addedBacklogItems, props.renderMobile, []);
-    // let firstDisplayIndex: number;
-    // if (props.addedBacklogItems.length) {
-    //     const lastAddedBacklogItem = props.addedBacklogItems[props.addedBacklogItems.length - 1];
-    //     firstDisplayIndex = lastAddedBacklogItem.displayIndex;
-    // }
-    const backlogItems = props.allItems.filter((item) => item.source === BacklogItemSource.Loaded);
-    const backlogItemElts = buildBacklogItemElts(props.editMode, backlogItems, props.renderMobile, sortedHighlightedDividers);
     const actionButtons =
         props.editMode === EditMode.View ? null : (
             <div className={css.backlogItemPlanningActionPanel}>
@@ -183,16 +127,39 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
                 />
             </div>
         );
-    const addedBacklogItemEltsDivider = addedBacklogItemElts.length ? <SimpleDivider /> : null;
-    const backlogItemEltsDivider = backlogItemElts.length ? <SimpleDivider /> : null;
+    let inLoadedSection = false;
+    let inAddedSection = false;
+    let renderElts = [];
+    props.allItems.forEach((item) => {
+        if (item.source === BacklogItemSource.Added) {
+            inAddedSection = true;
+        }
+        if (item.source === BacklogItemSource.Loaded) {
+            if (inAddedSection) {
+                renderElts.push(<SimpleDivider />);
+                inAddedSection = false;
+            }
+            if (!inLoadedSection) {
+                renderElts.push(actionButtons);
+            }
+            inLoadedSection = true;
+        }
+        if (item.source === BacklogItemSource.Added || item.source === BacklogItemSource.Loaded) {
+            renderElts.push(buildBacklogItemElt(props.editMode, item, props.renderMobile, dispatch));
+        }
+    });
+    if (inLoadedSection) {
+        renderElts.push(<SimpleDivider />);
+    }
 
     return (
         <div className={classNameToUse}>
-            {addedBacklogItemElts}
+            {renderElts}
+            {/* {addedBacklogItemElts}
             {addedBacklogItemEltsDivider}
             {actionButtons}
             {backlogItemElts}
-            {backlogItemEltsDivider}
+            {backlogItemEltsDivider} */}
         </div>
     );
 };
