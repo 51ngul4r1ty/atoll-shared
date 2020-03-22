@@ -67,5 +67,91 @@ describe("Linked List", () => {
                 value: "item 3"
             });
         });
+        it("should handle addArray called more than once correctly", () => {
+            const list = new LinkedList();
+            const itemsA = [
+                {
+                    id: "A1",
+                    value: "item A1"
+                }
+            ];
+            const itemsB = [
+                {
+                    id: "1",
+                    value: "item 1"
+                },
+                {
+                    id: "2",
+                    value: "item 2"
+                },
+                {
+                    id: "3",
+                    value: "item 3"
+                }
+            ];
+            list.addArray("id", itemsA);
+            list.addArray("id", itemsB);
+            const result = list.toArray();
+            expect(result.length).toEqual(4);
+            expect(result[0]).toStrictEqual({
+                id: "A1",
+                value: "item A1"
+            });
+            expect(result[1]).toStrictEqual({
+                id: "1",
+                value: "item 1"
+            });
+            expect(result[2]).toStrictEqual({
+                id: "2",
+                value: "item 2"
+            });
+            expect(result[3]).toStrictEqual({
+                id: "3",
+                value: "item 3"
+            });
+        });
+    });
+    describe("combinations", () => {
+        it("should handle addArray followed by addLink", () => {
+            const list = new LinkedList();
+            const items = [
+                {
+                    id: "1",
+                    value: "item 1"
+                },
+                {
+                    id: "2",
+                    value: "item 2"
+                },
+                {
+                    id: "3",
+                    value: "item 3"
+                }
+            ];
+            list.addArray("id", items);
+
+            const newId = "new-item-1";
+            list.addLink(null, newId);
+            list.addItemData(newId, { id: newId, value: "new item 1" });
+
+            const result = list.toArray();
+            expect(result.length).toEqual(4);
+            expect(result[0]).toStrictEqual({
+                id: "new-item-1",
+                value: "new item 1"
+            });
+            expect(result[1]).toStrictEqual({
+                id: "1",
+                value: "item 1"
+            });
+            expect(result[2]).toStrictEqual({
+                id: "2",
+                value: "item 2"
+            });
+            expect(result[3]).toStrictEqual({
+                id: "3",
+                value: "item 3"
+            });
+        });
     });
 });

@@ -39,9 +39,11 @@ export class LinkedList<T> {
         }
         let item = this.itemHashMap[itemId] || null;
         let next = this.itemHashMap[nextId] || null;
+        let nextAdded = false;
         if (!next && nextId !== null) {
             // need to add the "next" item because it doesn't exist yet
             next = this.addUnlinkedItem(nextId);
+            nextAdded = true;
         }
         if (!item && itemId !== null) {
             // need to add the item itself because it doesn't exist yet
@@ -53,7 +55,14 @@ export class LinkedList<T> {
         }
         if (!itemId) {
             // if itemId isn't defined the caller is inserting the first item in the list
-            this.firstItem = next;
+            const oldFirstItem = this.firstItem;
+            // prevent a circular reference
+            if (oldFirstItem?.id !== nextId) {
+                this.firstItem = next;
+                if (nextAdded) {
+                    this.firstItem.next = oldFirstItem;
+                }
+            }
         } else if (!this.firstItem) {
             // if no item has been added as the first item then this item is it until another one is assigned
             this.firstItem = item;
@@ -65,10 +74,31 @@ export class LinkedList<T> {
             item.data = data;
         }
     }
+    getLastItem() {
+        let item = this.firstItem;
+        let lastItem: LinkedListItem<T> | null = null;
+        while (item) {
+            lastItem = item;
+            item = item.next;
+        }
+        return lastItem;
+    }
+    /**
+     * Add an array of items and link them to the end of the existing items.
+     *
+     * @param idPropertyName the name of the ID property (usually just "id")
+     * @param items an array of items to add in sequence
+     */
     addArray(idPropertyName: string, items: any[]) {
         const maxitems = 10;
         let prevId: string;
         let itemId: string;
+
+        const lastItem = this.getLastItem();
+        if (lastItem) {
+            prevId = lastItem.id;
+        }
+
         /* 1. add links */
         items.forEach((item) => {
             itemId = item[idPropertyName];
@@ -85,7 +115,7 @@ export class LinkedList<T> {
         }
         /* 2. add data */
         items.forEach((item) => {
-            this.addItemData(item.id, item);
+            this.addItemData(item[idPropertyName], item);
         });
     }
     toArray(): T[] {

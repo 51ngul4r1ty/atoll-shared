@@ -1,5 +1,5 @@
 // externals
-import { produce } from "immer";
+import { produce, Draft } from "immer";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
@@ -15,6 +15,10 @@ import {
 } from "../actions/backlogItems";
 import { PushBacklogItemModel } from "../middleware/wsMiddleware";
 import { LinkedList } from "../utils/linkedList";
+import {
+    BacklogItemDetailFormEditableFields,
+    BacklogItemDetailFormEditableFieldsWithInstanceId
+} from "../components/organisms/forms/BacklogItemDetailForm";
 
 export type BacklogItemType = "story" | "issue";
 
@@ -79,6 +83,56 @@ export const isUnsavedItemId = (id: string): boolean => {
     return id?.startsWith(UNSAVED_ITEM_ID_PREFIX) || false;
 };
 
+export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>): BacklogItemWithSource => ({
+    id: pushedItem.id,
+    instanceId: undefined,
+    source: BacklogItemSource.Pushed,
+    creationDateTime: pushedItem.creationDateTime,
+    estimate: pushedItem.estimate,
+    externalId: pushedItem.externalId,
+    reasonPhrase: pushedItem.reasonPhrase,
+    rolePhrase: pushedItem.rolePhrase,
+    storyPhrase: pushedItem.storyPhrase,
+    type: pushedItem.type
+});
+
+export const rebuildAllItems = (draft: Draft<BacklogItemsState>) => {
+    console.log("KEVIN - rebuildAllItems");
+    const allItems = new LinkedList<BacklogItemWithSource>();
+    const addedItems = draft.addedItems.map((item) => addSourceAndId(item, BacklogItemSource.Added));
+    console.log("KEVIN - rebuildAllItems: addedItems count = ", addedItems.length);
+    allItems.addArray("id", addedItems);
+    const loadedItems = draft.items.map((item) => addSource(item, BacklogItemSource.Loaded));
+    console.log("KEVIN - rebuildAllItems: loadedItems count = ", loadedItems.length);
+    allItems.addArray("id", loadedItems);
+    const pushedItems = draft.pushedItems.map((item) => addSource(item, BacklogItemSource.Pushed));
+    // TODO: Find out why this results in just a single item in the linked list:
+    pushedItems.forEach((pushedItem) => {
+        allItems.addLink(pushedItem.prevBacklogItemId, pushedItem.id);
+        allItems.addItemData(pushedItem.id, mapPushedToBacklogItem(pushedItem));
+    });
+    //    allItems.addArray("id", pushedItems);
+    draft.allItems = allItems.toArray();
+};
+
+export const updateItemFieldsInAllItems = (
+    draft: Draft<BacklogItemsState>,
+    payload: BacklogItemDetailFormEditableFieldsWithInstanceId
+) => {
+    const item = draft.allItems.filter((item) => item.instanceId == payload.instanceId);
+    if (item.length === 1) {
+        updateBacklogItem(item[0], payload);
+    }
+};
+
+export const updateBacklogItem = (backlogItem: BacklogItem, payload: BacklogItemDetailFormEditableFields) => {
+    backlogItem.estimate = payload.estimate;
+    backlogItem.externalId = payload.externalId;
+    backlogItem.storyPhrase = payload.storyPhrase;
+    backlogItem.reasonPhrase = payload.reasonPhrase;
+    backlogItem.rolePhrase = payload.rolePhrase;
+};
+
 export const backlogItemsReducer = (state: BacklogItemsState = initialState, action: AnyFSA): BacklogItemsState =>
     produce(state, (draft) => {
         const { type } = action;
@@ -87,6 +141,7 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                 // TODO: Add `const actionTyped = ` to make this type-safe
                 const { payload } = action;
                 draft.items = payload.response.data.items;
+                rebuildAllItems(draft);
                 return;
             }
             case ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS: {
@@ -100,6 +155,7 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                         addedItem.saved = true;
                     }
                 });
+                rebuildAllItems(draft);
                 return;
             }
             case ActionTypes.ADD_BACKLOG_ITEM: {
@@ -119,6 +175,7 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                         saved: false
                     } as SaveableBacklogItem
                 ];
+                rebuildAllItems(draft);
                 return;
             }
             case ActionTypes.CANCEL_UNSAVED_BACKLOG_ITEM: {
@@ -130,37 +187,23 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                     }
                 });
                 draft.addedItems = newItems;
+                rebuildAllItems(draft);
                 return;
             }
             case ActionTypes.UPDATE_BACKLOG_ITEM_FIELDS: {
                 const actionTyped = action as UpdateBacklogItemFieldsAction;
                 draft.addedItems.forEach((addedItem) => {
                     if (addedItem.instanceId === actionTyped.payload.instanceId) {
-                        addedItem.estimate = actionTyped.payload.estimate;
-                        addedItem.externalId = actionTyped.payload.externalId;
-                        addedItem.storyPhrase = actionTyped.payload.storyPhrase;
-                        addedItem.reasonPhrase = actionTyped.payload.reasonPhrase;
-                        addedItem.rolePhrase = actionTyped.payload.rolePhrase;
+                        updateBacklogItem(addedItem, actionTyped.payload);
                     }
                 });
+                updateItemFieldsInAllItems(draft, actionTyped.payload);
                 return;
             }
             case ActionTypes.RECEIVE_PUSHED_BACKLOG_ITEM: {
-                // 1. add new item to pushedItems list
                 const actionTyped = action as ReceivePushedBacklogItemAction;
                 draft.pushedItems.push(actionTyped.payload);
-                // 2. rebuild allItems list (to determine "highlighted divider" positions)
-                const allItems = new LinkedList<BacklogItemWithSource>();
-                const addedItems = draft.addedItems.map((item) => addSourceAndId(item, BacklogItemSource.Added));
-                allItems.addArray("id", addedItems);
-                console.log(`Kevin - AFTER ADDED ITEMS: ${allItems.getStatusText()}`);
-                const loadedItems = draft.items.map((item) => addSource(item, BacklogItemSource.Loaded));
-                allItems.addArray("id", loadedItems);
-                console.log(`Kevin - AFTER LOADED ITEMS: ${allItems.getStatusText()}`);
-                const pushedItems = draft.pushedItems.map((item) => addSource(item, BacklogItemSource.Pushed));
-                allItems.addArray("id", pushedItems);
-                console.log(`Kevin - AFTER PUSHED ITEMS: ${allItems.getStatusText()}`);
-                draft.allItems = allItems.toArray();
+                rebuildAllItems(draft);
                 return;
             }
         }

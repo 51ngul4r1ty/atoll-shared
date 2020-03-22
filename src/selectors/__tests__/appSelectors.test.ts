@@ -1,5 +1,7 @@
+// test related
 import "jest";
 
+// code under test
 import { getLocale } from "../appSelectors";
 import { initialState } from "../../reducers/appReducer";
 
