@@ -195,5 +195,47 @@ describe("Linked List", () => {
                 value: "item 3"
             });
         });
+        it("should handle addArray followed by addLink (to end of list, next=null)", () => {
+            const list = new LinkedList();
+            const firstItemId = "1";
+            const items = [
+                {
+                    id: firstItemId,
+                    value: "item 1"
+                },
+                {
+                    id: "2",
+                    value: "item 2"
+                },
+                {
+                    id: "3",
+                    value: "item 3"
+                }
+            ];
+            list.addArray("id", items);
+
+            const newId = "new-item-1";
+            list.addLink(newId, null);
+            list.addItemData(newId, { id: newId, value: "new item 1" });
+
+            const result = list.toArray();
+            expect(result.length).toEqual(4);
+            expect(result[0]).toStrictEqual({
+                id: "1",
+                value: "item 1"
+            });
+            expect(result[1]).toStrictEqual({
+                id: "2",
+                value: "item 2"
+            });
+            expect(result[2]).toStrictEqual({
+                id: "3",
+                value: "item 3"
+            });
+            expect(result[3]).toStrictEqual({
+                id: "new-item-1",
+                value: "new item 1"
+            });
+        });
     });
 });

@@ -58,6 +58,14 @@ export class LinkedList<T> {
                 // next is first item but we just added something before it!
                 this.firstItem = item;
             }
+            if (itemAdded && !item.next) {
+                // item being added to end of list
+                const lastItem = this.getLastItem();
+                if (lastItem && lastItem?.id !== item.id) {
+                    // link last item to this item avoiding circular reference
+                    lastItem.next = item;
+                }
+            }
         }
         if (!itemId) {
             // if itemId isn't defined the caller is inserting the first item in the list
