@@ -41,8 +41,6 @@ export interface PlanningPanelBacklogItem {
 
 export interface BacklogItemPlanningPanelStateProps {
     allItems: BacklogItemWithSource[];
-    //    addedBacklogItems: PlanningPanelBacklogItem[];
-    backlogItems: SaveableBacklogItem[]; // PlanningPanelBacklogItem[];
     highlightedDividers: number[];
     editMode: EditMode;
     renderMobile?: boolean;
@@ -60,7 +58,7 @@ export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
 
 const buildCommonBacklogItemElts = (
     editMode: EditMode,
-    backlogItems: SaveableBacklogItem[], // PlanningPanelBacklogItem[],
+    backlogItems: SaveableBacklogItem[],
     renderMobile: boolean,
     addedItems: boolean,
     sortedHighlightedDividers: number[]
@@ -68,7 +66,7 @@ const buildCommonBacklogItemElts = (
     const dispatch = useDispatch();
     let currentHighlightedDividerIdx = 0;
     let lastDisplayIndex: number = null;
-    return backlogItems.map((item: SaveableBacklogItem /*PlanningPanelBacklogItem*/) => {
+    return backlogItems.map((item: SaveableBacklogItem) => {
         const currentHighlightedDivider = sortedHighlightedDividers[currentHighlightedDividerIdx];
 
         if (!item.saved && editMode === EditMode.Edit) {
@@ -136,7 +134,7 @@ const buildCommonBacklogItemElts = (
 
 const buildAddedBacklogItemElts = (
     editMode: EditMode,
-    backlogItems: BacklogItemWithSource[], // PlanningPanelBacklogItem[],
+    backlogItems: BacklogItemWithSource[],
     renderMobile: boolean,
     sortedHighlightedDividers: number[]
 ) => {
@@ -145,7 +143,7 @@ const buildAddedBacklogItemElts = (
 
 const buildBacklogItemElts = (
     editMode: EditMode,
-    backlogItems: SaveableBacklogItem[], // PlanningPanelBacklogItem[],
+    backlogItems: SaveableBacklogItem[],
     renderMobile: boolean,
     sortedHighlightedDividers: number[]
 ) => {
@@ -166,7 +164,8 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
     //     const lastAddedBacklogItem = props.addedBacklogItems[props.addedBacklogItems.length - 1];
     //     firstDisplayIndex = lastAddedBacklogItem.displayIndex;
     // }
-    const backlogItemElts = buildBacklogItemElts(props.editMode, props.backlogItems, props.renderMobile, sortedHighlightedDividers);
+    const backlogItems = props.allItems.filter((item) => item.source === BacklogItemSource.Loaded);
+    const backlogItemElts = buildBacklogItemElts(props.editMode, backlogItems, props.renderMobile, sortedHighlightedDividers);
     const actionButtons =
         props.editMode === EditMode.View ? null : (
             <div className={css.backlogItemPlanningActionPanel}>

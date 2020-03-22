@@ -33,7 +33,7 @@ export interface BacklogItemModel extends BaseModelItem {
 }
 
 export interface BacklogItem extends BacklogItemModel {
-    instanceId: number | null;
+    instanceId?: number | null;
 }
 
 export interface SaveableBacklogItem extends BacklogItem {
@@ -64,8 +64,30 @@ export const initialState = Object.freeze<BacklogItemsState>({
     allItems: []
 });
 
-export const addSource = <T>(item: T, source: BacklogItemSource) => ({ ...item, source });
-export const addSourceAndId = (item: BacklogItem, source: BacklogItemSource) => {
+export const convertSaved = (saved: boolean | undefined): boolean => {
+    if (saved === true) {
+        return true;
+    } else if (saved === false) {
+        return false;
+    } else {
+        // default to saved if it isn't provided
+        return true;
+    }
+};
+
+export const addSource = (item: SaveableBacklogItem, source: BacklogItemSource) => ({
+    ...item,
+    source,
+    saved: convertSaved(item.saved)
+});
+
+export const addSourceToPushedItem = (item: Partial<PushBacklogItemModel>, source: BacklogItemSource) => ({
+    ...item,
+    source,
+    saved: convertSaved(undefined)
+});
+
+export const addSourceAndId = (item: SaveableBacklogItem, source: BacklogItemSource) => {
     let result = addSource(item, source);
     if (!result.id && result.source === BacklogItemSource.Added) {
         result.id = buildUnsavedItemId(result.instanceId);
@@ -102,7 +124,7 @@ export const rebuildAllItems = (draft: Draft<BacklogItemsState>) => {
     allItems.addArray("id", addedItems);
     const loadedItems = draft.items.map((item) => addSource(item, BacklogItemSource.Loaded));
     allItems.addArray("id", loadedItems);
-    const pushedItems = draft.pushedItems.map((item) => addSource(item, BacklogItemSource.Pushed));
+    const pushedItems = draft.pushedItems.map((item) => addSourceToPushedItem(item, BacklogItemSource.Pushed));
     pushedItems.forEach((pushedItem) => {
         if (pushedItem.prevBacklogItemId) {
             allItems.addLink(pushedItem.prevBacklogItemId, pushedItem.id);
@@ -159,18 +181,11 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
             }
             case ActionTypes.ADD_BACKLOG_ITEM: {
                 const actionTyped = action as AddNewBacklogItemAction;
-                //                const topIndex = draft.items.length ? draft.items[0].displayIndex : 1.0;
-                // let newTopIndex = topIndex - draft.addedItems.length - 1.0;
-                // draft.addedItems.forEach((addedItem) => {
-                //     addedItem.displayIndex = newTopIndex;
-                //     newTopIndex = newTopIndex + 1.0;
-                // });
                 draft.addedItems = [
                     ...draft.addedItems,
                     {
                         type: actionTyped.payload.type,
                         instanceId: actionTyped.payload.instanceId,
-                        // displayIndex: newTopIndex,
                         saved: false
                     } as SaveableBacklogItem
                 ];

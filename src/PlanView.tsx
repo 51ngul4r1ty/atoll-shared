@@ -24,8 +24,6 @@ import { BacklogItemType, BacklogItemWithSource, SaveableBacklogItem } from "./r
 
 export interface PlanViewStateProps {
     allItems: BacklogItemWithSource[];
-    //    addedBacklogItems: PlanningPanelBacklogItem[];
-    backlogItems: SaveableBacklogItem[]; // PlanningPanelBacklogItem[];
     highlightedDividers: number[];
     editMode: EditMode;
 }
@@ -53,8 +51,6 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                 <TopMenuPanelContainer activeTabId="plan" />
                 <BacklogItemPlanningPanel
                     allItems={this.props.allItems}
-                    //                    addedBacklogItems={this.props.addedBacklogItems}
-                    backlogItems={this.props.backlogItems}
                     highlightedDividers={this.props.highlightedDividers}
                     editMode={this.props.editMode}
                     onAddNewBacklogItem={(type: BacklogItemType) => {
