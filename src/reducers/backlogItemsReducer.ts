@@ -97,21 +97,20 @@ export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>
 });
 
 export const rebuildAllItems = (draft: Draft<BacklogItemsState>) => {
-    console.log("KEVIN - rebuildAllItems");
     const allItems = new LinkedList<BacklogItemWithSource>();
     const addedItems = draft.addedItems.map((item) => addSourceAndId(item, BacklogItemSource.Added));
-    console.log("KEVIN - rebuildAllItems: addedItems count = ", addedItems.length);
     allItems.addArray("id", addedItems);
     const loadedItems = draft.items.map((item) => addSource(item, BacklogItemSource.Loaded));
-    console.log("KEVIN - rebuildAllItems: loadedItems count = ", loadedItems.length);
     allItems.addArray("id", loadedItems);
     const pushedItems = draft.pushedItems.map((item) => addSource(item, BacklogItemSource.Pushed));
-    // TODO: Find out why this results in just a single item in the linked list:
     pushedItems.forEach((pushedItem) => {
-        allItems.addLink(pushedItem.prevBacklogItemId, pushedItem.id);
+        if (pushedItem.prevBacklogItemId) {
+            allItems.addLink(pushedItem.prevBacklogItemId, pushedItem.id);
+        } else {
+            allItems.addLink(pushedItem.id, pushedItem.nextBacklogItemId);
+        }
         allItems.addItemData(pushedItem.id, mapPushedToBacklogItem(pushedItem));
     });
-    //    allItems.addArray("id", pushedItems);
     draft.allItems = allItems.toArray();
 };
 

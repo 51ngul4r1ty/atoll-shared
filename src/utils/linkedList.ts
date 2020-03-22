@@ -40,6 +40,7 @@ export class LinkedList<T> {
         let item = this.itemHashMap[itemId] || null;
         let next = this.itemHashMap[nextId] || null;
         let nextAdded = false;
+        let itemAdded = false;
         if (!next && nextId !== null) {
             // need to add the "next" item because it doesn't exist yet
             next = this.addUnlinkedItem(nextId);
@@ -48,10 +49,15 @@ export class LinkedList<T> {
         if (!item && itemId !== null) {
             // need to add the item itself because it doesn't exist yet
             item = this.addUnlinkedItem(itemId);
+            itemAdded = true;
         }
         if (item) {
             // link item to the next item
             item.next = next;
+            if (itemAdded && next?.id && next?.id === this.firstItem?.id) {
+                // next is first item but we just added something before it!
+                this.firstItem = item;
+            }
         }
         if (!itemId) {
             // if itemId isn't defined the caller is inserting the first item in the list
