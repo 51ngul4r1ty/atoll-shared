@@ -5,7 +5,7 @@ import { produce } from "immer";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { AppState, AnyFSA, PushNotificationType, BasePushNotification, PushNotification, BaseModelItem } from "../types";
+import { AppState, AnyFSA, PushNotificationType, PushNotification, BaseModelItem } from "../types";
 import { EditMode } from "../components/molecules/buttons/EditButton";
 import { BacklogItemModel } from "./backlogItemsReducer";
 

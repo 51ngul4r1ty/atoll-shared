@@ -71,6 +71,7 @@
     "cross-env": "7.0.0",
     "jest": "25.1.0",
     "jest-cli": "25.1.0",
+    "jest-css-modules-transform": "4.0.0",
     "launchdarkly-js-client-sdk": "2.17.1",
     "open-cli": "5.0.0",
     "postcss-assets": "5.0.0",
