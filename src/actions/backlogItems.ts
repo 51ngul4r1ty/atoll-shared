@@ -1,5 +1,5 @@
 // middleware
-import { API, ApiAction } from "../middleware/apiMiddleware";
+import { API, ApiAction, ApiActionSuccessPayload, ApiActionMetaDataRequestBody } from "../middleware/apiMiddleware";
 
 // actions
 import * as ActionTypes from "./actionTypes";
@@ -8,8 +8,9 @@ import * as ActionTypes from "./actionTypes";
 import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
-import { BacklogItemType, BacklogItemModel } from "../reducers/backlogItemsReducer";
+import { BacklogItemType, BacklogItemModel, BacklogItem } from "../reducers/backlogItemsReducer";
 import { BacklogItemDetailFormEditableFieldsWithInstanceId } from "../components/organisms/forms/BacklogItemDetailForm";
+import { PushBacklogItemModel } from "../middleware/wsMiddleware";
 
 export const getBacklogItems = (): ApiAction<undefined> => ({
     type: API,
@@ -78,14 +79,38 @@ export const saveBacklogItem = (instanceId: number): SaveBacklogItemAction => ({
 
 export interface SaveBacklogItemPayload {}
 
-export const postBacklogItem = (backlogItem: BacklogItemModel, meta: any): ApiAction<SaveBacklogItemPayload> => {
+export interface ApiPostBacklogItemSuccessResponse {
+    status: number;
+    data: {
+        item: BacklogItem;
+    };
+}
+
+export type ApiPostBacklogItemSuccessActionPayload = ApiActionSuccessPayload<ApiPostBacklogItemSuccessResponse>;
+
+export interface ApiPostBacklogItemSuccessActionMeta extends ApiActionMetaDataRequestBody<BacklogItemModel> {
+    instanceId: number;
+}
+
+export interface ApiPostBacklogItemSuccessAction {
+    type: typeof ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS;
+    payload: ApiPostBacklogItemSuccessActionPayload;
+    meta: ApiPostBacklogItemSuccessActionMeta;
+}
+
+export const postBacklogItem = (
+    backlogItem: BacklogItemModel,
+    prevBacklogItemId: string,
+    meta: any
+): ApiAction<SaveBacklogItemPayload> => {
     return {
         type: API,
         payload: {
             endpoint: "http://localhost:8500/api/v1/backlog-items",
             method: "POST",
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
-            data: backlogItem,
+            // TODO: Define a type for this?
+            data: { ...backlogItem, prevBacklogItemId },
             types: [
                 ActionTypes.API_POST_BACKLOG_ITEM_REQUEST,
                 ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS,
@@ -107,3 +132,15 @@ export const updateBacklogItemFields = (
     type: ActionTypes.UPDATE_BACKLOG_ITEM_FIELDS,
     payload: fields
 });
+
+export interface ReceivePushedBacklogItemAction {
+    type: typeof ActionTypes.RECEIVE_PUSHED_BACKLOG_ITEM;
+    payload: Partial<PushBacklogItemModel>;
+}
+
+export const receivePushedBacklogItem = (item: Partial<PushBacklogItemModel>): ReceivePushedBacklogItemAction => {
+    return {
+        type: ActionTypes.RECEIVE_PUSHED_BACKLOG_ITEM,
+        payload: item
+    };
+};

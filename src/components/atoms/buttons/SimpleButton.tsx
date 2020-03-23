@@ -1,13 +1,16 @@
+// externals
 import * as React from "react";
 
+// style
 import css from "./SimpleButton.module.css";
+
+// utils
 import { buildClassName } from "../../../utils/classNameBuilder";
 
-export interface SimpleButtonCommonProps {
-    className?: string;
-}
+// interfaces/types
+import { PropsWithClassName } from "../../common/types";
 
-export interface SimpleButtonStateProps {
+export interface SimpleButtonStateProps extends PropsWithClassName {
     icon?: any; // TODO: Define type
     iconOnLeft?: boolean;
 }
@@ -16,7 +19,7 @@ export interface SimpleButtonDispatchProps {
     onClick: { () };
 }
 
-export type SimpleButtonProps = SimpleButtonCommonProps & SimpleButtonStateProps & SimpleButtonDispatchProps;
+export type SimpleButtonProps = SimpleButtonStateProps & SimpleButtonDispatchProps;
 
 export const SimpleButton: React.FC<SimpleButtonProps> = (props) => {
     const icon = props.icon && <div className={css.buttonIcon}>{props.icon}</div>;

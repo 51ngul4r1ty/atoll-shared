@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // atoms
-import { SimpleButton, SimpleButtonCommonProps } from "../../atoms/buttons/SimpleButton";
+import { SimpleButton } from "../../atoms/buttons/SimpleButton";
 
 // icons
 import { EditIcon } from "../../atoms/icons/EditIcon";
@@ -10,13 +10,14 @@ import { EditCancelIcon } from "../../atoms/icons/EditCancelIcon";
 
 // style
 import css from "./EditButton.module.css";
+import { PropsWithClassName } from "../../common/types";
 
 export enum EditMode {
     View,
     Edit
 }
 
-export interface EditButtonStateProps {
+export interface EditButtonStateProps extends PropsWithClassName {
     mode: EditMode;
 }
 
@@ -24,7 +25,7 @@ export interface EditButtonDispatchProps {
     onClick: { () };
 }
 
-export type EditButtonProps = SimpleButtonCommonProps & EditButtonStateProps & EditButtonDispatchProps;
+export type EditButtonProps = EditButtonStateProps & EditButtonDispatchProps;
 
 export const EditButton: React.FC<EditButtonProps> = (props) => {
     const icon = props.mode === EditMode.View ? <EditIcon /> : <EditCancelIcon />;

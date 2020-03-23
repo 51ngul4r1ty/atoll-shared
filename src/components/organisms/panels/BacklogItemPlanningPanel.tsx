@@ -1,5 +1,6 @@
 // externals
 import * as React from "react";
+import { Dispatch } from "redux";
 import { withTranslation, WithTranslation } from "react-i18next";
 
 // style
@@ -8,13 +9,19 @@ import css from "./BacklogItemPlanningPanel.module.css";
 // components
 import { AddButton } from "../../molecules/buttons/AddButton";
 import { BacklogItemCard, BacklogItemTypeEnum } from "../../molecules/cards/BacklogItemCard";
+import { SimpleDivider } from "../../atoms/dividers/SimpleDivider";
 
 // consts/enums
 import { EditMode } from "../../molecules/buttons/EditButton";
 import { BacklogItemDetailForm } from "../forms/BacklogItemDetailForm";
 import { buildClassName } from "../../../utils/classNameBuilder";
-import { useDispatch, useSelector } from "react-redux";
-import { BacklogItemType } from "../../../reducers/backlogItemsReducer";
+import { useDispatch } from "react-redux";
+import {
+    BacklogItemType,
+    BacklogItemWithSource,
+    BacklogItemSource,
+    SaveableBacklogItem
+} from "../../../reducers/backlogItemsReducer";
 
 // actions
 import { updateBacklogItemFields, cancelUnsavedBacklogItem, saveBacklogItem } from "../../../actions/backlogItems";
@@ -34,8 +41,8 @@ export interface PlanningPanelBacklogItem {
 }
 
 export interface BacklogItemPlanningPanelStateProps {
-    addedBacklogItems: PlanningPanelBacklogItem[];
-    backlogItems: PlanningPanelBacklogItem[];
+    allItems: BacklogItemWithSource[];
+    highlightedDividers: number[];
     editMode: EditMode;
     renderMobile?: boolean;
 }
@@ -50,16 +57,16 @@ export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
 
 /* exported components */
 
-const buildCommonBacklogItemElts = (
+export const buildBacklogItemElt = (
     editMode: EditMode,
-    backlogItems: PlanningPanelBacklogItem[],
+    item: SaveableBacklogItem,
     renderMobile: boolean,
-    addedItems: boolean
+    highlightAbove: boolean,
+    dispatch: Dispatch<any>
 ) => {
-    const dispatch = useDispatch();
-    return backlogItems.map((item: PlanningPanelBacklogItem) => {
-        if (!item.saved && editMode === EditMode.Edit) {
-            return (
+    if (!item.saved && editMode === EditMode.Edit) {
+        return (
+            <>
                 <BacklogItemDetailForm
                     key={`unsaved-form-${item.instanceId}`}
                     className={css.backlogItemUserStoryFormRow}
@@ -81,10 +88,14 @@ const buildCommonBacklogItemElts = (
                         dispatch(cancelUnsavedBacklogItem(instanceId));
                     }}
                 />
-            );
-        }
-        if (item.saved) {
-            return (
+                <SimpleDivider />
+            </>
+        );
+    }
+    if (item.saved) {
+        return (
+            <>
+                <SimpleDivider key={`divider-${item.id}`} highlighted={highlightAbove} />
                 <BacklogItemCard
                     key={item.id}
                     estimate={item.estimate}
@@ -95,23 +106,14 @@ const buildCommonBacklogItemElts = (
                     renderMobile={renderMobile}
                     marginBelowItem
                 />
-            );
-        }
-    });
-};
-
-const buildAddedBacklogItemElts = (editMode: EditMode, backlogItems: PlanningPanelBacklogItem[], renderMobile: boolean) => {
-    return buildCommonBacklogItemElts(editMode, backlogItems, renderMobile, true);
-};
-
-const buildBacklogItemElts = (editMode: EditMode, backlogItems: PlanningPanelBacklogItem[], renderMobile: boolean) => {
-    return buildCommonBacklogItemElts(editMode, backlogItems, renderMobile, false);
+            </>
+        );
+    }
 };
 
 export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps> = (props) => {
+    const dispatch = useDispatch();
     const classNameToUse = buildClassName(css.backlogItemPlanningPanel, props.renderMobile ? css.mobile : null);
-    const addedBacklogItemElts = buildAddedBacklogItemElts(props.editMode, props.addedBacklogItems, props.renderMobile);
-    const backlogItemElts = buildBacklogItemElts(props.editMode, props.backlogItems, props.renderMobile);
     const actionButtons =
         props.editMode === EditMode.View ? null : (
             <div className={css.backlogItemPlanningActionPanel}>
@@ -129,13 +131,38 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
                 />
             </div>
         );
-    return (
-        <div className={classNameToUse}>
-            {addedBacklogItemElts}
-            {actionButtons}
-            {backlogItemElts}
-        </div>
-    );
+    let inLoadedSection = false;
+    let inAddedSection = false;
+    let afterPushedItem = false;
+    let renderElts = [];
+    props.allItems.forEach((item) => {
+        let highlightAbove = false;
+        if (item.source === BacklogItemSource.Added) {
+            inAddedSection = true;
+            highlightAbove = afterPushedItem;
+        }
+        if (item.source === BacklogItemSource.Loaded) {
+            highlightAbove = afterPushedItem;
+            if (inAddedSection) {
+                renderElts.push(<SimpleDivider />);
+                inAddedSection = false;
+            }
+            if (!inLoadedSection) {
+                renderElts.push(actionButtons);
+            }
+            inLoadedSection = true;
+        }
+        if (item.source === BacklogItemSource.Added || item.source === BacklogItemSource.Loaded) {
+            const elt = buildBacklogItemElt(props.editMode, item, props.renderMobile, highlightAbove, dispatch);
+            renderElts.push(elt);
+        }
+        afterPushedItem = item.source === BacklogItemSource.Pushed;
+    });
+    if (inLoadedSection) {
+        renderElts.push(<SimpleDivider />);
+    }
+
+    return <div className={classNameToUse}>{renderElts}</div>;
 };
 
 export const BacklogItemPlanningPanel = withTranslation()(RawBacklogItemPlanningPanel);

@@ -4,18 +4,12 @@ import * as React from "react";
 // components
 import { AppContext, AppProvider } from "./contexts/appContextUtil";
 
-// // components
-// import { BacklogItem, BacklogItemPlanningPanel } from "./components/organisms/panels/BacklogItemPlanningPanel";
-// import { TopMenuPanelContainer } from "./containers/TopMenuPanelContainer";
-
 // utils
 import { ThemeHelper } from "./utils/themeHelper";
+import * as wsClient from "./utils/wsClient";
 
 // style
 import css from "./App.module.css";
-
-// // interfaces/types
-// import { EditMode } from "./components/molecules/buttons/EditButton";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
@@ -30,6 +24,7 @@ export interface AppStateProps {
 
 export interface AppDispatchProps {
     onLoaded: { () };
+    onWebSocketMessageReceived: { (data: any) };
 }
 
 export type AppProps = AppStateProps & AppDispatchProps;
@@ -47,6 +42,9 @@ export class App extends React.Component<AppProps, AppState> {
         super(props);
     }
     componentDidMount() {
+        wsClient.init((data: any) => {
+            this.props.onWebSocketMessageReceived(data);
+        });
         this.themeHelper.init();
         this.props.onLoaded();
         window.addEventListener("resize", this.handleResize);
@@ -78,6 +76,12 @@ export class App extends React.Component<AppProps, AppState> {
     }
     updateIsMobile = (value: boolean) => {
         if (this.state?.isMobile !== value) {
+            // console.log("sending message");
+            // try {
+            //     wsClient.send({ ...{ isMobile: value }, type: "userevent" });
+            // } catch {
+            //     console.log("unable to send - socket probably not open yet");
+            // }
             this.setState({ isMobile: value });
         }
     };

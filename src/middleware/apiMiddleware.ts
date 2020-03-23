@@ -1,5 +1,5 @@
 // externals
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { Action, Dispatch } from "redux";
 
 // consts/enums
@@ -23,6 +23,25 @@ export interface ApiAction<T> extends Action {
         types: ApiActionType[];
     };
     meta?: any;
+}
+
+export interface ApiActionFailureError {
+    message: string;
+    name: string;
+    stack: string;
+}
+
+export interface ApiActionFailurePayload<R> {
+    response: R;
+    error: ApiActionFailureError;
+}
+
+export interface ApiActionSuccessPayload<T> {
+    response: T;
+}
+
+export interface ApiActionBaseMeta<T> {
+    requestBody: T;
 }
 
 export const API = "API";
@@ -57,18 +76,26 @@ const dispatchRequest = (dispatch: Dispatch<any>, requestType: ApiActionType, da
     });
 };
 
-const dispatchSuccess = (dispatch: Dispatch<any>, requestType: ApiActionType, data: any, requestBody: any, meta: any) => {
-    dispatch({
-        type: requestType,
-        payload: {
-            response: data
+const dispatchSuccess = (
+    dispatch: Dispatch<any>,
+    type: ApiActionType,
+    data: any,
+    requestBody: AxiosRequestConfig,
+    origMeta: any
+) => {
+    const payload: ApiActionSuccessPayload<any> = {
+        response: data
+    };
+    const meta: ApiActionBaseMeta<any> = {
+        ...{
+            requestBody
         },
-        meta: {
-            ...{
-                requestBody
-            },
-            ...meta
-        }
+        ...origMeta
+    };
+    dispatch({
+        type,
+        payload,
+        meta
     });
 };
 
@@ -95,6 +122,14 @@ const dispatchFailure = (
     });
 };
 
+export interface ApiActionMetaDataRequestBody<T> extends AxiosRequestConfig {
+    data?: T;
+}
+
+export interface ApiActionMetaParamsRequestBody<T> extends AxiosRequestConfig {
+    params?: T;
+}
+
 export const apiMiddleware = ({ dispatch }) => (next) => (action: Action) => {
     next(action);
     if (action.type !== API) {
@@ -107,7 +142,7 @@ export const apiMiddleware = ({ dispatch }) => (next) => (action: Action) => {
     axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || "";
     axios.defaults.headers.common["Content-Type"] = APPLICATION_JSON;
     //    axios.defaults.headers.common["Authorization"] = `Bearer  ${token}`;
-    const requestBody = {
+    const requestBody: AxiosRequestConfig = {
         url: endpoint,
         method,
         headers,
@@ -117,18 +152,17 @@ export const apiMiddleware = ({ dispatch }) => (next) => (action: Action) => {
     axios
         .request(requestBody)
         .then(({ data }) => {
-            dispatchSuccess(dispatch, getSuccessType(types), data, requestBody, apiAction.meta);
+            try {
+                dispatchSuccess(dispatch, getSuccessType(types), data, requestBody, apiAction.meta);
+            } catch (err) {
+                console.error(`Error occurred while dispatching success: ${err}`);
+            }
         })
         .catch((error) => {
             dispatchFailure(dispatch, getFailureType(types), data, requestBody, apiAction.meta, error);
 
             // if (error.response && error.response.status === 403) {
             //     dispatch(accessDenied(window.location.pathname));
-            // }
-        })
-        .finally(() => {
-            // if (label) {
-            //     dispatch(apiEnd(label));
             // }
         });
 };

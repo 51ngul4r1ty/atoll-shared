@@ -22,3 +22,7 @@ export const SAVE_BACKLOG_ITEM = "app/save:backlog-item";
 export const CANCEL_UNSAVED_BACKLOG_ITEM = "app/cancel-unsaved:backlog-item";
 
 export const UPDATE_BACKLOG_ITEM_FIELDS = "app/update:user-story-fields";
+
+export const RECEIVE_WEBSOCKET_MESSAGE = "app/ws:receive-message";
+
+export const RECEIVE_PUSHED_BACKLOG_ITEM = "app/receive:pushed-backlog-item";

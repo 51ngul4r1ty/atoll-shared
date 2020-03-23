@@ -1,0 +1,9 @@
+.dividerLine {
+    font-size: 0;
+    height: 0.0625rem; /* TODO: Move to vars */
+    margin-bottom: 0.0625rem; /* TODO: Move to vars */
+}
+
+.dividerLine.highlighted {
+    background-color: #5a5; /* TODO: Use theme */
+}

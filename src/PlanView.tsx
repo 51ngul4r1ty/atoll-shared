@@ -14,7 +14,7 @@ import css from "./App.module.css";
 
 // interfaces/types
 import { EditMode } from "./components/molecules/buttons/EditButton";
-import { BacklogItemType } from "./reducers/backlogItemsReducer";
+import { BacklogItemType, BacklogItemWithSource, SaveableBacklogItem } from "./reducers/backlogItemsReducer";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
@@ -23,8 +23,8 @@ import { BacklogItemType } from "./reducers/backlogItemsReducer";
 /* exported interface */
 
 export interface PlanViewStateProps {
-    addedBacklogItems: PlanningPanelBacklogItem[];
-    backlogItems: PlanningPanelBacklogItem[];
+    allItems: BacklogItemWithSource[];
+    highlightedDividers: number[];
     editMode: EditMode;
 }
 
@@ -50,8 +50,8 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
             <>
                 <TopMenuPanelContainer activeTabId="plan" />
                 <BacklogItemPlanningPanel
-                    addedBacklogItems={this.props.addedBacklogItems}
-                    backlogItems={this.props.backlogItems}
+                    allItems={this.props.allItems}
+                    highlightedDividers={this.props.highlightedDividers}
                     editMode={this.props.editMode}
                     onAddNewBacklogItem={(type: BacklogItemType) => {
                         this.props.onAddNewBacklogItem(type);
