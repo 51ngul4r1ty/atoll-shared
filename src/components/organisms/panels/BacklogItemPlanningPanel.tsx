@@ -61,6 +61,7 @@ export const buildBacklogItemElt = (
     editMode: EditMode,
     item: SaveableBacklogItem,
     renderMobile: boolean,
+    highlightAbove: boolean,
     dispatch: Dispatch<any>
 ) => {
     if (!item.saved && editMode === EditMode.Edit) {
@@ -92,11 +93,9 @@ export const buildBacklogItemElt = (
         );
     }
     if (item.saved) {
-        let highlighted: boolean;
-        highlighted = false;
         return (
             <>
-                <SimpleDivider key={`divider-${item.id}`} highlighted={highlighted} />
+                <SimpleDivider key={`divider-${item.id}`} highlighted={highlightAbove} />
                 <BacklogItemCard
                     key={item.id}
                     estimate={item.estimate}
@@ -134,12 +133,16 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
         );
     let inLoadedSection = false;
     let inAddedSection = false;
+    let afterPushedItem = false;
     let renderElts = [];
     props.allItems.forEach((item) => {
+        let highlightAbove = false;
         if (item.source === BacklogItemSource.Added) {
             inAddedSection = true;
+            highlightAbove = afterPushedItem;
         }
         if (item.source === BacklogItemSource.Loaded) {
+            highlightAbove = afterPushedItem;
             if (inAddedSection) {
                 renderElts.push(<SimpleDivider />);
                 inAddedSection = false;
@@ -150,8 +153,10 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
             inLoadedSection = true;
         }
         if (item.source === BacklogItemSource.Added || item.source === BacklogItemSource.Loaded) {
-            renderElts.push(buildBacklogItemElt(props.editMode, item, props.renderMobile, dispatch));
+            const elt = buildBacklogItemElt(props.editMode, item, props.renderMobile, highlightAbove, dispatch);
+            renderElts.push(elt);
         }
+        afterPushedItem = item.source === BacklogItemSource.Pushed;
     });
     if (inLoadedSection) {
         renderElts.push(<SimpleDivider />);

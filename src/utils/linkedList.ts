@@ -37,14 +37,14 @@ export class LinkedList<T> {
         if (itemId === nextId) {
             throw new Error(`Unable to addLink because itemId=${itemId} and nextId=${nextId} - they may not be the same`);
         }
-        let item = this.itemHashMap[itemId] || null;
-        let next = this.itemHashMap[nextId] || null;
-        let nextAdded = false;
-        let itemAdded = false;
+        let item = this.itemHashMap[itemId] || null; // 1. item = "1"
+        let next = this.itemHashMap[nextId] || null; // 2. next = null
+        let nextAdded = false; // 3.
+        let itemAdded = false; // 4.
         if (!next && nextId !== null) {
             // need to add the "next" item because it doesn't exist yet
-            next = this.addUnlinkedItem(nextId);
-            nextAdded = true;
+            next = this.addUnlinkedItem(nextId); // 5. added (next = "new-item-1")
+            nextAdded = true; // 6. nextAdded = true
         }
         if (!item && itemId !== null) {
             // need to add the item itself because it doesn't exist yet
@@ -53,7 +53,12 @@ export class LinkedList<T> {
         }
         if (item) {
             // link item to the next item
+            const oldNext = item.next;
             item.next = next;
+            if (next && nextAdded) {
+                // make sure to preserve the link to the next item in the chain
+                next.next = oldNext;
+            }
             if (itemAdded && next?.id && next?.id === this.firstItem?.id) {
                 // next is first item but we just added something before it!
                 this.firstItem = item;
