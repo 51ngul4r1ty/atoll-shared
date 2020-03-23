@@ -5,5 +5,10 @@ module.exports = {
         "^.+\\.tsx?$": "ts-jest",
         ".+\\.(css|styl|less|sass|scss)$": "<rootDir>/node_modules/jest-css-modules-transform"
     },
-    moduleFileExtensions: ["js", "jsx", "json", "ts", "tsx"]
+    moduleFileExtensions: ["js", "jsx", "json", "ts", "tsx"],
+    globals: {
+        "ts-jest": {
+            diagnostics: true
+        }
+    }
 };
