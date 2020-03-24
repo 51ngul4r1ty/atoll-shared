@@ -14,6 +14,7 @@ export { DoneIcon } from "./components/atoms/icons/DoneIcon";
 export { EditIcon } from "./components/atoms/icons/EditIcon";
 export { HamburgerIcon } from "./components/atoms/icons/HamburgerIcon";
 export { HomeButton } from "./components/molecules/buttons/HomeButton";
+export { RefreshIcon } from "./components/atoms/icons/RefreshIcon";
 export { SimpleButton } from "./components/atoms/buttons/SimpleButton";
 export { SimpleText } from "./components/atoms/text/SimpleText";
 export { TabStrip } from "./components/atoms/tabs/TabStrip";
