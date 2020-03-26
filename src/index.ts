@@ -8,6 +8,7 @@ export { AddButton } from "./components/molecules/buttons/AddButton";
 export { CancelButton } from "./components/molecules/buttons/CancelButton";
 export { DoneButton } from "./components/molecules/buttons/DoneButton";
 export { EditButton, EditMode } from "./components/molecules/buttons/EditButton";
+export { RefreshButton } from "./components/molecules/buttons/RefreshButton";
 export { AddIcon } from "./components/atoms/icons/AddIcon";
 export { CancelIcon } from "./components/atoms/icons/CancelIcon";
 export { DoneIcon } from "./components/atoms/icons/DoneIcon";

@@ -5,6 +5,7 @@ import { push } from "connected-react-router";
 
 // actions
 import { setEditMode } from "../actions/appActions";
+import { getBacklogItems } from "../actions/backlogItems";
 
 // state
 import { StateTree } from "../types";
@@ -25,7 +26,8 @@ export interface TopMenuPanelContainerProps {
 const mapStateToProps = (state: StateTree, ownProps: TopMenuPanelContainerProps): TopMenuPanelStateProps => {
     let result: TopMenuPanelStateProps = {
         activeTabId: ownProps.activeTabId,
-        editMode: state.app.editMode
+        editMode: state.app.editMode,
+        showRefreshButton: state.backlogItems.pushedItems.length > 0
     };
     return result;
 };
@@ -47,6 +49,9 @@ const mapDispatchToProps = (dispatch: Dispatch): TopMenuPanelDispatchProps => {
         },
         setEditMode: (editMode: EditMode) => {
             dispatch(setEditMode(editMode));
+        },
+        refreshData: () => {
+            dispatch(getBacklogItems());
         }
     };
 };
