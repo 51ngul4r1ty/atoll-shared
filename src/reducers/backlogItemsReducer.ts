@@ -162,6 +162,8 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                 // TODO: Add `const actionTyped = ` to make this type-safe
                 const { payload } = action;
                 draft.items = payload.response.data.items;
+                draft.pushedItems = [];
+                draft.addedItems = [];
                 rebuildAllItems(draft);
                 return;
             }

@@ -8,8 +8,9 @@ import { useFeatureToggle, ToggleFeature } from "@flopflip/react-broadcast";
 import { TabStrip } from "../../atoms/tabs/TabStrip";
 
 // molecules
-import { HomeButton } from "../../molecules/buttons/HomeButton";
 import { EditButton, EditMode } from "../../molecules/buttons/EditButton";
+import { HomeButton } from "../../molecules/buttons/HomeButton";
+import { RefreshButton } from "../../molecules/buttons/RefreshButton";
 
 // style
 import css from "./TopMenuPanel.module.css";
@@ -20,11 +21,13 @@ import { routePlanView, routeSprintView, routeReviewView } from "../../../action
 export interface TopMenuPanelStateProps {
     activeTabId?: string;
     editMode: EditMode;
+    showRefreshButton: boolean;
 }
 
 export interface TopMenuPanelDispatchProps {
     onChangeTab?: { (selectedTabId: string) };
     setEditMode: { (editMode: EditMode) };
+    refreshData: { () };
 }
 
 export type TopMenuPanelProps = TopMenuPanelStateProps & TopMenuPanelDispatchProps & WithTranslation;
@@ -36,6 +39,17 @@ export const RawTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
     const enableReviewTab = useFeatureToggle("enableReviewTab");
     const dispatch = useDispatch();
     const buttons = [];
+    console.log(`RE-RENDERING showRefreshButton=${props.showRefreshButton}`);
+    if (props.showRefreshButton) {
+        buttons.push(
+            <RefreshButton
+                key="refresh-button"
+                onClick={() => {
+                    props.refreshData();
+                }}
+            />
+        );
+    }
     buttons.push(
         <ToggleFeature key="edit-button-key" flag="showEditButton">
             <EditButton

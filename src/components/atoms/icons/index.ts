@@ -7,4 +7,5 @@ export * from "./EditCancelIcon";
 export * from "./EditIcon";
 export * from "./HamburgerIcon";
 export * from "./IssueIcon";
+export * from "./RefreshIcon";
 export * from "./StoryIcon";
