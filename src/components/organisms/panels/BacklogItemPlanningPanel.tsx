@@ -42,7 +42,6 @@ export interface PlanningPanelBacklogItem {
 
 export interface BacklogItemPlanningPanelStateProps {
     allItems: BacklogItemWithSource[];
-    highlightedDividers: number[];
     editMode: EditMode;
     renderMobile?: boolean;
 }
