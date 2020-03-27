@@ -20,12 +20,14 @@ export { SimpleButton } from "./components/atoms/buttons/SimpleButton";
 export { SimpleText } from "./components/atoms/text/SimpleText";
 export { TabStrip } from "./components/atoms/tabs/TabStrip";
 export { BacklogItemDetailForm } from "./components/organisms/forms/BacklogItemDetailForm";
+export { BacklogItemPlanningPanel } from "./components/organisms/panels/BacklogItemPlanningPanel";
 export * from "./components/atoms/icons";
 export * from "./utils/linkedList";
 
 // interfaces/types
 export { StateTree, FeatureToggle, FeatureTogglesState } from "./types";
 export { BacklogItem, BacklogItemsState } from "./reducers/backlogItemsReducer";
+export { BacklogItemWithSource, BacklogItemType, BacklogItemSource } from "./reducers/backlogItemsReducer";
 
 // containers
 export { default as IntlProvider } from "./i18n/IntlProvider";
