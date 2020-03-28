@@ -174,10 +174,10 @@ const getDragItemId = (target: EventTarget) => {
     return null;
 };
 
-const getDragItemIdUnderTarget = (e: React.MouseEvent<HTMLElement>) => {
+const getDragItemIdUnderTarget = (e: React.MouseEvent<HTMLElement>, adjustY: number) => {
     let result: string = null;
     const target = e.target as HTMLElement;
-    const clientY = e.clientY;
+    const clientY = e.clientY + adjustY;
     const item = getDragItem(target);
     const container = item.parentElement;
     let lastTop = 0;
@@ -343,12 +343,13 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
             onMouseMove={(e: React.MouseEvent<HTMLElement>) => {
                 if (dragStartClientY) {
                     const deltaY = e.clientY - dragStartClientY;
+                    const deltaYToTop = dragItemStartTop - dragStartClientY;
                     if (Math.abs(deltaY) > 5) {
                         setIsDragging(true);
                     }
                     if (isDragging) {
                         setDragItemTop(dragItemStartTop + deltaY);
-                        const overItemId = getDragItemIdUnderTarget(e);
+                        const overItemId = getDragItemIdUnderTarget(e, deltaYToTop);
                         if (overItemId) {
                             setDragOverItemId(overItemId);
                         }
