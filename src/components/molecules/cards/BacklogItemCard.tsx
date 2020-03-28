@@ -36,6 +36,7 @@ export const titleForItemId = (id: string): string | undefined => {
 
 // TODO: See if this is defined elsewhere:
 export enum BacklogItemTypeEnum {
+    None,
     Bug,
     Story
 }
@@ -43,14 +44,21 @@ export enum BacklogItemTypeEnum {
 export interface BacklogItemCardStateProps {
     estimate: number | null;
     isDraggable?: boolean;
+    internalId: string;
     itemId: string;
     itemType: BacklogItemTypeEnum;
     marginBelowItem?: boolean;
     renderMobile?: boolean;
     titleText: string;
+    top?: string;
+    width?: any;
 }
 
-export interface BacklogItemCardDispatchProps {}
+export interface BacklogItemCardDispatchProps {
+    // onDragStart?: { (itemId: string) };
+    // onDragMove?: { (itemId: string, deltaY: number) };
+    // onDragEnd?: { (itemId: string) };
+}
 
 export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDispatchProps & WithTranslation;
 
@@ -60,10 +68,18 @@ export const RawBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
     const classNameToUse = buildClassName(
         css.backlogItemCard,
         props.renderMobile ? css.mobile : null,
-        props.marginBelowItem ? css.marginBelowItem : null
+        props.marginBelowItem ? css.marginBelowItem : null,
+        props.itemType === BacklogItemTypeEnum.None ? css.backlogItemGap : null,
+        props.top ? css.dragging : null
     );
     return (
-        <div className={classNameToUse} tabIndex={0}>
+        <div
+            data-class="backlogitem"
+            data-id={props.internalId}
+            className={classNameToUse}
+            tabIndex={0}
+            style={{ top: props.top, width: props.width }}
+        >
             <div className={css.backlogItemType}>
                 <div className={css.backlogItemIcon}>
                     {props.itemType === BacklogItemTypeEnum.Story ? <StoryIcon invertColors /> : <IssueIcon invertColors />}
@@ -75,7 +91,15 @@ export const RawBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
             <div className={css.backlogItemText}>{props.titleText}</div>
             <div className={css.backlogItemEstimate}>{formatEstimateForDisplay(props.estimate)}</div>
             {props.isDraggable ? (
-                <div className={css.backlogItemDragButton}>
+                <div
+                    className={css.backlogItemDragButton}
+                    // onMouseDown={() => {
+                    //     props.onDragStart && props.onDragStart(props.itemId);
+                    // }}
+                    // onMouseUp={() => {
+                    //     props.onDragEnd && props.onDragEnd(props.itemId);
+                    // }}
+                >
                     <DragIcon />
                 </div>
             ) : null}

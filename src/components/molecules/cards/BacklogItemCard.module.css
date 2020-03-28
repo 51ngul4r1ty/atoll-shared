@@ -1,6 +1,7 @@
 .backlogItemCard {
     display: flex;
     height: 2rem;
+    background-color: var(--normal-page-color, white);
 }
 
 .backlogItemCard.mobile {
@@ -106,4 +107,12 @@
 .backlogItemDragButton svg {
     width: 1.3rem;
     height: 1.3rem;
+}
+
+.backlogItemGap {
+    opacity: 0;
+}
+
+.dragging {
+    position: absolute;
 }
