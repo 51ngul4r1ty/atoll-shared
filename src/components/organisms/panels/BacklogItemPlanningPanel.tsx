@@ -174,6 +174,31 @@ const getDragItemId = (target: EventTarget) => {
     return null;
 };
 
+const getDragItemIdUnderTarget = (e: React.MouseEvent<HTMLElement>) => {
+    let result: string = null;
+    const target = e.target as HTMLElement;
+    const clientY = e.clientY;
+    const item = getDragItem(target);
+    const container = item.parentElement;
+    let lastTop = 0;
+    for (let i = 0; i < container.children.length; i++) {
+        if (!result) {
+            const item = container.children.item(i);
+            if (item.hasAttribute("data-id")) {
+                const dataId = item.getAttribute("data-id");
+                const trueDataId = isSpacerInternalId(dataId) ? parseSpacerInternalId(dataId) : dataId;
+                const rect = item.getBoundingClientRect();
+                if (clientY > lastTop && clientY <= rect.top) {
+                    result = trueDataId;
+                    console.log(`found item: ${trueDataId}`);
+                }
+                lastTop = rect.top;
+            }
+        }
+    }
+    return result;
+};
+
 const getDragItemWidth = (target: EventTarget) => {
     const item = getDragItem(target);
     if (item) {
@@ -183,13 +208,37 @@ const getDragItemWidth = (target: EventTarget) => {
     return null;
 };
 
+const getDragItemTop = (target: EventTarget) => {
+    const item = getDragItem(target);
+    if (item) {
+        const rect = item.getBoundingClientRect();
+        return rect.top;
+    }
+    return null;
+};
+
+const SPACER_PREFIX = "spacer---";
+
+export const buildSpacerInternalId = (id: string) => {
+    return `${SPACER_PREFIX}${id}`;
+};
+
+export const isSpacerInternalId = (id: string) => {
+    return id.startsWith(SPACER_PREFIX);
+};
+
+export const parseSpacerInternalId = (id: string) => {
+    return isSpacerInternalId(id) ? id.substring(SPACER_PREFIX.length) : null;
+};
+
 export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps> = (props) => {
-    console.log("rendering");
     const [itemCardWidth, setItemCardWidth] = useState(null);
+    const [dragStartClientY, setDragStartClientY] = useState(null);
     const [dragItemId, setDragItemId] = useState(null);
     const [dragOverItemId, setDragOverItemId] = useState(null);
-    const [dragItemTop, setDragItemTop] = useState("1px");
-    console.log(`rendering state ${dragItemId} ${dragOverItemId}}`);
+    const [dragItemTop, setDragItemTop] = useState(null);
+    const [dragItemStartTop, setDragItemStartTop] = useState(null);
+    const [isDragging, setIsDragging] = useState(false);
     const ref = React.createRef<HTMLDivElement>();
     React.useEffect(() => {
         const computedStyle = getComputedStyle(ref.current);
@@ -222,16 +271,14 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
     props.allItems.forEach((item) => {
         const isDragItem = dragItemId === item.id;
         const isDragOverItem = dragOverItemId === item.id;
-        console.log(`isDragItem: ${isDragItem} id: ${dragItemId}`);
         if (isDragOverItem) {
-            console.log(`isDragOverItem: ${dragOverItemId}`);
             // insert gap here
             renderElts.push(<SimpleDivider />);
             renderElts.push(
                 <BacklogItemCard
                     key={`none---${item.id}---none`}
                     estimate={null}
-                    internalId={null}
+                    internalId={buildSpacerInternalId(item.id)}
                     itemId={null}
                     itemType={BacklogItemTypeEnum.None}
                     titleText={null}
@@ -242,7 +289,6 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
             );
         }
         if (isDragItem) {
-            console.log(`isDragItem: ${dragItemId}`);
             const elt = buildDragBacklogItemElt(props.editMode, item, props.renderMobile, dragItemTop, itemCardWidth);
             renderElts.push(elt);
         } else {
@@ -285,15 +331,35 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
                 if (id) {
                     const width = getDragItemWidth(e.target);
                     console.log(`drag start: ${id} ${width}`);
+                    const top = getDragItemTop(e.target);
+                    setDragItemTop(top);
+                    setDragItemStartTop(top);
+                    setDragStartClientY(e.clientY);
                     setItemCardWidth(width);
                     setDragItemId(id);
                     setDragOverItemId(id);
+                }
+            }}
+            onMouseMove={(e: React.MouseEvent<HTMLElement>) => {
+                if (dragStartClientY) {
+                    const deltaY = e.clientY - dragStartClientY;
+                    if (Math.abs(deltaY) > 5) {
+                        setIsDragging(true);
+                    }
+                    if (isDragging) {
+                        setDragItemTop(dragItemStartTop + deltaY);
+                        const overItemId = getDragItemIdUnderTarget(e);
+                        if (overItemId) {
+                            setDragOverItemId(overItemId);
+                        }
+                    }
                 }
             }}
             onMouseUp={(e: React.MouseEvent<HTMLElement>) => {
                 const id = getDragItemId(e.target);
                 if (dragItemId) {
                     console.log(`drag end: ${id}`);
+                    setDragStartClientY(null);
                     setDragItemId(null);
                     setDragOverItemId(null);
                 }
