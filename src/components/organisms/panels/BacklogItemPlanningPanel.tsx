@@ -172,25 +172,28 @@ const targetIsDragButton = (e: React.MouseEvent<HTMLElement>) => {
     return !!getParentWithDataClass(e.target as HTMLElement, "drag-button");
 };
 
+const BELOW_LAST_CARD_ID = "##below#last#card##";
+
 const getDragItemIdUnderTarget = (e: React.MouseEvent<HTMLElement>, adjustY: number, cardPositions: CardPosition[]) => {
     let result: string = null;
     const clientY = e.clientY + adjustY;
     let lastTop = 0;
-    console.log("========== getDragItemIdUnderTarget (start) ===========");
+    let lastCard: CardPosition = null;
     cardPositions.forEach((item) => {
-        console.log(`  card: ${item.id} ${lastTop} --> ${item.top}`);
         if (!result) {
             const dataId = item.id;
-            console.log(
-                `  clientY (${clientY}) > lastTop (${lastTop}) = ${clientY > lastTop}, clientY <= item.top = ${clientY <= item.top}`
-            );
             if (clientY > lastTop && clientY <= item.top) {
                 result = dataId;
             }
             lastTop = item.top;
+            lastCard = item;
         }
     });
-    console.log("========== getDragItemIdUnderTarget (finish) ==========");
+    if (!result && lastCard) {
+        if (clientY > lastTop && clientY <= lastCard.bottom) {
+            result = BELOW_LAST_CARD_ID;
+        }
+    }
     return result;
 };
 
@@ -247,14 +250,11 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
         const computedStyle = getComputedStyle(ref.current);
         const width = ref.current?.offsetWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight);
         const elts = ref.current.querySelectorAll(`[data-class='backlogitem']`);
-        console.log("-------------------- useEffect (start) ---------------------");
         elts.forEach((elt) => {
             const id = elt.getAttribute("data-id");
             const rect = elt.getBoundingClientRect();
             newCardPositions.push({ id, top: rect.top, bottom: rect.bottom });
-            console.log(`  id: ${id}  top: ${rect.top}  bottom: ${rect.bottom}`);
         });
-        console.log("-------------------- useEffect (finish) --------------------");
         setCardPositions(newCardPositions);
         setItemCardWidth(width);
     }, []);
