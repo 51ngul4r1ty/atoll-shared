@@ -41,20 +41,10 @@ export interface PlanningPanelBacklogItem {
     saved: boolean;
 }
 
-// export interface DragItemData {
-//     dragItemId: string;
-//     dragOverItemId: string;
-//     top: string;
-//     // left: string;
-//     // width: string;
-//     // height: string;
-// }
-
 export interface BacklogItemPlanningPanelStateProps {
     allItems: BacklogItemWithSource[];
     editMode: EditMode;
     renderMobile?: boolean;
-    //    dragItem?: DragItemData;
 }
 
 export interface BacklogItemPlanningPanelDispatchProps {
@@ -140,12 +130,6 @@ export const buildBacklogItemElt = (
                     isDraggable={editMode === EditMode.Edit}
                     renderMobile={renderMobile}
                     marginBelowItem
-                    // onDragStart={(itemId) => {
-                    //     console.log(`on drag start - ${itemId}`);
-                    // }}
-                    // onDragEnd={(itemId) => {
-                    //     console.log(`on drag end - ${itemId}`);
-                    // }}
                 />
             </>
         );
@@ -165,6 +149,16 @@ const getDragItem = (target: EventTarget) => {
     return null;
 };
 
+const getParentWithDataClass = (elt: HTMLElement, dataClass: string) => {
+    while (elt && elt.getAttribute("data-class") !== dataClass) {
+        elt = elt.parentElement;
+    }
+    if (elt) {
+        return elt;
+    }
+    return null;
+};
+
 const getDragItemId = (target: EventTarget) => {
     const item = getDragItem(target);
     if (item) {
@@ -172,6 +166,10 @@ const getDragItemId = (target: EventTarget) => {
         return id;
     }
     return null;
+};
+
+const targetIsDragButton = (e: React.MouseEvent<HTMLElement>) => {
+    return !!getParentWithDataClass(e.target as HTMLElement, "drag-button");
 };
 
 const getDragItemIdUnderTarget = (e: React.MouseEvent<HTMLElement>, adjustY: number) => {
@@ -190,7 +188,6 @@ const getDragItemIdUnderTarget = (e: React.MouseEvent<HTMLElement>, adjustY: num
                 const rect = item.getBoundingClientRect();
                 if (clientY > lastTop && clientY <= rect.top) {
                     result = trueDataId;
-                    console.log(`found item: ${trueDataId}`);
                 }
                 lastTop = rect.top;
             }
@@ -269,25 +266,8 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
     let afterPushedItem = false;
     let renderElts = [];
     props.allItems.forEach((item) => {
-        const isDragItem = dragItemId === item.id;
-        const isDragOverItem = dragOverItemId === item.id;
-        if (isDragOverItem) {
-            // insert gap here
-            renderElts.push(<SimpleDivider />);
-            renderElts.push(
-                <BacklogItemCard
-                    key={`none---${item.id}---none`}
-                    estimate={null}
-                    internalId={buildSpacerInternalId(item.id)}
-                    itemId={null}
-                    itemType={BacklogItemTypeEnum.None}
-                    titleText={null}
-                    isDraggable={props.editMode === EditMode.Edit}
-                    renderMobile={props.renderMobile}
-                    marginBelowItem
-                />
-            );
-        }
+        const isDragItem = isDragging && dragItemId === item.id;
+        const isDragOverItem = isDragging && dragOverItemId === item.id;
         if (isDragItem) {
             const elt = buildDragBacklogItemElt(props.editMode, item, props.renderMobile, dragItemTop, itemCardWidth);
             renderElts.push(elt);
@@ -310,7 +290,21 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
             }
             if (item.source === BacklogItemSource.Added || item.source === BacklogItemSource.Loaded) {
                 if (isDragOverItem) {
-                    // add gap here
+                    // insert gap here
+                    renderElts.push(<SimpleDivider />);
+                    renderElts.push(
+                        <BacklogItemCard
+                            key={`none---${item.id}---none`}
+                            estimate={null}
+                            internalId={buildSpacerInternalId(item.id)}
+                            itemId={null}
+                            itemType={BacklogItemTypeEnum.None}
+                            titleText={null}
+                            isDraggable={props.editMode === EditMode.Edit}
+                            renderMobile={props.renderMobile}
+                            marginBelowItem
+                        />
+                    );
                 }
                 const elt = buildBacklogItemElt(props.editMode, item, props.renderMobile, highlightAbove, dispatch);
                 renderElts.push(elt);
@@ -327,17 +321,19 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
             ref={ref}
             className={classNameToUse}
             onMouseDown={(e: React.MouseEvent<HTMLDivElement>) => {
-                const id = getDragItemId(e.target);
-                if (id) {
-                    const width = getDragItemWidth(e.target);
-                    console.log(`drag start: ${id} ${width}`);
-                    const top = getDragItemTop(e.target);
-                    setDragItemTop(top);
-                    setDragItemStartTop(top);
-                    setDragStartClientY(e.clientY);
-                    setItemCardWidth(width);
-                    setDragItemId(id);
-                    setDragOverItemId(id);
+                if (targetIsDragButton(e)) {
+                    const id = getDragItemId(e.target);
+                    if (id) {
+                        const width = getDragItemWidth(e.target);
+                        const top = getDragItemTop(e.target);
+                        setDragItemTop(top);
+                        setDragItemStartTop(top);
+                        setDragStartClientY(e.clientY);
+                        setItemCardWidth(width);
+                        setDragItemId(id);
+                        setDragOverItemId(id);
+                    }
+                    e.preventDefault();
                 }
             }}
             onMouseMove={(e: React.MouseEvent<HTMLElement>) => {
@@ -359,7 +355,6 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
             onMouseUp={(e: React.MouseEvent<HTMLElement>) => {
                 const id = getDragItemId(e.target);
                 if (dragItemId) {
-                    console.log(`drag end: ${id}`);
                     setDragStartClientY(null);
                     setDragItemId(null);
                     setDragOverItemId(null);
