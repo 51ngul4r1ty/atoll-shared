@@ -26,6 +26,7 @@ import {
 // actions
 import { updateBacklogItemFields, cancelUnsavedBacklogItem, saveBacklogItem } from "../../../actions/backlogItems";
 import { useState } from "react";
+import { useRecursiveTimeout } from "../../common/setTimeoutHook";
 
 /* exported interfaces */
 
@@ -193,6 +194,17 @@ const getDragItemIdUnderTarget = (e: React.MouseEvent<HTMLElement>, adjustY: num
     return result;
 };
 
+const getHtmlClientHeight = () => {
+    const htmlElt = document.getElementsByTagName("html")[0];
+    const clientHeight = htmlElt.clientHeight;
+    return clientHeight;
+};
+
+const atBottomOfPage = (clientY: number) => {
+    const clientHeight = getHtmlClientHeight();
+    return clientY > clientHeight * 0.95;
+};
+
 const getDragItemWidth = (target: EventTarget) => {
     const item = getDragItem(target);
     if (item) {
@@ -231,6 +243,37 @@ interface CardPosition {
     bottom: number;
 }
 
+const scrollDown = () => {
+    const clientHeight = getHtmlClientHeight();
+    const scrollByY = Math.round(clientHeight * 0.05);
+    window.scrollBy(0, scrollByY);
+};
+
+// const scrollDownCheck = (getScrollDownQueued: { (): boolean }, setScrollDownQueued: { (value: boolean) }) => {
+//     if (!getScrollDownQueued()) {
+//         setScrollDownQueued(true);
+//         setTimeout(() => {
+//             scrollDown();
+//             setScrollDownQueued(false);
+//         }, 500);
+//     }
+// };
+
+// const startScrollDownChecking = (getScrollDownQueued: { (): boolean }, setScrollDownQueued: { (value: boolean) }) => {
+//     setTimeout(() => {
+//         scrollDownCheck(getScrollDownQueued, setScrollDownQueued);
+//     }, 500);
+//     // scrollDownCheck(
+//     //     () => atBottomOfPage(e),
+//     //     () => scrollDownQueued,
+//     //     (value: boolean) => {
+//     //         setScrollDownQueued(value);
+//     //     }
+//     // );
+// };
+
+// const stopScrollDownChecking = () => {};
+
 export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps> = (props) => {
     const [cardPositions, setCardPositions] = useState([]);
     const [itemCardWidth, setItemCardWidth] = useState(null);
@@ -238,8 +281,15 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
     const [dragItemId, setDragItemId] = useState(null);
     const [dragOverItemId, setDragOverItemId] = useState(null);
     const [dragItemTop, setDragItemTop] = useState(null);
+    const [dragItemClientY, setDragItemClientY] = useState(null);
     const [dragItemStartTop, setDragItemStartTop] = useState(null);
     const [isDragging, setIsDragging] = useState(false);
+    useRecursiveTimeout(() => {
+        if (isDragging && atBottomOfPage(dragItemClientY)) {
+            scrollDown();
+        }
+        console.log(`I was called recusively, and synchronously dragStartClientY=${dragStartClientY}`);
+    }, 500);
     const ref = React.createRef<HTMLDivElement>();
     React.useEffect(() => {
         const newCardPositions: CardPosition[] = [];
@@ -361,6 +411,7 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
                     }
                     if (isDragging) {
                         setDragItemTop(dragItemStartTop + deltaY);
+                        setDragItemClientY(e.clientY);
                         const overItemId = getDragItemIdUnderTarget(e, deltaYToTop, cardPositions);
                         if (overItemId) {
                             setDragOverItemId(overItemId);

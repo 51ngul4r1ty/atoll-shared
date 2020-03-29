@@ -20,7 +20,7 @@ export { SimpleButton } from "./components/atoms/buttons/SimpleButton";
 export { SimpleText } from "./components/atoms/text/SimpleText";
 export { TabStrip } from "./components/atoms/tabs/TabStrip";
 export { BacklogItemDetailForm } from "./components/organisms/forms/BacklogItemDetailForm";
-export { BacklogItemPlanningPanel, DragItemData } from "./components/organisms/panels/BacklogItemPlanningPanel";
+export { BacklogItemPlanningPanel } from "./components/organisms/panels/BacklogItemPlanningPanel";
 export * from "./components/atoms/icons";
 export * from "./utils/linkedList";
 
