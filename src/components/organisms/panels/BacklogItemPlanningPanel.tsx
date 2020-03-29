@@ -288,7 +288,6 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
         if (isDragging && atBottomOfPage(dragItemClientY)) {
             scrollDown();
         }
-        console.log(`I was called recusively, and synchronously dragStartClientY=${dragStartClientY}`);
     }, 500);
     const ref = React.createRef<HTMLDivElement>();
     React.useEffect(() => {
