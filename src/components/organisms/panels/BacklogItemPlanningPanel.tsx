@@ -355,6 +355,7 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
             onMouseUp={(e: React.MouseEvent<HTMLElement>) => {
                 const id = getDragItemId(e.target);
                 if (dragItemId) {
+                    setIsDragging(false);
                     setDragStartClientY(null);
                     setDragItemId(null);
                     setDragOverItemId(null);
