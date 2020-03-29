@@ -172,27 +172,25 @@ const targetIsDragButton = (e: React.MouseEvent<HTMLElement>) => {
     return !!getParentWithDataClass(e.target as HTMLElement, "drag-button");
 };
 
-const getDragItemIdUnderTarget = (e: React.MouseEvent<HTMLElement>, adjustY: number) => {
+const getDragItemIdUnderTarget = (e: React.MouseEvent<HTMLElement>, adjustY: number, cardPositions: CardPosition[]) => {
     let result: string = null;
-    const target = e.target as HTMLElement;
     const clientY = e.clientY + adjustY;
-    const item = getDragItem(target);
-    const container = item.parentElement;
     let lastTop = 0;
-    for (let i = 0; i < container.children.length; i++) {
+    console.log("========== getDragItemIdUnderTarget (start) ===========");
+    cardPositions.forEach((item) => {
+        console.log(`  card: ${item.id} ${lastTop} --> ${item.top}`);
         if (!result) {
-            const item = container.children.item(i);
-            if (item.hasAttribute("data-id")) {
-                const dataId = item.getAttribute("data-id");
-                const trueDataId = isSpacerInternalId(dataId) ? parseSpacerInternalId(dataId) : dataId;
-                const rect = item.getBoundingClientRect();
-                if (clientY > lastTop && clientY <= rect.top) {
-                    result = trueDataId;
-                }
-                lastTop = rect.top;
+            const dataId = item.id;
+            console.log(
+                `  clientY (${clientY}) > lastTop (${lastTop}) = ${clientY > lastTop}, clientY <= item.top = ${clientY <= item.top}`
+            );
+            if (clientY > lastTop && clientY <= item.top) {
+                result = dataId;
             }
+            lastTop = item.top;
         }
-    }
+    });
+    console.log("========== getDragItemIdUnderTarget (finish) ==========");
     return result;
 };
 
@@ -228,7 +226,14 @@ export const parseSpacerInternalId = (id: string) => {
     return isSpacerInternalId(id) ? id.substring(SPACER_PREFIX.length) : null;
 };
 
+interface CardPosition {
+    id: string;
+    top: number;
+    bottom: number;
+}
+
 export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps> = (props) => {
+    const [cardPositions, setCardPositions] = useState([]);
     const [itemCardWidth, setItemCardWidth] = useState(null);
     const [dragStartClientY, setDragStartClientY] = useState(null);
     const [dragItemId, setDragItemId] = useState(null);
@@ -238,8 +243,19 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
     const [isDragging, setIsDragging] = useState(false);
     const ref = React.createRef<HTMLDivElement>();
     React.useEffect(() => {
+        const newCardPositions: CardPosition[] = [];
         const computedStyle = getComputedStyle(ref.current);
         const width = ref.current?.offsetWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight);
+        const elts = ref.current.querySelectorAll(`[data-class='backlogitem']`);
+        console.log("-------------------- useEffect (start) ---------------------");
+        elts.forEach((elt) => {
+            const id = elt.getAttribute("data-id");
+            const rect = elt.getBoundingClientRect();
+            newCardPositions.push({ id, top: rect.top, bottom: rect.bottom });
+            console.log(`  id: ${id}  top: ${rect.top}  bottom: ${rect.bottom}`);
+        });
+        console.log("-------------------- useEffect (finish) --------------------");
+        setCardPositions(newCardPositions);
         setItemCardWidth(width);
     }, []);
     const dispatch = useDispatch();
@@ -266,51 +282,53 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
     let afterPushedItem = false;
     let renderElts = [];
     props.allItems.forEach((item) => {
-        const isDragItem = isDragging && dragItemId === item.id;
-        const isDragOverItem = isDragging && dragOverItemId === item.id;
+        // TODO: Uncomment code below to restore original logic
+        const isDragItem = /* isDragging && */ dragItemId === item.id;
+        const isDragOverItem = /* isDragging && */ dragOverItemId === item.id;
         if (isDragItem) {
             const elt = buildDragBacklogItemElt(props.editMode, item, props.renderMobile, dragItemTop, itemCardWidth);
             renderElts.push(elt);
-        } else {
-            let highlightAbove = false;
-            if (item.source === BacklogItemSource.Added) {
-                inAddedSection = true;
-                highlightAbove = afterPushedItem;
+        }
+        let highlightAbove = false;
+        if (item.source === BacklogItemSource.Added) {
+            inAddedSection = true;
+            highlightAbove = afterPushedItem;
+        }
+        if (item.source === BacklogItemSource.Loaded) {
+            highlightAbove = afterPushedItem;
+            if (inAddedSection) {
+                renderElts.push(<SimpleDivider />);
+                inAddedSection = false;
             }
-            if (item.source === BacklogItemSource.Loaded) {
-                highlightAbove = afterPushedItem;
-                if (inAddedSection) {
-                    renderElts.push(<SimpleDivider />);
-                    inAddedSection = false;
-                }
-                if (!inLoadedSection) {
-                    renderElts.push(actionButtons);
-                }
-                inLoadedSection = true;
+            if (!inLoadedSection) {
+                renderElts.push(actionButtons);
             }
-            if (item.source === BacklogItemSource.Added || item.source === BacklogItemSource.Loaded) {
-                if (isDragOverItem) {
-                    // insert gap here
-                    renderElts.push(<SimpleDivider />);
-                    renderElts.push(
-                        <BacklogItemCard
-                            key={`none---${item.id}---none`}
-                            estimate={null}
-                            internalId={buildSpacerInternalId(item.id)}
-                            itemId={null}
-                            itemType={BacklogItemTypeEnum.None}
-                            titleText={null}
-                            isDraggable={props.editMode === EditMode.Edit}
-                            renderMobile={props.renderMobile}
-                            marginBelowItem
-                        />
-                    );
-                }
+            inLoadedSection = true;
+        }
+        if (item.source === BacklogItemSource.Added || item.source === BacklogItemSource.Loaded) {
+            if (isDragOverItem) {
+                // insert gap here
+                renderElts.push(<SimpleDivider />);
+                renderElts.push(
+                    <BacklogItemCard
+                        key={`none---${item.id}---none`}
+                        estimate={null}
+                        internalId={buildSpacerInternalId(item.id)}
+                        itemId={null}
+                        itemType={BacklogItemTypeEnum.None}
+                        titleText={null}
+                        isDraggable={props.editMode === EditMode.Edit}
+                        renderMobile={props.renderMobile}
+                        marginBelowItem
+                    />
+                );
+            }
+            if (!isDragItem) {
                 const elt = buildBacklogItemElt(props.editMode, item, props.renderMobile, highlightAbove, dispatch);
                 renderElts.push(elt);
             }
-            afterPushedItem = item.source === BacklogItemSource.Pushed;
         }
+        afterPushedItem = item.source === BacklogItemSource.Pushed;
     });
     if (inLoadedSection) {
         renderElts.push(<SimpleDivider />);
@@ -345,7 +363,7 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
                     }
                     if (isDragging) {
                         setDragItemTop(dragItemStartTop + deltaY);
-                        const overItemId = getDragItemIdUnderTarget(e, deltaYToTop);
+                        const overItemId = getDragItemIdUnderTarget(e, deltaYToTop, cardPositions);
                         if (overItemId) {
                             setDragOverItemId(overItemId);
                         }
