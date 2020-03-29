@@ -81,58 +81,54 @@ export const buildDragBacklogItemElt = (
     );
 };
 
-export const buildBacklogItemElt = (
+export const buildBacklogItemElts = (
     editMode: EditMode,
     item: SaveableBacklogItem,
     renderMobile: boolean,
     highlightAbove: boolean,
     dispatch: Dispatch<any>
-) => {
+): JSX.Element[] => {
     if (!item.saved && editMode === EditMode.Edit) {
-        return (
-            <>
-                <BacklogItemDetailForm
-                    key={`unsaved-form-${item.instanceId}`}
-                    className={css.backlogItemUserStoryFormRow}
-                    instanceId={item.instanceId}
-                    externalId={item.externalId}
-                    editing
-                    estimate={item.estimate}
-                    rolePhrase={item.rolePhrase}
-                    storyPhrase={item.storyPhrase}
-                    reasonPhrase={item.reasonPhrase}
-                    type={item.type}
-                    onDataUpdate={(fields) => {
-                        dispatch(updateBacklogItemFields(fields));
-                    }}
-                    onDoneClick={(instanceId) => {
-                        dispatch(saveBacklogItem(instanceId));
-                    }}
-                    onCancelClick={(instanceId) => {
-                        dispatch(cancelUnsavedBacklogItem(instanceId));
-                    }}
-                />
-                <SimpleDivider />
-            </>
-        );
+        return [
+            <BacklogItemDetailForm
+                key={`unsaved-form-${item.instanceId}`}
+                className={css.backlogItemUserStoryFormRow}
+                instanceId={item.instanceId}
+                externalId={item.externalId}
+                editing
+                estimate={item.estimate}
+                rolePhrase={item.rolePhrase}
+                storyPhrase={item.storyPhrase}
+                reasonPhrase={item.reasonPhrase}
+                type={item.type}
+                onDataUpdate={(fields) => {
+                    dispatch(updateBacklogItemFields(fields));
+                }}
+                onDoneClick={(instanceId) => {
+                    dispatch(saveBacklogItem(instanceId));
+                }}
+                onCancelClick={(instanceId) => {
+                    dispatch(cancelUnsavedBacklogItem(instanceId));
+                }}
+            />,
+            <SimpleDivider key={`divider-unsaved-form-${item.instanceId}`} />
+        ];
     }
     if (item.saved) {
-        return (
-            <>
-                <SimpleDivider key={`divider-${item.id}`} highlighted={highlightAbove} />
-                <BacklogItemCard
-                    key={item.id}
-                    estimate={item.estimate}
-                    internalId={`${item.id}`}
-                    itemId={`${item.externalId}`}
-                    itemType={item.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
-                    titleText={item.storyPhrase}
-                    isDraggable={editMode === EditMode.Edit}
-                    renderMobile={renderMobile}
-                    marginBelowItem
-                />
-            </>
-        );
+        return [
+            <SimpleDivider key={`divider-${item.id}`} highlighted={highlightAbove} />,
+            <BacklogItemCard
+                key={item.id}
+                estimate={item.estimate}
+                internalId={`${item.id}`}
+                itemId={`${item.externalId}`}
+                itemType={item.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
+                titleText={item.storyPhrase}
+                isDraggable={editMode === EditMode.Edit}
+                renderMobile={renderMobile}
+                marginBelowItem
+            />
+        ];
     }
 };
 
@@ -262,7 +258,7 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
     const classNameToUse = buildClassName(css.backlogItemPlanningPanel, props.renderMobile ? css.mobile : null);
     const actionButtons =
         props.editMode === EditMode.View ? null : (
-            <div className={css.backlogItemPlanningActionPanel}>
+            <div key="backlogitem-action-buttons" className={css.backlogItemPlanningActionPanel}>
                 <AddButton
                     itemName="story"
                     onClick={() => {
@@ -297,7 +293,7 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
         if (item.source === BacklogItemSource.Loaded) {
             highlightAbove = afterPushedItem;
             if (inAddedSection) {
-                renderElts.push(<SimpleDivider />);
+                renderElts.push(<SimpleDivider key={`divider-${item.id}`} />);
                 inAddedSection = false;
             }
             if (!inLoadedSection) {
@@ -307,11 +303,11 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
         }
         if (item.source === BacklogItemSource.Added || item.source === BacklogItemSource.Loaded) {
             if (isDragOverItem) {
-                // insert gap here
-                renderElts.push(<SimpleDivider />);
+                const cardKey = `none---${item.id}---none`;
+                renderElts.push(<SimpleDivider key={`divider-${cardKey}`} />);
                 renderElts.push(
                     <BacklogItemCard
-                        key={`none---${item.id}---none`}
+                        key={cardKey}
                         estimate={null}
                         internalId={buildSpacerInternalId(item.id)}
                         itemId={null}
@@ -324,14 +320,16 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
                 );
             }
             if (!isDragItem) {
-                const elt = buildBacklogItemElt(props.editMode, item, props.renderMobile, highlightAbove, dispatch);
-                renderElts.push(elt);
+                const elts = buildBacklogItemElts(props.editMode, item, props.renderMobile, highlightAbove, dispatch);
+                elts.forEach((elt) => {
+                    renderElts.push(elt);
+                });
             }
         }
         afterPushedItem = item.source === BacklogItemSource.Pushed;
     });
     if (inLoadedSection) {
-        renderElts.push(<SimpleDivider />);
+        renderElts.push(<SimpleDivider key="last-divider" />);
     }
 
     return (

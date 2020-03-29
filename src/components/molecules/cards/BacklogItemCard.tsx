@@ -54,11 +54,7 @@ export interface BacklogItemCardStateProps {
     width?: any;
 }
 
-export interface BacklogItemCardDispatchProps {
-    // onDragStart?: { (itemId: string) };
-    // onDragMove?: { (itemId: string, deltaY: number) };
-    // onDragEnd?: { (itemId: string) };
-}
+export interface BacklogItemCardDispatchProps {}
 
 export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDispatchProps & WithTranslation;
 
@@ -74,11 +70,11 @@ export const RawBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
     );
     return (
         <div
+            className={classNameToUse}
             data-class="backlogitem"
             data-id={props.internalId}
-            className={classNameToUse}
-            tabIndex={0}
             style={{ top: props.top, width: props.width }}
+            tabIndex={0}
         >
             <div className={css.backlogItemType}>
                 <div className={css.backlogItemIcon}>
