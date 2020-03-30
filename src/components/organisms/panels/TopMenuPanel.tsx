@@ -39,7 +39,6 @@ export const RawTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
     const enableReviewTab = useFeatureToggle("enableReviewTab");
     const dispatch = useDispatch();
     const buttons = [];
-    console.log(`RE-RENDERING showRefreshButton=${props.showRefreshButton}`);
     if (props.showRefreshButton) {
         buttons.push(
             <RefreshButton
