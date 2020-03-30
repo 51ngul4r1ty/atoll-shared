@@ -62,7 +62,7 @@ export const buildDragBacklogItemElt = (
     editMode: EditMode,
     item: SaveableBacklogItem,
     renderMobile: boolean,
-    top: string,
+    documentTop: string,
     width: any
 ) => {
     return (
@@ -76,7 +76,7 @@ export const buildDragBacklogItemElt = (
             isDraggable={editMode === EditMode.Edit}
             renderMobile={renderMobile}
             marginBelowItem
-            top={top}
+            top={documentTop}
             width={width}
         />
     );
@@ -173,21 +173,21 @@ const BELOW_LAST_CARD_ID = "##below#last#card##";
 
 const getDragItemIdUnderTarget = (e: React.MouseEvent<HTMLElement>, adjustY: number, cardPositions: CardPosition[]) => {
     let result: string = null;
-    const clientY = e.clientY + adjustY;
+    const clientY = e.clientY + window.scrollY + adjustY;
     let lastTop = 0;
     let lastCard: CardPosition = null;
     cardPositions.forEach((item) => {
         if (!result) {
             const dataId = item.id;
-            if (clientY > lastTop && clientY <= item.top) {
+            if (clientY > lastTop && clientY <= item.documentTop) {
                 result = dataId;
             }
-            lastTop = item.top;
+            lastTop = item.documentTop;
             lastCard = item;
         }
     });
     if (!result && lastCard) {
-        if (clientY > lastTop && clientY <= lastCard.bottom) {
+        if (clientY > lastTop && clientY <= lastCard.documentBottom) {
             result = BELOW_LAST_CARD_ID;
         }
     }
@@ -214,11 +214,11 @@ const getDragItemWidth = (target: EventTarget) => {
     return null;
 };
 
-const getDragItemTop = (target: EventTarget) => {
+const getDragItemDocumentTop = (target: EventTarget) => {
     const item = getDragItem(target);
     if (item) {
         const rect = item.getBoundingClientRect();
-        return rect.top;
+        return rect.top + window.scrollY;
     }
     return null;
 };
@@ -239,54 +239,38 @@ export const parseSpacerInternalId = (id: string) => {
 
 interface CardPosition {
     id: string;
-    top: number;
-    bottom: number;
+    documentTop: number;
+    documentBottom: number;
 }
 
-const scrollDown = () => {
+const scrollDown = (onScrollDown: { (scrollByY: number) }) => {
     const clientHeight = getHtmlClientHeight();
     const scrollByY = Math.round(clientHeight * 0.05);
+    const beforeScrollY = window.scrollY;
     window.scrollBy(0, scrollByY);
+    const afterScrollY = window.scrollY;
+    const deltaScrollY = afterScrollY - beforeScrollY;
+    if (deltaScrollY) {
+        onScrollDown(deltaScrollY);
+    }
 };
-
-// const scrollDownCheck = (getScrollDownQueued: { (): boolean }, setScrollDownQueued: { (value: boolean) }) => {
-//     if (!getScrollDownQueued()) {
-//         setScrollDownQueued(true);
-//         setTimeout(() => {
-//             scrollDown();
-//             setScrollDownQueued(false);
-//         }, 500);
-//     }
-// };
-
-// const startScrollDownChecking = (getScrollDownQueued: { (): boolean }, setScrollDownQueued: { (value: boolean) }) => {
-//     setTimeout(() => {
-//         scrollDownCheck(getScrollDownQueued, setScrollDownQueued);
-//     }, 500);
-//     // scrollDownCheck(
-//     //     () => atBottomOfPage(e),
-//     //     () => scrollDownQueued,
-//     //     (value: boolean) => {
-//     //         setScrollDownQueued(value);
-//     //     }
-//     // );
-// };
-
-// const stopScrollDownChecking = () => {};
 
 export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps> = (props) => {
     const [cardPositions, setCardPositions] = useState([]);
     const [itemCardWidth, setItemCardWidth] = useState(null);
     const [dragStartClientY, setDragStartClientY] = useState(null);
+    const [dragStartScrollY, setDragStartScrollY] = useState(null);
     const [dragItemId, setDragItemId] = useState(null);
     const [dragOverItemId, setDragOverItemId] = useState(null);
-    const [dragItemTop, setDragItemTop] = useState(null);
+    const [dragItemDocumentTop, setDragItemDocumentTop] = useState(null);
     const [dragItemClientY, setDragItemClientY] = useState(null);
-    const [dragItemStartTop, setDragItemStartTop] = useState(null);
+    const [dragItemStartDocumentTop, setDragItemStartDocumentTop] = useState(null);
     const [isDragging, setIsDragging] = useState(false);
     useRecursiveTimeout(() => {
         if (isDragging && atBottomOfPage(dragItemClientY)) {
-            scrollDown();
+            scrollDown((deltaY) => {
+                setDragItemDocumentTop(dragItemDocumentTop + deltaY);
+            });
         }
     }, 500);
     const ref = React.createRef<HTMLDivElement>();
@@ -298,7 +282,7 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
         elts.forEach((elt) => {
             const id = elt.getAttribute("data-id");
             const rect = elt.getBoundingClientRect();
-            newCardPositions.push({ id, top: rect.top, bottom: rect.bottom });
+            newCardPositions.push({ id, documentTop: rect.top + window.scrollY, documentBottom: rect.bottom + window.scrollY });
         });
         setCardPositions(newCardPositions);
         setItemCardWidth(width);
@@ -327,11 +311,10 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
     let afterPushedItem = false;
     let renderElts = [];
     props.allItems.forEach((item) => {
-        // TODO: Uncomment code below to restore original logic
-        const isDragItem = /* isDragging && */ dragItemId === item.id;
-        const isDragOverItem = /* isDragging && */ dragOverItemId === item.id;
+        const isDragItem = isDragging && dragItemId === item.id;
+        const isDragOverItem = isDragging && dragOverItemId === item.id;
         if (isDragItem) {
-            const elt = buildDragBacklogItemElt(props.editMode, item, props.renderMobile, dragItemTop, itemCardWidth);
+            const elt = buildDragBacklogItemElt(props.editMode, item, props.renderMobile, dragItemDocumentTop, itemCardWidth);
             renderElts.push(elt);
         }
         let highlightAbove = false;
@@ -390,10 +373,11 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
                     const id = getDragItemId(e.target);
                     if (id) {
                         const width = getDragItemWidth(e.target);
-                        const top = getDragItemTop(e.target);
-                        setDragItemTop(top);
-                        setDragItemStartTop(top);
+                        const top = getDragItemDocumentTop(e.target);
+                        setDragItemDocumentTop(top);
+                        setDragItemStartDocumentTop(top);
                         setDragStartClientY(e.clientY);
+                        setDragStartScrollY(window.scrollY);
                         setItemCardWidth(width);
                         setDragItemId(id);
                         setDragOverItemId(id);
@@ -403,15 +387,17 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
             }}
             onMouseMove={(e: React.MouseEvent<HTMLElement>) => {
                 if (dragStartClientY) {
-                    const deltaY = e.clientY - dragStartClientY;
-                    const deltaYToTop = dragItemStartTop - dragStartClientY;
-                    if (Math.abs(deltaY) > 5) {
+                    const mouseStartClientYToDocumentTop = dragStartClientY + dragStartScrollY;
+                    const mouseClientYToDocumentTop = e.clientY + window.scrollY;
+                    const mouseDeltaClientY = mouseClientYToDocumentTop - mouseStartClientYToDocumentTop;
+                    const adjustY = dragItemStartDocumentTop - dragStartScrollY - dragStartClientY;
+                    if (Math.abs(mouseDeltaClientY) > 5) {
                         setIsDragging(true);
                     }
                     if (isDragging) {
-                        setDragItemTop(dragItemStartTop + deltaY);
+                        setDragItemDocumentTop(dragItemStartDocumentTop + mouseDeltaClientY);
                         setDragItemClientY(e.clientY);
-                        const overItemId = getDragItemIdUnderTarget(e, deltaYToTop, cardPositions);
+                        const overItemId = getDragItemIdUnderTarget(e, adjustY, cardPositions);
                         if (overItemId) {
                             setDragOverItemId(overItemId);
                         }
