@@ -26,3 +26,5 @@ export const UPDATE_BACKLOG_ITEM_FIELDS = "app/update:user-story-fields";
 export const RECEIVE_WEBSOCKET_MESSAGE = "app/ws:receive-message";
 
 export const RECEIVE_PUSHED_BACKLOG_ITEM = "app/receive:pushed-backlog-item";
+
+export const REORDER_BACKLOG_ITEM = "app/reorder:backlog-item";

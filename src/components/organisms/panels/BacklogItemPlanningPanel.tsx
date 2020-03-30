@@ -24,7 +24,12 @@ import {
 } from "../../../reducers/backlogItemsReducer";
 
 // actions
-import { updateBacklogItemFields, cancelUnsavedBacklogItem, saveBacklogItem } from "../../../actions/backlogItems";
+import {
+    updateBacklogItemFields,
+    cancelUnsavedBacklogItem,
+    saveBacklogItem,
+    reorderBacklogItems
+} from "../../../actions/backlogItems";
 import { useState } from "react";
 import { useRecursiveTimeout } from "../../common/setTimeoutHook";
 
@@ -50,6 +55,7 @@ export interface BacklogItemPlanningPanelStateProps {
 
 export interface BacklogItemPlanningPanelDispatchProps {
     onAddNewBacklogItem: { (itemType: BacklogItemType) };
+    onReorderBacklogItems: { (sourceItemId: string, targerItemId: string) };
 }
 
 export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
@@ -351,7 +357,7 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
         });
         setCardPositions(newCardPositions);
         setItemCardWidth(width);
-    }, []);
+    }, [props.allItems]);
     const dispatch = useDispatch();
     const classNameToUse = buildClassName(css.backlogItemPlanningPanel, props.renderMobile ? css.mobile : null);
     const actionButtons =
@@ -470,8 +476,10 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
                 }
             }}
             onMouseUp={(e: React.MouseEvent<HTMLElement>) => {
-                const id = getDragItemId(e.target);
-                if (dragItemId) {
+                if (isDragging) {
+                    if (props.onReorderBacklogItems) {
+                        props.onReorderBacklogItems(dragItemId, dragOverItemId);
+                    }
                     setIsDragging(false);
                     setDragStartClientY(null);
                     setDragItemId(null);

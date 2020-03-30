@@ -144,3 +144,23 @@ export const receivePushedBacklogItem = (item: Partial<PushBacklogItemModel>): R
         payload: item
     };
 };
+
+export interface ReorderBacklogItemPayload {
+    sourceItemId: string;
+    targetItemId: string;
+}
+
+export interface ReorderBacklogItemAction {
+    type: typeof ActionTypes.REORDER_BACKLOG_ITEM;
+    payload: ReorderBacklogItemPayload;
+}
+
+export const reorderBacklogItems = (sourceItemId: string, targetItemId: string): ReorderBacklogItemAction => {
+    return {
+        type: ActionTypes.REORDER_BACKLOG_ITEM,
+        payload: {
+            sourceItemId,
+            targetItemId
+        }
+    };
+};
