@@ -171,15 +171,14 @@ const targetIsDragButton = (e: React.MouseEvent<HTMLElement>) => {
 
 const BELOW_LAST_CARD_ID = "##below#last#card##";
 
-const getDragItemIdUnderTarget = (e: React.MouseEvent<HTMLElement>, adjustY: number, cardPositions: CardPosition[]) => {
+const getDragItemIdUnderCommon = (documentTop: number, cardPositions: CardPosition[]) => {
     let result: string = null;
-    const clientY = e.clientY + window.scrollY + adjustY;
     let lastTop = 0;
     let lastCard: CardPosition = null;
     cardPositions.forEach((item) => {
         if (!result) {
             const dataId = item.id;
-            if (clientY > lastTop && clientY <= item.documentTop) {
+            if (documentTop > lastTop && documentTop <= item.documentTop) {
                 result = dataId;
             }
             lastTop = item.documentTop;
@@ -187,11 +186,20 @@ const getDragItemIdUnderTarget = (e: React.MouseEvent<HTMLElement>, adjustY: num
         }
     });
     if (!result && lastCard) {
-        if (clientY > lastTop && clientY <= lastCard.documentBottom) {
+        if (documentTop > lastTop && documentTop <= lastCard.documentBottom) {
             result = BELOW_LAST_CARD_ID;
         }
     }
     return result;
+};
+
+const getDragItemIdUnderTarget = (e: React.MouseEvent<HTMLElement>, adjustY: number, cardPositions: CardPosition[]) => {
+    const documentTop = e.clientY + window.scrollY + adjustY;
+    return getDragItemIdUnderCommon(documentTop, cardPositions);
+};
+
+const getDragItemIdUnderDocumentTop = (documentTop: number, cardPositions: CardPosition[]) => {
+    return getDragItemIdUnderCommon(documentTop, cardPositions);
 };
 
 const getHtmlClientHeight = () => {
@@ -269,7 +277,12 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
     useRecursiveTimeout(() => {
         if (isDragging && atBottomOfPage(dragItemClientY)) {
             scrollDown((deltaY) => {
-                setDragItemDocumentTop(dragItemDocumentTop + deltaY);
+                const newDragItemDocumentTop = dragItemDocumentTop + deltaY;
+                setDragItemDocumentTop(newDragItemDocumentTop);
+                const overItemId = getDragItemIdUnderDocumentTop(newDragItemDocumentTop, cardPositions);
+                if (overItemId && overItemId !== dragOverItemId) {
+                    setDragOverItemId(overItemId);
+                }
             });
         }
     }, 500);
