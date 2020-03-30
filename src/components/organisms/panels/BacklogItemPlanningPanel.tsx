@@ -208,9 +208,21 @@ const getHtmlClientHeight = () => {
     return clientHeight;
 };
 
+const PAGE_EDGE_PERCENTAGE = 5;
+const PAGE_SCROLL_PERCENTAGE = 5;
+
+const percentageToFraction = (percentage: number) => {
+    return percentage / 100.0;
+};
+
+const atTopOfPage = (clientY: number) => {
+    const clientHeight = getHtmlClientHeight();
+    return clientY < clientHeight * percentageToFraction(PAGE_EDGE_PERCENTAGE);
+};
+
 const atBottomOfPage = (clientY: number) => {
     const clientHeight = getHtmlClientHeight();
-    return clientY > clientHeight * 0.95;
+    return clientY > clientHeight * percentageToFraction(100 - PAGE_EDGE_PERCENTAGE);
 };
 
 const getDragItemWidth = (target: EventTarget) => {
@@ -251,15 +263,39 @@ interface CardPosition {
     documentBottom: number;
 }
 
-const scrollDown = (onScrollDown: { (scrollByY: number) }) => {
+const scrollByPageHeightPercentage = (scrollPercent: number, onScroll: { (scrollByY: number) }) => {
     const clientHeight = getHtmlClientHeight();
-    const scrollByY = Math.round(clientHeight * 0.05);
+    const scrollByY = Math.round(clientHeight * percentageToFraction(scrollPercent));
     const beforeScrollY = window.scrollY;
     window.scrollBy(0, scrollByY);
     const afterScrollY = window.scrollY;
     const deltaScrollY = afterScrollY - beforeScrollY;
     if (deltaScrollY) {
-        onScrollDown(deltaScrollY);
+        onScroll(deltaScrollY);
+    }
+};
+
+const scrollDown = (onScroll: { (scrollByY: number) }) => {
+    scrollByPageHeightPercentage(PAGE_SCROLL_PERCENTAGE, (scrollByY) => onScroll(scrollByY));
+};
+
+const scrollUp = (onScroll: { (scrollByY: number) }) => {
+    scrollByPageHeightPercentage(-PAGE_SCROLL_PERCENTAGE, (scrollByY) => onScroll(scrollByY));
+};
+
+const handleScroll = (
+    deltaY: number,
+    cardPositions: CardPosition[],
+    dragItemDocumentTop: number,
+    setDragItemDocumentTop: { (value: number) },
+    dragOverItemId: string,
+    setDragOverItemId: { (value: string) }
+) => {
+    const newDragItemDocumentTop = dragItemDocumentTop + deltaY;
+    setDragItemDocumentTop(newDragItemDocumentTop);
+    const overItemId = getDragItemIdUnderDocumentTop(newDragItemDocumentTop, cardPositions);
+    if (overItemId && overItemId !== dragOverItemId) {
+        setDragOverItemId(overItemId);
     }
 };
 
@@ -275,15 +311,31 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
     const [dragItemStartDocumentTop, setDragItemStartDocumentTop] = useState(null);
     const [isDragging, setIsDragging] = useState(false);
     useRecursiveTimeout(() => {
-        if (isDragging && atBottomOfPage(dragItemClientY)) {
-            scrollDown((deltaY) => {
-                const newDragItemDocumentTop = dragItemDocumentTop + deltaY;
-                setDragItemDocumentTop(newDragItemDocumentTop);
-                const overItemId = getDragItemIdUnderDocumentTop(newDragItemDocumentTop, cardPositions);
-                if (overItemId && overItemId !== dragOverItemId) {
-                    setDragOverItemId(overItemId);
-                }
-            });
+        if (isDragging) {
+            if (atBottomOfPage(dragItemClientY)) {
+                scrollDown((deltaY) => {
+                    handleScroll(
+                        deltaY,
+                        cardPositions,
+                        dragItemDocumentTop,
+                        setDragItemDocumentTop,
+                        dragOverItemId,
+                        setDragOverItemId
+                    );
+                });
+            }
+            if (atTopOfPage(dragItemClientY)) {
+                scrollUp((deltaY) => {
+                    handleScroll(
+                        deltaY,
+                        cardPositions,
+                        dragItemDocumentTop,
+                        setDragItemDocumentTop,
+                        dragOverItemId,
+                        setDragOverItemId
+                    );
+                });
+            }
         }
     }, 500);
     const ref = React.createRef<HTMLDivElement>();
