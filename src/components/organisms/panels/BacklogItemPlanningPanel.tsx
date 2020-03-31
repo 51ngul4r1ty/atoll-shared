@@ -28,7 +28,8 @@ import {
     updateBacklogItemFields,
     cancelUnsavedBacklogItem,
     saveBacklogItem,
-    reorderBacklogItems
+    reorderBacklogItems,
+    RelativePosition
 } from "../../../actions/backlogItems";
 import { useState } from "react";
 import { useRecursiveTimeout } from "../../common/setTimeoutHook";
@@ -55,7 +56,7 @@ export interface BacklogItemPlanningPanelStateProps {
 
 export interface BacklogItemPlanningPanelDispatchProps {
     onAddNewBacklogItem: { (itemType: BacklogItemType) };
-    onReorderBacklogItems: { (sourceItemId: string, targerItemId: string) };
+    onReorderBacklogItems: { (sourceItemId: string, targerItemId: string, relativePosition: RelativePosition) };
 }
 
 export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
@@ -478,7 +479,11 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
             onMouseUp={(e: React.MouseEvent<HTMLElement>) => {
                 if (isDragging) {
                     if (props.onReorderBacklogItems) {
-                        props.onReorderBacklogItems(dragItemId, dragOverItemId);
+                        const itemDraggedDown = dragItemDocumentTop > dragItemStartDocumentTop;
+                        // when dragging down we insert the dragged item "before" the item we drop it over,
+                        // when dragging up we insert the dragged item "after" the item we drop it over
+                        const relativePosition = itemDraggedDown ? RelativePosition.BEFORE : RelativePosition.AFTER;
+                        props.onReorderBacklogItems(dragItemId, dragOverItemId, relativePosition);
                     }
                     setIsDragging(false);
                     setDragStartClientY(null);

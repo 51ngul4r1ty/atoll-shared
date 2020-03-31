@@ -15,6 +15,7 @@ import css from "./App.module.css";
 // interfaces/types
 import { EditMode } from "./components/molecules/buttons/EditButton";
 import { BacklogItemType, BacklogItemWithSource, SaveableBacklogItem } from "./reducers/backlogItemsReducer";
+import { RelativePosition } from "./actions/backlogItems";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
@@ -30,7 +31,7 @@ export interface PlanViewStateProps {
 export interface PlanViewDispatchProps {
     onLoaded: { () };
     onAddNewBacklogItem: { (type: BacklogItemType) };
-    onReorderBacklogItems: { (sourceItemId: string, targetItemId: string) };
+    onReorderBacklogItems: { (sourceItemId: string, targetItemId: string, relativePosition: RelativePosition) };
 }
 
 export type PlanViewProps = PlanViewStateProps & PlanViewDispatchProps;
@@ -55,8 +56,8 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     onAddNewBacklogItem={(type: BacklogItemType) => {
                         this.props.onAddNewBacklogItem(type);
                     }}
-                    onReorderBacklogItems={(sourceItemId: string, targetItemId: string) => {
-                        this.props.onReorderBacklogItems(sourceItemId, targetItemId);
+                    onReorderBacklogItems={(sourceItemId: string, targetItemId: string, relativePosition: RelativePosition) => {
+                        this.props.onReorderBacklogItems(sourceItemId, targetItemId, relativePosition);
                     }}
                     renderMobile={this.context.state?.isMobile}
                 />

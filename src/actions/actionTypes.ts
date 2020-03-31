@@ -13,6 +13,10 @@ export const API_POST_BACKLOG_ITEM_REQUEST = "app/api:add-backlog-item:request";
 export const API_POST_BACKLOG_ITEM_SUCCESS = "app/api:add-backlog-item:success";
 export const API_POST_BACKLOG_ITEM_FAILURE = "app/api:add-backlog-item:failure";
 
+export const API_POST_ACTION_REORDER_BACKLOG_ITEM_REQUEST = "app/api:reorder-backlog-item:request";
+export const API_POST_ACTION_REORDER_BACKLOG_ITEM_SUCCESS = "app/api:reorder-backlog-item:success";
+export const API_POST_ACTION_REORDER_BACKLOG_ITEM_FAILURE = "app/api:reorder-backlog-item:failure";
+
 export const ROUTE_PLAN_VIEW = "app/route:plan-view";
 export const ROUTE_SPRINT_VIEW = "app/route:sprint-view";
 export const ROUTE_REVIEW_VIEW = "app/route:review-view";
