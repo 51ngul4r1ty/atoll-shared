@@ -12,7 +12,8 @@ import {
     CancelUnsavedBacklogItemAction,
     ApiPostBacklogItemSuccessAction,
     ReceivePushedBacklogItemAction,
-    ReorderBacklogItemAction
+    ReorderBacklogItemAction,
+    RelativePosition
 } from "../actions/backlogItems";
 import { PushBacklogItemModel } from "../middleware/wsMiddleware";
 import { LinkedList } from "../utils/linkedList";
@@ -225,6 +226,7 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
             }
             case ActionTypes.REORDER_BACKLOG_ITEM: {
                 const actionTyped = action as ReorderBacklogItemAction;
+                const relativePosition = actionTyped.payload.relativePosition;
                 let idx = 0;
                 let sourceItemIdx: number = null;
                 let targetItemIdx: number = null;
@@ -249,6 +251,10 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                         draft.allItems.splice(sourceItemIdx, 1);
                         draft.allItems.splice(targetItemIdx, 0, sourceItem);
                     }
+                } else if (sourceItemIdx !== null && targetItemIdx === null && relativePosition === RelativePosition.BEFORE) {
+                    // re-order moved item to end of list
+                    draft.allItems.push(sourceItem);
+                    draft.allItems.splice(sourceItemIdx, 1);
                 }
                 return;
             }

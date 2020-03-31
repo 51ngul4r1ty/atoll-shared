@@ -483,7 +483,8 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
                         // when dragging down we insert the dragged item "before" the item we drop it over,
                         // when dragging up we insert the dragged item "after" the item we drop it over
                         const relativePosition = itemDraggedDown ? RelativePosition.BEFORE : RelativePosition.AFTER;
-                        props.onReorderBacklogItems(dragItemId, dragOverItemId, relativePosition);
+                        const dragOverItemIdToUse = dragOverItemId === BELOW_LAST_CARD_ID ? null : dragOverItemId;
+                        props.onReorderBacklogItems(dragItemId, dragOverItemIdToUse, relativePosition);
                     }
                     setIsDragging(false);
                     setDragStartClientY(null);
