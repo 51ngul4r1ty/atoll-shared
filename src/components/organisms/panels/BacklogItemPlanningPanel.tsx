@@ -358,7 +358,7 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
         });
         setCardPositions(newCardPositions);
         setItemCardWidth(width);
-    }, [props.allItems]);
+    }, [props.allItems, props.editMode]);
     const dispatch = useDispatch();
     const classNameToUse = buildClassName(css.backlogItemPlanningPanel, props.renderMobile ? css.mobile : null);
     const actionButtons =
