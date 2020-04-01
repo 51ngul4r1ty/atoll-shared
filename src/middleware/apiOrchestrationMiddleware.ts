@@ -40,13 +40,7 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
         }
         case ActionTypes.REORDER_BACKLOG_ITEM: {
             const actionTyped = action as ReorderBacklogItemAction;
-            storeTyped.dispatch(
-                postActionBacklogItemReorder(
-                    actionTyped.payload.sourceItemId,
-                    actionTyped.payload.targetItemId,
-                    actionTyped.payload.relativePosition
-                )
-            );
+            storeTyped.dispatch(postActionBacklogItemReorder(actionTyped.payload.sourceItemId, actionTyped.payload.targetItemId));
             break;
         }
     }

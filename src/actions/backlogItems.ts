@@ -124,7 +124,6 @@ export const postBacklogItem = (
 export interface ActionPostBacklogItemReorderPayloadData {
     sourceItemId: string;
     targetItemId: string;
-    relativePosition: "before" | "after";
 }
 
 export enum RelativePosition {
@@ -132,21 +131,9 @@ export enum RelativePosition {
     AFTER
 }
 
-export const relativePositionToString = (relPosition: RelativePosition) => {
-    switch (relPosition) {
-        case RelativePosition.BEFORE:
-            return "before";
-        case RelativePosition.AFTER:
-            return "after";
-        default:
-            throw new Error(`Unable to convert relative position enum ${relPosition} to string`);
-    }
-};
-
 export const postActionBacklogItemReorder = (
     sourceItemId: string,
-    targetItemId: string,
-    reorderDirection: RelativePosition
+    targetItemId: string
 ): ApiAction<ActionPostBacklogItemReorderPayloadData> => {
     return {
         type: API,
@@ -154,7 +141,7 @@ export const postActionBacklogItemReorder = (
             endpoint: "http://localhost:8500/api/v1/actions/reorder-backlog-items",
             method: "POST",
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
-            data: { sourceItemId, targetItemId, relativePosition: relativePositionToString(reorderDirection) },
+            data: { sourceItemId, targetItemId },
             types: [
                 ActionTypes.API_POST_ACTION_REORDER_BACKLOG_ITEM_REQUEST,
                 ActionTypes.API_POST_ACTION_REORDER_BACKLOG_ITEM_SUCCESS,
@@ -191,7 +178,6 @@ export const receivePushedBacklogItem = (item: Partial<PushBacklogItemModel>): R
 export interface ReorderBacklogItemPayload {
     sourceItemId: string;
     targetItemId: string;
-    relativePosition: RelativePosition;
 }
 
 export interface ReorderBacklogItemAction {
@@ -199,17 +185,12 @@ export interface ReorderBacklogItemAction {
     payload: ReorderBacklogItemPayload;
 }
 
-export const reorderBacklogItems = (
-    sourceItemId: string,
-    targetItemId: string,
-    relativePosition: RelativePosition
-): ReorderBacklogItemAction => {
+export const reorderBacklogItems = (sourceItemId: string, targetItemId: string): ReorderBacklogItemAction => {
     return {
         type: ActionTypes.REORDER_BACKLOG_ITEM,
         payload: {
             sourceItemId,
-            targetItemId,
-            relativePosition
+            targetItemId
         }
     };
 };

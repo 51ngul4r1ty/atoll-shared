@@ -56,7 +56,7 @@ export interface BacklogItemPlanningPanelStateProps {
 
 export interface BacklogItemPlanningPanelDispatchProps {
     onAddNewBacklogItem: { (itemType: BacklogItemType) };
-    onReorderBacklogItems: { (sourceItemId: string, targerItemId: string, relativePosition: RelativePosition) };
+    onReorderBacklogItems: { (sourceItemId: string, targerItemId: string) };
 }
 
 export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
@@ -479,12 +479,9 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
             onMouseUp={(e: React.MouseEvent<HTMLElement>) => {
                 if (isDragging) {
                     if (props.onReorderBacklogItems) {
-                        const itemDraggedDown = dragItemDocumentTop > dragItemStartDocumentTop;
-                        // when dragging down we insert the dragged item "before" the item we drop it over,
-                        // when dragging up we insert the dragged item "after" the item we drop it over
-                        const relativePosition = itemDraggedDown ? RelativePosition.BEFORE : RelativePosition.AFTER;
                         const dragOverItemIdToUse = dragOverItemId === BELOW_LAST_CARD_ID ? null : dragOverItemId;
-                        props.onReorderBacklogItems(dragItemId, dragOverItemIdToUse, relativePosition);
+                        // NOTE: We always drag the item to a position before the "drag over item"
+                        props.onReorderBacklogItems(dragItemId, dragOverItemIdToUse);
                     }
                     setIsDragging(false);
                     setDragStartClientY(null);

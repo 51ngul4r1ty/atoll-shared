@@ -30,8 +30,8 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
     return {
         onLoaded: () => dispatch(getBacklogItems()),
         onAddNewBacklogItem: (type: BacklogItemType) => dispatch(addNewBacklogItem(type)),
-        onReorderBacklogItems: (sourceItemId: string, targetItemId: string, relativePosition: RelativePosition) =>
-            dispatch(reorderBacklogItems(sourceItemId, targetItemId, relativePosition))
+        onReorderBacklogItems: (sourceItemId: string, targetItemId: string) =>
+            dispatch(reorderBacklogItems(sourceItemId, targetItemId))
     };
 };
 

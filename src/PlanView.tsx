@@ -31,7 +31,7 @@ export interface PlanViewStateProps {
 export interface PlanViewDispatchProps {
     onLoaded: { () };
     onAddNewBacklogItem: { (type: BacklogItemType) };
-    onReorderBacklogItems: { (sourceItemId: string, targetItemId: string, relativePosition: RelativePosition) };
+    onReorderBacklogItems: { (sourceItemId: string, targetItemId: string) };
 }
 
 export type PlanViewProps = PlanViewStateProps & PlanViewDispatchProps;
@@ -56,8 +56,8 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     onAddNewBacklogItem={(type: BacklogItemType) => {
                         this.props.onAddNewBacklogItem(type);
                     }}
-                    onReorderBacklogItems={(sourceItemId: string, targetItemId: string, relativePosition: RelativePosition) => {
-                        this.props.onReorderBacklogItems(sourceItemId, targetItemId, relativePosition);
+                    onReorderBacklogItems={(sourceItemId: string, targetItemId: string) => {
+                        this.props.onReorderBacklogItems(sourceItemId, targetItemId);
                     }}
                     renderMobile={this.context.state?.isMobile}
                 />
