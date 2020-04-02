@@ -12,6 +12,8 @@ import { BacklogItemType, BacklogItemModel, BacklogItem } from "../reducers/back
 import { BacklogItemDetailFormEditableFieldsWithInstanceId } from "../components/organisms/forms/BacklogItemDetailForm";
 import { PushBacklogItemModel } from "../middleware/wsMiddleware";
 
+export const refreshBacklogItems = () => getBacklogItems();
+
 export const getBacklogItems = (): ApiAction<undefined> => ({
     type: API,
     payload: {

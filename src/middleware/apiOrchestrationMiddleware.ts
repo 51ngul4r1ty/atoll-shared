@@ -12,7 +12,8 @@ import {
     postBacklogItem,
     SaveBacklogItemAction,
     ReorderBacklogItemAction,
-    postActionBacklogItemReorder
+    postActionBacklogItemReorder,
+    refreshBacklogItems
 } from "../actions/backlogItems";
 
 // state
@@ -41,6 +42,10 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
         case ActionTypes.REORDER_BACKLOG_ITEM: {
             const actionTyped = action as ReorderBacklogItemAction;
             storeTyped.dispatch(postActionBacklogItemReorder(actionTyped.payload.sourceItemId, actionTyped.payload.targetItemId));
+            break;
+        }
+        case ActionTypes.API_POST_ACTION_REORDER_BACKLOG_ITEM_SUCCESS: {
+            storeTyped.dispatch(refreshBacklogItems());
             break;
         }
     }
