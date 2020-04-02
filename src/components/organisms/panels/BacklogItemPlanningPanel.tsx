@@ -124,7 +124,7 @@ export const buildBacklogItemElts = (
     }
     if (item.saved) {
         return [
-            <SimpleDivider key={`divider-${item.id}`} highlighted={highlightAbove} />,
+            <SimpleDivider key={`divider-saved-${item.id}`} highlighted={highlightAbove} />,
             <BacklogItemCard
                 key={item.id}
                 estimate={item.estimate}
@@ -397,7 +397,7 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
         if (item.source === BacklogItemSource.Loaded) {
             highlightAbove = afterPushedItem;
             if (inAddedSection) {
-                renderElts.push(<SimpleDivider key={`divider-${item.id}`} />);
+                renderElts.push(<SimpleDivider key={`divider-loaded-${item.id}`} />);
                 inAddedSection = false;
             }
             if (!inLoadedSection) {
