@@ -137,4 +137,20 @@ describe("BacklogItemPlanningPanel", () => {
         );
         expect(wrapper.container).toMatchSnapshot();
     });
+    it("should not include double spacing between added saved, added unsaved and action buttons", () => {
+        const allItems = [];
+        allItems.push(buildAddedItem(1, 13, true));
+        allItems.push(buildAddedItem(2, 5, false));
+        const editMode = EditMode.Edit;
+        const wrapper = render(
+            <BacklogItemPlanningPanel
+                allItems={allItems}
+                editMode={editMode}
+                renderMobile
+                onAddNewBacklogItem={() => {}}
+                onReorderBacklogItems={() => {}}
+            />
+        );
+        expect(wrapper.container).toMatchSnapshot();
+    });
 });
