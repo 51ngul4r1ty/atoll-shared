@@ -12,8 +12,7 @@ import {
     CancelUnsavedBacklogItemAction,
     ApiPostBacklogItemSuccessAction,
     ReceivePushedBacklogItemAction,
-    ReorderBacklogItemAction,
-    RelativePosition
+    ReorderBacklogItemAction
 } from "../actions/backlogItems";
 import { PushBacklogItemModel } from "../middleware/wsMiddleware";
 import { LinkedList } from "../utils/linkedList";
