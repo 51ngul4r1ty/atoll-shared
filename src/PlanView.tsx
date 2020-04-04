@@ -15,7 +15,6 @@ import css from "./App.module.css";
 // interfaces/types
 import { EditMode } from "./components/molecules/buttons/EditButton";
 import { BacklogItemType, BacklogItemWithSource, SaveableBacklogItem } from "./reducers/backlogItemsReducer";
-import { RelativePosition } from "./actions/backlogItems";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build

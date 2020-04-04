@@ -10,7 +10,7 @@ import { PlanningPanelBacklogItem } from "./components/organisms/panels/BacklogI
 import { StateTree } from "./types";
 
 // actions
-import { getBacklogItems, addNewBacklogItem, reorderBacklogItems, RelativePosition } from "./actions/backlogItems";
+import { getBacklogItems, addNewBacklogItem, reorderBacklogItems } from "./actions/backlogItems";
 
 // interfaces/types
 import { BacklogItemType } from "./reducers/backlogItemsReducer";

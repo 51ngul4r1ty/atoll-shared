@@ -128,11 +128,6 @@ export interface ActionPostBacklogItemReorderPayloadData {
     targetItemId: string;
 }
 
-export enum RelativePosition {
-    BEFORE,
-    AFTER
-}
-
 export const postActionBacklogItemReorder = (
     sourceItemId: string,
     targetItemId: string
