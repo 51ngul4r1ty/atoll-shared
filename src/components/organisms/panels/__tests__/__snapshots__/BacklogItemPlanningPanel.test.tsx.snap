@@ -1,5 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`BacklogItemPlanningPanel should handle scenario where unsaved form visible and user switches from edit to view mode 1`] = `
+<div>
+  <div
+    class="backlogItemPlanningPanel mobile"
+  >
+    [Mock SimpleDivider]
+    [Mock SimpleDivider]
+    [Mock BacklogItemCard internalId=fake-id-3 itemId=item-3-loaded titleText="loaded story 3" marginBelowItem=true]
+    [Mock SimpleDivider]
+  </div>
+</div>
+`;
+
 exports[`BacklogItemPlanningPanel should include spacing between added items, action buttons and loaded items 1`] = `
 <div>
   <div

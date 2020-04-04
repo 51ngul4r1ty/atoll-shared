@@ -153,4 +153,20 @@ describe("BacklogItemPlanningPanel", () => {
         );
         expect(wrapper.container).toMatchSnapshot();
     });
+    it("should handle scenario where unsaved form visible and user switches from edit to view mode", () => {
+        const allItems = [];
+        allItems.push(buildAddedItem(1, 13, false));
+        allItems.push(buildLoadedItem(3, 8));
+        const editMode = EditMode.View;
+        const wrapper = render(
+            <BacklogItemPlanningPanel
+                allItems={allItems}
+                editMode={editMode}
+                renderMobile
+                onAddNewBacklogItem={() => {}}
+                onReorderBacklogItems={() => {}}
+            />
+        );
+        expect(wrapper.container).toMatchSnapshot();
+    });
 });

@@ -145,6 +145,7 @@ export const buildBacklogItemElts = (
             />
         ];
     }
+    return [];
 };
 
 const isBacklogItem = (elt: HTMLElement) => elt && elt.getAttribute("data-class") === "backlogitem";
