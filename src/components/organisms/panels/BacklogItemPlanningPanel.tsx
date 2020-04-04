@@ -24,13 +24,7 @@ import {
 } from "../../../reducers/backlogItemsReducer";
 
 // actions
-import {
-    updateBacklogItemFields,
-    cancelUnsavedBacklogItem,
-    saveBacklogItem,
-    reorderBacklogItems,
-    RelativePosition
-} from "../../../actions/backlogItems";
+import { updateBacklogItemFields, cancelUnsavedBacklogItem, saveBacklogItem } from "../../../actions/backlogItems";
 import { useState } from "react";
 import { useRecursiveTimeout } from "../../common/setTimeoutHook";
 

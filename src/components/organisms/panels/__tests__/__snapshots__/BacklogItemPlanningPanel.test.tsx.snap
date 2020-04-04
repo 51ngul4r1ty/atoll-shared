@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BacklogItemPlanningPanel should include spacing between added items, action buttons and loaded items 1`] = `
+<div>
+  <div
+    class="backlogItemPlanningPanel mobile"
+  >
+    [Mock BacklogItemDetailForm]
+    <div
+      class="dividerLine"
+    />
+  </div>
+</div>
+`;
