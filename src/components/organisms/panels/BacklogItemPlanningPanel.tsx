@@ -48,9 +48,17 @@ export interface BacklogItemPlanningPanelStateProps {
     renderMobile?: boolean;
 }
 
+export interface OnAddedNewBacklogItem {
+    (itemType: BacklogItemType);
+}
+
+export interface OnReorderBacklogItems {
+    (sourceItemId: string, targerItemId: string);
+}
+
 export interface BacklogItemPlanningPanelDispatchProps {
-    onAddNewBacklogItem: { (itemType: BacklogItemType) };
-    onReorderBacklogItems: { (sourceItemId: string, targerItemId: string) };
+    onAddNewBacklogItem: OnAddedNewBacklogItem;
+    onReorderBacklogItems: OnReorderBacklogItems;
 }
 
 export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
@@ -88,13 +96,19 @@ export const buildBacklogItemElts = (
     item: SaveableBacklogItem,
     renderMobile: boolean,
     highlightAbove: boolean,
-    dispatch: Dispatch<any>
+    dispatch: Dispatch<any>,
+    suppressTopPadding: boolean
 ): JSX.Element[] => {
     if (!item.saved && editMode === EditMode.Edit) {
+        const classNameToUse = buildClassName(
+            css.backlogItemUserStoryFormRow,
+            suppressTopPadding ? null : css.embeddedBacklogItemUserStoryFormRow
+        );
         return [
+            <SimpleDivider key={`divider-unsaved-form-${item.instanceId}`} />,
             <BacklogItemDetailForm
                 key={`unsaved-form-${item.instanceId}`}
-                className={css.backlogItemUserStoryFormRow}
+                className={classNameToUse}
                 instanceId={item.instanceId}
                 externalId={item.externalId}
                 editing
@@ -112,8 +126,7 @@ export const buildBacklogItemElts = (
                 onCancelClick={(instanceId) => {
                     dispatch(cancelUnsavedBacklogItem(instanceId));
                 }}
-            />,
-            <SimpleDivider key={`divider-unsaved-form-${item.instanceId}`} />
+            />
         ];
     }
     if (item.saved) {
@@ -300,6 +313,29 @@ const handleScroll = (
     }
 };
 
+const buildActionButtons = (editMode: EditMode, suppressTopPadding: boolean, onAddNewBacklogItem: OnAddedNewBacklogItem) => {
+    const actionButtonsClassName = buildClassName(
+        css.backlogItemPlanningActionPanel,
+        suppressTopPadding ? null : css.embeddedBacklogItemUserStoryFormRow
+    );
+    return editMode === EditMode.View ? null : (
+        <div key="backlogitem-action-buttons" className={actionButtonsClassName}>
+            <AddButton
+                itemName="story"
+                onClick={() => {
+                    onAddNewBacklogItem("story");
+                }}
+            />
+            <AddButton
+                itemName="issue"
+                onClick={() => {
+                    onAddNewBacklogItem("issue");
+                }}
+            />
+        </div>
+    );
+};
+
 export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps> = (props) => {
     const [cardPositions, setCardPositions] = useState([]);
     const [itemCardWidth, setItemCardWidth] = useState(null);
@@ -354,28 +390,12 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
         setItemCardWidth(width);
     }, [props.allItems, props.editMode]);
     const dispatch = useDispatch();
-    const classNameToUse = buildClassName(css.backlogItemPlanningPanel, props.renderMobile ? css.mobile : null);
-    const actionButtons =
-        props.editMode === EditMode.View ? null : (
-            <div key="backlogitem-action-buttons" className={css.backlogItemPlanningActionPanel}>
-                <AddButton
-                    itemName="story"
-                    onClick={() => {
-                        props.onAddNewBacklogItem("story");
-                    }}
-                />
-                <AddButton
-                    itemName="issue"
-                    onClick={() => {
-                        props.onAddNewBacklogItem("issue");
-                    }}
-                />
-            </div>
-        );
     let inLoadedSection = false;
     let inAddedSection = false;
     let afterPushedItem = false;
     let renderElts = [];
+    let suppressTopPadding = true;
+    let lastItemWasUnsaved = false;
     props.allItems.forEach((item) => {
         const isDragItem = isDragging && dragItemId === item.id;
         const isDragOverItem = isDragging && dragOverItemId === item.id;
@@ -395,7 +415,9 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
                 inAddedSection = false;
             }
             if (!inLoadedSection) {
-                renderElts.push(actionButtons);
+                renderElts.push(
+                    buildActionButtons(props.editMode, suppressTopPadding || lastItemWasUnsaved, props.onAddNewBacklogItem)
+                );
             }
             inLoadedSection = true;
         }
@@ -418,18 +440,28 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
                 );
             }
             if (!isDragItem) {
-                const elts = buildBacklogItemElts(props.editMode, item, props.renderMobile, highlightAbove, dispatch);
+                const elts = buildBacklogItemElts(
+                    props.editMode,
+                    item,
+                    props.renderMobile,
+                    highlightAbove,
+                    dispatch,
+                    suppressTopPadding
+                );
                 elts.forEach((elt) => {
                     renderElts.push(elt);
                 });
             }
         }
         afterPushedItem = item.source === BacklogItemSource.Pushed;
+        lastItemWasUnsaved = item.source === BacklogItemSource.Added && !item.saved;
+        suppressTopPadding = false;
     });
     if (inLoadedSection) {
         renderElts.push(<SimpleDivider key="last-divider" />);
     }
 
+    const classNameToUse = buildClassName(css.backlogItemPlanningPanel, props.renderMobile ? css.mobile : null);
     return (
         <div
             ref={ref}
