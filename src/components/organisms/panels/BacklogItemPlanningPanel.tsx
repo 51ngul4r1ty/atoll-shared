@@ -181,7 +181,7 @@ const getDragItemId = (target: EventTarget) => {
     return null;
 };
 
-const targetIsDragButton = (e: React.MouseEvent<HTMLElement>) => {
+const targetIsDragButton = (e: React.BaseSyntheticEvent<HTMLElement>) => {
     return !!getParentWithDataClass(e.target as HTMLElement, "drag-button");
 };
 
@@ -209,8 +209,13 @@ const getDragItemIdUnderCommon = (documentTop: number, cardPositions: CardPositi
     return result;
 };
 
-const getDragItemIdUnderTarget = (e: React.MouseEvent<HTMLElement>, adjustY: number, cardPositions: CardPosition[]) => {
-    const documentTop = e.clientY + window.scrollY + adjustY;
+const getDragItemIdUnderTarget = (
+    e: React.BaseSyntheticEvent<HTMLElement>,
+    clientY,
+    adjustY: number,
+    cardPositions: CardPosition[]
+) => {
+    const documentTop = clientY + window.scrollY + adjustY;
     return getDragItemIdUnderCommon(documentTop, cardPositions);
 };
 
@@ -464,58 +469,88 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
     }
 
     const classNameToUse = buildClassName(css.backlogItemPlanningPanel, props.renderMobile ? css.mobile : null);
+    const onMouseDown = (e: React.BaseSyntheticEvent<HTMLDivElement>, clientY: number) => {
+        if (targetIsDragButton(e)) {
+            const id = getDragItemId(e.target);
+            if (id) {
+                const width = getDragItemWidth(e.target);
+                const top = getDragItemDocumentTop(e.target);
+                setDragItemDocumentTop(top);
+                setDragItemStartDocumentTop(top);
+                setDragStartClientY(clientY);
+                setDragStartScrollY(window.scrollY);
+                setItemCardWidth(width);
+                setDragItemId(id);
+                setDragOverItemId(id);
+            }
+            e.preventDefault();
+            return false;
+        }
+        return true;
+    };
+    const onMouseMove = (e: React.BaseSyntheticEvent<HTMLDivElement>, clientY: number) => {
+        if (dragStartClientY) {
+            const mouseStartClientYToDocumentTop = dragStartClientY + dragStartScrollY;
+            const mouseClientYToDocumentTop = clientY + window.scrollY;
+            const mouseDeltaClientY = mouseClientYToDocumentTop - mouseStartClientYToDocumentTop;
+            const adjustY = dragItemStartDocumentTop - dragStartScrollY - dragStartClientY;
+            if (Math.abs(mouseDeltaClientY) > 5) {
+                setIsDragging(true);
+            }
+            if (isDragging) {
+                setDragItemDocumentTop(dragItemStartDocumentTop + mouseDeltaClientY);
+                setDragItemClientY(clientY);
+                const overItemId = getDragItemIdUnderTarget(e, clientY, adjustY, cardPositions);
+                if (overItemId) {
+                    setDragOverItemId(overItemId);
+                }
+            }
+            return false;
+        }
+        return true;
+    };
+    const onMouseUp = (e: React.BaseSyntheticEvent<HTMLDivElement>) => {
+        if (isDragging) {
+            if (props.onReorderBacklogItems) {
+                const dragOverItemIdToUse = dragOverItemId === BELOW_LAST_CARD_ID ? null : dragOverItemId;
+                // NOTE: We always drag the item to a position before the "drag over item"
+                if (dragItemId !== dragOverItemIdToUse) {
+                    props.onReorderBacklogItems(dragItemId, dragOverItemIdToUse);
+                }
+            }
+            setIsDragging(false);
+            setDragStartClientY(null);
+            setDragItemId(null);
+            setDragOverItemId(null);
+            return false;
+        }
+        return true;
+    };
+    const isSingleTouch = (touches: React.TouchList) => touches.length === 1;
+    const touchesToClientY = (touches: React.TouchList): number | null => {
+        if (touches.length === 1) {
+            return touches[0].clientY;
+        }
+        return null;
+    };
     return (
         <div
             ref={ref}
             className={classNameToUse}
-            onMouseDown={(e: React.MouseEvent<HTMLDivElement>) => {
-                if (targetIsDragButton(e)) {
-                    const id = getDragItemId(e.target);
-                    if (id) {
-                        const width = getDragItemWidth(e.target);
-                        const top = getDragItemDocumentTop(e.target);
-                        setDragItemDocumentTop(top);
-                        setDragItemStartDocumentTop(top);
-                        setDragStartClientY(e.clientY);
-                        setDragStartScrollY(window.scrollY);
-                        setItemCardWidth(width);
-                        setDragItemId(id);
-                        setDragOverItemId(id);
-                    }
-                    e.preventDefault();
+            onMouseDown={(e: React.MouseEvent<HTMLDivElement>) => onMouseDown(e as any, e.clientY)}
+            onMouseMove={(e: React.MouseEvent<HTMLDivElement>) => onMouseMove(e as any, e.clientY)}
+            onMouseUp={(e: React.MouseEvent<HTMLDivElement>) => onMouseUp(e as any)}
+            onTouchStart={(e: React.TouchEvent<HTMLDivElement>) => {
+                if (isSingleTouch(e.touches)) {
+                    return onMouseDown(e as any, touchesToClientY(e.touches));
                 }
+                return true;
             }}
-            onMouseMove={(e: React.MouseEvent<HTMLElement>) => {
-                if (dragStartClientY) {
-                    const mouseStartClientYToDocumentTop = dragStartClientY + dragStartScrollY;
-                    const mouseClientYToDocumentTop = e.clientY + window.scrollY;
-                    const mouseDeltaClientY = mouseClientYToDocumentTop - mouseStartClientYToDocumentTop;
-                    const adjustY = dragItemStartDocumentTop - dragStartScrollY - dragStartClientY;
-                    if (Math.abs(mouseDeltaClientY) > 5) {
-                        setIsDragging(true);
-                    }
-                    if (isDragging) {
-                        setDragItemDocumentTop(dragItemStartDocumentTop + mouseDeltaClientY);
-                        setDragItemClientY(e.clientY);
-                        const overItemId = getDragItemIdUnderTarget(e, adjustY, cardPositions);
-                        if (overItemId) {
-                            setDragOverItemId(overItemId);
-                        }
-                    }
-                }
+            onTouchMove={(e: React.TouchEvent<HTMLDivElement>) => {
+                return onMouseMove(e as any, touchesToClientY(e.touches));
             }}
-            onMouseUp={(e: React.MouseEvent<HTMLElement>) => {
-                if (isDragging) {
-                    if (props.onReorderBacklogItems) {
-                        const dragOverItemIdToUse = dragOverItemId === BELOW_LAST_CARD_ID ? null : dragOverItemId;
-                        // NOTE: We always drag the item to a position before the "drag over item"
-                        props.onReorderBacklogItems(dragItemId, dragOverItemIdToUse);
-                    }
-                    setIsDragging(false);
-                    setDragStartClientY(null);
-                    setDragItemId(null);
-                    setDragOverItemId(null);
-                }
+            onTouchEnd={(e: React.TouchEvent<HTMLDivElement>) => {
+                return onMouseUp(e as any);
             }}
         >
             {renderElts}
