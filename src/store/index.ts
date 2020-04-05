@@ -14,7 +14,13 @@ import { wsMiddleware } from "../middleware/wsMiddleware";
 import { apiOrchestrationMiddleware } from "../middleware/apiOrchestrationMiddleware";
 
 const composeEnhancers = composeWithDevTools({
+    name: "Atoll",
     // Specify name here, actionsBlacklist, actionsCreators and other options if needed
+    trace: true,
+    features: {
+        pause: true,
+        dispatch: true
+    }
 });
 
 type StoreParams = {

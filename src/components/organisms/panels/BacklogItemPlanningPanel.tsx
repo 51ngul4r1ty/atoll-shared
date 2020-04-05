@@ -149,75 +149,7 @@ export const buildBacklogItemElts = (
     return [];
 };
 
-const isBacklogItem = (elt: HTMLElement) => elt && elt.getAttribute("data-class") === "backlogitem";
-
-const getDragItem = (target: EventTarget) => {
-    let elt = target as HTMLElement;
-    while (elt && !isBacklogItem(elt)) {
-        elt = elt.parentElement;
-    }
-    if (isBacklogItem(elt)) {
-        return elt;
-    }
-    return null;
-};
-
-const getParentWithDataClass = (elt: HTMLElement, dataClass: string) => {
-    while (elt && elt.getAttribute("data-class") !== dataClass) {
-        elt = elt.parentElement;
-    }
-    if (elt) {
-        return elt;
-    }
-    return null;
-};
-
-const getDragItemId = (target: EventTarget) => {
-    const item = getDragItem(target);
-    if (item) {
-        const id = item.getAttribute("data-id");
-        return id;
-    }
-    return null;
-};
-
-const targetIsDragButton = (e: React.BaseSyntheticEvent<HTMLElement>) => {
-    return !!getParentWithDataClass(e.target as HTMLElement, "drag-button");
-};
-
 const BELOW_LAST_CARD_ID = "##below#last#card##";
-
-const getDragItemIdUnderCommon = (documentTop: number, cardPositions: CardPosition[]) => {
-    let result: string = null;
-    let lastTop = 0;
-    let lastCard: CardPosition = null;
-    cardPositions.forEach((item) => {
-        if (!result) {
-            const dataId = item.id;
-            if (documentTop > lastTop && documentTop <= item.documentTop) {
-                result = dataId;
-            }
-            lastTop = item.documentTop;
-            lastCard = item;
-        }
-    });
-    if (!result && lastCard) {
-        if (documentTop > lastTop && documentTop <= lastCard.documentBottom) {
-            result = BELOW_LAST_CARD_ID;
-        }
-    }
-    return result;
-};
-
-const getDragItemIdUnderTarget = (
-    e: React.BaseSyntheticEvent<HTMLElement>,
-    clientY,
-    adjustY: number,
-    cardPositions: CardPosition[]
-) => {
-    const documentTop = clientY + window.scrollY + adjustY;
-    return getDragItemIdUnderCommon(documentTop, cardPositions);
-};
 
 const getDragItemIdUnderDocumentTop = (documentTop: number, cardPositions: CardPosition[]) => {
     return getDragItemIdUnderCommon(documentTop, cardPositions);
@@ -244,24 +176,6 @@ const atTopOfPage = (clientY: number) => {
 const atBottomOfPage = (clientY: number) => {
     const clientHeight = getHtmlClientHeight();
     return clientY > clientHeight * percentageToFraction(100 - PAGE_EDGE_PERCENTAGE);
-};
-
-const getDragItemWidth = (target: EventTarget) => {
-    const item = getDragItem(target);
-    if (item) {
-        const width = item.offsetWidth;
-        return width;
-    }
-    return null;
-};
-
-const getDragItemDocumentTop = (target: EventTarget) => {
-    const item = getDragItem(target);
-    if (item) {
-        const rect = item.getBoundingClientRect();
-        return rect.top + window.scrollY;
-    }
-    return null;
 };
 
 const SPACER_PREFIX = "spacer---";
@@ -343,17 +257,165 @@ const buildActionButtons = (editMode: EditMode, suppressTopPadding: boolean, onA
     );
 };
 
+const preventDefault = (e: React.BaseSyntheticEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    // if ((e as any).stopImmediatePropagation) {
+    //     (e as any).stopImmediatePropagation();
+    // } else {
+    //     e.stopPropagation();
+    // }
+};
+
+const getParentWithDataClass = (elt: HTMLElement, dataClass: string) => {
+    while (elt && elt.getAttribute("data-class") !== dataClass) {
+        elt = elt.parentElement;
+    }
+    if (elt) {
+        return elt;
+    }
+    return null;
+};
+
+const targetIsDragButton = (e: React.BaseSyntheticEvent<HTMLElement>) => {
+    return !!getParentWithDataClass(e.target as HTMLElement, "drag-button");
+};
+
+const isBacklogItem = (elt: HTMLElement) => elt && elt.getAttribute("data-class") === "backlogitem";
+
+const getDragItem = (target: EventTarget) => {
+    let elt = target as HTMLElement;
+    while (elt && !isBacklogItem(elt)) {
+        elt = elt.parentElement;
+    }
+    if (isBacklogItem(elt)) {
+        return elt;
+    }
+    return null;
+};
+
+const getDragItemId = (target: EventTarget) => {
+    const item = getDragItem(target);
+    if (item) {
+        const id = item.getAttribute("data-id");
+        return id;
+    }
+    return null;
+};
+
+const getDragItemWidth = (target: EventTarget) => {
+    const item = getDragItem(target);
+    if (item) {
+        const width = item.offsetWidth;
+        return width;
+    }
+    return null;
+};
+
+const getDragItemDocumentTop = (target: EventTarget) => {
+    const item = getDragItem(target);
+    if (item) {
+        const rect = item.getBoundingClientRect();
+        return rect.top + window.scrollY;
+    }
+    return null;
+};
+
+const getDragItemIdUnderCommon = (documentTop: number, cardPositions: CardPosition[]) => {
+    let result: string = null;
+    let lastTop = 0;
+    let lastCard: CardPosition = null;
+    cardPositions.forEach((item) => {
+        if (!result) {
+            const dataId = item.id;
+            if (documentTop > lastTop && documentTop <= item.documentTop) {
+                result = dataId;
+            }
+            lastTop = item.documentTop;
+            lastCard = item;
+        }
+    });
+    if (!result && lastCard) {
+        if (documentTop > lastTop && documentTop <= lastCard.documentBottom) {
+            result = BELOW_LAST_CARD_ID;
+        }
+    }
+    return result;
+};
+
+const getDragItemIdUnderTarget = (
+    e: React.BaseSyntheticEvent<HTMLElement>,
+    clientY,
+    adjustY: number,
+    cardPositions: CardPosition[]
+) => {
+    const documentTop = clientY + window.scrollY + adjustY;
+    return getDragItemIdUnderCommon(documentTop, cardPositions);
+};
+
 export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps> = (props) => {
-    const [cardPositions, setCardPositions] = useState([]);
-    const [itemCardWidth, setItemCardWidth] = useState(null);
-    const [dragStartClientY, setDragStartClientY] = useState(null);
-    const [dragStartScrollY, setDragStartScrollY] = useState(null);
-    const [dragItemId, setDragItemId] = useState(null);
-    const [dragOverItemId, setDragOverItemId] = useState(null);
-    const [dragItemDocumentTop, setDragItemDocumentTop] = useState(null);
-    const [dragItemClientY, setDragItemClientY] = useState(null);
-    const [dragItemStartDocumentTop, setDragItemStartDocumentTop] = useState(null);
-    const [isDragging, setIsDragging] = useState(false);
+    // #region state with refs
+    const [cardPositions, _setCardPositions] = useState([]);
+    const cardPositionsRef = React.useRef();
+    const setCardPositions = (data) => {
+        cardPositionsRef.current = data;
+        _setCardPositions(data);
+    };
+    const [dragItemDocumentTop, _setDragItemDocumentTop] = useState(null);
+    const dragItemDocumentTopRef = React.useRef();
+    const setDragItemDocumentTop = (data) => {
+        dragItemDocumentTopRef.current = data;
+        _setDragItemDocumentTop(data);
+    };
+    const [dragItemStartDocumentTop, _setDragItemStartDocumentTop] = useState(null);
+    const dragItemStartDocumentTopRef = React.useRef<number>();
+    const setDragItemStartDocumentTop = (data) => {
+        dragItemStartDocumentTopRef.current = data;
+        _setDragItemStartDocumentTop(data);
+    };
+    const [dragStartClientY, _setDragStartClientY] = useState(null);
+    const dragStartClientYRef = React.useRef<number>();
+    const setDragStartClientY = (data) => {
+        dragStartClientYRef.current = data;
+        _setDragStartClientY(data);
+    };
+    const [dragStartScrollY, _setDragStartScrollY] = useState(null);
+    const dragStartScrollYRef = React.useRef<number>();
+    const setDragStartScrollY = (data) => {
+        dragStartScrollYRef.current = data;
+        _setDragStartClientY(data);
+    };
+    const [isDragging, _setIsDragging] = useState(false);
+    const isDraggingRef = React.useRef();
+    const setIsDragging = (data) => {
+        isDraggingRef.current = data;
+        _setIsDragging(data);
+    };
+    const [dragItemClientY, _setDragItemClientY] = useState(null);
+    const dragItemClientYRef = React.useRef();
+    const setDragItemClientY = (data) => {
+        dragItemClientYRef.current = data;
+        _setDragItemClientY(data);
+    };
+    const [itemCardWidth, _setItemCardWidth] = useState(null);
+    const itemCardWidthRef = React.useRef();
+    const setItemCardWidth = (data) => {
+        itemCardWidthRef.current = data;
+        _setItemCardWidth(data);
+    };
+    const [dragItemId, _setDragItemId] = useState(null);
+    const dragItemIdRef = React.useRef();
+    const setDragItemId = (data) => {
+        dragItemIdRef.current = data;
+        _setDragItemId(data);
+    };
+    const [dragOverItemId, _setDragOverItemId] = useState(null);
+    const dragOverItemIdRef = React.useRef();
+    const setDragOverItemId = (data) => {
+        dragOverItemIdRef.current = data;
+        _setDragOverItemId(data);
+    };
+    // #endregion
+
     useRecursiveTimeout(() => {
         if (isDragging) {
             if (atBottomOfPage(dragItemClientY)) {
@@ -382,7 +444,112 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
             }
         }
     }, 500);
+
+    const onMouseDown = (e: React.BaseSyntheticEvent<HTMLDivElement>, clientY: number) => {
+        if (targetIsDragButton(e)) {
+            const id = getDragItemId(e.target);
+            if (id) {
+                const width = getDragItemWidth(e.target);
+                const top = getDragItemDocumentTop(e.target);
+                setDragItemDocumentTop(top);
+                setDragItemStartDocumentTop(top);
+                setDragStartClientY(clientY);
+                setDragStartScrollY(window.scrollY);
+                setItemCardWidth(width);
+                setDragItemId(id);
+                setDragOverItemId(id);
+            }
+            preventDefault(e);
+            return false;
+        }
+        return true;
+    };
+
+    const onMouseMove = (e: React.BaseSyntheticEvent<HTMLDivElement>, clientY: number) => {
+        if (dragStartClientYRef.current) {
+            const mouseStartClientYToDocumentTop = dragStartClientYRef.current + dragStartScrollYRef.current;
+            const mouseClientYToDocumentTop = clientY + window.scrollY;
+            const mouseDeltaClientY = mouseClientYToDocumentTop - mouseStartClientYToDocumentTop;
+            const adjustY = dragItemStartDocumentTopRef.current - dragStartScrollYRef.current - dragStartClientYRef.current;
+            if (Math.abs(mouseDeltaClientY) > 5) {
+                setIsDragging(true);
+            }
+            if (isDraggingRef.current) {
+                setDragItemDocumentTop(dragItemStartDocumentTopRef.current + mouseDeltaClientY);
+                setDragItemClientY(clientY);
+                const overItemId = getDragItemIdUnderTarget(e, clientY, adjustY, cardPositionsRef.current);
+                if (overItemId) {
+                    setDragOverItemId(overItemId);
+                }
+            }
+            return false;
+        }
+        return true;
+    };
+
+    const onMouseUp = (e: React.BaseSyntheticEvent<HTMLDivElement>) => {
+        if (isDraggingRef.current) {
+            if (props.onReorderBacklogItems) {
+                const dragOverItemIdToUse = dragOverItemIdRef.current === BELOW_LAST_CARD_ID ? null : dragOverItemIdRef.current;
+                // NOTE: We always drag the item to a position before the "drag over item"
+                if (dragItemIdRef.current !== dragOverItemIdToUse) {
+                    props.onReorderBacklogItems(dragItemIdRef.current, dragOverItemIdToUse);
+                }
+            }
+            setIsDragging(false);
+            setDragStartClientY(null);
+            setDragItemId(null);
+            setDragOverItemId(null);
+            return false;
+        }
+        return true;
+    };
+
     const ref = React.createRef<HTMLDivElement>();
+    React.useEffect(
+        () => {
+            const listenerHost = window;
+            const removeEventListener = listenerHost.removeEventListener;
+            let touchStartListener;
+            let touchMoveListener;
+            let touchEndListener;
+            if (listenerHost) {
+                touchStartListener = listenerHost.addEventListener(
+                    "touchstart",
+                    (e: any) => {
+                        if (isSingleTouch(e.touches)) {
+                            return onMouseDown(e, touchesToClientY(e.touches));
+                        }
+                        return true;
+                    },
+                    { passive: false }
+                );
+                touchMoveListener = listenerHost.addEventListener(
+                    "touchmove",
+                    (e: any) => {
+                        return onMouseMove(e, touchesToClientY(e.touches));
+                    },
+                    { passive: false }
+                );
+                touchEndListener = listenerHost.addEventListener(
+                    "touchend",
+                    (e: any) => {
+                        return onMouseUp(e);
+                    },
+                    { passive: false }
+                );
+            }
+            const cleanup = () => {
+                removeEventListener("touchstart", touchStartListener);
+                removeEventListener("touchmove", touchMoveListener);
+                removeEventListener("touchend", touchEndListener);
+            };
+            return cleanup;
+        },
+        [
+            /*cardPositions, itemCardWidth, dragItemId, dragOverItemId, dragItemClientY, isDragging*/
+        ]
+    );
     React.useEffect(() => {
         const newCardPositions: CardPosition[] = [];
         const computedStyle = getComputedStyle(ref.current);
@@ -469,63 +636,7 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
     }
 
     const classNameToUse = buildClassName(css.backlogItemPlanningPanel, props.renderMobile ? css.mobile : null);
-    const onMouseDown = (e: React.BaseSyntheticEvent<HTMLDivElement>, clientY: number) => {
-        if (targetIsDragButton(e)) {
-            const id = getDragItemId(e.target);
-            if (id) {
-                const width = getDragItemWidth(e.target);
-                const top = getDragItemDocumentTop(e.target);
-                setDragItemDocumentTop(top);
-                setDragItemStartDocumentTop(top);
-                setDragStartClientY(clientY);
-                setDragStartScrollY(window.scrollY);
-                setItemCardWidth(width);
-                setDragItemId(id);
-                setDragOverItemId(id);
-            }
-            e.preventDefault();
-            return false;
-        }
-        return true;
-    };
-    const onMouseMove = (e: React.BaseSyntheticEvent<HTMLDivElement>, clientY: number) => {
-        if (dragStartClientY) {
-            const mouseStartClientYToDocumentTop = dragStartClientY + dragStartScrollY;
-            const mouseClientYToDocumentTop = clientY + window.scrollY;
-            const mouseDeltaClientY = mouseClientYToDocumentTop - mouseStartClientYToDocumentTop;
-            const adjustY = dragItemStartDocumentTop - dragStartScrollY - dragStartClientY;
-            if (Math.abs(mouseDeltaClientY) > 5) {
-                setIsDragging(true);
-            }
-            if (isDragging) {
-                setDragItemDocumentTop(dragItemStartDocumentTop + mouseDeltaClientY);
-                setDragItemClientY(clientY);
-                const overItemId = getDragItemIdUnderTarget(e, clientY, adjustY, cardPositions);
-                if (overItemId) {
-                    setDragOverItemId(overItemId);
-                }
-            }
-            return false;
-        }
-        return true;
-    };
-    const onMouseUp = (e: React.BaseSyntheticEvent<HTMLDivElement>) => {
-        if (isDragging) {
-            if (props.onReorderBacklogItems) {
-                const dragOverItemIdToUse = dragOverItemId === BELOW_LAST_CARD_ID ? null : dragOverItemId;
-                // NOTE: We always drag the item to a position before the "drag over item"
-                if (dragItemId !== dragOverItemIdToUse) {
-                    props.onReorderBacklogItems(dragItemId, dragOverItemIdToUse);
-                }
-            }
-            setIsDragging(false);
-            setDragStartClientY(null);
-            setDragItemId(null);
-            setDragOverItemId(null);
-            return false;
-        }
-        return true;
-    };
+    /* NOTE: Handlers were here */
     const isSingleTouch = (touches: React.TouchList) => touches.length === 1;
     const touchesToClientY = (touches: React.TouchList): number | null => {
         if (touches.length === 1) {
@@ -540,18 +651,6 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
             onMouseDown={(e: React.MouseEvent<HTMLDivElement>) => onMouseDown(e as any, e.clientY)}
             onMouseMove={(e: React.MouseEvent<HTMLDivElement>) => onMouseMove(e as any, e.clientY)}
             onMouseUp={(e: React.MouseEvent<HTMLDivElement>) => onMouseUp(e as any)}
-            onTouchStart={(e: React.TouchEvent<HTMLDivElement>) => {
-                if (isSingleTouch(e.touches)) {
-                    return onMouseDown(e as any, touchesToClientY(e.touches));
-                }
-                return true;
-            }}
-            onTouchMove={(e: React.TouchEvent<HTMLDivElement>) => {
-                return onMouseMove(e as any, touchesToClientY(e.touches));
-            }}
-            onTouchEnd={(e: React.TouchEvent<HTMLDivElement>) => {
-                return onMouseUp(e as any);
-            }}
         >
             {renderElts}
         </div>
