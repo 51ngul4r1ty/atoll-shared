@@ -9,9 +9,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Install NPM packages
-      run: npm ci
     - name: Transpile
       run: |
         echo tranpiling...
+        npm ci
         npm run transpile
