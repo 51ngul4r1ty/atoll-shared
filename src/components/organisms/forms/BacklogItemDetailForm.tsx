@@ -31,6 +31,7 @@ export interface BacklogItemDetailFormStateProps extends BacklogItemDetailFormEd
     className?: string;
     type: BacklogItemType;
     editing: boolean;
+    renderMobile?: boolean;
 }
 
 export interface BacklogItemDetailFormDispatchProps {
@@ -79,76 +80,112 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
             rolePhrase: this.props.rolePhrase,
             reasonPhrase: this.props.reasonPhrase
         };
-        return (
-            <form data-instance-id={this.props.instanceId} className={buildClassName(css.form, this.props.className)}>
+        const rolePhraseInput = (
+            <LabeledInput
+                inputId="userStoryRolePhrase"
+                labelText="Role phrase"
+                placeHolder="As a <role>"
+                inputValue={this.props.rolePhrase}
+                onChange={(value) => {
+                    this.handleDataUpdate({ ...prevData, rolePhrase: value });
+                }}
+            />
+        );
+        const storyPhraseInput = (
+            <LabeledInput
+                inputId="userStoryStoryPhrase"
+                labelText="Story phrase"
+                placeHolder="I can <something>"
+                inputValue={this.props.storyPhrase}
+                required
+                onChange={(value) => {
+                    this.handleDataUpdate({ ...prevData, storyPhrase: value });
+                }}
+            />
+        );
+        const reasonPhraseInput = (
+            <LabeledInput
+                inputId="userStoryReasonPhrase"
+                labelText="Reason phrase"
+                placeHolder={placeholderText}
+                inputValue={this.props.reasonPhrase}
+                onChange={(value) => {
+                    this.handleDataUpdate({ ...prevData, reasonPhrase: value });
+                }}
+            />
+        );
+        const estimateInput = (
+            <LabeledInput
+                inputId="userStoryEstimate"
+                labelText="Estimate"
+                size={3}
+                inputValue={estimateValue}
+                onChange={(value) => {
+                    const valueToUse = value.trim();
+                    const estimate = valueToUse ? parseInt(valueToUse) : null;
+                    this.handleDataUpdate({ ...prevData, estimate });
+                }}
+            />
+        );
+        const externalIdInput = (
+            <LabeledInput
+                inputId="userStoryExternalId"
+                labelText="External ID"
+                inputValue={this.props.externalId}
+                onChange={(value) => {
+                    this.handleDataUpdate({ ...prevData, externalId: value });
+                }}
+            />
+        );
+        const actionButtonPanel = (
+            <div className={css.actionButtonPanel}>
+                <div />
+                <div className={css.centerCell}>
+                    <DoneButton
+                        onClick={() => {
+                            this.handleDoneClick();
+                        }}
+                    />
+                </div>
+                <div className={css.centerCell}>
+                    <CancelButton
+                        onClick={() => {
+                            this.handleCancelClick();
+                        }}
+                    />
+                </div>
+            </div>
+        );
+        const formContent = this.props.renderMobile ? (
+            <>
+                <div className={buildClassName(css.userStoryFormMobile)}>
+                    <div className={css.mobileFormRow}>{rolePhraseInput}</div>
+                    <div className={css.mobileFormRow}>{storyPhraseInput}</div>
+                    <div className={css.mobileFormRow}>{reasonPhraseInput}</div>
+                    <div className={buildClassName(css.mobileFormRow, css.halfAndHalfRow)}>
+                        {estimateInput}
+                        {externalIdInput}
+                    </div>
+                    <div className={css.mobileFormRow}>{actionButtonPanel}</div>
+                </div>
+            </>
+        ) : (
+            <>
                 <div className={buildClassName(css.userStoryDescription, css.formRow)}>
-                    <LabeledInput
-                        inputId="userStoryRolePhrase"
-                        labelText="Role phrase"
-                        placeHolder="As a <role>"
-                        inputValue={this.props.rolePhrase}
-                        onChange={(value) => {
-                            this.handleDataUpdate({ ...prevData, rolePhrase: value });
-                        }}
-                    />
-                    <LabeledInput
-                        inputId="userStoryStoryPhrase"
-                        labelText="Story phrase"
-                        placeHolder="I can <something>"
-                        inputValue={this.props.storyPhrase}
-                        required
-                        onChange={(value) => {
-                            this.handleDataUpdate({ ...prevData, storyPhrase: value });
-                        }}
-                    />
-                    <LabeledInput
-                        inputId="userStoryReasonPhrase"
-                        labelText="Reason phrase"
-                        placeHolder={placeholderText}
-                        inputValue={this.props.reasonPhrase}
-                        onChange={(value) => {
-                            this.handleDataUpdate({ ...prevData, reasonPhrase: value });
-                        }}
-                    />
+                    {rolePhraseInput}
+                    {storyPhraseInput}
+                    {reasonPhraseInput}
                 </div>
                 <div className={buildClassName(css.userStoryExtraFields, css.formRow)}>
-                    <LabeledInput
-                        inputId="userStoryEstimate"
-                        labelText="Estimate"
-                        size={3}
-                        inputValue={estimateValue}
-                        onChange={(value) => {
-                            const valueToUse = value.trim();
-                            const estimate = valueToUse ? parseInt(valueToUse) : null;
-                            this.handleDataUpdate({ ...prevData, estimate });
-                        }}
-                    />
-                    <LabeledInput
-                        inputId="userStoryExternalId"
-                        labelText="External ID"
-                        inputValue={this.props.externalId}
-                        onChange={(value) => {
-                            this.handleDataUpdate({ ...prevData, externalId: value });
-                        }}
-                    />
-                    <div className={css.actionButtonPanel}>
-                        <div />
-                        <div className={css.centerCell}>
-                            <DoneButton
-                                onClick={() => {
-                                    this.handleDoneClick();
-                                }}
-                            />
-                        </div>
-                        <div className={css.centerCell}>
-                            <CancelButton
-                                onClick={() => {
-                                    this.handleCancelClick();
-                                }}
-                            />
-                        </div>
-                    </div>
+                    {estimateInput}
+                    {externalIdInput}
+                    {actionButtonPanel}
                 </div>
+            </>
+        );
+        return (
+            <form data-instance-id={this.props.instanceId} className={buildClassName(css.form, this.props.className)}>
+                {formContent}
             </form>
         );
     }

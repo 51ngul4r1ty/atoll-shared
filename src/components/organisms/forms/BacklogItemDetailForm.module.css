@@ -31,3 +31,19 @@
     display: flex;
     align-items: center;
 }
+
+.userStoryFormMobile {
+    display: grid;
+    grid-template-columns: auto;
+    grid-row-gap: 0.7rem;
+}
+
+.mobileFormRow {
+    width: 100%;
+}
+
+.halfAndHalfRow {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-column-gap: 0.7rem;
+}

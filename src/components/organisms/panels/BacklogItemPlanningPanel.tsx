@@ -117,6 +117,7 @@ export const buildBacklogItemElts = (
                 storyPhrase={item.storyPhrase}
                 reasonPhrase={item.reasonPhrase}
                 type={item.type}
+                renderMobile={renderMobile}
                 onDataUpdate={(fields) => {
                     dispatch(updateBacklogItemFields(fields));
                 }}
