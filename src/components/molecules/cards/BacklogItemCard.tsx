@@ -83,10 +83,15 @@ export const RawBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
                 <div className={css.backlogItemId} title={titleForItemId(props.itemId)}>
                     {abbreviateId(props.itemId)}
                 </div>
+                {props.isDraggable && props.renderMobile ? (
+                    <div data-class="drag-button" className={css.backlogItemDragButton}>
+                        <DragIcon invertColors />
+                    </div>
+                ) : null}
             </div>
             <div className={css.backlogItemText}>{props.titleText}</div>
             <div className={css.backlogItemEstimate}>{formatEstimateForDisplay(props.estimate)}</div>
-            {props.isDraggable ? (
+            {props.isDraggable && !props.renderMobile ? (
                 <div data-class="drag-button" className={css.backlogItemDragButton}>
                     <DragIcon />
                 </div>
