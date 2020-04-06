@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BacklogItemPlanningPanel should handle scenario where unsaved form visible and user switches from edit to view mode 1`] = `
+<div>
+  <div
+    class="backlogItemPlanningPanel mobile"
+  >
+    [Mock SimpleDivider]
+    [Mock SimpleDivider]
+    [Mock BacklogItemCard internalId=fake-id-3 itemId=item-3-loaded titleText="loaded story 3" marginBelowItem=true]
+    [Mock SimpleDivider]
+  </div>
+</div>
+`;
+
+exports[`BacklogItemPlanningPanel should include spacing between added items, action buttons and loaded items 1`] = `
+<div>
+  <div
+    class="backlogItemPlanningPanel mobile"
+  >
+    [Mock SimpleDivider]
+    [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow" instanceId=undefined externalId=item-1-added id=undefined]
+    [Mock SimpleDivider]
+    <div
+      class="backlogItemPlanningActionPanel"
+    >
+      [Mock AddButton itemName=story]
+      [Mock AddButton itemName=issue]
+    </div>
+    [Mock SimpleDivider]
+    [Mock BacklogItemCard internalId=fake-id-1 itemId=item-1-loaded titleText="loaded story 1" marginBelowItem=true]
+    [Mock SimpleDivider]
+    [Mock BacklogItemCard internalId=fake-id-2 itemId=item-2-loaded titleText="loaded story 2" marginBelowItem=true]
+    [Mock SimpleDivider]
+  </div>
+</div>
+`;
+
+exports[`BacklogItemPlanningPanel should include spacing between added saved, added unsaved, and loaded item 1`] = `
+<div>
+  <div
+    class="backlogItemPlanningPanel mobile"
+  >
+    [Mock SimpleDivider]
+    [Mock BacklogItemCard internalId=fake-id-1 itemId=item-1-added titleText="added story 1" marginBelowItem=true]
+    [Mock SimpleDivider]
+    [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow embeddedBacklogItemUserStoryFormRow" instanceId=undefined externalId=item-2-added id=undefined]
+    [Mock SimpleDivider]
+    <div
+      class="backlogItemPlanningActionPanel"
+    >
+      [Mock AddButton itemName=story]
+      [Mock AddButton itemName=issue]
+    </div>
+    [Mock SimpleDivider]
+    [Mock BacklogItemCard internalId=fake-id-3 itemId=item-3-loaded titleText="loaded story 3" marginBelowItem=true]
+    [Mock SimpleDivider]
+  </div>
+</div>
+`;
+
+exports[`BacklogItemPlanningPanel should not include double spacing between added saved, added unsaved and action buttons 1`] = `
+<div>
+  <div
+    class="backlogItemPlanningPanel mobile"
+  >
+    [Mock SimpleDivider]
+    [Mock BacklogItemCard internalId=fake-id-1 itemId=item-1-added titleText="added story 1" marginBelowItem=true]
+    [Mock SimpleDivider]
+    [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow embeddedBacklogItemUserStoryFormRow" instanceId=undefined externalId=item-2-added id=undefined]
+  </div>
+</div>
+`;

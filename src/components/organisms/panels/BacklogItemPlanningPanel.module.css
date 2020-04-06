@@ -9,8 +9,16 @@
     padding-bottom: 0.5rem;
 }
 
+.embeddedBacklogItemPlanningActionPanel {
+    padding-top: 0.5rem;
+}
+
 .backlogItemUserStoryFormRow {
     margin-bottom: 0.5rem;
+}
+
+.embeddedBacklogItemUserStoryFormRow {
+    margin-top: 0.5rem;
 }
 
 .mobile {

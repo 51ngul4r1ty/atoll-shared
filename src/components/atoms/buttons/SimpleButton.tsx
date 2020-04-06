@@ -44,7 +44,7 @@ export const SimpleButton: React.FC<SimpleButtonProps> = (props) => {
         </>
     );
     return (
-        <div className={className} tabIndex={0} onClick={props.onClick}>
+        <div data-testid="button-container" className={className} tabIndex={0} onClick={props.onClick}>
             {contents}
         </div>
     );

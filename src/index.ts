@@ -26,8 +26,13 @@ export * from "./utils/linkedList";
 
 // interfaces/types
 export { StateTree, FeatureToggle, FeatureTogglesState } from "./types";
-export { BacklogItem, BacklogItemsState } from "./reducers/backlogItemsReducer";
-export { BacklogItemWithSource, BacklogItemType, BacklogItemSource } from "./reducers/backlogItemsReducer";
+export {
+    BacklogItem,
+    BacklogItemSource,
+    BacklogItemType,
+    BacklogItemWithSource,
+    BacklogItemsState
+} from "./reducers/backlogItemsReducer";
 
 // containers
 export { default as IntlProvider } from "./i18n/IntlProvider";

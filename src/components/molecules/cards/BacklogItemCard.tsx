@@ -36,6 +36,7 @@ export const titleForItemId = (id: string): string | undefined => {
 
 // TODO: See if this is defined elsewhere:
 export enum BacklogItemTypeEnum {
+    None,
     Bug,
     Story
 }
@@ -43,11 +44,14 @@ export enum BacklogItemTypeEnum {
 export interface BacklogItemCardStateProps {
     estimate: number | null;
     isDraggable?: boolean;
+    internalId: string;
     itemId: string;
     itemType: BacklogItemTypeEnum;
     marginBelowItem?: boolean;
     renderMobile?: boolean;
     titleText: string;
+    top?: string;
+    width?: any;
 }
 
 export interface BacklogItemCardDispatchProps {}
@@ -60,10 +64,18 @@ export const RawBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
     const classNameToUse = buildClassName(
         css.backlogItemCard,
         props.renderMobile ? css.mobile : null,
-        props.marginBelowItem ? css.marginBelowItem : null
+        props.marginBelowItem ? css.marginBelowItem : null,
+        props.itemType === BacklogItemTypeEnum.None ? css.backlogItemGap : null,
+        props.top ? css.dragging : null
     );
     return (
-        <div className={classNameToUse} tabIndex={0}>
+        <div
+            className={classNameToUse}
+            data-class="backlogitem"
+            data-id={props.internalId}
+            style={{ top: props.top, width: props.width }}
+            tabIndex={0}
+        >
             <div className={css.backlogItemType}>
                 <div className={css.backlogItemIcon}>
                     {props.itemType === BacklogItemTypeEnum.Story ? <StoryIcon invertColors /> : <IssueIcon invertColors />}
@@ -71,11 +83,16 @@ export const RawBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
                 <div className={css.backlogItemId} title={titleForItemId(props.itemId)}>
                     {abbreviateId(props.itemId)}
                 </div>
+                {props.isDraggable && props.renderMobile ? (
+                    <div data-class="drag-button" className={css.backlogItemDragButton}>
+                        <DragIcon invertColors />
+                    </div>
+                ) : null}
             </div>
             <div className={css.backlogItemText}>{props.titleText}</div>
             <div className={css.backlogItemEstimate}>{formatEstimateForDisplay(props.estimate)}</div>
-            {props.isDraggable ? (
-                <div className={css.backlogItemDragButton}>
+            {props.isDraggable && !props.renderMobile ? (
+                <div data-class="drag-button" className={css.backlogItemDragButton}>
                     <DragIcon />
                 </div>
             ) : null}

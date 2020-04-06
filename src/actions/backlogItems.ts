@@ -12,6 +12,8 @@ import { BacklogItemType, BacklogItemModel, BacklogItem } from "../reducers/back
 import { BacklogItemDetailFormEditableFieldsWithInstanceId } from "../components/organisms/forms/BacklogItemDetailForm";
 import { PushBacklogItemModel } from "../middleware/wsMiddleware";
 
+export const refreshBacklogItems = () => getBacklogItems();
+
 export const getBacklogItems = (): ApiAction<undefined> => ({
     type: API,
     payload: {
@@ -121,6 +123,31 @@ export const postBacklogItem = (
     };
 };
 
+export interface ActionPostBacklogItemReorderPayloadData {
+    sourceItemId: string;
+    targetItemId: string;
+}
+
+export const postActionBacklogItemReorder = (
+    sourceItemId: string,
+    targetItemId: string
+): ApiAction<ActionPostBacklogItemReorderPayloadData> => {
+    return {
+        type: API,
+        payload: {
+            endpoint: "http://localhost:8500/api/v1/actions/reorder-backlog-items",
+            method: "POST",
+            headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+            data: { sourceItemId, targetItemId },
+            types: [
+                ActionTypes.API_POST_ACTION_REORDER_BACKLOG_ITEM_REQUEST,
+                ActionTypes.API_POST_ACTION_REORDER_BACKLOG_ITEM_SUCCESS,
+                ActionTypes.API_POST_ACTION_REORDER_BACKLOG_ITEM_FAILURE
+            ]
+        }
+    };
+};
+
 export interface UpdateBacklogItemFieldsAction {
     type: typeof ActionTypes.UPDATE_BACKLOG_ITEM_FIELDS;
     payload: BacklogItemDetailFormEditableFieldsWithInstanceId;
@@ -142,5 +169,25 @@ export const receivePushedBacklogItem = (item: Partial<PushBacklogItemModel>): R
     return {
         type: ActionTypes.RECEIVE_PUSHED_BACKLOG_ITEM,
         payload: item
+    };
+};
+
+export interface ReorderBacklogItemPayload {
+    sourceItemId: string;
+    targetItemId: string;
+}
+
+export interface ReorderBacklogItemAction {
+    type: typeof ActionTypes.REORDER_BACKLOG_ITEM;
+    payload: ReorderBacklogItemPayload;
+}
+
+export const reorderBacklogItems = (sourceItemId: string, targetItemId: string): ReorderBacklogItemAction => {
+    return {
+        type: ActionTypes.REORDER_BACKLOG_ITEM,
+        payload: {
+            sourceItemId,
+            targetItemId
+        }
     };
 };
