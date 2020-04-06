@@ -15,3 +15,7 @@ jobs:
       run: |
         echo tranpiling...
         npm run transpile
+    - name: Test
+      run: |
+        echo running unit tests...
+        npm run test:ci
