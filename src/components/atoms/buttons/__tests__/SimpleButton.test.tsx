@@ -1,5 +1,5 @@
 // externals
-import * as React from "React";
+import * as React from "react";
 
 // test related
 import "jest";
