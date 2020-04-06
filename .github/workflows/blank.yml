@@ -17,4 +17,5 @@ jobs:
     - name: Test
       run: |
         echo running unit tests...
+        npm ci
         npm run test:ci
