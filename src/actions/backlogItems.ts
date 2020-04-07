@@ -12,12 +12,15 @@ import { BacklogItemType, BacklogItemModel, BacklogItem } from "../reducers/back
 import { BacklogItemDetailFormEditableFieldsWithInstanceId } from "../components/organisms/forms/BacklogItemDetailForm";
 import { PushBacklogItemModel } from "../middleware/wsMiddleware";
 
+// config
+import { getApiBaseUrl } from "../config";
+
 export const refreshBacklogItems = () => getBacklogItems();
 
 export const getBacklogItems = (): ApiAction<undefined> => ({
     type: API,
     payload: {
-        endpoint: "http://localhost:8500/api/v1/backlog-items",
+        endpoint: `${getApiBaseUrl()}api/v1/backlog-items`,
         method: "GET",
         headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
         types: [
@@ -108,7 +111,7 @@ export const postBacklogItem = (
     return {
         type: API,
         payload: {
-            endpoint: "http://localhost:8500/api/v1/backlog-items",
+            endpoint: `${getApiBaseUrl()}api/v1/backlog-items`,
             method: "POST",
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
             // TODO: Define a type for this?
@@ -135,7 +138,7 @@ export const postActionBacklogItemReorder = (
     return {
         type: API,
         payload: {
-            endpoint: "http://localhost:8500/api/v1/actions/reorder-backlog-items",
+            endpoint: `${getApiBaseUrl()}api/v1/actions/reorder-backlog-items`,
             method: "POST",
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
             data: { sourceItemId, targetItemId },

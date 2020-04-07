@@ -23,6 +23,7 @@ export { BacklogItemDetailForm } from "./components/organisms/forms/BacklogItemD
 export { BacklogItemPlanningPanel } from "./components/organisms/panels/BacklogItemPlanningPanel";
 export * from "./components/atoms/icons";
 export * from "./utils/linkedList";
+export * from "./config";
 
 // interfaces/types
 export { StateTree, FeatureToggle, FeatureTogglesState } from "./types";
