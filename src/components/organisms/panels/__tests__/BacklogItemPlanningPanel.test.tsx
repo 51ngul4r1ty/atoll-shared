@@ -169,4 +169,22 @@ describe("BacklogItemPlanningPanel", () => {
         );
         expect(wrapper.container).toMatchSnapshot();
     });
+    it("should handle scenario where 3 unsaved added items shown in sequence", () => {
+        const allItems = [];
+        allItems.push(buildAddedItem(1, 13, false));
+        allItems.push(buildAddedItem(1, 8, false));
+        allItems.push(buildAddedItem(1, 5, false));
+        allItems.push(buildLoadedItem(3, 8));
+        const editMode = EditMode.Edit;
+        const wrapper = render(
+            <BacklogItemPlanningPanel
+                allItems={allItems}
+                editMode={editMode}
+                renderMobile
+                onAddNewBacklogItem={() => {}}
+                onReorderBacklogItems={() => {}}
+            />
+        );
+        expect(wrapper.container).toMatchSnapshot();
+    });
 });
