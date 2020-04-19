@@ -10,6 +10,8 @@ export const getHistoryInstance = () => {
     return historyInstance;
 };
 
+let assetPortOverride: number = null;
+
 let configCallbacks: ConfigCallbacks = {
     getDocumentLocHref: () => ""
 };
@@ -20,6 +22,14 @@ export interface ConfigCallbacks {
 
 export const initConfig = (configCallbacksObj: ConfigCallbacks) => {
     configCallbacks = configCallbacksObj;
+};
+
+export const setAssetPortOverride = (port: number | null) => {
+    assetPortOverride = port;
+};
+
+export const getAssetPortOverride = (): number | null => {
+    return assetPortOverride;
 };
 
 export const protocolToScheme = (protocol: string) => {
@@ -58,7 +68,56 @@ export const remapAssetPath = (url: string) => {
         return url;
     }
     const parsedAssetUrl = urlParse(url);
-    const baseUrl = `${protocolToScheme(parsedAssetUrl.protocol)}://${getApiHostName()}:${parsedAssetUrl.port}/`;
+    const portToUse = parsedAssetUrl.port || getAssetPortOverride();
+    const portSuffix = portToUse ? `:${portToUse}` : "";
+    const protocolPrefix = parsedAssetUrl.protocol ? `${protocolToScheme(parsedAssetUrl.protocol)}:` : "";
+    const baseUrl = `${protocolPrefix}//${getApiHostName()}${portSuffix}/`;
     const result = combineBaseAndRelativeUrl(baseUrl, parsedAssetUrl.pathname);
     return result;
+};
+
+export interface DbConfig {
+    database: string;
+    username: string;
+    password: string;
+    host: string;
+    port: string;
+}
+
+export const parsePostgresUrl = (url: string): DbConfig => {
+    if (!url) {
+        return null;
+    }
+    const POSTGRES_PROTOCOL = "postgres://";
+    if (!url.startsWith(POSTGRES_PROTOCOL)) {
+        return null;
+    }
+    let rest = url.substr(POSTGRES_PROTOCOL.length);
+    let nextToken = ":";
+    let idx = rest.indexOf(nextToken);
+    const username = rest.substr(0, idx);
+    rest = rest.substr(username.length + nextToken.length);
+    nextToken = "@";
+    idx = rest.indexOf(nextToken);
+    const password = rest.substr(0, idx);
+    rest = rest.substr(password.length + nextToken.length);
+    nextToken = "/";
+    idx = rest.indexOf(nextToken);
+    const hostAndPort = rest.substr(0, idx);
+    const portSepToken = ":";
+    const portSepIdx = hostAndPort.indexOf(portSepToken);
+    const host = idx < 0 ? hostAndPort : hostAndPort.substr(0, portSepIdx);
+    const port = idx < 0 ? "5432" : hostAndPort.substr(portSepIdx + 1);
+    const database = rest.substr(hostAndPort.length + nextToken.length);
+    return {
+        database,
+        username,
+        password,
+        host,
+        port
+    };
+};
+
+export const getDbConfig = (): DbConfig => {
+    return parsePostgresUrl(process.env.ATOLL_DATABASE_URL || process.env.DATABASE_URL);
 };

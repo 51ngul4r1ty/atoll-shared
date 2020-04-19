@@ -93,6 +93,12 @@ exports[`BacklogItemPlanningPanel should not include double spacing between adde
     [Mock BacklogItemCard internalId=fake-id-1 itemId=item-1-added titleText="added story 1" marginBelowItem=true]
     [Mock SimpleDivider]
     [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow embeddedBacklogItemUserStoryFormRow" instanceId=undefined externalId=item-2-added id=undefined]
+    <div
+      class="backlogItemPlanningActionPanel"
+    >
+      [Mock AddButton itemName=story]
+      [Mock AddButton itemName=issue]
+    </div>
   </div>
 </div>
 `;

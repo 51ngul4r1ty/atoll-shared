@@ -234,12 +234,20 @@ const handleScroll = (
     }
 };
 
-const buildActionButtons = (editMode: EditMode, suppressTopPadding: boolean, onAddNewBacklogItem: OnAddedNewBacklogItem) => {
+const addActionButtons = (
+    renderElts: any[],
+    editMode: EditMode,
+    suppressTopPadding: boolean,
+    onAddNewBacklogItem: OnAddedNewBacklogItem
+) => {
+    if (editMode === EditMode.View) {
+        return;
+    }
     const actionButtonsClassName = buildClassName(
         css.backlogItemPlanningActionPanel,
         suppressTopPadding ? null : css.embeddedBacklogItemUserStoryFormRow
     );
-    return editMode === EditMode.View ? null : (
+    renderElts.push(
         <div key="backlogitem-action-buttons" className={actionButtonsClassName}>
             <AddButton
                 itemName="story"
@@ -589,9 +597,7 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
                 inAddedSection = false;
             }
             if (!inLoadedSection) {
-                renderElts.push(
-                    buildActionButtons(props.editMode, suppressTopPadding || lastItemWasUnsaved, props.onAddNewBacklogItem)
-                );
+                addActionButtons(renderElts, props.editMode, suppressTopPadding || lastItemWasUnsaved, props.onAddNewBacklogItem);
             }
             inLoadedSection = true;
         }
@@ -631,6 +637,9 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
         lastItemWasUnsaved = item.source === BacklogItemSource.Added && !item.saved;
         suppressTopPadding = false;
     });
+    if (!inLoadedSection) {
+        addActionButtons(renderElts, props.editMode, suppressTopPadding || lastItemWasUnsaved, props.onAddNewBacklogItem);
+    }
     if (inLoadedSection) {
         renderElts.push(<SimpleDivider key="last-divider" />);
     }

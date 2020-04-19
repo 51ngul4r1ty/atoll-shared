@@ -1,6 +1,6 @@
 {
   "name": "@atoll/shared",
-  "version": "0.3.0-alpha.3",
+  "version": "0.3.2-alpha.4",
   "author": {
     "name": "Kevin Berry",
     "email": "41717340+51ngul4r1ty@users.noreply.github.com"
@@ -93,7 +93,7 @@
     "rollup-plugin-node-resolve": "5.2.0",
     "rollup-plugin-postcss-modules": "2.0.1",
     "rollup-plugin-typescript2": "0.26.0",
-    "ts-jest": "25.3.1",
+    "ts-jest": "25.4.0",
     "typescript": "3.8.3",
     "yalc": "1.0.0-pre.35"
   }
