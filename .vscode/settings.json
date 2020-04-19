@@ -23,5 +23,17 @@
     "coverage-gutters.lcovname": "lcov.info",
     "coverage-gutters.coverageReportFileName": "coverage/**/index.html",
     "coverage-gutters.showLineCoverage": false,
-    "typescript.tsdk": "node_modules\\typescript\\lib"
+    "typescript.tsdk": "node_modules\\typescript\\lib",
+    "css.lint.validProperties": [
+        "composes"
+    ],
+    "css.lint.argumentsInColorFunction": "ignore",
+    "css.lint.emptyRules": "ignore",
+    "css.lint.fontFaceProperties": "ignore",
+    "css.lint.hexColorLength": "ignore",
+    "css.lint.propertyIgnoredDueToDisplay": "ignore",
+    "css.lint.unknownAtRules": "ignore",
+    "css.lint.unknownProperties": "ignore",
+    "css.lint.vendorPrefix": "ignore",
+    "css.validate": false
 }

@@ -620,7 +620,7 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
                     props.renderMobile,
                     highlightAbove,
                     dispatch,
-                    suppressTopPadding
+                    suppressTopPadding || lastItemWasUnsaved
                 );
                 elts.forEach((elt) => {
                     renderElts.push(elt);
