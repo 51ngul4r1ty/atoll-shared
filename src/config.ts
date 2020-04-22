@@ -125,3 +125,5 @@ export const getDbConfig = (): DbConfig => {
 export const getAuthKey = (): string | null => {
     return process.env.ATOLL_AUTH_KEY || null;
 };
+
+export const getAuthTokenExpirationMinutes = () => 5;
