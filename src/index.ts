@@ -22,6 +22,7 @@ export { TabStrip } from "./components/atoms/tabs/TabStrip";
 export { BacklogItemDetailForm } from "./components/organisms/forms/BacklogItemDetailForm";
 export { BacklogItemPlanningPanel } from "./components/organisms/panels/BacklogItemPlanningPanel";
 export * from "./components/atoms/icons";
+export * from "./utils/dateHelper";
 export * from "./utils/linkedList";
 export * from "./config";
 
