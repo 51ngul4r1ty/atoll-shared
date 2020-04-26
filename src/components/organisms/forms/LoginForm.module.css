@@ -1,0 +1,9 @@
+.form,
+.formFields {
+    display: grid;
+    grid-row-gap: 0.7rem;
+}
+
+.formActions {
+    text-align: right;
+}

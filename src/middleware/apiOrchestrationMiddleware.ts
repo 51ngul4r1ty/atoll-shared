@@ -48,5 +48,10 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             storeTyped.dispatch(refreshBacklogItems());
             break;
         }
+        case ActionTypes.LOGIN_USER: {
+            // TODO: Finish this up
+            console.log("NEED TO MAKE API CALL HERE");
+            break;
+        }
     }
 };

@@ -7,6 +7,7 @@ import { CancelButton } from "../../molecules/buttons/CancelButton";
 import { DoneButton } from "../../molecules/buttons/DoneButton";
 
 // style
+import commonCss from "./common/common.module.css";
 import css from "./BacklogItemDetailForm.module.css";
 
 // utils
@@ -184,7 +185,10 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
             </>
         );
         return (
-            <form data-instance-id={this.props.instanceId} className={buildClassName(css.form, this.props.className)}>
+            <form
+                data-instance-id={this.props.instanceId}
+                className={buildClassName(commonCss.form, css.form, this.props.className)}
+            >
                 {formContent}
             </form>
         );

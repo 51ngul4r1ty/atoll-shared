@@ -41,6 +41,8 @@ export type AppState = Readonly<{
     editMode: EditMode;
     executingOnClient: boolean;
     pushNotifications: PushNotification<any>[];
+    username: string;
+    password: string;
 }>;
 
 /* User state related */
