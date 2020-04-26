@@ -1,20 +1,16 @@
 // externals
-import React, {
-    forwardRef,
-    Component,
-    ChangeEvent,
-    ForwardRefExoticComponent,
-    PropsWithoutRef,
-    RefAttributes,
-    RefObject,
-    Ref
-} from "react";
+import React, { forwardRef, Component, ChangeEvent, RefObject, Ref } from "react";
 
 // style
 import css from "./LabeledInput.module.css";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
+import { ComponentWithForwardedRef } from "../../../types";
+
+export type LabeledInputRefType = HTMLInputElement;
+
+export type LabeledInputType = ComponentWithForwardedRef<LabeledInputProps>;
 
 export interface LabeledInputStateProps {
     className?: string;
@@ -41,7 +37,7 @@ export interface LabeledInputDispatchProps {
 
 export type LabeledInputProps = LabeledInputStateProps & LabeledInputDispatchProps;
 
-export class RawLabeledInput extends Component<LabeledInputProps & LabeledInputInnerStateProps> {
+export class InnerLabeledInput extends Component<LabeledInputProps & LabeledInputInnerStateProps> {
     constructor(props) {
         super(props);
     }
@@ -93,10 +89,6 @@ export class RawLabeledInput extends Component<LabeledInputProps & LabeledInputI
     }
 }
 
-export type LabeledInputRefType = HTMLInputElement;
-
-export type LabeledInputType = ForwardRefExoticComponent<PropsWithoutRef<LabeledInputProps> & RefAttributes<any>>;
-
 export const LabeledInput: LabeledInputType = forwardRef((props: LabeledInputProps, ref: Ref<LabeledInputRefType>) => (
-    <RawLabeledInput innerRef={ref as RefObject<LabeledInputRefType>} {...props} />
+    <InnerLabeledInput innerRef={ref as RefObject<LabeledInputRefType>} {...props} />
 ));

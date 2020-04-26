@@ -1,17 +1,6 @@
 // externals
 import * as React from "react";
-import {
-    forwardRef,
-    RefObject,
-    RefAttributes,
-    Ref,
-    PropsWithoutRef,
-    PropsWithChildren,
-    ForwardRefExoticComponent,
-    Component,
-    ChangeEvent,
-    FC
-} from "react";
+import { forwardRef, RefObject, Ref, FC } from "react";
 
 // style
 import css from "./SimpleButton.module.css";
@@ -21,6 +10,11 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 
 // interfaces/types
 import { PropsWithClassName } from "../../common/types";
+import { ComponentWithForwardedRef } from "../../../types";
+
+export type SimpleButtonRefType = HTMLInputElement;
+
+export type SimpleButtonType = ComponentWithForwardedRef<SimpleButtonProps>;
 
 export interface SimpleButtonStateProps extends PropsWithClassName {
     icon?: any; // TODO: Define type
@@ -37,7 +31,7 @@ export interface SimpleButtonDispatchProps {
 
 export type SimpleButtonProps = SimpleButtonStateProps & SimpleButtonDispatchProps;
 
-export const RawSimpleButton: FC<SimpleButtonProps & SimpleButtonInnerStateProps> = (props) => {
+const InnerSimpleButton: FC<SimpleButtonProps & SimpleButtonInnerStateProps> = (props) => {
     const icon = props.icon && <div className={css.buttonIcon}>{props.icon}</div>;
     const hasChildren = !!props.children;
     const caption = !hasChildren ? null : <div className={css.buttonCaption}>{props.children}</div>;
@@ -66,12 +60,6 @@ export const RawSimpleButton: FC<SimpleButtonProps & SimpleButtonInnerStateProps
     );
 };
 
-export type SimpleButtonRefType = HTMLInputElement;
-
-export type SimpleButtonType = ForwardRefExoticComponent<
-    PropsWithoutRef<PropsWithChildren<SimpleButtonProps>> & RefAttributes<any>
->;
-
 export const SimpleButton: SimpleButtonType = forwardRef((props: SimpleButtonProps, ref: Ref<SimpleButtonRefType>) => (
-    <RawSimpleButton innerRef={ref as RefObject<SimpleButtonRefType>} {...props} />
+    <InnerSimpleButton innerRef={ref as RefObject<SimpleButtonRefType>} {...props} />
 ));

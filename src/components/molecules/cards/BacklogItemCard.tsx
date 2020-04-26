@@ -60,7 +60,7 @@ export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDi
 
 /* exported components */
 
-export const RawBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
+export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
     const classNameToUse = buildClassName(
         css.backlogItemCard,
         props.renderMobile ? css.mobile : null,
@@ -100,4 +100,4 @@ export const RawBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
     );
 };
 
-export const BacklogItemCard = withTranslation()(RawBacklogItemCard);
+export const BacklogItemCard = withTranslation()(InnerBacklogItemCard);

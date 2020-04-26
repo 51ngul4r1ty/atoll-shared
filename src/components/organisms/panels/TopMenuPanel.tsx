@@ -34,7 +34,7 @@ export type TopMenuPanelProps = TopMenuPanelStateProps & TopMenuPanelDispatchPro
 
 /* exported components */
 
-export const RawTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
+export const InnerTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
     const enableSprintTab = useFeatureToggle("enableSprintTab");
     const enableReviewTab = useFeatureToggle("enableReviewTab");
     const dispatch = useDispatch();
@@ -95,4 +95,4 @@ export const RawTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
     );
 };
 
-export const TopMenuPanel = withTranslation()(RawTopMenuPanel);
+export const TopMenuPanel = withTranslation()(InnerTopMenuPanel);

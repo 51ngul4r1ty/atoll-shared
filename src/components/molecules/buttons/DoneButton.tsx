@@ -1,13 +1,5 @@
 // externals
-import React, {
-    forwardRef,
-    ForwardRefExoticComponent,
-    PropsWithoutRef,
-    PropsWithChildren,
-    RefAttributes,
-    RefObject,
-    Ref
-} from "react";
+import React, { forwardRef, RefObject, Ref } from "react";
 
 // atoms
 import { SimpleButton, SimpleButtonRefType } from "../../atoms/buttons/SimpleButton";
@@ -20,6 +12,11 @@ import css from "./DoneButton.module.css";
 
 // interfaces/types
 import { PropsWithClassName } from "../../common/types";
+import { ComponentWithForwardedRef } from "../../../types";
+
+export type DoneButtonRefType = SimpleButtonRefType;
+
+export type DoneButtonType = ComponentWithForwardedRef<DoneButtonProps>;
 
 export interface DoneButtonStateProps extends PropsWithClassName {
     itemName?: string;
@@ -35,7 +32,7 @@ export interface DoneButtonDispatchProps {
 
 export type DoneButtonProps = DoneButtonStateProps & DoneButtonDispatchProps;
 
-export const RawDoneButton: React.FC<DoneButtonProps & DoneButtonInnerStateProps> = (props) => {
+const InnerSimpleButton: React.FC<DoneButtonProps & DoneButtonInnerStateProps> = (props) => {
     const icon = <DoneIcon />;
     let text = "Done";
     if (props.itemName) {
@@ -48,10 +45,6 @@ export const RawDoneButton: React.FC<DoneButtonProps & DoneButtonInnerStateProps
     );
 };
 
-export type DoneButtonRefType = SimpleButtonRefType;
-
-export type DoneButtonType = ForwardRefExoticComponent<PropsWithoutRef<PropsWithChildren<DoneButtonProps>> & RefAttributes<any>>;
-
 export const DoneButton: DoneButtonType = forwardRef((props: DoneButtonProps, ref: Ref<DoneButtonRefType>) => (
-    <RawDoneButton innerRef={ref as RefObject<DoneButtonRefType>} {...props} />
+    <InnerSimpleButton innerRef={ref as RefObject<DoneButtonRefType>} {...props} />
 ));

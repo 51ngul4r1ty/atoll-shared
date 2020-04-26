@@ -1,4 +1,5 @@
 // externals
+import { ForwardRefExoticComponent, PropsWithoutRef, PropsWithChildren, RefAttributes } from "react";
 import { Action } from "redux";
 
 // consts/enums
@@ -6,6 +7,7 @@ import { EditMode } from "./components/molecules/buttons/EditButton";
 
 // interfaces/types
 import { BacklogItemsState } from "./reducers/backlogItemsReducer";
+import { DoneButtonProps } from "./components/molecules/buttons/DoneButton";
 
 export type Locale = "en_US" | "de_DE";
 
@@ -84,3 +86,7 @@ export interface FSA<T, P> extends SimpleFSA<T> {
 export interface FSAWithMeta<T, P, M> extends FSA<T, P> {
     meta?: M;
 }
+
+/* Forwarded Ref Related */
+
+export type ComponentWithForwardedRef<P> = ForwardRefExoticComponent<PropsWithoutRef<PropsWithChildren<P>> & RefAttributes<any>>;

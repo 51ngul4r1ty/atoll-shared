@@ -360,7 +360,7 @@ const getDragItemIdUnderTarget = (
     return getDragItemIdUnderCommon(documentTop, cardPositions);
 };
 
-export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps> = (props) => {
+export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps> = (props) => {
     // #region state with refs
     const [cardPositions, _setCardPositions] = useState([]);
     const cardPositionsRef = React.useRef();
@@ -666,4 +666,4 @@ export const RawBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps
     );
 };
 
-export const BacklogItemPlanningPanel = withTranslation()(RawBacklogItemPlanningPanel);
+export const BacklogItemPlanningPanel = withTranslation()(InnerBacklogItemPlanningPanel);

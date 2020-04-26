@@ -62,7 +62,9 @@ export class LoginForm extends Component<LoginFormProps> {
                             }
                         }}
                         onEnterKeyPress={() => {
-                            this.passwordInputRef.current.focus();
+                            if (usernameValue) {
+                                this.passwordInputRef.current.focus();
+                            }
                         }}
                     />
                 </div>
