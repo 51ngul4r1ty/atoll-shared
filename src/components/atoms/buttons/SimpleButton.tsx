@@ -22,7 +22,7 @@ export interface SimpleButtonStateProps extends PropsWithClassName {
 }
 
 interface SimpleButtonInnerStateProps {
-    innerRef: RefObject<SimpleButtonRefType>; // TODO: Define type
+    innerRef: RefObject<SimpleButtonRefType>;
 }
 
 export interface SimpleButtonDispatchProps {

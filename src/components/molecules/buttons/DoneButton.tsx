@@ -23,7 +23,7 @@ export interface DoneButtonStateProps extends PropsWithClassName {
 }
 
 interface DoneButtonInnerStateProps {
-    innerRef: RefObject<DoneButtonRefType>; // TODO: Define type
+    innerRef: RefObject<DoneButtonRefType>;
 }
 
 export interface DoneButtonDispatchProps {

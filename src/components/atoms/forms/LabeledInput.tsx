@@ -26,7 +26,7 @@ export interface LabeledInputStateProps {
 
 // NOTE: Keep this private so that it isn't referenced outside this component
 interface LabeledInputInnerStateProps {
-    innerRef: RefObject<LabeledInputRefType>; // TODO: Define type
+    innerRef: RefObject<LabeledInputRefType>;
 }
 
 export interface LabeledInputDispatchProps {
