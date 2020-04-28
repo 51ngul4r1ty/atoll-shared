@@ -24,20 +24,3 @@ export const setEditMode = (editMode: EditMode): SetEditModeAction => ({
     type: ActionTypes.SET_EDIT_MODE,
     payload: editMode
 });
-
-export type SetUsernameAction = FSA<typeof ActionTypes.SET_USERNAME, string>;
-export const setUsername = (username: string): SetUsernameAction => ({
-    type: ActionTypes.SET_USERNAME,
-    payload: username
-});
-
-export type SetPasswordAction = FSA<typeof ActionTypes.SET_PASSWORD, string>;
-export const setPassword = (password: string): SetPasswordAction => ({
-    type: ActionTypes.SET_PASSWORD,
-    payload: password
-});
-
-export type LoginUserAction = SimpleFSA<typeof ActionTypes.LOGIN_USER>;
-export const loginUser = (): LoginUserAction => ({
-    type: ActionTypes.LOGIN_USER
-});

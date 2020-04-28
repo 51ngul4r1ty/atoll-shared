@@ -3,6 +3,7 @@ import { API, ApiAction, ApiActionSuccessPayload, ApiActionMetaDataRequestBody }
 
 // actions
 import * as ActionTypes from "./actionTypes";
+import * as ApiActionNames from "./apiActionNames";
 
 // consts/enums
 import { APPLICATION_JSON } from "../constants";
@@ -14,6 +15,7 @@ import { PushBacklogItemModel } from "../middleware/wsMiddleware";
 
 // config
 import { getApiBaseUrl } from "../config";
+import { buildActionTypes } from "./utils/apiActionUtils";
 
 export const refreshBacklogItems = () => getBacklogItems();
 
@@ -23,11 +25,7 @@ export const getBacklogItems = (): ApiAction<undefined> => ({
         endpoint: `${getApiBaseUrl()}api/v1/backlog-items`,
         method: "GET",
         headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
-        types: [
-            ActionTypes.API_GET_BACKLOG_ITEMS_REQUEST,
-            ActionTypes.API_GET_BACKLOG_ITEMS_SUCCESS,
-            ActionTypes.API_GET_BACKLOG_ITEMS_FAILURE
-        ]
+        types: buildActionTypes(ApiActionNames.GET_BACKLOG_ITEMS)
     }
 });
 
@@ -114,13 +112,8 @@ export const postBacklogItem = (
             endpoint: `${getApiBaseUrl()}api/v1/backlog-items`,
             method: "POST",
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
-            // TODO: Define a type for this?
             data: { ...backlogItem, prevBacklogItemId },
-            types: [
-                ActionTypes.API_POST_BACKLOG_ITEM_REQUEST,
-                ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS,
-                ActionTypes.API_POST_BACKLOG_ITEM_FAILURE
-            ]
+            types: buildActionTypes(ApiActionNames.POST_BACKLOG_ITEM)
         },
         meta
     };
@@ -142,11 +135,7 @@ export const postActionBacklogItemReorder = (
             method: "POST",
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
             data: { sourceItemId, targetItemId },
-            types: [
-                ActionTypes.API_POST_ACTION_REORDER_BACKLOG_ITEM_REQUEST,
-                ActionTypes.API_POST_ACTION_REORDER_BACKLOG_ITEM_SUCCESS,
-                ActionTypes.API_POST_ACTION_REORDER_BACKLOG_ITEM_FAILURE
-            ]
+            types: buildActionTypes(ApiActionNames.POST_ACTION_REORDER_BACKLOG_ITEM)
         }
     };
 };

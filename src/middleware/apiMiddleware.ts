@@ -1,9 +1,15 @@
 // externals
 import axios, { AxiosRequestConfig } from "axios";
-import { Action, Dispatch } from "redux";
+import { Action, Dispatch, Store } from "redux";
 
 // consts/enums
 import { APPLICATION_JSON } from "../constants";
+
+// interfaces/types
+import { StateTree } from "../types";
+
+// selectors
+import { getAuthToken } from "../selectors/appSelectors";
 
 export interface ApiHeaders {
     [name: string]: string;
@@ -130,18 +136,23 @@ export interface ApiActionMetaParamsRequestBody<T> extends AxiosRequestConfig {
     params?: T;
 }
 
-export const apiMiddleware = ({ dispatch }) => (next) => (action: Action) => {
+export const apiMiddleware = (store: Store<StateTree>) => (next) => (action: Action) => {
     next(action);
     if (action.type !== API) {
         return;
     }
+    const { dispatch, getState } = store;
+    const state = getState();
+    const authToken = getAuthToken(state);
     const apiAction = action as ApiAction<any>;
     const { endpoint, method, data, types, headers } = apiAction.payload;
     const dataOrParams = ["GET", "DELETE"].includes(method) ? "params" : "data";
 
     axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || "";
     axios.defaults.headers.common["Content-Type"] = APPLICATION_JSON;
-    //    axios.defaults.headers.common["Authorization"] = `Bearer  ${token}`;
+    if (authToken) {
+        axios.defaults.headers.common["Authorization"] = `Bearer  ${authToken}`;
+    }
     const requestBody: AxiosRequestConfig = {
         url: endpoint,
         method,

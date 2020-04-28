@@ -39,12 +39,14 @@ export interface PushNotification<T> extends BasePushNotification {
 }
 
 export type AppState = Readonly<{
-    locale: Locale;
+    authToken: string;
     editMode: EditMode;
     executingOnClient: boolean;
-    pushNotifications: PushNotification<any>[];
-    username: string;
+    locale: Locale;
     password: string;
+    pushNotifications: PushNotification<any>[];
+    requestToken: string;
+    username: string;
 }>;
 
 /* User state related */

@@ -9,7 +9,7 @@ import { LoginView, LoginViewStateProps, LoginViewDispatchProps } from "./LoginV
 import { StateTree } from "./types";
 
 // actions
-import { loginUser, setUsername, setPassword } from "./actions/appActions";
+import { loginUser, setUsername, setPassword } from "./actions/authActions";
 
 const mapStateToProps = (state: StateTree): LoginViewStateProps => {
     let result: LoginViewStateProps = {

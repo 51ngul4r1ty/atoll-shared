@@ -1,5 +1,6 @@
 // externals
 import { Action, Store } from "redux";
+import * as HttpStatus from "http-status-codes";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
@@ -15,12 +16,14 @@ import {
     postActionBacklogItemReorder,
     refreshBacklogItems
 } from "../actions/backlogItems";
+import { postLogin, ActionPostLoginSuccessAction } from "../actions/authActions";
 
 // state
 import { StateTree } from "../types";
 
 // utils
 import { convertToBacklogItemModel } from "../utils/apiPayloadHelper";
+import { routePlanView } from "../actions/routeActions";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
@@ -49,8 +52,15 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             break;
         }
         case ActionTypes.LOGIN_USER: {
-            // TODO: Finish this up
-            console.log("NEED TO MAKE API CALL HERE");
+            const state = storeTyped.getState();
+            storeTyped.dispatch(postLogin(state.app.username, state.app.password));
+            break;
+        }
+        case ActionTypes.API_POST_ACTION_LOGIN_SUCCESS: {
+            const actionTyped = action as ActionPostLoginSuccessAction;
+            if (actionTyped.payload.response.status === HttpStatus.OK) {
+                storeTyped.dispatch(routePlanView());
+            }
             break;
         }
     }

@@ -8,7 +8,7 @@ import * as ActionTypes from "../actions/actionTypes";
 import { AppState, AnyFSA, PushNotificationType, PushNotification, BaseModelItem } from "../types";
 import { EditMode } from "../components/molecules/buttons/EditButton";
 import { BacklogItemModel } from "./backlogItemsReducer";
-import { SetUsernameAction, SetPasswordAction } from "../actions/appActions";
+import { SetUsernameAction, SetPasswordAction, ActionPostLoginSuccessAction } from "../actions/authActions";
 
 const backlogItem1: BacklogItemModel = {
     creationDateTime: new Date(),
@@ -43,7 +43,9 @@ export const initialState = Object.freeze<AppState>({
         } as PushNotification<BacklogItemPushNotificationData>
     ],
     username: "",
-    password: ""
+    password: "",
+    authToken: null,
+    requestToken: null
 });
 
 export const appReducer = (state: AppState = initialState, action: AnyFSA): AppState =>
@@ -67,6 +69,14 @@ export const appReducer = (state: AppState = initialState, action: AnyFSA): AppS
             case ActionTypes.SET_PASSWORD: {
                 const actionTyped = action as SetPasswordAction;
                 draft.password = actionTyped.payload;
+                return;
+            }
+            case ActionTypes.API_POST_ACTION_LOGIN_SUCCESS: {
+                const actionTyped = action as ActionPostLoginSuccessAction;
+                const authToken = actionTyped.payload.response.data.item.authToken;
+                const requestToken = actionTyped.payload.response.data.item.refreshToken;
+                draft.authToken = authToken;
+                draft.requestToken = requestToken;
                 return;
             }
         }

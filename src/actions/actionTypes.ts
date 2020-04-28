@@ -1,21 +1,28 @@
+import { buildActionName } from "./utils/apiActionUtils";
+import * as Names from "./ApiActionNames";
+
 export const SET_LOCALE = "app/set-locale";
 export const SET_EDIT_MODE = "app/set-edit-mode";
 
-export const API_GET_BACKLOG_ITEMS_REQUEST = "app/api:get-backlog-items:request";
-export const API_GET_BACKLOG_ITEMS_SUCCESS = "app/api:get-backlog-items:success";
-export const API_GET_BACKLOG_ITEMS_FAILURE = "app/api:get-backlog-items:failure";
+export const API_GET_BACKLOG_ITEMS_REQUEST = buildActionName(Names.GET_BACKLOG_ITEMS, "request");
+export const API_GET_BACKLOG_ITEMS_SUCCESS = buildActionName(Names.GET_BACKLOG_ITEMS, "success");
+export const API_GET_BACKLOG_ITEMS_FAILURE = buildActionName(Names.GET_BACKLOG_ITEMS, "failure");
 
-export const API_GET_USER_PREFS_REQUEST = "app/api:get-user-prefs:request";
-export const API_GET_USER_PREFS_SUCCESS = "app/api:get-user-prefs:success";
-export const API_GET_USER_PREFS_FAILURE = "app/api:get-user-prefs:failure";
+export const API_GET_USER_PREFS_REQUEST = buildActionName(Names.GET_USER_PREFS, "request");
+export const API_GET_USER_PREFS_SUCCESS = buildActionName(Names.GET_USER_PREFS, "success");
+export const API_GET_USER_PREFS_FAILURE = buildActionName(Names.GET_USER_PREFS, "failure");
 
-export const API_POST_BACKLOG_ITEM_REQUEST = "app/api:add-backlog-item:request";
-export const API_POST_BACKLOG_ITEM_SUCCESS = "app/api:add-backlog-item:success";
-export const API_POST_BACKLOG_ITEM_FAILURE = "app/api:add-backlog-item:failure";
+export const API_POST_BACKLOG_ITEM_REQUEST = buildActionName(Names.POST_BACKLOG_ITEM, "request");
+export const API_POST_BACKLOG_ITEM_SUCCESS = buildActionName(Names.POST_BACKLOG_ITEM, "success");
+export const API_POST_BACKLOG_ITEM_FAILURE = buildActionName(Names.POST_BACKLOG_ITEM, "failure");
 
-export const API_POST_ACTION_REORDER_BACKLOG_ITEM_REQUEST = "app/api:reorder-backlog-item:request";
-export const API_POST_ACTION_REORDER_BACKLOG_ITEM_SUCCESS = "app/api:reorder-backlog-item:success";
-export const API_POST_ACTION_REORDER_BACKLOG_ITEM_FAILURE = "app/api:reorder-backlog-item:failure";
+export const API_POST_ACTION_REORDER_BACKLOG_ITEM_REQUEST = buildActionName(Names.POST_ACTION_REORDER_BACKLOG_ITEM, "request");
+export const API_POST_ACTION_REORDER_BACKLOG_ITEM_SUCCESS = buildActionName(Names.POST_ACTION_REORDER_BACKLOG_ITEM, "success");
+export const API_POST_ACTION_REORDER_BACKLOG_ITEM_FAILURE = buildActionName(Names.POST_ACTION_REORDER_BACKLOG_ITEM, "failure");
+
+export const API_POST_ACTION_LOGIN_REQUEST = buildActionName(Names.POST_ACTION_LOGIN, "request");
+export const API_POST_ACTION_LOGIN_SUCCESS = buildActionName(Names.POST_ACTION_LOGIN, "success");
+export const API_POST_ACTION_LOGIN_FAILURE = buildActionName(Names.POST_ACTION_LOGIN, "failure");
 
 export const ROUTE_PLAN_VIEW = "app/route:plan-view";
 export const ROUTE_SPRINT_VIEW = "app/route:sprint-view";
