@@ -58,10 +58,14 @@ export class InnerLabeledInput extends Component<LabeledInputProps & LabeledInpu
         }
     }
     componentDidMount() {
-        this.props.innerRef.current.addEventListener("keyup", this.handleKeyUp.bind(this));
+        if (this.props.innerRef?.current) {
+            this.props.innerRef.current.addEventListener("keyup", this.handleKeyUp.bind(this));
+        }
     }
     componentWillUnmount() {
-        this.props.innerRef.current.removeEventListener("keyup", this.handleKeyUp);
+        if (this.props.innerRef?.current) {
+            this.props.innerRef.current.removeEventListener("keyup", this.handleKeyUp);
+        }
     }
     render() {
         const nameToUse = this.props.inputName || this.props.inputId;
