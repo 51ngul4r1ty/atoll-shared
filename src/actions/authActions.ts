@@ -67,7 +67,6 @@ export type ActionPostRefreshTokenSuccessResponse = ActionPostTokenResponseBase;
 
 export type ActionPostRefreshTokenSuccessActionPayload = ApiActionSuccessPayload<ActionPostRefreshTokenSuccessResponse>;
 
-// TODO: I think this needs the tryCount??
 export interface ActionPostRefreshTokenSuccessActionMeta extends ApiActionMetaDataRequestBody<ActionPostRefreshTokenPayloadData> {}
 
 export interface ActionPostRefreshTokenSuccessAction {
