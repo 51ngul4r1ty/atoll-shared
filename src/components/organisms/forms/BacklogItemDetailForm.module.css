@@ -8,15 +8,8 @@
 }
 
 .form {
-    padding: 0.7rem;
     display: flex;
     flex-direction: column;
-    background-color: var(--normal-form-page-color, #d0d0d0);
-    animation-duration: 0.2s;
-    animation-name: rotateIn;
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
-    transform-origin: center top;
 }
 
 .userStoryDescription {

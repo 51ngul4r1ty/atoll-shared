@@ -121,3 +121,9 @@ export const parsePostgresUrl = (url: string): DbConfig => {
 export const getDbConfig = (): DbConfig => {
     return parsePostgresUrl(process.env.ATOLL_DATABASE_URL || process.env.DATABASE_URL);
 };
+
+export const getAuthKey = (): string | null => {
+    return process.env.ATOLL_AUTH_KEY || null;
+};
+
+export const getAuthTokenExpirationMinutes = () => 5;

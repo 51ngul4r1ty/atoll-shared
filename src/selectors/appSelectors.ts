@@ -4,4 +4,6 @@ import { AppState, Locale } from "../types";
 
 export const app = (state: { app: AppState }): AppState => state.app;
 
-export const getLocale = createSelector([app], (app): Locale => app.locale);
+export const getLocale = createSelector([app], (app: AppState): Locale => app.locale);
+
+export const getAuthToken = createSelector([app], (app: AppState): string => app.authToken);

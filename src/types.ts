@@ -1,4 +1,5 @@
 // externals
+import { ForwardRefExoticComponent, PropsWithoutRef, PropsWithChildren, RefAttributes } from "react";
 import { Action } from "redux";
 
 // consts/enums
@@ -6,6 +7,7 @@ import { EditMode } from "./components/molecules/buttons/EditButton";
 
 // interfaces/types
 import { BacklogItemsState } from "./reducers/backlogItemsReducer";
+import { DoneButtonProps } from "./components/molecules/buttons/DoneButton";
 
 export type Locale = "en_US" | "de_DE";
 
@@ -37,10 +39,14 @@ export interface PushNotification<T> extends BasePushNotification {
 }
 
 export type AppState = Readonly<{
-    locale: Locale;
+    authToken: string;
     editMode: EditMode;
     executingOnClient: boolean;
+    locale: Locale;
+    password: string;
     pushNotifications: PushNotification<any>[];
+    refreshToken: string;
+    username: string;
 }>;
 
 /* User state related */
@@ -82,3 +88,7 @@ export interface FSA<T, P> extends SimpleFSA<T> {
 export interface FSAWithMeta<T, P, M> extends FSA<T, P> {
     meta?: M;
 }
+
+/* Forwarded Ref Related */
+
+export type ComponentWithForwardedRef<P> = ForwardRefExoticComponent<PropsWithoutRef<PropsWithChildren<P>> & RefAttributes<any>>;

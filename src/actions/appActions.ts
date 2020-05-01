@@ -1,5 +1,5 @@
 // interfaces/types
-import { Locale } from "../types";
+import { Locale, FSA, SimpleFSA } from "../types";
 
 // consts/enums
 import * as ActionTypes from "./actionTypes";

@@ -6,9 +6,7 @@ export interface ReceiveWebsocketMessageAction {
     payload: any;
 }
 
-export const receiveWebSocketMessage = (msg: any): ReceiveWebsocketMessageAction => {
-    return {
-        type: RECEIVE_WEBSOCKET_MESSAGE,
-        payload: msg
-    };
-};
+export const receiveWebSocketMessage = (msg: any): ReceiveWebsocketMessageAction => ({
+    type: RECEIVE_WEBSOCKET_MESSAGE,
+    payload: msg
+});
