@@ -15,7 +15,7 @@ import {
     ActionPostRefreshTokenSuccessAction,
     ActionPostTokenResponseBase
 } from "../actions/authActions";
-import { ApiActionSuccessPayload } from "../middleware/apiMiddleware";
+import { ApiActionSuccessPayload } from "../middleware/apiTypes";
 
 const backlogItem1: BacklogItemModel = {
     creationDateTime: new Date(),

@@ -7,35 +7,11 @@ import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
 import { StateTree } from "../types";
+import { ApiActionType, ApiActionMeta, ApiActionSuccessPayload, API, ApiAction } from "./apiTypes";
 
 // selectors
 import { getAuthToken } from "../selectors/appSelectors";
 import { refreshTokenAndRetry } from "../actions/authActions";
-
-export interface ApiHeaders {
-    [name: string]: string;
-}
-
-export type SimpleApiActionType = string;
-export type ComplexApiActionType = {}; // TODO: future use
-
-export type ApiActionType = SimpleApiActionType | ComplexApiActionType;
-
-export interface ApiActionMeta<P> {
-    tryCount: number;
-    passthrough: P;
-}
-
-export interface ApiAction<T> extends Action {
-    payload: {
-        endpoint: string;
-        method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "OPTIONS";
-        headers?: ApiHeaders;
-        data?: T;
-        types: ApiActionType[];
-    };
-    meta?: ApiActionMeta<any>;
-}
 
 export interface ApiActionFailureError {
     message: string;
@@ -48,15 +24,9 @@ export interface ApiActionFailurePayload<R> {
     error: ApiActionFailureError;
 }
 
-export interface ApiActionSuccessPayload<T> {
-    response: T;
-}
-
 export interface ApiActionBaseMeta<T> {
     requestBody: T;
 }
-
-export const API = "API";
 
 const getRequestType = (types: ApiActionType[]) => {
     // TODO: Add error handling
@@ -139,11 +109,6 @@ const dispatchFailure = (
         }
     });
 };
-
-export interface ApiActionMetaDataRequestBody<T> {
-    data?: T;
-    requestData: AxiosRequestConfig;
-}
 
 export interface ApiActionMetaParamsRequestBody<T> extends AxiosRequestConfig {
     params?: T;

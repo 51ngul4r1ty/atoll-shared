@@ -1,5 +1,5 @@
-// middleware
-import { API, ApiAction } from "../middleware/apiMiddleware";
+// interfaces/types
+import { API, ApiAction } from "../middleware/apiTypes";
 
 // actions
 import * as ApiActionNames from "./apiActionNames";
