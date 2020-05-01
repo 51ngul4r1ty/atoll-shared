@@ -114,12 +114,13 @@ export interface ApiActionMetaParamsRequestBody<T> extends AxiosRequestConfig {
     params?: T;
 }
 
-export const apiMiddleware = (store: Store<StateTree>) => (next) => (action: Action) => {
+export const apiMiddleware = (store) => (next) => (action: Action) => {
+    const storeTyped = store as Store<StateTree>;
     next(action);
     if (action.type !== API) {
         return;
     }
-    const { dispatch, getState } = store;
+    const { dispatch, getState } = storeTyped;
     const state = getState();
     const authToken = getAuthToken(state);
     const apiAction = action as ApiAction<any>;
