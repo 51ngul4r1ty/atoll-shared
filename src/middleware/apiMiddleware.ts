@@ -138,8 +138,11 @@ export const apiMiddleware = (store) => (next) => (action: Action) => {
         headers,
         [dataOrParams]: data
     };
-    // TODO: Add check here to see if retrying (and don't re-dispatch)
-    dispatchRequest(dispatch, getRequestType(types), data, requestBody, apiAction.meta);
+    const tryCount = apiAction.meta?.tryCount || 0;
+    const isRetry = tryCount > 0;
+    if (!isRetry) {
+        dispatchRequest(dispatch, getRequestType(types), data, requestBody, apiAction.meta);
+    }
     axios
         .request(requestBody)
         .then(({ data }) => {
@@ -150,8 +153,7 @@ export const apiMiddleware = (store) => (next) => (action: Action) => {
             }
         })
         .catch((error) => {
-            const tryCount = apiAction.meta?.tryCount || 0;
-            if (error.response && error.response.status === 403 && tryCount === 0) {
+            if (error.response && error.response.status === 403 && !isRetry) {
                 if (!apiAction.meta) {
                     apiAction.meta = {
                         tryCount: 0,
