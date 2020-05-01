@@ -16,7 +16,7 @@ import {
     postActionBacklogItemReorder,
     refreshBacklogItems
 } from "../actions/backlogItems";
-import { postLogin, ActionPostLoginSuccessAction } from "../actions/authActions";
+import { postLogin, ActionPostLoginSuccessAction, ActionPostRefreshTokenSuccessAction } from "../actions/authActions";
 
 // state
 import { StateTree } from "../types";
@@ -60,6 +60,14 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const actionTyped = action as ActionPostLoginSuccessAction;
             if (actionTyped.payload.response.status === HttpStatus.OK) {
                 storeTyped.dispatch(routePlanView());
+            }
+            break;
+        }
+        case ActionTypes.API_POST_ACTION_RETRY_TOKEN_SUCCESS: {
+            const actionTyped = action as ActionPostRefreshTokenSuccessAction;
+            if (actionTyped.payload.response.status === HttpStatus.OK) {
+                const apiAction = actionTyped.meta.passthrough.actionToRetry;
+                storeTyped.dispatch(apiAction);
             }
             break;
         }

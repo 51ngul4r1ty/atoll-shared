@@ -1,5 +1,5 @@
 // middleware
-import { API, ApiAction, ApiActionMetaDataRequestBody, ApiActionSuccessPayload } from "../middleware/apiMiddleware";
+import { API, ApiAction, ApiActionMetaDataRequestBody, ApiActionSuccessPayload, ApiActionMeta } from "../middleware/apiMiddleware";
 
 // actions
 import * as ActionTypes from "./actionTypes";
@@ -20,12 +20,7 @@ export const loginUser = (): LoginUserAction => ({
     type: ActionTypes.LOGIN_USER
 });
 
-export interface ActionPostLoginPayloadData {
-    username: string;
-    password: string;
-}
-
-export interface ActionPostLoginSuccessResponse {
+export interface ActionPostTokenResponseBase {
     status: number;
     data: {
         item: {
@@ -34,6 +29,13 @@ export interface ActionPostLoginSuccessResponse {
         };
     };
 }
+
+export interface ActionPostLoginPayloadData {
+    username: string;
+    password: string;
+}
+
+export type ActionPostLoginSuccessResponse = ActionPostTokenResponseBase;
 
 export type ActionPostLoginSuccessActionPayload = ApiActionSuccessPayload<ActionPostLoginSuccessResponse>;
 export interface ActionPostLoginSuccessActionMeta extends ApiActionMetaDataRequestBody<ActionPostLoginPayloadData> {
@@ -54,6 +56,39 @@ export const postLogin = (username: string, password: string): ApiAction<ActionP
         headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
         data: { username, password },
         types: buildActionTypes(ApiActionNames.POST_ACTION_LOGIN)
+    }
+});
+
+export interface ActionPostRefreshTokenPayloadData {
+    refreshToken: string;
+}
+
+export type ActionPostRefreshTokenSuccessResponse = ActionPostTokenResponseBase;
+
+export type ActionPostRefreshTokenSuccessActionPayload = ApiActionSuccessPayload<ActionPostRefreshTokenSuccessResponse>;
+
+// TODO: I think this needs the tryCount??
+export interface ActionPostRefreshTokenSuccessActionMeta extends ApiActionMetaDataRequestBody<ActionPostRefreshTokenPayloadData> {}
+
+export interface ActionPostRefreshTokenSuccessAction {
+    type: typeof ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS;
+    payload: ActionPostRefreshTokenSuccessActionPayload;
+    meta: ActionPostRefreshTokenSuccessActionMeta & ApiActionMeta<any>;
+}
+
+export const refreshTokenAndRetry = (refreshToken: string, actionToRetry: ApiAction<any>) => ({
+    type: API,
+    payload: {
+        endpoint: `${getApiBaseUrl()}api/v1/actions/refresh-token`,
+        method: "POST",
+        headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+        data: { refreshToken },
+        types: buildActionTypes(ApiActionNames.POST_ACTION_REFRESH_TOKEN)
+    },
+    meta: {
+        passthrough: {
+            actionToRetry
+        }
     }
 });
 

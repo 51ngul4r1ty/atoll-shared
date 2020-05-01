@@ -1,5 +1,5 @@
 // externals
-import { produce } from "immer";
+import { produce, Draft } from "immer";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
@@ -8,7 +8,14 @@ import * as ActionTypes from "../actions/actionTypes";
 import { AppState, AnyFSA, PushNotificationType, PushNotification, BaseModelItem } from "../types";
 import { EditMode } from "../components/molecules/buttons/EditButton";
 import { BacklogItemModel } from "./backlogItemsReducer";
-import { SetUsernameAction, SetPasswordAction, ActionPostLoginSuccessAction } from "../actions/authActions";
+import {
+    SetUsernameAction,
+    SetPasswordAction,
+    ActionPostLoginSuccessAction,
+    ActionPostRefreshTokenSuccessAction,
+    ActionPostTokenResponseBase
+} from "../actions/authActions";
+import { ApiActionSuccessPayload } from "../middleware/apiMiddleware";
 
 const backlogItem1: BacklogItemModel = {
     creationDateTime: new Date(),
@@ -45,8 +52,15 @@ export const initialState = Object.freeze<AppState>({
     username: "",
     password: "",
     authToken: null,
-    requestToken: null
+    refreshToken: null
 });
+
+const updateDraftWithTokenPayload = (draft: Draft<AppState>, payload: ApiActionSuccessPayload<ActionPostTokenResponseBase>) => {
+    const authToken = payload.response.data.item.authToken;
+    const refreshToken = payload.response.data.item.refreshToken;
+    draft.authToken = authToken;
+    draft.refreshToken = refreshToken;
+};
 
 export const appReducer = (state: AppState = initialState, action: AnyFSA): AppState =>
     produce(state, (draft) => {
@@ -73,10 +87,12 @@ export const appReducer = (state: AppState = initialState, action: AnyFSA): AppS
             }
             case ActionTypes.API_POST_ACTION_LOGIN_SUCCESS: {
                 const actionTyped = action as ActionPostLoginSuccessAction;
-                const authToken = actionTyped.payload.response.data.item.authToken;
-                const requestToken = actionTyped.payload.response.data.item.refreshToken;
-                draft.authToken = authToken;
-                draft.requestToken = requestToken;
+                updateDraftWithTokenPayload(draft, actionTyped.payload);
+                return;
+            }
+            case ActionTypes.API_POST_ACTION_RETRY_TOKEN_SUCCESS: {
+                const actionTyped = action as ActionPostRefreshTokenSuccessAction;
+                updateDraftWithTokenPayload(draft, actionTyped.payload);
                 return;
             }
         }

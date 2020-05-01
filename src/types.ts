@@ -45,7 +45,7 @@ export type AppState = Readonly<{
     locale: Locale;
     password: string;
     pushNotifications: PushNotification<any>[];
-    requestToken: string;
+    refreshToken: string;
     username: string;
 }>;
 

@@ -10,6 +10,7 @@ import { StateTree } from "../types";
 
 // selectors
 import { getAuthToken } from "../selectors/appSelectors";
+import { refreshTokenAndRetry } from "../actions/authActions";
 
 export interface ApiHeaders {
     [name: string]: string;
@@ -20,6 +21,11 @@ export type ComplexApiActionType = {}; // TODO: future use
 
 export type ApiActionType = SimpleApiActionType | ComplexApiActionType;
 
+export interface ApiActionMeta<P> {
+    tryCount: number;
+    passthrough: P;
+}
+
 export interface ApiAction<T> extends Action {
     payload: {
         endpoint: string;
@@ -28,7 +34,7 @@ export interface ApiAction<T> extends Action {
         data?: T;
         types: ApiActionType[];
     };
-    meta?: any;
+    meta?: ApiActionMeta<any>;
 }
 
 export interface ApiActionFailureError {
@@ -67,7 +73,13 @@ const getFailureType = (types: ApiActionType[]) => {
     return types[2];
 };
 
-const dispatchRequest = (dispatch: Dispatch<any>, requestType: ApiActionType, data: any, requestBody: any, meta: any) => {
+const dispatchRequest = (
+    dispatch: Dispatch<any>,
+    requestType: ApiActionType,
+    data: any,
+    requestBody: any,
+    meta: ApiActionMeta<any>
+) => {
     dispatch({
         type: requestType,
         payload: {
@@ -87,7 +99,7 @@ const dispatchSuccess = (
     type: ApiActionType,
     data: any,
     requestBody: AxiosRequestConfig,
-    origMeta: any
+    origMeta: ApiActionMeta<any>
 ) => {
     const payload: ApiActionSuccessPayload<any> = {
         response: data
@@ -110,7 +122,7 @@ const dispatchFailure = (
     requestType: ApiActionType,
     data: any,
     requestBody: any,
-    meta: any,
+    meta: ApiActionMeta<any>,
     error: any
 ) => {
     dispatch({
@@ -128,8 +140,9 @@ const dispatchFailure = (
     });
 };
 
-export interface ApiActionMetaDataRequestBody<T> extends AxiosRequestConfig {
+export interface ApiActionMetaDataRequestBody<T> {
     data?: T;
+    requestData: AxiosRequestConfig;
 }
 
 export interface ApiActionMetaParamsRequestBody<T> extends AxiosRequestConfig {
@@ -159,6 +172,7 @@ export const apiMiddleware = (store: Store<StateTree>) => (next) => (action: Act
         headers,
         [dataOrParams]: data
     };
+    // TODO: Add check here to see if retrying (and don't re-dispatch)
     dispatchRequest(dispatch, getRequestType(types), data, requestBody, apiAction.meta);
     axios
         .request(requestBody)
@@ -170,10 +184,18 @@ export const apiMiddleware = (store: Store<StateTree>) => (next) => (action: Act
             }
         })
         .catch((error) => {
-            dispatchFailure(dispatch, getFailureType(types), data, requestBody, apiAction.meta, error);
-
-            // if (error.response && error.response.status === 403) {
-            //     dispatch(accessDenied(window.location.pathname));
-            // }
+            const tryCount = apiAction.meta?.tryCount || 0;
+            if (error.response && error.response.status === 403 && tryCount === 0) {
+                if (!apiAction.meta) {
+                    apiAction.meta = {
+                        tryCount: 0,
+                        passthrough: null
+                    };
+                }
+                apiAction.meta.tryCount++;
+                dispatch(refreshTokenAndRetry(state.app.refreshToken, apiAction));
+            } else {
+                dispatchFailure(dispatch, getFailureType(types), data, requestBody, apiAction.meta, error);
+            }
         });
 };
