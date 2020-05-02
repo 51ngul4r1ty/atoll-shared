@@ -1,6 +1,6 @@
 {
   "name": "@atoll/shared",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "author": {
     "name": "Kevin Berry",
     "email": "41717340+51ngul4r1ty@users.noreply.github.com"
@@ -87,7 +87,7 @@
     "postcss-import": "12.0.1",
     "postcss-nested": "4.2.1",
     "redux-mock-store": "1.5.4",
-    "rollup": "2.7.6",
+    "rollup": "1.32.1",
     "rollup-plugin-image": "1.0.2",
     "rollup-plugin-json": "4.0.0",
     "rollup-plugin-jsx": "1.0.3",
