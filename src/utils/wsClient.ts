@@ -3,13 +3,14 @@ import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 import { Dispatch } from "react";
 
 // actions
-import { receiveWebSocketMessage } from "../actions/wsActions";
+import { getApiHostName, getApiPort } from "../config";
 
 let client: W3CWebSocket;
 
 export const init = (callback: { (data: any) }) => {
-    // TODO: Add configuration for the host name
-    client = new W3CWebSocket("ws://127.0.0.1:8500/ws");
+    const apiHostName = getApiHostName();
+    const apiPort = getApiPort();
+    client = new W3CWebSocket(`ws://${apiHostName}:${apiPort}/ws`);
     client.onopen = () => {
         console.log("WebSocket Client Connected");
     };
