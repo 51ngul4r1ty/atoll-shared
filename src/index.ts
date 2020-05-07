@@ -40,7 +40,14 @@ export { SprintViewContainer } from "./SprintViewContainer";
 export * from "./config";
 
 // interfaces/types
-export { StateTree, FeatureToggle, FeatureTogglesState } from "./types";
+export {
+    BasePushNotification,
+    FeatureToggle,
+    FeatureTogglesState,
+    PushNotification,
+    PushNotificationType,
+    StateTree
+} from "./types";
 export {
     BacklogItem,
     BacklogItemSource,

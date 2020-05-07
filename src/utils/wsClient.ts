@@ -1,18 +1,43 @@
 // externals
 import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
-import { Dispatch } from "react";
 
 // actions
-import { getApiHostName, getApiPort } from "../config";
+import { getApiHostName, getApiPort, requiresSecureProtocol } from "../config";
+
+// interfaces/types
+import { PushNotification, PushNotificationType, BasePushNotification } from "../types";
 
 let client: W3CWebSocket;
+
+let keepaliveTimeout: NodeJS.Timeout = null;
+
+const setKeepaliveTimeout = () => {
+    keepaliveTimeout = setTimeout(() => {
+        console.log("re-scheduling next keepalive");
+        setKeepaliveTimeout();
+        const keepalivePayload: BasePushNotification = {
+            type: PushNotificationType.KeepAlive
+        };
+        console.log("send keepalive");
+        try {
+            send(keepalivePayload);
+        } catch (err) {
+            console.warn(`Unable to send keepalive timeout: ${err}`);
+        }
+    }, 30000);
+};
 
 export const init = (callback: { (data: any) }) => {
     const apiHostName = getApiHostName();
     const apiPort = getApiPort();
-    client = new W3CWebSocket(`ws://${apiHostName}:${apiPort}/ws`);
+    const scheme = requiresSecureProtocol() ? "wss" : "ws";
+    client = new W3CWebSocket(`${scheme}://${apiHostName}:${apiPort}/ws`);
     client.onopen = () => {
         console.log("WebSocket Client Connected");
+        if (keepaliveTimeout) {
+            clearTimeout(keepaliveTimeout);
+        }
+        setKeepaliveTimeout();
     };
     client.onclose = () => {
         console.log("WebSocket Client Disconnected");
