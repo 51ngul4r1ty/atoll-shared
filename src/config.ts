@@ -54,6 +54,19 @@ export const getApiPort = () => {
     return parsed.port;
 };
 
+export const requiresSecureProtocol = () => {
+    const appUrl = configCallbacks.getDocumentLocHref();
+    const parsed = urlParse(appUrl);
+    if (parsed.protocol === "http:" || parsed.port === "80" || parsed.port === "8500") {
+        return false;
+    } else if (parsed.protocol === "https:" || parsed.port === "443") {
+        return true;
+    } else {
+        // default to secure
+        return true;
+    }
+};
+
 export const getApiBaseUrl = () => {
     return `${getApiScheme()}://${getApiHostName()}:${getApiPort()}/`;
 };
