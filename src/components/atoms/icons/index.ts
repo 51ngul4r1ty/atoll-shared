@@ -4,6 +4,7 @@ export * from "./CancelIcon";
 export * from "./DoneIcon";
 export * from "./DragIcon";
 export * from "./EditCancelIcon";
+export * from "./EditDetailIcon";
 export * from "./EditIcon";
 export * from "./HamburgerIcon";
 export * from "./IssueIcon";
