@@ -8,6 +8,7 @@ import { StoryIcon } from "../../atoms/icons/StoryIcon";
 import { IssueIcon } from "../../atoms/icons/IssueIcon";
 import { DragIcon } from "../../atoms/icons/DragIcon";
 import { buildClassName } from "../../../utils/classNameBuilder";
+import { EditDetailIcon } from "../../atoms/icons/EditDetailIcon";
 
 /* exported functions */
 
@@ -43,6 +44,7 @@ export enum BacklogItemTypeEnum {
 
 export interface BacklogItemCardStateProps {
     estimate: number | null;
+    hasDetails?: boolean;
     isDraggable?: boolean;
     internalId: string;
     itemId: string;
@@ -91,6 +93,11 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
             </div>
             <div className={css.backlogItemText}>{props.titleText}</div>
             <div className={css.backlogItemEstimate}>{formatEstimateForDisplay(props.estimate)}</div>
+            {props.hasDetails && !props.renderMobile ? (
+                <div className={css.backlogItemDetailButton}>
+                    <EditDetailIcon />
+                </div>
+            ) : null}
             {props.isDraggable && !props.renderMobile ? (
                 <div data-class="drag-button" className={css.backlogItemDragButton}>
                     <DragIcon />
