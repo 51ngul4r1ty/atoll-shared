@@ -1,14 +1,17 @@
 // consts/enums
 export { APPLICATION_JSON } from "./constants";
 
-// components - buttons
+// components - buttons - atoms
+export { SimpleButton } from "./components/atoms/buttons/SimpleButton";
+
+// components - buttons - molecules
 export { AddButton } from "./components/molecules/buttons/AddButton";
 export { CancelButton } from "./components/molecules/buttons/CancelButton";
 export { DoneButton } from "./components/molecules/buttons/DoneButton";
 export { EditButton, EditMode } from "./components/molecules/buttons/EditButton";
 export { HomeButton } from "./components/molecules/buttons/HomeButton";
 export { RefreshButton } from "./components/molecules/buttons/RefreshButton";
-export { SimpleButton } from "./components/atoms/buttons/SimpleButton";
+export { RemoveButton } from "./components/molecules/buttons/RemoveButton";
 
 // components - cards
 export { BacklogItemCard, BacklogItemTypeEnum } from "./components/molecules/cards/BacklogItemCard";
@@ -18,6 +21,7 @@ export { BacklogItemDetailForm } from "./components/organisms/forms/BacklogItemD
 export { LoginForm } from "./components/organisms/forms/LoginForm";
 
 // components - panels
+export { ItemMenuPanel } from "./components/atoms/panels/ItemMenuPanel";
 export { BacklogItemPlanningPanel } from "./components/organisms/panels/BacklogItemPlanningPanel";
 
 // components - misc

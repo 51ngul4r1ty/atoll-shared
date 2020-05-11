@@ -44,6 +44,8 @@ export const RECEIVE_PUSHED_BACKLOG_ITEM = "app/receive:pushed-backlog-item";
 
 export const REORDER_BACKLOG_ITEM = "app/reorder:backlog-item";
 
+export const TOGGLE_BACKLOG_ITEM_DETAIL = "app/toggle:backlog-item-detail";
+
 export const SET_USERNAME = "app/user:set-username";
 export const SET_PASSWORD = "app/user:set-password";
 

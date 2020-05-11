@@ -1,0 +1,23 @@
+.component {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.triangle {
+    width: 0;
+    height: 0;
+    border-left: 0.5rem solid transparent;
+    border-right: 0.5rem solid transparent;
+    border-bottom: 0.5rem solid var(--normal-form-page-color, #d0d0d0);
+}
+
+.panel {
+    background-color: var(--normal-form-page-color, #d0d0d0);
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.3rem;
+}

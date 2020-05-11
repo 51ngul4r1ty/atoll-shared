@@ -25,6 +25,7 @@ import { BacklogItemType, BacklogItemWithSource, SaveableBacklogItem } from "./r
 export interface PlanViewStateProps {
     allItems: BacklogItemWithSource[];
     editMode: EditMode;
+    openedDetailMenuBacklogItemId: string | null;
 }
 
 export interface PlanViewDispatchProps {
@@ -59,6 +60,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                         this.props.onReorderBacklogItems(sourceItemId, targetItemId);
                     }}
                     renderMobile={this.context.state?.isMobile}
+                    openedDetailMenuBacklogItemId={this.props.openedDetailMenuBacklogItemId}
                 />
             </>
         );

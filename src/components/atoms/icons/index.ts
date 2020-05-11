@@ -10,3 +10,4 @@ export * from "./HamburgerIcon";
 export * from "./IssueIcon";
 export * from "./RefreshIcon";
 export * from "./StoryIcon";
+export * from "./TrashIcon";

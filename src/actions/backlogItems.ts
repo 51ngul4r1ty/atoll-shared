@@ -172,12 +172,26 @@ export interface ReorderBacklogItemAction {
     payload: ReorderBacklogItemPayload;
 }
 
-export const reorderBacklogItems = (sourceItemId: string, targetItemId: string): ReorderBacklogItemAction => {
-    return {
-        type: ActionTypes.REORDER_BACKLOG_ITEM,
-        payload: {
-            sourceItemId,
-            targetItemId
-        }
-    };
-};
+export const reorderBacklogItems = (sourceItemId: string, targetItemId: string): ReorderBacklogItemAction => ({
+    type: ActionTypes.REORDER_BACKLOG_ITEM,
+    payload: {
+        sourceItemId,
+        targetItemId
+    }
+});
+
+export interface ToggleBacklogItemDetailPayload {
+    itemId: string;
+}
+
+export interface ToggleBacklogItemDetailAction {
+    type: typeof ActionTypes.TOGGLE_BACKLOG_ITEM_DETAIL;
+    payload: ToggleBacklogItemDetailPayload;
+}
+
+export const backlogItemDetailClicked = (itemId: string): ToggleBacklogItemDetailAction => ({
+    type: ActionTypes.TOGGLE_BACKLOG_ITEM_DETAIL,
+    payload: {
+        itemId
+    }
+});
