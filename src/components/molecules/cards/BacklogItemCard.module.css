@@ -4,7 +4,7 @@
     background-color: var(--normal-page-color, white);
 }
 
-.backlogItemCard.mobile {
+.backlogItemCardOuter.mobile .backlogItemCard {
     height: auto;
     flex-wrap: wrap;
 }
@@ -40,11 +40,12 @@
     order: 0;
 }
 
-.backlogItemCard.mobile .backlogItemType {
+.backlogItemCardOuter.mobile .backlogItemType {
     flex-grow: 1;
 }
 
 .backlogItemText {
+    position: relative;
     color: var(--normal-pen-color, black);
     padding-left: 0.25rem; /* TODO: Use constants??? */
     padding-right: 0.25rem; /* TODO: Use constants??? */
@@ -57,12 +58,13 @@
     order: 1;
 }
 
-.backlogItemCard.mobile .backlogItemText {
+.backlogItemCardOuter.mobile .backlogItemText {
     white-space: normal;
     order: 2;
     height: 4.15rem;
     flex-basis: 100%;
     border-left: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
+    border-right: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
 }
 
 .backlogItemEstimate {
@@ -74,7 +76,7 @@
     order: 3;
 }
 
-.backlogItemCard.mobile .backlogItemEstimate {
+.backlogItemCardOuter.mobile .backlogItemEstimate {
     order: 1;
     flex-grow: 0;
     text-align: right;
@@ -97,7 +99,7 @@
     text-align: center;
 }
 
-.backlogItemCard.mobile .backlogItemId {
+.backlogItemCardOuter.mobile .backlogItemId {
     flex-grow: 0;
 }
 
@@ -111,7 +113,7 @@
     order: 4;
 }
 
-.backlogItemCard.mobile .backlogItemDragButton {
+.backlogItemCardOuter.mobile .backlogItemDragButton {
     flex-grow: 1;
 }
 
@@ -120,10 +122,16 @@
     height: 1.3rem;
 }
 
-.backlogItemDetailButton {
+.backlogItemCardOuter:not(.mobile) .backlogItemDetailButton {
     order: 2;
     border-top: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
     border-bottom: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
+}
+
+.backlogItemCardOuter.mobile .backlogItemDetailButton {
+    position: absolute;
+    top: 0.3rem;
+    right: -0.2rem;
 }
 
 .backlogItemDetailButton svg {
@@ -143,7 +151,13 @@
 
 .backlogItemCardDetailMenu {
     position: absolute;
-    right: 2rem;
+    right: 1.2rem;
+    z-index: 1;
+}
+
+.backlogItemCardOuter.mobile .backlogItemCardDetailMenu {
+    right: 1.2rem;
+    top: 1.95rem;
 }
 
 .backlogItemCardDetailMenu > div {
@@ -152,4 +166,5 @@
 }
 
 .backlogItemCardOuter {
+    position: relative;
 }

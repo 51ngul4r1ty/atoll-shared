@@ -9,7 +9,7 @@ import { IssueIcon } from "../../atoms/icons/IssueIcon";
 import { DragIcon } from "../../atoms/icons/DragIcon";
 import { buildClassName } from "../../../utils/classNameBuilder";
 import { EditDetailIcon } from "../../atoms/icons/EditDetailIcon";
-import { ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
+import { CaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
 import { RemoveButton } from "../buttons/RemoveButton";
 
 /* exported functions */
@@ -69,7 +69,7 @@ export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDi
 
 export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
     const detailMenu = props.showDetailMenu ? (
-        <ItemMenuPanel>
+        <ItemMenuPanel caretPosition={props.renderMobile ? CaretPosition.RightTop : CaretPosition.TopCenter}>
             <RemoveButton
                 onClick={() => {
                     alert("remove clicked");
@@ -77,15 +77,28 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
             />
         </ItemMenuPanel>
     ) : null;
+    const outerClassNameToUse = buildClassName(css.backlogItemCardOuter, props.renderMobile ? css.mobile : null);
     const classNameToUse = buildClassName(
         css.backlogItemCard,
-        props.renderMobile ? css.mobile : null,
+        //        props.renderMobile ? css.mobile : null,
         props.marginBelowItem ? css.marginBelowItem : null,
         props.itemType === BacklogItemTypeEnum.None ? css.backlogItemGap : null,
         props.top ? css.dragging : null
     );
+    const editDetailButton = props.hasDetails ? (
+        <div
+            className={css.backlogItemDetailButton}
+            onClick={() => {
+                if (props.onDetailClicked) {
+                    props.onDetailClicked();
+                }
+            }}
+        >
+            <EditDetailIcon />
+        </div>
+    ) : null;
     return (
-        <div className={css.backlogItemCardOuter}>
+        <div className={outerClassNameToUse}>
             <div
                 className={classNameToUse}
                 data-class="backlogitem"
@@ -106,20 +119,12 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
                         </div>
                     ) : null}
                 </div>
-                <div className={css.backlogItemText}>{props.titleText}</div>
+                <div className={css.backlogItemText}>
+                    {props.titleText}
+                    {props.renderMobile ? editDetailButton : null}
+                </div>
                 <div className={css.backlogItemEstimate}>{formatEstimateForDisplay(props.estimate)}</div>
-                {props.hasDetails && !props.renderMobile ? (
-                    <div
-                        className={css.backlogItemDetailButton}
-                        onClick={() => {
-                            if (props.onDetailClicked) {
-                                props.onDetailClicked();
-                            }
-                        }}
-                    >
-                        <EditDetailIcon />
-                    </div>
-                ) : null}
+                {!props.renderMobile ? editDetailButton : null}
                 {props.isDraggable && !props.renderMobile ? (
                     <div data-class="drag-button" className={css.backlogItemDragButton}>
                         <DragIcon />

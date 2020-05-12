@@ -21,7 +21,7 @@ export { BacklogItemDetailForm } from "./components/organisms/forms/BacklogItemD
 export { LoginForm } from "./components/organisms/forms/LoginForm";
 
 // components - panels
-export { ItemMenuPanel } from "./components/atoms/panels/ItemMenuPanel";
+export { CaretPosition, ItemMenuPanel } from "./components/atoms/panels/ItemMenuPanel";
 export { BacklogItemPlanningPanel } from "./components/organisms/panels/BacklogItemPlanningPanel";
 
 // components - misc
