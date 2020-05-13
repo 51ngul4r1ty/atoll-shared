@@ -1,5 +1,6 @@
 // externals
 import * as React from "react";
+import { useState } from "react";
 import { Dispatch } from "redux";
 import { withTranslation, WithTranslation } from "react-i18next";
 
@@ -28,9 +29,11 @@ import {
     updateBacklogItemFields,
     cancelUnsavedBacklogItem,
     saveBacklogItem,
-    backlogItemDetailClicked
+    backlogItemDetailClicked,
+    removeBacklogItem
 } from "../../../actions/backlogItems";
-import { useState } from "react";
+
+// utils
 import { useRecursiveTimeout } from "../../common/setTimeoutHook";
 
 /* exported interfaces */
@@ -155,6 +158,9 @@ export const buildBacklogItemElts = (
                 marginBelowItem
                 onDetailClicked={() => {
                     dispatch(backlogItemDetailClicked(item.id));
+                }}
+                onRemoveItemClicked={(backlogItemId) => {
+                    dispatch(removeBacklogItem(item.id));
                 }}
                 showDetailMenu={showDetailMenu}
             />
@@ -634,6 +640,9 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         marginBelowItem
                         onDetailClicked={() => {
                             dispatch(backlogItemDetailClicked(item.id));
+                        }}
+                        onRemoveItemClicked={(backlogItemId) => {
+                            dispatch(removeBacklogItem(item.id));
                         }}
                         showDetailMenu={showDetailMenu}
                     />

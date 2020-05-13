@@ -61,6 +61,7 @@ export interface BacklogItemCardStateProps {
 
 export interface BacklogItemCardDispatchProps {
     onDetailClicked?: { () };
+    onRemoveItemClicked?: { (backlogItemId: string) };
 }
 
 export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDispatchProps & WithTranslation;
@@ -72,7 +73,9 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
         <ItemMenuPanel caretPosition={props.renderMobile ? CaretPosition.RightTop : CaretPosition.TopCenter}>
             <RemoveButton
                 onClick={() => {
-                    alert("remove clicked");
+                    if (props.itemId && props.onRemoveItemClicked) {
+                        props.onRemoveItemClicked(props.itemId);
+                    }
                 }}
             />
         </ItemMenuPanel>

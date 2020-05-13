@@ -9,7 +9,7 @@ import { APPLICATION_JSON } from "../constants";
 import { BacklogItemType, BacklogItemModel, BacklogItem } from "../reducers/backlogItemsReducer";
 import { BacklogItemDetailFormEditableFieldsWithInstanceId } from "../components/organisms/forms/BacklogItemDetailForm";
 import { PushBacklogItemModel } from "../middleware/wsMiddleware";
-import { API, ApiAction, ApiActionSuccessPayload, ApiActionMetaDataRequestBody } from "../middleware/apiTypes";
+import { API, ApiAction, ApiActionSuccessPayload, ApiActionMetaDataRequestBody, NoDataApiAction } from "../middleware/apiTypes";
 
 // config
 import { getApiBaseUrl } from "../config";
@@ -195,3 +195,15 @@ export const backlogItemDetailClicked = (itemId: string): ToggleBacklogItemDetai
         itemId
     }
 });
+
+export const removeBacklogItem = (backlogItemId: string): NoDataApiAction => {
+    return {
+        type: API,
+        payload: {
+            endpoint: `${getApiBaseUrl()}api/v1/backlog-items/${backlogItemId}`,
+            method: "DELETE",
+            headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+            types: buildActionTypes(ApiActionNames.DELETE_BACKLOG_ITEM)
+        }
+    };
+};

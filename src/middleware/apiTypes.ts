@@ -30,6 +30,8 @@ export interface ApiAction<T> extends Action {
     meta?: ApiActionMeta<any>;
 }
 
+export interface NoDataApiAction extends ApiAction<undefined> {}
+
 export interface ApiActionMetaDataRequestBody<T> {
     data?: T;
     requestData: AxiosRequestConfig;
