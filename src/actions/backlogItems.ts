@@ -196,7 +196,15 @@ export const backlogItemDetailClicked = (itemId: string): ToggleBacklogItemDetai
     }
 });
 
-export const removeBacklogItem = (backlogItemId: string): NoDataApiAction => {
+export interface RemoveBacklogItemMeta {
+    originalActionArgs: {
+        backlogItemId: string;
+    };
+}
+
+export type RemoveBacklogItemAction = NoDataApiAction<RemoveBacklogItemMeta>;
+
+export const removeBacklogItem = (backlogItemId: string): RemoveBacklogItemAction => {
     return {
         type: API,
         payload: {
@@ -204,6 +212,11 @@ export const removeBacklogItem = (backlogItemId: string): NoDataApiAction => {
             method: "DELETE",
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
             types: buildActionTypes(ApiActionNames.DELETE_BACKLOG_ITEM)
+        },
+        meta: {
+            originalActionArgs: {
+                backlogItemId
+            }
         }
     };
 };
