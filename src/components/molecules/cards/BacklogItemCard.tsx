@@ -83,7 +83,6 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
     const outerClassNameToUse = buildClassName(css.backlogItemCardOuter, props.renderMobile ? css.mobile : null);
     const classNameToUse = buildClassName(
         css.backlogItemCard,
-        //        props.renderMobile ? css.mobile : null,
         props.marginBelowItem ? css.marginBelowItem : null,
         props.itemType === BacklogItemTypeEnum.None ? css.backlogItemGap : null,
         props.top ? css.dragging : null
