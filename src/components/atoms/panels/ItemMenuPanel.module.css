@@ -1,0 +1,49 @@
+.component {
+    position: relative;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.component:not(.rightTopCaret) {
+    flex-direction: column;
+}
+
+.component.rightTopCaret {
+    flex-direction: row;
+}
+
+.triangle {
+    width: 0;
+    height: 0;
+}
+
+.panel {
+    background-color: var(--normal-form-page-color, #d0d0d0);
+    box-sizing: border-box;
+    padding: 0.5rem;
+}
+
+.component:not(.rightTopCaret) .triangle {
+    order: 1;
+    border-left: 0.5rem solid transparent;
+    border-right: 0.5rem solid transparent;
+    border-bottom: 0.5rem solid var(--normal-form-page-color, #d0d0d0);
+}
+
+.component:not(.rightTopCaret) .panel {
+    order: 2;
+    width: 100%;
+}
+
+.component.rightTopCaret .panel {
+    order: 1;
+}
+
+.component.rightTopCaret .triangle {
+    order: 2;
+    border-top: 0.5rem solid transparent;
+    border-bottom: 0.5rem solid transparent;
+    border-left: 0.5rem solid var(--normal-form-page-color, #d0d0d0);
+}

@@ -28,6 +28,10 @@ export const API_POST_ACTION_RETRY_TOKEN_REQUEST = buildActionName(Names.POST_AC
 export const API_POST_ACTION_RETRY_TOKEN_SUCCESS = buildActionName(Names.POST_ACTION_REFRESH_TOKEN, "success");
 export const API_POST_ACTION_RETRY_TOKEN_FAILURE = buildActionName(Names.POST_ACTION_REFRESH_TOKEN, "failure");
 
+export const API_DELETE_BACKLOG_ITEM_REQUEST = buildActionName(Names.DELETE_BACKLOG_ITEM, "request");
+export const API_DELETE_BACKLOG_ITEM_SUCCESS = buildActionName(Names.DELETE_BACKLOG_ITEM, "success");
+export const API_DELETE_BACKLOG_ITEM_FAILURE = buildActionName(Names.DELETE_BACKLOG_ITEM, "failure");
+
 export const ROUTE_PLAN_VIEW = "app/route:plan-view";
 export const ROUTE_SPRINT_VIEW = "app/route:sprint-view";
 export const ROUTE_REVIEW_VIEW = "app/route:review-view";
@@ -43,6 +47,8 @@ export const RECEIVE_WEBSOCKET_MESSAGE = "app/ws:receive-message";
 export const RECEIVE_PUSHED_BACKLOG_ITEM = "app/receive:pushed-backlog-item";
 
 export const REORDER_BACKLOG_ITEM = "app/reorder:backlog-item";
+
+export const TOGGLE_BACKLOG_ITEM_DETAIL = "app/toggle:backlog-item-detail";
 
 export const SET_USERNAME = "app/user:set-username";
 export const SET_PASSWORD = "app/user:set-password";

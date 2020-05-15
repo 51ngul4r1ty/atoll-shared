@@ -9,7 +9,7 @@ import { APPLICATION_JSON } from "../constants";
 import { BacklogItemType, BacklogItemModel, BacklogItem } from "../reducers/backlogItemsReducer";
 import { BacklogItemDetailFormEditableFieldsWithInstanceId } from "../components/organisms/forms/BacklogItemDetailForm";
 import { PushBacklogItemModel } from "../middleware/wsMiddleware";
-import { API, ApiAction, ApiActionSuccessPayload, ApiActionMetaDataRequestBody } from "../middleware/apiTypes";
+import { API, ApiAction, ApiActionSuccessPayload, ApiActionMetaDataRequestBody, NoDataApiAction } from "../middleware/apiTypes";
 
 // config
 import { getApiBaseUrl } from "../config";
@@ -172,12 +172,51 @@ export interface ReorderBacklogItemAction {
     payload: ReorderBacklogItemPayload;
 }
 
-export const reorderBacklogItems = (sourceItemId: string, targetItemId: string): ReorderBacklogItemAction => {
+export const reorderBacklogItems = (sourceItemId: string, targetItemId: string): ReorderBacklogItemAction => ({
+    type: ActionTypes.REORDER_BACKLOG_ITEM,
+    payload: {
+        sourceItemId,
+        targetItemId
+    }
+});
+
+export interface ToggleBacklogItemDetailPayload {
+    itemId: string;
+}
+
+export interface ToggleBacklogItemDetailAction {
+    type: typeof ActionTypes.TOGGLE_BACKLOG_ITEM_DETAIL;
+    payload: ToggleBacklogItemDetailPayload;
+}
+
+export const backlogItemDetailClicked = (itemId: string): ToggleBacklogItemDetailAction => ({
+    type: ActionTypes.TOGGLE_BACKLOG_ITEM_DETAIL,
+    payload: {
+        itemId
+    }
+});
+
+export interface RemoveBacklogItemMeta {
+    originalActionArgs: {
+        backlogItemId: string;
+    };
+}
+
+export type RemoveBacklogItemAction = NoDataApiAction<RemoveBacklogItemMeta>;
+
+export const removeBacklogItem = (backlogItemId: string): RemoveBacklogItemAction => {
     return {
-        type: ActionTypes.REORDER_BACKLOG_ITEM,
+        type: API,
         payload: {
-            sourceItemId,
-            targetItemId
+            endpoint: `${getApiBaseUrl()}api/v1/backlog-items/${backlogItemId}`,
+            method: "DELETE",
+            headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+            types: buildActionTypes(ApiActionNames.DELETE_BACKLOG_ITEM)
+        },
+        meta: {
+            originalActionArgs: {
+                backlogItemId
+            }
         }
     };
 };

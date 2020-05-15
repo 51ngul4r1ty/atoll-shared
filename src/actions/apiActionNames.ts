@@ -4,3 +4,4 @@ export const POST_ACTION_LOGIN = "login";
 export const POST_ACTION_REFRESH_TOKEN = "refresh-token";
 export const POST_ACTION_REORDER_BACKLOG_ITEM = "reorder-backlog-item";
 export const POST_BACKLOG_ITEM = "add-backlog-item";
+export const DELETE_BACKLOG_ITEM = "delete-backlog-item";

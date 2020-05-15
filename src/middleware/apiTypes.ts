@@ -15,11 +15,11 @@ export type ComplexApiActionType = {}; // TODO: future use
 export type ApiActionType = SimpleApiActionType | ComplexApiActionType;
 
 export interface ApiActionMeta<P> {
-    tryCount: number;
-    passthrough: P;
+    tryCount?: number;
+    passthrough?: P;
 }
 
-export interface ApiAction<T> extends Action {
+export interface ApiAction<T, U = any> extends Action {
     payload: {
         endpoint: string;
         method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "OPTIONS";
@@ -27,8 +27,10 @@ export interface ApiAction<T> extends Action {
         data?: T;
         types: ApiActionType[];
     };
-    meta?: ApiActionMeta<any>;
+    meta?: ApiActionMeta<any> & U;
 }
+
+export interface NoDataApiAction<U = any> extends ApiAction<undefined, U> {}
 
 export interface ApiActionMetaDataRequestBody<T> {
     data?: T;

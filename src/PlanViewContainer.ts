@@ -21,7 +21,8 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
     // const highlightedDividers = state.backlogItems.pushedItems.map((item) => item.displayIndex);
     let result: PlanViewStateProps = {
         allItems,
-        editMode: state.app.editMode
+        editMode: state.app.editMode,
+        openedDetailMenuBacklogItemId: state.backlogItems.openedDetailMenuBacklogItemId
     };
     return result;
 };

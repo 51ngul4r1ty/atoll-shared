@@ -12,7 +12,9 @@ import {
     CancelUnsavedBacklogItemAction,
     ApiPostBacklogItemSuccessAction,
     ReceivePushedBacklogItemAction,
-    ReorderBacklogItemAction
+    ReorderBacklogItemAction,
+    ToggleBacklogItemDetailAction,
+    RemoveBacklogItemAction
 } from "../actions/backlogItems";
 import { PushBacklogItemModel } from "../middleware/wsMiddleware";
 import { LinkedList } from "../utils/linkedList";
@@ -56,13 +58,15 @@ export type BacklogItemsState = Readonly<{
     pushedItems: Partial<PushBacklogItemModel>[];
     items: BacklogItem[];
     allItems: BacklogItemWithSource[];
+    openedDetailMenuBacklogItemId: string | null;
 }>;
 
 export const initialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
     pushedItems: [],
     items: [],
-    allItems: []
+    allItems: [],
+    openedDetailMenuBacklogItemId: null
 });
 
 export const convertSaved = (saved: boolean | undefined): boolean => {
@@ -223,6 +227,17 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                 rebuildAllItems(draft);
                 return;
             }
+            case ActionTypes.TOGGLE_BACKLOG_ITEM_DETAIL: {
+                const actionTyped = action as ToggleBacklogItemDetailAction;
+                if (draft.openedDetailMenuBacklogItemId === null) {
+                    draft.openedDetailMenuBacklogItemId = actionTyped.payload.itemId;
+                } else if (draft.openedDetailMenuBacklogItemId === actionTyped.payload.itemId) {
+                    draft.openedDetailMenuBacklogItemId = null;
+                } else {
+                    draft.openedDetailMenuBacklogItemId = actionTyped.payload.itemId;
+                }
+                return;
+            }
             case ActionTypes.REORDER_BACKLOG_ITEM: {
                 const actionTyped = action as ReorderBacklogItemAction;
                 let idx = 0;
@@ -254,6 +269,21 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                     draft.allItems.push(sourceItem);
                     draft.allItems.splice(sourceItemIdx, 1);
                 }
+                return;
+            }
+            case ActionTypes.API_DELETE_BACKLOG_ITEM_SUCCESS: {
+                const actionTyped = action as RemoveBacklogItemAction;
+                const id = actionTyped.meta.originalActionArgs.backlogItemId;
+                const idx = draft.addedItems.findIndex((item) => item.id === id);
+                if (idx >= 0) {
+                    draft.addedItems.splice(idx, 1);
+                }
+                const idx2 = draft.items.findIndex((item) => item.id === id);
+                if (idx2 >= 0) {
+                    draft.items.splice(idx2, 1);
+                }
+                rebuildAllItems(draft);
+                draft.openedDetailMenuBacklogItemId = null;
                 return;
             }
         }

@@ -8,6 +8,9 @@ import { StoryIcon } from "../../atoms/icons/StoryIcon";
 import { IssueIcon } from "../../atoms/icons/IssueIcon";
 import { DragIcon } from "../../atoms/icons/DragIcon";
 import { buildClassName } from "../../../utils/classNameBuilder";
+import { EditDetailIcon } from "../../atoms/icons/EditDetailIcon";
+import { CaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
+import { RemoveButton } from "../buttons/RemoveButton";
 
 /* exported functions */
 
@@ -43,6 +46,7 @@ export enum BacklogItemTypeEnum {
 
 export interface BacklogItemCardStateProps {
     estimate: number | null;
+    hasDetails?: boolean;
     isDraggable?: boolean;
     internalId: string;
     itemId: string;
@@ -52,50 +56,84 @@ export interface BacklogItemCardStateProps {
     titleText: string;
     top?: string;
     width?: any;
+    showDetailMenu: boolean;
 }
 
-export interface BacklogItemCardDispatchProps {}
+export interface BacklogItemCardDispatchProps {
+    onDetailClicked?: { () };
+    onRemoveItemClicked?: { (backlogItemId: string) };
+}
 
 export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDispatchProps & WithTranslation;
 
 /* exported components */
 
 export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
+    const detailMenu = props.showDetailMenu ? (
+        <ItemMenuPanel caretPosition={props.renderMobile ? CaretPosition.RightTop : CaretPosition.TopCenter}>
+            <RemoveButton
+                onClick={() => {
+                    if (props.itemId && props.onRemoveItemClicked) {
+                        props.onRemoveItemClicked(props.itemId);
+                    }
+                }}
+            />
+        </ItemMenuPanel>
+    ) : null;
+    const outerClassNameToUse = buildClassName(css.backlogItemCardOuter, props.renderMobile ? css.mobile : null);
     const classNameToUse = buildClassName(
         css.backlogItemCard,
-        props.renderMobile ? css.mobile : null,
         props.marginBelowItem ? css.marginBelowItem : null,
         props.itemType === BacklogItemTypeEnum.None ? css.backlogItemGap : null,
         props.top ? css.dragging : null
     );
-    return (
+    const editDetailButton = props.hasDetails ? (
         <div
-            className={classNameToUse}
-            data-class="backlogitem"
-            data-id={props.internalId}
-            style={{ top: props.top, width: props.width }}
-            tabIndex={0}
+            className={css.backlogItemDetailButton}
+            onClick={() => {
+                if (props.onDetailClicked) {
+                    props.onDetailClicked();
+                }
+            }}
         >
-            <div className={css.backlogItemType}>
-                <div className={css.backlogItemIcon}>
-                    {props.itemType === BacklogItemTypeEnum.Story ? <StoryIcon invertColors /> : <IssueIcon invertColors />}
+            <EditDetailIcon />
+        </div>
+    ) : null;
+    return (
+        <div className={outerClassNameToUse}>
+            <div
+                className={classNameToUse}
+                data-class="backlogitem"
+                data-id={props.internalId}
+                style={{ top: props.top, width: props.width }}
+                tabIndex={0}
+            >
+                <div className={css.backlogItemType}>
+                    <div className={css.backlogItemIcon}>
+                        {props.itemType === BacklogItemTypeEnum.Story ? <StoryIcon invertColors /> : <IssueIcon invertColors />}
+                    </div>
+                    <div className={css.backlogItemId} title={titleForItemId(props.itemId)}>
+                        {abbreviateId(props.itemId)}
+                    </div>
+                    {props.isDraggable && props.renderMobile ? (
+                        <div data-class="drag-button" className={css.backlogItemDragButton}>
+                            <DragIcon invertColors />
+                        </div>
+                    ) : null}
                 </div>
-                <div className={css.backlogItemId} title={titleForItemId(props.itemId)}>
-                    {abbreviateId(props.itemId)}
+                <div className={css.backlogItemText}>
+                    {props.titleText}
+                    {props.renderMobile ? editDetailButton : null}
                 </div>
-                {props.isDraggable && props.renderMobile ? (
+                <div className={css.backlogItemEstimate}>{formatEstimateForDisplay(props.estimate)}</div>
+                {!props.renderMobile ? editDetailButton : null}
+                {props.isDraggable && !props.renderMobile ? (
                     <div data-class="drag-button" className={css.backlogItemDragButton}>
-                        <DragIcon invertColors />
+                        <DragIcon />
                     </div>
                 ) : null}
             </div>
-            <div className={css.backlogItemText}>{props.titleText}</div>
-            <div className={css.backlogItemEstimate}>{formatEstimateForDisplay(props.estimate)}</div>
-            {props.isDraggable && !props.renderMobile ? (
-                <div data-class="drag-button" className={css.backlogItemDragButton}>
-                    <DragIcon />
-                </div>
-            ) : null}
+            <div className={css.backlogItemCardDetailMenu}>{detailMenu}</div>
         </div>
     );
 };

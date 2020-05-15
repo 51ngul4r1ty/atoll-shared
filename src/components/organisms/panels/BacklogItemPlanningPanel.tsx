@@ -1,5 +1,6 @@
 // externals
 import * as React from "react";
+import { useState } from "react";
 import { Dispatch } from "redux";
 import { withTranslation, WithTranslation } from "react-i18next";
 
@@ -24,8 +25,15 @@ import {
 } from "../../../reducers/backlogItemsReducer";
 
 // actions
-import { updateBacklogItemFields, cancelUnsavedBacklogItem, saveBacklogItem } from "../../../actions/backlogItems";
-import { useState } from "react";
+import {
+    updateBacklogItemFields,
+    cancelUnsavedBacklogItem,
+    saveBacklogItem,
+    backlogItemDetailClicked,
+    removeBacklogItem
+} from "../../../actions/backlogItems";
+
+// utils
 import { useRecursiveTimeout } from "../../common/setTimeoutHook";
 
 /* exported interfaces */
@@ -46,6 +54,7 @@ export interface BacklogItemPlanningPanelStateProps {
     allItems: BacklogItemWithSource[];
     editMode: EditMode;
     renderMobile?: boolean;
+    openedDetailMenuBacklogItemId: string | null;
 }
 
 export interface OnAddedNewBacklogItem {
@@ -83,10 +92,12 @@ export const buildDragBacklogItemElt = (
             itemType={item.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
             titleText={item.storyPhrase}
             isDraggable={editMode === EditMode.Edit}
+            hasDetails={editMode === EditMode.Edit}
             renderMobile={renderMobile}
             marginBelowItem
             top={documentTop}
             width={width}
+            showDetailMenu={false}
         />
     );
 };
@@ -97,7 +108,8 @@ export const buildBacklogItemElts = (
     renderMobile: boolean,
     highlightAbove: boolean,
     dispatch: Dispatch<any>,
-    suppressTopPadding: boolean
+    suppressTopPadding: boolean,
+    showDetailMenu: boolean
 ): JSX.Element[] => {
     if (!item.saved && editMode === EditMode.Edit) {
         const classNameToUse = buildClassName(
@@ -141,8 +153,16 @@ export const buildBacklogItemElts = (
                 itemType={item.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
                 titleText={item.storyPhrase}
                 isDraggable={editMode === EditMode.Edit}
+                hasDetails={editMode === EditMode.Edit}
                 renderMobile={renderMobile}
                 marginBelowItem
+                onDetailClicked={() => {
+                    dispatch(backlogItemDetailClicked(item.id));
+                }}
+                onRemoveItemClicked={(backlogItemId) => {
+                    dispatch(removeBacklogItem(item.id));
+                }}
+                showDetailMenu={showDetailMenu}
             />
         ];
     }
@@ -605,6 +625,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
             if (isDragOverItem) {
                 const cardKey = `none---${item.id}---none`;
                 renderElts.push(<SimpleDivider key={`divider-${cardKey}`} />);
+                const showDetailMenu = item.id === props.openedDetailMenuBacklogItemId;
                 renderElts.push(
                     <BacklogItemCard
                         key={cardKey}
@@ -614,19 +635,29 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         itemType={BacklogItemTypeEnum.None}
                         titleText={null}
                         isDraggable={props.editMode === EditMode.Edit}
+                        hasDetails={props.editMode === EditMode.Edit}
                         renderMobile={props.renderMobile}
                         marginBelowItem
+                        onDetailClicked={() => {
+                            dispatch(backlogItemDetailClicked(item.id));
+                        }}
+                        onRemoveItemClicked={(backlogItemId) => {
+                            dispatch(removeBacklogItem(item.id));
+                        }}
+                        showDetailMenu={showDetailMenu}
                     />
                 );
             }
             if (!isDragItem) {
+                const showDetailMenu = item.id === props.openedDetailMenuBacklogItemId;
                 const elts = buildBacklogItemElts(
                     props.editMode,
                     item,
                     props.renderMobile,
                     highlightAbove,
                     dispatch,
-                    suppressTopPadding || lastItemWasUnsaved
+                    suppressTopPadding || lastItemWasUnsaved,
+                    showDetailMenu
                 );
                 elts.forEach((elt) => {
                     renderElts.push(elt);
