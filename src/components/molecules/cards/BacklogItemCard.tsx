@@ -2,15 +2,20 @@
 import * as React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 
-// components
+// style
 import css from "./BacklogItemCard.module.css";
+
+// components
 import { StoryIcon } from "../../atoms/icons/StoryIcon";
 import { IssueIcon } from "../../atoms/icons/IssueIcon";
 import { DragIcon } from "../../atoms/icons/DragIcon";
-import { buildClassName } from "../../../utils/classNameBuilder";
 import { EditDetailIcon } from "../../atoms/icons/EditDetailIcon";
 import { CaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
 import { RemoveButton } from "../buttons/RemoveButton";
+import { EditButton, EditMode } from "../buttons/EditButton";
+
+// utils
+import { buildClassName } from "../../../utils/classNameBuilder";
 
 /* exported functions */
 
@@ -61,6 +66,7 @@ export interface BacklogItemCardStateProps {
 
 export interface BacklogItemCardDispatchProps {
     onDetailClicked?: { () };
+    onEditItemClicked?: { (backlogItemId: string) };
     onRemoveItemClicked?: { (backlogItemId: string) };
 }
 
@@ -72,9 +78,19 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
     const detailMenu = props.showDetailMenu ? (
         <ItemMenuPanel caretPosition={props.renderMobile ? CaretPosition.RightTop : CaretPosition.TopCenter}>
             <RemoveButton
+                suppressSpacing
                 onClick={() => {
                     if (props.itemId && props.onRemoveItemClicked) {
                         props.onRemoveItemClicked(props.itemId);
+                    }
+                }}
+            />
+            <EditButton
+                mode={EditMode.View}
+                suppressSpacing
+                onClick={() => {
+                    if (props.itemId && props.onEditItemClicked) {
+                        props.onEditItemClicked(props.itemId);
                     }
                 }}
             />

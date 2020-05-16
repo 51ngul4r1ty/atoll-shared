@@ -17,8 +17,10 @@ export type SimpleButtonRefType = HTMLInputElement;
 export type SimpleButtonType = ComponentWithForwardedRef<SimpleButtonProps>;
 
 export interface SimpleButtonStateProps extends PropsWithClassName {
+    draggable?: boolean;
     icon?: any; // TODO: Define type
     iconOnLeft?: boolean;
+    suppressSpacing?: boolean;
 }
 
 interface SimpleButtonInnerStateProps {
@@ -31,6 +33,17 @@ export interface SimpleButtonDispatchProps {
 
 export type SimpleButtonProps = SimpleButtonStateProps & SimpleButtonDispatchProps;
 
+/**
+ * Remove properties that should be overidden in specialized button component.
+ */
+export const cleanPassthroughProps = (passthroughProps: any): SimpleButtonProps => {
+    const result = { ...passthroughProps };
+    delete result.onClick;
+    delete result.iconOnLeft;
+    delete result.icon;
+    return result;
+};
+
 const InnerSimpleButton: FC<SimpleButtonProps & SimpleButtonInnerStateProps> = (props) => {
     const icon = props.icon && <div className={css.buttonIcon}>{props.icon}</div>;
     const hasChildren = !!props.children;
@@ -41,7 +54,12 @@ const InnerSimpleButton: FC<SimpleButtonProps & SimpleButtonInnerStateProps> = (
     } else {
         classNameToAdd = "";
     }
-    const className = buildClassName(css.button, props.className, classNameToAdd);
+    const className = buildClassName(
+        css.button,
+        props.className,
+        classNameToAdd,
+        props.suppressSpacing ? css.suppressSpacing : null
+    );
     const contents = props.iconOnLeft ? (
         <>
             {icon}
@@ -53,8 +71,24 @@ const InnerSimpleButton: FC<SimpleButtonProps & SimpleButtonInnerStateProps> = (
             {icon}
         </>
     );
+    const handleDragStart = () => {
+        if (!props.draggable) {
+            return false;
+        }
+    };
+    const draggableToUse = !!props.draggable;
     return (
-        <div data-testid="button-container" ref={props.innerRef} className={className} tabIndex={0} onClick={props.onClick}>
+        <div
+            draggable={draggableToUse}
+            onDragStart={() => {
+                return handleDragStart();
+            }}
+            data-testid="button-container"
+            ref={props.innerRef}
+            className={className}
+            tabIndex={0}
+            onClick={props.onClick}
+        >
             {contents}
         </div>
     );

@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // atoms
-import { SimpleButton } from "../../atoms/buttons/SimpleButton";
+import { SimpleButton, SimpleButtonProps, cleanPassthroughProps } from "../../atoms/buttons/SimpleButton";
 
 // icons
 import { TrashIcon } from "../../atoms/icons/TrashIcon";
@@ -17,11 +17,11 @@ export interface RemoveButtonDispatchProps {
     onClick: { () };
 }
 
-export type RemoveButtonProps = RemoveButtonStateProps & RemoveButtonDispatchProps;
+export type RemoveButtonProps = RemoveButtonStateProps & SimpleButtonProps & RemoveButtonDispatchProps;
 
 export const RemoveButton: React.FC<RemoveButtonProps> = (props) => {
     return (
-        <SimpleButton className={props.className} iconOnLeft icon={<TrashIcon />} onClick={props.onClick}>
+        <SimpleButton {...cleanPassthroughProps(props)} iconOnLeft icon={<TrashIcon />}>
             Remove
         </SimpleButton>
     );

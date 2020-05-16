@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // atoms
-import { SimpleButton } from "../../atoms/buttons/SimpleButton";
+import { SimpleButton, SimpleButtonProps, cleanPassthroughProps } from "../../atoms/buttons/SimpleButton";
 
 // icons
 import { EditIcon } from "../../atoms/icons/EditIcon";
@@ -25,13 +25,13 @@ export interface EditButtonDispatchProps {
     onClick: { () };
 }
 
-export type EditButtonProps = EditButtonStateProps & EditButtonDispatchProps;
+export type EditButtonProps = EditButtonStateProps & SimpleButtonProps & EditButtonDispatchProps;
 
 export const EditButton: React.FC<EditButtonProps> = (props) => {
     const icon = props.mode === EditMode.View ? <EditIcon /> : <EditCancelIcon />;
     const text = props.mode === EditMode.View ? "Edit" : "View";
     return (
-        <SimpleButton className={props.className} iconOnLeft icon={icon} onClick={props.onClick}>
+        <SimpleButton {...cleanPassthroughProps(props)} iconOnLeft icon={icon} onClick={props.onClick}>
             {text}
         </SimpleButton>
     );

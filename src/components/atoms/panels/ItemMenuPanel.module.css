@@ -23,6 +23,8 @@
     background-color: var(--normal-form-page-color, #d0d0d0);
     box-sizing: border-box;
     padding: 0.5rem;
+    display: grid;
+    grid-gap: 0.4rem;
 }
 
 .component:not(.rightTopCaret) .triangle {
