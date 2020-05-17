@@ -91,6 +91,17 @@ export const refreshTokenAndRetry = (refreshToken: string, actionToRetry: ApiAct
     }
 });
 
+// export const getAuthTokenWithRefreshToken = (refreshToken: string) => ({
+//     type: API,
+//     payload: {
+//         endpoint: `${getApiBaseUrl()}api/v1/actions/refresh-token`,
+//         method: "POST",
+//         headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+//         data: { refreshToken },
+//         types: buildActionTypes(ApiActionNames.POST_ACTION_REFRESH_TOKEN)
+//     }
+// });
+
 export type SetUsernameAction = FSA<typeof ActionTypes.SET_USERNAME, string>;
 export const setUsername = (username: string): SetUsernameAction => ({
     type: ActionTypes.SET_USERNAME,

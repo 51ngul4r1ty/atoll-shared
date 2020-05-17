@@ -12,6 +12,7 @@ import { apiMiddleware } from "../middleware/apiMiddleware";
 import { routingMiddleware } from "../middleware/routingMiddleware";
 import { wsMiddleware } from "../middleware/wsMiddleware";
 import { apiOrchestrationMiddleware } from "../middleware/apiOrchestrationMiddleware";
+import { localStorageMiddleware } from "../middleware/localStorageMiddleware";
 
 const composeEnhancers = composeWithDevTools({
     name: "Atoll",
@@ -35,6 +36,7 @@ export const configureStore = ({ initialState, middleware = [], history }: Store
     const allMiddleware = [
         thunk,
         routerMiddleware(history),
+        localStorageMiddleware,
         apiOrchestrationMiddleware,
         apiMiddleware,
         routingMiddleware,

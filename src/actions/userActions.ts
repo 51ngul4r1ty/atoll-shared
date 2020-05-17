@@ -1,5 +1,5 @@
 // interfaces/types
-import { API, ApiAction } from "../middleware/apiTypes";
+import { API, NoDataApiAction } from "../middleware/apiTypes";
 
 // actions
 import * as ApiActionNames from "./apiActionNames";
@@ -11,7 +11,7 @@ import { APPLICATION_JSON } from "../constants";
 import { getApiBaseUrl } from "../config";
 import { buildActionTypes } from "./utils/apiActionUtils";
 
-export const getUserPreferences = (): ApiAction<undefined> => ({
+export const getUserPreferences = (): NoDataApiAction => ({
     type: API,
     payload: {
         endpoint: `${getApiBaseUrl()}api/v1/users/{self}/preferences`,

@@ -17,7 +17,7 @@ import { buildActionTypes } from "./utils/apiActionUtils";
 
 export const refreshBacklogItems = () => getBacklogItems();
 
-export const getBacklogItems = (): ApiAction<undefined> => ({
+export const getBacklogItems = (): NoDataApiAction => ({
     type: API,
     payload: {
         endpoint: `${getApiBaseUrl()}api/v1/backlog-items`,

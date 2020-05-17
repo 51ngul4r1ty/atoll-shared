@@ -16,6 +16,7 @@ import {
     ActionPostTokenResponseBase
 } from "../actions/authActions";
 import { ApiActionSuccessPayload } from "../middleware/apiTypes";
+import { LocalStoreRefreshTokenAction } from "../actions/appActions";
 
 const backlogItem1: BacklogItemModel = {
     creationDateTime: new Date(),
@@ -83,6 +84,11 @@ export const appReducer = (state: AppState = initialState, action: AnyFSA): AppS
             case ActionTypes.SET_PASSWORD: {
                 const actionTyped = action as SetPasswordAction;
                 draft.password = actionTyped.payload;
+                return;
+            }
+            case ActionTypes.LOCAL_STORE_REFRESH_TOKEN: {
+                const actionTyped = action as LocalStoreRefreshTokenAction;
+                draft.refreshToken = actionTyped.payload.refreshToken;
                 return;
             }
             case ActionTypes.API_POST_ACTION_LOGIN_SUCCESS: {

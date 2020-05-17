@@ -1,6 +1,10 @@
 import { buildActionName } from "./utils/apiActionUtils";
 import * as Names from "./apiActionNames";
 
+export const INIT_APP = "app/init";
+
+export const LOCAL_STORE_REFRESH_TOKEN = "app/local-store:refresh-token";
+
 export const SET_LOCALE = "app/set-locale";
 export const SET_EDIT_MODE = "app/set-edit-mode";
 
