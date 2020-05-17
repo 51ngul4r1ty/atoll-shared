@@ -382,53 +382,47 @@ const getDragItemIdUnderTarget = (
 
 export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps> = (props) => {
     // #region state with refs
-    const [cardPositions, _setCardPositions] = useState([]);
+
+    // 1. Refs that are not used for re-rendering
+
+    //    const [cardPositions, _setCardPositions] = useState([]);
     const cardPositionsRef = React.useRef();
     const setCardPositions = (data) => {
         cardPositionsRef.current = data;
-        _setCardPositions(data);
+        //        _setCardPositions(data);
     };
-    const [dragItemDocumentTop, _setDragItemDocumentTop] = useState(null);
-    const dragItemDocumentTopRef = React.useRef();
-    const setDragItemDocumentTop = (data) => {
-        dragItemDocumentTopRef.current = data;
-        _setDragItemDocumentTop(data);
-    };
-    const [dragItemStartDocumentTop, _setDragItemStartDocumentTop] = useState(null);
+    //    const [dragItemStartDocumentTop, _setDragItemStartDocumentTop] = useState(null);
     const dragItemStartDocumentTopRef = React.useRef<number>();
     const setDragItemStartDocumentTop = (data) => {
         dragItemStartDocumentTopRef.current = data;
-        _setDragItemStartDocumentTop(data);
+        //        _setDragItemStartDocumentTop(data);
     };
-    const [dragStartClientY, _setDragStartClientY] = useState(null);
+    //    const [dragStartClientY, _setDragStartClientY] = useState(null);
     const dragStartClientYRef = React.useRef<number>();
     const setDragStartClientY = (data) => {
         dragStartClientYRef.current = data;
-        _setDragStartClientY(data);
+        //        _setDragStartClientY(data);
     };
-    const [dragStartScrollY, _setDragStartScrollY] = useState(null);
+    //    const [dragStartScrollY, _setDragStartScrollY] = useState(null);
     const dragStartScrollYRef = React.useRef<number>();
     const setDragStartScrollY = (data) => {
         dragStartScrollYRef.current = data;
-        _setDragStartClientY(data);
+        //        _setDragStartScrollY(data);
     };
+    //    const [itemCardWidth, _setItemCardWidth] = useState(null);
+    const itemCardWidthRef = React.useRef();
+    const setItemCardWidth = (data) => {
+        itemCardWidthRef.current = data;
+        // _setItemCardWidth(data);
+    };
+
+    // 2. Refs that are used for re-rendering
+
     const [isDragging, _setIsDragging] = useState(false);
     const isDraggingRef = React.useRef();
     const setIsDragging = (data) => {
         isDraggingRef.current = data;
         _setIsDragging(data);
-    };
-    const [dragItemClientY, _setDragItemClientY] = useState(null);
-    const dragItemClientYRef = React.useRef();
-    const setDragItemClientY = (data) => {
-        dragItemClientYRef.current = data;
-        _setDragItemClientY(data);
-    };
-    const [itemCardWidth, _setItemCardWidth] = useState(null);
-    const itemCardWidthRef = React.useRef();
-    const setItemCardWidth = (data) => {
-        itemCardWidthRef.current = data;
-        _setItemCardWidth(data);
     };
     const [dragItemId, _setDragItemId] = useState(null);
     const dragItemIdRef = React.useRef();
@@ -442,30 +436,42 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
         dragOverItemIdRef.current = data;
         _setDragOverItemId(data);
     };
+    const [dragItemDocumentTop, _setDragItemDocumentTop] = useState(null);
+    const dragItemDocumentTopRef = React.useRef();
+    const setDragItemDocumentTop = (data) => {
+        dragItemDocumentTopRef.current = data;
+        _setDragItemDocumentTop(data);
+    };
+    const [dragItemClientY, _setDragItemClientY] = useState(null);
+    const dragItemClientYRef = React.useRef();
+    const setDragItemClientY = (data) => {
+        dragItemClientYRef.current = data;
+        _setDragItemClientY(data);
+    };
     // #endregion
 
     useRecursiveTimeout(() => {
-        if (isDragging) {
-            if (atBottomOfPage(dragItemClientY)) {
+        if (isDraggingRef.current) {
+            if (atBottomOfPage(dragItemClientYRef.current)) {
                 scrollDown((deltaY) => {
                     handleScroll(
                         deltaY,
-                        cardPositions,
-                        dragItemDocumentTop,
+                        cardPositionsRef.current,
+                        dragItemDocumentTopRef.current,
                         setDragItemDocumentTop,
-                        dragOverItemId,
+                        dragOverItemIdRef.current,
                         setDragOverItemId
                     );
                 });
             }
-            if (atTopOfPage(dragItemClientY)) {
+            if (atTopOfPage(dragItemClientYRef.current)) {
                 scrollUp((deltaY) => {
                     handleScroll(
                         deltaY,
-                        cardPositions,
-                        dragItemDocumentTop,
+                        cardPositionsRef.current,
+                        dragItemDocumentTopRef.current,
                         setDragItemDocumentTop,
-                        dragOverItemId,
+                        dragOverItemIdRef.current,
                         setDragOverItemId
                     );
                 });
@@ -474,39 +480,56 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
     }, 500);
 
     const onMouseDown = (e: React.BaseSyntheticEvent<HTMLDivElement>, clientY: number) => {
+        console.log("ENTER: onMouseDown");
         if (targetIsDragButton(e)) {
+            console.log(" - target is drag button");
             const id = getDragItemId(e.target);
             if (id) {
+                console.log(` - has ID: ${id}`);
                 const width = getDragItemWidth(e.target);
                 const top = getDragItemDocumentTop(e.target);
+                console.log(` - has document top: ${top}`);
                 setDragItemDocumentTop(top);
                 setDragItemStartDocumentTop(top);
+                console.log(` - drag start client Y: ${clientY}`);
                 setDragStartClientY(clientY);
+                console.log(` - drag start scroll Y: ${window.scrollY}`);
                 setDragStartScrollY(window.scrollY);
                 setItemCardWidth(width);
                 setDragItemId(id);
                 setDragOverItemId(id);
             }
             preventDefault(e);
+            console.log("EXIT: onMouseDown (prevent default)");
             return false;
         }
+        console.log("EXIT: onMouseDown");
         return true;
     };
 
     const onMouseMove = (e: React.BaseSyntheticEvent<HTMLDivElement>, clientY: number) => {
         if (dragStartClientYRef.current) {
-            const mouseStartClientYToDocumentTop = dragStartClientYRef.current + dragStartScrollYRef.current;
+            const dragStartClientY = dragStartClientYRef.current;
+            const dragStartScrollY = dragStartScrollYRef.current;
+            console.log(`onMouseMove: dragStartClientY: ${dragStartClientY}`);
+            console.log(`onMouseMove: dragStartScrollY: ${dragStartScrollY}`);
+            const mouseStartClientYToDocumentTop = dragStartClientY + dragStartScrollY;
             const mouseClientYToDocumentTop = clientY + window.scrollY;
             const mouseDeltaClientY = mouseClientYToDocumentTop - mouseStartClientYToDocumentTop;
             const adjustY = dragItemStartDocumentTopRef.current - dragStartScrollYRef.current - dragStartClientYRef.current;
             if (Math.abs(mouseDeltaClientY) > 5) {
+                console.log("onMouseMove - setting dragging");
                 setIsDragging(true);
             }
             if (isDraggingRef.current) {
-                setDragItemDocumentTop(dragItemStartDocumentTopRef.current + mouseDeltaClientY);
+                const top = dragItemStartDocumentTopRef.current + mouseDeltaClientY;
+                console.log(`onMouseMove - set drag item document top: ${top}`);
+                setDragItemDocumentTop(top);
+                console.log(`onMouseMove - set drag item document client Y: ${clientY}`);
                 setDragItemClientY(clientY);
                 const overItemId = getDragItemIdUnderTarget(e, clientY, adjustY, cardPositionsRef.current);
                 if (overItemId) {
+                    console.log(`onMouseMove - set drag over item id ${overItemId}`);
                     setDragOverItemId(overItemId);
                 }
             }
@@ -516,6 +539,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
     };
 
     const onMouseUp = (e: React.BaseSyntheticEvent<HTMLDivElement>) => {
+        console.log("ENTER: onMouseUp");
         if (isDraggingRef.current) {
             if (props.onReorderBacklogItems) {
                 const dragOverItemIdToUse = dragOverItemIdRef.current === BELOW_LAST_CARD_ID ? null : dragOverItemIdRef.current;
@@ -530,6 +554,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
             setDragOverItemId(null);
             return false;
         }
+        console.log("EXIT: onMouseUp");
         return true;
     };
 
@@ -545,9 +570,12 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 touchStartListener = listenerHost.addEventListener(
                     "touchstart",
                     (e: any) => {
+                        console.log("touchstart");
                         if (isSingleTouch(e.touches)) {
+                            console.log("- single touch");
                             return onMouseDown(e, touchesToClientY(e.touches));
                         }
+                        console.log("- multi touch");
                         return true;
                     },
                     { passive: false }
@@ -555,6 +583,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 touchMoveListener = listenerHost.addEventListener(
                     "touchmove",
                     (e: any) => {
+                        console.log("touchmove");
                         return onMouseMove(e, touchesToClientY(e.touches));
                     },
                     { passive: false }
@@ -562,6 +591,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 touchEndListener = listenerHost.addEventListener(
                     "touchend",
                     (e: any) => {
+                        console.log("touchend");
                         return onMouseUp(e);
                     },
                     { passive: false }
@@ -599,10 +629,16 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
     let suppressTopPadding = true;
     let lastItemWasUnsaved = false;
     props.allItems.forEach((item) => {
-        const isDragItem = isDragging && dragItemId === item.id;
-        const isDragOverItem = isDragging && dragOverItemId === item.id;
+        const isDragItem = isDraggingRef.current && dragItemIdRef.current === item.id;
+        const isDragOverItem = isDraggingRef.current && dragOverItemIdRef.current === item.id;
         if (isDragItem) {
-            const elt = buildDragBacklogItemElt(props.editMode, item, props.renderMobile, dragItemDocumentTop, itemCardWidth);
+            const elt = buildDragBacklogItemElt(
+                props.editMode,
+                item,
+                props.renderMobile,
+                dragItemDocumentTopRef.current,
+                itemCardWidthRef.current
+            );
             renderElts.push(elt);
         }
         let highlightAbove = false;
