@@ -24,3 +24,25 @@ export const setEditMode = (editMode: EditMode): SetEditModeAction => ({
     type: ActionTypes.SET_EDIT_MODE,
     payload: editMode
 });
+
+export interface InitAppAction {
+    type: typeof ActionTypes.INIT_APP;
+}
+
+export const initApp = (): InitAppAction => ({
+    type: ActionTypes.INIT_APP
+});
+
+export interface LocalStoreRefreshTokenAction {
+    type: typeof ActionTypes.LOCAL_STORE_REFRESH_TOKEN;
+    payload: {
+        refreshToken: string;
+    };
+}
+
+export const localStoreRefreshToken = (refreshToken: string): LocalStoreRefreshTokenAction => ({
+    type: ActionTypes.LOCAL_STORE_REFRESH_TOKEN,
+    payload: {
+        refreshToken
+    }
+});
