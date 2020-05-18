@@ -24,6 +24,7 @@ import { StateTree } from "../types";
 // utils
 import { convertToBacklogItemModel } from "../utils/apiPayloadHelper";
 import { routePlanView } from "../actions/routeActions";
+import { getUserPreferences } from "../actions/userActions";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
@@ -69,6 +70,10 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
                 const apiAction = actionTyped.meta.passthrough.actionToRetry;
                 storeTyped.dispatch(apiAction);
             }
+            break;
+        }
+        case ActionTypes.INIT_APP: {
+            storeTyped.dispatch(getUserPreferences());
             break;
         }
     }

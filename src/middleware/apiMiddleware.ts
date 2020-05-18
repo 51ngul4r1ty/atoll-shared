@@ -1,6 +1,7 @@
 // externals
 import axios, { AxiosRequestConfig } from "axios";
 import { Action, Dispatch, Store } from "redux";
+import * as HttpStatus from "http-status-codes";
 
 // consts/enums
 import { APPLICATION_JSON } from "../constants";
@@ -114,6 +115,10 @@ export interface ApiActionMetaParamsRequestBody<T> extends AxiosRequestConfig {
     params?: T;
 }
 
+export const authFailed = (errorResponseStatus: number) => {
+    return errorResponseStatus === HttpStatus.UNAUTHORIZED || errorResponseStatus === HttpStatus.FORBIDDEN;
+};
+
 export const apiMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
     next(action);
@@ -121,8 +126,7 @@ export const apiMiddleware = (store) => (next) => (action: Action) => {
         return;
     }
     const { dispatch, getState } = storeTyped;
-    const state = getState();
-    const authToken = getAuthToken(state);
+    const authToken = getAuthToken(getState());
     const apiAction = action as ApiAction<any>;
     const { endpoint, method, data, types, headers } = apiAction.payload;
     const dataOrParams = ["GET", "DELETE"].includes(method) ? "params" : "data";
@@ -153,7 +157,7 @@ export const apiMiddleware = (store) => (next) => (action: Action) => {
             }
         })
         .catch((error) => {
-            if (error.response && error.response.status === 403 && !isRetry) {
+            if (error.response && authFailed(error.response.status) && !isRetry) {
                 if (!apiAction.meta) {
                     apiAction.meta = {
                         tryCount: 0,
@@ -161,6 +165,7 @@ export const apiMiddleware = (store) => (next) => (action: Action) => {
                     };
                 }
                 apiAction.meta.tryCount++;
+                const state = getState();
                 dispatch(refreshTokenAndRetry(state.app.refreshToken, apiAction));
             } else {
                 dispatchFailure(dispatch, getFailureType(types), data, requestBody, apiAction.meta, error);
