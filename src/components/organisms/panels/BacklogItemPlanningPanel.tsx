@@ -80,7 +80,7 @@ export const buildDragBacklogItemElt = (
     editMode: EditMode,
     item: SaveableBacklogItem,
     renderMobile: boolean,
-    documentTop: string,
+    offsetTop: number,
     width: any
 ) => {
     return (
@@ -95,7 +95,7 @@ export const buildDragBacklogItemElt = (
             hasDetails={editMode === EditMode.Edit}
             renderMobile={renderMobile}
             marginBelowItem
-            top={documentTop}
+            offsetTop={offsetTop}
             width={width}
             showDetailMenu={false}
         />
@@ -242,12 +242,16 @@ const handleScroll = (
     deltaY: number,
     cardPositions: CardPosition[],
     dragItemDocumentTop: number,
+    dragItemOffsetTop: number,
     setDragItemDocumentTop: { (value: number) },
+    setDragItemOffsetTop: { (value: number) },
     dragOverItemId: string,
     setDragOverItemId: { (value: string) }
 ) => {
     const newDragItemDocumentTop = dragItemDocumentTop + deltaY;
+    const newDragItemOffsetTop = dragItemOffsetTop + deltaY;
     setDragItemDocumentTop(newDragItemDocumentTop);
+    setDragItemOffsetTop(newDragItemOffsetTop);
     const overItemId = getDragItemIdUnderDocumentTop(newDragItemDocumentTop, cardPositions);
     if (overItemId && overItemId !== dragOverItemId) {
         setDragOverItemId(overItemId);
@@ -348,6 +352,17 @@ const getDragItemDocumentTop = (target: EventTarget) => {
     return null;
 };
 
+const getDragItemOffsetTop = (target: EventTarget): number | null => {
+    const item = getDragItem(target);
+    if (item) {
+        const backlogItemDiv = getParentWithDataClass(item, "backlogitem");
+        console.log(`getDragItemOffsetTop: ${backlogItemDiv.offsetTop}`);
+        return item.offsetTop;
+    }
+    console.log(`getDragItemOffsetTop: null`);
+    return null;
+};
+
 const getDragItemIdUnderCommon = (documentTop: number, cardPositions: CardPosition[]) => {
     let result: string = null;
     let lastTop = 0;
@@ -397,6 +412,12 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
         dragItemStartDocumentTopRef.current = data;
         //        _setDragItemStartDocumentTop(data);
     };
+    const dragItemStartOffsetTopRef = React.useRef<number>();
+    const setDragItemStartOffsetTop = (data) => {
+        dragItemStartOffsetTopRef.current = data;
+        //        _setDragItemStartDocumentTop(data);
+    };
+
     //    const [dragStartClientY, _setDragStartClientY] = useState(null);
     const dragStartClientYRef = React.useRef<number>();
     const setDragStartClientY = (data) => {
@@ -442,6 +463,12 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
         dragItemDocumentTopRef.current = data;
         _setDragItemDocumentTop(data);
     };
+    const [dragItemOffsetTop, _setDragItemOffsetTop] = useState(null);
+    const dragItemOffsetTopRef = React.useRef<number>();
+    const setDragItemOffsetTop = (data) => {
+        dragItemOffsetTopRef.current = data;
+        _setDragItemOffsetTop(data);
+    };
     const [dragItemClientY, _setDragItemClientY] = useState(null);
     const dragItemClientYRef = React.useRef();
     const setDragItemClientY = (data) => {
@@ -458,7 +485,9 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         deltaY,
                         cardPositionsRef.current,
                         dragItemDocumentTopRef.current,
+                        dragItemOffsetTopRef.current,
                         setDragItemDocumentTop,
+                        setDragItemOffsetTop,
                         dragOverItemIdRef.current,
                         setDragOverItemId
                     );
@@ -470,7 +499,9 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         deltaY,
                         cardPositionsRef.current,
                         dragItemDocumentTopRef.current,
+                        dragItemOffsetTopRef.current,
                         setDragItemDocumentTop,
+                        setDragItemOffsetTop,
                         dragOverItemIdRef.current,
                         setDragOverItemId
                     );
@@ -489,6 +520,9 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 const width = getDragItemWidth(e.target);
                 const top = getDragItemDocumentTop(e.target);
                 console.log(` - has document top: ${top}`);
+                const offsetTop = getDragItemOffsetTop(e.target);
+                setDragItemOffsetTop(offsetTop);
+                setDragItemStartOffsetTop(offsetTop);
                 setDragItemDocumentTop(top);
                 setDragItemStartDocumentTop(top);
                 console.log(` - drag start client Y: ${clientY}`);
@@ -507,26 +541,35 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
         return true;
     };
 
+    const getMouseDragDistance = (clientY: number) => {
+        const dragStartClientY = dragStartClientYRef.current;
+        const dragStartScrollY = dragStartScrollYRef.current;
+        console.log(`getMouseDragDistance: dragStartClientY: ${dragStartClientY}`);
+        console.log(`getMouseDragDistance: dragStartScrollY: ${dragStartScrollY}`);
+        const mouseClientYToDocumentTop = clientY + window.scrollY;
+        const mouseStartClientYToDocumentTop = dragStartClientY + dragStartScrollY;
+        const mouseDeltaClientY = mouseClientYToDocumentTop - mouseStartClientYToDocumentTop;
+        return mouseDeltaClientY;
+    };
+
     const onMouseMove = (e: React.BaseSyntheticEvent<HTMLDivElement>, clientY: number) => {
         if (dragStartClientYRef.current) {
-            const dragStartClientY = dragStartClientYRef.current;
-            const dragStartScrollY = dragStartScrollYRef.current;
-            console.log(`onMouseMove: dragStartClientY: ${dragStartClientY}`);
-            console.log(`onMouseMove: dragStartScrollY: ${dragStartScrollY}`);
-            const mouseStartClientYToDocumentTop = dragStartClientY + dragStartScrollY;
-            const mouseClientYToDocumentTop = clientY + window.scrollY;
-            const mouseDeltaClientY = mouseClientYToDocumentTop - mouseStartClientYToDocumentTop;
-            const adjustY = dragItemStartDocumentTopRef.current - dragStartScrollYRef.current - dragStartClientYRef.current;
+            console.log("onMouseMove - dragStartClientY is non-null");
+            const mouseDeltaClientY = getMouseDragDistance(clientY);
             if (Math.abs(mouseDeltaClientY) > 5) {
                 console.log("onMouseMove - setting dragging");
                 setIsDragging(true);
             }
             if (isDraggingRef.current) {
+                // TODO: Calculate this
                 const top = dragItemStartDocumentTopRef.current + mouseDeltaClientY;
+                const offsetTop = dragItemStartOffsetTopRef.current + mouseDeltaClientY;
                 console.log(`onMouseMove - set drag item document top: ${top}`);
+                setDragItemOffsetTop(offsetTop);
                 setDragItemDocumentTop(top);
                 console.log(`onMouseMove - set drag item document client Y: ${clientY}`);
                 setDragItemClientY(clientY);
+                const adjustY = dragItemStartDocumentTopRef.current - dragStartScrollYRef.current - dragStartClientYRef.current;
                 const overItemId = getDragItemIdUnderTarget(e, clientY, adjustY, cardPositionsRef.current);
                 if (overItemId) {
                     console.log(`onMouseMove - set drag over item id ${overItemId}`);
@@ -636,7 +679,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 props.editMode,
                 item,
                 props.renderMobile,
-                dragItemDocumentTopRef.current,
+                dragItemOffsetTopRef.current,
                 itemCardWidthRef.current
             );
             renderElts.push(elt);
