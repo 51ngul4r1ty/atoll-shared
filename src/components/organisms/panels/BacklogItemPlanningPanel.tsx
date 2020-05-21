@@ -535,7 +535,6 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 setIsDragging(true);
             }
             if (isDraggingRef.current) {
-                // TODO: Calculate this
                 const top = dragItemStartDocumentTopRef.current + mouseDeltaClientY;
                 const offsetTop = dragItemStartOffsetTopRef.current + mouseDeltaClientY;
                 setDragItemOffsetTop(offsetTop);
