@@ -80,7 +80,7 @@ export const buildDragBacklogItemElt = (
     editMode: EditMode,
     item: SaveableBacklogItem,
     renderMobile: boolean,
-    documentTop: string,
+    offsetTop: number,
     width: any
 ) => {
     return (
@@ -95,7 +95,7 @@ export const buildDragBacklogItemElt = (
             hasDetails={editMode === EditMode.Edit}
             renderMobile={renderMobile}
             marginBelowItem
-            top={documentTop}
+            offsetTop={offsetTop}
             width={width}
             showDetailMenu={false}
         />
@@ -242,12 +242,16 @@ const handleScroll = (
     deltaY: number,
     cardPositions: CardPosition[],
     dragItemDocumentTop: number,
+    dragItemOffsetTop: number,
     setDragItemDocumentTop: { (value: number) },
+    setDragItemOffsetTop: { (value: number) },
     dragOverItemId: string,
     setDragOverItemId: { (value: string) }
 ) => {
     const newDragItemDocumentTop = dragItemDocumentTop + deltaY;
+    const newDragItemOffsetTop = dragItemOffsetTop + deltaY;
     setDragItemDocumentTop(newDragItemDocumentTop);
+    setDragItemOffsetTop(newDragItemOffsetTop);
     const overItemId = getDragItemIdUnderDocumentTop(newDragItemDocumentTop, cardPositions);
     if (overItemId && overItemId !== dragOverItemId) {
         setDragOverItemId(overItemId);
@@ -348,6 +352,15 @@ const getDragItemDocumentTop = (target: EventTarget) => {
     return null;
 };
 
+const getDragItemOffsetTop = (target: EventTarget): number | null => {
+    const item = getDragItem(target);
+    if (item) {
+        const backlogItemDiv = getParentWithDataClass(item, "backlogitem");
+        return item.offsetTop;
+    }
+    return null;
+};
+
 const getDragItemIdUnderCommon = (documentTop: number, cardPositions: CardPosition[]) => {
     let result: string = null;
     let lastTop = 0;
@@ -382,53 +395,41 @@ const getDragItemIdUnderTarget = (
 
 export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps> = (props) => {
     // #region state with refs
-    const [cardPositions, _setCardPositions] = useState([]);
+
+    // 1. Refs that are not used for re-rendering
+
     const cardPositionsRef = React.useRef();
     const setCardPositions = (data) => {
         cardPositionsRef.current = data;
-        _setCardPositions(data);
     };
-    const [dragItemDocumentTop, _setDragItemDocumentTop] = useState(null);
-    const dragItemDocumentTopRef = React.useRef();
-    const setDragItemDocumentTop = (data) => {
-        dragItemDocumentTopRef.current = data;
-        _setDragItemDocumentTop(data);
-    };
-    const [dragItemStartDocumentTop, _setDragItemStartDocumentTop] = useState(null);
     const dragItemStartDocumentTopRef = React.useRef<number>();
     const setDragItemStartDocumentTop = (data) => {
         dragItemStartDocumentTopRef.current = data;
-        _setDragItemStartDocumentTop(data);
     };
-    const [dragStartClientY, _setDragStartClientY] = useState(null);
+    const dragItemStartOffsetTopRef = React.useRef<number>();
+    const setDragItemStartOffsetTop = (data) => {
+        dragItemStartOffsetTopRef.current = data;
+    };
     const dragStartClientYRef = React.useRef<number>();
     const setDragStartClientY = (data) => {
         dragStartClientYRef.current = data;
-        _setDragStartClientY(data);
     };
-    const [dragStartScrollY, _setDragStartScrollY] = useState(null);
     const dragStartScrollYRef = React.useRef<number>();
     const setDragStartScrollY = (data) => {
         dragStartScrollYRef.current = data;
-        _setDragStartClientY(data);
     };
+    const itemCardWidthRef = React.useRef();
+    const setItemCardWidth = (data) => {
+        itemCardWidthRef.current = data;
+    };
+
+    // 2. Refs that are used for re-rendering
+
     const [isDragging, _setIsDragging] = useState(false);
     const isDraggingRef = React.useRef();
     const setIsDragging = (data) => {
         isDraggingRef.current = data;
         _setIsDragging(data);
-    };
-    const [dragItemClientY, _setDragItemClientY] = useState(null);
-    const dragItemClientYRef = React.useRef();
-    const setDragItemClientY = (data) => {
-        dragItemClientYRef.current = data;
-        _setDragItemClientY(data);
-    };
-    const [itemCardWidth, _setItemCardWidth] = useState(null);
-    const itemCardWidthRef = React.useRef();
-    const setItemCardWidth = (data) => {
-        itemCardWidthRef.current = data;
-        _setItemCardWidth(data);
     };
     const [dragItemId, _setDragItemId] = useState(null);
     const dragItemIdRef = React.useRef();
@@ -442,30 +443,52 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
         dragOverItemIdRef.current = data;
         _setDragOverItemId(data);
     };
+    const [dragItemDocumentTop, _setDragItemDocumentTop] = useState(null);
+    const dragItemDocumentTopRef = React.useRef();
+    const setDragItemDocumentTop = (data) => {
+        dragItemDocumentTopRef.current = data;
+        _setDragItemDocumentTop(data);
+    };
+    const [dragItemOffsetTop, _setDragItemOffsetTop] = useState(null);
+    const dragItemOffsetTopRef = React.useRef<number>();
+    const setDragItemOffsetTop = (data) => {
+        dragItemOffsetTopRef.current = data;
+        _setDragItemOffsetTop(data);
+    };
+    const [dragItemClientY, _setDragItemClientY] = useState(null);
+    const dragItemClientYRef = React.useRef();
+    const setDragItemClientY = (data) => {
+        dragItemClientYRef.current = data;
+        _setDragItemClientY(data);
+    };
     // #endregion
 
     useRecursiveTimeout(() => {
-        if (isDragging) {
-            if (atBottomOfPage(dragItemClientY)) {
+        if (isDraggingRef.current) {
+            if (atBottomOfPage(dragItemClientYRef.current)) {
                 scrollDown((deltaY) => {
                     handleScroll(
                         deltaY,
-                        cardPositions,
-                        dragItemDocumentTop,
+                        cardPositionsRef.current,
+                        dragItemDocumentTopRef.current,
+                        dragItemOffsetTopRef.current,
                         setDragItemDocumentTop,
-                        dragOverItemId,
+                        setDragItemOffsetTop,
+                        dragOverItemIdRef.current,
                         setDragOverItemId
                     );
                 });
             }
-            if (atTopOfPage(dragItemClientY)) {
+            if (atTopOfPage(dragItemClientYRef.current)) {
                 scrollUp((deltaY) => {
                     handleScroll(
                         deltaY,
-                        cardPositions,
-                        dragItemDocumentTop,
+                        cardPositionsRef.current,
+                        dragItemDocumentTopRef.current,
+                        dragItemOffsetTopRef.current,
                         setDragItemDocumentTop,
-                        dragOverItemId,
+                        setDragItemOffsetTop,
+                        dragOverItemIdRef.current,
                         setDragOverItemId
                     );
                 });
@@ -479,6 +502,9 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
             if (id) {
                 const width = getDragItemWidth(e.target);
                 const top = getDragItemDocumentTop(e.target);
+                const offsetTop = getDragItemOffsetTop(e.target);
+                setDragItemOffsetTop(offsetTop);
+                setDragItemStartOffsetTop(offsetTop);
                 setDragItemDocumentTop(top);
                 setDragItemStartDocumentTop(top);
                 setDragStartClientY(clientY);
@@ -493,18 +519,28 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
         return true;
     };
 
+    const getMouseDragDistance = (clientY: number) => {
+        const dragStartClientY = dragStartClientYRef.current;
+        const dragStartScrollY = dragStartScrollYRef.current;
+        const mouseClientYToDocumentTop = clientY + window.scrollY;
+        const mouseStartClientYToDocumentTop = dragStartClientY + dragStartScrollY;
+        const mouseDeltaClientY = mouseClientYToDocumentTop - mouseStartClientYToDocumentTop;
+        return mouseDeltaClientY;
+    };
+
     const onMouseMove = (e: React.BaseSyntheticEvent<HTMLDivElement>, clientY: number) => {
         if (dragStartClientYRef.current) {
-            const mouseStartClientYToDocumentTop = dragStartClientYRef.current + dragStartScrollYRef.current;
-            const mouseClientYToDocumentTop = clientY + window.scrollY;
-            const mouseDeltaClientY = mouseClientYToDocumentTop - mouseStartClientYToDocumentTop;
-            const adjustY = dragItemStartDocumentTopRef.current - dragStartScrollYRef.current - dragStartClientYRef.current;
+            const mouseDeltaClientY = getMouseDragDistance(clientY);
             if (Math.abs(mouseDeltaClientY) > 5) {
                 setIsDragging(true);
             }
             if (isDraggingRef.current) {
-                setDragItemDocumentTop(dragItemStartDocumentTopRef.current + mouseDeltaClientY);
+                const top = dragItemStartDocumentTopRef.current + mouseDeltaClientY;
+                const offsetTop = dragItemStartOffsetTopRef.current + mouseDeltaClientY;
+                setDragItemOffsetTop(offsetTop);
+                setDragItemDocumentTop(top);
                 setDragItemClientY(clientY);
+                const adjustY = dragItemStartDocumentTopRef.current - dragStartScrollYRef.current - dragStartClientYRef.current;
                 const overItemId = getDragItemIdUnderTarget(e, clientY, adjustY, cardPositionsRef.current);
                 if (overItemId) {
                     setDragOverItemId(overItemId);
@@ -599,10 +635,16 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
     let suppressTopPadding = true;
     let lastItemWasUnsaved = false;
     props.allItems.forEach((item) => {
-        const isDragItem = isDragging && dragItemId === item.id;
-        const isDragOverItem = isDragging && dragOverItemId === item.id;
+        const isDragItem = isDraggingRef.current && dragItemIdRef.current === item.id;
+        const isDragOverItem = isDraggingRef.current && dragOverItemIdRef.current === item.id;
         if (isDragItem) {
-            const elt = buildDragBacklogItemElt(props.editMode, item, props.renderMobile, dragItemDocumentTop, itemCardWidth);
+            const elt = buildDragBacklogItemElt(
+                props.editMode,
+                item,
+                props.renderMobile,
+                dragItemOffsetTopRef.current,
+                itemCardWidthRef.current
+            );
             renderElts.push(elt);
         }
         let highlightAbove = false;

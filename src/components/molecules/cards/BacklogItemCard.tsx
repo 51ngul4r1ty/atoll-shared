@@ -59,7 +59,7 @@ export interface BacklogItemCardStateProps {
     marginBelowItem?: boolean;
     renderMobile?: boolean;
     titleText: string;
-    top?: string;
+    offsetTop?: number;
     width?: any;
     showDetailMenu: boolean;
 }
@@ -101,7 +101,7 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
         css.backlogItemCard,
         props.marginBelowItem ? css.marginBelowItem : null,
         props.itemType === BacklogItemTypeEnum.None ? css.backlogItemGap : null,
-        props.top ? css.dragging : null
+        props.offsetTop ? css.dragging : null
     );
     const editDetailButton = props.hasDetails ? (
         <div
@@ -115,15 +115,10 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
             <EditDetailIcon />
         </div>
     ) : null;
+    const styleToUse: React.CSSProperties = props.offsetTop && { top: props.offsetTop, position: "absolute", zIndex: 10 };
     return (
-        <div className={outerClassNameToUse}>
-            <div
-                className={classNameToUse}
-                data-class="backlogitem"
-                data-id={props.internalId}
-                style={{ top: props.top, width: props.width }}
-                tabIndex={0}
-            >
+        <div className={outerClassNameToUse} data-class="backlogitem" data-id={props.internalId} style={styleToUse}>
+            <div className={classNameToUse} style={{ width: props.width }} tabIndex={0}>
                 <div className={css.backlogItemType}>
                     <div className={css.backlogItemIcon}>
                         {props.itemType === BacklogItemTypeEnum.Story ? <StoryIcon invertColors /> : <IssueIcon invertColors />}
