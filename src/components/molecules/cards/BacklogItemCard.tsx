@@ -99,7 +99,7 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
             <EditDetailIcon />
         </div>
     ) : null;
-    const styleToUse: any = props.offsetTop && { top: props.offsetTop, position: "absolute", zIndex: 10 };
+    const styleToUse: React.CSSProperties = props.offsetTop && { top: props.offsetTop, position: "absolute", zIndex: 10 };
     return (
         <div className={outerClassNameToUse} data-class="backlogitem" data-id={props.internalId} style={styleToUse}>
             <div className={classNameToUse} style={{ width: props.width }} tabIndex={0}>
