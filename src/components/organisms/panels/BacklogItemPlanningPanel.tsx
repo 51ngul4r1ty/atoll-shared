@@ -398,41 +398,29 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
 
     // 1. Refs that are not used for re-rendering
 
-    //    const [cardPositions, _setCardPositions] = useState([]);
     const cardPositionsRef = React.useRef();
     const setCardPositions = (data) => {
         cardPositionsRef.current = data;
-        //        _setCardPositions(data);
     };
-    //    const [dragItemStartDocumentTop, _setDragItemStartDocumentTop] = useState(null);
     const dragItemStartDocumentTopRef = React.useRef<number>();
     const setDragItemStartDocumentTop = (data) => {
         dragItemStartDocumentTopRef.current = data;
-        //        _setDragItemStartDocumentTop(data);
     };
     const dragItemStartOffsetTopRef = React.useRef<number>();
     const setDragItemStartOffsetTop = (data) => {
         dragItemStartOffsetTopRef.current = data;
-        //        _setDragItemStartDocumentTop(data);
     };
-
-    //    const [dragStartClientY, _setDragStartClientY] = useState(null);
     const dragStartClientYRef = React.useRef<number>();
     const setDragStartClientY = (data) => {
         dragStartClientYRef.current = data;
-        //        _setDragStartClientY(data);
     };
-    //    const [dragStartScrollY, _setDragStartScrollY] = useState(null);
     const dragStartScrollYRef = React.useRef<number>();
     const setDragStartScrollY = (data) => {
         dragStartScrollYRef.current = data;
-        //        _setDragStartScrollY(data);
     };
-    //    const [itemCardWidth, _setItemCardWidth] = useState(null);
     const itemCardWidthRef = React.useRef();
     const setItemCardWidth = (data) => {
         itemCardWidthRef.current = data;
-        // _setItemCardWidth(data);
     };
 
     // 2. Refs that are used for re-rendering
