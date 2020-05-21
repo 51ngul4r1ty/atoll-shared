@@ -359,7 +359,6 @@ const getDragItemOffsetTop = (target: EventTarget): number | null => {
         console.log(`getDragItemOffsetTop: ${backlogItemDiv.offsetTop}`);
         return item.offsetTop;
     }
-    console.log(`getDragItemOffsetTop: null`);
     return null;
 };
 
