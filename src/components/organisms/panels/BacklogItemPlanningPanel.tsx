@@ -356,7 +356,6 @@ const getDragItemOffsetTop = (target: EventTarget): number | null => {
     const item = getDragItem(target);
     if (item) {
         const backlogItemDiv = getParentWithDataClass(item, "backlogitem");
-        console.log(`getDragItemOffsetTop: ${backlogItemDiv.offsetTop}`);
         return item.offsetTop;
     }
     return null;
@@ -510,41 +509,31 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
     }, 500);
 
     const onMouseDown = (e: React.BaseSyntheticEvent<HTMLDivElement>, clientY: number) => {
-        console.log("ENTER: onMouseDown");
         if (targetIsDragButton(e)) {
-            console.log(" - target is drag button");
             const id = getDragItemId(e.target);
             if (id) {
-                console.log(` - has ID: ${id}`);
                 const width = getDragItemWidth(e.target);
                 const top = getDragItemDocumentTop(e.target);
-                console.log(` - has document top: ${top}`);
                 const offsetTop = getDragItemOffsetTop(e.target);
                 setDragItemOffsetTop(offsetTop);
                 setDragItemStartOffsetTop(offsetTop);
                 setDragItemDocumentTop(top);
                 setDragItemStartDocumentTop(top);
-                console.log(` - drag start client Y: ${clientY}`);
                 setDragStartClientY(clientY);
-                console.log(` - drag start scroll Y: ${window.scrollY}`);
                 setDragStartScrollY(window.scrollY);
                 setItemCardWidth(width);
                 setDragItemId(id);
                 setDragOverItemId(id);
             }
             preventDefault(e);
-            console.log("EXIT: onMouseDown (prevent default)");
             return false;
         }
-        console.log("EXIT: onMouseDown");
         return true;
     };
 
     const getMouseDragDistance = (clientY: number) => {
         const dragStartClientY = dragStartClientYRef.current;
         const dragStartScrollY = dragStartScrollYRef.current;
-        console.log(`getMouseDragDistance: dragStartClientY: ${dragStartClientY}`);
-        console.log(`getMouseDragDistance: dragStartScrollY: ${dragStartScrollY}`);
         const mouseClientYToDocumentTop = clientY + window.scrollY;
         const mouseStartClientYToDocumentTop = dragStartClientY + dragStartScrollY;
         const mouseDeltaClientY = mouseClientYToDocumentTop - mouseStartClientYToDocumentTop;
@@ -553,25 +542,20 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
 
     const onMouseMove = (e: React.BaseSyntheticEvent<HTMLDivElement>, clientY: number) => {
         if (dragStartClientYRef.current) {
-            console.log("onMouseMove - dragStartClientY is non-null");
             const mouseDeltaClientY = getMouseDragDistance(clientY);
             if (Math.abs(mouseDeltaClientY) > 5) {
-                console.log("onMouseMove - setting dragging");
                 setIsDragging(true);
             }
             if (isDraggingRef.current) {
                 // TODO: Calculate this
                 const top = dragItemStartDocumentTopRef.current + mouseDeltaClientY;
                 const offsetTop = dragItemStartOffsetTopRef.current + mouseDeltaClientY;
-                console.log(`onMouseMove - set drag item document top: ${top}`);
                 setDragItemOffsetTop(offsetTop);
                 setDragItemDocumentTop(top);
-                console.log(`onMouseMove - set drag item document client Y: ${clientY}`);
                 setDragItemClientY(clientY);
                 const adjustY = dragItemStartDocumentTopRef.current - dragStartScrollYRef.current - dragStartClientYRef.current;
                 const overItemId = getDragItemIdUnderTarget(e, clientY, adjustY, cardPositionsRef.current);
                 if (overItemId) {
-                    console.log(`onMouseMove - set drag over item id ${overItemId}`);
                     setDragOverItemId(overItemId);
                 }
             }
@@ -581,7 +565,6 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
     };
 
     const onMouseUp = (e: React.BaseSyntheticEvent<HTMLDivElement>) => {
-        console.log("ENTER: onMouseUp");
         if (isDraggingRef.current) {
             if (props.onReorderBacklogItems) {
                 const dragOverItemIdToUse = dragOverItemIdRef.current === BELOW_LAST_CARD_ID ? null : dragOverItemIdRef.current;
@@ -596,7 +579,6 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
             setDragOverItemId(null);
             return false;
         }
-        console.log("EXIT: onMouseUp");
         return true;
     };
 
@@ -612,12 +594,9 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 touchStartListener = listenerHost.addEventListener(
                     "touchstart",
                     (e: any) => {
-                        console.log("touchstart");
                         if (isSingleTouch(e.touches)) {
-                            console.log("- single touch");
                             return onMouseDown(e, touchesToClientY(e.touches));
                         }
-                        console.log("- multi touch");
                         return true;
                     },
                     { passive: false }
@@ -625,7 +604,6 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 touchMoveListener = listenerHost.addEventListener(
                     "touchmove",
                     (e: any) => {
-                        console.log("touchmove");
                         return onMouseMove(e, touchesToClientY(e.touches));
                     },
                     { passive: false }
@@ -633,7 +611,6 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 touchEndListener = listenerHost.addEventListener(
                     "touchend",
                     (e: any) => {
-                        console.log("touchend");
                         return onMouseUp(e);
                     },
                     { passive: false }
