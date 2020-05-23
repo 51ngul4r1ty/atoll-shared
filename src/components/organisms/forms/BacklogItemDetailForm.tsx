@@ -18,6 +18,7 @@ import { BacklogItemType } from "../../../reducers/backlogItemsReducer";
 
 export interface BacklogItemDetailFormEditableFields {
     estimate: number | null;
+    id: string;
     externalId: string;
     storyPhrase: string;
     rolePhrase: string;
@@ -37,7 +38,7 @@ export interface BacklogItemDetailFormStateProps extends BacklogItemDetailFormEd
 
 export interface BacklogItemDetailFormDispatchProps {
     onDoneClick?: { (instanceId: number) };
-    onCancelClick?: { (instanceId: number) };
+    onCancelClick?: { (id: string, instanceId: number) };
     onDataUpdate?: { (props: BacklogItemDetailFormEditableFieldsWithInstanceId) };
 }
 
@@ -65,7 +66,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
     };
     handleCancelClick = () => {
         if (this.props.onCancelClick) {
-            this.props.onCancelClick(this.props.instanceId);
+            this.props.onCancelClick(this.props.id, this.props.instanceId);
         }
     };
     render() {
@@ -74,6 +75,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
         const storyPlaceholder = "so that I can <derive value>";
         const placeholderText = this.props.type === "issue" ? issuePlaceholder : storyPlaceholder;
         const prevData: BacklogItemDetailFormEditableFieldsWithInstanceId = {
+            id: this.props.id,
             instanceId: this.props.instanceId,
             estimate: this.props.estimate,
             externalId: this.props.externalId,

@@ -43,6 +43,7 @@ export const ROUTE_REVIEW_VIEW = "app/route:review-view";
 export const ADD_BACKLOG_ITEM = "app/add:backlog-item";
 export const SAVE_BACKLOG_ITEM = "app/save:backlog-item";
 export const CANCEL_UNSAVED_BACKLOG_ITEM = "app/cancel-unsaved:backlog-item";
+export const CANCEL_EDIT_BACKLOG_ITEM = "app/cancel-edit:backlog-item";
 
 export const UPDATE_BACKLOG_ITEM_FIELDS = "app/update:user-story-fields";
 
@@ -53,6 +54,7 @@ export const RECEIVE_PUSHED_BACKLOG_ITEM = "app/receive:pushed-backlog-item";
 export const REORDER_BACKLOG_ITEM = "app/reorder:backlog-item";
 
 export const TOGGLE_BACKLOG_ITEM_DETAIL = "app/toggle:backlog-item-detail";
+export const EDIT_BACKLOG_ITEM = "app/edit:backlog-item";
 
 export const SET_USERNAME = "app/user:set-username";
 export const SET_PASSWORD = "app/user:set-password";

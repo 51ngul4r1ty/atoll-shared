@@ -80,8 +80,8 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
             <RemoveButton
                 suppressSpacing
                 onClick={() => {
-                    if (props.itemId && props.onRemoveItemClicked) {
-                        props.onRemoveItemClicked(props.itemId);
+                    if (props.internalId && props.onRemoveItemClicked) {
+                        props.onRemoveItemClicked(props.internalId);
                     }
                 }}
             />
@@ -89,8 +89,8 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
                 mode={EditMode.View}
                 suppressSpacing
                 onClick={() => {
-                    if (props.itemId && props.onEditItemClicked) {
-                        props.onEditItemClicked(props.itemId);
+                    if (props.internalId && props.onEditItemClicked) {
+                        props.onEditItemClicked(props.internalId);
                     }
                 }}
             />

@@ -62,6 +62,22 @@ export const cancelUnsavedBacklogItem = (instanceId: number): CancelUnsavedBackl
     }
 });
 
+export interface CancelEditBacklogItemActionPayload {
+    itemId: string;
+}
+
+export interface CancelEditBacklogItemAction {
+    type: typeof ActionTypes.CANCEL_EDIT_BACKLOG_ITEM;
+    payload: CancelEditBacklogItemActionPayload;
+}
+
+export const cancelEditBacklogItem = (itemId: string): CancelEditBacklogItemAction => ({
+    type: ActionTypes.CANCEL_EDIT_BACKLOG_ITEM,
+    payload: {
+        itemId
+    }
+});
+
 export interface SaveBacklogItemActionPayload {
     instanceId: number;
 }
@@ -220,3 +236,19 @@ export const removeBacklogItem = (backlogItemId: string): RemoveBacklogItemActio
         }
     };
 };
+
+export interface EditBacklogItemPayload {
+    itemId: string;
+}
+
+export interface EditBacklogItemAction {
+    type: typeof ActionTypes.EDIT_BACKLOG_ITEM;
+    payload: EditBacklogItemPayload;
+}
+
+export const editBacklogItem = (itemId: string): EditBacklogItemAction => ({
+    type: ActionTypes.EDIT_BACKLOG_ITEM,
+    payload: {
+        itemId
+    }
+});

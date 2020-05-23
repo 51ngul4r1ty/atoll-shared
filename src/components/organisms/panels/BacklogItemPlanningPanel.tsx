@@ -30,11 +30,13 @@ import {
     cancelUnsavedBacklogItem,
     saveBacklogItem,
     backlogItemDetailClicked,
-    removeBacklogItem
+    removeBacklogItem,
+    editBacklogItem
 } from "../../../actions/backlogItems";
 
 // utils
 import { useRecursiveTimeout } from "../../common/setTimeoutHook";
+import { BacklogItemPlanningItem } from "../combo/BacklogItemPlanningItem";
 
 /* exported interfaces */
 
@@ -100,73 +102,6 @@ export const buildDragBacklogItemElt = (
             showDetailMenu={false}
         />
     );
-};
-
-export const buildBacklogItemElts = (
-    editMode: EditMode,
-    item: SaveableBacklogItem,
-    renderMobile: boolean,
-    highlightAbove: boolean,
-    dispatch: Dispatch<any>,
-    suppressTopPadding: boolean,
-    showDetailMenu: boolean
-): JSX.Element[] => {
-    if (!item.saved && editMode === EditMode.Edit) {
-        const classNameToUse = buildClassName(
-            css.backlogItemUserStoryFormRow,
-            suppressTopPadding ? null : css.embeddedBacklogItemUserStoryFormRow
-        );
-        return [
-            <SimpleDivider key={`divider-unsaved-form-${item.instanceId}`} />,
-            <BacklogItemDetailForm
-                key={`unsaved-form-${item.instanceId}`}
-                className={classNameToUse}
-                instanceId={item.instanceId}
-                externalId={item.externalId}
-                editing
-                estimate={item.estimate}
-                rolePhrase={item.rolePhrase}
-                storyPhrase={item.storyPhrase}
-                reasonPhrase={item.reasonPhrase}
-                type={item.type}
-                renderMobile={renderMobile}
-                onDataUpdate={(fields) => {
-                    dispatch(updateBacklogItemFields(fields));
-                }}
-                onDoneClick={(instanceId) => {
-                    dispatch(saveBacklogItem(instanceId));
-                }}
-                onCancelClick={(instanceId) => {
-                    dispatch(cancelUnsavedBacklogItem(instanceId));
-                }}
-            />
-        ];
-    }
-    if (item.saved) {
-        return [
-            <SimpleDivider key={`divider-saved-${item.id}`} highlighted={highlightAbove} />,
-            <BacklogItemCard
-                key={item.id}
-                estimate={item.estimate}
-                internalId={`${item.id}`}
-                itemId={`${item.externalId}`}
-                itemType={item.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
-                titleText={item.storyPhrase}
-                isDraggable={editMode === EditMode.Edit}
-                hasDetails={editMode === EditMode.Edit}
-                renderMobile={renderMobile}
-                marginBelowItem
-                onDetailClicked={() => {
-                    dispatch(backlogItemDetailClicked(item.id));
-                }}
-                onRemoveItemClicked={(backlogItemId) => {
-                    dispatch(removeBacklogItem(item.id));
-                }}
-                showDetailMenu={showDetailMenu}
-            />
-        ];
-    }
-    return [];
 };
 
 const BELOW_LAST_CARD_ID = "##below#last#card##";
@@ -291,11 +226,6 @@ const addActionButtons = (
 
 const preventDefault = (e: React.BaseSyntheticEvent<HTMLDivElement>) => {
     e.preventDefault();
-    // if ((e as any).stopImmediatePropagation) {
-    //     (e as any).stopImmediatePropagation();
-    // } else {
-    //     e.stopPropagation();
-    // }
 };
 
 const getParentWithDataClass = (elt: HTMLElement, dataClass: string) => {
@@ -686,24 +616,37 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         onRemoveItemClicked={(backlogItemId) => {
                             dispatch(removeBacklogItem(item.id));
                         }}
+                        onEditItemClicked={(backlogItemId) => {
+                            dispatch(editBacklogItem(item.id));
+                        }}
                         showDetailMenu={showDetailMenu}
                     />
                 );
             }
             if (!isDragItem) {
                 const showDetailMenu = item.id === props.openedDetailMenuBacklogItemId;
-                const elts = buildBacklogItemElts(
-                    props.editMode,
-                    item,
-                    props.renderMobile,
-                    highlightAbove,
-                    dispatch,
-                    suppressTopPadding || lastItemWasUnsaved,
-                    showDetailMenu
+                // const elts = buildBacklogItemElts(
+                //     props.editMode,
+                //     item,
+                //     props.renderMobile,
+                //     highlightAbove,
+                //     dispatch,
+                //     suppressTopPadding || lastItemWasUnsaved,
+                //     showDetailMenu
+                // );
+                // elts.forEach((elt) => {
+                //     renderElts.push(elt);
+                // });
+                renderElts.push(
+                    <BacklogItemPlanningItem
+                        {...item}
+                        editMode={props.editMode}
+                        renderMobile={props.renderMobile}
+                        highlightAbove={highlightAbove}
+                        suppressTopPadding={suppressTopPadding || lastItemWasUnsaved}
+                        showDetailMenu={showDetailMenu}
+                    />
                 );
-                elts.forEach((elt) => {
-                    renderElts.push(elt);
-                });
             }
         }
         afterPushedItem = item.source === BacklogItemSource.Pushed;

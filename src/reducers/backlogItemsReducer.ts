@@ -14,7 +14,9 @@ import {
     ReceivePushedBacklogItemAction,
     ReorderBacklogItemAction,
     ToggleBacklogItemDetailAction,
-    RemoveBacklogItemAction
+    RemoveBacklogItemAction,
+    EditBacklogItemAction,
+    CancelEditBacklogItemAction
 } from "../actions/backlogItems";
 import { PushBacklogItemModel } from "../middleware/wsMiddleware";
 import { LinkedList } from "../utils/linkedList";
@@ -39,7 +41,12 @@ export interface BacklogItem extends BacklogItemModel {
     instanceId?: number | null;
 }
 
-export interface SaveableBacklogItem extends BacklogItem {
+export interface EditableBacklogItem extends BacklogItem {
+    editing?: boolean;
+}
+
+export interface SaveableBacklogItem extends EditableBacklogItem {
+    editing?: boolean;
     saved?: boolean;
 }
 
@@ -56,7 +63,7 @@ export interface BacklogItemWithSource extends SaveableBacklogItem {
 export type BacklogItemsState = Readonly<{
     addedItems: SaveableBacklogItem[];
     pushedItems: Partial<PushBacklogItemModel>[];
-    items: BacklogItem[];
+    items: EditableBacklogItem[];
     allItems: BacklogItemWithSource[];
     openedDetailMenuBacklogItemId: string | null;
 }>;
@@ -159,6 +166,17 @@ export const updateBacklogItem = (backlogItem: BacklogItem, payload: BacklogItem
     backlogItem.rolePhrase = payload.rolePhrase;
 };
 
+export const updateItemById = (draft: Draft<BacklogItemsState>, itemId: string, updateItem: { (item: EditableBacklogItem) }) => {
+    const idx = draft.addedItems.findIndex((item) => item.id === itemId);
+    if (idx >= 0) {
+        updateItem(draft.addedItems[idx]);
+    }
+    const idx2 = draft.items.findIndex((item) => item.id === itemId);
+    if (idx2 >= 0) {
+        updateItem(draft.items[idx2]);
+    }
+};
+
 export const backlogItemsReducer = (state: BacklogItemsState = initialState, action: AnyFSA): BacklogItemsState =>
     produce(state, (draft) => {
         const { type } = action;
@@ -211,6 +229,14 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                 rebuildAllItems(draft);
                 return;
             }
+            case ActionTypes.CANCEL_EDIT_BACKLOG_ITEM: {
+                const actionTyped = action as CancelEditBacklogItemAction;
+                updateItemById(draft, actionTyped.payload.itemId, (item) => {
+                    item.editing = false;
+                });
+                rebuildAllItems(draft);
+                return;
+            }
             case ActionTypes.UPDATE_BACKLOG_ITEM_FIELDS: {
                 const actionTyped = action as UpdateBacklogItemFieldsAction;
                 draft.addedItems.forEach((addedItem) => {
@@ -236,6 +262,14 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                 } else {
                     draft.openedDetailMenuBacklogItemId = actionTyped.payload.itemId;
                 }
+                return;
+            }
+            case ActionTypes.EDIT_BACKLOG_ITEM: {
+                const actionTyped = action as EditBacklogItemAction;
+                updateItemById(draft, actionTyped.payload.itemId, (item) => {
+                    item.editing = true;
+                });
+                rebuildAllItems(draft);
                 return;
             }
             case ActionTypes.REORDER_BACKLOG_ITEM: {
