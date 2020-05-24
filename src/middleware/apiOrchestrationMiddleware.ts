@@ -24,10 +24,14 @@ import { postLogin, ActionPostLoginSuccessAction, ActionPostRefreshTokenSuccessA
 // state
 import { StateTree } from "../types";
 
+// selectors
+import { buildApiPayloadBaseForResource } from "../selectors/apiSelectors";
+
 // utils
 import { convertToBacklogItemModel } from "../utils/apiPayloadHelper";
 import { routePlanView } from "../actions/routeActions";
 import { getUserPreferences } from "../actions/userActions";
+import { ResourceTypes } from "../reducers/apiLinksReducer";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
@@ -81,7 +85,11 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
         }
         case ActionTypes.CANCEL_EDIT_BACKLOG_ITEM: {
             const actionTyped = action as CancelEditBacklogItemAction;
-            storeTyped.dispatch(getBacklogItem(actionTyped.payload.itemId));
+            const state = storeTyped.getState();
+            const itemId = actionTyped.payload.itemId;
+            storeTyped.dispatch(
+                getBacklogItem(itemId, buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "self", itemId))
+            );
             break;
         }
     }

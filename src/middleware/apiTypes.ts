@@ -19,10 +19,12 @@ export interface ApiActionMeta<P> {
     passthrough?: P;
 }
 
+export type ApiMethods = "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "OPTIONS";
+
 export interface ApiAction<T, U = any> extends Action {
     payload: {
         endpoint: string;
-        method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "OPTIONS";
+        method: ApiMethods;
         headers?: ApiHeaders;
         data?: T;
         types: ApiActionType[];

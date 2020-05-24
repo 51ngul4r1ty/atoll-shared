@@ -20,6 +20,7 @@ import {
     ApiActionSuccessPayloadForItem
 } from "../middleware/apiTypes";
 import { ApiBacklogItem } from "../apiModelTypes";
+import { ApiPayloadBase } from "../selectors/apiSelectors";
 
 // config
 import { getApiBaseUrl } from "../config";
@@ -51,13 +52,16 @@ export interface GetBacklogItemSuccessAction {
     meta: ApiActionMetaDataRequestMeta<{}>;
 }
 
-export const getBacklogItem = (itemId: string): NoDataApiAction => ({
+export const getBacklogItem = (itemId: string, payloadOverride: ApiPayloadBase = {}): NoDataApiAction => ({
     type: API,
     payload: {
-        endpoint: `${getApiBaseUrl()}api/v1/backlog-items/${itemId}`,
-        method: "GET",
-        headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
-        types: buildActionTypes(ApiActionNames.GET_BACKLOG_ITEM)
+        ...{
+            endpoint: `${getApiBaseUrl()}api/v1/backlog-items/${itemId}`,
+            method: "GET",
+            headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+            types: buildActionTypes(ApiActionNames.GET_BACKLOG_ITEM)
+        },
+        ...payloadOverride
     }
 });
 

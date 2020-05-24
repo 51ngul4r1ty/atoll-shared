@@ -9,6 +9,10 @@ import * as ActionTypes from "../actions/actionTypes";
 import { AnyFSA } from "../types";
 import { GetBacklogItemsSuccessAction } from "../actions/backlogItems";
 
+export const ResourceTypes = {
+    BACKLOG_ITEM: "backlogItems"
+};
+
 export interface ApiLinkDefn {
     type: string;
     method: string;
@@ -34,7 +38,7 @@ export const initialState = Object.freeze<ApiLinkState>({
 });
 
 export const getLinkForItem = (state: ApiLinkState, itemType: string, rel: string, itemId: string): ApiLinkDefn | null => {
-    const forItemType = state[itemType];
+    const forItemType = state.linksByType[itemType];
     if (!forItemType) {
         return null;
     }
@@ -65,10 +69,11 @@ export const apiLinksReducer = (state: ApiLinkState = initialState, action: AnyF
                     if (item.links?.length) {
                         item.links.forEach((link) => {
                             if (link.rel === "self") {
-                                if (!draft.linksByType.backlogItems[item.id]) {
-                                    draft.linksByType.backlogItems[item.id] = { self: null };
+                                const resourceLinks = draft.linksByType[ResourceTypes.BACKLOG_ITEM];
+                                if (!resourceLinks[item.id]) {
+                                    resourceLinks[item.id] = { self: null };
                                 }
-                                draft.linksByType.backlogItems[item.id].self = {
+                                resourceLinks[item.id].self = {
                                     type: link.type,
                                     method: link.method,
                                     uri: buildUri(actionTyped.meta.requestBody.url, link.uri)
