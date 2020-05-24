@@ -41,7 +41,6 @@ export const mapToHeaderValue = (type: string): string => {
 };
 
 export const buildApiPayloadBaseForResource = (state: StateTree, resource: string, rel: string, itemId: string): ApiPayloadBase => {
-    debugger;
     const linkForItem = getLinkForItem(state.apiLinks, resource, rel, itemId);
     const endpoint = linkForItem.uri;
     const method = mapToApiMethods(linkForItem.method);
