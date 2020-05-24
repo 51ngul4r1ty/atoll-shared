@@ -17,7 +17,8 @@ import {
     RemoveBacklogItemAction,
     EditBacklogItemAction,
     CancelEditBacklogItemAction,
-    GetBacklogItemsSuccessAction
+    GetBacklogItemsSuccessAction,
+    GetBacklogItemSuccessAction
 } from "../actions/backlogItems";
 import { PushBacklogItemModel } from "../middleware/wsMiddleware";
 import { LinkedList } from "../utils/linkedList";
@@ -212,6 +213,21 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                 draft.items = mapApiItemsToBacklogItems(payload.response.data.items);
                 draft.pushedItems = [];
                 draft.addedItems = [];
+                rebuildAllItems(draft);
+                return;
+            }
+            case ActionTypes.API_GET_BACKLOG_ITEM_SUCCESS: {
+                const actionTyped = action as GetBacklogItemSuccessAction;
+                const { payload } = actionTyped;
+                const backlogItem = mapApiItemToBacklogItem(payload.response.data.item);
+                const newItems = [];
+                draft.items.forEach((item) => {
+                    if (item.id === backlogItem.id) {
+                        item = { ...item, ...backlogItem };
+                    }
+                    newItems.push(item);
+                });
+                draft.items = newItems;
                 rebuildAllItems(draft);
                 return;
             }

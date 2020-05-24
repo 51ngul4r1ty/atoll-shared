@@ -48,3 +48,5 @@ export interface ApiActionSuccessPayload<T> {
 }
 
 export type ApiActionSuccessPayloadForCollection<T> = ApiActionSuccessPayload<{ data: { items: T[] } }>;
+
+export type ApiActionSuccessPayloadForItem<T> = ApiActionSuccessPayload<{ data: { item: T } }>;

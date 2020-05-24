@@ -16,7 +16,8 @@ import {
     ApiActionMetaDataRequestBody,
     NoDataApiAction,
     ApiActionSuccessPayloadForCollection,
-    ApiActionMetaDataRequestMeta
+    ApiActionMetaDataRequestMeta,
+    ApiActionSuccessPayloadForItem
 } from "../middleware/apiTypes";
 import { ApiBacklogItem } from "../apiModelTypes";
 
@@ -41,6 +42,22 @@ export const getBacklogItems = (): NoDataApiAction => ({
         method: "GET",
         headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
         types: buildActionTypes(ApiActionNames.GET_BACKLOG_ITEMS)
+    }
+});
+
+export interface GetBacklogItemSuccessAction {
+    type: typeof ActionTypes.API_GET_BACKLOG_ITEM_SUCCESS;
+    payload: ApiActionSuccessPayloadForItem<ApiBacklogItem>;
+    meta: ApiActionMetaDataRequestMeta<{}>;
+}
+
+export const getBacklogItem = (itemId: string): NoDataApiAction => ({
+    type: API,
+    payload: {
+        endpoint: `${getApiBaseUrl()}api/v1/backlog-items/${itemId}`,
+        method: "GET",
+        headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+        types: buildActionTypes(ApiActionNames.GET_BACKLOG_ITEM)
     }
 });
 

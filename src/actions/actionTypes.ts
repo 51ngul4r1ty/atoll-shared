@@ -12,6 +12,10 @@ export const API_GET_BACKLOG_ITEMS_REQUEST = buildActionName(Names.GET_BACKLOG_I
 export const API_GET_BACKLOG_ITEMS_SUCCESS = buildActionName(Names.GET_BACKLOG_ITEMS, "success");
 export const API_GET_BACKLOG_ITEMS_FAILURE = buildActionName(Names.GET_BACKLOG_ITEMS, "failure");
 
+export const API_GET_BACKLOG_ITEM_REQUEST = buildActionName(Names.GET_BACKLOG_ITEM, "request");
+export const API_GET_BACKLOG_ITEM_SUCCESS = buildActionName(Names.GET_BACKLOG_ITEM, "success");
+export const API_GET_BACKLOG_ITEM_FAILURE = buildActionName(Names.GET_BACKLOG_ITEM, "failure");
+
 export const API_GET_USER_PREFS_REQUEST = buildActionName(Names.GET_USER_PREFS, "request");
 export const API_GET_USER_PREFS_SUCCESS = buildActionName(Names.GET_USER_PREFS, "success");
 export const API_GET_USER_PREFS_FAILURE = buildActionName(Names.GET_USER_PREFS, "failure");

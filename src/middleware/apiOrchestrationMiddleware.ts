@@ -14,7 +14,10 @@ import {
     SaveBacklogItemAction,
     ReorderBacklogItemAction,
     postActionBacklogItemReorder,
-    refreshBacklogItems
+    refreshBacklogItems,
+    getBacklogItems,
+    getBacklogItem,
+    CancelEditBacklogItemAction
 } from "../actions/backlogItems";
 import { postLogin, ActionPostLoginSuccessAction, ActionPostRefreshTokenSuccessAction } from "../actions/authActions";
 
@@ -74,6 +77,11 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
         }
         case ActionTypes.INIT_APP: {
             storeTyped.dispatch(getUserPreferences());
+            break;
+        }
+        case ActionTypes.CANCEL_EDIT_BACKLOG_ITEM: {
+            const actionTyped = action as CancelEditBacklogItemAction;
+            storeTyped.dispatch(getBacklogItem(actionTyped.payload.itemId));
             break;
         }
     }
