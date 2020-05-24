@@ -1,7 +1,6 @@
 // externals
 import * as React from "react";
 import { useState } from "react";
-import { Dispatch } from "redux";
 import { withTranslation, WithTranslation } from "react-i18next";
 
 // style
@@ -14,7 +13,6 @@ import { SimpleDivider } from "../../atoms/dividers/SimpleDivider";
 
 // consts/enums
 import { EditMode } from "../../molecules/buttons/EditButton";
-import { BacklogItemDetailForm } from "../forms/BacklogItemDetailForm";
 import { buildClassName } from "../../../utils/classNameBuilder";
 import { useDispatch } from "react-redux";
 import {
@@ -25,14 +23,7 @@ import {
 } from "../../../reducers/backlogItemsReducer";
 
 // actions
-import {
-    updateBacklogItemFields,
-    cancelUnsavedBacklogItem,
-    saveBacklogItem,
-    backlogItemDetailClicked,
-    removeBacklogItem,
-    editBacklogItem
-} from "../../../actions/backlogItems";
+import { backlogItemDetailClicked, removeBacklogItem, editBacklogItem } from "../../../actions/backlogItems";
 
 // utils
 import { useRecursiveTimeout } from "../../common/setTimeoutHook";
@@ -625,18 +616,6 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
             }
             if (!isDragItem) {
                 const showDetailMenu = item.id === props.openedDetailMenuBacklogItemId;
-                // const elts = buildBacklogItemElts(
-                //     props.editMode,
-                //     item,
-                //     props.renderMobile,
-                //     highlightAbove,
-                //     dispatch,
-                //     suppressTopPadding || lastItemWasUnsaved,
-                //     showDetailMenu
-                // );
-                // elts.forEach((elt) => {
-                //     renderElts.push(elt);
-                // });
                 renderElts.push(
                     <BacklogItemPlanningItem
                         {...item}

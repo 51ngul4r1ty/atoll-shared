@@ -33,10 +33,18 @@ export interface ApiAction<T, U = any> extends Action {
 export interface NoDataApiAction<U = any> extends ApiAction<undefined, U> {}
 
 export interface ApiActionMetaDataRequestBody<T> {
+    url: string;
+    method: string;
+    headers: { [header: string]: string };
     data?: T;
-    requestData: AxiosRequestConfig;
+}
+
+export interface ApiActionMetaDataRequestMeta<T> {
+    requestBody: ApiActionMetaDataRequestBody<T>;
 }
 
 export interface ApiActionSuccessPayload<T> {
     response: T;
 }
+
+export type ApiActionSuccessPayloadForCollection<T> = ApiActionSuccessPayload<{ data: { items: T[] } }>;

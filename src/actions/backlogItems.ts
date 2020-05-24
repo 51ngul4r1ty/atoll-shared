@@ -9,13 +9,30 @@ import { APPLICATION_JSON } from "../constants";
 import { BacklogItemType, BacklogItemModel, BacklogItem } from "../reducers/backlogItemsReducer";
 import { BacklogItemDetailFormEditableFieldsWithInstanceId } from "../components/organisms/forms/BacklogItemDetailForm";
 import { PushBacklogItemModel } from "../middleware/wsMiddleware";
-import { API, ApiAction, ApiActionSuccessPayload, ApiActionMetaDataRequestBody, NoDataApiAction } from "../middleware/apiTypes";
+import {
+    API,
+    ApiAction,
+    ApiActionSuccessPayload,
+    ApiActionMetaDataRequestBody,
+    NoDataApiAction,
+    ApiActionSuccessPayloadForCollection,
+    ApiActionMetaDataRequestMeta
+} from "../middleware/apiTypes";
+import { ApiBacklogItem } from "../apiModelTypes";
 
 // config
 import { getApiBaseUrl } from "../config";
+
+// utils
 import { buildActionTypes } from "./utils/apiActionUtils";
 
 export const refreshBacklogItems = () => getBacklogItems();
+
+export interface GetBacklogItemsSuccessAction {
+    type: typeof ActionTypes.API_GET_BACKLOG_ITEMS_SUCCESS;
+    payload: ApiActionSuccessPayloadForCollection<ApiBacklogItem>;
+    meta: ApiActionMetaDataRequestMeta<{}>;
+}
 
 export const getBacklogItems = (): NoDataApiAction => ({
     type: API,
