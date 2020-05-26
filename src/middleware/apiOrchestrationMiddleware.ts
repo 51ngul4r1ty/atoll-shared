@@ -88,7 +88,7 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const state = storeTyped.getState();
             const itemId = actionTyped.payload.itemId;
             storeTyped.dispatch(
-                getBacklogItem(itemId, buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "self", itemId))
+                getBacklogItem(itemId, buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", itemId))
             );
             break;
         }

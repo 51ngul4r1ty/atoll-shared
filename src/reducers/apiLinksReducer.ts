@@ -68,12 +68,12 @@ export const apiLinksReducer = (state: ApiLinkState = initialState, action: AnyF
                 payload.response.data.items.forEach((item) => {
                     if (item.links?.length) {
                         item.links.forEach((link) => {
-                            if (link.rel === "self") {
+                            if (link.rel === "item") {
                                 const resourceLinks = draft.linksByType[ResourceTypes.BACKLOG_ITEM];
                                 if (!resourceLinks[item.id]) {
-                                    resourceLinks[item.id] = { self: null };
+                                    resourceLinks[item.id] = { item: null };
                                 }
-                                resourceLinks[item.id].self = {
+                                resourceLinks[item.id].item = {
                                     type: link.type,
                                     method: link.method,
                                     uri: buildUri(actionTyped.meta.requestBody.url, link.uri)
