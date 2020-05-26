@@ -22,7 +22,6 @@ export type Method = "GET" | "POST" | "PUT" | "DELETE";
 
 export interface Link {
     type: string;
-    method: Method;
     rel: string;
     uri: string;
 }

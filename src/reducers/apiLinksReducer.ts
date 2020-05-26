@@ -15,7 +15,6 @@ export const ResourceTypes = {
 
 export interface ApiLinkDefn {
     type: string;
-    method: string;
     uri: string;
 }
 
@@ -75,7 +74,6 @@ export const apiLinksReducer = (state: ApiLinkState = initialState, action: AnyF
                                 }
                                 resourceLinks[item.id].item = {
                                     type: link.type,
-                                    method: link.method,
                                     uri: buildUri(actionTyped.meta.requestBody.url, link.uri)
                                 };
                             }
