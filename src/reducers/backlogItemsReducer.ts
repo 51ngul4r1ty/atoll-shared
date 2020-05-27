@@ -103,24 +103,6 @@ export const addSourceToPushedItem = (item: Partial<PushBacklogItemModel>, sourc
     saved: convertSaved(undefined)
 });
 
-// export const addSourceAndId = (item: SaveableBacklogItem, source: BacklogItemSource) => {
-//     let result = addSource(item, source);
-//     if (!result.id && result.source === BacklogItemSource.Added) {
-//         result.id = buildUnsavedItemId(result.instanceId);
-//     }
-//     return result;
-// };
-
-// export const UNSAVED_ITEM_ID_PREFIX = "unsaved-";
-
-// export const buildUnsavedItemId = (instanceId: number): string => {
-//     return `${UNSAVED_ITEM_ID_PREFIX}${instanceId}`;
-// };
-
-// export const isUnsavedItemId = (id: string): boolean => {
-//     return id?.startsWith(UNSAVED_ITEM_ID_PREFIX) || false;
-// };
-
 export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>): BacklogItemWithSource => ({
     id: pushedItem.id,
     instanceId: undefined,
