@@ -23,7 +23,6 @@ import {
 } from "../../../actions/backlogItems";
 
 // style
-// TODO: Move this to a local file
 import css from "./BacklogItemPlanningItem.module.css";
 
 export interface BacklogItemPlanningItemStateProps extends BacklogItemWithSource {
