@@ -24,7 +24,7 @@ import {
 
 // style
 // TODO: Move this to a local file
-import css from "../panels/BacklogItemPlanningPanel.module.css";
+import css from "./BacklogItemPlanningItem.module.css";
 
 export interface BacklogItemPlanningItemStateProps extends BacklogItemWithSource {
     editMode: EditMode;
