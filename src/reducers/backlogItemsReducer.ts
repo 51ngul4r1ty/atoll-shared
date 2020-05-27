@@ -18,7 +18,8 @@ import {
     EditBacklogItemAction,
     CancelEditBacklogItemAction,
     GetBacklogItemsSuccessAction,
-    GetBacklogItemSuccessAction
+    GetBacklogItemSuccessAction,
+    UpdateBacklogItemAction
 } from "../actions/backlogItems";
 import { PushBacklogItemModel } from "../middleware/wsMiddleware";
 import { LinkedList } from "../utils/linkedList";
@@ -273,6 +274,14 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
             case ActionTypes.CANCEL_EDIT_BACKLOG_ITEM: {
                 const actionTyped = action as CancelEditBacklogItemAction;
                 updateItemById(draft, actionTyped.payload.itemId, (item) => {
+                    item.editing = false;
+                });
+                rebuildAllItems(draft);
+                return;
+            }
+            case ActionTypes.UPDATE_BACKLOG_ITEM: {
+                const actionTyped = action as UpdateBacklogItemAction;
+                updateItemById(draft, actionTyped.payload.id, (item) => {
                     item.editing = false;
                 });
                 rebuildAllItems(draft);
