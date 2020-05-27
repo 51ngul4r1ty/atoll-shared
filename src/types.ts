@@ -5,13 +5,14 @@ import { Action } from "redux";
 // consts/enums
 import { EditMode } from "./components/molecules/buttons/EditButton";
 
-// interfaces/types
+// state
 import { BacklogItemsState } from "./reducers/backlogItemsReducer";
-import { DoneButtonProps } from "./components/molecules/buttons/DoneButton";
+import { ApiLinkState } from "./reducers/apiLinksReducer";
 
 export type Locale = "en_US" | "de_DE";
 
 export interface StateTree {
+    apiLinks: ApiLinkState;
     app: AppState;
     backlogItems: BacklogItemsState;
     user: UserState;

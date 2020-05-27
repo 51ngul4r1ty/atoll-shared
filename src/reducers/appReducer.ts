@@ -18,18 +18,6 @@ import {
 import { ApiActionSuccessPayload } from "../middleware/apiTypes";
 import { LocalStoreRefreshTokenAction } from "../actions/appActions";
 
-const backlogItem1: BacklogItemModel = {
-    creationDateTime: new Date(),
-    // displayIndex: -100.0,
-    estimate: 13,
-    externalId: "B1000032",
-    id: "920581ae222e4fa2ab24117664cda3fb",
-    rolePhrase: "As a user",
-    storyPhrase: "I can filter my view",
-    reasonPhrase: "without it taking so long",
-    type: "issue"
-};
-
 export interface BacklogItemPushNotificationData {
     itemsAdded: BacklogItemModel[];
     itemsRemoved: BaseModelItem[];
@@ -45,7 +33,7 @@ export const initialState = Object.freeze<AppState>({
             type: PushNotificationType.ModifiedBacklogItems,
             data: {
                 itemsAdded: [],
-                itemsModified: [backlogItem1],
+                itemsModified: [],
                 itemsRemoved: []
             }
         } as PushNotification<BacklogItemPushNotificationData>

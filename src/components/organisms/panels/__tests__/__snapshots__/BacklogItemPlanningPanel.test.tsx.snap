@@ -6,11 +6,11 @@ exports[`BacklogItemPlanningPanel should handle scenario where 3 unsaved added i
     class="backlogItemPlanningPanel mobile"
   >
     [Mock SimpleDivider]
-    [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow" instanceId=5000 externalId=item-1-added id=undefined]
+    [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow" instanceId=5000 externalId=item-1-added id=fake-id-1]
     [Mock SimpleDivider]
-    [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow" instanceId=5001 externalId=item-1-added id=undefined]
+    [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow" instanceId=5001 externalId=item-2-added id=fake-id-2]
     [Mock SimpleDivider]
-    [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow" instanceId=5002 externalId=item-1-added id=undefined]
+    [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow" instanceId=5002 externalId=item-3-added id=fake-id-3]
     [Mock SimpleDivider]
     <div
       class="backlogItemPlanningActionPanel"
@@ -19,7 +19,7 @@ exports[`BacklogItemPlanningPanel should handle scenario where 3 unsaved added i
       [Mock AddButton itemName=issue]
     </div>
     [Mock SimpleDivider]
-    [Mock BacklogItemCard internalId=fake-id-3 itemId=item-3-loaded titleText="loaded story 3" marginBelowItem=true]
+    [Mock BacklogItemCard internalId=fake-id-4 itemId=item-4-loaded titleText="loaded story 4" marginBelowItem=true]
     [Mock SimpleDivider]
   </div>
 </div>
@@ -31,8 +31,10 @@ exports[`BacklogItemPlanningPanel should handle scenario where unsaved form visi
     class="backlogItemPlanningPanel mobile"
   >
     [Mock SimpleDivider]
+    [Mock BacklogItemCard internalId=fake-id-1 itemId=item-1-added titleText="added story 1" marginBelowItem=true]
     [Mock SimpleDivider]
-    [Mock BacklogItemCard internalId=fake-id-3 itemId=item-3-loaded titleText="loaded story 3" marginBelowItem=true]
+    [Mock SimpleDivider]
+    [Mock BacklogItemCard internalId=fake-id-2 itemId=item-2-loaded titleText="loaded story 2" marginBelowItem=true]
     [Mock SimpleDivider]
   </div>
 </div>
@@ -44,7 +46,7 @@ exports[`BacklogItemPlanningPanel should include spacing between added items, ac
     class="backlogItemPlanningPanel mobile"
   >
     [Mock SimpleDivider]
-    [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow" instanceId=1000 externalId=item-1-added id=undefined]
+    [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow" instanceId=1000 externalId=item-1-added id=fake-id-1]
     [Mock SimpleDivider]
     <div
       class="backlogItemPlanningActionPanel"
@@ -53,9 +55,9 @@ exports[`BacklogItemPlanningPanel should include spacing between added items, ac
       [Mock AddButton itemName=issue]
     </div>
     [Mock SimpleDivider]
-    [Mock BacklogItemCard internalId=fake-id-1 itemId=item-1-loaded titleText="loaded story 1" marginBelowItem=true]
-    [Mock SimpleDivider]
     [Mock BacklogItemCard internalId=fake-id-2 itemId=item-2-loaded titleText="loaded story 2" marginBelowItem=true]
+    [Mock SimpleDivider]
+    [Mock BacklogItemCard internalId=fake-id-3 itemId=item-3-loaded titleText="loaded story 3" marginBelowItem=true]
     [Mock SimpleDivider]
   </div>
 </div>
@@ -69,7 +71,7 @@ exports[`BacklogItemPlanningPanel should include spacing between added saved, ad
     [Mock SimpleDivider]
     [Mock BacklogItemCard internalId=fake-id-1 itemId=item-1-added titleText="added story 1" marginBelowItem=true]
     [Mock SimpleDivider]
-    [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow embeddedBacklogItemUserStoryFormRow" instanceId=2001 externalId=item-2-added id=undefined]
+    [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow embeddedBacklogItemUserStoryFormRow" instanceId=2001 externalId=item-2-added id=fake-id-2]
     [Mock SimpleDivider]
     <div
       class="backlogItemPlanningActionPanel"
@@ -92,7 +94,7 @@ exports[`BacklogItemPlanningPanel should not include double spacing between adde
     [Mock SimpleDivider]
     [Mock BacklogItemCard internalId=fake-id-1 itemId=item-1-added titleText="added story 1" marginBelowItem=true]
     [Mock SimpleDivider]
-    [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow embeddedBacklogItemUserStoryFormRow" instanceId=3001 externalId=item-2-added id=undefined]
+    [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow embeddedBacklogItemUserStoryFormRow" instanceId=3001 externalId=item-2-added id=fake-id-2]
     <div
       class="backlogItemPlanningActionPanel"
     >

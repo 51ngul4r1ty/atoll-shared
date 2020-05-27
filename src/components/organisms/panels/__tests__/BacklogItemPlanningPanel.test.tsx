@@ -85,7 +85,7 @@ const buildCommonItem = (
     estimate: number,
     saved: boolean = true
 ): BacklogItemWithSource => ({
-    creationDateTime: new Date(),
+    createdAt: new Date(),
     estimate,
     externalId: buildExternalId(source, itemNumber),
     id: buildId(itemNumber),
@@ -108,8 +108,8 @@ describe("BacklogItemPlanningPanel", () => {
     it("should include spacing between added items, action buttons and loaded items", () => {
         const allItems = [];
         allItems.push(buildAddedItem(1, 1000, 13, false));
-        allItems.push(buildLoadedItem(1, 8));
-        allItems.push(buildLoadedItem(2, 3));
+        allItems.push(buildLoadedItem(2, 8));
+        allItems.push(buildLoadedItem(3, 3));
         const editMode = EditMode.Edit;
         const wrapper = render(
             <BacklogItemPlanningPanel
@@ -161,7 +161,7 @@ describe("BacklogItemPlanningPanel", () => {
     it("should handle scenario where unsaved form visible and user switches from edit to view mode", () => {
         const allItems = [];
         allItems.push(buildAddedItem(1, 4000, 13, false));
-        allItems.push(buildLoadedItem(3, 8));
+        allItems.push(buildLoadedItem(2, 8));
         const editMode = EditMode.View;
         const wrapper = render(
             <BacklogItemPlanningPanel
@@ -178,9 +178,9 @@ describe("BacklogItemPlanningPanel", () => {
     it("should handle scenario where 3 unsaved added items shown in sequence", () => {
         const allItems = [];
         allItems.push(buildAddedItem(1, 5000, 13, false));
-        allItems.push(buildAddedItem(1, 5001, 8, false));
-        allItems.push(buildAddedItem(1, 5002, 5, false));
-        allItems.push(buildLoadedItem(3, 8));
+        allItems.push(buildAddedItem(2, 5001, 8, false));
+        allItems.push(buildAddedItem(3, 5002, 5, false));
+        allItems.push(buildLoadedItem(4, 8));
         const editMode = EditMode.Edit;
         const wrapper = render(
             <BacklogItemPlanningPanel

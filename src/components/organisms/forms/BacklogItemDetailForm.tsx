@@ -18,6 +18,7 @@ import { BacklogItemType } from "../../../reducers/backlogItemsReducer";
 
 export interface BacklogItemDetailFormEditableFields {
     estimate: number | null;
+    id: string;
     externalId: string;
     storyPhrase: string;
     rolePhrase: string;
@@ -36,8 +37,8 @@ export interface BacklogItemDetailFormStateProps extends BacklogItemDetailFormEd
 }
 
 export interface BacklogItemDetailFormDispatchProps {
-    onDoneClick?: { (instanceId: number) };
-    onCancelClick?: { (instanceId: number) };
+    onDoneClick?: { (id: string, instanceId: number) };
+    onCancelClick?: { (id: string, instanceId: number) };
     onDataUpdate?: { (props: BacklogItemDetailFormEditableFieldsWithInstanceId) };
 }
 
@@ -54,18 +55,24 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
     };
     handleDoneClick = () => {
         const matchingForms = document.querySelectorAll(`[data-instance-id="${this.props.instanceId}"]`);
+        let matchingForm: HTMLFormElement;
         if (matchingForms.length === 1) {
-            const matchingForm = matchingForms[0] as HTMLFormElement;
-            if (matchingForm.reportValidity()) {
-                if (this.props.onDoneClick) {
-                    this.props.onDoneClick(this.props.instanceId);
-                }
+            matchingForm = matchingForms[0] as HTMLFormElement;
+        } else {
+            const matchingForms = document.querySelectorAll(`[data-item-id="${this.props.id}"]`);
+            if (matchingForms.length === 1) {
+                matchingForm = matchingForms[0] as HTMLFormElement;
+            }
+        }
+        if (matchingForm && matchingForm.reportValidity()) {
+            if (this.props.onDoneClick) {
+                this.props.onDoneClick(this.props.id, this.props.instanceId);
             }
         }
     };
     handleCancelClick = () => {
         if (this.props.onCancelClick) {
-            this.props.onCancelClick(this.props.instanceId);
+            this.props.onCancelClick(this.props.id, this.props.instanceId);
         }
     };
     render() {
@@ -74,6 +81,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
         const storyPlaceholder = "so that I can <derive value>";
         const placeholderText = this.props.type === "issue" ? issuePlaceholder : storyPlaceholder;
         const prevData: BacklogItemDetailFormEditableFieldsWithInstanceId = {
+            id: this.props.id,
             instanceId: this.props.instanceId,
             estimate: this.props.estimate,
             externalId: this.props.externalId,
@@ -187,6 +195,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
         return (
             <form
                 data-instance-id={this.props.instanceId}
+                data-item-id={this.props.id}
                 className={buildClassName(commonCss.form, css.form, this.props.className)}
             >
                 {formContent}

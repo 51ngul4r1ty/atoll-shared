@@ -9,7 +9,7 @@
     overflow: hidden;
 }
 
-.button + .button {
+.button:not(.suppressSpacing) + .button:not(.suppressSpacing) {
     margin-left: 0.3rem;
 }
 

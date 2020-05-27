@@ -52,6 +52,7 @@ export {
     PushNotificationType,
     StateTree
 } from "./types";
+export * from "./apiModelTypes";
 export {
     BacklogItem,
     BacklogItemSource,

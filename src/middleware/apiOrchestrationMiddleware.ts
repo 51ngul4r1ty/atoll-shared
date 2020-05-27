@@ -6,32 +6,44 @@ import * as HttpStatus from "http-status-codes";
 import * as ActionTypes from "../actions/actionTypes";
 
 // selectors
-import { getBacklogItemByInstanceId, getPrevSavedBacklogItemByInstanceId } from "../selectors/backlogItemSelectors";
+import {
+    getBacklogItemByInstanceId,
+    getPrevSavedBacklogItemByInstanceId,
+    getBacklogItemById
+} from "../selectors/backlogItemSelectors";
 
 // actions
 import {
+    refreshBacklogItems,
+    putBacklogItem,
     postBacklogItem,
-    SaveBacklogItemAction,
-    ReorderBacklogItemAction,
     postActionBacklogItemReorder,
-    refreshBacklogItems
+    getBacklogItem,
+    UpdateBacklogItemAction,
+    SaveNewBacklogItemAction,
+    ReorderBacklogItemAction,
+    CancelEditBacklogItemAction
 } from "../actions/backlogItems";
 import { postLogin, ActionPostLoginSuccessAction, ActionPostRefreshTokenSuccessAction } from "../actions/authActions";
 
 // state
 import { StateTree } from "../types";
 
+// selectors
+import { buildApiPayloadBaseForResource } from "../selectors/apiSelectors";
+
 // utils
 import { convertToBacklogItemModel } from "../utils/apiPayloadHelper";
 import { routePlanView } from "../actions/routeActions";
 import { getUserPreferences } from "../actions/userActions";
+import { ResourceTypes } from "../reducers/apiLinksReducer";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
     next(action);
     switch (action.type) {
-        case ActionTypes.SAVE_BACKLOG_ITEM: {
-            const actionTyped = action as SaveBacklogItemAction;
+        case ActionTypes.SAVE_NEW_BACKLOG_ITEM: {
+            const actionTyped = action as SaveNewBacklogItemAction;
             const state = storeTyped.getState();
             const instanceId = actionTyped.payload.instanceId;
             const backlogItem = getBacklogItemByInstanceId(state, instanceId);
@@ -74,6 +86,29 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
         }
         case ActionTypes.INIT_APP: {
             storeTyped.dispatch(getUserPreferences());
+            break;
+        }
+        case ActionTypes.CANCEL_EDIT_BACKLOG_ITEM: {
+            const actionTyped = action as CancelEditBacklogItemAction;
+            const state = storeTyped.getState();
+            const itemId = actionTyped.payload.itemId;
+            storeTyped.dispatch(
+                getBacklogItem(itemId, buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", itemId))
+            );
+            break;
+        }
+        case ActionTypes.UPDATE_BACKLOG_ITEM: {
+            const actionTyped = action as UpdateBacklogItemAction;
+            const state = storeTyped.getState();
+            const itemId = actionTyped.payload.id;
+
+            const backlogItem = getBacklogItemById(state, itemId);
+            if (backlogItem) {
+                const model = convertToBacklogItemModel(backlogItem);
+                storeTyped.dispatch(
+                    putBacklogItem(model, buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", itemId))
+                );
+            }
             break;
         }
     }

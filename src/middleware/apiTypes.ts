@@ -19,10 +19,12 @@ export interface ApiActionMeta<P> {
     passthrough?: P;
 }
 
+export type ApiMethods = "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "OPTIONS";
+
 export interface ApiAction<T, U = any> extends Action {
     payload: {
         endpoint: string;
-        method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "OPTIONS";
+        method: ApiMethods;
         headers?: ApiHeaders;
         data?: T;
         types: ApiActionType[];
@@ -33,10 +35,20 @@ export interface ApiAction<T, U = any> extends Action {
 export interface NoDataApiAction<U = any> extends ApiAction<undefined, U> {}
 
 export interface ApiActionMetaDataRequestBody<T> {
+    url: string;
+    method: string;
+    headers: { [header: string]: string };
     data?: T;
-    requestData: AxiosRequestConfig;
+}
+
+export interface ApiActionMetaDataRequestMeta<T> {
+    requestBody: ApiActionMetaDataRequestBody<T>;
 }
 
 export interface ApiActionSuccessPayload<T> {
     response: T;
 }
+
+export type ApiActionSuccessPayloadForCollection<T> = ApiActionSuccessPayload<{ data: { items: T[] } }>;
+
+export type ApiActionSuccessPayloadForItem<T> = ApiActionSuccessPayload<{ data: { item: T } }>;

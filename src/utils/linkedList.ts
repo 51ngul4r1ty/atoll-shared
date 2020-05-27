@@ -109,6 +109,9 @@ export class LinkedList<T> {
      * @param items an array of items to add in sequence
      */
     addArray(idPropertyName: string, items: any[]) {
+        this.addArray2(idPropertyName, idPropertyName, items);
+    }
+    addArray2(idPropertyName: string, id2PropertyName: string, items: any[]) {
         const maxitems = 10;
         let prevId: string;
         let itemId: string;
@@ -120,7 +123,7 @@ export class LinkedList<T> {
 
         /* 1. add links */
         items.forEach((item) => {
-            itemId = item[idPropertyName];
+            itemId = item[idPropertyName] || `${item[id2PropertyName]}`;
             if (typeof itemId !== "string") {
                 throw new Error(`Item ID must be a string - item stringified: "${JSON.stringify(item)}"`);
             }
@@ -134,7 +137,7 @@ export class LinkedList<T> {
         }
         /* 2. add data */
         items.forEach((item) => {
-            this.addItemData(item[idPropertyName], item);
+            this.addItemData(item[idPropertyName] || `${item[id2PropertyName]}`, item);
         });
     }
     toArray(): T[] {

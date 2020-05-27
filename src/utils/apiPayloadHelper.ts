@@ -2,7 +2,7 @@
 import { BacklogItemModel, BacklogItem } from "../reducers/backlogItemsReducer";
 
 export const convertToBacklogItemModel = (backlogItem: BacklogItem): BacklogItemModel => ({
-    creationDateTime: backlogItem.creationDateTime,
+    createdAt: backlogItem.createdAt,
     // displayIndex: backlogItem.displayIndex,
     estimate: backlogItem.estimate,
     externalId: backlogItem.externalId,

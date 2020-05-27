@@ -1,3 +1,5 @@
+/* right */
+
 .backlogItemPlanningPanel {
     padding: 0.5rem 0.6rem;
     perspective: 2000px;
@@ -10,17 +12,9 @@
     padding-bottom: 0.5rem;
 }
 
-.embeddedBacklogItemPlanningActionPanel {
-    padding-top: 0.5rem;
-}
-
-.backlogItemUserStoryFormRow {
-    margin-bottom: 0.5rem;
+.mobile {
 }
 
 .embeddedBacklogItemUserStoryFormRow {
     margin-top: 0.5rem;
-}
-
-.mobile {
 }
