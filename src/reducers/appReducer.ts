@@ -33,9 +33,7 @@ export const initialState = Object.freeze<AppState>({
             type: PushNotificationType.ModifiedBacklogItems,
             data: {
                 itemsAdded: [],
-                itemsModified: [
-                    /* backlogItem1 */
-                ],
+                itemsModified: [],
                 itemsRemoved: []
             }
         } as PushNotification<BacklogItemPushNotificationData>
