@@ -116,23 +116,37 @@ export const cancelEditBacklogItem = (itemId: string): CancelEditBacklogItemActi
     }
 });
 
-export interface SaveBacklogItemActionPayload {
+export interface SaveNewBacklogItemActionPayload {
     instanceId: number;
 }
 
-export interface SaveBacklogItemAction {
-    type: typeof ActionTypes.SAVE_BACKLOG_ITEM;
-    payload: SaveBacklogItemActionPayload;
+export interface SaveNewBacklogItemAction {
+    type: typeof ActionTypes.SAVE_NEW_BACKLOG_ITEM;
+    payload: SaveNewBacklogItemActionPayload;
 }
 
-export const saveBacklogItem = (instanceId: number): SaveBacklogItemAction => ({
-    type: ActionTypes.SAVE_BACKLOG_ITEM,
+export const saveNewBacklogItem = (instanceId: number): SaveNewBacklogItemAction => ({
+    type: ActionTypes.SAVE_NEW_BACKLOG_ITEM,
     payload: {
         instanceId
     }
 });
 
-export interface SaveBacklogItemPayload {}
+export interface UpdateBacklogItemActionPayload {
+    id: string;
+}
+
+export interface UpdateBacklogItemAction {
+    type: typeof ActionTypes.UPDATE_BACKLOG_ITEM;
+    payload: UpdateBacklogItemActionPayload;
+}
+
+export const updateBacklogItem = (id: string): UpdateBacklogItemAction => ({
+    type: ActionTypes.UPDATE_BACKLOG_ITEM,
+    payload: {
+        id
+    }
+});
 
 export interface ApiPostBacklogItemSuccessResponse {
     status: number;
@@ -153,11 +167,13 @@ export interface ApiPostBacklogItemSuccessAction {
     meta: ApiPostBacklogItemSuccessActionMeta;
 }
 
+export interface AddBacklogItemPayload {}
+
 export const postBacklogItem = (
     backlogItem: BacklogItemModel,
     prevBacklogItemId: string,
     meta: any
-): ApiAction<SaveBacklogItemPayload> => {
+): ApiAction<AddBacklogItemPayload> => {
     return {
         type: API,
         payload: {
@@ -170,6 +186,29 @@ export const postBacklogItem = (
         meta
     };
 };
+
+export interface PutBacklogItemSuccessAction {
+    type: typeof ActionTypes.API_PUT_BACKLOG_ITEM_SUCCESS;
+    payload: ApiActionSuccessPayloadForItem<ApiBacklogItem>;
+    meta: ApiActionMetaDataRequestMeta<{}>;
+}
+
+export const putBacklogItem = (
+    backlogItem: BacklogItemModel,
+    payloadOverride: ApiPayloadBase = {}
+): ApiAction<BacklogItemModel> => ({
+    type: API,
+    payload: {
+        ...{
+            endpoint: `${getApiBaseUrl()}api/v1/backlog-items/${backlogItem.id}`,
+            method: "PUT",
+            data: backlogItem,
+            headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+            types: buildActionTypes(ApiActionNames.PUT_BACKLOG_ITEM)
+        },
+        ...payloadOverride
+    }
+});
 
 export interface ActionPostBacklogItemReorderPayloadData {
     sourceItemId: string;

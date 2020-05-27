@@ -165,11 +165,11 @@ export const updateItemFieldsInAllItems = (
 ) => {
     const item = draft.allItems.filter((item) => idsMatch(item, payload));
     if (item.length === 1) {
-        updateBacklogItem(item[0], payload);
+        updateBacklogItemFields(item[0], payload);
     }
 };
 
-export const updateBacklogItem = (backlogItem: BacklogItem, payload: BacklogItemDetailFormEditableFields) => {
+export const updateBacklogItemFields = (backlogItem: BacklogItem, payload: BacklogItemDetailFormEditableFields) => {
     backlogItem.estimate = payload.estimate;
     backlogItem.externalId = payload.externalId;
     backlogItem.storyPhrase = payload.storyPhrase;
@@ -282,12 +282,12 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                 const actionTyped = action as UpdateBacklogItemFieldsAction;
                 draft.addedItems.forEach((addedItem) => {
                     if (idsMatch(addedItem, actionTyped.payload)) {
-                        updateBacklogItem(addedItem, actionTyped.payload);
+                        updateBacklogItemFields(addedItem, actionTyped.payload);
                     }
                 });
                 draft.items.forEach((addedItem) => {
                     if (idsMatch(addedItem, actionTyped.payload)) {
-                        updateBacklogItem(addedItem, actionTyped.payload);
+                        updateBacklogItemFields(addedItem, actionTyped.payload);
                     }
                 });
                 updateItemFieldsInAllItems(draft, actionTyped.payload);

@@ -13,12 +13,13 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 // actions
 import {
     updateBacklogItemFields,
-    saveBacklogItem,
+    saveNewBacklogItem,
     cancelUnsavedBacklogItem,
     backlogItemDetailClicked,
     removeBacklogItem,
     editBacklogItem,
-    cancelEditBacklogItem
+    cancelEditBacklogItem,
+    updateBacklogItem
 } from "../../../actions/backlogItems";
 
 // style
@@ -63,8 +64,12 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     onDataUpdate={(fields) => {
                         dispatch(updateBacklogItemFields(fields));
                     }}
-                    onDoneClick={(instanceId) => {
-                        dispatch(saveBacklogItem(instanceId));
+                    onDoneClick={(id, instanceId) => {
+                        if (id) {
+                            dispatch(updateBacklogItem(id));
+                        } else {
+                            dispatch(saveNewBacklogItem(instanceId));
+                        }
                     }}
                     onCancelClick={(id, instanceId) => {
                         if (id) {

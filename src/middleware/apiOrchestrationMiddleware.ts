@@ -6,17 +6,22 @@ import * as HttpStatus from "http-status-codes";
 import * as ActionTypes from "../actions/actionTypes";
 
 // selectors
-import { getBacklogItemByInstanceId, getPrevSavedBacklogItemByInstanceId } from "../selectors/backlogItemSelectors";
+import {
+    getBacklogItemByInstanceId,
+    getPrevSavedBacklogItemByInstanceId,
+    getBacklogItemById
+} from "../selectors/backlogItemSelectors";
 
 // actions
 import {
-    postBacklogItem,
-    SaveBacklogItemAction,
-    ReorderBacklogItemAction,
-    postActionBacklogItemReorder,
     refreshBacklogItems,
-    getBacklogItems,
+    putBacklogItem,
+    postBacklogItem,
+    postActionBacklogItemReorder,
     getBacklogItem,
+    UpdateBacklogItemAction,
+    SaveNewBacklogItemAction,
+    ReorderBacklogItemAction,
     CancelEditBacklogItemAction
 } from "../actions/backlogItems";
 import { postLogin, ActionPostLoginSuccessAction, ActionPostRefreshTokenSuccessAction } from "../actions/authActions";
@@ -37,8 +42,8 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
     const storeTyped = store as Store<StateTree>;
     next(action);
     switch (action.type) {
-        case ActionTypes.SAVE_BACKLOG_ITEM: {
-            const actionTyped = action as SaveBacklogItemAction;
+        case ActionTypes.SAVE_NEW_BACKLOG_ITEM: {
+            const actionTyped = action as SaveNewBacklogItemAction;
             const state = storeTyped.getState();
             const instanceId = actionTyped.payload.instanceId;
             const backlogItem = getBacklogItemByInstanceId(state, instanceId);
@@ -90,6 +95,20 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             storeTyped.dispatch(
                 getBacklogItem(itemId, buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", itemId))
             );
+            break;
+        }
+        case ActionTypes.UPDATE_BACKLOG_ITEM: {
+            const actionTyped = action as UpdateBacklogItemAction;
+            const state = storeTyped.getState();
+            const itemId = actionTyped.payload.id;
+
+            const backlogItem = getBacklogItemById(state, itemId);
+            if (backlogItem) {
+                const model = convertToBacklogItemModel(backlogItem);
+                storeTyped.dispatch(
+                    putBacklogItem(model, buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", itemId))
+                );
+            }
             break;
         }
     }
