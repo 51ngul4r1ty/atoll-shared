@@ -21,7 +21,7 @@ export type RemoveButtonProps = RemoveButtonStateProps & SimpleButtonProps & Rem
 
 export const RemoveButton: React.FC<RemoveButtonProps> = (props) => {
     return (
-        <SimpleButton {...cleanPassthroughProps(props)} iconOnLeft icon={<TrashIcon />}>
+        <SimpleButton {...cleanPassthroughProps(props)} iconOnLeft icon={<TrashIcon />} onClick={props.onClick}>
             Remove
         </SimpleButton>
     );
