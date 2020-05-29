@@ -5,5 +5,7 @@
 }
 
 .dividerLine.highlighted {
-    background-color: #5a5; /* TODO: Use theme */
+    background-color: #0c0; /* TODO: Use theme */
+    mask-image: url("data:image/svg+xml;base64utf8,<svg xmlns='http://www.w3.org/2000/svg' width='6' height='10'><rect x='0' y='0' width='3' height='10' fill='black' /></svg>");
+    mask-repeat: repeat;
 }
