@@ -41,6 +41,10 @@ export interface ApiActionMetaDataRequestBody<T> {
     data?: T;
 }
 
+export interface ApiActionMetaDataRequestBodyWithOriginal<T> extends ApiActionMetaDataRequestBody<T> {
+    original?: T;
+}
+
 export interface ApiActionMetaDataRequestMeta<T> {
     requestBody: ApiActionMetaDataRequestBody<T>;
 }

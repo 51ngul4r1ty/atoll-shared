@@ -38,7 +38,7 @@ export const wsMiddleware = (store) => (next) => (action: Action) => {
             const actionTyped = action as ApiPostBacklogItemSuccessAction;
             if (actionTyped.payload.response?.status === 201) {
                 const item = actionTyped.payload.response.data?.item;
-                const meta = actionTyped.meta as any;
+                const meta = actionTyped.meta;
                 const prevBacklogItemId = meta?.requestBody?.data?.prevBacklogItemId || null;
                 const prevNextAndCurrent = getPrevNextAndCurrentById(state, item.id);
                 const nextBacklogItemId = prevNextAndCurrent.next?.id;

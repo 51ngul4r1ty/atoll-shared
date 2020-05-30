@@ -13,11 +13,11 @@ import {
     API,
     ApiAction,
     ApiActionSuccessPayload,
-    ApiActionMetaDataRequestBody,
     NoDataApiAction,
     ApiActionSuccessPayloadForCollection,
     ApiActionMetaDataRequestMeta,
-    ApiActionSuccessPayloadForItem
+    ApiActionSuccessPayloadForItem,
+    ApiActionMetaDataRequestBodyWithOriginal
 } from "../middleware/apiTypes";
 import { ApiBacklogItem } from "../apiModelTypes";
 import { ApiPayloadBase } from "../selectors/apiSelectors";
@@ -157,8 +157,9 @@ export interface ApiPostBacklogItemSuccessResponse {
 
 export type ApiPostBacklogItemSuccessActionPayload = ApiActionSuccessPayload<ApiPostBacklogItemSuccessResponse>;
 
-export interface ApiPostBacklogItemSuccessActionMeta extends ApiActionMetaDataRequestBody<BacklogItemModel> {
+export interface ApiPostBacklogItemSuccessActionMeta {
     instanceId: number;
+    requestBody: ApiActionMetaDataRequestBodyWithOriginal<PushBacklogItemModel>;
 }
 
 export interface ApiPostBacklogItemSuccessAction {
