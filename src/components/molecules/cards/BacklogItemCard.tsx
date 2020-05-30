@@ -17,6 +17,9 @@ import { EditButton, EditMode } from "../buttons/EditButton";
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
 
+// consts/enums
+import { PushState } from "../../../reducers/backlogItemsReducer";
+
 /* exported functions */
 
 export const abbreviateId = (id: string): string => {
@@ -62,6 +65,7 @@ export interface BacklogItemCardStateProps {
     offsetTop?: number;
     width?: any;
     showDetailMenu: boolean;
+    pushState?: PushState;
 }
 
 export interface BacklogItemCardDispatchProps {
@@ -101,7 +105,9 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
         css.backlogItemCard,
         props.marginBelowItem ? css.marginBelowItem : null,
         props.itemType === BacklogItemTypeEnum.None ? css.backlogItemGap : null,
-        props.offsetTop ? css.dragging : null
+        props.offsetTop ? css.dragging : null,
+        props.pushState === PushState.Changed ? css.pushStateChanged : null,
+        props.pushState === PushState.Removed ? css.pushStateRemoved : null
     );
     const editDetailButton = props.hasDetails ? (
         <div
@@ -119,6 +125,9 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
     return (
         <div className={outerClassNameToUse} data-class="backlogitem" data-id={props.internalId} style={styleToUse}>
             <div className={classNameToUse} style={{ width: props.width }} tabIndex={0}>
+                <div className={css.backlogItemPushState}>
+                    <div />
+                </div>
                 <div className={css.backlogItemType}>
                     <div className={css.backlogItemIcon}>
                         {props.itemType === BacklogItemTypeEnum.Story ? <StoryIcon invertColors /> : <IssueIcon invertColors />}

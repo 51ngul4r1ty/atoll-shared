@@ -95,6 +95,7 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     hasDetails={props.editMode === EditMode.Edit}
                     renderMobile={props.renderMobile}
                     marginBelowItem
+                    pushState={props.pushState}
                     onDetailClicked={() => {
                         dispatch(backlogItemDetailClicked(props.id));
                     }}

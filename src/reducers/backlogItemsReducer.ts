@@ -31,6 +31,12 @@ import { ApiBacklogItem } from "../apiModelTypes";
 
 export type BacklogItemType = "story" | "issue";
 
+export enum PushState {
+    None,
+    Changed,
+    Removed
+}
+
 export interface BacklogItemModel extends BaseModelItem {
     createdAt: Date;
     estimate: number | null;
@@ -62,6 +68,7 @@ export enum BacklogItemSource {
 
 export interface BacklogItemWithSource extends SaveableBacklogItem {
     source: BacklogItemSource;
+    pushState?: PushState;
 }
 
 export type BacklogItemsState = Readonly<{

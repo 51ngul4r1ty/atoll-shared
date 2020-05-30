@@ -1,5 +1,6 @@
 // consts/enums
 export { APPLICATION_JSON } from "./constants";
+export { PushState } from "./reducers/backlogItemsReducer";
 
 // components - buttons - atoms
 export { SimpleButton } from "./components/atoms/buttons/SimpleButton";
