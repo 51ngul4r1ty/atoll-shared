@@ -5,20 +5,22 @@ import { produce, Draft } from "immer";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { AnyFSA, BaseModelItem } from "../types";
+import { AnyFSA, BaseModelItem, WebsocketPushNotificationData, PushOperationType } from "../types";
+import {
+    ApiPostBacklogItemSuccessAction,
+    ApiDeleteBacklogItemAction,
+    ApiGetBacklogItemsSuccessAction,
+    ApiGetBacklogItemSuccessAction
+} from "../actions/apiBacklogItems";
 import {
     AddNewBacklogItemAction,
     UpdateBacklogItemFieldsAction,
     CancelUnsavedBacklogItemAction,
-    ApiPostBacklogItemSuccessAction,
     ReceivePushedBacklogItemAction,
     ReorderBacklogItemAction,
     ToggleBacklogItemDetailAction,
-    RemoveBacklogItemAction,
     EditBacklogItemAction,
     CancelEditBacklogItemAction,
-    GetBacklogItemsSuccessAction,
-    GetBacklogItemSuccessAction,
     UpdateBacklogItemAction
 } from "../actions/backlogItems";
 import { PushBacklogItemModel } from "../middleware/wsMiddleware";
@@ -73,7 +75,7 @@ export interface BacklogItemWithSource extends SaveableBacklogItem {
 
 export type BacklogItemsState = Readonly<{
     addedItems: SaveableBacklogItem[];
-    pushedItems: Partial<PushBacklogItemModel>[];
+    pushedItems: WebsocketPushNotificationData<any>[];
     items: EditableBacklogItem[];
     allItems: BacklogItemWithSource[];
     openedDetailMenuBacklogItemId: string | null;
@@ -125,13 +127,15 @@ export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>
 
 export const rebuildAllItems = (draft: Draft<BacklogItemsState>) => {
     const allItems = new LinkedList<BacklogItemWithSource>();
-    const addedItems = draft.addedItems.map(
-        (item) => addSource(item, BacklogItemSource.Added) /* addSourceAndId(item, BacklogItemSource.Added) */
-    );
+
+    const addedItems = draft.addedItems.map((item) => addSource(item, BacklogItemSource.Added));
     allItems.addArray2("id", "instanceId", addedItems);
+
     const loadedItems = draft.items.map((item) => addSource(item, BacklogItemSource.Loaded));
     allItems.addArray("id", loadedItems);
-    const pushedItems = draft.pushedItems.map((item) => addSourceToPushedItem(item, BacklogItemSource.Pushed));
+
+    const pushedAddedItems = draft.pushedItems.filter((item) => item.operation === PushOperationType.Added);
+    const pushedItems = pushedAddedItems.map((item) => addSourceToPushedItem(item.item, BacklogItemSource.Pushed));
     pushedItems.forEach((pushedItem) => {
         if (pushedItem.prevBacklogItemId) {
             allItems.addLink(pushedItem.prevBacklogItemId, pushedItem.id);
@@ -140,7 +144,21 @@ export const rebuildAllItems = (draft: Draft<BacklogItemsState>) => {
         }
         allItems.addItemData(pushedItem.id, mapPushedToBacklogItem(pushedItem));
     });
-    draft.allItems = allItems.toArray();
+
+    const pushedRemovedItems = draft.pushedItems.filter((item) => item.operation === PushOperationType.Removed);
+    const pushedRemovedItemsById = {} as { [key: string]: BacklogItemModel };
+    pushedRemovedItems.forEach((data) => {
+        const item = data.item as BacklogItemModel;
+        pushedRemovedItemsById[item.id] = item;
+    });
+
+    const allItemsArray = allItems.toArray();
+    allItemsArray.forEach((item) => {
+        if (pushedRemovedItemsById[item.id]) {
+            item.pushState = PushState.Removed;
+        }
+    });
+    draft.allItems = allItemsArray;
 };
 
 export const idsMatch = (item1: BacklogItem, item2: BacklogItemDetailFormEditableFieldsWithInstanceId): boolean => {
@@ -198,7 +216,7 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
         const { type } = action;
         switch (type) {
             case ActionTypes.API_GET_BACKLOG_ITEMS_SUCCESS: {
-                const actionTyped = action as GetBacklogItemsSuccessAction;
+                const actionTyped = action as ApiGetBacklogItemsSuccessAction;
                 const { payload } = actionTyped;
                 draft.items = mapApiItemsToBacklogItems(payload.response.data.items);
                 draft.pushedItems = [];
@@ -207,7 +225,7 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                 return;
             }
             case ActionTypes.API_GET_BACKLOG_ITEM_SUCCESS: {
-                const actionTyped = action as GetBacklogItemSuccessAction;
+                const actionTyped = action as ApiGetBacklogItemSuccessAction;
                 const { payload } = actionTyped;
                 const backlogItem = mapApiItemToBacklogItem(payload.response.data.item);
                 const newItems = [];
@@ -355,7 +373,7 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                 return;
             }
             case ActionTypes.API_DELETE_BACKLOG_ITEM_SUCCESS: {
-                const actionTyped = action as RemoveBacklogItemAction;
+                const actionTyped = action as ApiDeleteBacklogItemAction;
                 const id = actionTyped.meta.originalActionArgs.backlogItemId;
                 const idx = draft.addedItems.findIndex((item) => item.id === id);
                 if (idx >= 0) {

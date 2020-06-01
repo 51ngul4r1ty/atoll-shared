@@ -8,8 +8,15 @@ import * as ActionTypes from "../actions/actionTypes";
 import * as wsClient from "../utils/wsClient";
 
 // interfaces/types
-import { ApiPostBacklogItemSuccessAction, receivePushedBacklogItem } from "../actions/backlogItems";
-import { PushNotification, PushNotificationType } from "../types";
+import { ApiPostBacklogItemSuccessAction, ApiDeleteBacklogItemSuccessAction } from "../actions/apiBacklogItems";
+import { receivePushedBacklogItem } from "../actions/backlogItems";
+import {
+    WebsocketPushNotification,
+    PushNotificationType,
+    PushOperationType,
+    WebsocketPushNotificationV0,
+    WebsocketPushNotificationData
+} from "../types";
 import { ReceiveWebsocketMessageAction } from "../actions/wsActions";
 import { BacklogItemModel } from "../reducers/backlogItemsReducer";
 
@@ -22,9 +29,25 @@ export interface PushBacklogItemModel extends BacklogItemModel {
 }
 
 const pushBacklogItemSaved = (item: BacklogItemModel, prevBacklogItemId: string | null, nextBacklogItemId: string | null) => {
-    const payload: PushNotification<PushBacklogItemModel> = {
+    const payload: WebsocketPushNotification<PushBacklogItemModel> = {
         type: PushNotificationType.ModifiedBacklogItems,
-        data: { ...item, prevBacklogItemId, nextBacklogItemId }
+        data: {
+            item: { ...item, prevBacklogItemId, nextBacklogItemId },
+            operation: PushOperationType.Added
+        },
+        schema: "v0.9.0"
+    };
+    wsClient.send(payload);
+};
+
+const pushBacklogItemDeleted = (item: BacklogItemModel) => {
+    const payload: WebsocketPushNotification<BacklogItemModel> = {
+        type: PushNotificationType.ModifiedBacklogItems,
+        data: {
+            item,
+            operation: PushOperationType.Removed
+        },
+        schema: "v0.9.0"
     };
     wsClient.send(payload);
 };
@@ -36,21 +59,41 @@ export const wsMiddleware = (store) => (next) => (action: Action) => {
         case ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS: {
             const state = store.getState();
             const actionTyped = action as ApiPostBacklogItemSuccessAction;
-            if (actionTyped.payload.response?.status === 201) {
-                const item = actionTyped.payload.response.data?.item;
-                const meta = actionTyped.meta;
-                const prevBacklogItemId = meta?.requestBody?.data?.prevBacklogItemId || null;
-                const prevNextAndCurrent = getPrevNextAndCurrentById(state, item.id);
-                const nextBacklogItemId = prevNextAndCurrent.next?.id;
-                pushBacklogItemSaved(item, prevBacklogItemId, nextBacklogItemId);
-            }
+            const item = actionTyped.payload.response.data?.item;
+            const meta = actionTyped.meta;
+            const prevBacklogItemId = meta?.requestBody?.data?.prevBacklogItemId || null;
+            const prevNextAndCurrent = getPrevNextAndCurrentById(state, item.id);
+            const nextBacklogItemId = prevNextAndCurrent.next?.id;
+            pushBacklogItemSaved(item, prevBacklogItemId, nextBacklogItemId);
+            break;
+        }
+        case ActionTypes.API_DELETE_BACKLOG_ITEM_SUCCESS: {
+            const actionTyped = action as ApiDeleteBacklogItemSuccessAction;
+            const item = actionTyped.payload.response.data?.item;
+            pushBacklogItemDeleted(item);
             break;
         }
         case ActionTypes.RECEIVE_WEBSOCKET_MESSAGE: {
             const actionTyped = action as ReceiveWebsocketMessageAction;
             const msgDecoded = JSON.parse(actionTyped.payload || "{}");
+            debugger;
             if (msgDecoded.type === PushNotificationType.ModifiedBacklogItems) {
-                dispatch(receivePushedBacklogItem(msgDecoded.data || ({} as Partial<PushBacklogItemModel>)));
+                let data: WebsocketPushNotificationData<any>;
+                if (!msgDecoded.schema) {
+                    // before v0.9.0 the only push notification was "added", so we treat every message with a missing schema
+                    // version as an "added" push notification
+                    const msgDecodedAsType = msgDecoded as WebsocketPushNotificationV0<PushBacklogItemModel>;
+                    data = {
+                        operation: PushOperationType.Added,
+                        item: msgDecodedAsType.data
+                    };
+                } else {
+                    const msgDecodedAsType = msgDecoded as WebsocketPushNotification<any>;
+                    data = msgDecodedAsType.data;
+                }
+                if (data) {
+                    dispatch(receivePushedBacklogItem(data));
+                }
             }
             break;
         }

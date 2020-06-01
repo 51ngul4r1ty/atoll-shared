@@ -5,7 +5,7 @@ import { produce, Draft } from "immer";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { AppState, AnyFSA, PushNotificationType, PushNotification, BaseModelItem } from "../types";
+import { AppState, AnyFSA, PushNotificationType, WebsocketPushNotification, BaseModelItem } from "../types";
 import { EditMode } from "../components/molecules/buttons/EditButton";
 import { BacklogItemModel } from "./backlogItemsReducer";
 import {
@@ -18,26 +18,10 @@ import {
 import { ApiActionSuccessPayload } from "../middleware/apiTypes";
 import { LocalStoreRefreshTokenAction } from "../actions/appActions";
 
-export interface BacklogItemPushNotificationData {
-    itemsAdded: BacklogItemModel[];
-    itemsRemoved: BaseModelItem[];
-    itemsModified: BacklogItemModel[];
-}
-
 export const initialState = Object.freeze<AppState>({
     locale: "en_US",
     editMode: EditMode.View,
     executingOnClient: false,
-    pushNotifications: [
-        {
-            type: PushNotificationType.ModifiedBacklogItems,
-            data: {
-                itemsAdded: [],
-                itemsModified: [],
-                itemsRemoved: []
-            }
-        } as PushNotification<BacklogItemPushNotificationData>
-    ],
     username: "",
     password: "",
     authToken: null,

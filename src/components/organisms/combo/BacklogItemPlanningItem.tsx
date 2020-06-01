@@ -11,12 +11,12 @@ import { BacklogItemCard, BacklogItemTypeEnum } from "../../molecules/cards/Back
 import { buildClassName } from "../../../utils/classNameBuilder";
 
 // actions
+import { apiDeleteBacklogItem } from "../../../actions/apiBacklogItems";
 import {
     updateBacklogItemFields,
     saveNewBacklogItem,
     cancelUnsavedBacklogItem,
     backlogItemDetailClicked,
-    removeBacklogItem,
     editBacklogItem,
     cancelEditBacklogItem,
     updateBacklogItem
@@ -100,7 +100,7 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                         dispatch(backlogItemDetailClicked(props.id));
                     }}
                     onRemoveItemClicked={(backlogItemId) => {
-                        dispatch(removeBacklogItem(props.id));
+                        dispatch(apiDeleteBacklogItem(props.id));
                     }}
                     onEditItemClicked={(itemId: string) => {
                         dispatch(editBacklogItem(props.id));

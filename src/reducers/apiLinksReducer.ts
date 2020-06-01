@@ -7,7 +7,7 @@ import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
 import { AnyFSA } from "../types";
-import { GetBacklogItemsSuccessAction } from "../actions/backlogItems";
+import { ApiGetBacklogItemsSuccessAction } from "../actions/apiBacklogItems";
 
 export const ResourceTypes = {
     BACKLOG_ITEM: "backlogItems"
@@ -62,7 +62,7 @@ export const apiLinksReducer = (state: ApiLinkState = initialState, action: AnyF
     produce(state, (draft) => {
         switch (action.type) {
             case ActionTypes.API_GET_BACKLOG_ITEMS_SUCCESS: {
-                const actionTyped = action as GetBacklogItemsSuccessAction;
+                const actionTyped = action as ApiGetBacklogItemsSuccessAction;
                 const { payload } = actionTyped;
                 payload.response.data.items.forEach((item) => {
                     if (item.links?.length) {

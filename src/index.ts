@@ -49,7 +49,7 @@ export {
     BasePushNotification,
     FeatureToggle,
     FeatureTogglesState,
-    PushNotification,
+    WebsocketPushNotification as PushNotification,
     PushNotificationType,
     StateTree
 } from "./types";
