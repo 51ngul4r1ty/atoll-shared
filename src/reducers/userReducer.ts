@@ -19,7 +19,7 @@ export const userReducer = (state: UserState = initialState, action: AnyFSA): Us
 
         switch (type) {
             case ActionTypes.API_GET_USER_PREFS_SUCCESS: {
-                draft.preferences = { ...draft.preferences, ...payload.response.data };
+                draft.preferences = { ...draft.preferences, ...payload.response.data.item };
                 return;
             }
         }

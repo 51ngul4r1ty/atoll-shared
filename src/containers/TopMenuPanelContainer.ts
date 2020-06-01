@@ -5,7 +5,7 @@ import { push } from "connected-react-router";
 
 // actions
 import { setEditMode } from "../actions/appActions";
-import { getBacklogItems } from "../actions/backlogItems";
+import { apiGetBacklogItems } from "../actions/apiBacklogItems";
 
 // state
 import { StateTree } from "../types";
@@ -51,7 +51,7 @@ const mapDispatchToProps = (dispatch: Dispatch): TopMenuPanelDispatchProps => {
             dispatch(setEditMode(editMode));
         },
         refreshData: () => {
-            dispatch(getBacklogItems());
+            dispatch(apiGetBacklogItems());
         }
     };
 };

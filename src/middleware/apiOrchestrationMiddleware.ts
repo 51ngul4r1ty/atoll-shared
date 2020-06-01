@@ -14,11 +14,13 @@ import {
 
 // actions
 import {
+    apiPutBacklogItem,
+    apiPostBacklogItem,
+    apiPostActionBacklogItemReorder,
+    apiGetBacklogItem
+} from "../actions/apiBacklogItems";
+import {
     refreshBacklogItems,
-    putBacklogItem,
-    postBacklogItem,
-    postActionBacklogItemReorder,
-    getBacklogItem,
     UpdateBacklogItemAction,
     SaveNewBacklogItemAction,
     ReorderBacklogItemAction,
@@ -51,13 +53,15 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             if (backlogItem) {
                 const prevItemId = prevBacklogItem ? prevBacklogItem.id : null;
                 const model = convertToBacklogItemModel(backlogItem);
-                storeTyped.dispatch(postBacklogItem(model, prevItemId, { instanceId }));
+                storeTyped.dispatch(apiPostBacklogItem(model, prevItemId, { instanceId }));
             }
             break;
         }
         case ActionTypes.REORDER_BACKLOG_ITEM: {
             const actionTyped = action as ReorderBacklogItemAction;
-            storeTyped.dispatch(postActionBacklogItemReorder(actionTyped.payload.sourceItemId, actionTyped.payload.targetItemId));
+            storeTyped.dispatch(
+                apiPostActionBacklogItemReorder(actionTyped.payload.sourceItemId, actionTyped.payload.targetItemId)
+            );
             break;
         }
         case ActionTypes.API_POST_ACTION_REORDER_BACKLOG_ITEM_SUCCESS: {
@@ -93,7 +97,7 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const state = storeTyped.getState();
             const itemId = actionTyped.payload.itemId;
             storeTyped.dispatch(
-                getBacklogItem(itemId, buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", itemId))
+                apiGetBacklogItem(itemId, buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", itemId))
             );
             break;
         }
@@ -106,7 +110,7 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             if (backlogItem) {
                 const model = convertToBacklogItemModel(backlogItem);
                 storeTyped.dispatch(
-                    putBacklogItem(model, buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", itemId))
+                    apiPutBacklogItem(model, buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", itemId))
                 );
             }
             break;

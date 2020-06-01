@@ -23,7 +23,8 @@ import {
 } from "../../../reducers/backlogItemsReducer";
 
 // actions
-import { backlogItemDetailClicked, removeBacklogItem, editBacklogItem } from "../../../actions/backlogItems";
+import { apiDeleteBacklogItem } from "../../../actions/apiBacklogItems";
+import { backlogItemDetailClicked, editBacklogItem } from "../../../actions/backlogItems";
 
 // utils
 import { useRecursiveTimeout } from "../../common/setTimeoutHook";
@@ -605,7 +606,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                             dispatch(backlogItemDetailClicked(item.id));
                         }}
                         onRemoveItemClicked={(backlogItemId) => {
-                            dispatch(removeBacklogItem(item.id));
+                            dispatch(apiDeleteBacklogItem(item.id));
                         }}
                         onEditItemClicked={(backlogItemId) => {
                             dispatch(editBacklogItem(item.id));

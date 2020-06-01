@@ -5,7 +5,7 @@ import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 import { getApiHostName, getApiPort, requiresSecureProtocol } from "../config";
 
 // interfaces/types
-import { PushNotification, PushNotificationType, BasePushNotification } from "../types";
+import { WebsocketPushNotification, PushNotificationType, BasePushNotification } from "../types";
 
 let client: W3CWebSocket;
 

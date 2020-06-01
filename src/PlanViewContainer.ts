@@ -10,7 +10,8 @@ import { PlanningPanelBacklogItem } from "./components/organisms/panels/BacklogI
 import { StateTree } from "./types";
 
 // actions
-import { getBacklogItems, addNewBacklogItem, reorderBacklogItems } from "./actions/backlogItems";
+import { apiGetBacklogItems } from "./actions/apiBacklogItems";
+import { addNewBacklogItem, reorderBacklogItems } from "./actions/backlogItems";
 
 // interfaces/types
 import { BacklogItemType } from "./reducers/backlogItemsReducer";
@@ -29,7 +30,7 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
     return {
-        onLoaded: () => dispatch(getBacklogItems()),
+        onLoaded: () => dispatch(apiGetBacklogItems()),
         onAddNewBacklogItem: (type: BacklogItemType) => dispatch(addNewBacklogItem(type)),
         onReorderBacklogItems: (sourceItemId: string, targetItemId: string) =>
             dispatch(reorderBacklogItems(sourceItemId, targetItemId))
