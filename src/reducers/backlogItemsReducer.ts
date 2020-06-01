@@ -125,15 +125,7 @@ export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>
     type: pushedItem.type
 });
 
-export const rebuildAllItems = (draft: Draft<BacklogItemsState>) => {
-    const allItems = new LinkedList<BacklogItemWithSource>();
-
-    const addedItems = draft.addedItems.map((item) => addSource(item, BacklogItemSource.Added));
-    allItems.addArray2("id", "instanceId", addedItems);
-
-    const loadedItems = draft.items.map((item) => addSource(item, BacklogItemSource.Loaded));
-    allItems.addArray("id", loadedItems);
-
+export const addPushedAddedItemsToAllItems = (draft: Draft<BacklogItemsState>, allItems: LinkedList<BacklogItemWithSource>) => {
     const pushedAddedItems = draft.pushedItems.filter((item) => item.operation === PushOperationType.Added);
     const pushedItems = pushedAddedItems.map((item) => addSourceToPushedItem(item.item, BacklogItemSource.Pushed));
     pushedItems.forEach((pushedItem) => {
@@ -144,7 +136,9 @@ export const rebuildAllItems = (draft: Draft<BacklogItemsState>) => {
         }
         allItems.addItemData(pushedItem.id, mapPushedToBacklogItem(pushedItem));
     });
+};
 
+export const addPushedRemovedItemsToAllItemsArray = (draft: Draft<BacklogItemsState>, allItems: BacklogItemWithSource[]) => {
     const pushedRemovedItems = draft.pushedItems.filter((item) => item.operation === PushOperationType.Removed);
     const pushedRemovedItemsById = {} as { [key: string]: BacklogItemModel };
     pushedRemovedItems.forEach((data) => {
@@ -152,12 +146,44 @@ export const rebuildAllItems = (draft: Draft<BacklogItemsState>) => {
         pushedRemovedItemsById[item.id] = item;
     });
 
-    const allItemsArray = allItems.toArray();
-    allItemsArray.forEach((item) => {
+    allItems.forEach((item) => {
         if (pushedRemovedItemsById[item.id]) {
             item.pushState = PushState.Removed;
         }
     });
+};
+
+export const addPushedUpdatedItemsToAllItemsArray = (draft: Draft<BacklogItemsState>, allItems: BacklogItemWithSource[]) => {
+    const pushedUpdatedItems = draft.pushedItems.filter((item) => item.operation === PushOperationType.Updated);
+    const pushedUpdatedItemsById = {} as { [key: string]: BacklogItemModel };
+    pushedUpdatedItems.forEach((data) => {
+        const item = data.item as BacklogItemModel;
+        pushedUpdatedItemsById[item.id] = item;
+    });
+
+    allItems.forEach((item) => {
+        if (pushedUpdatedItemsById[item.id]) {
+            item.pushState = PushState.Changed;
+        }
+    });
+};
+
+export const rebuildAllItems = (draft: Draft<BacklogItemsState>) => {
+    const allItems = new LinkedList<BacklogItemWithSource>();
+
+    const addedItems = draft.addedItems.map((item) => addSource(item, BacklogItemSource.Added));
+    allItems.addArray2("id", "instanceId", addedItems);
+
+    const loadedItems = draft.items.map((item) => addSource(item, BacklogItemSource.Loaded));
+    allItems.addArray("id", loadedItems);
+
+    addPushedAddedItemsToAllItems(draft, allItems);
+
+    const allItemsArray = allItems.toArray();
+
+    addPushedUpdatedItemsToAllItemsArray(draft, allItemsArray);
+    addPushedRemovedItemsToAllItemsArray(draft, allItemsArray);
+
     draft.allItems = allItemsArray;
 };
 

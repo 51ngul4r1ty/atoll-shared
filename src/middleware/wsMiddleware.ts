@@ -8,7 +8,11 @@ import * as ActionTypes from "../actions/actionTypes";
 import * as wsClient from "../utils/wsClient";
 
 // interfaces/types
-import { ApiPostBacklogItemSuccessAction, ApiDeleteBacklogItemSuccessAction } from "../actions/apiBacklogItems";
+import {
+    ApiPostBacklogItemSuccessAction,
+    ApiDeleteBacklogItemSuccessAction,
+    ApiPutBacklogItemSuccessAction
+} from "../actions/apiBacklogItems";
 import { receivePushedBacklogItem } from "../actions/backlogItems";
 import {
     WebsocketPushNotification,
@@ -28,6 +32,8 @@ export interface PushBacklogItemModel extends BacklogItemModel {
     nextBacklogItemId: string | null;
 }
 
+const SCHEMA_VER_0_9_0 = "v0.9.0";
+
 const pushBacklogItemSaved = (item: BacklogItemModel, prevBacklogItemId: string | null, nextBacklogItemId: string | null) => {
     const payload: WebsocketPushNotification<PushBacklogItemModel> = {
         type: PushNotificationType.ModifiedBacklogItems,
@@ -35,7 +41,7 @@ const pushBacklogItemSaved = (item: BacklogItemModel, prevBacklogItemId: string 
             item: { ...item, prevBacklogItemId, nextBacklogItemId },
             operation: PushOperationType.Added
         },
-        schema: "v0.9.0"
+        schema: SCHEMA_VER_0_9_0
     };
     wsClient.send(payload);
 };
@@ -47,7 +53,19 @@ const pushBacklogItemDeleted = (item: BacklogItemModel) => {
             item,
             operation: PushOperationType.Removed
         },
-        schema: "v0.9.0"
+        schema: SCHEMA_VER_0_9_0
+    };
+    wsClient.send(payload);
+};
+
+const pushBacklogItemUpdated = (item: BacklogItemModel) => {
+    const payload: WebsocketPushNotification<BacklogItemModel> = {
+        type: PushNotificationType.ModifiedBacklogItems,
+        data: {
+            item,
+            operation: PushOperationType.Updated
+        },
+        schema: SCHEMA_VER_0_9_0
     };
     wsClient.send(payload);
 };
@@ -71,6 +89,12 @@ export const wsMiddleware = (store) => (next) => (action: Action) => {
             const actionTyped = action as ApiDeleteBacklogItemSuccessAction;
             const item = actionTyped.payload.response.data?.item;
             pushBacklogItemDeleted(item);
+            break;
+        }
+        case ActionTypes.API_PUT_BACKLOG_ITEM_SUCCESS: {
+            const actionTyped = action as ApiPutBacklogItemSuccessAction;
+            const item = actionTyped.payload.response.data?.item;
+            pushBacklogItemUpdated(item);
             break;
         }
         case ActionTypes.RECEIVE_WEBSOCKET_MESSAGE: {
