@@ -185,6 +185,16 @@ export const updateBacklogItemFields = (backlogItem: BacklogItem, payload: Backl
     backlogItem.rolePhrase = payload.rolePhrase;
 };
 
+export const getBacklogItemById = (backlogItems: BacklogItemsState, itemId: string): BacklogItemWithSource | null => {
+    const matchingItems = backlogItems.allItems.filter((item) => item.id === itemId);
+    if (matchingItems.length === 1) {
+        const matchingItem = matchingItems[0];
+        return matchingItem as BacklogItemWithSource;
+    } else {
+        return null;
+    }
+};
+
 export const updateItemById = (draft: Draft<BacklogItemsState>, itemId: string, updateItem: { (item: EditableBacklogItem) }) => {
     const idx = draft.addedItems.findIndex((item) => item.id === itemId);
     if (idx >= 0) {
@@ -311,19 +321,36 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
             }
             case ActionTypes.RECEIVE_PUSHED_BACKLOG_ITEM: {
                 const actionTyped = action as ReceivePushedBacklogItemAction;
+                if (actionTyped.payload.operation === PushOperationType.Removed) {
+                    const removedItemId = actionTyped.payload.item.id;
+                    if (draft.openedDetailMenuBacklogItemId === removedItemId) {
+                        // close the menu for the deleted item - it isn't possible to use any of the actions available now
+                        draft.openedDetailMenuBacklogItemId = null;
+                    }
+                }
                 draft.pushedItems.push(actionTyped.payload);
                 rebuildAllItems(draft);
                 return;
             }
             case ActionTypes.TOGGLE_BACKLOG_ITEM_DETAIL: {
                 const actionTyped = action as ToggleBacklogItemDetailAction;
+                let openItemId: string;
                 if (draft.openedDetailMenuBacklogItemId === null) {
-                    draft.openedDetailMenuBacklogItemId = actionTyped.payload.itemId;
+                    openItemId = actionTyped.payload.itemId;
                 } else if (draft.openedDetailMenuBacklogItemId === actionTyped.payload.itemId) {
-                    draft.openedDetailMenuBacklogItemId = null;
+                    openItemId = null;
                 } else {
+                    openItemId = actionTyped.payload.itemId;
                     draft.openedDetailMenuBacklogItemId = actionTyped.payload.itemId;
                 }
+                if (openItemId) {
+                    const backlogItem = getBacklogItemById(state, openItemId);
+                    if (backlogItem.pushState === PushState.Removed) {
+                        // do not allow this menu to be shown when the item has been deleted
+                        openItemId = null;
+                    }
+                }
+                draft.openedDetailMenuBacklogItemId = openItemId;
                 return;
             }
             case ActionTypes.EDIT_BACKLOG_ITEM: {

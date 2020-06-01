@@ -76,7 +76,6 @@ export const wsMiddleware = (store) => (next) => (action: Action) => {
         case ActionTypes.RECEIVE_WEBSOCKET_MESSAGE: {
             const actionTyped = action as ReceiveWebsocketMessageAction;
             const msgDecoded = JSON.parse(actionTyped.payload || "{}");
-            debugger;
             if (msgDecoded.type === PushNotificationType.ModifiedBacklogItems) {
                 let data: WebsocketPushNotificationData<any>;
                 if (!msgDecoded.schema) {
