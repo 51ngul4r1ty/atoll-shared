@@ -144,7 +144,9 @@ export class LinkedList<T> {
         const items = [];
         let item = this.firstItem;
         while (item) {
-            items.push(item.data);
+            if (item.data) {
+                items.push(item.data);
+            }
             item = item.next;
         }
         return items;

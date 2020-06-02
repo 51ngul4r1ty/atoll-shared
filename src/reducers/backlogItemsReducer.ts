@@ -40,7 +40,9 @@ export enum PushState {
 }
 
 export interface BacklogItemModel extends BaseModelItem {
+    version?: number;
     createdAt: Date;
+    updatedAt: Date;
     estimate: number | null;
     externalId: string | null;
     reasonPhrase: string | null;
@@ -117,6 +119,7 @@ export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>
     instanceId: undefined,
     source: BacklogItemSource.Pushed,
     createdAt: pushedItem.createdAt,
+    updatedAt: pushedItem.updatedAt,
     estimate: pushedItem.estimate,
     externalId: pushedItem.externalId,
     reasonPhrase: pushedItem.reasonPhrase,
@@ -240,7 +243,8 @@ export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem =>
     reasonPhrase: apiItem.reasonPhrase,
     estimate: apiItem.estimate,
     type: apiItem.type,
-    createdAt: apiItem.createdAt
+    createdAt: apiItem.createdAt,
+    updatedAt: apiItem.updatedAt
 });
 
 export const mapApiItemsToBacklogItems = (apiItems: ApiBacklogItem[]): BacklogItem[] => {

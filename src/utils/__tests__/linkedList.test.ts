@@ -11,6 +11,13 @@ describe("Linked List", () => {
             const result = list.toArray();
             expect(result.length).toEqual(0);
         });
+        it("should handle link without data", () => {
+            const list = new LinkedList();
+            list.addLink("item1", "item2");
+            list.addItemData("item1", { someObjField: "nothing important" });
+            const result = list.toArray();
+            expect(result).toStrictEqual([{ someObjField: "nothing important" }]);
+        });
     });
     describe("addArray", () => {
         it("should handle empty array correctly", () => {
