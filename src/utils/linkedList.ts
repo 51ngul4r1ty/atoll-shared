@@ -219,8 +219,8 @@ export class LinkedList<T> {
         if (itemId === nextId) {
             throw new Error(`Unable to addLink because itemId=${itemId} and nextId=${nextId} - they may not be the same`);
         }
-        let item = this.itemHashMap[itemId] || null; // 1. item = "1"
-        let next = this.itemHashMap[nextId] || null; // 2. next = null
+        let item = this.itemHashMap[itemId] || null;
+        let next = this.itemHashMap[nextId] || null;
         if (itemId && !item && nextId && next) {
             // if both itemId & nextId were both passed in but only next item existed already, that means we need to insert the link
             // before that "next" item.
@@ -234,34 +234,21 @@ export class LinkedList<T> {
             // add this item at the beginning of the list
             this.addIdBefore(nextId, this.firstItem?.id || null);
         } else {
-            let nextAdded = false; // 3.
-            let itemAdded = false; // 4.
-
-            let conditionNumber: number;
-            if (itemId && item && nextId && next) {
-                conditionNumber = 5;
-            } else if (itemId && item && !nextId) {
-                conditionNumber = 6;
-            } else if (!itemId && nextId && next) {
-                conditionNumber = 7;
-            } else if (itemId && !item && nextId && !next) {
-                conditionNumber = 8;
-            }
-
-            console.log(`exercising conditon #${conditionNumber}`);
+            let nextAdded = false;
+            let itemAdded = false;
 
             if (!next && nextId !== null) {
-                // condition 8
                 // need to add the "next" item because it doesn't exist yet
-                next = this.addUnlinkedItem(nextId); // 5. added (next = "new-item-1")
-                nextAdded = true; // 6. nextAdded = true
+                next = this.addUnlinkedItem(nextId);
+                nextAdded = true;
             }
+
             if (!item && itemId !== null) {
-                // condition 6
                 // need to add the item itself because it doesn't exist yet
                 item = this.addUnlinkedItem(itemId);
                 itemAdded = true;
             }
+
             if (item) {
                 // link item to the next item
                 const oldItemNext = item.next;
@@ -278,10 +265,6 @@ export class LinkedList<T> {
                             // we just added an item after the last item, need to update it!
                             this.lastItem = next;
                         }
-                    } else {
-                        // next was alrady there
-                        // TODO: Handle this- write unit test for this scenario + add more logic here
-                        const oldNextPrev = next.prev;
                     }
                 }
                 if (itemAdded && next?.id && next?.id === this.firstItem?.id) {
@@ -299,6 +282,7 @@ export class LinkedList<T> {
                     }
                 }
             }
+
             if (!itemId) {
                 // if itemId isn't defined the caller is inserting the first item in the list
                 const oldFirstItem = this.firstItem;
@@ -310,20 +294,13 @@ export class LinkedList<T> {
                     }
                 }
             }
+
             // make sure first entries set firstItem & lastItem correctly
             if (!this.firstItem) {
-                if (itemId) {
-                    this.firstItem = item;
-                } else {
-                    this.firstItem = next;
-                }
+                this.firstItem = itemId ? item : next;
             }
             if (!this.lastItem) {
-                if (nextId) {
-                    this.lastItem = next;
-                } else {
-                    this.lastItem = item;
-                }
+                this.lastItem = nextId ? next : item;
             }
         }
     }

@@ -73,6 +73,15 @@ describe("Linked List", () => {
             const t = () => list.addLink(null, null);
             expect(t).toThrow(Error);
         });
+        // other scenarios
+        it.skip("should update firstItem when links added out of sequence", () => {
+            const list = new LinkedList();
+            list.addLink("item-q", null);
+            list.addLink("item-o", "item-p");
+            list.addLink("item-p", "item-q");
+            expect(list.isFirstItem("item-o")).toBeTruthy();
+            expect(list.isLastItem("item-q")).toBeTruthy();
+        });
     });
     describe("toArray", () => {
         it("should handle empty list correctly", () => {
