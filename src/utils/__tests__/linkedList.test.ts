@@ -5,6 +5,14 @@ import "jest";
 import { LinkedList } from "../linkedList";
 
 describe("Linked List", () => {
+    describe("addLink", () => {
+        it("should set lastItem correctly when adding a single item", () => {
+            const list = new LinkedList();
+            list.addLink("item1", null);
+            expect(list.isFirstItem("item1")).toBeTruthy();
+            expect(list.isLastItem("item1")).toBeTruthy();
+        });
+    });
     describe("toArray", () => {
         it("should handle empty list correctly", () => {
             const list = new LinkedList();
@@ -116,6 +124,29 @@ describe("Linked List", () => {
                 id: "3",
                 value: "item 3"
             });
+        });
+        it("addArray should update firstItem & lastItem correctly", () => {
+            const list = new LinkedList();
+            const firstItemId = "1";
+            const middleItemId = "2";
+            const lastItemId = "3";
+            const items = [
+                {
+                    id: firstItemId,
+                    value: "item 1"
+                },
+                {
+                    id: middleItemId,
+                    value: "item 2"
+                },
+                {
+                    id: lastItemId,
+                    value: "item 3"
+                }
+            ];
+            list.addArray("id", items);
+            expect(list.isFirstItem(firstItemId)).toBeTruthy();
+            expect(list.isLastItem(lastItemId)).toBeTruthy();
         });
     });
     describe("combinations", () => {

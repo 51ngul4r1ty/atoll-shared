@@ -35,7 +35,7 @@ describe("Backlog Items Reducer", () => {
                 storyPhrase: undefined,
                 id: undefined
             };
-            const aadedItem1InAllItems: BacklogItemWithSource = {
+            const addedItem1InAllItems: BacklogItemWithSource = {
                 ...addedItem,
                 source: BacklogItemSource.Added
             };
@@ -85,7 +85,7 @@ describe("Backlog Items Reducer", () => {
             produce({ ...initialState, addedItems: [addedItem], items: [item], pushedItems: [pushedItem1] }, (draft) => {
                 rebuildAllItems(draft);
                 expect(draft.addedItems).toEqual([addedItem]);
-                expect(draft.allItems).toEqual([aadedItem1InAllItems, pushedItem1InAllItems, item]);
+                expect(draft.allItems).toEqual([addedItem1InAllItems, pushedItem1InAllItems, item]);
                 expect(draft.items).toEqual([item]);
                 expect(draft.openedDetailMenuBacklogItemId).toEqual(null);
                 expect(draft.pushedItems).toEqual([pushedItem1]);
