@@ -44,6 +44,22 @@ describe("Linked List", () => {
             expect(list.isFirstItem("item1-a")).toBeTruthy();
             expect(list.isLastItem("item1-b")).toBeTruthy();
         });
+        // scenario 6: itemId set, item present
+        it("should handle setting up the same item twice", () => {
+            const list = new LinkedList();
+            list.addLink(null, "item-a");
+            list.addLink("item-a", null);
+            expect(list.isFirstItem("item-a")).toBeTruthy();
+            expect(list.isLastItem("item-a")).toBeTruthy();
+        });
+        // scenario 7: nextId set, next present
+        it("should handle setting up the same 'next' twice", () => {
+            const list = new LinkedList();
+            list.addLink(null, "item-a");
+            list.addLink(null, "item-a");
+            expect(list.isFirstItem("item-a")).toBeTruthy();
+            expect(list.isLastItem("item-a")).toBeTruthy();
+        });
     });
     describe("toArray", () => {
         it("should handle empty list correctly", () => {
