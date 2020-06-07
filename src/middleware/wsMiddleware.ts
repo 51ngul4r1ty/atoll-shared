@@ -13,7 +13,7 @@ import {
     ApiDeleteBacklogItemSuccessAction,
     ApiPutBacklogItemSuccessAction
 } from "../actions/apiBacklogItems";
-import { ApiPostBacklogItemSuccessAction, ApiDeleteBacklogItemSuccessAction, receivePushedBacklogItem } from "../actions/backlogItems";
+import { receivePushedBacklogItem } from "../actions/backlogItems";
 import {
     WebsocketPushNotification,
     PushNotificationType,
