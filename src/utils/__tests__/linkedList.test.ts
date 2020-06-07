@@ -7,18 +7,26 @@ import { LinkedList } from "../linkedList";
 describe("Linked List", () => {
     describe("addLink", () => {
         // scenario 3: itemId set, item missing
-        it("should set lastItem correctly when adding a single item", () => {
+        it("should set first/lastItem correctly when adding a single item to end of list", () => {
             const list = new LinkedList();
             list.addLink("item1", null);
             expect(list.isFirstItem("item1")).toBeTruthy();
             expect(list.isLastItem("item1")).toBeTruthy();
         });
         // scenario 4: nextId set, next missing
-        it("should set lastItem correctly when adding a single item", () => {
+        it("should set first/lastItem correctly when adding a single item to beginning of list", () => {
             const list = new LinkedList();
             list.addLink(null, "item1-b");
             expect(list.isFirstItem("item1-b")).toBeTruthy();
             expect(list.isLastItem("item1-b")).toBeTruthy();
+        });
+        // scenario 1: itemId set, item missing, nextId set, next present
+        it("should set first/lastItem correctly when linking to existing 'next' item", () => {
+            const list = new LinkedList();
+            list.addLink("item-d", null);
+            list.addLink("item-c", "item-d");
+            expect(list.isFirstItem("item-c")).toBeTruthy();
+            expect(list.isLastItem("item-d")).toBeTruthy();
         });
     });
     describe("toArray", () => {
