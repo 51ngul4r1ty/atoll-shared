@@ -6,6 +6,22 @@ import { LinkedList } from "../linkedList";
 
 describe("Linked List", () => {
     describe("addLink", () => {
+        // scenario 1: itemId set, item missing, nextId set, next present
+        it("should set first/lastItem correctly when linking to existing 'next' item", () => {
+            const list = new LinkedList();
+            list.addLink("item-d", null);
+            list.addLink("item-c", "item-d");
+            expect(list.isFirstItem("item-c")).toBeTruthy();
+            expect(list.isLastItem("item-d")).toBeTruthy();
+        });
+        // scenario 2: itemId set, item present, nextId set, next missing
+        it("should set first/lastItem correctly when linking to existing 'prev' item", () => {
+            const list = new LinkedList();
+            list.addLink("item-c", null);
+            list.addLink("item-c", "item-d");
+            expect(list.isFirstItem("item-c")).toBeTruthy();
+            expect(list.isLastItem("item-d")).toBeTruthy();
+        });
         // scenario 3: itemId set, item missing
         it("should set first/lastItem correctly when adding a single item to end of list", () => {
             const list = new LinkedList();
@@ -20,13 +36,13 @@ describe("Linked List", () => {
             expect(list.isFirstItem("item1-b")).toBeTruthy();
             expect(list.isLastItem("item1-b")).toBeTruthy();
         });
-        // scenario 1: itemId set, item missing, nextId set, next present
-        it("should set first/lastItem correctly when linking to existing 'next' item", () => {
+        // scenario 5: everything set and present
+        it("should handle setting up the same link twice", () => {
             const list = new LinkedList();
-            list.addLink("item-d", null);
-            list.addLink("item-c", "item-d");
-            expect(list.isFirstItem("item-c")).toBeTruthy();
-            expect(list.isLastItem("item-d")).toBeTruthy();
+            list.addLink("item1-a", "item1-b");
+            list.addLink("item1-a", "item1-b");
+            expect(list.isFirstItem("item1-a")).toBeTruthy();
+            expect(list.isLastItem("item1-b")).toBeTruthy();
         });
     });
     describe("toArray", () => {
