@@ -6,11 +6,19 @@ import { LinkedList } from "../linkedList";
 
 describe("Linked List", () => {
     describe("addLink", () => {
+        // scenario 3: itemId set, item missing
         it("should set lastItem correctly when adding a single item", () => {
             const list = new LinkedList();
             list.addLink("item1", null);
             expect(list.isFirstItem("item1")).toBeTruthy();
             expect(list.isLastItem("item1")).toBeTruthy();
+        });
+        // scenario 4: nextId set, next missing
+        it("should set lastItem correctly when adding a single item", () => {
+            const list = new LinkedList();
+            list.addLink(null, "item1-b");
+            expect(list.isFirstItem("item1-b")).toBeTruthy();
+            expect(list.isLastItem("item1-b")).toBeTruthy();
         });
     });
     describe("toArray", () => {

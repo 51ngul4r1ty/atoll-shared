@@ -38,13 +38,39 @@ export class LinkedList<T> {
         }
         return this.lastItem?.id === itemId;
     }
+    private addFirstItem(itemId: string) {
+        if (this.firstItem || this.lastItem) {
+            throw new Error(`Unable to add first item because firstItem=${this.firstItem} and lastItem=${this.lastItem}`);
+        }
+        const item = this.addUnlinkedItem(itemId);
+        item.next = null;
+        item.prev = null;
+        this.firstItem = item;
+        this.lastItem = item;
+    }
     /**
      * Insert a shell item (with ID `{itemId}`) before the item with ID `{beforeId}`.
      *
      * @param itemId must not be null and item with this ID must NOT exist
      * @param beforeId must not be null and item with this ID must exist
      */
-    addIdBefore(itemId: string, beforeId: string) {
+    addIdBefore(itemId: string, beforeId: string | null, calledFromAddIdAfter: boolean = false) {
+        if (itemId && !beforeId) {
+            if (this.lastItem) {
+                if (this.lastItem?.id === itemId) {
+                    throw new Error(`Unable to add an item with the same ID ${itemId} to the end of the list more than once`);
+                } else {
+                    if (calledFromAddIdAfter) {
+                        throw new Error(`Unable to call addIdAfter because addIdBefore already called addIdAfter once!`);
+                    }
+                    this.addIdAfter(itemId, this.lastItem.id, true);
+                }
+            } else {
+                this.addFirstItem(itemId);
+            }
+            return;
+        }
+
         if (!itemId || !beforeId) {
             throw new Error(`Unable to addIdBefore because itemId=${itemId} and beforeId=${beforeId} - they may not be the null`);
         }
@@ -109,21 +135,20 @@ export class LinkedList<T> {
      * @param itemId must not be null and item with this ID must NOT exist
      * @param afterId must not be null and item with this ID must exist
      */
-    addIdAfter(itemId: string, afterId: string | null) {
+    addIdAfter(itemId: string, afterId: string | null, calledFromAddIdBefore: boolean = false) {
         if (itemId && !afterId) {
             if (this.firstItem) {
                 if (this.firstItem?.id === itemId) {
                     throw new Error(`Unable to add an item with the same ID ${itemId} to the start of the list more than once`);
                 } else {
                     // addIdBefore can handle this instead
-                    this.addIdBefore(itemId, this.firstItem.id);
+                    if (calledFromAddIdBefore) {
+                        throw new Error(`Unable to call addIdBefore because addIdAfter already called addIdBefore once!`);
+                    }
+                    this.addIdBefore(itemId, this.firstItem.id, true);
                 }
             } else {
-                const item = this.addUnlinkedItem(itemId);
-                item.next = null;
-                item.prev = null;
-                this.firstItem = item;
-                this.lastItem = item;
+                this.addFirstItem(itemId);
             }
             return;
         }
@@ -207,8 +232,11 @@ export class LinkedList<T> {
             this.addIdAfter(itemId, this.lastItem?.id || null);
         } else if (!itemId && nextId && !next) {
             // add this item at the beginning of the list
-            this.addIdBefore(nextId, this.firstItem.id);
+            this.addIdBefore(nextId, this.firstItem?.id || null);
         } else {
+            let nextAdded = false; // 3.
+            let itemAdded = false; // 4.
+
             let conditionNumber: number;
             if (itemId && item && nextId && next) {
                 conditionNumber = 5;
@@ -219,16 +247,17 @@ export class LinkedList<T> {
             } else if (itemId && !item && nextId && !next) {
                 conditionNumber = 8;
             }
+
             console.log(`exercising conditon #${conditionNumber}`);
-            // scenarios this code handles: (1) "item" and "next" both aren't in list yet (2) TBD
-            let nextAdded = false; // 3.
-            let itemAdded = false; // 4.
+
             if (!next && nextId !== null) {
+                // condition 8
                 // need to add the "next" item because it doesn't exist yet
                 next = this.addUnlinkedItem(nextId); // 5. added (next = "new-item-1")
                 nextAdded = true; // 6. nextAdded = true
             }
             if (!item && itemId !== null) {
+                // condition 6
                 // need to add the item itself because it doesn't exist yet
                 item = this.addUnlinkedItem(itemId);
                 itemAdded = true;
