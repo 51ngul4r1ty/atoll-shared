@@ -60,6 +60,19 @@ describe("Linked List", () => {
             expect(list.isFirstItem("item-a")).toBeTruthy();
             expect(list.isLastItem("item-a")).toBeTruthy();
         });
+        // scenario 8: itemId set, nextId set, nothing present
+        it("should handle two items in link with neither store in collection yet", () => {
+            const list = new LinkedList();
+            list.addLink("item-x", "item-y");
+            expect(list.isFirstItem("item-x")).toBeTruthy();
+            expect(list.isLastItem("item-y")).toBeTruthy();
+        });
+        // scenario 9: itemId and nextId both not set
+        it("should throw error when two items in link are null", () => {
+            const list = new LinkedList();
+            const t = () => list.addLink(null, null);
+            expect(t).toThrow(Error);
+        });
     });
     describe("toArray", () => {
         it("should handle empty list correctly", () => {
