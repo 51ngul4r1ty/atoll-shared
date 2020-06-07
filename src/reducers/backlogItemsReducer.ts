@@ -224,16 +224,6 @@ export const getBacklogItemById = (backlogItems: BacklogItemsState, itemId: stri
     }
 };
 
-export const getBacklogItemById = (backlogItems: BacklogItemsState, itemId: string): BacklogItemWithSource | null => {
-    const matchingItems = backlogItems.allItems.filter((item) => item.id === itemId);
-    if (matchingItems.length === 1) {
-        const matchingItem = matchingItems[0];
-        return matchingItem as BacklogItemWithSource;
-    } else {
-        return null;
-    }
-};
-
 export const updateItemById = (draft: Draft<BacklogItemsState>, itemId: string, updateItem: { (item: EditableBacklogItem) }) => {
     const idx = draft.addedItems.findIndex((item) => item.id === itemId);
     if (idx >= 0) {
