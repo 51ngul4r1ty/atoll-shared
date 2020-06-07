@@ -86,6 +86,7 @@ const buildCommonItem = (
     saved: boolean = true
 ): BacklogItemWithSource => ({
     createdAt: new Date(),
+    updatedAt: new Date(),
     estimate,
     externalId: buildExternalId(source, itemNumber),
     id: buildId(itemNumber),
