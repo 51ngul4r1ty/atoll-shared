@@ -38,6 +38,93 @@ export class LinkedList<T> {
         }
         return this.lastItem?.id === itemId;
     }
+    private fourDigitLinkId(id: string): string {
+        if (!id) {
+            return `null`;
+        } else {
+            return id.substr(id.length - 4);
+        }
+    }
+    getDiagnosticString(): string {
+        return `main: ${this.getMainLinkDiagString()};\norphans: ${this.getOrphanDiagString()}\n`;
+    }
+    getOrphanLinkedListItemStart(orphanItem: LinkedListItem<T>): LinkedListItem<T> {
+        let curr = orphanItem;
+        while (curr.prev !== null) {
+            curr = curr.prev;
+        }
+        return curr;
+    }
+    getOrphanDiagString(): string {
+        let curr = this.firstItem;
+        let result = "";
+        let linkedInItems: { [key: string]: LinkedListItem<T> } = {};
+        while (curr) {
+            linkedInItems[curr.id] = curr;
+            curr = curr.next;
+        }
+        let allItemKeys = Object.keys(this.itemHashMap);
+        let orphanDiagStrings: { [key: string]: LinkedListItem<T> } = {};
+        let orphanIds: string[] = [];
+        allItemKeys.forEach((key) => {
+            if (!linkedInItems[key]) {
+                const orphanItem = this.itemHashMap[key];
+                orphanIds.push(orphanItem.id);
+                const firstItemInOrphanLinkChain = this.getOrphanLinkedListItemStart(orphanItem);
+                const orphanDiagString = this.getLinkDiagString(firstItemInOrphanLinkChain);
+                orphanDiagStrings[orphanDiagString] = orphanItem;
+            }
+        });
+        const orphanDiagStringKeys = Object.keys(orphanDiagStrings);
+        orphanDiagStringKeys.forEach((key) => {
+            if (result) {
+                result += "; ";
+            }
+            result += key;
+        });
+        return result;
+        //        return `none`;
+    }
+    getLinkDiagString(item: LinkedListItem<T>, itemToHighlight?: LinkedListItem<T>): string {
+        let curr = item;
+        let lastCurr: LinkedListItem<T> = null;
+        let result = "";
+        while (curr) {
+            if (this.isFirstItem(curr.id)) {
+                result += " [ ";
+            }
+            const hightlightThisItem = itemToHighlight?.id === curr.id;
+            if (hightlightThisItem) {
+                result += "▸ ";
+            }
+            result += this.fourDigitLinkId(curr.id);
+            if (hightlightThisItem) {
+                result += "◂ ";
+            }
+            if (this.isLastItem(curr.id)) {
+                result += " ] ";
+            }
+            if (curr.next) {
+                const linkToLastCurrId = curr.prev?.id || null;
+                const lastCurrId = lastCurr?.id || null;
+                const linkBackGood = linkToLastCurrId === lastCurrId;
+                const linkBackBad = !linkBackGood && linkToLastCurrId !== null;
+                if (linkBackGood) {
+                    result += " <--> ";
+                } else if (linkBackBad) {
+                    result += " *--> ";
+                } else {
+                    result += " ---> ";
+                }
+            }
+            lastCurr = curr;
+            curr = curr.next;
+        }
+        return result;
+    }
+    getMainLinkDiagString(): string {
+        return this.getLinkDiagString(this.firstItem);
+    }
     private addFirstItem(itemId: string) {
         if (this.firstItem || this.lastItem) {
             throw new Error(`Unable to add first item because firstItem=${this.firstItem} and lastItem=${this.lastItem}`);
@@ -54,7 +141,12 @@ export class LinkedList<T> {
      * @param itemId must not be null and item with this ID must NOT exist
      * @param beforeId must not be null and item with this ID must exist
      */
-    addIdBefore(itemId: string, beforeId: string | null, calledFromAddIdAfter: boolean = false) {
+    addIdBefore(
+        itemId: string,
+        beforeId: string | null,
+        calledFromAddIdAfter: boolean = false,
+        supportOrphanedItems: boolean = false
+    ) {
         if (itemId && !beforeId) {
             if (this.lastItem) {
                 if (this.lastItem?.id === itemId) {
@@ -120,7 +212,14 @@ export class LinkedList<T> {
                     }
                 } else if (this.firstItem.id === next.id) {
                     this.firstItem = item;
-                } else {
+                } else if (!supportOrphanedItems) {
+                    // it is possible we're inserting an item before an orphaned item in this case, so we only throw this error
+                    // when running with "stricter" default rules
+                    try {
+                        console.log(`DIAGNOSTIC STRING: ${this.getDiagnosticString()}`);
+                    } catch (err) {
+                        console.log(`DIAGNOSTIC STRING: Error = ${err}`);
+                    }
                     throw new Error(
                         `Unable to addIdBefore because inserting before item (${beforeId}) that should be the first` +
                             ` item in the linked list, but is not (${this.firstItem.id} is).`
@@ -224,7 +323,7 @@ export class LinkedList<T> {
         if (itemId && !item && nextId && next) {
             // if both itemId & nextId were both passed in but only next item existed already, that means we need to insert the link
             // before that "next" item.
-            this.addIdBefore(itemId, nextId);
+            this.addIdBefore(itemId, nextId, false, true);
         } else if (itemId && item && nextId && !next) {
             this.addIdAfter(nextId, itemId);
         } else if (itemId && !item && !nextId) {
@@ -267,9 +366,15 @@ export class LinkedList<T> {
                         }
                     }
                 }
-                if (itemAdded && next?.id && next?.id === this.firstItem?.id) {
+                if (next?.id && next?.id === this.firstItem?.id) {
                     // next is first item but we just added something before it!
-                    this.firstItem = item;
+                    if (itemAdded) {
+                        this.firstItem = item;
+                    } else {
+                        // if it existed we'll need to do a bit more work to find where the list starts
+                        const startItem = this.getOrphanLinkedListItemStart(item);
+                        this.firstItem = startItem;
+                    }
                 }
                 if (itemAdded && !item.next) {
                     // item being added to end of list

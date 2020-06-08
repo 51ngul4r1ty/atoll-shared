@@ -74,13 +74,27 @@ describe("Linked List", () => {
             expect(t).toThrow(Error);
         });
         // other scenarios
-        it.skip("should update firstItem when links added out of sequence", () => {
+        it("should update firstItem when links added out of sequence", () => {
             const list = new LinkedList();
             list.addLink("item-q", null);
             list.addLink("item-o", "item-p");
             list.addLink("item-p", "item-q");
             expect(list.isFirstItem("item-o")).toBeTruthy();
             expect(list.isLastItem("item-q")).toBeTruthy();
+        });
+        // prod issue
+        it("should be able to process links in any order (backlog item rank example)", () => {
+            const list = new LinkedList<number>();
+            list.addLink("e522", "e9d6");
+            list.addLink("e9d6", "2da6");
+            list.addLink("2da6", null);
+            list.addLink("aa81", "b2ca");
+            list.addLink("3996", "aa81");
+            list.addLink("b2ca", "e522");
+            list.addLink(null, "fdd2");
+            list.addLink("fdd2", "3996");
+            expect(list.isFirstItem("fdd2")).toBeTruthy();
+            expect(list.isLastItem("2da6")).toBeTruthy();
         });
     });
     describe("toArray", () => {
