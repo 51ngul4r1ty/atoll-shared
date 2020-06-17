@@ -30,6 +30,12 @@ import { backlogItemDetailClicked, editBacklogItem } from "../../../actions/back
 import { useRecursiveTimeout } from "../../common/setTimeoutHook";
 import { BacklogItemPlanningItem } from "../combo/BacklogItemPlanningItem";
 
+// utils
+import * as logger from "../../../utils/logger";
+
+// consts/enums
+import * as loggingTags from "../../../constants/loggingTags";
+
 /* exported interfaces */
 
 export interface PlanningPanelBacklogItem {
@@ -70,6 +76,22 @@ export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
 
 /* exported components */
 
+export const buildUniqueItemKey = (props: SaveableBacklogItem, componentPrefix: string): string => {
+    return props.id ? `${componentPrefix}-id-${props.id}` : `${componentPrefix}-i-${props.instanceId}`;
+};
+
+export const buildBacklogItemKey = (props: SaveableBacklogItem): string => {
+    return buildUniqueItemKey(props, "bic");
+};
+
+export const buildBacklogItemPlanningItemKey = (props: SaveableBacklogItem): string => {
+    return buildUniqueItemKey(props, "bipi");
+};
+
+export const buildDividerKey = (props: SaveableBacklogItem): string => {
+    return buildUniqueItemKey(props, "div-l");
+};
+
 export const buildDragBacklogItemElt = (
     editMode: EditMode,
     item: SaveableBacklogItem,
@@ -79,7 +101,7 @@ export const buildDragBacklogItemElt = (
 ) => {
     return (
         <BacklogItemCard
-            key={item.id}
+            key={buildBacklogItemKey(item)}
             estimate={item.estimate}
             internalId={`${item.id}`}
             itemId={`${item.externalId}`}
@@ -217,6 +239,7 @@ const addActionButtons = (
 };
 
 const preventDefault = (e: React.BaseSyntheticEvent<HTMLDivElement>) => {
+    logger.info("preventDefault", [loggingTags.DRAG_BACKLOGITEM]);
     e.preventDefault();
 };
 
@@ -316,6 +339,7 @@ const getDragItemIdUnderTarget = (
 };
 
 export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps> = (props) => {
+    logger.info("render(InnerBacklogItemPlanningPanel)", [loggingTags.DRAG_BACKLOGITEM]);
     // #region state with refs
 
     // 1. Refs that are not used for re-rendering
@@ -350,6 +374,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
     const [isDragging, _setIsDragging] = useState(false);
     const isDraggingRef = React.useRef();
     const setIsDragging = (data) => {
+        logger.info(`setIsDragging:${data}`, [loggingTags.DRAG_BACKLOGITEM]);
         isDraggingRef.current = data;
         _setIsDragging(data);
     };
@@ -419,7 +444,9 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
     }, 500);
 
     const onMouseDown = (e: React.BaseSyntheticEvent<HTMLDivElement>, clientY: number) => {
+        const logContainer = logger.info(`onMouseDown:${clientY}`, [loggingTags.DRAG_BACKLOGITEM]);
         if (targetIsDragButton(e)) {
+            logger.info("target is drag button", [loggingTags.DRAG_BACKLOGITEM], logContainer);
             const id = getDragItemId(e.target);
             if (id) {
                 const width = getDragItemWidth(e.target);
@@ -438,6 +465,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
             preventDefault(e);
             return false;
         }
+        logger.info("target is NOT drag button", [loggingTags.DRAG_BACKLOGITEM], logContainer);
         return true;
     };
 
@@ -450,9 +478,19 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
         return mouseDeltaClientY;
     };
 
-    const onMouseMove = (e: React.BaseSyntheticEvent<HTMLDivElement>, clientY: number) => {
+    enum EventType {
+        Mouse,
+        Touch
+    }
+
+    const onMouseMove = (e: React.BaseSyntheticEvent<HTMLDivElement>, clientY: number, eventType: EventType = EventType.Mouse) => {
+        const loggingContainer = logger.info(`onMouseMove:${clientY}`, [loggingTags.DRAG_BACKLOGITEM]);
         if (dragStartClientYRef.current) {
+            if (eventType === EventType.Touch) {
+                preventDefault(e);
+            }
             const mouseDeltaClientY = getMouseDragDistance(clientY);
+            logger.info(`mouseDelta:${mouseDeltaClientY}`, [loggingTags.DRAG_BACKLOGITEM], loggingContainer);
             if (Math.abs(mouseDeltaClientY) > 5) {
                 setIsDragging(true);
             }
@@ -470,10 +508,13 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
             }
             return false;
         }
+        logger.info("not dragging, bypassed preventDefault", [loggingTags.DRAG_BACKLOGITEM], loggingContainer);
         return true;
     };
 
     const onMouseUp = (e: React.BaseSyntheticEvent<HTMLDivElement>) => {
+        logger.info(`onMouseUp`, [loggingTags.DRAG_BACKLOGITEM]);
+
         if (isDraggingRef.current) {
             if (props.onReorderBacklogItems) {
                 const dragOverItemIdToUse = dragOverItemIdRef.current === BELOW_LAST_CARD_ID ? null : dragOverItemIdRef.current;
@@ -487,55 +528,66 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
             setDragItemId(null);
             setDragOverItemId(null);
             return false;
+        } else if (dragStartClientYRef.current) {
+            setDragStartClientY(null);
+            setDragItemId(null);
+            setDragOverItemId(null);
+            return false;
         }
         return true;
     };
 
     const ref = React.createRef<HTMLDivElement>();
-    React.useEffect(
-        () => {
-            const listenerHost = window;
-            const removeEventListener = listenerHost.removeEventListener;
-            let touchStartListener;
-            let touchMoveListener;
-            let touchEndListener;
-            if (listenerHost) {
-                touchStartListener = listenerHost.addEventListener(
-                    "touchstart",
-                    (e: any) => {
-                        if (isSingleTouch(e.touches)) {
-                            return onMouseDown(e, touchesToClientY(e.touches));
-                        }
-                        return true;
-                    },
-                    { passive: false }
-                );
-                touchMoveListener = listenerHost.addEventListener(
-                    "touchmove",
-                    (e: any) => {
-                        return onMouseMove(e, touchesToClientY(e.touches));
-                    },
-                    { passive: false }
-                );
-                touchEndListener = listenerHost.addEventListener(
-                    "touchend",
-                    (e: any) => {
-                        return onMouseUp(e);
-                    },
-                    { passive: false }
-                );
-            }
-            const cleanup = () => {
-                removeEventListener("touchstart", touchStartListener);
-                removeEventListener("touchmove", touchMoveListener);
-                removeEventListener("touchend", touchEndListener);
-            };
-            return cleanup;
-        },
-        [
-            /*cardPositions, itemCardWidth, dragItemId, dragOverItemId, dragItemClientY, isDragging*/
-        ]
-    );
+    React.useEffect(() => {
+        logger.info("setting up event listeners for touchstart, touchmove, touchend", [loggingTags.DRAG_BACKLOGITEM]);
+        const listenerHost = window;
+        const removeEventListener = listenerHost.removeEventListener;
+        let touchStartListener;
+        let touchMoveListener;
+        let touchEndListener;
+        if (listenerHost) {
+            logger.info("listenerHost set", [loggingTags.DRAG_BACKLOGITEM]);
+            touchStartListener = listenerHost.addEventListener(
+                "touchstart",
+                (e: any) => {
+                    const logInfo = logger.info("touchstart", [loggingTags.DRAG_BACKLOGITEM]);
+                    if (isSingleTouch(e.touches)) {
+                        const result = onMouseDown(e, touchesToClientY(e.touches));
+                        logger.info(`isSingleTouch, returning ${result}`, [loggingTags.DRAG_BACKLOGITEM], logInfo);
+                        return result;
+                    }
+                    logger.info("not single touch, returning true", [loggingTags.DRAG_BACKLOGITEM], logInfo);
+                    return true;
+                },
+                { passive: false }
+            );
+            touchMoveListener = listenerHost.addEventListener(
+                "touchmove",
+                (e: any) => {
+                    const result = onMouseMove(e, touchesToClientY(e.touches), EventType.Touch);
+                    logger.info(`touchmove, returning ${result}`, [loggingTags.DRAG_BACKLOGITEM]);
+                    return result;
+                },
+                { passive: false }
+            );
+            touchEndListener = listenerHost.addEventListener(
+                "touchend",
+                (e: any) => {
+                    const result = onMouseUp(e);
+                    logger.info(`touchend, returning ${result}`, [loggingTags.DRAG_BACKLOGITEM]);
+                    return result;
+                },
+                { passive: false }
+            );
+        }
+        const cleanup = () => {
+            logger.info("cleanup event listeners for touchstart, touchmove, touchend", [loggingTags.DRAG_BACKLOGITEM]);
+            removeEventListener("touchstart", touchStartListener);
+            removeEventListener("touchmove", touchMoveListener);
+            removeEventListener("touchend", touchEndListener);
+        };
+        return cleanup;
+    }, []);
     React.useEffect(() => {
         const newCardPositions: CardPosition[] = [];
         const computedStyle = getComputedStyle(ref.current);
@@ -577,7 +629,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
         if (item.source === BacklogItemSource.Loaded) {
             highlightAbove = afterPushedItem;
             if (inAddedSection) {
-                renderElts.push(<SimpleDivider key={`divider-loaded-${item.id}`} />);
+                renderElts.push(<SimpleDivider key={buildDividerKey(item)} />);
                 inAddedSection = false;
             }
             if (!inLoadedSection) {
@@ -619,6 +671,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 const showDetailMenu = item.id === props.openedDetailMenuBacklogItemId;
                 renderElts.push(
                     <BacklogItemPlanningItem
+                        key={buildBacklogItemPlanningItemKey(item)}
                         {...item}
                         editMode={props.editMode}
                         renderMobile={props.renderMobile}
