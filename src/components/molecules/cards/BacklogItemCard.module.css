@@ -4,6 +4,10 @@
     background-color: var(--normal-page-color, white);
 }
 
+.backlogItemCard.hidden {
+    display: none;
+}
+
 .backlogItemCardOuter.mobile .backlogItemCard {
     height: auto;
     flex-wrap: wrap;
