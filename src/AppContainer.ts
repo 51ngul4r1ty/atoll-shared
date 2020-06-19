@@ -10,7 +10,7 @@ import { StateTree, UserPreferences } from "./types";
 
 // actions
 import { receiveWebSocketMessage } from "./actions/wsActions";
-import { initApp, appClick } from "./actions/appActions";
+import { initApp, appClick, appKeyUp } from "./actions/appActions";
 
 const mapStateToProps = (state: StateTree): AppStateProps => {
     const userPreferences = (state.user && state.user.preferences) || ({} as UserPreferences);
@@ -27,6 +27,9 @@ const mapDispatchToProps = (dispatch: Dispatch): AppDispatchProps => {
         },
         onAppClick: (e: MouseEvent) => {
             dispatch(appClick(e));
+        },
+        onAppKeyUp: (e: KeyboardEvent) => {
+            dispatch(appKeyUp(e));
         },
         onWebSocketMessageReceived: (data: any) => {
             dispatch(receiveWebSocketMessage(data));

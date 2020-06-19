@@ -33,7 +33,7 @@ import {
     BacklogItemDetailFormEditableFieldsWithInstanceId
 } from "../components/organisms/forms/BacklogItemDetailForm";
 import { ApiBacklogItem } from "../apiModelTypes";
-import { AppClickAction } from "../actions/appActions";
+import { AppClickAction, AppKeyUpAction } from "../actions/appActions";
 
 export type BacklogItemType = "story" | "issue";
 
@@ -379,6 +379,15 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                     const actionTyped = action as AppClickAction;
                     const targetElt = actionTyped.payload.target;
                     if (!targetIsInMenuPanel(targetElt) && !targetIsInMenuButton(targetElt)) {
+                        draft.openedDetailMenuBacklogItemId = null;
+                    }
+                }
+                return;
+            }
+            case ActionTypes.APP_KEYUP: {
+                if (draft.openedDetailMenuBacklogItemId) {
+                    const actionTyped = action as AppKeyUpAction;
+                    if (actionTyped.payload.keyCode === 27) {
                         draft.openedDetailMenuBacklogItemId = null;
                     }
                 }

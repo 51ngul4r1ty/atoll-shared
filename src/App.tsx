@@ -28,6 +28,7 @@ export interface AppStateProps {
 
 export interface AppDispatchProps {
     onAppClick: { (e: MouseEvent) };
+    onAppKeyUp: { (e: KeyboardEvent) };
     onLoaded: { () };
     onWebSocketMessageReceived: { (data: any) };
 }
@@ -54,6 +55,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.props.onLoaded();
         window.addEventListener("resize", this.handleResize);
         window.addEventListener("click", this.handleClick);
+        window.addEventListener("keyup", this.handleKeyUp);
         this.setState({ isMobile: false });
         this.context.updateIsMobile = (value) => {
             this.updateIsMobile(value);
@@ -63,6 +65,7 @@ export class App extends React.Component<AppProps, AppState> {
     componentWillUnmount() {
         window.removeEventListener("resize", this.handleResize);
         window.removeEventListener("click", this.handleClick);
+        window.removeEventListener("keyup", this.handleKeyUp);
     }
     handleResize = () => {
         const width = window.innerWidth;
@@ -76,6 +79,13 @@ export class App extends React.Component<AppProps, AppState> {
         const logContainer = logger.info("app click", [loggingTags.APP_EVENTS]);
         if (this.props.onAppClick) {
             this.props.onAppClick(e);
+        }
+        return true;
+    };
+    handleKeyUp = (e: KeyboardEvent) => {
+        const logContainer = logger.info("app key", [loggingTags.APP_EVENTS]);
+        if (this.props.onAppKeyUp) {
+            this.props.onAppKeyUp(e);
         }
         return true;
     };
