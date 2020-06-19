@@ -31,6 +31,7 @@ export interface BacklogItemPlanningItemStateProps extends BacklogItemWithSource
     renderMobile: boolean;
     showDetailMenu: boolean;
     suppressTopPadding: boolean;
+    hidden?: boolean;
 }
 
 export interface BacklogItemPlanningItemDispatchProps {}
@@ -39,7 +40,7 @@ export type BacklogItemPlanningItemProps = BacklogItemPlanningItemStateProps & B
 
 export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (props) => {
     const dispatch = useDispatch();
-    if (props.editMode === EditMode.Edit && (!props.saved || props.editing)) {
+    if (!props.hidden && props.editMode === EditMode.Edit && (!props.saved || props.editing)) {
         const classNameToUse = buildClassName(
             css.backlogItemUserStoryFormRow,
             props.suppressTopPadding ? null : css.embeddedBacklogItemUserStoryFormRow
@@ -83,10 +84,11 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
     } else {
         return (
             <>
-                <SimpleDivider key={`divider-saved-${props.id}`} highlighted={props.highlightAbove} />
+                <SimpleDivider key={`divider-saved-${props.id}`} hidden={props.hidden} highlighted={props.highlightAbove} />
                 <BacklogItemCard
                     key={props.id}
                     estimate={props.estimate}
+                    hidden={props.hidden}
                     internalId={`${props.id}`}
                     itemId={`${props.externalId}`}
                     itemType={props.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}

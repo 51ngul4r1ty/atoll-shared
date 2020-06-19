@@ -667,20 +667,20 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                     />
                 );
             }
-            if (!isDragItem) {
-                const showDetailMenu = item.id === props.openedDetailMenuBacklogItemId;
-                renderElts.push(
-                    <BacklogItemPlanningItem
-                        key={buildBacklogItemPlanningItemKey(item)}
-                        {...item}
-                        editMode={props.editMode}
-                        renderMobile={props.renderMobile}
-                        highlightAbove={highlightAbove}
-                        suppressTopPadding={suppressTopPadding || lastItemWasUnsaved}
-                        showDetailMenu={showDetailMenu}
-                    />
-                );
-            }
+            const showItem = !isDragItem;
+            const showDetailMenu = item.id === props.openedDetailMenuBacklogItemId;
+            renderElts.push(
+                <BacklogItemPlanningItem
+                    key={buildBacklogItemPlanningItemKey(item)}
+                    {...item}
+                    editMode={props.editMode}
+                    renderMobile={props.renderMobile}
+                    highlightAbove={highlightAbove}
+                    suppressTopPadding={suppressTopPadding || lastItemWasUnsaved}
+                    showDetailMenu={showDetailMenu}
+                    hidden={!showItem}
+                />
+            );
         }
         afterPushedItem = item.source === BacklogItemSource.Pushed;
         lastItemWasUnsaved = item.source === BacklogItemSource.Added && !item.saved;

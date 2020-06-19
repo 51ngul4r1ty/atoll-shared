@@ -55,6 +55,7 @@ export enum BacklogItemTypeEnum {
 export interface BacklogItemCardStateProps {
     estimate: number | null;
     hasDetails?: boolean;
+    hidden?: boolean;
     isDraggable?: boolean;
     internalId: string;
     itemId: string;
@@ -107,7 +108,8 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
         props.itemType === BacklogItemTypeEnum.None ? css.backlogItemGap : null,
         props.offsetTop ? css.dragging : null,
         props.pushState === PushState.Changed ? css.pushStateChanged : null,
-        props.pushState === PushState.Removed ? css.pushStateRemoved : null
+        props.pushState === PushState.Removed ? css.pushStateRemoved : null,
+        props.hidden ? css.hidden : null
     );
     const editDetailButton = props.hasDetails ? (
         <div

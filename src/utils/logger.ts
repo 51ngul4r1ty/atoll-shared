@@ -11,7 +11,11 @@ export const hasTag = (tags: string[], tag: string): boolean => tags.indexOf(tag
  */
 export const shouldLogThis = (tags: string[], level: LevelType): boolean => {
     if (level === "info") {
-        return !hasTag(tags, loggingTags.KEEPALIVE) && !hasTag(tags, loggingTags.WEBSOCKET);
+        return (
+            !hasTag(tags, loggingTags.KEEPALIVE) &&
+            !hasTag(tags, loggingTags.WEBSOCKET) &&
+            !hasTag(tags, loggingTags.DRAG_BACKLOGITEM)
+        );
     }
     return true;
 };
