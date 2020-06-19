@@ -113,6 +113,7 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
     );
     const editDetailButton = props.hasDetails ? (
         <div
+            data-class="item-menu-button"
             className={css.backlogItemDetailButton}
             onClick={() => {
                 if (props.onDetailClicked) {

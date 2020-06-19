@@ -27,11 +27,10 @@ import { apiDeleteBacklogItem } from "../../../actions/apiBacklogItems";
 import { backlogItemDetailClicked, editBacklogItem } from "../../../actions/backlogItems";
 
 // utils
+import * as logger from "../../../utils/logger";
 import { useRecursiveTimeout } from "../../common/setTimeoutHook";
 import { BacklogItemPlanningItem } from "../combo/BacklogItemPlanningItem";
-
-// utils
-import * as logger from "../../../utils/logger";
+import { getParentWithDataClass } from "../../common/domUtils";
 
 // consts/enums
 import * as loggingTags from "../../../constants/loggingTags";
@@ -243,16 +242,6 @@ const addActionButtons = (
 const preventDefault = (e: React.BaseSyntheticEvent<HTMLDivElement>) => {
     logger.info("preventDefault", [loggingTags.DRAG_BACKLOGITEM]);
     e.preventDefault();
-};
-
-const getParentWithDataClass = (elt: HTMLElement, dataClass: string) => {
-    while (elt && elt.getAttribute("data-class") !== dataClass) {
-        elt = elt.parentElement;
-    }
-    if (elt) {
-        return elt;
-    }
-    return null;
 };
 
 const targetIsDragButton = (e: React.BaseSyntheticEvent<HTMLElement>) => {

@@ -33,6 +33,26 @@ export const initApp = (): InitAppAction => ({
     type: ActionTypes.INIT_APP
 });
 
+export interface AppClickAction {
+    type: typeof ActionTypes.APP_CLICK;
+    payload: MouseEvent;
+}
+
+export const appClick = (e: MouseEvent): AppClickAction => ({
+    type: ActionTypes.APP_CLICK,
+    payload: e
+});
+
+export interface AppKeyUpAction {
+    type: typeof ActionTypes.APP_KEYUP;
+    payload: KeyboardEvent;
+}
+
+export const appKeyUp = (e: KeyboardEvent): AppKeyUpAction => ({
+    type: ActionTypes.APP_KEYUP,
+    payload: e
+});
+
 export interface LocalStoreRefreshTokenAction {
     type: typeof ActionTypes.LOCAL_STORE_REFRESH_TOKEN;
     payload: {

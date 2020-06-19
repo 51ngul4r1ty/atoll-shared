@@ -45,7 +45,7 @@ export class ItemMenuPanel extends Component<ItemMenuPanelProps> {
             this.props.caretPosition === CaretPosition.RightTop ? css.rightTopCaret : null
         );
         return (
-            <div className={classToUse}>
+            <div data-class="item-menu-panel" className={classToUse}>
                 <div className={css.triangle}></div>
                 <div className={css.panel}>{this.props.children}</div>
             </div>
