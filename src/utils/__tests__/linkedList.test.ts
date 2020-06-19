@@ -82,8 +82,8 @@ describe("Linked List", () => {
             expect(list.isFirstItem("item-o")).toBeTruthy();
             expect(list.isLastItem("item-q")).toBeTruthy();
         });
-        // prod issue
-        it("should be able to process links in any order (backlog item rank example)", () => {
+        // prod issue 1
+        it("should be able to process links in any order (backlog item rank example 1)", () => {
             const list = new LinkedList<number>();
             list.addLink("e522", "e9d6");
             list.addLink("e9d6", "2da6");
@@ -95,6 +95,20 @@ describe("Linked List", () => {
             list.addLink("fdd2", "3996");
             expect(list.isFirstItem("fdd2")).toBeTruthy();
             expect(list.isLastItem("2da6")).toBeTruthy();
+            expect(list.toIdArray()).toStrictEqual(["fdd2", "3996", "aa81", "b2ca", "e522", "e9d6", "2da6"]);
+        });
+        // prod issue 2
+        it("should be able to process links in any order (backlog item rank example 2)", () => {
+            const list = new LinkedList<number>();
+            list.addLink("fdd3", null);
+            list.addLink("87b0", "4432");
+            list.addLink("4432", "363c");
+            list.addLink("363c", "fdd3");
+            list.addLink("0290", "87b0");
+            list.addLink(null, "0290");
+            expect(list.isFirstItem("0290")).toBeTruthy();
+            expect(list.isLastItem("fdd3")).toBeTruthy();
+            expect(list.toIdArray()).toStrictEqual(["0290", "87b0", "4432", "363c", "fdd3"]);
         });
     });
     describe("toArray", () => {

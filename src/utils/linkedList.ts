@@ -291,11 +291,6 @@ export class LinkedList<T> {
                     this.lastItem = item;
                 } else if (this.isLastItem(prev.id)) {
                     this.lastItem = item;
-                } else {
-                    throw new Error(
-                        `Unable to addIdAfter because inserting after item (${afterId}) that should be the last` +
-                            ` item in the linked list, but is not (${this.lastItem.id} is).`
-                    );
                 }
             } else {
                 // BEFORE: prev <------------> oldPrevNext
@@ -466,6 +461,15 @@ export class LinkedList<T> {
             if (item.data) {
                 items.push(item.data);
             }
+            item = item.next;
+        }
+        return items;
+    }
+    toIdArray(): string[] {
+        const items = [];
+        let item = this.firstItem;
+        while (item) {
+            items.push(item.id);
             item = item.next;
         }
         return items;
