@@ -1,7 +1,9 @@
 .backlogItemUserStoryFormRow {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem; /* TODO: Move to vars */
+    margin-left: 0.3rem; /* TODO: Move to vars */
 }
 
 .embeddedBacklogItemUserStoryFormRow {
-    margin-top: 0.5rem;
+    margin-top: 0.5rem; /* TODO: Move to vars */
+    margin-left: 0.3rem; /* TODO: Move to vars */
 }

@@ -211,14 +211,16 @@ const addActionButtons = (
     renderElts: any[],
     editMode: EditMode,
     suppressTopPadding: boolean,
-    onAddNewBacklogItem: OnAddedNewBacklogItem
+    onAddNewBacklogItem: OnAddedNewBacklogItem,
+    renderMobile: boolean
 ) => {
     if (editMode === EditMode.View) {
         return;
     }
     const actionButtonsClassName = buildClassName(
         css.backlogItemPlanningActionPanel,
-        suppressTopPadding ? null : css.embeddedBacklogItemUserStoryFormRow
+        suppressTopPadding ? null : css.embeddedBacklogItemUserStoryFormRow,
+        renderMobile ? css.mobile : null
     );
     renderElts.push(
         <div key="backlogitem-action-buttons" className={actionButtonsClassName}>
@@ -600,7 +602,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
         });
         setCardPositions(newCardPositions);
         setItemCardWidth(width);
-    }, [props.allItems, props.editMode]);
+    }, [props.allItems, props.editMode, props.renderMobile]);
     const dispatch = useDispatch();
     let inLoadedSection = false;
     let inAddedSection = false;
@@ -633,7 +635,13 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 inAddedSection = false;
             }
             if (!inLoadedSection) {
-                addActionButtons(renderElts, props.editMode, suppressTopPadding || lastItemWasUnsaved, props.onAddNewBacklogItem);
+                addActionButtons(
+                    renderElts,
+                    props.editMode,
+                    suppressTopPadding || lastItemWasUnsaved,
+                    props.onAddNewBacklogItem,
+                    props.renderMobile
+                );
             }
             inLoadedSection = true;
         }
@@ -687,7 +695,13 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
         suppressTopPadding = false;
     });
     if (!inLoadedSection) {
-        addActionButtons(renderElts, props.editMode, suppressTopPadding || lastItemWasUnsaved, props.onAddNewBacklogItem);
+        addActionButtons(
+            renderElts,
+            props.editMode,
+            suppressTopPadding || lastItemWasUnsaved,
+            props.onAddNewBacklogItem,
+            props.renderMobile
+        );
     }
     if (inLoadedSection) {
         renderElts.push(<SimpleDivider key="last-divider" />);

@@ -1,20 +1,21 @@
 /* right */
 
 .backlogItemPlanningPanel {
-    padding: 0.5rem 0.6rem;
+    padding: 0.5rem 0.7rem 0.5rem 0.4rem; /* TODO: Move to vars, note that 0.4rem is really computed as 0.7rem - 0.3rem */
     perspective: 2000px;
 }
 
 .backlogItemPlanningActionPanel {
     display: grid;
     grid-template-columns: max-content max-content;
-    grid-column-gap: 0.4rem;
-    padding-bottom: 0.5rem;
+    grid-column-gap: 0.4rem; /* TODO: Move to vars */
+    padding-bottom: 0.5rem; /* TODO: Move to vars */
+    margin-left: 0.3rem; /* TODO: Move to vars */
 }
 
 .mobile {
 }
 
 .embeddedBacklogItemUserStoryFormRow {
-    margin-top: 0.5rem;
+    margin-top: 0.5rem; /* TODO: Move to vars */
 }

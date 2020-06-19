@@ -63,6 +63,10 @@
 }
 
 .backlogItemCardOuter.mobile .backlogItemText {
+    margin-left: 0.3rem; /* TODO: Use constants??? */
+}
+
+.backlogItemCardOuter.mobile .backlogItemText {
     white-space: normal;
     order: 2;
     height: 4.15rem;

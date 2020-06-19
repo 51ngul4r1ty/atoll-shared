@@ -19,6 +19,11 @@
     height: 0;
 }
 
+.component.rightTopCaret .triangle {
+    margin-top: 1.2rem;
+    align-self: start;
+}
+
 .panel {
     background-color: var(--normal-form-page-color, #d0d0d0);
     box-sizing: border-box;
