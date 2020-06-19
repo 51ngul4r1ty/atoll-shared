@@ -291,13 +291,6 @@ export class LinkedList<T> {
                     this.lastItem = item;
                 } else if (this.isLastItem(prev.id)) {
                     this.lastItem = item;
-                } else {
-                    // TODO: Commented this out for now because it is possible to insert items that are orphaned, and this could
-                    //       just be an orphan case.
-                    // throw new Error(
-                    //     `Unable to addIdAfter because inserting after item (${afterId}) that should be the last` +
-                    //         ` item in the linked list, but is not (${this.lastItem.id} is).`
-                    // );
                 }
             } else {
                 // BEFORE: prev <------------> oldPrevNext
