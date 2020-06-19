@@ -13,7 +13,7 @@ exports[`BacklogItemPlanningPanel should handle scenario where 3 unsaved added i
     [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow" instanceId=5002 externalId=item-3-added id=fake-id-3]
     [Mock SimpleDivider]
     <div
-      class="backlogItemPlanningActionPanel"
+      class="backlogItemPlanningActionPanel mobile"
     >
       [Mock AddButton itemName=story]
       [Mock AddButton itemName=issue]
@@ -49,7 +49,7 @@ exports[`BacklogItemPlanningPanel should include spacing between added items, ac
     [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow" instanceId=1000 externalId=item-1-added id=fake-id-1]
     [Mock SimpleDivider]
     <div
-      class="backlogItemPlanningActionPanel"
+      class="backlogItemPlanningActionPanel mobile"
     >
       [Mock AddButton itemName=story]
       [Mock AddButton itemName=issue]
@@ -74,7 +74,7 @@ exports[`BacklogItemPlanningPanel should include spacing between added saved, ad
     [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow embeddedBacklogItemUserStoryFormRow" instanceId=2001 externalId=item-2-added id=fake-id-2]
     [Mock SimpleDivider]
     <div
-      class="backlogItemPlanningActionPanel"
+      class="backlogItemPlanningActionPanel mobile"
     >
       [Mock AddButton itemName=story]
       [Mock AddButton itemName=issue]
@@ -96,7 +96,7 @@ exports[`BacklogItemPlanningPanel should not include double spacing between adde
     [Mock SimpleDivider]
     [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow embeddedBacklogItemUserStoryFormRow" instanceId=3001 externalId=item-2-added id=fake-id-2]
     <div
-      class="backlogItemPlanningActionPanel"
+      class="backlogItemPlanningActionPanel mobile"
     >
       [Mock AddButton itemName=story]
       [Mock AddButton itemName=issue]
