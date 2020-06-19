@@ -668,7 +668,6 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 );
             }
             const showItem = !isDragItem;
-            // if (!isDragItem) {
             const showDetailMenu = item.id === props.openedDetailMenuBacklogItemId;
             renderElts.push(
                 <BacklogItemPlanningItem
@@ -682,7 +681,6 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                     hidden={!showItem}
                 />
             );
-            // }
         }
         afterPushedItem = item.source === BacklogItemSource.Pushed;
         lastItemWasUnsaved = item.source === BacklogItemSource.Added && !item.saved;
