@@ -4,6 +4,9 @@ import { produce, Draft } from "immer";
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
 
+// utils
+import { getParentWithDataClass } from "../components/common/domUtils";
+
 // interfaces/types
 import { AnyFSA, BaseModelItem, WebsocketPushNotificationData, PushOperationType } from "../types";
 import {
@@ -30,6 +33,7 @@ import {
     BacklogItemDetailFormEditableFieldsWithInstanceId
 } from "../components/organisms/forms/BacklogItemDetailForm";
 import { ApiBacklogItem } from "../apiModelTypes";
+import { AppClickAction } from "../actions/appActions";
 
 export type BacklogItemType = "story" | "issue";
 
@@ -251,6 +255,14 @@ export const mapApiItemsToBacklogItems = (apiItems: ApiBacklogItem[]): BacklogIt
     return apiItems.map((item) => mapApiItemToBacklogItem(item));
 };
 
+const targetIsInMenuPanel = (target: EventTarget) => {
+    return !!getParentWithDataClass(target as HTMLElement, "item-menu-panel");
+};
+
+const targetIsInMenuButton = (target: EventTarget) => {
+    return !!getParentWithDataClass(target as HTMLElement, "item-menu-button");
+};
+
 export const backlogItemsReducer = (state: BacklogItemsState = initialState, action: AnyFSA): BacklogItemsState =>
     produce(state, (draft) => {
         const { type } = action;
@@ -360,6 +372,16 @@ export const backlogItemsReducer = (state: BacklogItemsState = initialState, act
                 }
                 draft.pushedItems.push(actionTyped.payload);
                 rebuildAllItems(draft);
+                return;
+            }
+            case ActionTypes.APP_CLICK: {
+                if (draft.openedDetailMenuBacklogItemId) {
+                    const actionTyped = action as AppClickAction;
+                    const targetElt = actionTyped.payload.target;
+                    if (!targetIsInMenuPanel(targetElt) && !targetIsInMenuButton(targetElt)) {
+                        draft.openedDetailMenuBacklogItemId = null;
+                    }
+                }
                 return;
             }
             case ActionTypes.TOGGLE_BACKLOG_ITEM_DETAIL: {

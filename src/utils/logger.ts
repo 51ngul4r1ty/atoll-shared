@@ -14,7 +14,8 @@ export const shouldLogThis = (tags: string[], level: LevelType): boolean => {
         return (
             !hasTag(tags, loggingTags.KEEPALIVE) &&
             !hasTag(tags, loggingTags.WEBSOCKET) &&
-            !hasTag(tags, loggingTags.DRAG_BACKLOGITEM)
+            !hasTag(tags, loggingTags.DRAG_BACKLOGITEM) &&
+            !hasTag(tags, loggingTags.APP_EVENTS)
         );
     }
     return true;
