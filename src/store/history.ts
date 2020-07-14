@@ -15,3 +15,7 @@ export const createClientHistory = ({ initialEntries = [] }: HistoryParams = {})
 export const createServerHistory = ({ initialEntries = [] }: HistoryParams = {}) => {
     return createMemoryHistory({ initialEntries });
 };
+
+export const createElectronClientHistory = ({ initialEntries = [] }: HistoryParams = {}) => {
+    return createMemoryHistory({ initialEntries });
+};

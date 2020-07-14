@@ -1,5 +1,6 @@
 // consts/enums
 export { APPLICATION_JSON } from "./constants";
+export { FEATURE_TOGGLE_LIST } from "./constants/defaultFeatureToggles";
 export { PushState } from "./reducers/backlogItemsReducer";
 
 // components - buttons - atoms
@@ -48,10 +49,12 @@ export * from "./config";
 export {
     BasePushNotification,
     FeatureToggle,
-    FeatureTogglesState,
     WebsocketPushNotification as PushNotification,
     PushNotificationType,
-    StateTree
+    StateTree,
+    AppState,
+    FeatureTogglesState,
+    UserState
 } from "./types";
 export * from "./apiModelTypes";
 export {
@@ -67,7 +70,7 @@ export { AppContext, AppProvider, AppConsumer } from "./contexts/appContextUtil"
 
 // utils
 export { configureStore } from "./store";
-export { createClientHistory, createServerHistory } from "./store/history";
+export { createClientHistory, createElectronClientHistory, createServerHistory } from "./store/history";
 export { storeHistoryInstance, getHistoryInstance } from "./config";
 export * from "./utils/dateHelper";
 export * from "./utils/linkedList";
