@@ -37,6 +37,8 @@ export type AppProps = AppStateProps & AppDispatchProps;
 
 export interface AppState {
     isMobile: boolean;
+    hasError?: boolean;
+    errorMessage?: string;
 }
 
 /* exported component */
@@ -103,19 +105,26 @@ export class App extends React.Component<AppProps, AppState> {
             this.setState({ isMobile: value });
         }
     };
+    static getDerivedStateFromError(error) {
+        return { hasError: true, errorMessage: error };
+    }
     render() {
         const classNameToUse = this.state?.isMobile ? `${css.app} ${css.mobile}` : css.app;
-        return (
-            <AppProvider value={{ state: this.state, updateIsMobile: this.updateIsMobile }}>
-                <div className={classNameToUse}>
-                    {/* <Helmet
+        if (this.state?.hasError) {
+            return <div>ERROR MESSAGE: {this.state?.errorMessage}</div>;
+        } else {
+            return (
+                <AppProvider value={{ state: this.state, updateIsMobile: this.updateIsMobile }}>
+                    <div className={classNameToUse}>
+                        {/* <Helmet
                     defaultTitle="Atoll"
                     titleTemplate="Atoll – %s"
                     link={[{ rel: "icon", type: "image/png", href: favicon }]}
                 /> */}
-                    {this.props.children}
-                </div>
-            </AppProvider>
-        );
+                        {this.props.children}
+                    </div>
+                </AppProvider>
+            );
+        }
     }
 }
