@@ -74,6 +74,7 @@ export { createClientHistory, createElectronClientHistory, createServerHistory }
 export { storeHistoryInstance, getHistoryInstance } from "./config";
 export * from "./utils/dateHelper";
 export * from "./utils/linkedList";
+export * from "./utils/featureToggleUtils";
 
 // themes
 export { themeList } from "./themes/all";
