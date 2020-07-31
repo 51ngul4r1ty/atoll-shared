@@ -1,6 +1,6 @@
 // externals
 import thunk from "redux-thunk";
-import { createStore, applyMiddleware } from "redux";
+import { compose, createStore, applyMiddleware } from "redux";
 import { routerMiddleware } from "connected-react-router";
 import { composeWithDevTools } from "redux-devtools-extension";
 
@@ -28,9 +28,10 @@ type StoreParams = {
     initialState?: { [key: string]: any };
     middleware?: any[];
     history: any;
+    windowRef?: any;
 };
 
-export const configureStore = ({ initialState, middleware = [], history }: StoreParams) => {
+export const configureStore = ({ initialState, middleware = [], history, windowRef }: StoreParams) => {
     const rootReducer = createRootReducer(history);
 
     const allMiddleware = [
@@ -43,8 +44,19 @@ export const configureStore = ({ initialState, middleware = [], history }: Store
         wsMiddleware
     ].concat(...middleware);
 
-    const store = createStore(rootReducer, initialState, composeEnhancers(applyMiddleware(...allMiddleware)));
-
+    let store;
+    if (!windowRef) {
+        store = createStore(rootReducer, initialState, composeEnhancers(applyMiddleware(...allMiddleware)));
+    } else {
+        store = createStore(
+            rootReducer,
+            initialState,
+            compose(
+                applyMiddleware(...allMiddleware),
+                windowRef.__REDUX_DEVTOOLS_EXTENSION__ ? windowRef.__REDUX_DEVTOOLS_EXTENSION__() : (f) => f
+            )
+        );
+    }
     return store;
 };
 
