@@ -31,6 +31,13 @@ const mapDispatchToProps = (dispatch: Dispatch): AppDispatchProps => {
         onAppKeyUp: (e: KeyboardEvent) => {
             dispatch(appKeyUp(e));
         },
+        onClose: () => {
+            // This is electron specific code - may be better to handle it in a more decoupled way?
+            const globalCloseApp = (window as any).atoll__CloseApp;
+            if (globalCloseApp) {
+                globalCloseApp();
+            }
+        },
         onWebSocketMessageReceived: (data: any) => {
             dispatch(receiveWebSocketMessage(data));
         }

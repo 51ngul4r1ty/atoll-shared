@@ -14,6 +14,8 @@ import css from "./App.module.css";
 
 // consts/enums
 import * as loggingTags from "./constants/loggingTags";
+import { FrameCloseButton } from "./components/molecules/buttons/FrameCloseButton";
+import { buildClassName } from "./utils/classNameBuilder";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
@@ -23,12 +25,13 @@ import * as loggingTags from "./constants/loggingTags";
 
 export interface AppStateProps {
     detectBrowserDarkMode: boolean;
-    executingOnClient: boolean;
+    executingOnClient: boolean; // i.e. electron
 }
 
 export interface AppDispatchProps {
     onAppClick: { (e: MouseEvent) };
     onAppKeyUp: { (e: KeyboardEvent) };
+    onClose: { () };
     onLoaded: { () };
     onWebSocketMessageReceived: { (data: any) };
 }
@@ -110,6 +113,22 @@ export class App extends React.Component<AppProps, AppState> {
     }
     render() {
         const classNameToUse = this.state?.isMobile ? `${css.app} ${css.mobile}` : css.app;
+        const titleBar = !this.props.executingOnClient ? null : (
+            <div className={css.appTitleBar}>
+                <div className={css.appTitleBarButtons}>
+                    <button className={css.appTitleBarMinButton}>-</button>
+                    <button className={css.appTitleBarMaxButton}>+</button>
+                    <FrameCloseButton
+                        className={css.appTitleBarCloseButton}
+                        onClick={() => {
+                            if (this.props.onClose) {
+                                this.props.onClose();
+                            }
+                        }}
+                    />
+                </div>
+            </div>
+        );
         if (this.state?.hasError) {
             return <div>ERROR MESSAGE: {this.state?.errorMessage}</div>;
         } else {
@@ -122,6 +141,7 @@ export class App extends React.Component<AppProps, AppState> {
                     link={[{ rel: "icon", type: "image/png", href: favicon }]}
                 /> */}
                         {this.props.children}
+                        {titleBar}
                     </div>
                 </AppProvider>
             );

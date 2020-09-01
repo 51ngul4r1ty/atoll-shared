@@ -14,6 +14,7 @@ export { EditButton, EditMode } from "./components/molecules/buttons/EditButton"
 export { HomeButton } from "./components/molecules/buttons/HomeButton";
 export { RefreshButton } from "./components/molecules/buttons/RefreshButton";
 export { RemoveButton } from "./components/molecules/buttons/RemoveButton";
+export { FrameCloseButton } from "./components/molecules/buttons/FrameCloseButton";
 
 // components - cards
 export { BacklogItemCard, BacklogItemTypeEnum } from "./components/molecules/cards/BacklogItemCard";

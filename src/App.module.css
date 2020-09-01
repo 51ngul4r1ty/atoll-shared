@@ -21,5 +21,28 @@
     /* add top-level style for app here */
 }
 
+.appTitleBar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.appTitleBarButtons {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+}
+
+.appTitleBarCloseButton svg {
+    width: 0.5rem;
+    height: 0.5rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
 .mobile {
 }
