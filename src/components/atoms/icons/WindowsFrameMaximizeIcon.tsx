@@ -10,14 +10,14 @@ import { StandardInvertibleComponentProps } from "../../common/types";
 // utils
 import { getFillAndStrokeClassNames } from "../../common/propUtils";
 
-export interface WindowsFrameCloseIconDispatchProps {
+export interface WindowsFrameMaximizeIconDispatchProps {
     onMouseEnter?: { () };
     onMouseLeave?: { () };
 }
 
-export interface WindowsFrameCloseIconProps extends StandardInvertibleComponentProps, WindowsFrameCloseIconDispatchProps {}
+export interface WindowsFrameMaximizeIconProps extends StandardInvertibleComponentProps, WindowsFrameMaximizeIconDispatchProps {}
 
-export const WindowsFrameCloseIcon: React.FC<WindowsFrameCloseIconProps> = (props) => {
+export const WindowsFrameMaximizeIcon: React.FC<WindowsFrameMaximizeIconProps> = (props) => {
     const { fillClass, strokeClass } = getFillAndStrokeClassNames(
         props,
         baseCss.fillInverted,
@@ -50,10 +50,10 @@ export const WindowsFrameCloseIcon: React.FC<WindowsFrameCloseIconProps> = (prop
                 <g id="Layer 1" transform="scale(1 -1)">
                     <path
                         className={fillClass}
-                        d="M 0,4.94 L 32.566,37.51 L 0.01,70.07 L 4.939,75 L 37.495,42.43 L 70.061,75 L 74.99,70.08 L 42.424,37.51 L 74.99,4.93 L 70.071,0 L 37.495,32.58 L 4.929,0.01 L 0,4.94 Z"
+                        d="M 0.01,0 L 0.01,74.99 L 74.99,74.99 L 74.99,0 L 0.01,0 Z M 67.491,7.49 L 67.491,67.49 L 7.499,67.49 L 7.499,7.49 L 67.491,7.49 Z"
+                        fill="black"
                         strokeLinejoin="miter"
                         stroke="none"
-                        fill="black"
                         markerStart="none"
                         markerEnd="none"
                     />

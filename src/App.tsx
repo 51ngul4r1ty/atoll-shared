@@ -15,6 +15,7 @@ import css from "./App.module.css";
 // consts/enums
 import * as loggingTags from "./constants/loggingTags";
 import { FrameCloseButton } from "./components/molecules/buttons/FrameCloseButton";
+import { FrameMaximizeButton } from "./components/molecules/buttons/FrameMaximizeButton";
 import { buildClassName } from "./utils/classNameBuilder";
 
 // images
@@ -32,6 +33,8 @@ export interface AppDispatchProps {
     onAppClick: { (e: MouseEvent) };
     onAppKeyUp: { (e: KeyboardEvent) };
     onClose: { () };
+    onMaximize: { () };
+    onMinimize: { () };
     onLoaded: { () };
     onWebSocketMessageReceived: { (data: any) };
 }
@@ -117,7 +120,14 @@ export class App extends React.Component<AppProps, AppState> {
             <div className={css.appTitleBar}>
                 <div className={css.appTitleBarButtons}>
                     <button className={css.appTitleBarMinButton}>-</button>
-                    <button className={css.appTitleBarMaxButton}>+</button>
+                    <FrameMaximizeButton
+                        className={css.appTitleBarMaximizeButton}
+                        onClick={() => {
+                            if (this.props.onMaximize) {
+                                this.props.onMaximize();
+                            }
+                        }}
+                    />
                     <FrameCloseButton
                         className={css.appTitleBarCloseButton}
                         onClick={() => {

@@ -38,6 +38,20 @@ const mapDispatchToProps = (dispatch: Dispatch): AppDispatchProps => {
                 globalCloseApp();
             }
         },
+        onMaximize: () => {
+            // This is electron specific code - may be better to handle it in a more decoupled way?
+            const globalMaximizeApp = (window as any).atoll__MaximizeApp;
+            if (globalMaximizeApp) {
+                globalMaximizeApp();
+            }
+        },
+        onMinimize: () => {
+            // This is electron specific code - may be better to handle it in a more decoupled way?
+            const globalMinimizeApp = (window as any).atoll__MinimizeApp;
+            if (globalMinimizeApp) {
+                globalMinimizeApp();
+            }
+        },
         onWebSocketMessageReceived: (data: any) => {
             dispatch(receiveWebSocketMessage(data));
         }
