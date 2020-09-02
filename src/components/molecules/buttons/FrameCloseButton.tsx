@@ -1,9 +1,6 @@
 // externals
 import * as React from "react";
 
-// // atoms
-// import { SimpleButton } from "../../atoms/buttons/SimpleButton";
-
 // icons
 import { WindowsFrameCloseIcon } from "../../atoms/icons/WindowsFrameCloseIcon";
 

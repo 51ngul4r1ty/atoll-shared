@@ -16,6 +16,7 @@ import css from "./App.module.css";
 import * as loggingTags from "./constants/loggingTags";
 import { FrameCloseButton } from "./components/molecules/buttons/FrameCloseButton";
 import { FrameMaximizeButton } from "./components/molecules/buttons/FrameMaximizeButton";
+import { FrameMinimizeButton } from "./components/molecules/buttons/FrameMinimizeButton";
 import { buildClassName } from "./utils/classNameBuilder";
 
 // images
@@ -120,6 +121,14 @@ export class App extends React.Component<AppProps, AppState> {
             <div className={css.appTitleBar}>
                 <div className={css.appTitleBarButtons}>
                     <button className={css.appTitleBarMinButton}>-</button>
+                    <FrameMinimizeButton
+                        className={css.appTitleBarMinimizeButton}
+                        onClick={() => {
+                            if (this.props.onMinimize) {
+                                this.props.onMinimize();
+                            }
+                        }}
+                    />
                     <FrameMaximizeButton
                         className={css.appTitleBarMaximizeButton}
                         onClick={() => {
