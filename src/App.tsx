@@ -120,7 +120,6 @@ export class App extends React.Component<AppProps, AppState> {
         const titleBar = !this.props.executingOnClient ? null : (
             <div className={css.appTitleBar}>
                 <div className={css.appTitleBarButtons}>
-                    <button className={css.appTitleBarMinButton}>-</button>
                     <FrameMinimizeButton
                         className={css.appTitleBarMinimizeButton}
                         onClick={() => {
