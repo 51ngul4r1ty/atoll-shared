@@ -15,7 +15,7 @@ import css from "./App.module.css";
 // consts/enums
 import * as loggingTags from "./constants/loggingTags";
 import { FrameCloseButton } from "./components/molecules/buttons/FrameCloseButton";
-import { FrameMaximizeButton } from "./components/molecules/buttons/FrameMaximizeButton";
+import { FrameMaximizeButton, MaximizedState } from "./components/molecules/buttons/FrameMaximizeButton";
 import { FrameMinimizeButton } from "./components/molecules/buttons/FrameMinimizeButton";
 import { buildClassName } from "./utils/classNameBuilder";
 
@@ -35,6 +35,7 @@ export interface AppDispatchProps {
     onAppKeyUp: { (e: KeyboardEvent) };
     onClose: { () };
     onMaximize: { () };
+    onRestore: { () };
     onMinimize: { () };
     onLoaded: { () };
     onWebSocketMessageReceived: { (data: any) };
@@ -130,9 +131,21 @@ export class App extends React.Component<AppProps, AppState> {
                     />
                     <FrameMaximizeButton
                         className={css.appTitleBarMaximizeButton}
-                        onClick={() => {
-                            if (this.props.onMaximize) {
-                                this.props.onMaximize();
+                        onClick={(currentState) => {
+                            if (currentState === MaximizedState.NotMaximized) {
+                                if (this.props.onMaximize) {
+                                    this.props.onMaximize();
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            } else if (currentState === MaximizedState.Maximized) {
+                                if (this.props.onRestore) {
+                                    this.props.onRestore();
+                                    return true;
+                                } else {
+                                    return false;
+                                }
                             }
                         }}
                     />

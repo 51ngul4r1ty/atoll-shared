@@ -45,6 +45,13 @@ const mapDispatchToProps = (dispatch: Dispatch): AppDispatchProps => {
                 globalMaximizeApp();
             }
         },
+        onRestore: () => {
+            // This is electron specific code - may be better to handle it in a more decoupled way?
+            const globalRestoreApp = (window as any).atoll__RestoreApp;
+            if (globalRestoreApp) {
+                globalRestoreApp();
+            }
+        },
         onMinimize: () => {
             // This is electron specific code - may be better to handle it in a more decoupled way?
             const globalMinimizeApp = (window as any).atoll__MinimizeApp;
