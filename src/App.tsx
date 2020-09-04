@@ -3,6 +3,9 @@ import * as React from "react";
 
 // components
 import { AppContext, AppProvider } from "./contexts/appContextUtil";
+import { FrameCloseButton } from "./components/molecules/buttons/FrameCloseButton";
+import { FrameMaximizeButton, MaximizedState } from "./components/molecules/buttons/FrameMaximizeButton";
+import { FrameMinimizeButton } from "./components/molecules/buttons/FrameMinimizeButton";
 
 // utils
 import { ThemeHelper } from "./utils/themeHelper";
@@ -23,12 +26,16 @@ import * as loggingTags from "./constants/loggingTags";
 
 export interface AppStateProps {
     detectBrowserDarkMode: boolean;
-    executingOnClient: boolean;
+    executingOnClient: boolean; // i.e. electron
 }
 
 export interface AppDispatchProps {
     onAppClick: { (e: MouseEvent) };
     onAppKeyUp: { (e: KeyboardEvent) };
+    onClose: { () };
+    onMaximize: { () };
+    onRestore: { () };
+    onMinimize: { () };
     onLoaded: { () };
     onWebSocketMessageReceived: { (data: any) };
 }
@@ -110,6 +117,48 @@ export class App extends React.Component<AppProps, AppState> {
     }
     render() {
         const classNameToUse = this.state?.isMobile ? `${css.app} ${css.mobile}` : css.app;
+        const titleBar = !this.props.executingOnClient ? null : (
+            <div className={css.appTitleBar}>
+                <div className={css.appTitleBarButtons}>
+                    <FrameMinimizeButton
+                        className={css.appTitleBarMinimizeButton}
+                        onClick={() => {
+                            if (this.props.onMinimize) {
+                                this.props.onMinimize();
+                            }
+                        }}
+                    />
+                    <FrameMaximizeButton
+                        className={css.appTitleBarMaximizeButton}
+                        onClick={(currentState) => {
+                            if (currentState === MaximizedState.NotMaximized) {
+                                if (this.props.onMaximize) {
+                                    this.props.onMaximize();
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            } else if (currentState === MaximizedState.Maximized) {
+                                if (this.props.onRestore) {
+                                    this.props.onRestore();
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            }
+                        }}
+                    />
+                    <FrameCloseButton
+                        className={css.appTitleBarCloseButton}
+                        onClick={() => {
+                            if (this.props.onClose) {
+                                this.props.onClose();
+                            }
+                        }}
+                    />
+                </div>
+            </div>
+        );
         if (this.state?.hasError) {
             return <div>ERROR MESSAGE: {this.state?.errorMessage}</div>;
         } else {
@@ -122,6 +171,7 @@ export class App extends React.Component<AppProps, AppState> {
                     link={[{ rel: "icon", type: "image/png", href: favicon }]}
                 /> */}
                         {this.props.children}
+                        {titleBar}
                     </div>
                 </AppProvider>
             );

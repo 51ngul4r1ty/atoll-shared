@@ -11,3 +11,6 @@ export * from "./IssueIcon";
 export * from "./RefreshIcon";
 export * from "./StoryIcon";
 export * from "./TrashIcon";
+export * from "./WindowsFrameCloseIcon";
+export * from "./WindowsFrameMaximizeIcon";
+export * from "./WindowsFrameMinimizeIcon";
