@@ -3,6 +3,9 @@ import * as React from "react";
 
 // components
 import { AppContext, AppProvider } from "./contexts/appContextUtil";
+import { FrameCloseButton } from "./components/molecules/buttons/FrameCloseButton";
+import { FrameMaximizeButton, MaximizedState } from "./components/molecules/buttons/FrameMaximizeButton";
+import { FrameMinimizeButton } from "./components/molecules/buttons/FrameMinimizeButton";
 
 // utils
 import { ThemeHelper } from "./utils/themeHelper";
@@ -14,10 +17,6 @@ import css from "./App.module.css";
 
 // consts/enums
 import * as loggingTags from "./constants/loggingTags";
-import { FrameCloseButton } from "./components/molecules/buttons/FrameCloseButton";
-import { FrameMaximizeButton, MaximizedState } from "./components/molecules/buttons/FrameMaximizeButton";
-import { FrameMinimizeButton } from "./components/molecules/buttons/FrameMinimizeButton";
-import { buildClassName } from "./utils/classNameBuilder";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
