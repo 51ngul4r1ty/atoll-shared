@@ -187,8 +187,8 @@ export class App extends React.Component<AppProps, AppState> {
                     link={[{ rel: "icon", type: "image/png", href: favicon }]}
                 /> */}
                         {this.props.children}
-                        {titleBar}
                     </div>
+                    {titleBar}
                 </AppProvider>
             );
         }
