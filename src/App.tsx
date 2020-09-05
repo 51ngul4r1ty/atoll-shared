@@ -30,6 +30,7 @@ export interface AppStateProps {
     detectBrowserDarkMode: boolean;
     executingOnClient: boolean; // any client (inlcuding web browser), not just electron
     electronClient: boolean;
+    isWindowMaximized?: { (): boolean | undefined };
 }
 
 export interface AppDispatchProps {
@@ -39,7 +40,7 @@ export interface AppDispatchProps {
     onMaximize: { () };
     onRestore: { () };
     onMinimize: { () };
-    onTitleBarDoubleClick: { () };
+    onTitleBarDoubleClick: { (): boolean };
     onLoaded: { () };
     onWebSocketMessageReceived: { (data: any) };
 }
@@ -48,6 +49,7 @@ export type AppProps = AppStateProps & AppDispatchProps;
 
 export interface AppState {
     isMobile: boolean;
+    isMaximized: boolean;
     hasError?: boolean;
     errorMessage?: string;
 }
@@ -57,6 +59,7 @@ export interface AppState {
 export class App extends React.Component<AppProps, AppState> {
     static contextType = AppContext;
     private themeHelper = new ThemeHelper();
+    private timeoutHandle: NodeJS.Timeout;
     constructor(props) {
         super(props);
     }
@@ -69,13 +72,17 @@ export class App extends React.Component<AppProps, AppState> {
         window.addEventListener("resize", this.handleResize);
         window.addEventListener("click", this.handleClick);
         window.addEventListener("keyup", this.handleKeyUp);
-        this.setState({ isMobile: false });
+        this.setState({ isMobile: false, isMaximized: this.props.isWindowMaximized() });
         this.context.updateIsMobile = (value) => {
             this.updateIsMobile(value);
         };
         this.handleResize();
+        this.handleWindowMaximize();
     }
     componentWillUnmount() {
+        if (this.timeoutHandle) {
+            clearTimeout(this.timeoutHandle);
+        }
         window.removeEventListener("resize", this.handleResize);
         window.removeEventListener("click", this.handleClick);
         window.removeEventListener("keyup", this.handleKeyUp);
@@ -87,6 +94,12 @@ export class App extends React.Component<AppProps, AppState> {
         } else {
             this.context.updateIsMobile(false);
         }
+    };
+    handleWindowMaximize = () => {
+        this.timeoutHandle = setTimeout(() => {
+            this.updateIsMaximized();
+            this.handleWindowMaximize();
+        }, 500);
     };
     handleClick = (e: MouseEvent) => {
         const logContainer = logger.info("app click", [loggingTags.APP_EVENTS]);
@@ -110,8 +123,12 @@ export class App extends React.Component<AppProps, AppState> {
     }
     updateIsMobile = (value: boolean) => {
         if (this.state?.isMobile !== value) {
-            this.setState({ isMobile: value });
+            this.setState({ isMobile: value, isMaximized: this.state?.isMaximized });
         }
+    };
+    updateIsMaximized = () => {
+        const isMaximized = this.props.isWindowMaximized();
+        this.setState({ isMobile: this.state?.isMobile, isMaximized });
     };
     static getDerivedStateFromError(error) {
         return { hasError: true, errorMessage: error };
@@ -135,21 +152,14 @@ export class App extends React.Component<AppProps, AppState> {
                     }}
                 />
                 <FrameMaximizeButton
+                    isMaximized={this.props.isWindowMaximized()}
                     className={css.appTitleBarMaximizeButton}
-                    onClick={(currentState) => {
-                        if (currentState === MaximizedState.NotMaximized) {
-                            if (this.props.onMaximize) {
-                                this.props.onMaximize();
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        } else if (currentState === MaximizedState.Maximized) {
-                            if (this.props.onRestore) {
+                    onClick={() => {
+                        if (this.props.isWindowMaximized) {
+                            if (this.props.isWindowMaximized()) {
                                 this.props.onRestore();
-                                return true;
                             } else {
-                                return false;
+                                this.props.onMaximize();
                             }
                         }
                     }}
@@ -169,7 +179,9 @@ export class App extends React.Component<AppProps, AppState> {
                 className={css.appTitleBar}
                 onDoubleClick={() => {
                     if (this.props.onTitleBarDoubleClick) {
-                        this.props.onTitleBarDoubleClick();
+                        const wasExecuted = this.props.onTitleBarDoubleClick();
+                        if (wasExecuted) {
+                        }
                     }
                 }}
             >

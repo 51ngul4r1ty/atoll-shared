@@ -17,7 +17,15 @@ const mapStateToProps = (state: StateTree): AppStateProps => {
     return {
         detectBrowserDarkMode: userPreferences.detectBrowserDarkMode,
         executingOnClient: state.app.executingOnClient || false,
-        electronClient: state.app.electronClient || false
+        electronClient: state.app.electronClient || false,
+        isWindowMaximized: (): boolean | undefined => {
+            // This is electron specific code - may be better to handle it in a more decoupled way?
+            const globalIsWindowMaximized = (window as any).atoll__IsWindowMaximized;
+            if (globalIsWindowMaximized) {
+                return globalIsWindowMaximized();
+            }
+            return undefined;
+        }
     };
 };
 
@@ -64,8 +72,9 @@ const mapDispatchToProps = (dispatch: Dispatch): AppDispatchProps => {
             // This is electron specific code - may be better to handle it in a more decoupled way?
             const globalTitleBarDoubleClick = (window as any).atoll__TitleBarDoubleClick;
             if (globalTitleBarDoubleClick) {
-                globalTitleBarDoubleClick();
+                return globalTitleBarDoubleClick();
             }
+            return false;
         },
         onWebSocketMessageReceived: (data: any) => {
             dispatch(receiveWebSocketMessage(data));

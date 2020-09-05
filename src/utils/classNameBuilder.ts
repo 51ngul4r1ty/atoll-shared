@@ -11,7 +11,6 @@ export const buildClassName = (...classNames: string[]) => {
 };
 
 export const buildOsClassName = (platformValue: string) => {
-    console.log(`PLATFORM VALUE = ${platformValue}`);
     switch (platformValue) {
         case platformValues.WINDOWS:
             return "os-windows";

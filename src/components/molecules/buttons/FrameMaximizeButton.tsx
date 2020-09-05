@@ -14,7 +14,7 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 
 export interface FrameMaximizeButtonStateProps extends PropsWithClassName {
     itemName?: string;
-    isMaximizedToStart?: boolean;
+    isMaximized?: boolean;
 }
 
 export enum MaximizedState {
@@ -23,24 +23,14 @@ export enum MaximizedState {
 }
 
 export interface FrameMaximizeButtonDispatchProps {
-    /**
-     * Handle the maximize/restore functionality.
-     *
-     * @returns true, false or undefined;
-     *   true = window state changed after click;
-     *   false = it didn't change;
-     *   undefined probably means that the developer was unaware that returning a value would have an effect - so we assume the
-     *       window state change was successful.
-     */
-    onClick: { (currentState: MaximizedState): boolean | void };
+    onClick: { () };
 }
 
 export type FrameMaximizeButtonProps = FrameMaximizeButtonStateProps & FrameMaximizeButtonDispatchProps;
 
 export const FrameMaximizeButton: React.FC<FrameMaximizeButtonProps> = (props) => {
     const [isHover, setIsHover] = React.useState(false);
-    const [isMaximized, setIsMaximized] = React.useState(props.isMaximizedToStart);
-    const icon = isMaximized ? (
+    const icon = props.isMaximized ? (
         <WindowsFrameRestoreIcon invertColors={isHover} />
     ) : (
         <WindowsFrameMaximizeIcon invertColors={isHover} />
@@ -57,11 +47,7 @@ export const FrameMaximizeButton: React.FC<FrameMaximizeButtonProps> = (props) =
             }}
             onClick={() => {
                 if (props.onClick) {
-                    const currentState = isMaximized ? MaximizedState.Maximized : MaximizedState.NotMaximized;
-                    const clickResult = props.onClick(currentState);
-                    if (clickResult !== false) {
-                        setIsMaximized(!isMaximized);
-                    }
+                    props.onClick();
                 }
             }}
         >
