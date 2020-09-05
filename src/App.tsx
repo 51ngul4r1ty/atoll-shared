@@ -17,6 +17,7 @@ import css from "./App.module.css";
 
 // consts/enums
 import * as loggingTags from "./constants/loggingTags";
+import { isPlatformWindows } from "./utils/osUtils";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
@@ -117,48 +118,47 @@ export class App extends React.Component<AppProps, AppState> {
     }
     render() {
         const classNameToUse = this.state?.isMobile ? `${css.app} ${css.mobile}` : css.app;
-        const titleBar = !this.props.executingOnClient ? null : (
-            <div className={css.appTitleBar}>
-                <div className={css.appTitleBarButtons}>
-                    <FrameMinimizeButton
-                        className={css.appTitleBarMinimizeButton}
-                        onClick={() => {
-                            if (this.props.onMinimize) {
-                                this.props.onMinimize();
+        const titleBarButtonElts = !isPlatformWindows() ? null : (
+            <div className={css.appTitleBarButtons}>
+                <FrameMinimizeButton
+                    className={css.appTitleBarMinimizeButton}
+                    onClick={() => {
+                        if (this.props.onMinimize) {
+                            this.props.onMinimize();
+                        }
+                    }}
+                />
+                <FrameMaximizeButton
+                    className={css.appTitleBarMaximizeButton}
+                    onClick={(currentState) => {
+                        if (currentState === MaximizedState.NotMaximized) {
+                            if (this.props.onMaximize) {
+                                this.props.onMaximize();
+                                return true;
+                            } else {
+                                return false;
                             }
-                        }}
-                    />
-                    <FrameMaximizeButton
-                        className={css.appTitleBarMaximizeButton}
-                        onClick={(currentState) => {
-                            if (currentState === MaximizedState.NotMaximized) {
-                                if (this.props.onMaximize) {
-                                    this.props.onMaximize();
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            } else if (currentState === MaximizedState.Maximized) {
-                                if (this.props.onRestore) {
-                                    this.props.onRestore();
-                                    return true;
-                                } else {
-                                    return false;
-                                }
+                        } else if (currentState === MaximizedState.Maximized) {
+                            if (this.props.onRestore) {
+                                this.props.onRestore();
+                                return true;
+                            } else {
+                                return false;
                             }
-                        }}
-                    />
-                    <FrameCloseButton
-                        className={css.appTitleBarCloseButton}
-                        onClick={() => {
-                            if (this.props.onClose) {
-                                this.props.onClose();
-                            }
-                        }}
-                    />
-                </div>
+                        }
+                    }}
+                />
+                <FrameCloseButton
+                    className={css.appTitleBarCloseButton}
+                    onClick={() => {
+                        if (this.props.onClose) {
+                            this.props.onClose();
+                        }
+                    }}
+                />
             </div>
         );
+        const titleBar = !this.props.executingOnClient ? null : <div className={css.appTitleBar}>{titleBarButtonElts}</div>;
         if (this.state?.hasError) {
             return <div>ERROR MESSAGE: {this.state?.errorMessage}</div>;
         } else {
