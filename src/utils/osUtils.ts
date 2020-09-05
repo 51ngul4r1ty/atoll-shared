@@ -1,6 +1,6 @@
 import * as os from "os";
 
-const platforms = {
+export const platforms = {
     WINDOWS: "WINDOWS",
     MAC: "MAC",
     LINUX: "LINUX",
@@ -19,6 +19,8 @@ const platformsNames = {
     android: platforms.ANDROID,
     aix: platforms.AIX
 };
+
+export const currentPlatform = os.platform();
 
 export const platformName = platformsNames[os.platform()];
 
