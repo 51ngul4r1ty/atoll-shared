@@ -29,6 +29,14 @@
     bottom: 0;
 }
 
+/* .appTitleBar:global(.os-windows) {
+    top: 1.5rem;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+} */
+
 .appTitleBar {
     position: absolute;
     top: 0;
@@ -36,14 +44,16 @@
     right: 0;
     min-height: 1.5rem;
     max-height: 1.5rem;
+    display: grid;
+    grid-template-columns: auto min-content;
+}
+
+.appTitleBarDragArea {
     -webkit-app-region: drag;
     -webkit-user-select: none;
 }
 
 .appTitleBarButtons {
-    position: absolute;
-    top: 0;
-    right: 0;
     display: flex;
 }
 

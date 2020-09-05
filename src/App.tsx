@@ -122,47 +122,48 @@ export class App extends React.Component<AppProps, AppState> {
             this.state?.isMobile ? css.mobile : null,
             this.props.electronClient ? buildOsClassName(currentPlatformValue) : null
         );
-        const titleBarButtonElts =
-            this.props.electronClient && !isPlatformWindows() ? null : (
-                <div className={css.appTitleBarButtons}>
-                    <FrameMinimizeButton
-                        className={css.appTitleBarMinimizeButton}
-                        onClick={() => {
-                            if (this.props.onMinimize) {
-                                this.props.onMinimize();
+        const isWindowsElectronClient = this.props.electronClient && !isPlatformWindows();
+        const titleBarDragAreaElts = !isWindowsElectronClient ? null : <div className={css.appTitleBarDragArea} />;
+        const titleBarButtonElts = !isWindowsElectronClient ? null : (
+            <div className={css.appTitleBarButtons}>
+                <FrameMinimizeButton
+                    className={css.appTitleBarMinimizeButton}
+                    onClick={() => {
+                        if (this.props.onMinimize) {
+                            this.props.onMinimize();
+                        }
+                    }}
+                />
+                <FrameMaximizeButton
+                    className={css.appTitleBarMaximizeButton}
+                    onClick={(currentState) => {
+                        if (currentState === MaximizedState.NotMaximized) {
+                            if (this.props.onMaximize) {
+                                this.props.onMaximize();
+                                return true;
+                            } else {
+                                return false;
                             }
-                        }}
-                    />
-                    <FrameMaximizeButton
-                        className={css.appTitleBarMaximizeButton}
-                        onClick={(currentState) => {
-                            if (currentState === MaximizedState.NotMaximized) {
-                                if (this.props.onMaximize) {
-                                    this.props.onMaximize();
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            } else if (currentState === MaximizedState.Maximized) {
-                                if (this.props.onRestore) {
-                                    this.props.onRestore();
-                                    return true;
-                                } else {
-                                    return false;
-                                }
+                        } else if (currentState === MaximizedState.Maximized) {
+                            if (this.props.onRestore) {
+                                this.props.onRestore();
+                                return true;
+                            } else {
+                                return false;
                             }
-                        }}
-                    />
-                    <FrameCloseButton
-                        className={css.appTitleBarCloseButton}
-                        onClick={() => {
-                            if (this.props.onClose) {
-                                this.props.onClose();
-                            }
-                        }}
-                    />
-                </div>
-            );
+                        }
+                    }}
+                />
+                <FrameCloseButton
+                    className={css.appTitleBarCloseButton}
+                    onClick={() => {
+                        if (this.props.onClose) {
+                            this.props.onClose();
+                        }
+                    }}
+                />
+            </div>
+        );
         const titleBar = !this.props.electronClient ? null : (
             <div
                 className={css.appTitleBar}
@@ -172,6 +173,7 @@ export class App extends React.Component<AppProps, AppState> {
                     }
                 }}
             >
+                {titleBarDragAreaElts}
                 {titleBarButtonElts}
             </div>
         );
