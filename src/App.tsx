@@ -38,6 +38,7 @@ export interface AppDispatchProps {
     onMaximize: { () };
     onRestore: { () };
     onMinimize: { () };
+    onTitleBarDoubleClick: { () };
     onLoaded: { () };
     onWebSocketMessageReceived: { (data: any) };
 }
@@ -164,7 +165,18 @@ export class App extends React.Component<AppProps, AppState> {
                     />
                 </div>
             );
-        const titleBar = !this.props.executingOnClient ? null : <div className={css.appTitleBar}>{titleBarButtonElts}</div>;
+        const titleBar = !this.props.executingOnClient ? null : (
+            <div
+                className={css.appTitleBar}
+                onDoubleClick={() => {
+                    if (this.props.onTitleBarDoubleClick) {
+                        this.props.onTitleBarDoubleClick();
+                    }
+                }}
+            >
+                {titleBarButtonElts}
+            </div>
+        );
         if (this.state?.hasError) {
             return <div>ERROR MESSAGE: {this.state?.errorMessage}</div>;
         } else {

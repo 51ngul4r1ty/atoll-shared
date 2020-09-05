@@ -59,6 +59,13 @@ const mapDispatchToProps = (dispatch: Dispatch): AppDispatchProps => {
                 globalMinimizeApp();
             }
         },
+        onTitleBarDoubleClick: () => {
+            // This is electron specific code - may be better to handle it in a more decoupled way?
+            const globalTitleBarDoubleClick = (window as any).atoll__TitleBarDoubleClick;
+            if (globalTitleBarDoubleClick) {
+                globalTitleBarDoubleClick();
+            }
+        },
         onWebSocketMessageReceived: (data: any) => {
             dispatch(receiveWebSocketMessage(data));
         }
