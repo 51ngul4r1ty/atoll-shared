@@ -122,7 +122,7 @@ export class App extends React.Component<AppProps, AppState> {
             this.state?.isMobile ? css.mobile : null,
             this.props.electronClient ? buildOsClassName(currentPlatformValue) : null
         );
-        const isWindowsElectronClient = this.props.electronClient && !isPlatformWindows();
+        const isWindowsElectronClient = this.props.electronClient && isPlatformWindows();
         const titleBarDragAreaElts = !isWindowsElectronClient ? null : <div className={css.appTitleBarDragArea} />;
         const titleBarButtonElts = !isWindowsElectronClient ? null : (
             <div className={css.appTitleBarButtons}>
