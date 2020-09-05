@@ -34,6 +34,6 @@ export const currentPlatformValue = os.platform();
 
 export const platformName = platformToNameMap[os.platform()];
 
-export const isPlatformWindows = () => os.platform() === platformNames.WINDOWS;
+export const isPlatformWindows = () => os.platform() === platformValues.WINDOWS;
 
-export const isPlatformMacOSX = () => os.platform() === platformNames.MAC;
+export const isPlatformMacOSX = () => os.platform() === platformValues.MAC;
