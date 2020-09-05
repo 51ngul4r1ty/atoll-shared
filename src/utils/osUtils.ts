@@ -1,6 +1,6 @@
 import * as os from "os";
 
-export const platforms = {
+export const platformNames = {
     WINDOWS: "WINDOWS",
     MAC: "MAC",
     LINUX: "LINUX",
@@ -10,20 +10,30 @@ export const platforms = {
     AIX: "AIX"
 };
 
-const platformsNames = {
-    win32: platforms.WINDOWS,
-    darwin: platforms.MAC,
-    linux: platforms.LINUX,
-    sunos: platforms.SUN,
-    openbsd: platforms.OPENBSD,
-    android: platforms.ANDROID,
-    aix: platforms.AIX
+export const platformValues = {
+    WINDOWS: "win32",
+    MAC: "darwin",
+    LINUX: "linux",
+    SUN: "sunos",
+    OPENBSD: "openbsd",
+    ANDROID: "android",
+    AIX: "aix"
 };
 
-export const currentPlatform = os.platform();
+const platformToNameMap = {
+    win32: platformNames.WINDOWS,
+    darwin: platformNames.MAC,
+    linux: platformNames.LINUX,
+    sunos: platformNames.SUN,
+    openbsd: platformNames.OPENBSD,
+    android: platformNames.ANDROID,
+    aix: platformNames.AIX
+};
 
-export const platformName = platformsNames[os.platform()];
+export const currentPlatformValue = os.platform();
 
-export const isPlatformWindows = () => os.platform() === platforms.WINDOWS;
+export const platformName = platformToNameMap[os.platform()];
 
-export const isPlatformMacOSX = () => os.platform() === platforms.MAC;
+export const isPlatformWindows = () => os.platform() === platformNames.WINDOWS;
+
+export const isPlatformMacOSX = () => os.platform() === platformNames.MAC;

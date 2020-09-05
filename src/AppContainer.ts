@@ -16,7 +16,8 @@ const mapStateToProps = (state: StateTree): AppStateProps => {
     const userPreferences = (state.user && state.user.preferences) || ({} as UserPreferences);
     return {
         detectBrowserDarkMode: userPreferences.detectBrowserDarkMode,
-        executingOnClient: state.app.executingOnClient || false
+        executingOnClient: state.app.executingOnClient || false,
+        electronClient: state.app.electronClient || false
     };
 };
 

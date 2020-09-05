@@ -17,7 +17,7 @@ import css from "./App.module.css";
 
 // consts/enums
 import * as loggingTags from "./constants/loggingTags";
-import { isPlatformWindows, currentPlatform } from "./utils/osUtils";
+import { isPlatformWindows, currentPlatformValue } from "./utils/osUtils";
 import { buildClassName, buildOsClassName } from "./utils";
 
 // images
@@ -28,7 +28,8 @@ import { buildClassName, buildOsClassName } from "./utils";
 
 export interface AppStateProps {
     detectBrowserDarkMode: boolean;
-    executingOnClient: boolean; // i.e. electron
+    executingOnClient: boolean; // any client (inlcuding web browser), not just electron
+    electronClient: boolean;
 }
 
 export interface AppDispatchProps {
@@ -106,9 +107,6 @@ export class App extends React.Component<AppProps, AppState> {
         if (prevProps.detectBrowserDarkMode !== detectBrowserDarkMode) {
             this.themeHelper.detectBrowserDarkMode = detectBrowserDarkMode;
         }
-        const executingOnClient = this.props.executingOnClient;
-        if (executingOnClient && prevProps.executingOnClient !== executingOnClient) {
-        }
     }
     updateIsMobile = (value: boolean) => {
         if (this.state?.isMobile !== value) {
@@ -122,10 +120,10 @@ export class App extends React.Component<AppProps, AppState> {
         const classNameToUse = buildClassName(
             css.app,
             this.state?.isMobile ? css.mobile : null,
-            this.props.executingOnClient ? buildOsClassName(currentPlatform) : null
+            this.props.electronClient ? buildOsClassName(currentPlatformValue) : null
         );
         const titleBarButtonElts =
-            this.props.executingOnClient && !isPlatformWindows() ? null : (
+            this.props.electronClient && !isPlatformWindows() ? null : (
                 <div className={css.appTitleBarButtons}>
                     <FrameMinimizeButton
                         className={css.appTitleBarMinimizeButton}
@@ -165,7 +163,7 @@ export class App extends React.Component<AppProps, AppState> {
                     />
                 </div>
             );
-        const titleBar = !this.props.executingOnClient ? null : (
+        const titleBar = !this.props.electronClient ? null : (
             <div
                 className={css.appTitleBar}
                 onDoubleClick={() => {

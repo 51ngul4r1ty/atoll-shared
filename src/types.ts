@@ -66,6 +66,7 @@ export interface WebsocketPushNotificationV0<T> extends BasePushNotification {
 export type AppState = Readonly<{
     authToken: string;
     editMode: EditMode;
+    electronClient: boolean;
     executingOnClient: boolean;
     locale: Locale;
     password: string;

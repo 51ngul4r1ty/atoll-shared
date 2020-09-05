@@ -21,12 +21,21 @@
     /* add top-level style for app here */
 }
 
+.app:global(.os-mac) {
+    top: 1.5rem;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
 .appTitleBar {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 1.5rem;
+    min-height: 1.5rem;
+    max-height: 1.5rem;
     -webkit-app-region: drag;
     -webkit-user-select: none;
 }

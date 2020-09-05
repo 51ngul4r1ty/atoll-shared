@@ -1,4 +1,4 @@
-import { platforms } from "./osUtils";
+import { platformValues } from "./osUtils";
 
 export const buildClassName = (...classNames: string[]) => {
     const itemsToUse = [];
@@ -10,21 +10,22 @@ export const buildClassName = (...classNames: string[]) => {
     return itemsToUse.join(" ");
 };
 
-export const buildOsClassName = (platform: string) => {
-    switch (platform) {
-        case platforms.WINDOWS:
+export const buildOsClassName = (platformValue: string) => {
+    console.log(`PLATFORM VALUE = ${platformValue}`);
+    switch (platformValue) {
+        case platformValues.WINDOWS:
             return "os-windows";
-        case platforms.MAC:
+        case platformValues.MAC:
             return "os-mac";
-        case platforms.LINUX:
+        case platformValues.LINUX:
             return "os-linux";
-        case platforms.SUN:
+        case platformValues.SUN:
             return "os-sun";
-        case platforms.OPENBSD:
+        case platformValues.OPENBSD:
             return "os-openbsd";
-        case platforms.ANDROID:
+        case platformValues.ANDROID:
             return "os-android";
-        case platforms.AIX:
+        case platformValues.AIX:
             return "os-aix";
         default:
             return "os-unknown";
