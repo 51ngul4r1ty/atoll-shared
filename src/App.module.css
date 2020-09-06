@@ -29,14 +29,6 @@
     bottom: 0;
 }
 
-/* .appTitleBar:global(.os-windows) {
-    top: 1.5rem;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-} */
-
 .appTitleBar {
     position: absolute;
     top: 0;
