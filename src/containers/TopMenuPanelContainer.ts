@@ -21,13 +21,15 @@ import { TopMenuPanelStateProps, TopMenuPanelDispatchProps } from "../components
 
 export interface TopMenuPanelContainerProps {
     activeTabId: string;
+    treatAsElectronTitleBar: boolean;
 }
 
 const mapStateToProps = (state: StateTree, ownProps: TopMenuPanelContainerProps): TopMenuPanelStateProps => {
     let result: TopMenuPanelStateProps = {
         activeTabId: ownProps.activeTabId,
         editMode: state.app.editMode,
-        showRefreshButton: state.backlogItems.pushedItems.length > 0
+        showRefreshButton: state.backlogItems.pushedItems.length > 0,
+        treatAsElectronTitleBar: ownProps.treatAsElectronTitleBar
     };
     return result;
 };

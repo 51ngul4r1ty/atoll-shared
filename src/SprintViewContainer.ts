@@ -6,9 +6,14 @@ import { Dispatch } from "redux";
 import { SprintView, SprintViewDispatchProps, SprintViewStateProps } from "./SprintView";
 import { StateTree } from "./types";
 
+// utils
+import { isPlatformWindows } from "./utils/osUtils";
+
 const mapStateToProps = (state: StateTree): SprintViewStateProps => {
     let result: SprintViewStateProps = {
-        editMode: state.app.editMode
+        editMode: state.app.editMode,
+        electronClient: state.app.electronClient,
+        showWindowTitleBar: !isPlatformWindows()
     };
     return result;
 };

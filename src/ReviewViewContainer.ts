@@ -6,8 +6,15 @@ import { Dispatch } from "redux";
 import { ReviewView, ReviewViewDispatchProps, ReviewViewStateProps } from "./ReviewView";
 import { StateTree } from "./types";
 
+// utils
+import { isPlatformWindows } from "./utils/osUtils";
+
 const mapStateToProps = (state: StateTree): ReviewViewStateProps => {
-    let result: ReviewViewStateProps = {};
+    let result: ReviewViewStateProps = {
+        editMode: state.app.editMode,
+        electronClient: state.app.electronClient,
+        showWindowTitleBar: !isPlatformWindows()
+    };
     return result;
 };
 

@@ -72,7 +72,10 @@ export class App extends React.Component<AppProps, AppState> {
         window.addEventListener("resize", this.handleResize);
         window.addEventListener("click", this.handleClick);
         window.addEventListener("keyup", this.handleKeyUp);
-        this.setState({ isMobile: false, isMaximized: this.props.isWindowMaximized() });
+        this.setState({
+            isMobile: false,
+            isMaximized: this.props.isWindowMaximized()
+        });
         this.context.updateIsMobile = (value) => {
             this.updateIsMobile(value);
         };
@@ -127,8 +130,10 @@ export class App extends React.Component<AppProps, AppState> {
         }
     };
     updateIsMaximized = () => {
-        const isMaximized = this.props.isWindowMaximized();
-        this.setState({ isMobile: this.state?.isMobile, isMaximized });
+        const value = this.props.isWindowMaximized();
+        if (this.state?.isMaximized !== value) {
+            this.setState({ isMobile: this.state?.isMobile, isMaximized: value });
+        }
     };
     static getDerivedStateFromError(error) {
         return { hasError: true, errorMessage: error };
@@ -140,60 +145,68 @@ export class App extends React.Component<AppProps, AppState> {
             this.props.electronClient ? buildOsClassName(currentPlatformValue) : null
         );
         const isWindowsElectronClient = this.props.electronClient && isPlatformWindows();
-        const titleBarDragAreaElts = !isWindowsElectronClient ? null : <div className={css.appTitleBarDragArea} />;
-        const titleBarButtonElts = !isWindowsElectronClient ? null : (
-            <div className={css.appTitleBarButtons}>
-                <FrameMinimizeButton
-                    className={css.appTitleBarMinimizeButton}
-                    onClick={() => {
-                        if (this.props.onMinimize) {
-                            this.props.onMinimize();
-                        }
-                    }}
-                />
-                <FrameMaximizeButton
-                    isMaximized={this.props.isWindowMaximized()}
-                    className={css.appTitleBarMaximizeButton}
-                    onClick={() => {
-                        if (this.props.isWindowMaximized) {
-                            if (this.props.isWindowMaximized()) {
-                                this.props.onRestore();
-                            } else {
-                                this.props.onMaximize();
+
+        let windowFrameCustomElts;
+        if (!this.props.electronClient) {
+            windowFrameCustomElts = null;
+        } else if (isWindowsElectronClient) {
+            windowFrameCustomElts = (
+                <div className={css.appTitleBarButtons}>
+                    <FrameMinimizeButton
+                        className={css.appTitleBarMinimizeButton}
+                        onClick={() => {
+                            if (this.props.onMinimize) {
+                                this.props.onMinimize();
                             }
+                        }}
+                    />
+                    <FrameMaximizeButton
+                        isMaximized={this.props.isWindowMaximized()}
+                        className={css.appTitleBarMaximizeButton}
+                        onClick={() => {
+                            if (this.props.isWindowMaximized) {
+                                if (this.props.isWindowMaximized()) {
+                                    this.props.onRestore();
+                                } else {
+                                    this.props.onMaximize();
+                                }
+                            }
+                        }}
+                    />
+                    <FrameCloseButton
+                        className={css.appTitleBarCloseButton}
+                        onClick={() => {
+                            if (this.props.onClose) {
+                                this.props.onClose();
+                            }
+                        }}
+                    />
+                </div>
+            );
+        } else {
+            windowFrameCustomElts = (
+                <div
+                    className={css.appTitleBar}
+                    onDoubleClick={() => {
+                        if (this.props.onTitleBarDoubleClick) {
+                            this.props.onTitleBarDoubleClick();
                         }
                     }}
-                />
-                <FrameCloseButton
-                    className={css.appTitleBarCloseButton}
-                    onClick={() => {
-                        if (this.props.onClose) {
-                            this.props.onClose();
-                        }
-                    }}
-                />
-            </div>
-        );
-        const titleBar = !this.props.electronClient ? null : (
-            <div
-                className={css.appTitleBar}
-                onDoubleClick={() => {
-                    if (this.props.onTitleBarDoubleClick) {
-                        const wasExecuted = this.props.onTitleBarDoubleClick();
-                        if (wasExecuted) {
-                        }
-                    }
-                }}
-            >
-                {titleBarDragAreaElts}
-                {titleBarButtonElts}
-            </div>
-        );
+                >
+                    <div className={css.appTitleBarDragArea} />
+                </div>
+            );
+        }
         if (this.state?.hasError) {
             return <div>ERROR MESSAGE: {this.state?.errorMessage}</div>;
         } else {
             return (
-                <AppProvider value={{ state: this.state, updateIsMobile: this.updateIsMobile }}>
+                <AppProvider
+                    value={{
+                        state: this.state,
+                        updateIsMobile: this.updateIsMobile
+                    }}
+                >
                     <div className={classNameToUse}>
                         {/* <Helmet
                     defaultTitle="Atoll"
@@ -202,7 +215,7 @@ export class App extends React.Component<AppProps, AppState> {
                 /> */}
                         {this.props.children}
                     </div>
-                    {titleBar}
+                    {windowFrameCustomElts}
                 </AppProvider>
             );
         }
