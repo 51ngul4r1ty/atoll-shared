@@ -10,13 +10,15 @@ import { EditMode } from "./components/molecules/buttons/EditButton";
 // style
 import css from "./App.module.css";
 
-export interface ReviewViewStateProps {}
+export interface ReviewViewStateProps {
+    editMode: EditMode;
+    electronClient: boolean;
+    showWindowTitleBar: boolean;
+}
 
 export interface ReviewViewDispatchProps {}
 
-export interface ReviewViewProps {
-    editMode: EditMode;
-}
+export type ReviewViewProps = ReviewViewStateProps & ReviewViewDispatchProps;
 
 export const ReviewView: React.FC<ReviewViewProps> = (props) => {
     return (
@@ -26,7 +28,10 @@ export const ReviewView: React.FC<ReviewViewProps> = (props) => {
                     titleTemplate="Atoll – %s"
                     link={[{ rel: "icon", type: "image/png", href: favicon }]}
                 /> */}
-            <TopMenuPanelContainer activeTabId="review" />
+            <TopMenuPanelContainer
+                activeTabId="review"
+                treatAsElectronTitleBar={props.electronClient && !props.showWindowTitleBar}
+            />
         </>
     );
 };

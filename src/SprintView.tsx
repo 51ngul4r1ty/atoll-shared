@@ -15,6 +15,8 @@ import css from "./App.module.css";
 
 export interface SprintViewStateProps {
     editMode: EditMode;
+    electronClient: boolean;
+    showWindowTitleBar: boolean;
 }
 
 export interface SprintViewDispatchProps {}
@@ -30,8 +32,13 @@ export const SprintView: React.FC<SprintViewProps> = (props) => {
                     link={[{ rel: "icon", type: "image/png", href: favicon }]}
                 /> */}
             <AppConsumer>
-                {(props) => {
-                    return <TopMenuPanelContainer activeTabId="sprint" />;
+                {(appConsumerProps) => {
+                    return (
+                        <TopMenuPanelContainer
+                            activeTabId="sprint"
+                            treatAsElectronTitleBar={props.electronClient && !props.showWindowTitleBar}
+                        />
+                    );
                 }}
             </AppConsumer>
         </>

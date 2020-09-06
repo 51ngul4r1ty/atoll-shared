@@ -26,6 +26,8 @@ export interface PlanViewStateProps {
     allItems: BacklogItemWithSource[];
     editMode: EditMode;
     openedDetailMenuBacklogItemId: string | null;
+    electronClient: boolean;
+    showWindowTitleBar: boolean;
 }
 
 export interface PlanViewDispatchProps {
@@ -49,7 +51,10 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
     render() {
         return (
             <>
-                <TopMenuPanelContainer activeTabId="plan" />
+                <TopMenuPanelContainer
+                    activeTabId="plan"
+                    treatAsElectronTitleBar={this.props.electronClient && !this.props.showWindowTitleBar}
+                />
                 <BacklogItemPlanningPanel
                     allItems={this.props.allItems}
                     editMode={this.props.editMode}

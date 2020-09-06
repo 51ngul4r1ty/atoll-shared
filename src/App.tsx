@@ -11,12 +11,14 @@ import { FrameMinimizeButton } from "./components/molecules/buttons/FrameMinimiz
 import { ThemeHelper } from "./utils/themeHelper";
 import * as wsClient from "./utils/wsClient";
 import * as logger from "./utils/logger";
-
-// style
-import css from "./App.module.css";
+import { isPlatformWindows, currentPlatformValue } from "./utils/osUtils";
+import { buildClassName, buildOsClassName } from "./utils";
 
 // consts/enums
 import * as loggingTags from "./constants/loggingTags";
+
+// style
+import css from "./App.module.css";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
@@ -26,7 +28,9 @@ import * as loggingTags from "./constants/loggingTags";
 
 export interface AppStateProps {
     detectBrowserDarkMode: boolean;
-    executingOnClient: boolean; // i.e. electron
+    executingOnClient: boolean; // any client (inlcuding web browser), not just electron
+    electronClient: boolean;
+    isWindowMaximized?: { (): boolean | undefined };
 }
 
 export interface AppDispatchProps {
@@ -36,6 +40,7 @@ export interface AppDispatchProps {
     onMaximize: { () };
     onRestore: { () };
     onMinimize: { () };
+    onTitleBarDoubleClick: { (): boolean };
     onLoaded: { () };
     onWebSocketMessageReceived: { (data: any) };
 }
@@ -44,6 +49,7 @@ export type AppProps = AppStateProps & AppDispatchProps;
 
 export interface AppState {
     isMobile: boolean;
+    isMaximized: boolean;
     hasError?: boolean;
     errorMessage?: string;
 }
@@ -53,6 +59,7 @@ export interface AppState {
 export class App extends React.Component<AppProps, AppState> {
     static contextType = AppContext;
     private themeHelper = new ThemeHelper();
+    private timeoutHandle: NodeJS.Timeout;
     constructor(props) {
         super(props);
     }
@@ -65,13 +72,20 @@ export class App extends React.Component<AppProps, AppState> {
         window.addEventListener("resize", this.handleResize);
         window.addEventListener("click", this.handleClick);
         window.addEventListener("keyup", this.handleKeyUp);
-        this.setState({ isMobile: false });
+        this.setState({
+            isMobile: false,
+            isMaximized: this.props.isWindowMaximized()
+        });
         this.context.updateIsMobile = (value) => {
             this.updateIsMobile(value);
         };
         this.handleResize();
+        this.handleWindowMaximize();
     }
     componentWillUnmount() {
+        if (this.timeoutHandle) {
+            clearTimeout(this.timeoutHandle);
+        }
         window.removeEventListener("resize", this.handleResize);
         window.removeEventListener("click", this.handleClick);
         window.removeEventListener("keyup", this.handleKeyUp);
@@ -83,6 +97,12 @@ export class App extends React.Component<AppProps, AppState> {
         } else {
             this.context.updateIsMobile(false);
         }
+    };
+    handleWindowMaximize = () => {
+        this.timeoutHandle = setTimeout(() => {
+            this.updateIsMaximized();
+            this.handleWindowMaximize();
+        }, 500);
     };
     handleClick = (e: MouseEvent) => {
         const logContainer = logger.info("app click", [loggingTags.APP_EVENTS]);
@@ -103,22 +123,34 @@ export class App extends React.Component<AppProps, AppState> {
         if (prevProps.detectBrowserDarkMode !== detectBrowserDarkMode) {
             this.themeHelper.detectBrowserDarkMode = detectBrowserDarkMode;
         }
-        const executingOnClient = this.props.executingOnClient;
-        if (executingOnClient && prevProps.executingOnClient !== executingOnClient) {
-        }
     }
     updateIsMobile = (value: boolean) => {
         if (this.state?.isMobile !== value) {
-            this.setState({ isMobile: value });
+            this.setState({ isMobile: value, isMaximized: this.state?.isMaximized });
+        }
+    };
+    updateIsMaximized = () => {
+        const value = this.props.isWindowMaximized();
+        if (this.state?.isMaximized !== value) {
+            this.setState({ isMobile: this.state?.isMobile, isMaximized: value });
         }
     };
     static getDerivedStateFromError(error) {
         return { hasError: true, errorMessage: error };
     }
     render() {
-        const classNameToUse = this.state?.isMobile ? `${css.app} ${css.mobile}` : css.app;
-        const titleBar = !this.props.executingOnClient ? null : (
-            <div className={css.appTitleBar}>
+        const classNameToUse = buildClassName(
+            css.app,
+            this.state?.isMobile ? css.mobile : null,
+            this.props.electronClient ? buildOsClassName(currentPlatformValue) : null
+        );
+        const isWindowsElectronClient = this.props.electronClient && isPlatformWindows();
+
+        let windowFrameCustomElts;
+        if (!this.props.electronClient) {
+            windowFrameCustomElts = null;
+        } else if (isWindowsElectronClient) {
+            windowFrameCustomElts = (
                 <div className={css.appTitleBarButtons}>
                     <FrameMinimizeButton
                         className={css.appTitleBarMinimizeButton}
@@ -129,21 +161,14 @@ export class App extends React.Component<AppProps, AppState> {
                         }}
                     />
                     <FrameMaximizeButton
+                        isMaximized={this.props.isWindowMaximized()}
                         className={css.appTitleBarMaximizeButton}
-                        onClick={(currentState) => {
-                            if (currentState === MaximizedState.NotMaximized) {
-                                if (this.props.onMaximize) {
-                                    this.props.onMaximize();
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            } else if (currentState === MaximizedState.Maximized) {
-                                if (this.props.onRestore) {
+                        onClick={() => {
+                            if (this.props.isWindowMaximized) {
+                                if (this.props.isWindowMaximized()) {
                                     this.props.onRestore();
-                                    return true;
                                 } else {
-                                    return false;
+                                    this.props.onMaximize();
                                 }
                             }
                         }}
@@ -157,13 +182,31 @@ export class App extends React.Component<AppProps, AppState> {
                         }}
                     />
                 </div>
-            </div>
-        );
+            );
+        } else {
+            windowFrameCustomElts = (
+                <div
+                    className={css.appTitleBar}
+                    onDoubleClick={() => {
+                        if (this.props.onTitleBarDoubleClick) {
+                            this.props.onTitleBarDoubleClick();
+                        }
+                    }}
+                >
+                    <div className={css.appTitleBarDragArea} />
+                </div>
+            );
+        }
         if (this.state?.hasError) {
             return <div>ERROR MESSAGE: {this.state?.errorMessage}</div>;
         } else {
             return (
-                <AppProvider value={{ state: this.state, updateIsMobile: this.updateIsMobile }}>
+                <AppProvider
+                    value={{
+                        state: this.state,
+                        updateIsMobile: this.updateIsMobile
+                    }}
+                >
                     <div className={classNameToUse}>
                         {/* <Helmet
                     defaultTitle="Atoll"
@@ -171,8 +214,8 @@ export class App extends React.Component<AppProps, AppState> {
                     link={[{ rel: "icon", type: "image/png", href: favicon }]}
                 /> */}
                         {this.props.children}
-                        {titleBar}
                     </div>
+                    {windowFrameCustomElts}
                 </AppProvider>
             );
         }

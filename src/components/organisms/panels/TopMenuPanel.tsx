@@ -12,6 +12,9 @@ import { EditButton, EditMode } from "../../molecules/buttons/EditButton";
 import { HomeButton } from "../../molecules/buttons/HomeButton";
 import { RefreshButton } from "../../molecules/buttons/RefreshButton";
 
+// utils
+import { buildClassName } from "../../../utils/classNameBuilder";
+
 // style
 import css from "./TopMenuPanel.module.css";
 import { routePlanView, routeSprintView, routeReviewView } from "../../../actions/routeActions";
@@ -22,6 +25,7 @@ export interface TopMenuPanelStateProps {
     activeTabId?: string;
     editMode: EditMode;
     showRefreshButton: boolean;
+    treatAsElectronTitleBar?: boolean; // necessary to work properly for Electron client on Windows
 }
 
 export interface TopMenuPanelDispatchProps {
@@ -69,6 +73,8 @@ export const InnerTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
         tabs.push({ id: "review", caption: props.t("Review") });
     }
 
+    const fillSpaceClassName = buildClassName(css.fillSpaceAvailable, props.treatAsElectronTitleBar ? css.electronDragPanel : null);
+
     return (
         <div className={css.topMenuPanel}>
             <HomeButton />
@@ -89,7 +95,7 @@ export const InnerTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
                     }
                 }}
             />
-            <div className={css.fillSpaceAvailable}></div>
+            <div className={fillSpaceClassName}></div>
             <div className={css.actionButtonPanel}>{buttons}</div>
         </div>
     );

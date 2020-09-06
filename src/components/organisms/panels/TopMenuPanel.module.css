@@ -1,3 +1,7 @@
+:global(.os-windows) .topMenuPanel {
+    width: calc(100% - 7rem);
+}
+
 .topMenuPanel {
     display: flex;
     border-bottom: 1px solid var(--normal-divider-color, #f4f4f4);
@@ -5,6 +9,10 @@
 
 .fillSpaceAvailable {
     flex-grow: 1;
+}
+
+.electronDragPanel {
+    -webkit-app-region: drag;
 }
 
 .actionButtonPanel {

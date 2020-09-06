@@ -21,6 +21,7 @@ import { LocalStoreRefreshTokenAction } from "../actions/appActions";
 export const initialState = Object.freeze<AppState>({
     locale: "en_US",
     editMode: EditMode.View,
+    electronClient: false,
     executingOnClient: false,
     username: "",
     password: "",

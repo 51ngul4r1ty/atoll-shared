@@ -4,7 +4,6 @@ import { Dispatch } from "redux";
 
 // components
 import { PlanView, PlanViewStateProps, PlanViewDispatchProps } from "./PlanView";
-import { PlanningPanelBacklogItem } from "./components/organisms/panels/BacklogItemPlanningPanel";
 
 // state
 import { StateTree } from "./types";
@@ -16,6 +15,9 @@ import { addNewBacklogItem, reorderBacklogItems } from "./actions/backlogItems";
 // interfaces/types
 import { BacklogItemType } from "./reducers/backlogItemsReducer";
 
+// utils
+import { isPlatformWindows } from "./utils";
+
 const mapStateToProps = (state: StateTree): PlanViewStateProps => {
     // TODO: Switch to using selectors?
     const allItems = state.backlogItems.allItems;
@@ -23,7 +25,9 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
     let result: PlanViewStateProps = {
         allItems,
         editMode: state.app.editMode,
-        openedDetailMenuBacklogItemId: state.backlogItems.openedDetailMenuBacklogItemId
+        openedDetailMenuBacklogItemId: state.backlogItems.openedDetailMenuBacklogItemId,
+        electronClient: state.app.electronClient,
+        showWindowTitleBar: !isPlatformWindows()
     };
     return result;
 };
