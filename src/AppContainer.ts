@@ -12,7 +12,11 @@ import { StateTree, UserPreferences } from "./types";
 import { receiveWebSocketMessage } from "./actions/wsActions";
 import { initApp, appClick, appKeyUp } from "./actions/appActions";
 
-const mapStateToProps = (state: StateTree): AppStateProps => {
+interface AppOwnProps {
+    allowTitleBarWindowDragging?: boolean;
+}
+
+const mapStateToProps = (state: StateTree, ownProps: AppOwnProps): AppStateProps => {
     const userPreferences = (state.user && state.user.preferences) || ({} as UserPreferences);
     return {
         detectBrowserDarkMode: userPreferences.detectBrowserDarkMode,
@@ -25,7 +29,8 @@ const mapStateToProps = (state: StateTree): AppStateProps => {
                 return globalIsWindowMaximized();
             }
             return undefined;
-        }
+        },
+        allowTitleBarWindowDragging: ownProps.allowTitleBarWindowDragging
     };
 };
 
