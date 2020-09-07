@@ -11,14 +11,16 @@ import { FrameMinimizeButton } from "./components/molecules/buttons/FrameMinimiz
 import { ThemeHelper } from "./utils/themeHelper";
 import * as wsClient from "./utils/wsClient";
 import * as logger from "./utils/logger";
-
-// style
-import css from "./App.module.css";
+import { isPlatformWindows, currentPlatformValue } from "./utils/osUtils";
+import { buildClassName, buildOsClassName } from "./utils";
 
 // consts/enums
 import * as loggingTags from "./constants/loggingTags";
 import { isPlatformWindows, currentPlatformValue } from "./utils/osUtils";
 import { buildClassName, buildOsClassName } from "./utils";
+
+// style
+import css from "./App.module.css";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
