@@ -30,7 +30,8 @@ export interface AppStateProps {
     detectBrowserDarkMode: boolean;
     executingOnClient: boolean; // any client (inlcuding web browser), not just electron
     electronClient: boolean;
-    isWindowMaximized?: { (): boolean | undefined };
+    allowTitleBarWindowDragging: boolean;
+    isWindowMaximized?: { (): boolean | undefined }; // NOTE: This is a callback, it is not used for dispatch!
 }
 
 export interface AppDispatchProps {
@@ -146,43 +147,58 @@ export class App extends React.Component<AppProps, AppState> {
         );
         const isWindowsElectronClient = this.props.electronClient && isPlatformWindows();
 
+        const titleBarButtons = (
+            <div className={css.appTitleBarButtons}>
+                <FrameMinimizeButton
+                    className={css.appTitleBarMinimizeButton}
+                    onClick={() => {
+                        if (this.props.onMinimize) {
+                            this.props.onMinimize();
+                        }
+                    }}
+                />
+                <FrameMaximizeButton
+                    isMaximized={this.props.isWindowMaximized()}
+                    className={css.appTitleBarMaximizeButton}
+                    onClick={() => {
+                        if (this.props.isWindowMaximized) {
+                            if (this.props.isWindowMaximized()) {
+                                this.props.onRestore();
+                            } else {
+                                this.props.onMaximize();
+                            }
+                        }
+                    }}
+                />
+                <FrameCloseButton
+                    className={css.appTitleBarCloseButton}
+                    onClick={() => {
+                        if (this.props.onClose) {
+                            this.props.onClose();
+                        }
+                    }}
+                />
+            </div>
+        );
         let windowFrameCustomElts;
         if (!this.props.electronClient) {
             windowFrameCustomElts = null;
-        } else if (isWindowsElectronClient) {
+        } else if (isWindowsElectronClient && this.props.allowTitleBarWindowDragging) {
             windowFrameCustomElts = (
-                <div className={css.appTitleBarButtons}>
-                    <FrameMinimizeButton
-                        className={css.appTitleBarMinimizeButton}
-                        onClick={() => {
-                            if (this.props.onMinimize) {
-                                this.props.onMinimize();
-                            }
-                        }}
-                    />
-                    <FrameMaximizeButton
-                        isMaximized={this.props.isWindowMaximized()}
-                        className={css.appTitleBarMaximizeButton}
-                        onClick={() => {
-                            if (this.props.isWindowMaximized) {
-                                if (this.props.isWindowMaximized()) {
-                                    this.props.onRestore();
-                                } else {
-                                    this.props.onMaximize();
-                                }
-                            }
-                        }}
-                    />
-                    <FrameCloseButton
-                        className={css.appTitleBarCloseButton}
-                        onClick={() => {
-                            if (this.props.onClose) {
-                                this.props.onClose();
-                            }
-                        }}
-                    />
+                <div
+                    className={css.appTitleBar}
+                    onDoubleClick={() => {
+                        if (this.props.onTitleBarDoubleClick) {
+                            this.props.onTitleBarDoubleClick();
+                        }
+                    }}
+                >
+                    <div className={css.appTitleBarDragArea} />
+                    {titleBarButtons}
                 </div>
             );
+        } else if (isWindowsElectronClient && !this.props.allowTitleBarWindowDragging) {
+            windowFrameCustomElts = titleBarButtons;
         } else {
             windowFrameCustomElts = (
                 <div

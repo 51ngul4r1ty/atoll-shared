@@ -12,12 +12,17 @@ import { StateTree, UserPreferences } from "./types";
 import { receiveWebSocketMessage } from "./actions/wsActions";
 import { initApp, appClick, appKeyUp } from "./actions/appActions";
 
-const mapStateToProps = (state: StateTree): AppStateProps => {
+interface AppOwnProps {
+    allowTitleBarWindowDragging?: boolean;
+}
+
+const mapStateToProps = (state: StateTree, ownProps: AppOwnProps): AppStateProps => {
     const userPreferences = (state.user && state.user.preferences) || ({} as UserPreferences);
     return {
         detectBrowserDarkMode: userPreferences.detectBrowserDarkMode,
         executingOnClient: state.app.executingOnClient || false,
         electronClient: state.app.electronClient || false,
+        allowTitleBarWindowDragging: ownProps.allowTitleBarWindowDragging,
         isWindowMaximized: (): boolean | undefined => {
             // This is electron specific code - may be better to handle it in a more decoupled way?
             const globalIsWindowMaximized = (window as any).atoll__IsWindowMaximized;
