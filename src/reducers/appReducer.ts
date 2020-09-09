@@ -37,7 +37,6 @@ const updateDraftWithTokenPayload = (draft: Draft<AppState>, payload: ApiActionS
 };
 
 export const appReducer = (state: AppState = appReducerInitialState, action: AnyFSA): AppState => {
-    console.log(`KEVIN: appReducer with STATE= ${JSON.stringify(state)}`);
     return produce(state, (draft) => {
         switch (action.type) {
             case ActionTypes.SET_LOCALE: {
