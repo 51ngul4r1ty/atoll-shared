@@ -18,7 +18,7 @@ import {
 import { ApiActionSuccessPayload } from "../middleware/apiTypes";
 import { LocalStoreRefreshTokenAction } from "../actions/appActions";
 
-export const initialState = Object.freeze<AppState>({
+export const appReducerInitialState = Object.freeze<AppState>({
     locale: "en_US",
     editMode: EditMode.View,
     electronClient: false,
@@ -36,8 +36,9 @@ const updateDraftWithTokenPayload = (draft: Draft<AppState>, payload: ApiActionS
     draft.refreshToken = refreshToken;
 };
 
-export const appReducer = (state: AppState = initialState, action: AnyFSA): AppState =>
-    produce(state, (draft) => {
+export const appReducer = (state: AppState = appReducerInitialState, action: AnyFSA): AppState => {
+    console.log(`KEVIN: appReducer with STATE= ${JSON.stringify(state)}`);
+    return produce(state, (draft) => {
         switch (action.type) {
             case ActionTypes.SET_LOCALE: {
                 const { type, payload } = action;
@@ -76,3 +77,4 @@ export const appReducer = (state: AppState = initialState, action: AnyFSA): AppS
             }
         }
     });
+};

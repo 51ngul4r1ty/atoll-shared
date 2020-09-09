@@ -2,6 +2,7 @@
 export { APPLICATION_JSON } from "./constants";
 export { FEATURE_TOGGLE_LIST } from "./constants/defaultFeatureToggles";
 export { PushState } from "./reducers/backlogItemsReducer";
+export { rootReducerInitialState } from "./reducers/rootReducer";
 
 // components - buttons - atoms
 export { SimpleButton } from "./components/atoms/buttons/SimpleButton";
