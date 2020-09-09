@@ -7,13 +7,13 @@ import * as ActionTypes from "../actions/actionTypes";
 // interfaces/types
 import { UserState, AnyFSA } from "../types";
 
-export const initialState = Object.freeze<UserState>({
+export const userReducerInitialState = Object.freeze<UserState>({
     preferences: {
         detectBrowserDarkMode: false
     }
 });
 
-export const userReducer = (state: UserState = initialState, action: AnyFSA): UserState =>
+export const userReducer = (state: UserState = userReducerInitialState, action: AnyFSA): UserState =>
     produce(state, (draft) => {
         const { type, payload } = action;
 

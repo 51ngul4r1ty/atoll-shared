@@ -30,7 +30,7 @@ export interface ApiLinkState {
     linksByType: { [key: string]: ApiLinksForType };
 }
 
-export const initialState = Object.freeze<ApiLinkState>({
+export const apiLinksReducerInitialState = Object.freeze<ApiLinkState>({
     linksByType: {
         backlogItems: {}
     }
@@ -58,7 +58,7 @@ export const buildUri = (requestUrl: string, linkUri: string): string => {
     return `${parsed.protocol}//${hostAndPort}${linkUri}`;
 };
 
-export const apiLinksReducer = (state: ApiLinkState = initialState, action: AnyFSA): ApiLinkState =>
+export const apiLinksReducer = (state: ApiLinkState = apiLinksReducerInitialState, action: AnyFSA): ApiLinkState =>
     produce(state, (draft) => {
         switch (action.type) {
             case ActionTypes.API_GET_BACKLOG_ITEMS_SUCCESS: {

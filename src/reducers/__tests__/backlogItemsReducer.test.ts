@@ -6,7 +6,7 @@ import produce, { Draft } from "immer";
 
 // code under test
 import {
-    initialState,
+    backlogItemsReducerInitialState,
     rebuildAllItems,
     BacklogItemSource,
     BacklogItemWithSource,
@@ -82,14 +82,17 @@ describe("Backlog Items Reducer", () => {
                 estimate: null,
                 source: BacklogItemSource.Pushed
             };
-            produce({ ...initialState, addedItems: [addedItem], items: [item], pushedItems: [pushedItem1] }, (draft) => {
-                rebuildAllItems(draft);
-                expect(draft.addedItems).toEqual([addedItem]);
-                expect(draft.allItems).toEqual([addedItem1InAllItems, pushedItem1InAllItems, item]);
-                expect(draft.items).toEqual([item]);
-                expect(draft.openedDetailMenuBacklogItemId).toEqual(null);
-                expect(draft.pushedItems).toEqual([pushedItem1]);
-            });
+            produce(
+                { ...backlogItemsReducerInitialState, addedItems: [addedItem], items: [item], pushedItems: [pushedItem1] },
+                (draft) => {
+                    rebuildAllItems(draft);
+                    expect(draft.addedItems).toEqual([addedItem]);
+                    expect(draft.allItems).toEqual([addedItem1InAllItems, pushedItem1InAllItems, item]);
+                    expect(draft.items).toEqual([item]);
+                    expect(draft.openedDetailMenuBacklogItemId).toEqual(null);
+                    expect(draft.pushedItems).toEqual([pushedItem1]);
+                }
+            );
         });
     });
 });

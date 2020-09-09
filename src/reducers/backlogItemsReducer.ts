@@ -87,7 +87,7 @@ export type BacklogItemsState = Readonly<{
     openedDetailMenuBacklogItemId: string | null;
 }>;
 
-export const initialState = Object.freeze<BacklogItemsState>({
+export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
     pushedItems: [],
     items: [],
@@ -263,7 +263,10 @@ const targetIsInMenuButton = (target: EventTarget) => {
     return !!getParentWithDataClass(target as HTMLElement, "item-menu-button");
 };
 
-export const backlogItemsReducer = (state: BacklogItemsState = initialState, action: AnyFSA): BacklogItemsState =>
+export const backlogItemsReducer = (
+    state: BacklogItemsState = backlogItemsReducerInitialState,
+    action: AnyFSA
+): BacklogItemsState =>
     produce(state, (draft) => {
         const { type } = action;
         switch (type) {
