@@ -29,6 +29,7 @@ describe("Backlog Items Reducer", () => {
                 createdAt: undefined,
                 updatedAt: undefined,
                 estimate: undefined,
+                friendlyId: undefined,
                 externalId: undefined,
                 reasonPhrase: undefined,
                 rolePhrase: undefined,
@@ -41,6 +42,7 @@ describe("Backlog Items Reducer", () => {
             };
             const item: BacklogItemWithSource = {
                 id: "20650986d6b84db79b2a9fa8239016ad",
+                friendlyId: "1",
                 externalId: "t-1",
                 rolePhrase: null,
                 storyPhrase: "test",
@@ -55,6 +57,7 @@ describe("Backlog Items Reducer", () => {
             const pushedItem1: WebsocketPushNotificationData<PushBacklogItemModel> = {
                 item: {
                     version: 0,
+                    friendlyId: "2",
                     externalId: "t-2",
                     storyPhrase: "test 2",
                     type: "story",
@@ -70,6 +73,7 @@ describe("Backlog Items Reducer", () => {
                 operation: PushOperationType.Added
             };
             const pushedItem1InAllItems: BacklogItemWithSource = {
+                friendlyId: "2",
                 externalId: "t-2",
                 storyPhrase: "test 2",
                 type: "story",

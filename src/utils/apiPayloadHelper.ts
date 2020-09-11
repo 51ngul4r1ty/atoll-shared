@@ -6,6 +6,7 @@ export const convertToBacklogItemModel = (backlogItem: BacklogItem): BacklogItem
     updatedAt: backlogItem.updatedAt,
     // displayIndex: backlogItem.displayIndex,
     estimate: backlogItem.estimate,
+    friendlyId: backlogItem.friendlyId,
     externalId: backlogItem.externalId,
     id: backlogItem.id,
     reasonPhrase: backlogItem.reasonPhrase,

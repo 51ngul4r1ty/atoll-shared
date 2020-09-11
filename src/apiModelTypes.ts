@@ -35,6 +35,7 @@ export interface StandardItem extends BaseItem, ItemWithId, ApiItemWithLinks {}
 export interface StandardNamedItem extends StandardItem, ItemWithName {}
 
 export interface ApiBacklogItem extends StandardItem {
+    friendlyId: string | null;
     externalId: string | null;
     rolePhrase: string | null;
     storyPhrase: string;

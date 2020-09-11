@@ -48,6 +48,7 @@ export interface BacklogItemModel extends BaseModelItem {
     createdAt: Date;
     updatedAt: Date;
     estimate: number | null;
+    friendlyId: string;
     externalId: string | null;
     reasonPhrase: string | null;
     rolePhrase: string | null;
@@ -125,6 +126,7 @@ export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>
     createdAt: pushedItem.createdAt,
     updatedAt: pushedItem.updatedAt,
     estimate: pushedItem.estimate,
+    friendlyId: pushedItem.friendlyId,
     externalId: pushedItem.externalId,
     reasonPhrase: pushedItem.reasonPhrase,
     rolePhrase: pushedItem.rolePhrase,
@@ -212,6 +214,7 @@ export const updateItemFieldsInAllItems = (
 
 export const updateBacklogItemFields = (backlogItem: BacklogItem, payload: BacklogItemDetailFormEditableFields) => {
     backlogItem.estimate = payload.estimate;
+    backlogItem.friendlyId = payload.friendlyId;
     backlogItem.externalId = payload.externalId;
     backlogItem.storyPhrase = payload.storyPhrase;
     backlogItem.reasonPhrase = payload.reasonPhrase;
@@ -241,6 +244,7 @@ export const updateItemById = (draft: Draft<BacklogItemsState>, itemId: string, 
 
 export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem => ({
     id: apiItem.id,
+    friendlyId: apiItem.friendlyId,
     externalId: apiItem.externalId,
     rolePhrase: apiItem.rolePhrase,
     storyPhrase: apiItem.storyPhrase,

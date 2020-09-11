@@ -20,7 +20,7 @@
 
 .userStoryExtraFields {
     display: grid;
-    grid-template-columns: 3.5rem 8rem auto;
+    grid-template-columns: 3.5rem 5.5rem 5.5rem auto;
     grid-column-gap: 0.7rem;
 }
 
@@ -49,8 +49,8 @@
     width: 100%;
 }
 
-.halfAndHalfRow {
+.threeCellRow {
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto auto auto;
     grid-column-gap: 0.7rem;
 }

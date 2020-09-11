@@ -53,6 +53,7 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     className={classNameToUse}
                     id={props.id}
                     instanceId={props.instanceId}
+                    friendlyId={props.friendlyId}
                     externalId={props.externalId}
                     editing
                     estimate={props.estimate}
@@ -90,7 +91,7 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     estimate={props.estimate}
                     hidden={props.hidden}
                     internalId={`${props.id}`}
-                    itemId={`${props.externalId}`}
+                    itemId={`${props.externalId || props.friendlyId}`}
                     itemType={props.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
                     titleText={props.storyPhrase}
                     isDraggable={props.editMode === EditMode.Edit}
