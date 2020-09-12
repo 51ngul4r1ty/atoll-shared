@@ -78,6 +78,10 @@ const buildId = (itemNumber: number) => {
     return `fake-id-${itemNumber}`;
 };
 
+const buildFriendlyId = (isStory: boolean, itemNumber: number) => {
+    return isStory ? `s-${itemNumber}` : `i-${itemNumber}`;
+};
+
 const buildCommonItem = (
     source: BacklogItemSource,
     itemNumber: number,
@@ -90,6 +94,7 @@ const buildCommonItem = (
     estimate,
     externalId: buildExternalId(source, itemNumber),
     id: buildId(itemNumber),
+    friendlyId: buildFriendlyId(true, itemNumber),
     instanceId,
     reasonPhrase: null,
     rolePhrase: null,
