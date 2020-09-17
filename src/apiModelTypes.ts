@@ -46,9 +46,12 @@ export interface ApiBacklogItem extends StandardItem {
 
 // TODO: Need to figure out good place for this type - it maps to the database structure, but is it really just an exact copy or
 //       could it potentially deviate from it?
-export interface ApiBacklogItemRank extends StandardItem {
-    backlogitemId: string | null;
-    nextbacklogitemId: string | null;
+export interface ApiCounter extends StandardItem {
+    entity: string | null;
+    entityId: string | null;
+    entitySubtype: string;
+    lastNumber: number | null;
+    lastCounterValue: string | null;
 }
 
 /* sprints */
@@ -56,4 +59,14 @@ export interface ApiBacklogItemRank extends StandardItem {
 export interface ApiSprint extends StandardNamedItem {
     startDate: Date;
     finishDate: Date;
+}
+
+export interface ApiBacklogItem extends StandardItem {
+    friendlyId: string | null;
+    externalId: string | null;
+    rolePhrase: string | null;
+    storyPhrase: string;
+    reasonPhrase: string | null;
+    estimate: number | null;
+    type: BacklogItemType;
 }
