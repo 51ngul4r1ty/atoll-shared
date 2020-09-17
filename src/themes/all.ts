@@ -65,12 +65,14 @@
 export interface Theme {
     "--normal-page-color": string;
     "--normal-pen-color": string;
+    "--normal-pen-disabled-color": string;
     "--normal-placeholder-color": string;
     "--normal-light-border-color": string;
     "--normal-divider-color": string;
     "--normal-active-page-color": string;
     "--normal-form-page-color": string;
     "--normal-input-page-color": string;
+    "--normal-input-page-disabled-color": string;
     "--normal-focus-page-color": string;
     "--normal-hover-shadow": string;
     "--normal-hover-shadow-size": string;
@@ -88,7 +90,9 @@ export interface Theme {
 export const defaultTheme: Theme = {
     "--normal-page-color": "white",
     "--normal-pen-color": "black",
+    "--normal-pen-disabled-color": "#999",
     "--normal-placeholder-color": "#777",
+    "--normal-input-page-disabled-color": "#e0e0e0",
     "--normal-divider-color": "#f4f4f4",
     "--normal-light-border-color": "#ccc",
     "--normal-active-page-color": "#ddd",
@@ -111,12 +115,14 @@ export const defaultTheme: Theme = {
 export const darkTheme: Theme = {
     "--normal-page-color": "black",
     "--normal-pen-color": "#bbb",
+    "--normal-pen-disabled-color": "#888",
     "--normal-placeholder-color": "#999",
     "--normal-divider-color": "#0b0b0b",
     "--normal-light-border-color": "#333",
     "--normal-active-page-color": "#555",
     "--normal-form-page-color": "#606060",
     "--normal-input-page-color": "#222",
+    "--normal-input-page-disabled-color": "#444",
     "--normal-focus-page-color": "#444",
     "--normal-hover-shadow": "rgba(255, 255, 255, 1.0)",
     "--normal-hover-shadow-size": "1.0rem",

@@ -54,6 +54,7 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     id={props.id}
                     instanceId={props.instanceId}
                     friendlyId={props.friendlyId}
+                    friendlyIdDisabled={!props.saved}
                     externalId={props.externalId}
                     editing
                     estimate={props.estimate}
