@@ -306,6 +306,7 @@ export const backlogItemsReducer = (
                 draft.addedItems.forEach((addedItem) => {
                     if (addedItem.instanceId === instanceId) {
                         addedItem.id = updatedBacklogItem.id;
+                        addedItem.friendlyId = updatedBacklogItem.friendlyId;
                         addedItem.saved = true;
                     }
                 });
