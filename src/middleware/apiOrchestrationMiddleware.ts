@@ -37,8 +37,9 @@ import { buildApiPayloadBaseForResource } from "../selectors/apiSelectors";
 // utils
 import { convertToBacklogItemModel } from "../utils/apiPayloadHelper";
 import { routePlanView } from "../actions/routeActions";
-import { getUserPreferences } from "../actions/userActions";
+import { getUserPreferences, ActionGetUserPrefsSuccessAction } from "../actions/userActions";
 import { ResourceTypes } from "../reducers/apiLinksReducer";
+import { settings } from "cluster";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
@@ -53,6 +54,7 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             if (backlogItem) {
                 const prevItemId = prevBacklogItem ? prevBacklogItem.id : null;
                 const model = convertToBacklogItemModel(backlogItem);
+                model.projectId = state.user.preferences.selectedProject;
                 storeTyped.dispatch(apiPostBacklogItem(model, prevItemId, { instanceId }));
             }
             break;
@@ -76,6 +78,13 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
         case ActionTypes.API_POST_ACTION_LOGIN_SUCCESS: {
             const actionTyped = action as ActionPostLoginSuccessAction;
             if (actionTyped.payload.response.status === HttpStatus.OK) {
+                storeTyped.dispatch(getUserPreferences(action.type));
+            }
+            break;
+        }
+        case ActionTypes.API_GET_USER_PREFS_SUCCESS: {
+            const actionTyped = action as ActionGetUserPrefsSuccessAction;
+            if (actionTyped.meta.sourceActionType === ActionTypes.API_POST_ACTION_LOGIN_SUCCESS) {
                 storeTyped.dispatch(routePlanView());
             }
             break;

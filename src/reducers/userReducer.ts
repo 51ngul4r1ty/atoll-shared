@@ -9,7 +9,8 @@ import { UserState, AnyFSA } from "../types";
 
 export const userReducerInitialState = Object.freeze<UserState>({
     preferences: {
-        detectBrowserDarkMode: false
+        detectBrowserDarkMode: false,
+        seletedProject: null
     }
 });
 

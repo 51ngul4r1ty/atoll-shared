@@ -40,6 +40,7 @@ export interface ApiBacklogItem extends StandardItem {
     reasonPhrase: string | null;
     estimate: number | null;
     type: BacklogItemType;
+    projectId: string | null;
 }
 
 // TODO: Need to figure out good place for this type - it maps to the database structure, but is it really just an exact copy or
@@ -78,5 +79,10 @@ export interface ProjectSettings {
 export interface ApiProjectSettings extends StandardItem {
     projectId: string | null;
     externalId: string | null;
+    settings: ProjectSettings;
+}
+
+export interface ApiUserSettings extends StandardItem {
+    appuserId: string | null;
     settings: ProjectSettings;
 }

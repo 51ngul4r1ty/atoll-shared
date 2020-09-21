@@ -54,6 +54,7 @@ export interface BacklogItemModel extends BaseModelItem {
     rolePhrase: string | null;
     storyPhrase: string;
     type: BacklogItemType;
+    projectId: string; // TODO: Finish up code related to this
 }
 
 export interface BacklogItem extends BacklogItemModel {
@@ -131,7 +132,8 @@ export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>
     reasonPhrase: pushedItem.reasonPhrase,
     rolePhrase: pushedItem.rolePhrase,
     storyPhrase: pushedItem.storyPhrase,
-    type: pushedItem.type
+    type: pushedItem.type,
+    projectId: pushedItem.projectId
 });
 
 export const addPushedAddedItemsToAllItems = (draft: Draft<BacklogItemsState>, allItems: LinkedList<BacklogItemWithSource>) => {
@@ -252,7 +254,8 @@ export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem =>
     estimate: apiItem.estimate,
     type: apiItem.type,
     createdAt: apiItem.createdAt,
-    updatedAt: apiItem.updatedAt
+    updatedAt: apiItem.updatedAt,
+    projectId: apiItem.projectId
 });
 
 export const mapApiItemsToBacklogItems = (apiItems: ApiBacklogItem[]): BacklogItem[] => {
