@@ -5,12 +5,12 @@ import { produce } from "immer";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { UserState, AnyFSA } from "../types";
+import { UserState, AnyFSA, UserPreferences } from "../types";
 
 export const userReducerInitialState = Object.freeze<UserState>({
     preferences: {
         detectBrowserDarkMode: false,
-        seletedProject: null
+        selectedProject: null
     }
 });
 
