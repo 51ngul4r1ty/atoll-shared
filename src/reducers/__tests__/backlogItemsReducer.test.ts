@@ -56,19 +56,20 @@ describe("Backlog Items Reducer", () => {
             };
             const pushedItem1: WebsocketPushNotificationData<PushBacklogItemModel> = {
                 item: {
-                    version: 0,
-                    friendlyId: "2",
+                    createdAt: new Date("2020-06-02T01:15:54.715Z"),
+                    estimate: null,
                     externalId: "t-2",
+                    friendlyId: "2",
+                    id: "3ba659af17e344aebd02a23b394964b3",
+                    nextBacklogItemId: "20650986d6b84db79b2a9fa8239016ad",
+                    prevBacklogItemId: null,
+                    projectId: null,
+                    reasonPhrase: null,
+                    rolePhrase: null,
                     storyPhrase: "test 2",
                     type: "story",
-                    id: "3ba659af17e344aebd02a23b394964b3",
                     updatedAt: new Date("2020-06-02T01:15:54.715Z"),
-                    createdAt: new Date("2020-06-02T01:15:54.715Z"),
-                    rolePhrase: null,
-                    reasonPhrase: null,
-                    estimate: null,
-                    prevBacklogItemId: null,
-                    nextBacklogItemId: "20650986d6b84db79b2a9fa8239016ad"
+                    version: 0
                 },
                 operation: PushOperationType.Added
             };
