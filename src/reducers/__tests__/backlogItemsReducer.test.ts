@@ -41,18 +41,19 @@ describe("Backlog Items Reducer", () => {
                 source: BacklogItemSource.Added
             };
             const item: BacklogItemWithSource = {
-                id: "20650986d6b84db79b2a9fa8239016ad",
-                friendlyId: "1",
-                externalId: "t-1",
-                rolePhrase: null,
-                storyPhrase: "test",
-                reasonPhrase: null,
-                estimate: null,
-                type: "story",
                 createdAt: new Date("2020-05-16T17:49:30.265Z"),
-                updatedAt: new Date("2020-05-16T17:49:30.265Z"),
+                estimate: null,
+                externalId: "t-1",
+                friendlyId: "1",
+                id: "20650986d6b84db79b2a9fa8239016ad",
+                projectId: null,
+                reasonPhrase: null,
+                rolePhrase: null,
                 saved: true,
-                source: BacklogItemSource.Loaded
+                source: BacklogItemSource.Loaded,
+                storyPhrase: "test",
+                type: "story",
+                updatedAt: new Date("2020-05-16T17:49:30.265Z")
             };
             const pushedItem1: WebsocketPushNotificationData<PushBacklogItemModel> = {
                 item: {
