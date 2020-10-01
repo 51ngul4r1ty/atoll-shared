@@ -23,18 +23,19 @@ describe("Backlog Items Reducer", () => {
     describe("rebuildAllItems", () => {
         it("should update correctly", () => {
             const addedItem: SaveableBacklogItem = {
-                type: "issue",
-                instanceId: 1,
-                saved: false,
                 createdAt: undefined,
-                updatedAt: undefined,
                 estimate: undefined,
-                friendlyId: undefined,
                 externalId: undefined,
+                friendlyId: undefined,
+                id: undefined,
+                instanceId: 1,
+                projectId: undefined,
                 reasonPhrase: undefined,
                 rolePhrase: undefined,
+                saved: false,
                 storyPhrase: undefined,
-                id: undefined
+                type: "issue",
+                updatedAt: undefined
             };
             const addedItem1InAllItems: BacklogItemWithSource = {
                 ...addedItem,
