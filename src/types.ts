@@ -78,6 +78,7 @@ export type AppState = Readonly<{
 
 export interface UserPreferences {
     detectBrowserDarkMode: boolean;
+    selectedProject: string | null;
 }
 
 export type UserState = Readonly<{

@@ -23,64 +23,72 @@ describe("Backlog Items Reducer", () => {
     describe("rebuildAllItems", () => {
         it("should update correctly", () => {
             const addedItem: SaveableBacklogItem = {
-                type: "issue",
-                instanceId: 1,
-                saved: false,
                 createdAt: undefined,
-                updatedAt: undefined,
                 estimate: undefined,
                 externalId: undefined,
+                friendlyId: undefined,
+                id: undefined,
+                instanceId: 1,
+                projectId: undefined,
                 reasonPhrase: undefined,
                 rolePhrase: undefined,
+                saved: false,
                 storyPhrase: undefined,
-                id: undefined
+                type: "issue",
+                updatedAt: undefined
             };
             const addedItem1InAllItems: BacklogItemWithSource = {
                 ...addedItem,
                 source: BacklogItemSource.Added
             };
             const item: BacklogItemWithSource = {
-                id: "20650986d6b84db79b2a9fa8239016ad",
-                externalId: "t-1",
-                rolePhrase: null,
-                storyPhrase: "test",
-                reasonPhrase: null,
-                estimate: null,
-                type: "story",
                 createdAt: new Date("2020-05-16T17:49:30.265Z"),
-                updatedAt: new Date("2020-05-16T17:49:30.265Z"),
+                estimate: null,
+                externalId: "t-1",
+                friendlyId: "1",
+                id: "20650986d6b84db79b2a9fa8239016ad",
+                projectId: null,
+                reasonPhrase: null,
+                rolePhrase: null,
                 saved: true,
-                source: BacklogItemSource.Loaded
+                source: BacklogItemSource.Loaded,
+                storyPhrase: "test",
+                type: "story",
+                updatedAt: new Date("2020-05-16T17:49:30.265Z")
             };
             const pushedItem1: WebsocketPushNotificationData<PushBacklogItemModel> = {
                 item: {
-                    version: 0,
+                    createdAt: new Date("2020-06-02T01:15:54.715Z"),
+                    estimate: null,
                     externalId: "t-2",
+                    friendlyId: "2",
+                    id: "3ba659af17e344aebd02a23b394964b3",
+                    nextBacklogItemId: "20650986d6b84db79b2a9fa8239016ad",
+                    prevBacklogItemId: null,
+                    projectId: null,
+                    reasonPhrase: null,
+                    rolePhrase: null,
                     storyPhrase: "test 2",
                     type: "story",
-                    id: "3ba659af17e344aebd02a23b394964b3",
                     updatedAt: new Date("2020-06-02T01:15:54.715Z"),
-                    createdAt: new Date("2020-06-02T01:15:54.715Z"),
-                    rolePhrase: null,
-                    reasonPhrase: null,
-                    estimate: null,
-                    prevBacklogItemId: null,
-                    nextBacklogItemId: "20650986d6b84db79b2a9fa8239016ad"
+                    version: 0
                 },
                 operation: PushOperationType.Added
             };
             const pushedItem1InAllItems: BacklogItemWithSource = {
+                createdAt: new Date("2020-06-02T01:15:54.715Z"),
+                estimate: null,
                 externalId: "t-2",
-                storyPhrase: "test 2",
-                type: "story",
+                friendlyId: "2",
                 id: "3ba659af17e344aebd02a23b394964b3",
                 instanceId: undefined,
-                createdAt: new Date("2020-06-02T01:15:54.715Z"),
-                updatedAt: new Date("2020-06-02T01:15:54.715Z"),
-                rolePhrase: null,
+                projectId: null,
                 reasonPhrase: null,
-                estimate: null,
-                source: BacklogItemSource.Pushed
+                rolePhrase: null,
+                source: BacklogItemSource.Pushed,
+                storyPhrase: "test 2",
+                type: "story",
+                updatedAt: new Date("2020-06-02T01:15:54.715Z")
             };
             produce(
                 { ...backlogItemsReducerInitialState, addedItems: [addedItem], items: [item], pushedItems: [pushedItem1] },

@@ -78,6 +78,10 @@ const buildId = (itemNumber: number) => {
     return `fake-id-${itemNumber}`;
 };
 
+const buildFriendlyId = (isStory: boolean, itemNumber: number) => {
+    return isStory ? `s-${itemNumber}` : `i-${itemNumber}`;
+};
+
 const buildCommonItem = (
     source: BacklogItemSource,
     itemNumber: number,
@@ -86,17 +90,19 @@ const buildCommonItem = (
     saved: boolean = true
 ): BacklogItemWithSource => ({
     createdAt: new Date(),
-    updatedAt: new Date(),
     estimate,
     externalId: buildExternalId(source, itemNumber),
+    friendlyId: buildFriendlyId(true, itemNumber),
     id: buildId(itemNumber),
     instanceId,
+    projectId: null,
     reasonPhrase: null,
     rolePhrase: null,
     saved,
     source,
     storyPhrase: buildStoryPhrase(source, itemNumber),
-    type: "story"
+    type: "story",
+    updatedAt: new Date()
 });
 
 const buildAddedItem = (itemNumber: number, instanceId: number | null, estimate: number, saved: boolean): BacklogItemWithSource =>

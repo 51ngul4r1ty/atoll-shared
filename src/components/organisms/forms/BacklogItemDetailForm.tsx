@@ -19,6 +19,8 @@ import { BacklogItemType } from "../../../reducers/backlogItemsReducer";
 export interface BacklogItemDetailFormEditableFields {
     estimate: number | null;
     id: string;
+    friendlyId: string;
+    friendlyIdDisabled: boolean;
     externalId: string;
     storyPhrase: string;
     rolePhrase: string;
@@ -82,6 +84,8 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
         const placeholderText = this.props.type === "issue" ? issuePlaceholder : storyPlaceholder;
         const prevData: BacklogItemDetailFormEditableFieldsWithInstanceId = {
             id: this.props.id,
+            friendlyId: this.props.friendlyId,
+            friendlyIdDisabled: this.props.friendlyIdDisabled,
             instanceId: this.props.instanceId,
             estimate: this.props.estimate,
             externalId: this.props.externalId,
@@ -146,6 +150,17 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                 }}
             />
         );
+        const friendlyIdInput = (
+            <LabeledInput
+                inputId="userStoryFriendlyId"
+                labelText="ID"
+                inputValue={this.props.friendlyId}
+                disabled={this.props.friendlyIdDisabled}
+                onChange={(value) => {
+                    this.handleDataUpdate({ ...prevData, friendlyId: value });
+                }}
+            />
+        );
         const actionButtonPanel = (
             <div className={css.actionButtonPanel}>
                 <div />
@@ -171,8 +186,9 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                     <div className={css.mobileFormRow}>{rolePhraseInput}</div>
                     <div className={css.mobileFormRow}>{storyPhraseInput}</div>
                     <div className={css.mobileFormRow}>{reasonPhraseInput}</div>
-                    <div className={buildClassName(css.mobileFormRow, css.halfAndHalfRow)}>
+                    <div className={buildClassName(css.mobileFormRow, css.threeCellRow)}>
                         {estimateInput}
+                        {friendlyIdInput}
                         {externalIdInput}
                     </div>
                     <div className={css.mobileFormRow}>{actionButtonPanel}</div>
@@ -187,6 +203,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                 </div>
                 <div className={buildClassName(css.userStoryExtraFields, css.formRow)}>
                     {estimateInput}
+                    {friendlyIdInput}
                     {externalIdInput}
                     {actionButtonPanel}
                 </div>

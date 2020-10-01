@@ -17,7 +17,7 @@ interface AppOwnProps {
 }
 
 const mapStateToProps = (state: StateTree, ownProps: AppOwnProps): AppStateProps => {
-    const userPreferences = (state.user && state.user.preferences) || ({} as UserPreferences);
+    const userPreferences: UserPreferences = (state.user && state.user.preferences) || ({} as UserPreferences);
     return {
         detectBrowserDarkMode: userPreferences.detectBrowserDarkMode,
         executingOnClient: state.app.executingOnClient || false,

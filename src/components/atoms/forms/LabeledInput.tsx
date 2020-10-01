@@ -14,6 +14,7 @@ export type LabeledInputType = ComponentWithForwardedRef<LabeledInputProps>;
 
 export interface LabeledInputStateProps {
     className?: string;
+    disabled?: boolean;
     inputId: string;
     inputName?: string;
     inputValue: string;
@@ -70,13 +71,14 @@ export class InnerLabeledInput extends Component<LabeledInputProps & LabeledInpu
     render() {
         const nameToUse = this.props.inputName || this.props.inputId;
         const valueToUse = this.props.inputValue || "";
-        const classToUse = buildClassName(css.input, this.props.className);
+        const classToUse = buildClassName(css.input, this.props.className, this.props.disabled ? css.disabled : null);
         const typeToUse = this.props.type || "text";
         return (
             <div className={classToUse}>
                 <input
                     id={this.props.inputId}
                     ref={this.props.innerRef}
+                    disabled={this.props.disabled}
                     name={nameToUse}
                     type={typeToUse}
                     placeholder={this.props.placeHolder}

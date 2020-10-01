@@ -39,6 +39,7 @@ import * as loggingTags from "../../../constants/loggingTags";
 
 export interface PlanningPanelBacklogItem {
     estimate: number | null;
+    friendlyId: string;
     externalId: string;
     id: string;
     instanceId: number | null;

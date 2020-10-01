@@ -25,3 +25,11 @@
 .input > input::placeholder {
     color: var(--normal-placeholder-color, #777);
 }
+
+.input.disabled > input {
+    background-color: var(--normal-input-page-disabled-color, #e0e0e0);
+}
+
+.input.disabled > label {
+    color: var(--normal-pen-disabled-color, #999);
+}

@@ -1,7 +1,5 @@
 export type uuid = string;
 
-/* backlog items */
-
 export type BacklogItemType = "story" | "issue";
 
 export interface BaseItem {
@@ -35,12 +33,14 @@ export interface StandardItem extends BaseItem, ItemWithId, ApiItemWithLinks {}
 export interface StandardNamedItem extends StandardItem, ItemWithName {}
 
 export interface ApiBacklogItem extends StandardItem {
+    friendlyId: string | null;
     externalId: string | null;
     rolePhrase: string | null;
     storyPhrase: string;
     reasonPhrase: string | null;
     estimate: number | null;
     type: BacklogItemType;
+    projectId: string | null;
 }
 
 // TODO: Need to figure out good place for this type - it maps to the database structure, but is it really just an exact copy or
@@ -50,9 +50,39 @@ export interface ApiBacklogItemRank extends StandardItem {
     nextbacklogitemId: string | null;
 }
 
-/* sprints */
+export interface ApiCounter extends StandardItem {
+    entity: string | null;
+    entityId: string | null;
+    entitySubtype: string;
+    lastNumber: number | null;
+    lastCounterValue: string | null;
+}
 
 export interface ApiSprint extends StandardNamedItem {
     startDate: Date;
     finishDate: Date;
+}
+
+export interface CounterSettings {
+    prefix?: string;
+    suffix?: string;
+    totalFixedLength?: number; // if it is a fixed length this includes prefix, suffix and generated number with leading zeros
+}
+
+export interface ProjectSettings {
+    counters?: {
+        story: CounterSettings;
+        issue: CounterSettings;
+    };
+}
+
+export interface ApiProjectSettings extends StandardItem {
+    projectId: string | null;
+    externalId: string | null;
+    settings: ProjectSettings;
+}
+
+export interface ApiUserSettings extends StandardItem {
+    appuserId: string | null;
+    settings: ProjectSettings;
 }

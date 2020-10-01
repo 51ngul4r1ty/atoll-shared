@@ -48,11 +48,13 @@ export interface BacklogItemModel extends BaseModelItem {
     createdAt: Date;
     updatedAt: Date;
     estimate: number | null;
+    friendlyId: string;
     externalId: string | null;
     reasonPhrase: string | null;
     rolePhrase: string | null;
     storyPhrase: string;
     type: BacklogItemType;
+    projectId: string; // TODO: Finish up code related to this
 }
 
 export interface BacklogItem extends BacklogItemModel {
@@ -125,11 +127,13 @@ export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>
     createdAt: pushedItem.createdAt,
     updatedAt: pushedItem.updatedAt,
     estimate: pushedItem.estimate,
+    friendlyId: pushedItem.friendlyId,
     externalId: pushedItem.externalId,
     reasonPhrase: pushedItem.reasonPhrase,
     rolePhrase: pushedItem.rolePhrase,
     storyPhrase: pushedItem.storyPhrase,
-    type: pushedItem.type
+    type: pushedItem.type,
+    projectId: pushedItem.projectId
 });
 
 export const addPushedAddedItemsToAllItems = (draft: Draft<BacklogItemsState>, allItems: LinkedList<BacklogItemWithSource>) => {
@@ -212,6 +216,7 @@ export const updateItemFieldsInAllItems = (
 
 export const updateBacklogItemFields = (backlogItem: BacklogItem, payload: BacklogItemDetailFormEditableFields) => {
     backlogItem.estimate = payload.estimate;
+    backlogItem.friendlyId = payload.friendlyId;
     backlogItem.externalId = payload.externalId;
     backlogItem.storyPhrase = payload.storyPhrase;
     backlogItem.reasonPhrase = payload.reasonPhrase;
@@ -241,6 +246,7 @@ export const updateItemById = (draft: Draft<BacklogItemsState>, itemId: string, 
 
 export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem => ({
     id: apiItem.id,
+    friendlyId: apiItem.friendlyId,
     externalId: apiItem.externalId,
     rolePhrase: apiItem.rolePhrase,
     storyPhrase: apiItem.storyPhrase,
@@ -248,7 +254,8 @@ export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem =>
     estimate: apiItem.estimate,
     type: apiItem.type,
     createdAt: apiItem.createdAt,
-    updatedAt: apiItem.updatedAt
+    updatedAt: apiItem.updatedAt,
+    projectId: apiItem.projectId
 });
 
 export const mapApiItemsToBacklogItems = (apiItems: ApiBacklogItem[]): BacklogItem[] => {
@@ -302,6 +309,7 @@ export const backlogItemsReducer = (
                 draft.addedItems.forEach((addedItem) => {
                     if (addedItem.instanceId === instanceId) {
                         addedItem.id = updatedBacklogItem.id;
+                        addedItem.friendlyId = updatedBacklogItem.friendlyId;
                         addedItem.saved = true;
                     }
                 });
