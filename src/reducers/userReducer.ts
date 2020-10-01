@@ -5,7 +5,8 @@ import { produce } from "immer";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { UserState, AnyFSA, UserPreferences } from "../types";
+import { UserState, AnyFSA } from "../types";
+import { ActionGetUserPrefsSuccessAction } from "../actions/userActions";
 
 export const userReducerInitialState = Object.freeze<UserState>({
     preferences: {
@@ -20,7 +21,12 @@ export const userReducer = (state: UserState = userReducerInitialState, action: 
 
         switch (type) {
             case ActionTypes.API_GET_USER_PREFS_SUCCESS: {
-                draft.preferences = { ...draft.preferences, ...payload.response.data.item };
+                const actionTyped = action as ActionGetUserPrefsSuccessAction;
+                const item = actionTyped.payload.response?.data?.item;
+                draft.preferences = {
+                    ...draft.preferences,
+                    selectedProject: item?.settings?.selectedProject
+                };
                 return;
             }
         }

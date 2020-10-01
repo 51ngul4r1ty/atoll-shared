@@ -1,5 +1,11 @@
 // interfaces/types
-import { API, NoDataApiAction, ApiActionMetaDataRequestBody, ApiActionSuccessPayload } from "../middleware/apiTypes";
+import {
+    API,
+    NoDataApiAction,
+    ApiActionMetaDataRequestBody,
+    ApiActionSuccessPayload,
+    ApiActionSuccessPayloadForItem
+} from "../middleware/apiTypes";
 
 // actions
 import * as ActionTypes from "./actionTypes";
@@ -12,10 +18,18 @@ import { APPLICATION_JSON } from "../constants";
 import { getApiBaseUrl } from "../config";
 import { buildActionTypes } from "./utils/apiActionUtils";
 
-// TODO: Define this
-export interface ActionGetUserPrefsSuccessResponse {}
+export interface ActionGetUserPrefsSuccessResponse {
+    appuserId: string;
+    createdAt: string; // ISO Date String
+    id: string;
+    settings: {
+        selectedProject: string;
+    };
+    updatedAt: string; // ISO Date String
+    version: number;
+}
 
-export type ActionGetUserPrefsSuccessActionPayload = ApiActionSuccessPayload<ActionGetUserPrefsSuccessResponse>;
+export type ActionGetUserPrefsSuccessActionPayload = ApiActionSuccessPayloadForItem<ActionGetUserPrefsSuccessResponse>;
 
 // TODO: Define this
 export interface ActionGetUserPrefsPayloadData {}
