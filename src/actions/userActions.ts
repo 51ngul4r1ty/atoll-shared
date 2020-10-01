@@ -31,7 +31,6 @@ export interface ActionGetUserPrefsSuccessResponse {
 
 export type ActionGetUserPrefsSuccessActionPayload = ApiActionSuccessPayloadForItem<ActionGetUserPrefsSuccessResponse>;
 
-// TODO: Define this
 export interface ActionGetUserPrefsPayloadData {}
 
 export interface ActionGetUserPrefsSuccessActionMeta extends ApiActionMetaDataRequestBody<ActionGetUserPrefsPayloadData> {
