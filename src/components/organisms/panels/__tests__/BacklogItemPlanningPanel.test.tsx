@@ -90,18 +90,19 @@ const buildCommonItem = (
     saved: boolean = true
 ): BacklogItemWithSource => ({
     createdAt: new Date(),
-    updatedAt: new Date(),
     estimate,
     externalId: buildExternalId(source, itemNumber),
-    id: buildId(itemNumber),
     friendlyId: buildFriendlyId(true, itemNumber),
+    id: buildId(itemNumber),
     instanceId,
+    projectId: null,
     reasonPhrase: null,
     rolePhrase: null,
     saved,
     source,
     storyPhrase: buildStoryPhrase(source, itemNumber),
-    type: "story"
+    type: "story",
+    updatedAt: new Date()
 });
 
 const buildAddedItem = (itemNumber: number, instanceId: number | null, estimate: number, saved: boolean): BacklogItemWithSource =>

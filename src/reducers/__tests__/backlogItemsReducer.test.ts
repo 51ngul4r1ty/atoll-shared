@@ -73,18 +73,19 @@ describe("Backlog Items Reducer", () => {
                 operation: PushOperationType.Added
             };
             const pushedItem1InAllItems: BacklogItemWithSource = {
-                friendlyId: "2",
+                createdAt: new Date("2020-06-02T01:15:54.715Z"),
+                estimate: null,
                 externalId: "t-2",
-                storyPhrase: "test 2",
-                type: "story",
+                friendlyId: "2",
                 id: "3ba659af17e344aebd02a23b394964b3",
                 instanceId: undefined,
-                createdAt: new Date("2020-06-02T01:15:54.715Z"),
-                updatedAt: new Date("2020-06-02T01:15:54.715Z"),
-                rolePhrase: null,
+                projectId: null,
                 reasonPhrase: null,
-                estimate: null,
-                source: BacklogItemSource.Pushed
+                rolePhrase: null,
+                source: BacklogItemSource.Pushed,
+                storyPhrase: "test 2",
+                type: "story",
+                updatedAt: new Date("2020-06-02T01:15:54.715Z")
             };
             produce(
                 { ...backlogItemsReducerInitialState, addedItems: [addedItem], items: [item], pushedItems: [pushedItem1] },
