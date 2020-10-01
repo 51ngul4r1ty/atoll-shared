@@ -12,5 +12,6 @@ export const convertToBacklogItemModel = (backlogItem: BacklogItem): BacklogItem
     reasonPhrase: backlogItem.reasonPhrase,
     rolePhrase: backlogItem.rolePhrase,
     storyPhrase: backlogItem.storyPhrase,
-    type: backlogItem.type
+    type: backlogItem.type,
+    projectId: backlogItem.projectId
 });
