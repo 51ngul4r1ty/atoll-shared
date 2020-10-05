@@ -8,6 +8,7 @@ import { EditMode } from "./components/molecules/buttons/EditButton";
 // state
 import { BacklogItemsState } from "./reducers/backlogItemsReducer";
 import { ApiLinkState } from "./reducers/apiLinksReducer";
+import { BacklogItemRanksState } from "./reducers/backlogItemRanksReducer";
 
 export type Locale = "en_US" | "de_DE";
 
@@ -15,6 +16,7 @@ export interface StateTree {
     apiLinks: ApiLinkState;
     app: AppState;
     backlogItems: BacklogItemsState;
+    backlogItemRanks: BacklogItemRanksState;
     user: UserState;
     featureToggles: FeatureTogglesState;
 }
