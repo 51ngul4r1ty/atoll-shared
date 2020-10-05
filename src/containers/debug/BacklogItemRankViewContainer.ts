@@ -139,7 +139,7 @@ const handleNewGroup = (
     groups.push(group);
     let lastItemAdded = {
         itemText: firstItem.backlogItemId || "NULL",
-        nextText: firstItem.nextBacklogItemId,
+        nextText: firstItem.nextBacklogItemId || "NULL",
         itemType: firstItem.backlogItemId ? RankItemType.OrphanedListStart : RankItemType.ListStart,
         linkCount: getIdLinkCount(linkCountObj, null)
     };
