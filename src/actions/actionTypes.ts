@@ -40,6 +40,12 @@ export const API_DELETE_BACKLOG_ITEM_SUCCESS = buildActionName(Names.DELETE_BACK
 export const API_DELETE_BACKLOG_ITEM_FAILURE = buildActionName(Names.DELETE_BACKLOG_ITEM, "failure");
 // #endregion
 
+// #region Backlog Item Ranks Resource Collection
+export const API_GET_BACKLOG_ITEM_RANKS_REQUEST = buildActionName(Names.GET_BACKLOG_ITEM_RANKS, "request");
+export const API_GET_BACKLOG_ITEM_RANKS_SUCCESS = buildActionName(Names.GET_BACKLOG_ITEM_RANKS, "success");
+export const API_GET_BACKLOG_ITEM_RANKS_FAILURE = buildActionName(Names.GET_BACKLOG_ITEM_RANKS, "failure");
+// #endregion
+
 // #region Post Actions
 export const API_POST_ACTION_REORDER_BACKLOG_ITEM_REQUEST = buildActionName(Names.POST_ACTION_REORDER_BACKLOG_ITEM, "request");
 export const API_POST_ACTION_REORDER_BACKLOG_ITEM_SUCCESS = buildActionName(Names.POST_ACTION_REORDER_BACKLOG_ITEM, "success");

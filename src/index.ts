@@ -42,6 +42,7 @@ export { AppContainer } from "./AppContainer";
 export { LoginViewContainer } from "./LoginViewContainer";
 export { PlanViewContainer } from "./PlanViewContainer";
 export { ReviewViewContainer } from "./ReviewViewContainer";
+export { BacklogItemRankViewContainer } from "./containers/debug/BacklogItemRankViewContainer";
 export { SprintViewContainer } from "./SprintViewContainer";
 
 // config

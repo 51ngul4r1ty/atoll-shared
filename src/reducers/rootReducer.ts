@@ -6,6 +6,7 @@ import { connectRouter } from "connected-react-router";
 import { appReducer, appReducerInitialState } from "./appReducer";
 import { apiLinksReducer, apiLinksReducerInitialState } from "./apiLinksReducer";
 import { backlogItemsReducer, backlogItemsReducerInitialState } from "./backlogItemsReducer";
+import { backlogItemRanksReducer, backlogItemRanksReducerInitialState } from "./backlogItemRanksReducer";
 import { userReducer, userReducerInitialState } from "./userReducer";
 import { featureTogglesReducer, featureTogglesReducerInitialState } from "./featureTogglesReducer";
 
@@ -13,6 +14,7 @@ export const rootReducerInitialState = {
     app: appReducerInitialState,
     apiLinks: apiLinksReducerInitialState,
     backlogItems: backlogItemsReducerInitialState,
+    backlogItemRanks: backlogItemRanksReducerInitialState,
     user: userReducerInitialState,
     featureToggles: featureTogglesReducerInitialState
 };
@@ -24,6 +26,7 @@ const createRootReducer = (history: any) => {
         app: appReducer,
         apiLinks: apiLinksReducer,
         backlogItems: backlogItemsReducer,
+        backlogItemRanks: backlogItemRanksReducer,
         user: userReducer,
         featureToggles: featureTogglesReducer
     });
