@@ -24,6 +24,7 @@ const handleNewList = (
     lastItemAdded: BacklogItemRankItem,
     linkCountObj: LinkCountObj
 ) => {
+    console.log("LOG - point 6");
     let itemsFound = availableItems.filter((item) => item.backlogItemId === firstItem.nextBacklogItemId);
     if (itemsFound.length === 0) {
         // start of list with nothing after it
@@ -34,6 +35,7 @@ const handleNewList = (
         let orphanedEnd = true;
         while (busy) {
             removeAvailableItem(availableItems, itemFound);
+            console.log("LOG - point 7");
             lastItemAdded = {
                 itemText: itemFound.backlogItemId,
                 nextText: itemFound.nextBacklogItemId,
@@ -46,6 +48,7 @@ const handleNewList = (
                 busy = false;
                 orphanedEnd = false;
             } else {
+                console.log("LOG - point 8");
                 const nextItemsFound = availableItems.filter((item) => item.backlogItemId === itemFound.nextBacklogItemId);
                 itemFound = nextItemsFound[0];
             }
@@ -62,6 +65,7 @@ const handleFirstItemFromAvailableList = (availableItems: AvailableRankItem[]): 
     let firstItem: BacklogItemRank;
     // there should not be multiple lists, but there are, so we need to find the start of these lists and iterate
     // through them just like we did in handleNewList for the first list
+    console.log("LOG - point 1");
     const listStartItems = availableItems.filter((item) => item.backlogItemId === null);
     if (listStartItems.length) {
         // this is a "normal" start of a list
@@ -73,6 +77,7 @@ const handleFirstItemFromAvailableList = (availableItems: AvailableRankItem[]): 
         // we need to follow the chain of items that leads to it
         firstItem = null;
         while (!firstItem) {
+            console.log("LOG - point 2");
             let itemsFound = availableItems.filter((item) => item.nextBacklogItemId === currentItem.backlogItemId);
             if (itemsFound.length) {
                 currentItem = itemsFound[0];
@@ -95,6 +100,7 @@ const handleNewGroup = (
         items: []
     };
     groups.push(group);
+    console.log("LOG - point 3");
     let lastItemAdded = {
         itemText: firstItem.backlogItemId || "NULL",
         nextText: firstItem.nextBacklogItemId || "NULL",
@@ -122,9 +128,11 @@ export const buildGroups = (state: StateTree) => {
     };
     const groups = buildNewGroups();
     const ranks = getBacklogItemRanks(state);
+    console.log("LOG - point 4");
     const listStartItems = ranks.filter((item) => item.backlogItemId === null);
     const linkCountObj: LinkCountObj = {};
     ranks.forEach((rank) => {
+        console.log("LOG - point 5");
         linkCountObj[`${rank.backlogItemId}`] = {
             linkCount: 0,
             inPrevList: true,
