@@ -6,8 +6,7 @@ import { LinkedList } from "../linkedList";
 
 describe("Linked List", () => {
     describe("addInitialLink", () => {
-        // scenario 1: itemId set, item missing, nextId set, next present
-        it("should set first/lastItem correctly when linking to existing 'next' item", () => {
+        it("should set head and tail correctly for two linked items (when head and tail linked first)", () => {
             const list = new LinkedList();
             list.addInitialLink(null, "item-c");
             list.addInitialLink("item-d", null);
@@ -15,8 +14,7 @@ describe("Linked List", () => {
             expect(list.isFirstItem("item-c")).toBeTruthy();
             expect(list.isLastItem("item-d")).toBeTruthy();
         });
-        // scenario 2: itemId set, item present, nextId set, next missing
-        it("should set first/lastItem correctly when linking to existing 'prev' item", () => {
+        it("should set head and tail correctly for two linked items (even when tail linked last)", () => {
             const list = new LinkedList();
             list.addInitialLink(null, "item-c");
             list.addInitialLink("item-c", "item-d");
@@ -24,15 +22,13 @@ describe("Linked List", () => {
             expect(list.isFirstItem("item-c")).toBeTruthy();
             expect(list.isLastItem("item-d")).toBeTruthy();
         });
-        // scenario 4: nextId set, next missing
-        it("should set first/lastItem correctly when adding a single item to beginning of list", () => {
+        it("should set head and tail correctly for a single item", () => {
             const list = new LinkedList();
             list.addInitialLink(null, "item1-b");
             list.addInitialLink("item1-b", null);
             expect(list.isFirstItem("item1-b")).toBeTruthy();
             expect(list.isLastItem("item1-b")).toBeTruthy();
         });
-        // scenario 5: everything set and present
         it("should handle setting up the same link twice", () => {
             const list = new LinkedList();
             list.addInitialLink(null, "item1-a");
@@ -42,8 +38,7 @@ describe("Linked List", () => {
             expect(list.isFirstItem("item1-a")).toBeTruthy();
             expect(list.isLastItem("item1-b")).toBeTruthy();
         });
-        // scenario 7: nextId set, next present
-        it("should not throw an error setting up the same 'next' twice", () => {
+        it("should not throw an error linking head item twice", () => {
             const list = new LinkedList();
             list.addInitialLink(null, "item-a");
             list.addInitialLink("item-a", null);
@@ -51,13 +46,29 @@ describe("Linked List", () => {
             expect(list.isFirstItem("item-a")).toBeTruthy();
             expect(list.isLastItem("item-a")).toBeTruthy();
         });
-        // scenario 9: itemId and nextId both not set
-        it("should throw error when two items in link are null", () => {
+        it("should throw error when linking 2 null item IDs", () => {
             const list = new LinkedList();
             const t = () => list.addInitialLink(null, null);
             expect(t).toThrow(Error);
         });
-        // prod issue 1
+    });
+    describe("toArray", () => {
+        it("should handle empty list correctly", () => {
+            const list = new LinkedList();
+            const result = list.toArray();
+            expect(result.length).toEqual(0);
+        });
+        it("should handle link without data, but still include item as undefined", () => {
+            const list = new LinkedList();
+            list.addInitialLink(null, "item1");
+            list.addInitialLink("item1", "item2");
+            list.addInitialLink("item2", null);
+            list.addItemData("item1", { someObjField: "nothing important" });
+            const result = list.toArray();
+            expect(result).toStrictEqual([{ someObjField: "nothing important" }, undefined]);
+        });
+    });
+    describe("addInitialLink + toArray - production issues", () => {
         it("should be able to process links in any order (backlog item rank example 1)", () => {
             const list = new LinkedList<number>();
             list.addInitialLink("e522", "e9d6");
@@ -72,7 +83,6 @@ describe("Linked List", () => {
             expect(list.isLastItem("2da6")).toBeTruthy();
             expect(list.toIdArray()).toStrictEqual(["fdd2", "3996", "aa81", "b2ca", "e522", "e9d6", "2da6"]);
         });
-        // prod issue 2
         it("should be able to process links in any order (backlog item rank example 2)", () => {
             const list = new LinkedList<number>();
             list.addInitialLink("fdd3", null);
@@ -85,7 +95,6 @@ describe("Linked List", () => {
             expect(list.isLastItem("fdd3")).toBeTruthy();
             expect(list.toIdArray()).toStrictEqual(["0290", "87b0", "4432", "363c", "fdd3"]);
         });
-        // prod issue 3
         it("should be able to process links in any order (backlog item rank example 3)", () => {
             const backlogItemRankDb = [
                 { backlogitemId: "87b0ae7bfa0b450680e493e034a21e60", nextbacklogitemId: "4432c293678146669fcc955259e3f997" },
@@ -119,22 +128,6 @@ describe("Linked List", () => {
             });
             const result = list.toArray();
             expect(result).toStrictEqual(["gh-113", "gh-114", "gh-115", "gh-116", "gh-119", null, "gh-133", "gh-131", "gh-98"]);
-        });
-    });
-    describe("toArray", () => {
-        it("should handle empty list correctly", () => {
-            const list = new LinkedList();
-            const result = list.toArray();
-            expect(result.length).toEqual(0);
-        });
-        it("should handle link without data, but still include item as undefined", () => {
-            const list = new LinkedList();
-            list.addInitialLink(null, "item1");
-            list.addInitialLink("item1", "item2");
-            list.addInitialLink("item2", null);
-            list.addItemData("item1", { someObjField: "nothing important" });
-            const result = list.toArray();
-            expect(result).toStrictEqual([{ someObjField: "nothing important" }, undefined]);
         });
     });
     describe("addArray", () => {

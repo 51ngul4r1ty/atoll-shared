@@ -205,6 +205,18 @@ export class LinkedList<T> {
         }
         return id2PropertyRawValue;
     }
+    getItemNodeInfo(itemId: string): NodeLinkInfo<T> {
+        if (!itemId) {
+            throw new Error(
+                "Unable to retrieve by itemId null because that could mean HEAD or TAIL of linked list- use specific ID"
+            );
+        }
+        const node = this.nodeInfo[itemId];
+        if (node) {
+            return node;
+        }
+        return null;
+    }
     getFirstItemNodeInfo(): NodeLinkInfo<T> {
         const head = this.nodeInfo[LIST_HEAD_NODE_ID];
         if (head) {
