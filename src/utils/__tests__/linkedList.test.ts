@@ -252,4 +252,28 @@ describe("Linked List", () => {
             expect(list.isLastItem(lastItemId)).toBeTruthy();
         });
     });
+    describe("isFirstItem", () => {
+        it("should not find a first item with an ID of null", () => {
+            const list = new LinkedList();
+            const actual = list.isFirstItem(null);
+            expect(actual).toBeFalsy();
+        });
+        it("should work correctly even when the list is empty", () => {
+            const list = new LinkedList();
+            const actual = list.isFirstItem("item");
+            expect(actual).toBeFalsy();
+        });
+    });
+    describe("isLastItem", () => {
+        it("should not find a last item with an ID of null", () => {
+            const list = new LinkedList();
+            const actual = list.isLastItem(null);
+            expect(actual).toBeFalsy();
+        });
+        it("should work correctly even when the list is empty", () => {
+            const list = new LinkedList();
+            const actual = list.isLastItem("item");
+            expect(actual).toBeFalsy();
+        });
+    });
 });
