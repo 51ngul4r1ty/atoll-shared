@@ -64,6 +64,44 @@ describe("Linked List", () => {
             expect(t).toThrow(Error);
         });
     });
+    describe("addItemAfter", () => {
+        it("should throw an error when adding an item with ID null", () => {
+            const list = new LinkedList();
+            const t = () => list.addItemAfter(null, "1", {});
+            expect(t).toThrow(Error);
+        });
+        it("should throw an error when adding an item ID twice when using throwErrorForDups option", () => {
+            const list = new LinkedList();
+            const options = { throwErrorForDups: true, requireItemIdExistance: false };
+            list.addArray("id", [{ id: "1" }, { id: "3" }]);
+            list.addItemAfter("2", "3", {}, options);
+            const t = () => list.addItemAfter("2", "3", {}, options);
+            expect(t).toThrow(Error);
+        });
+        it("should not throw an error when adding an item ID twice when not using throwErrorForDups option", () => {
+            const list = new LinkedList();
+            const options = { throwErrorForDups: false, requireItemIdExistance: false };
+            list.addArray("id", [{ id: "1" }, { id: "3" }]);
+            list.addItemAfter("2", "3", {}, options);
+            list.addItemAfter("2", "3", {}, options);
+        });
+        it("should not throw an error when requireItemIdExistance set to false", () => {
+            const list = new LinkedList();
+            const options = { throwErrorForDups: false, requireItemIdExistance: false };
+            list.addItemAfter("2", "3", {}, options);
+        });
+        it("should throw an error when requireItemIdExistance set to true (the default setting)", () => {
+            const list = new LinkedList();
+            const t = () => list.addItemAfter("new", "missing", {});
+            expect(t).toThrow(Error);
+        });
+        // it("should throw error if you link the same ID to 2 different 'prev' IDs", () => {
+        //     const list = new LinkedList();
+        //     list.addInitialLink("1", "2");
+        //     const t = () => list.addInitialLink("4", "2");
+        //     expect(t).toThrow(Error);
+        // });
+    });
     describe("addItemBefore", () => {
         it("should throw an error when adding an item with ID null", () => {
             const list = new LinkedList();
