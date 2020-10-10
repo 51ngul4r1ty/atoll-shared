@@ -10,14 +10,12 @@ import {
     rebuildAllItems,
     BacklogItemSource,
     BacklogItemWithSource,
-    EditableBacklogItem,
     SaveableBacklogItem
 } from "../backlogItemsReducer";
 
 // interfaces/types
 import { PushOperationType, WebsocketPushNotificationData } from "../../types";
 import { PushBacklogItemModel } from "../../middleware/wsMiddleware";
-import { isNullOrUndefined } from "util";
 
 describe("Backlog Items Reducer", () => {
     describe("rebuildAllItems", () => {

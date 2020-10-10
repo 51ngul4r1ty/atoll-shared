@@ -140,12 +140,20 @@ export const addPushedAddedItemsToAllItems = (draft: Draft<BacklogItemsState>, a
     const pushedAddedItems = draft.pushedItems.filter((item) => item.operation === PushOperationType.Added);
     const pushedItems = pushedAddedItems.map((item) => addSourceToPushedItem(item.item, BacklogItemSource.Pushed));
     pushedItems.forEach((pushedItem) => {
+        const itemData = mapPushedToBacklogItem(pushedItem);
+        // TODO: Consider turning on the strict options below for debug mode - so that we catch issues during dev
+        //       but prevent the app from blowing up for this non-critical function in prod
         if (pushedItem.prevBacklogItemId) {
-            allItems.addLink(pushedItem.prevBacklogItemId, pushedItem.id);
+            allItems.addItemAfter(pushedItem.id, pushedItem.prevBacklogItemId, itemData, {
+                throwErrorForDups: false,
+                requireItemIdExistance: false
+            });
         } else {
-            allItems.addLink(pushedItem.id, pushedItem.nextBacklogItemId);
+            allItems.addItemBefore(pushedItem.id, pushedItem.nextBacklogItemId, itemData, {
+                throwErrorForDups: false,
+                requireItemIdExistance: false
+            });
         }
-        allItems.addItemData(pushedItem.id, mapPushedToBacklogItem(pushedItem));
     });
 };
 
