@@ -282,6 +282,28 @@ describe("Linked List", () => {
             });
         });
     });
+    describe("buildId2Value", () => {
+        it("should handle a simple numeric value correctly", () => {
+            const list = new LinkedList();
+            const actual = list.buildId2Value(1234);
+            expect(actual).toEqual("id2-1234");
+        });
+        it("should handle a simple string value correctly", () => {
+            const list = new LinkedList();
+            const actual = list.buildId2Value("abcd");
+            expect(actual).toEqual("id2-abcd");
+        });
+        it("should handle null value correctly", () => {
+            const list = new LinkedList();
+            const actual = list.buildId2Value(null);
+            expect(actual).toStrictEqual(null);
+        });
+        it("should handle undefined value correctly", () => {
+            const list = new LinkedList();
+            const actual = list.buildId2Value(undefined);
+            expect(actual).toStrictEqual(undefined);
+        });
+    });
     describe("addInitialLink + toArray - production issues", () => {
         it("should be able to process links in any order (backlog item rank example 1)", () => {
             const list = new LinkedList<number>();
