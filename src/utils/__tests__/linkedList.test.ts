@@ -212,6 +212,31 @@ describe("Linked List", () => {
             expect(list.isLastItem(lastItemId)).toBeTruthy();
         });
     });
+    describe("addArray2", () => {
+        it("should handle empty array correctly", () => {
+            const list = new LinkedList();
+            list.addArray2("id", "id2", []);
+            const result = list.toArray();
+            expect(result.length).toEqual(0);
+        });
+        it("should handle single item array correctly", () => {
+            const list = new LinkedList();
+            list.addArray2("id", "id2", [{ id2: "1" }]);
+            const result = list.toArray();
+            expect(result.length).toEqual(1);
+        });
+        it("should reject a non-string ID column", () => {
+            const list = new LinkedList();
+            const t = () => list.addArray2("id", "id2", [{ id: 1234 }]);
+            expect(t).toThrow(Error);
+        });
+        it("should not reject a non-string ID2 column", () => {
+            const list = new LinkedList();
+            list.addArray2("id", "id2", [{ id2: 1234 }]);
+            const result = list.toArray();
+            expect(result.length).toEqual(1);
+        });
+    });
     describe("isFirstItem", () => {
         it("should not find a first item with an ID of null", () => {
             const list = new LinkedList();
