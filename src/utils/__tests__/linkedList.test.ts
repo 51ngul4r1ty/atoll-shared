@@ -260,6 +260,28 @@ describe("Linked List", () => {
             expect(t).toThrow(Error);
         });
     });
+    describe("getItemNodeInfo", () => {
+        it("should handle an empty list", () => {
+            const list = new LinkedList();
+            const actual = list.getItemNodeInfo("1");
+            expect(actual).toBeNull();
+        });
+        it("should throw an error when retrieving ID null", () => {
+            const list = new LinkedList();
+            const t = () => list.getItemNodeInfo(null);
+            expect(t).toThrow(Error);
+        });
+        it("should handle an empty list", () => {
+            const list = new LinkedList();
+            list.addInitialLink("1", "2");
+            const actual = list.getItemNodeInfo("1");
+            expect(actual).toStrictEqual({
+                id: "1",
+                nextId: "2",
+                prevId: undefined
+            });
+        });
+    });
     describe("addInitialLink + toArray - production issues", () => {
         it("should be able to process links in any order (backlog item rank example 1)", () => {
             const list = new LinkedList<number>();
