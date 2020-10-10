@@ -266,6 +266,7 @@ export class LinkedList<T> {
         return items;
     }
     toIdArray(): string[] {
+        this.checkDataIntegrity();
         const items = [];
         let item = this.getFirstItemNodeInfo();
         let lastItem = this.getLastItemNodeInfo();

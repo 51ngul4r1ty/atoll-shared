@@ -51,6 +51,18 @@ describe("Linked List", () => {
             const t = () => list.addInitialLink(null, null);
             expect(t).toThrow(Error);
         });
+        it("should throw error if you link the same ID to 2 different 'next' IDs", () => {
+            const list = new LinkedList();
+            list.addInitialLink("1", "2");
+            const t = () => list.addInitialLink("1", "3");
+            expect(t).toThrow(Error);
+        });
+        it("should throw error if you link the same ID to 2 different 'prev' IDs", () => {
+            const list = new LinkedList();
+            list.addInitialLink("1", "2");
+            const t = () => list.addInitialLink("4", "2");
+            expect(t).toThrow(Error);
+        });
     });
     describe("toArray", () => {
         it("should handle empty list correctly", () => {
@@ -68,66 +80,14 @@ describe("Linked List", () => {
             expect(result).toStrictEqual([{ someObjField: "nothing important" }, undefined]);
         });
     });
-    describe("addInitialLink + toArray - production issues", () => {
-        it("should be able to process links in any order (backlog item rank example 1)", () => {
-            const list = new LinkedList<number>();
-            list.addInitialLink("e522", "e9d6");
-            list.addInitialLink("e9d6", "2da6");
-            list.addInitialLink("2da6", null);
-            list.addInitialLink("aa81", "b2ca");
-            list.addInitialLink("3996", "aa81");
-            list.addInitialLink("b2ca", "e522");
-            list.addInitialLink(null, "fdd2");
-            list.addInitialLink("fdd2", "3996");
-            expect(list.isFirstItem("fdd2")).toBeTruthy();
-            expect(list.isLastItem("2da6")).toBeTruthy();
-            expect(list.toIdArray()).toStrictEqual(["fdd2", "3996", "aa81", "b2ca", "e522", "e9d6", "2da6"]);
-        });
-        it("should be able to process links in any order (backlog item rank example 2)", () => {
-            const list = new LinkedList<number>();
-            list.addInitialLink("fdd3", null);
-            list.addInitialLink("87b0", "4432");
-            list.addInitialLink("4432", "363c");
-            list.addInitialLink("363c", "fdd3");
-            list.addInitialLink("0290", "87b0");
-            list.addInitialLink(null, "0290");
-            expect(list.isFirstItem("0290")).toBeTruthy();
-            expect(list.isLastItem("fdd3")).toBeTruthy();
-            expect(list.toIdArray()).toStrictEqual(["0290", "87b0", "4432", "363c", "fdd3"]);
-        });
-        it("should be able to process links in any order (backlog item rank example 3)", () => {
-            const backlogItemRankDb = [
-                { backlogitemId: "87b0ae7bfa0b450680e493e034a21e60", nextbacklogitemId: "4432c293678146669fcc955259e3f997" },
-                { backlogitemId: "4432c293678146669fcc955259e3f997", nextbacklogitemId: "363cf6c8872f4c56a2a2c3a9d4faa623" },
-                { backlogitemId: "fdd3a0a5f2934202b3943f2a5cc049e6", nextbacklogitemId: null },
-                { backlogitemId: "363cf6c8872f4c56a2a2c3a9d4faa623", nextbacklogitemId: "02904cd94347403783b101c961b286f9" },
-                { backlogitemId: "02904cd94347403783b101c961b286f9", nextbacklogitemId: "2dcab74955094c1ca859c638d132f8d6" },
-                { backlogitemId: "2dcab74955094c1ca859c638d132f8d6", nextbacklogitemId: "ff907e488d8c4b2dab9177cb10d56886" },
-                { backlogitemId: null, nextbacklogitemId: "87b0ae7bfa0b450680e493e034a21e60" },
-                { backlogitemId: "0f13db1ab310436aad8263d35da97059", nextbacklogitemId: "fdd3a0a5f2934202b3943f2a5cc049e6" },
-                { backlogitemId: "740c116a3cbb4c5ca15f2a9c1ce158cc", nextbacklogitemId: "0f13db1ab310436aad8263d35da97059" },
-                { backlogitemId: "ff907e488d8c4b2dab9177cb10d56886", nextbacklogitemId: "740c116a3cbb4c5ca15f2a9c1ce158cc" }
-            ];
-            const list = new LinkedList<string>();
-            backlogItemRankDb.forEach((backlogItem) => {
-                list.addInitialLink(backlogItem.backlogitemId, backlogItem.nextbacklogitemId);
-            });
-            const backlogItemDb = [
-                { id: "02904cd94347403783b101c961b286f9", externalId: "gh-116" },
-                { id: "fdd3a0a5f2934202b3943f2a5cc049e6", externalId: "gh-98" },
-                { id: "4432c293678146669fcc955259e3f997", externalId: "gh-114" },
-                { id: "363cf6c8872f4c56a2a2c3a9d4faa623", externalId: "gh-115" },
-                { id: "87b0ae7bfa0b450680e493e034a21e60", externalId: "gh-113" },
-                { id: "2dcab74955094c1ca859c638d132f8d6", externalId: "gh-119" },
-                { id: "ff907e488d8c4b2dab9177cb10d56886", externalId: null },
-                { id: "740c116a3cbb4c5ca15f2a9c1ce158cc", externalId: "gh-133" },
-                { id: "0f13db1ab310436aad8263d35da97059", externalId: "gh-131" }
-            ];
-            backlogItemDb.forEach((item) => {
-                list.addItemData(item.id, item.externalId);
-            });
-            const result = list.toArray();
-            expect(result).toStrictEqual(["gh-113", "gh-114", "gh-115", "gh-116", "gh-119", null, "gh-133", "gh-131", "gh-98"]);
+    describe("toIdArray", () => {
+        it("should handle a simple linked list", () => {
+            const list = new LinkedList();
+            list.addInitialLink(null, "1");
+            list.addInitialLink("1", "2");
+            list.addInitialLink("2", null);
+            const result = list.toIdArray();
+            expect(result).toStrictEqual(["1", "2"]);
         });
     });
     describe("addArray", () => {
@@ -274,6 +234,92 @@ describe("Linked List", () => {
             const list = new LinkedList();
             const actual = list.isLastItem("item");
             expect(actual).toBeFalsy();
+        });
+    });
+    describe("checkDataIntegrity", () => {
+        it("should not throw error for empty list", () => {
+            const list = new LinkedList();
+            list.checkDataIntegrity();
+        });
+        it("should not throw error for simple ID list without data", () => {
+            const list = new LinkedList();
+            list.addArray("id", [{ id: "1" }, { id: "2" }]);
+            list.checkDataIntegrity();
+        });
+        it("should throw error when items added without head and tail link", () => {
+            const list = new LinkedList();
+            list.addInitialLink("1", "2");
+            const t = () => list.checkDataIntegrity();
+            expect(t).toThrow(Error);
+        });
+        it("should throw error when items added without tail link", () => {
+            const list = new LinkedList();
+            list.addInitialLink("1", "2");
+            list.addInitialLink(null, "1");
+            const t = () => list.checkDataIntegrity();
+            expect(t).toThrow(Error);
+        });
+    });
+    describe("addInitialLink + toArray - production issues", () => {
+        it("should be able to process links in any order (backlog item rank example 1)", () => {
+            const list = new LinkedList<number>();
+            list.addInitialLink("e522", "e9d6");
+            list.addInitialLink("e9d6", "2da6");
+            list.addInitialLink("2da6", null);
+            list.addInitialLink("aa81", "b2ca");
+            list.addInitialLink("3996", "aa81");
+            list.addInitialLink("b2ca", "e522");
+            list.addInitialLink(null, "fdd2");
+            list.addInitialLink("fdd2", "3996");
+            expect(list.isFirstItem("fdd2")).toBeTruthy();
+            expect(list.isLastItem("2da6")).toBeTruthy();
+            expect(list.toIdArray()).toStrictEqual(["fdd2", "3996", "aa81", "b2ca", "e522", "e9d6", "2da6"]);
+        });
+        it("should be able to process links in any order (backlog item rank example 2)", () => {
+            const list = new LinkedList<number>();
+            list.addInitialLink("fdd3", null);
+            list.addInitialLink("87b0", "4432");
+            list.addInitialLink("4432", "363c");
+            list.addInitialLink("363c", "fdd3");
+            list.addInitialLink("0290", "87b0");
+            list.addInitialLink(null, "0290");
+            expect(list.isFirstItem("0290")).toBeTruthy();
+            expect(list.isLastItem("fdd3")).toBeTruthy();
+            expect(list.toIdArray()).toStrictEqual(["0290", "87b0", "4432", "363c", "fdd3"]);
+        });
+        it("should be able to process links in any order (backlog item rank example 3)", () => {
+            const backlogItemRankDb = [
+                { backlogitemId: "87b0ae7bfa0b450680e493e034a21e60", nextbacklogitemId: "4432c293678146669fcc955259e3f997" },
+                { backlogitemId: "4432c293678146669fcc955259e3f997", nextbacklogitemId: "363cf6c8872f4c56a2a2c3a9d4faa623" },
+                { backlogitemId: "fdd3a0a5f2934202b3943f2a5cc049e6", nextbacklogitemId: null },
+                { backlogitemId: "363cf6c8872f4c56a2a2c3a9d4faa623", nextbacklogitemId: "02904cd94347403783b101c961b286f9" },
+                { backlogitemId: "02904cd94347403783b101c961b286f9", nextbacklogitemId: "2dcab74955094c1ca859c638d132f8d6" },
+                { backlogitemId: "2dcab74955094c1ca859c638d132f8d6", nextbacklogitemId: "ff907e488d8c4b2dab9177cb10d56886" },
+                { backlogitemId: null, nextbacklogitemId: "87b0ae7bfa0b450680e493e034a21e60" },
+                { backlogitemId: "0f13db1ab310436aad8263d35da97059", nextbacklogitemId: "fdd3a0a5f2934202b3943f2a5cc049e6" },
+                { backlogitemId: "740c116a3cbb4c5ca15f2a9c1ce158cc", nextbacklogitemId: "0f13db1ab310436aad8263d35da97059" },
+                { backlogitemId: "ff907e488d8c4b2dab9177cb10d56886", nextbacklogitemId: "740c116a3cbb4c5ca15f2a9c1ce158cc" }
+            ];
+            const list = new LinkedList<string>();
+            backlogItemRankDb.forEach((backlogItem) => {
+                list.addInitialLink(backlogItem.backlogitemId, backlogItem.nextbacklogitemId);
+            });
+            const backlogItemDb = [
+                { id: "02904cd94347403783b101c961b286f9", externalId: "gh-116" },
+                { id: "fdd3a0a5f2934202b3943f2a5cc049e6", externalId: "gh-98" },
+                { id: "4432c293678146669fcc955259e3f997", externalId: "gh-114" },
+                { id: "363cf6c8872f4c56a2a2c3a9d4faa623", externalId: "gh-115" },
+                { id: "87b0ae7bfa0b450680e493e034a21e60", externalId: "gh-113" },
+                { id: "2dcab74955094c1ca859c638d132f8d6", externalId: "gh-119" },
+                { id: "ff907e488d8c4b2dab9177cb10d56886", externalId: null },
+                { id: "740c116a3cbb4c5ca15f2a9c1ce158cc", externalId: "gh-133" },
+                { id: "0f13db1ab310436aad8263d35da97059", externalId: "gh-131" }
+            ];
+            backlogItemDb.forEach((item) => {
+                list.addItemData(item.id, item.externalId);
+            });
+            const result = list.toArray();
+            expect(result).toStrictEqual(["gh-113", "gh-114", "gh-115", "gh-116", "gh-119", null, "gh-133", "gh-131", "gh-98"]);
         });
     });
 });
