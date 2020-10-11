@@ -35,17 +35,17 @@ import { getParentWithDataClass } from "../../common/domUtils";
 // consts/enums
 import * as loggingTags from "../../../constants/loggingTags";
 
+// interfaces/types
+import { StoryPhrases } from "../../../types";
+
 /* exported interfaces */
 
-export interface PlanningPanelBacklogItem {
+export interface PlanningPanelBacklogItem extends StoryPhrases {
     estimate: number | null;
     friendlyId: string;
     externalId: string;
     id: string;
     instanceId: number | null;
-    storyPhrase: string;
-    rolePhrase: string;
-    reasonPhrase: string;
     type: BacklogItemType;
     saved: boolean;
 }

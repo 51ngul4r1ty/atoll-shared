@@ -1,3 +1,5 @@
+import { StoryPhrases } from "./types";
+
 export type uuid = string;
 
 export type BacklogItemType = "story" | "issue";
@@ -32,12 +34,9 @@ export interface StandardItem extends BaseItem, ItemWithId, ApiItemWithLinks {}
 
 export interface StandardNamedItem extends StandardItem, ItemWithName {}
 
-export interface ApiBacklogItem extends StandardItem {
+export interface ApiBacklogItem extends StandardItem, StoryPhrases {
     friendlyId: string | null;
     externalId: string | null;
-    rolePhrase: string | null;
-    storyPhrase: string;
-    reasonPhrase: string | null;
     estimate: number | null;
     type: BacklogItemType;
     projectId: string | null;
