@@ -15,16 +15,15 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 
 // interfaces/types
 import { BacklogItemType } from "../../../reducers/backlogItemsReducer";
+import { getStoryPhrases, isStoryPaste } from "./pasteFormatUtils";
+import { StoryPhrases } from "../../../types";
 
-export interface BacklogItemDetailFormEditableFields {
+export interface BacklogItemDetailFormEditableFields extends StoryPhrases {
     estimate: number | null;
     id: string;
     friendlyId: string;
     friendlyIdDisabled: boolean;
     externalId: string;
-    storyPhrase: string;
-    rolePhrase: string;
-    reasonPhrase: string;
 }
 
 export interface BacklogItemDetailFormEditableFieldsWithInstanceId extends BacklogItemDetailFormEditableFields {
@@ -50,7 +49,19 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
     constructor(props) {
         super(props);
     }
+    handleStoryPaste = (fields: BacklogItemDetailFormEditableFieldsWithInstanceId) => {
+        const previousRolePhrase = this.props.rolePhrase || "";
+        const newRolePhrase = fields.rolePhrase || "";
+        const isPaste = previousRolePhrase.length === 0 && newRolePhrase.length > 1;
+        if (isPaste && isStoryPaste(newRolePhrase)) {
+            const storyPhrases = getStoryPhrases(newRolePhrase);
+            fields.rolePhrase = storyPhrases.rolePhrase;
+            fields.storyPhrase = storyPhrases.storyPhrase;
+            fields.reasonPhrase = storyPhrases.reasonPhrase || "";
+        }
+    };
     handleDataUpdate = (fields: BacklogItemDetailFormEditableFieldsWithInstanceId) => {
+        this.handleStoryPaste(fields);
         if (this.props.onDataUpdate) {
             this.props.onDataUpdate(fields);
         }

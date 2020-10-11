@@ -120,3 +120,11 @@ export interface FSAWithMeta<T, P, M> extends FSA<T, P> {
 /* Forwarded Ref Related */
 
 export type ComponentWithForwardedRef<P> = ForwardRefExoticComponent<PropsWithoutRef<PropsWithChildren<P>> & RefAttributes<any>>;
+
+/* Story Related */
+
+export interface StoryPhrases {
+    rolePhrase: string | null;
+    storyPhrase: string;
+    reasonPhrase: string | null;
+}
