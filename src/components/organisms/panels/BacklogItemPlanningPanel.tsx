@@ -51,6 +51,7 @@ export interface PlanningPanelBacklogItem extends StoryPhrases {
 }
 
 export interface BacklogItemPlanningPanelStateProps {
+    className?: string;
     allItems: BacklogItemWithSource[];
     editMode: EditMode;
     renderMobile?: boolean;
@@ -697,7 +698,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
         renderElts.push(<SimpleDivider key="last-divider" />);
     }
 
-    const classNameToUse = buildClassName(css.backlogItemPlanningPanel, props.renderMobile ? css.mobile : null);
+    const classNameToUse = buildClassName(css.backlogItemPlanningPanel, props.className, props.renderMobile ? css.mobile : null);
     /* NOTE: Handlers were here */
     const isSingleTouch = (touches: React.TouchList) => touches.length === 1;
     const touchesToClientY = (touches: React.TouchList): number | null => {

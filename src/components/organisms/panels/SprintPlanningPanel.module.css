@@ -1,0 +1,62 @@
+.mobile {
+}
+
+.sprintPlanningPanel {
+    padding: 0.5rem 0.4rem 0.5rem 0.2rem;
+    flex-grow: 1;
+    width: 50%;
+    max-width: 35rem;
+}
+
+.sprintPanel {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 0.5rem;
+    border: 0.0625rem solid var(--normal-light-border-color, #ccc);
+    box-sizing: border-box;
+}
+
+.sprintHeader {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.sprintName {
+    min-width: 7rem;
+    font-weight: 500;
+}
+
+.sprintHeaderContent {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    flex-grow: 1;
+    font-size: 1rem;
+}
+
+.sprintHeaderContentTopRow {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.sprintDateRange {
+    width: 50%;
+    flex-grow: 1;
+}
+
+.sprintStatus {
+    flex-grow: 1;
+    text-align: right;
+    font-weight: 500;
+}
+
+.sprintHeaderContentInfoRow {
+    width: 100%;
+    flex-grow: 1;
+    padding-top: 0.4rem;
+    font-size: 0.75rem;
+}

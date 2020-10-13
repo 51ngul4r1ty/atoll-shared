@@ -1,7 +1,7 @@
 /* right */
 
 .backlogItemPlanningPanel {
-    padding: 0.5rem 0.7rem 0.5rem 0.4rem; /* TODO: Move to vars, note that 0.4rem is really computed as 0.7rem - 0.3rem */
+    padding: 0.5rem 0.2rem 0.5rem 0.4rem; /* TODO: Move to vars, note that 0.4rem is really computed as 0.7rem - 0.3rem */
     perspective: 2000px;
 }
 
