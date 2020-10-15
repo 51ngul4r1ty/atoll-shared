@@ -17,6 +17,10 @@ import { BacklogItemType } from "./reducers/backlogItemsReducer";
 
 // utils
 import { isPlatformWindows } from "./utils";
+import { apiGetSprints } from "./actions/apiSprints";
+
+// selectors
+import { getCurrentProjectId } from "./selectors/userSelectors";
 
 const mapStateToProps = (state: StateTree): PlanViewStateProps => {
     // TODO: Switch to using selectors?
@@ -27,14 +31,18 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
         editMode: state.app.editMode,
         openedDetailMenuBacklogItemId: state.backlogItems.openedDetailMenuBacklogItemId,
         electronClient: state.app.electronClient,
-        showWindowTitleBar: !isPlatformWindows()
+        showWindowTitleBar: !isPlatformWindows(),
+        projectId: getCurrentProjectId(state)
     };
     return result;
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
     return {
-        onLoaded: () => dispatch(apiGetBacklogItems()),
+        onLoaded: (projectId: string) => {
+            dispatch(apiGetBacklogItems());
+            dispatch(apiGetSprints(projectId));
+        },
         onAddNewBacklogItem: (type: BacklogItemType) => dispatch(addNewBacklogItem(type)),
         onReorderBacklogItems: (sourceItemId: string, targetItemId: string) =>
             dispatch(reorderBacklogItems(sourceItemId, targetItemId))

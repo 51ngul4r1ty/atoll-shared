@@ -26,13 +26,14 @@ import { SprintPlanningPanel, SprintStatus } from "./components/organisms/panels
 export interface PlanViewStateProps {
     allItems: BacklogItemWithSource[];
     editMode: EditMode;
-    openedDetailMenuBacklogItemId: string | null;
     electronClient: boolean;
+    openedDetailMenuBacklogItemId: string | null;
+    projectId: string;
     showWindowTitleBar: boolean;
 }
 
 export interface PlanViewDispatchProps {
-    onLoaded: { () };
+    onLoaded: { (projectId: string) };
     onAddNewBacklogItem: { (type: BacklogItemType) };
     onReorderBacklogItems: { (sourceItemId: string, targetItemId: string) };
 }
@@ -47,7 +48,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
         super(props);
     }
     componentDidMount() {
-        this.props.onLoaded();
+        this.props.onLoaded(this.props.projectId);
     }
     render() {
         const sprints = [

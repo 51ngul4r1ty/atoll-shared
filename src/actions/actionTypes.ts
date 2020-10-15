@@ -46,6 +46,12 @@ export const API_GET_BACKLOG_ITEM_RANKS_SUCCESS = buildActionName(Names.GET_BACK
 export const API_GET_BACKLOG_ITEM_RANKS_FAILURE = buildActionName(Names.GET_BACKLOG_ITEM_RANKS, "failure");
 // #endregion
 
+// #region Sprint Resource Collection
+export const API_GET_SPRINTS_REQUEST = buildActionName(Names.GET_SPRINTS, "request");
+export const API_GET_SPRINTS_SUCCESS = buildActionName(Names.GET_SPRINTS, "success");
+export const API_GET_SPRINTS_FAILURE = buildActionName(Names.GET_SPRINTS, "failure");
+// #endregion
+
 // #region Post Actions
 export const API_POST_ACTION_REORDER_BACKLOG_ITEM_REQUEST = buildActionName(Names.POST_ACTION_REORDER_BACKLOG_ITEM, "request");
 export const API_POST_ACTION_REORDER_BACKLOG_ITEM_SUCCESS = buildActionName(Names.POST_ACTION_REORDER_BACKLOG_ITEM, "success");

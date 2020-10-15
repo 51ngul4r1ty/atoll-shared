@@ -33,13 +33,13 @@ import { StateTree } from "../types";
 
 // selectors
 import { buildApiPayloadBaseForResource } from "../selectors/apiSelectors";
+import { getCurrentProjectId } from "../selectors/userSelectors";
 
 // utils
 import { convertToBacklogItemModel } from "../utils/apiPayloadHelper";
 import { routePlanView } from "../actions/routeActions";
 import { getUserPreferences, ActionGetUserPrefsSuccessAction } from "../actions/userActions";
 import { ResourceTypes } from "../reducers/apiLinksReducer";
-import { settings } from "cluster";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
@@ -54,7 +54,7 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             if (backlogItem) {
                 const prevItemId = prevBacklogItem ? prevBacklogItem.id : null;
                 const model = convertToBacklogItemModel(backlogItem);
-                model.projectId = state.user.preferences.selectedProject;
+                model.projectId = getCurrentProjectId(state);
                 storeTyped.dispatch(apiPostBacklogItem(model, prevItemId, { instanceId }));
             }
             break;
