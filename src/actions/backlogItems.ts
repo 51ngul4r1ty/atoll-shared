@@ -2,9 +2,8 @@
 import * as ActionTypes from "./actionTypes";
 
 // interfaces/types
-import { BacklogItemType } from "../reducers/backlogItemsReducer";
+import { BacklogItemType } from "../reducers/backlogItems/backlogItemsReducerTypes";
 import { BacklogItemDetailFormEditableFieldsWithInstanceId } from "../components/organisms/forms/BacklogItemDetailForm";
-import { PushBacklogItemModel } from "../middleware/wsMiddleware";
 
 // actions
 import { apiGetBacklogItems } from "./apiBacklogItems";

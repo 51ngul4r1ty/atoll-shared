@@ -3,12 +3,13 @@ import { combineReducers } from "redux";
 import { connectRouter } from "connected-react-router";
 
 // reducers
-import { appReducer, appReducerInitialState } from "./appReducer";
 import { apiLinksReducer, apiLinksReducerInitialState } from "./apiLinksReducer";
-import { backlogItemsReducer, backlogItemsReducerInitialState } from "./backlogItemsReducer";
+import { appReducer, appReducerInitialState } from "./appReducer";
 import { backlogItemRanksReducer, backlogItemRanksReducerInitialState } from "./backlogItemRanksReducer";
-import { userReducer, userReducerInitialState } from "./userReducer";
+import { backlogItemsReducer, backlogItemsReducerInitialState } from "./backlogItems/backlogItemsReducer";
 import { featureTogglesReducer, featureTogglesReducerInitialState } from "./featureTogglesReducer";
+import { sprintsReducer, sprintsReducerInitialState } from "./sprintsReducer";
+import { userReducer, userReducerInitialState } from "./userReducer";
 
 export const rootReducerInitialState = {
     app: appReducerInitialState,
@@ -16,19 +17,21 @@ export const rootReducerInitialState = {
     backlogItems: backlogItemsReducerInitialState,
     backlogItemRanks: backlogItemRanksReducerInitialState,
     user: userReducerInitialState,
-    featureToggles: featureTogglesReducerInitialState
+    featureToggles: featureTogglesReducerInitialState,
+    sprints: sprintsReducerInitialState
 };
 
 const createRootReducer = (history: any) => {
     const router = connectRouter(history);
     return combineReducers({
-        router,
-        app: appReducer,
         apiLinks: apiLinksReducer,
-        backlogItems: backlogItemsReducer,
+        app: appReducer,
         backlogItemRanks: backlogItemRanksReducer,
-        user: userReducer,
-        featureToggles: featureTogglesReducer
+        backlogItems: backlogItemsReducer,
+        featureToggles: featureTogglesReducer,
+        router,
+        sprints: sprintsReducer,
+        user: userReducer
     });
 };
 

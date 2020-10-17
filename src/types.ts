@@ -6,13 +6,15 @@ import { Action } from "redux";
 import { EditMode } from "./components/molecules/buttons/EditButton";
 
 // state
-import { BacklogItemsState } from "./reducers/backlogItemsReducer";
+import { BacklogItemsState } from "./reducers/backlogItems/backlogItemsReducerTypes";
 import { ApiLinkState } from "./reducers/apiLinksReducer";
 import { BacklogItemRanksState } from "./reducers/backlogItemRanksReducer";
 import { UserSettings } from "./apiModelTypes";
+import { SprintsState } from "./reducers/sprintsReducer";
 
 export type Locale = "en_US" | "de_DE";
 
+// TODO: Move this to rootReducer
 export interface StateTree {
     apiLinks: ApiLinkState;
     app: AppState;
@@ -20,12 +22,19 @@ export interface StateTree {
     backlogItemRanks: BacklogItemRanksState;
     user: UserState;
     featureToggles: FeatureTogglesState;
+    sprints: SprintsState;
 }
 
 /* Data model related */
 
 export interface BaseModelItem {
     id: string;
+}
+
+export interface StandardModelItem extends BaseModelItem {
+    version?: number;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 /* App state related */
@@ -124,3 +133,5 @@ export interface StoryPhrases {
     storyPhrase: string;
     reasonPhrase: string | null;
 }
+
+export type ISODateString = string;

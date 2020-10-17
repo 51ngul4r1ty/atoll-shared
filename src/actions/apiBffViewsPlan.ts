@@ -24,7 +24,7 @@ export interface ApiGetBffViewsPlanResponsePayload {
         status: number;
         data: {
             backlogItems: ApiBacklogItem[];
-            spints: ApiSprint[];
+            sprints: ApiSprint[];
             userPreferences: ApiUserSettings;
         };
     };

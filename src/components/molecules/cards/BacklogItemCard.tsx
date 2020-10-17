@@ -18,7 +18,7 @@ import { EditButton, EditMode } from "../buttons/EditButton";
 import { buildClassName } from "../../../utils/classNameBuilder";
 
 // consts/enums
-import { PushState } from "../../../reducers/backlogItemsReducer";
+import { PushState } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
 
 /* exported functions */
 

@@ -5,9 +5,8 @@ import { produce, Draft } from "immer";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { AppState, AnyFSA, PushNotificationType, WebsocketPushNotification, BaseModelItem } from "../types";
+import { AppState, AnyFSA } from "../types";
 import { EditMode } from "../components/molecules/buttons/EditButton";
-import { BacklogItemModel } from "./backlogItemsReducer";
 import {
     SetUsernameAction,
     SetPasswordAction,

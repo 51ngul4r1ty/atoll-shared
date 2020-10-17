@@ -1,6 +1,9 @@
 // interfaces/types
-import { BacklogItem, getBacklogItemById as reducerGetBacklogItemById } from "../reducers/backlogItemsReducer";
+import { BacklogItem } from "../reducers/backlogItems/backlogItemsReducerTypes";
 import { StateTree } from "../types";
+
+// utils
+import { getBacklogItemById as reducerGetBacklogItemById } from "../reducers/backlogItems/backlogItemsReducerHelper";
 
 // reducers
 
@@ -74,3 +77,5 @@ export const getPrevNextAndCurrentById = (state: StateTree, id: string): PrevNex
         next: resultNextItem
     };
 };
+
+export const getAllBacklogItems = (state: StateTree) => state.backlogItems.allItems;

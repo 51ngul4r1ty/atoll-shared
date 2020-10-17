@@ -3,7 +3,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 
 // interfaces/types
-import { BacklogItemWithSource } from "../../../reducers/backlogItemsReducer";
+import { BacklogItemWithSource } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
 import { EditMode } from "../../molecules/buttons/EditButton";
 import { SimpleDivider } from "../../atoms/dividers/SimpleDivider";
 import { BacklogItemDetailForm } from "../forms/BacklogItemDetailForm";

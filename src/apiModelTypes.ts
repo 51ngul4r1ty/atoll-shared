@@ -1,4 +1,5 @@
-import { StoryPhrases } from "./types";
+// interfaces/types
+import { ISODateString, StoryPhrases } from "./types";
 
 export type uuid = string;
 
@@ -57,8 +58,10 @@ export interface ApiCounter extends StandardItem {
 }
 
 export interface ApiSprint extends StandardNamedItem {
-    startdate: Date;
-    finishdate: Date;
+    startdate: ISODateString;
+    finishdate: ISODateString;
+    displayindex: number;
+    projectId: string;
 }
 
 export interface CounterSettings {

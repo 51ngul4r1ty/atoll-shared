@@ -1,7 +1,7 @@
 // consts/enums
 export { APPLICATION_JSON } from "./constants";
 export { FEATURE_TOGGLE_LIST } from "./constants/defaultFeatureToggles";
-export { PushState } from "./reducers/backlogItemsReducer";
+export { PushState } from "./reducers/backlogItems/backlogItemsReducerTypes";
 export { rootReducerInitialState } from "./reducers/rootReducer";
 
 // components - buttons - atoms
@@ -66,7 +66,7 @@ export {
     BacklogItemType,
     BacklogItemWithSource,
     BacklogItemsState
-} from "./reducers/backlogItemsReducer";
+} from "./reducers/backlogItems/backlogItemsReducerTypes";
 
 // contexts
 export { AppContext, AppProvider, AppConsumer } from "./contexts/appContextUtil";

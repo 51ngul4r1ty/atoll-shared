@@ -1,5 +1,5 @@
 // externals
-import { produce, Draft } from "immer";
+import { produce } from "immer";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
@@ -8,14 +8,6 @@ import * as ActionTypes from "../actions/actionTypes";
 import { AnyFSA, BaseModelItem } from "../types";
 import { ApiBacklogItemRank } from "../apiModelTypes";
 import { ApiGetBacklogItemRanksSuccessAction } from "../actions/apiBacklogItemRanks";
-
-export type BacklogItemType = "story" | "issue";
-
-export enum PushState {
-    None,
-    Changed,
-    Removed
-}
 
 export interface BacklogItemRank extends BaseModelItem {
     id: string;

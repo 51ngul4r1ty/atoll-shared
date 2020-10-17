@@ -20,7 +20,7 @@ import {
     BacklogItemWithSource,
     BacklogItemSource,
     SaveableBacklogItem
-} from "../../../reducers/backlogItemsReducer";
+} from "../../../reducers/backlogItems/backlogItemsReducerTypes";
 
 // actions
 import { apiDeleteBacklogItem } from "../../../actions/apiBacklogItems";

@@ -14,8 +14,8 @@ import css from "./PlanView.module.css";
 
 // interfaces/types
 import { EditMode } from "./components/molecules/buttons/EditButton";
-import { BacklogItemType, BacklogItemWithSource, SaveableBacklogItem } from "./reducers/backlogItemsReducer";
-import { SprintPlanningPanel, SprintStatus } from "./components/organisms/panels/SprintPlanningPanel";
+import { BacklogItemType, BacklogItemWithSource } from "./reducers/backlogItems/backlogItemsReducerTypes";
+import { SprintPlanningPanel, SprintPlanningPanelSprint } from "./components/organisms/panels/SprintPlanningPanel";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
@@ -30,6 +30,7 @@ export interface PlanViewStateProps {
     openedDetailMenuBacklogItemId: string | null;
     projectId: string;
     showWindowTitleBar: boolean;
+    sprints: SprintPlanningPanelSprint[];
 }
 
 export interface PlanViewDispatchProps {
@@ -51,20 +52,6 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
         this.props.onLoaded(this.props.projectId);
     }
     render() {
-        const sprints = [
-            {
-                name: "Sprint 192",
-                startDate: new Date(2019, 4, 30),
-                finishDate: new Date(2019, 5, 12),
-                status: SprintStatus.Completed
-            },
-            {
-                name: "Sprint 193",
-                startDate: new Date(2019, 5, 13),
-                finishDate: new Date(2019, 5, 26),
-                status: SprintStatus.InProgress
-            }
-        ];
         return (
             <>
                 <TopMenuPanelContainer
@@ -85,7 +72,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                         renderMobile={this.context.state?.isMobile}
                         openedDetailMenuBacklogItemId={this.props.openedDetailMenuBacklogItemId}
                     />
-                    <SprintPlanningPanel className={css.sprints} sprints={sprints} />
+                    <SprintPlanningPanel className={css.sprints} sprints={this.props.sprints} />
                 </div>
             </>
         );

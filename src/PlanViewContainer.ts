@@ -13,27 +13,28 @@ import { apiGetBacklogItems } from "./actions/apiBacklogItems";
 import { addNewBacklogItem, reorderBacklogItems } from "./actions/backlogItems";
 
 // interfaces/types
-import { BacklogItemType } from "./reducers/backlogItemsReducer";
+import { BacklogItemType } from "./reducers/backlogItems/backlogItemsReducerTypes";
 
 // utils
 import { isPlatformWindows } from "./utils";
-import { apiGetSprints } from "./actions/apiSprints";
 
 // selectors
 import { getCurrentProjectId } from "./selectors/userSelectors";
 import { apiBffViewsPlan } from "./actions/apiBffViewsPlan";
+import { getPlanViewSprints } from "./selectors/sprintSelectors";
+import { getAllBacklogItems } from "./selectors/backlogItemSelectors";
 
 const mapStateToProps = (state: StateTree): PlanViewStateProps => {
-    // TODO: Switch to using selectors?
-    const allItems = state.backlogItems.allItems;
-    // const highlightedDividers = state.backlogItems.pushedItems.map((item) => item.displayIndex);
+    const allItems = getAllBacklogItems(state);
+    const sprints = getPlanViewSprints(state);
     let result: PlanViewStateProps = {
         allItems,
         editMode: state.app.editMode,
         openedDetailMenuBacklogItemId: state.backlogItems.openedDetailMenuBacklogItemId,
         electronClient: state.app.electronClient,
         showWindowTitleBar: !isPlatformWindows(),
-        projectId: getCurrentProjectId(state)
+        projectId: getCurrentProjectId(state),
+        sprints
     };
     return result;
 };
@@ -42,8 +43,6 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
     return {
         onLoaded: (projectId: string) => {
             dispatch(apiBffViewsPlan());
-            // dispatch(apiGetBacklogItems());
-            // dispatch(apiGetSprints(projectId));
         },
         onAddNewBacklogItem: (type: BacklogItemType) => dispatch(addNewBacklogItem(type)),
         onReorderBacklogItems: (sourceItemId: string, targetItemId: string) =>
