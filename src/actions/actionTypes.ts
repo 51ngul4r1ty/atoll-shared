@@ -22,6 +22,12 @@ export const API_GET_BACKLOG_ITEMS_SUCCESS = buildActionName(Names.GET_BACKLOG_I
 export const API_GET_BACKLOG_ITEMS_FAILURE = buildActionName(Names.GET_BACKLOG_ITEMS, "failure");
 // #endregion
 
+// #region BFF
+export const API_GET_BFF_VIEWS_PLAN_REQUEST = buildActionName(Names.GET_BFF_VIEWS_PLAN, "request");
+export const API_GET_BFF_VIEWS_PLAN_SUCCESS = buildActionName(Names.GET_BFF_VIEWS_PLAN, "success");
+export const API_GET_BFF_VIEWS_PLAN_FAILURE = buildActionName(Names.GET_BFF_VIEWS_PLAN, "failure");
+//#endregion
+
 // #region Backlog Item Resource
 export const API_GET_BACKLOG_ITEM_REQUEST = buildActionName(Names.GET_BACKLOG_ITEM, "request");
 export const API_GET_BACKLOG_ITEM_SUCCESS = buildActionName(Names.GET_BACKLOG_ITEM, "success");

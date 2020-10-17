@@ -21,6 +21,7 @@ import { apiGetSprints } from "./actions/apiSprints";
 
 // selectors
 import { getCurrentProjectId } from "./selectors/userSelectors";
+import { apiBffViewsPlan } from "./actions/apiBffViewsPlan";
 
 const mapStateToProps = (state: StateTree): PlanViewStateProps => {
     // TODO: Switch to using selectors?
@@ -40,8 +41,9 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
 const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
     return {
         onLoaded: (projectId: string) => {
-            dispatch(apiGetBacklogItems());
-            dispatch(apiGetSprints(projectId));
+            dispatch(apiBffViewsPlan());
+            // dispatch(apiGetBacklogItems());
+            // dispatch(apiGetSprints(projectId));
         },
         onAddNewBacklogItem: (type: BacklogItemType) => dispatch(addNewBacklogItem(type)),
         onReorderBacklogItems: (sourceItemId: string, targetItemId: string) =>

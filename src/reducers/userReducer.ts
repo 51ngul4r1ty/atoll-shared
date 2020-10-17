@@ -11,7 +11,8 @@ import { ActionGetUserPrefsSuccessAction } from "../actions/userActions";
 export const userReducerInitialState = Object.freeze<UserState>({
     preferences: {
         detectBrowserDarkMode: false,
-        selectedProject: null
+        selectedProject: null,
+        selectedSprint: null
     }
 });
 
@@ -25,7 +26,9 @@ export const userReducer = (state: UserState = userReducerInitialState, action: 
                 const item = actionTyped.payload.response?.data?.item;
                 draft.preferences = {
                     ...draft.preferences,
-                    selectedProject: item?.settings?.selectedProject
+                    selectedProject: item?.settings?.selectedProject,
+                    selectedSprint: item?.settings?.selectedSprint,
+                    detectBrowserDarkMode: item?.settings?.detectBrowserDarkMode
                 };
                 return;
             }

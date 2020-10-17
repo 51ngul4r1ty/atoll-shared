@@ -10,3 +10,4 @@ export const POST_ACTION_REORDER_BACKLOG_ITEM = "reorder-backlog-item";
 export const POST_BACKLOG_ITEM = "add-backlog-item";
 export const PUT_BACKLOG_ITEM = "update-backlog-item";
 export const DELETE_BACKLOG_ITEM = "delete-backlog-item";
+export const GET_BFF_VIEWS_PLAN = "get-bff-views-plan";

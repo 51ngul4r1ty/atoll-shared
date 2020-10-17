@@ -15,6 +15,7 @@ import {
     ApiGetBacklogItemsSuccessAction,
     ApiGetBacklogItemSuccessAction
 } from "../actions/apiBacklogItems";
+import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
 import {
     AddNewBacklogItemAction,
     UpdateBacklogItemFieldsAction,
@@ -289,6 +290,15 @@ export const backlogItemsReducer = (
                 const actionTyped = action as ApiGetBacklogItemsSuccessAction;
                 const { payload } = actionTyped;
                 draft.items = mapApiItemsToBacklogItems(payload.response.data.items);
+                draft.pushedItems = [];
+                draft.addedItems = [];
+                rebuildAllItems(draft);
+                return;
+            }
+            case ActionTypes.API_GET_BFF_VIEWS_PLAN_SUCCESS: {
+                const actionTyped = action as ApiGetBffViewsPlanSuccessAction;
+                const { payload } = actionTyped;
+                draft.items = mapApiItemsToBacklogItems(payload.response.data.backlogItems);
                 draft.pushedItems = [];
                 draft.addedItems = [];
                 rebuildAllItems(draft);

@@ -57,8 +57,8 @@ export interface ApiCounter extends StandardItem {
 }
 
 export interface ApiSprint extends StandardNamedItem {
-    startDate: Date;
-    finishDate: Date;
+    startdate: Date;
+    finishdate: Date;
 }
 
 export interface CounterSettings {
@@ -80,7 +80,13 @@ export interface ApiProjectSettings extends StandardItem {
     settings: ProjectSettings;
 }
 
+export interface UserSettings {
+    detectBrowserDarkMode: boolean;
+    selectedProject: string | null;
+    selectedSprint: string | null;
+}
+
 export interface ApiUserSettings extends StandardItem {
     appuserId: string | null;
-    settings: ProjectSettings;
+    settings: UserSettings;
 }

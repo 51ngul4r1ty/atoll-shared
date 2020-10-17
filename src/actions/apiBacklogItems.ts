@@ -34,15 +34,18 @@ export interface ApiGetBacklogItemsSuccessAction {
     payload: ApiActionSuccessPayloadForCollection<ApiBacklogItem>;
     meta: ApiActionMetaDataRequestMeta<{}>;
 }
-export const apiGetBacklogItems = (): NoDataApiAction => ({
-    type: API,
-    payload: {
-        endpoint: `${getApiBaseUrl()}api/v1/backlog-items`,
-        method: "GET",
-        headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
-        types: buildActionTypes(ApiActionNames.GET_BACKLOG_ITEMS)
-    }
-});
+export const apiGetBacklogItems = (): NoDataApiAction => {
+    debugger;
+    return {
+        type: API,
+        payload: {
+            endpoint: `${getApiBaseUrl()}api/v1/backlog-items`,
+            method: "GET",
+            headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+            types: buildActionTypes(ApiActionNames.GET_BACKLOG_ITEMS)
+        }
+    };
+};
 
 // #endregion
 

@@ -6,18 +6,21 @@ import { Dispatch } from "redux";
 import { App, AppStateProps, AppDispatchProps } from "./App";
 
 // state
-import { StateTree, UserPreferences } from "./types";
+import { StateTree } from "./types";
 
 // actions
 import { receiveWebSocketMessage } from "./actions/wsActions";
 import { initApp, appClick, appKeyUp } from "./actions/appActions";
+
+// interfaces/types
+import { UserSettings } from "./apiModelTypes";
 
 interface AppOwnProps {
     allowTitleBarWindowDragging?: boolean;
 }
 
 const mapStateToProps = (state: StateTree, ownProps: AppOwnProps): AppStateProps => {
-    const userPreferences: UserPreferences = (state.user && state.user.preferences) || ({} as UserPreferences);
+    const userPreferences: UserSettings = (state.user && state.user.preferences) || ({} as UserSettings);
     return {
         detectBrowserDarkMode: userPreferences.detectBrowserDarkMode,
         executingOnClient: state.app.executingOnClient || false,

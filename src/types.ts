@@ -9,6 +9,7 @@ import { EditMode } from "./components/molecules/buttons/EditButton";
 import { BacklogItemsState } from "./reducers/backlogItemsReducer";
 import { ApiLinkState } from "./reducers/apiLinksReducer";
 import { BacklogItemRanksState } from "./reducers/backlogItemRanksReducer";
+import { UserSettings } from "./apiModelTypes";
 
 export type Locale = "en_US" | "de_DE";
 
@@ -78,13 +79,8 @@ export type AppState = Readonly<{
 
 /* User state related */
 
-export interface UserPreferences {
-    detectBrowserDarkMode: boolean;
-    selectedProject: string | null;
-}
-
 export type UserState = Readonly<{
-    preferences: UserPreferences;
+    preferences: UserSettings;
 }>;
 
 /* Feature Toggles state related */
