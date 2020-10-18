@@ -4,7 +4,7 @@ import { Dispatch } from "redux";
 
 // components
 import { SprintView, SprintViewDispatchProps, SprintViewStateProps } from "./SprintView";
-import { StateTree } from "./types";
+import { StateTree } from "./reducers/rootReducer";
 
 // utils
 import { isPlatformWindows } from "./utils/osUtils";

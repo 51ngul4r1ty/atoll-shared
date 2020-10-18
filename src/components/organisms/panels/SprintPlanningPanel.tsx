@@ -12,9 +12,10 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 import { SimpleDivider } from "../../atoms/dividers/SimpleDivider";
 
 export enum SprintStatus {
-    NotStarted = 0,
-    InProgress = 1,
-    Completed = 2
+    None = 0,
+    NotStarted = 1,
+    InProgress = 2,
+    Completed = 3
 }
 
 export interface SprintPlanningPanelSprint {

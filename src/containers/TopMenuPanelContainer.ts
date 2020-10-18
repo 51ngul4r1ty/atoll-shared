@@ -8,7 +8,7 @@ import { setEditMode } from "../actions/appActions";
 import { apiGetBacklogItems } from "../actions/apiBacklogItems";
 
 // state
-import { StateTree } from "../types";
+import { StateTree } from "../reducers/rootReducer";
 
 // components
 import { TopMenuPanel } from "../components/organisms/panels/TopMenuPanel";

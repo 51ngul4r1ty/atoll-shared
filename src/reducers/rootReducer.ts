@@ -3,13 +3,26 @@ import { combineReducers } from "redux";
 import { connectRouter } from "connected-react-router";
 
 // reducers
-import { apiLinksReducer, apiLinksReducerInitialState } from "./apiLinksReducer";
-import { appReducer, appReducerInitialState } from "./appReducer";
-import { backlogItemRanksReducer, backlogItemRanksReducerInitialState } from "./backlogItemRanksReducer";
+import { apiLinksReducer, apiLinksReducerInitialState, ApiLinkState } from "./apiLinksReducer";
+import { appReducer, appReducerInitialState, AppState } from "./appReducer";
+import { backlogItemRanksReducer, backlogItemRanksReducerInitialState, BacklogItemRanksState } from "./backlogItemRanksReducer";
 import { backlogItemsReducer, backlogItemsReducerInitialState } from "./backlogItems/backlogItemsReducer";
-import { featureTogglesReducer, featureTogglesReducerInitialState } from "./featureTogglesReducer";
-import { sprintsReducer, sprintsReducerInitialState } from "./sprintsReducer";
-import { userReducer, userReducerInitialState } from "./userReducer";
+import { featureTogglesReducer, featureTogglesReducerInitialState, FeatureTogglesState } from "./featureTogglesReducer";
+import { sprintsReducer, sprintsReducerInitialState, SprintsState } from "./sprintsReducer";
+import { userReducer, userReducerInitialState, UserState } from "./userReducer";
+import { BacklogItemsState } from "./backlogItems/backlogItemsReducerTypes";
+
+export interface StateTree {
+    apiLinks: ApiLinkState;
+    app: AppState;
+    backlogItems: BacklogItemsState;
+    backlogItemRanks: BacklogItemRanksState;
+    electronClient: boolean;
+    executingOnClient: boolean;
+    user: UserState;
+    featureToggles: FeatureTogglesState;
+    sprints: SprintsState;
+}
 
 export const rootReducerInitialState = {
     app: appReducerInitialState,

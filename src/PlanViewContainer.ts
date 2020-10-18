@@ -6,10 +6,9 @@ import { Dispatch } from "redux";
 import { PlanView, PlanViewStateProps, PlanViewDispatchProps } from "./PlanView";
 
 // state
-import { StateTree } from "./types";
+import { StateTree } from "./reducers/rootReducer";
 
 // actions
-import { apiGetBacklogItems } from "./actions/apiBacklogItems";
 import { addNewBacklogItem, reorderBacklogItems } from "./actions/backlogItems";
 
 // interfaces/types

@@ -2,7 +2,21 @@
 import { produce } from "immer";
 
 // interfaces/types
-import { AnyFSA, FeatureTogglesState } from "../types";
+import { AnyFSA } from "../types";
+
+export interface FeatureToggle {
+    enabled: boolean;
+    createdDateTime: Date;
+    modifiedDateTime: Date;
+}
+
+export type FeatureToggles = {
+    [key: string]: FeatureToggle;
+};
+
+export type FeatureTogglesState = Readonly<{
+    toggles: FeatureToggles;
+}>;
 
 export const featureTogglesReducerInitialState = Object.freeze<FeatureTogglesState>({
     toggles: {}

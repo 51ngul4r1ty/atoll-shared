@@ -7,7 +7,7 @@ import * as HttpStatus from "http-status-codes";
 import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
-import { StateTree } from "../types";
+import { StateTree } from "../reducers/rootReducer";
 import { ApiActionType, ApiActionMeta, ApiActionSuccessPayload, API, ApiAction } from "./apiTypes";
 
 // selectors

@@ -29,7 +29,7 @@ import {
 import { postLogin, ActionPostLoginSuccessAction, ActionPostRefreshTokenSuccessAction } from "../actions/authActions";
 
 // state
-import { StateTree } from "../types";
+import { StateTree } from "../reducers/rootReducer";
 
 // selectors
 import { buildApiPayloadBaseForResource } from "../selectors/apiSelectors";

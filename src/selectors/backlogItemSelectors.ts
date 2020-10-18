@@ -1,9 +1,9 @@
 // interfaces/types
 import { BacklogItem } from "../reducers/backlogItems/backlogItemsReducerTypes";
-import { StateTree } from "../types";
 
 // utils
 import { getBacklogItemById as reducerGetBacklogItemById } from "../reducers/backlogItems/backlogItemsReducerHelper";
+import { StateTree } from "../reducers/rootReducer";
 
 // reducers
 

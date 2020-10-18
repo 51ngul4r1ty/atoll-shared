@@ -5,26 +5,6 @@ import { Action } from "redux";
 // consts/enums
 import { EditMode } from "./components/molecules/buttons/EditButton";
 
-// state
-import { BacklogItemsState } from "./reducers/backlogItems/backlogItemsReducerTypes";
-import { ApiLinkState } from "./reducers/apiLinksReducer";
-import { BacklogItemRanksState } from "./reducers/backlogItemRanksReducer";
-import { UserSettings } from "./apiModelTypes";
-import { SprintsState } from "./reducers/sprintsReducer";
-
-export type Locale = "en_US" | "de_DE";
-
-// TODO: Move this to rootReducer
-export interface StateTree {
-    apiLinks: ApiLinkState;
-    app: AppState;
-    backlogItems: BacklogItemsState;
-    backlogItemRanks: BacklogItemRanksState;
-    user: UserState;
-    featureToggles: FeatureTogglesState;
-    sprints: SprintsState;
-}
-
 /* Data model related */
 
 export interface BaseModelItem {
@@ -74,39 +54,6 @@ export interface WebsocketPushNotification<T> extends BasePushNotification {
 export interface WebsocketPushNotificationV0<T> extends BasePushNotification {
     data: T;
 }
-
-export type AppState = Readonly<{
-    authToken: string;
-    editMode: EditMode;
-    electronClient: boolean;
-    executingOnClient: boolean;
-    locale: Locale;
-    password: string;
-    refreshToken: string;
-    username: string;
-}>;
-
-/* User state related */
-
-export type UserState = Readonly<{
-    preferences: UserSettings;
-}>;
-
-/* Feature Toggles state related */
-
-export interface FeatureToggle {
-    enabled: boolean;
-    createdDateTime: Date;
-    modifiedDateTime: Date;
-}
-
-export type FeatureToggles = {
-    [key: string]: FeatureToggle;
-};
-
-export type FeatureTogglesState = Readonly<{
-    toggles: FeatureToggles;
-}>;
 
 /* Flux Standard Action related */
 

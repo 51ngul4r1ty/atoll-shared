@@ -5,7 +5,7 @@ import { produce, Draft } from "immer";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { AppState, AnyFSA } from "../types";
+import { AnyFSA } from "../types";
 import { EditMode } from "../components/molecules/buttons/EditButton";
 import {
     SetUsernameAction,
@@ -16,6 +16,19 @@ import {
 } from "../actions/authActions";
 import { ApiActionSuccessPayload } from "../middleware/apiTypes";
 import { LocalStoreRefreshTokenAction } from "../actions/appActions";
+
+export type Locale = "en_US" | "de_DE";
+
+export type AppState = Readonly<{
+    authToken: string;
+    editMode: EditMode;
+    electronClient: boolean;
+    executingOnClient: boolean;
+    locale: Locale;
+    password: string;
+    refreshToken: string;
+    username: string;
+}>;
 
 export const appReducerInitialState = Object.freeze<AppState>({
     locale: "en_US",

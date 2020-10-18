@@ -5,8 +5,13 @@ import { produce } from "immer";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { UserState, AnyFSA } from "../types";
+import { AnyFSA } from "../types";
 import { ActionGetUserPrefsSuccessAction } from "../actions/userActions";
+import { UserSettings } from "../apiModelTypes";
+
+export type UserState = Readonly<{
+    preferences: UserSettings;
+}>;
 
 export const userReducerInitialState = Object.freeze<UserState>({
     preferences: {

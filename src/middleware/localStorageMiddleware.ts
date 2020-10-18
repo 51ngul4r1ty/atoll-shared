@@ -6,7 +6,7 @@ import * as HttpStatus from "http-status-codes";
 import * as ActionTypes from "../actions/actionTypes";
 
 // state
-import { StateTree } from "../types";
+import { StateTree } from "../reducers/rootReducer";
 
 // actions
 import {

@@ -14,9 +14,9 @@ import { isoDateStringToDate } from "../utils/apiPayloadConverters";
 
 export interface Sprint extends StandardModelItem {
     name: string;
-    displayindex: number;
-    startdate: Date;
-    finishdate: Date;
+    displayIndex: number;
+    startDate: Date;
+    finishDate: Date;
     projectId: string;
 }
 
@@ -31,9 +31,9 @@ export const sprintsReducerInitialState = Object.freeze<SprintsState>({
 export const mapApiItemToSprint = (apiItem: ApiSprint): Sprint => ({
     id: apiItem.id,
     name: apiItem.name,
-    displayindex: apiItem.displayindex,
-    startdate: isoDateStringToDate(apiItem.startdate),
-    finishdate: isoDateStringToDate(apiItem.finishdate),
+    displayIndex: apiItem.displayindex,
+    startDate: isoDateStringToDate(apiItem.startdate),
+    finishDate: isoDateStringToDate(apiItem.finishdate),
     createdAt: apiItem.createdAt,
     updatedAt: apiItem.updatedAt,
     projectId: apiItem.projectId

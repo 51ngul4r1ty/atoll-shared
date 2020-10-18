@@ -4,7 +4,7 @@ import { Dispatch } from "redux";
 
 // components
 import { ReviewView, ReviewViewDispatchProps, ReviewViewStateProps } from "./ReviewView";
-import { StateTree } from "./types";
+import { StateTree } from "./reducers/rootReducer";
 
 // utils
 import { isPlatformWindows } from "./utils/osUtils";

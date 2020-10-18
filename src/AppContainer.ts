@@ -6,7 +6,7 @@ import { Dispatch } from "redux";
 import { App, AppStateProps, AppDispatchProps } from "./App";
 
 // state
-import { StateTree } from "./types";
+import { StateTree } from "./reducers/rootReducer";
 
 // actions
 import { receiveWebSocketMessage } from "./actions/wsActions";
