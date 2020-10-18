@@ -1,3 +1,4 @@
+import { addDays } from "../../../../utils/dateHelper";
 import { SprintPlanningPanelSprint, SprintStatus } from "./sprintPlanningPanelTypes";
 
 const MONTH_NAMES = [
@@ -42,13 +43,25 @@ export const formatSameYearRange = (startDate: Date, finishDate: Date): string =
     }
 };
 
-export const formatDateRange = (startDate: Date, finishDate: Date): string => {
+export const formatDiffYearRange = (startDate: Date, finishDate: Date): string => {
     const startYear = startDate.getFullYear();
-    const finishYear = finishDate.getFullYear() - 1;
+    const finishYear = finishDate.getFullYear();
+    const startMonth = startDate.getMonth();
+    const finishMonth = finishDate.getMonth();
+    const startDay = startDate.getDate();
+    const finishDay = finishDate.getDate();
+    // e.g. "May 30, 2019 to June 12, 2020";
+    return `${monthToString(startMonth)} ${startDay}, ${startYear} to ${monthToString(finishMonth)} ${finishDay}, ${finishYear}`;
+};
+
+export const formatDateRange = (startDate: Date, finishDate: Date): string => {
+    const finishDateToUse = addDays(finishDate, -1);
+    const startYear = startDate.getFullYear();
+    const finishYear = finishDateToUse.getFullYear();
     if (startYear === finishYear) {
-        return formatSameYearRange(startDate, finishDate);
+        return formatSameYearRange(startDate, finishDateToUse);
     } else {
-        return "May 30 to June 12, 2019";
+        return formatDiffYearRange(startDate, finishDateToUse);
     }
 };
 
