@@ -35,7 +35,6 @@ export interface ApiGetBacklogItemsSuccessAction {
     meta: ApiActionMetaDataRequestMeta<{}>;
 }
 export const apiGetBacklogItems = (): NoDataApiAction => {
-    debugger;
     return {
         type: API,
         payload: {
