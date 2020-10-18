@@ -2,7 +2,7 @@
 import { BacklogItemRankGroup, BacklogItemRankItem, RankItemType } from "./BacklogItemRankView";
 
 // state
-import { StateTree } from "../../types";
+import { StateTree } from "../../reducers/rootReducer";
 
 // selectors
 import { getBacklogItemRanks } from "../../selectors/backlogItemRankSelectors";

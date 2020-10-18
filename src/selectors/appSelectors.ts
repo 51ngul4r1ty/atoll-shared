@@ -1,6 +1,9 @@
 /* eslint-disable import/prefer-default-export */
+// externals
 import { createSelector } from "reselect";
-import { AppState, Locale } from "../types";
+
+// interfaces/types
+import { AppState, Locale } from "../reducers/appReducer";
 
 export const app = (state: { app: AppState }): AppState => state.app;
 

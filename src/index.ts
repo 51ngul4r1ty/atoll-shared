@@ -49,16 +49,11 @@ export { SprintViewContainer } from "./SprintViewContainer";
 export * from "./config";
 
 // interfaces/types
-export {
-    BasePushNotification,
-    FeatureToggle,
-    WebsocketPushNotification as PushNotification,
-    PushNotificationType,
-    StateTree,
-    AppState,
-    FeatureTogglesState,
-    UserState
-} from "./types";
+export { BasePushNotification, WebsocketPushNotification as PushNotification, PushNotificationType } from "./types";
+export { FeatureToggle, FeatureTogglesState } from "./reducers/featureTogglesReducer";
+export { StateTree } from "./reducers/rootReducer";
+export { AppState } from "./reducers/appReducer";
+export { UserState } from "./reducers/userReducer";
 export * from "./apiModelTypes";
 export {
     BacklogItem,

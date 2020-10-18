@@ -18,6 +18,11 @@ export interface Sprint extends StandardModelItem {
     startDate: Date;
     finishDate: Date;
     projectId: string;
+    plannedPoints: number | null;
+    acceptedPoints: number | null;
+    velocityPoints: number | null;
+    usedSplitPoints: number | null;
+    remainingSplitPoints: number | null;
 }
 
 export type SprintsState = Readonly<{
@@ -36,7 +41,12 @@ export const mapApiItemToSprint = (apiItem: ApiSprint): Sprint => ({
     finishDate: isoDateStringToDate(apiItem.finishdate),
     createdAt: apiItem.createdAt,
     updatedAt: apiItem.updatedAt,
-    projectId: apiItem.projectId
+    projectId: apiItem.projectId,
+    plannedPoints: apiItem.plannedPoints,
+    acceptedPoints: apiItem.acceptedPoints,
+    velocityPoints: apiItem.velocityPoints,
+    usedSplitPoints: apiItem.usedSplitPoints,
+    remainingSplitPoints: apiItem.remainingSplitPoints
 });
 
 export const mapApiItemsToSprints = (apiItems: ApiSprint[]): Sprint[] => {

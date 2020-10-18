@@ -62,6 +62,11 @@ export interface ApiSprint extends StandardNamedItem {
     finishdate: ISODateString;
     displayindex: number;
     projectId: string;
+    plannedPoints: number | null;
+    acceptedPoints: number | null;
+    velocityPoints: number | null;
+    usedSplitPoints: number | null;
+    remainingSplitPoints: number | null;
 }
 
 export interface CounterSettings {

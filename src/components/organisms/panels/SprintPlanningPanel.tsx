@@ -23,6 +23,11 @@ export interface SprintPlanningPanelSprint {
     startDate: Date;
     finishDate: Date;
     status: SprintStatus;
+    plannedPoints: number | null;
+    acceptedPoints: number | null;
+    velocityPoints: number | null;
+    usedSplitPoints: number | null;
+    remainingSplitPoints: number | null;
 }
 
 export interface SprintPlanningPanelStateProps {
@@ -100,6 +105,53 @@ export const sprintStatusToString = (status: SprintStatus): string => {
     }
 };
 
+export const buildSprintPointInfoText = (sprint: SprintPlanningPanelSprint): string => {
+    if (sprint.status === SprintStatus.Completed) {
+        return buildCompletedSprintPointInfoText(sprint);
+    } else if (sprint.status === SprintStatus.NotStarted) {
+        return buildNotStartedSprintPointInfoText(sprint);
+    } else {
+        return buildInProgressSprintPointInfoText(sprint);
+    }
+};
+
+export const buildCompletedSprintPointInfoText = (sprint: SprintPlanningPanelSprint): string => {
+    const parts: string[] = [];
+    if (sprint.plannedPoints) {
+        parts.push(`${sprint.plannedPoints} planned`);
+    }
+    if (sprint.acceptedPoints) {
+        parts.push(`${sprint.acceptedPoints} accepted`);
+    }
+    if (sprint.usedSplitPoints) {
+        parts.push(`${sprint.usedSplitPoints} for split`);
+    }
+    if (!parts.length) {
+        return "";
+    } else {
+        return `points: ${parts.join(", ")}`;
+    }
+};
+
+export const buildInProgressSprintPointInfoText = (sprint: SprintPlanningPanelSprint): string => {
+    return buildCompletedSprintPointInfoText(sprint);
+};
+
+export const buildNotStartedSprintPointInfoText = (sprint: SprintPlanningPanelSprint): string => {
+    const parts: string[] = [];
+    if (sprint.plannedPoints && sprint.velocityPoints) {
+        parts.push(`${sprint.plannedPoints} of ${sprint.velocityPoints} planned`);
+        if (sprint.remainingSplitPoints) {
+            parts.push(`(${sprint.remainingSplitPoints} from split)`);
+        }
+    }
+    if (!parts.length) {
+        return "";
+    } else {
+        return `points: ${parts.join(" ")}`;
+    }
+};
+
 export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (props) => {
     const classNameToUse = buildClassName(
         css.sprintPlanningPanel,
@@ -118,7 +170,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                             <div className={css.sprintDateRange}>{formatDateRange(sprint.startDate, sprint.finishDate)}</div>
                             <div className={css.sprintStatus}>{sprintStatusToString(sprint.status)}</div>
                         </div>
-                        <div className={css.sprintHeaderContentInfoRow}>points: 23 planned, 20 accepted, 3 for sprint</div>
+                        <div className={css.sprintHeaderContentInfoRow}>{buildSprintPointInfoText(sprint)}</div>
                     </div>
                 </div>
             </div>

@@ -24,7 +24,12 @@ export const getPlanViewSprints = (state: StateTree): SprintPlanningPanelSprint[
             name: sprint.name,
             startDate: sprint.startDate,
             finishDate: sprint.finishDate,
-            status: determineSprintStatus(sprint)
+            status: determineSprintStatus(sprint),
+            plannedPoints: sprint.plannedPoints,
+            acceptedPoints: sprint.acceptedPoints,
+            velocityPoints: sprint.velocityPoints,
+            usedSplitPoints: sprint.usedSplitPoints,
+            remainingSplitPoints: sprint.remainingSplitPoints
         };
         return panelSprint;
     });

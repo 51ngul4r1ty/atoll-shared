@@ -1,5 +1,5 @@
 // interfaces/types
-import { Locale, FSA, SimpleFSA } from "../types";
+import { Locale } from "../reducers/appReducer";
 
 // consts/enums
 import * as ActionTypes from "./actionTypes";
