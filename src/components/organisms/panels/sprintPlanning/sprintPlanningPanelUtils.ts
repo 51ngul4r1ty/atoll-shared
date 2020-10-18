@@ -1,44 +1,4 @@
-// externals
-import * as React from "react";
-import { withTranslation, WithTranslation } from "react-i18next";
-
-// style
-import css from "./SprintPlanningPanel.module.css";
-
-// utils
-import { buildClassName } from "../../../utils/classNameBuilder";
-
-// components
-import { SimpleDivider } from "../../atoms/dividers/SimpleDivider";
-
-export enum SprintStatus {
-    None = 0,
-    NotStarted = 1,
-    InProgress = 2,
-    Completed = 3
-}
-
-export interface SprintPlanningPanelSprint {
-    name: string;
-    startDate: Date;
-    finishDate: Date;
-    status: SprintStatus;
-    plannedPoints: number | null;
-    acceptedPoints: number | null;
-    velocityPoints: number | null;
-    usedSplitPoints: number | null;
-    remainingSplitPoints: number | null;
-}
-
-export interface SprintPlanningPanelStateProps {
-    className?: string;
-    renderMobile?: boolean;
-    sprints: SprintPlanningPanelSprint[];
-}
-
-export interface SprintPlanningPanelDispatchProps {}
-
-export type SprintPlanningPanelProps = SprintPlanningPanelStateProps & SprintPlanningPanelDispatchProps & WithTranslation;
+import { SprintPlanningPanelSprint, SprintStatus } from "./sprintPlanningPanelTypes";
 
 const MONTH_NAMES = [
     "January",
@@ -84,7 +44,7 @@ export const formatSameYearRange = (startDate: Date, finishDate: Date): string =
 
 export const formatDateRange = (startDate: Date, finishDate: Date): string => {
     const startYear = startDate.getFullYear();
-    const finishYear = finishDate.getFullYear();
+    const finishYear = finishDate.getFullYear() - 1;
     if (startYear === finishYear) {
         return formatSameYearRange(startDate, finishDate);
     } else {
@@ -151,32 +111,3 @@ export const buildNotStartedSprintPointInfoText = (sprint: SprintPlanningPanelSp
         return `points: ${parts.join(" ")}`;
     }
 };
-
-export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (props) => {
-    const classNameToUse = buildClassName(
-        css.sprintPlanningPanel,
-        css.backlogItemPlanningPanel,
-        props.className,
-        props.renderMobile ? css.mobile : null
-    );
-    const sprintItemElts = props.sprints.map((sprint) => (
-        <div key={sprint.name}>
-            <SimpleDivider />
-            <div className={css.sprintPanel}>
-                <div className={css.sprintHeader}>
-                    <div className={css.sprintName}>{sprint.name}</div>
-                    <div className={css.sprintHeaderContent}>
-                        <div className={css.sprintHeaderContentTopRow}>
-                            <div className={css.sprintDateRange}>{formatDateRange(sprint.startDate, sprint.finishDate)}</div>
-                            <div className={css.sprintStatus}>{sprintStatusToString(sprint.status)}</div>
-                        </div>
-                        <div className={css.sprintHeaderContentInfoRow}>{buildSprintPointInfoText(sprint)}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    ));
-    return <div className={classNameToUse}>{sprintItemElts}</div>;
-};
-
-export const SprintPlanningPanel = withTranslation()(InnerSprintPlanningPanel);

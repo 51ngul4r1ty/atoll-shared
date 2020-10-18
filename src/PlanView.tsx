@@ -15,7 +15,10 @@ import css from "./PlanView.module.css";
 // interfaces/types
 import { EditMode } from "./components/molecules/buttons/EditButton";
 import { BacklogItemType, BacklogItemWithSource } from "./reducers/backlogItems/backlogItemsReducerTypes";
-import { SprintPlanningPanel, SprintPlanningPanelSprint } from "./components/organisms/panels/SprintPlanningPanel";
+import { SprintPlanningPanelSprint } from "./components/organisms/panels/sprintPlanning/sprintPlanningPanelTypes";
+
+// components
+import { SprintPlanningPanel } from "./components/organisms/panels/sprintPlanning/SprintPlanningPanel";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build

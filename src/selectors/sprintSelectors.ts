@@ -1,6 +1,8 @@
 // interfaces/types
 import { Sprint } from "../reducers/sprintsReducer";
-import { SprintPlanningPanelSprint, SprintStatus } from "../components/organisms/panels/SprintPlanningPanel";
+import { SprintPlanningPanelSprint, SprintStatus } from "../components/organisms/panels/sprintPlanning/sprintPlanningPanelTypes";
+
+// state
 import { StateTree } from "../reducers/rootReducer";
 
 export const determineSprintStatus = (sprint: Sprint): SprintStatus => {
