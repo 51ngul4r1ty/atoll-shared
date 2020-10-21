@@ -35,7 +35,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
     const sprintItemElts = props.sprints.map((sprint) => (
         <div key={sprint.name}>
             <SimpleDivider />
-            <div className={css.sprintPanel}>
+            <div className={css.sprintPanel} tabIndex={0}>
                 <div className={css.sprintHeader}>
                     <div className={css.sprintName}>{sprint.name}</div>
                     <div className={css.sprintHeaderContent}>
