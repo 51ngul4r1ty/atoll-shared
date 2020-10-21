@@ -14,9 +14,12 @@ import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 
 // interfaces/types
 import { SprintPlanningPanelSprint } from "./sprintPlanningPanelTypes";
+import { VerticalExpandIcon } from "../../../atoms/icons/VerticalExpandIcon";
+import { VerticalCollapseIcon } from "../../../atoms/icons/VerticalCollapseIcon";
 
 export interface SprintPlanningPanelStateProps {
     className?: string;
+    expanded?: boolean;
     renderMobile?: boolean;
     sprints: SprintPlanningPanelSprint[];
 }
@@ -32,6 +35,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
         props.className,
         props.renderMobile ? css.mobile : null
     );
+    const expandCollapseIcon = props.expanded ? <VerticalCollapseIcon /> : <VerticalExpandIcon />;
     const sprintItemElts = props.sprints.map((sprint) => (
         <div key={sprint.name}>
             <SimpleDivider />
@@ -46,6 +50,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         <div className={css.sprintHeaderContentInfoRow}>{buildSprintPointInfoText(sprint)}</div>
                     </div>
                 </div>
+                <div className={css.expandCollapse}>{expandCollapseIcon}</div>
             </div>
         </div>
     ));

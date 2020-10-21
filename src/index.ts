@@ -27,6 +27,7 @@ export { LoginForm } from "./components/organisms/forms/LoginForm";
 // components - panels
 export { CaretPosition, ItemMenuPanel } from "./components/atoms/panels/ItemMenuPanel";
 export { BacklogItemPlanningPanel } from "./components/organisms/panels/BacklogItemPlanningPanel";
+export { SprintPlanningPanel } from "./components/organisms/panels/sprintPlanning/SprintPlanningPanel";
 
 // components - misc
 export { App } from "./App";
@@ -62,6 +63,7 @@ export {
     BacklogItemWithSource,
     BacklogItemsState
 } from "./reducers/backlogItems/backlogItemsReducerTypes";
+export { SprintStatus, SprintPlanningPanelSprint } from "./components/organisms/panels/sprintPlanning/sprintPlanningPanelTypes";
 
 // contexts
 export { AppContext, AppProvider, AppConsumer } from "./contexts/appContextUtil";

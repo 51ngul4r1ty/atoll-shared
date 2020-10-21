@@ -10,9 +10,9 @@ import { StandardInvertibleComponentProps } from "../../common/types";
 // utils
 import { getFillAndStrokeClassNames } from "../../common/propUtils";
 
-export type VerticalCollapseIconProps = StandardInvertibleComponentProps;
+export type VerticalExpandIconProps = StandardInvertibleComponentProps;
 
-export const VerticalCollapseIcon: React.FC<VerticalCollapseIconProps> = (props) => {
+export const VerticalExpandIcon: React.FC<VerticalExpandIconProps> = (props) => {
     const { fillClass, strokeClass } = getFillAndStrokeClassNames(
         props,
         baseCss.fillInverted,
@@ -43,7 +43,7 @@ export const VerticalCollapseIcon: React.FC<VerticalCollapseIconProps> = (props)
             <defs />
             <g id="Layer 1" transform="scale(1 -1)">
                 <path
-                    d="M 37.485,54 L 17.25,21 C 26.638,23.382 37.336,24.201 48.165,23.008 C 51.785,22.606 55.233,22.001 58.5,21.214 L 37.485,54 Z"
+                    d="M 37.485,21 L 17.25,54 C 26.638,51.618 37.336,50.799 48.165,51.992 C 51.785,52.394 55.233,52.999 58.5,53.786 L 37.485,21 Z"
                     className={fillClass}
                     fill="#0d2644"
                     strokeLinejoin="miter"

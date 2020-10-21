@@ -9,6 +9,7 @@
 }
 
 .sprintPanel {
+    position: relative;
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -59,4 +60,15 @@
     flex-grow: 1;
     padding-top: 0.4rem;
     font-size: 0.75rem;
+}
+
+.expandCollapse {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.expandCollapse > * {
+    width: auto;
+    height: 0.9rem;
 }
