@@ -6,6 +6,8 @@ export enum SprintStatus {
 }
 
 export interface SprintPlanningPanelSprint {
+    id: string;
+    expanded: boolean;
     name: string;
     startDate: Date;
     finishDate: Date;

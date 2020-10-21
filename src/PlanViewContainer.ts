@@ -10,6 +10,7 @@ import { StateTree } from "./reducers/rootReducer";
 
 // actions
 import { addNewBacklogItem, reorderBacklogItems } from "./actions/backlogItems";
+import { collapseSprintPanel, expandSprintPanel } from "./actions/sprintActions";
 
 // interfaces/types
 import { BacklogItemType } from "./reducers/backlogItems/backlogItemsReducerTypes";
@@ -45,7 +46,14 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
         },
         onAddNewBacklogItem: (type: BacklogItemType) => dispatch(addNewBacklogItem(type)),
         onReorderBacklogItems: (sourceItemId: string, targetItemId: string) =>
-            dispatch(reorderBacklogItems(sourceItemId, targetItemId))
+            dispatch(reorderBacklogItems(sourceItemId, targetItemId)),
+        onExpandCollapse: (sprintId: string, expand: boolean) => {
+            if (expand) {
+                dispatch(expandSprintPanel(sprintId));
+            } else {
+                dispatch(collapseSprintPanel(sprintId));
+            }
+        }
     };
 };
 

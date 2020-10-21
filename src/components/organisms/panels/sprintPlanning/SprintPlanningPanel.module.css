@@ -18,6 +18,14 @@
     box-sizing: border-box;
 }
 
+.sprintHeaderAndContent {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 .sprintHeader {
     display: flex;
     flex-direction: row;
@@ -71,4 +79,8 @@
 .expandCollapse > * {
     width: auto;
     height: 0.9rem;
+}
+
+.sprintContents:not(.expanded) {
+    display: none;
 }

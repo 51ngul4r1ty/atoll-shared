@@ -40,6 +40,7 @@ export interface PlanViewDispatchProps {
     onLoaded: { (projectId: string) };
     onAddNewBacklogItem: { (type: BacklogItemType) };
     onReorderBacklogItems: { (sourceItemId: string, targetItemId: string) };
+    onExpandCollapse: { (sprintId: string, expand: boolean) };
 }
 
 export type PlanViewProps = PlanViewStateProps & PlanViewDispatchProps;
@@ -75,7 +76,15 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                         renderMobile={this.context.state?.isMobile}
                         openedDetailMenuBacklogItemId={this.props.openedDetailMenuBacklogItemId}
                     />
-                    <SprintPlanningPanel className={css.sprints} sprints={this.props.sprints} />
+                    <SprintPlanningPanel
+                        className={css.sprints}
+                        sprints={this.props.sprints}
+                        onExpandCollapse={(sprintId: string, expand: boolean) => {
+                            if (this.props.onExpandCollapse) {
+                                this.props.onExpandCollapse(sprintId, expand);
+                            }
+                        }}
+                    />
                 </div>
             </>
         );

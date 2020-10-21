@@ -97,3 +97,6 @@ export const SET_USERNAME = "app/user:set-username";
 export const SET_PASSWORD = "app/user:set-password";
 
 export const LOGIN_USER = "app/user:login-user";
+
+export const EXPAND_SPRINT_PANEL = "app/expand:sprint-panel";
+export const COLLAPSE_SPRINT_PANEL = "app/collapse:sprint-panel";

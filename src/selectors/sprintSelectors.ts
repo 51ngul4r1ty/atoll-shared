@@ -23,6 +23,8 @@ export const determineSprintStatus = (sprint: Sprint): SprintStatus => {
 export const getPlanViewSprints = (state: StateTree): SprintPlanningPanelSprint[] => {
     const result = state.sprints.items.map((sprint) => {
         const panelSprint: SprintPlanningPanelSprint = {
+            id: sprint.id,
+            expanded: sprint.expanded,
             name: sprint.name,
             startDate: sprint.startDate,
             finishDate: sprint.finishDate,
