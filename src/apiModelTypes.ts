@@ -69,6 +69,12 @@ export interface ApiSprint extends StandardNamedItem {
     remainingSplitPoints: number | null;
 }
 
+export interface ApiSprintBacklog extends StandardItem {
+    sprintId: string;
+    backlogitemId: string;
+    displayindex: number | null;
+}
+
 export interface CounterSettings {
     prefix?: string;
     suffix?: string;
