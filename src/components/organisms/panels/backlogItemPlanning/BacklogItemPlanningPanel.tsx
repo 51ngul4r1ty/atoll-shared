@@ -35,7 +35,6 @@ import { BacklogItemPlanningItem } from "../../combo/BacklogItemPlanningItem";
 import * as loggingTags from "../../../../constants/loggingTags";
 import { BacklogItemPlanningPanelProps, CardPosition } from "./backlogItemPlanningPanelTypes";
 import {
-    addActionButtons,
     atBottomOfPage,
     atTopOfPage,
     buildSpacerInternalId,
@@ -50,6 +49,7 @@ import {
     scrollUp,
     targetIsDragButton
 } from "./backlogItemPlanningPanelUtils";
+import { addActionButtons } from "./backlogItemPlanningPanelJsxUtils";
 
 /* exported components */
 

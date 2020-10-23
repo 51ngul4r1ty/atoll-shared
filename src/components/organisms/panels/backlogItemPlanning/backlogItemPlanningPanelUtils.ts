@@ -1,23 +1,12 @@
-// externals
-import * as React from "react";
-
-// style
-import css from "./BacklogItemPlanningPanel.module.css";
-
 // consts/enums
 import * as loggingTags from "../../../../constants/loggingTags";
-import { EditMode } from "../../../molecules/buttons/EditButton";
 
 // interfaces/types
-import { CardPosition, OnAddedNewBacklogItem } from "./backlogItemPlanningPanelTypes";
-
-// components
-import { AddButton } from "../../../molecules/buttons/AddButton";
+import { CardPosition } from "./backlogItemPlanningPanelTypes";
 
 // utils
 import * as logger from "../../../../utils/logger";
 import { getParentWithDataClass } from "../../../common/domUtils";
-import { buildClassName } from "../../../../utils/classNameBuilder";
 
 const getDragItemIdUnderDocumentTop = (documentTop: number, cardPositions: CardPosition[]) => {
     return getDragItemIdUnderCommon(documentTop, cardPositions);
@@ -93,39 +82,6 @@ export const handleScroll = (
     if (overItemId && overItemId !== dragOverItemId) {
         setDragOverItemId(overItemId);
     }
-};
-
-export const addActionButtons = (
-    renderElts: any[],
-    editMode: EditMode,
-    suppressTopPadding: boolean,
-    onAddNewBacklogItem: OnAddedNewBacklogItem,
-    renderMobile: boolean
-) => {
-    if (editMode === EditMode.View) {
-        return;
-    }
-    const actionButtonsClassName = buildClassName(
-        css.backlogItemPlanningActionPanel,
-        suppressTopPadding ? null : css.embeddedBacklogItemUserStoryFormRow,
-        renderMobile ? css.mobile : null
-    );
-    renderElts.push(
-        <div key="backlogitem-action-buttons" className={actionButtonsClassName}>
-            <AddButton
-                itemName="story"
-                onClick={() => {
-                    onAddNewBacklogItem("story");
-                }}
-            />
-            <AddButton
-                itemName="issue"
-                onClick={() => {
-                    onAddNewBacklogItem("issue");
-                }}
-            />
-        </div>
-    );
 };
 
 export const preventDefault = (e: React.BaseSyntheticEvent<HTMLDivElement>) => {
