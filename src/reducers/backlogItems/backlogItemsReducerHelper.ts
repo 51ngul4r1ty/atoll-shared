@@ -4,8 +4,6 @@ import { Draft } from "immer";
 // interfaces/types
 import { PushBacklogItemModel } from "../../middleware/wsMiddleware";
 import {
-    BacklogItem,
-    BacklogItemModel,
     BacklogItemSource,
     BacklogItemsState,
     BacklogItemWithSource,
@@ -13,15 +11,15 @@ import {
     PushState,
     SaveableBacklogItem
 } from "./backlogItemsReducerTypes";
-
-// utils
-import { LinkedList } from "../../utils/linkedList";
+import { BacklogItem, BacklogItemModel } from "../../types/backlogItemTypes";
 import { PushOperationType } from "../../types";
 import {
     BacklogItemDetailFormEditableFields,
     BacklogItemDetailFormEditableFieldsWithInstanceId
 } from "../../components/organisms/forms/BacklogItemDetailForm";
-import { ApiBacklogItem } from "../../apiModelTypes";
+
+// utils
+import { LinkedList } from "../../utils/linkedList";
 import { getParentWithDataClass } from "../../components/common/domUtils";
 
 export const convertSaved = (saved: boolean | undefined): boolean => {
@@ -177,24 +175,6 @@ export const updateItemById = (draft: Draft<BacklogItemsState>, itemId: string, 
     if (idx2 >= 0) {
         updateItem(draft.items[idx2]);
     }
-};
-
-export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem => ({
-    id: apiItem.id,
-    friendlyId: apiItem.friendlyId,
-    externalId: apiItem.externalId,
-    rolePhrase: apiItem.rolePhrase,
-    storyPhrase: apiItem.storyPhrase,
-    reasonPhrase: apiItem.reasonPhrase,
-    estimate: apiItem.estimate,
-    type: apiItem.type,
-    createdAt: apiItem.createdAt,
-    updatedAt: apiItem.updatedAt,
-    projectId: apiItem.projectId
-});
-
-export const mapApiItemsToBacklogItems = (apiItems: ApiBacklogItem[]): BacklogItem[] => {
-    return apiItems.map((item) => mapApiItemToBacklogItem(item));
 };
 
 export const targetIsInMenuPanel = (target: EventTarget) => {

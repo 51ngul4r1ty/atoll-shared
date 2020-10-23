@@ -1,3 +1,8 @@
+/**
+ * Purpose: To make RESTful API calls.
+ * Reason to change: If new features are needed for making RESTful API calls.
+ */
+
 // externals
 import axios, { AxiosRequestConfig } from "axios";
 import { Action, Dispatch, Store } from "redux";

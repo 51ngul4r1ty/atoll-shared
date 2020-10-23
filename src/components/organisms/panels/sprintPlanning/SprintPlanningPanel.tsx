@@ -16,6 +16,7 @@ import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 import { SprintPlanningPanelSprint } from "./sprintPlanningPanelTypes";
 import { VerticalExpandIcon } from "../../../atoms/icons/VerticalExpandIcon";
 import { VerticalCollapseIcon } from "../../../atoms/icons/VerticalCollapseIcon";
+import { SprintPanel } from "./SprintPanel";
 
 export interface SprintPlanningPanelStateProps {
     className?: string;
@@ -42,36 +43,14 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
         props.renderMobile ? css.mobile : null
     );
     const sprintItemElts = props.sprints.map((sprint) => {
-        const expandCollapseIcon = sprint.expanded ? <VerticalCollapseIcon /> : <VerticalExpandIcon />;
-        const contentsClassName = buildClassName(css.sprintContents, sprint.expanded ? css.expanded : null);
         return (
             <div key={sprint.name}>
-                <SimpleDivider />
-                <div className={css.sprintPanel} tabIndex={0}>
-                    <div className={css.sprintHeaderAndContent}>
-                        <div className={css.sprintHeader}>
-                            <div className={css.sprintName}>{sprint.name}</div>
-                            <div className={css.sprintHeaderContent}>
-                                <div className={css.sprintHeaderContentTopRow}>
-                                    <div className={css.sprintDateRange}>
-                                        {formatDateRange(sprint.startDate, sprint.finishDate)}
-                                    </div>
-                                    <div className={css.sprintStatus}>{sprintStatusToString(sprint.status)}</div>
-                                </div>
-                                <div className={css.sprintHeaderContentInfoRow}>{buildSprintPointInfoText(sprint)}</div>
-                            </div>
-                        </div>
-                        <div className={contentsClassName}>(contents)</div>
-                    </div>
-                    <div
-                        className={css.expandCollapse}
-                        onClick={() => {
-                            onExpandCollapse(sprint.id, !sprint.expanded);
-                        }}
-                    >
-                        {expandCollapseIcon}
-                    </div>
-                </div>
+                <SprintPanel
+                    {...sprint}
+                    onExpandCollapse={(id, expand) => {
+                        onExpandCollapse(id, expand);
+                    }}
+                />
             </div>
         );
     });

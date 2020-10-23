@@ -14,7 +14,7 @@ import css from "./BacklogItemDetailForm.module.css";
 import { buildClassName } from "../../../utils/classNameBuilder";
 
 // interfaces/types
-import { BacklogItemType } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
+import { BacklogItemType } from "../../../types/backlogItemTypes";
 import { getStoryPhrases, isStoryPaste } from "./pasteFormatUtils";
 import { StoryPhrases } from "../../../types";
 

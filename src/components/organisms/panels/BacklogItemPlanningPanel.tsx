@@ -8,7 +8,13 @@ import css from "./BacklogItemPlanningPanel.module.css";
 
 // components
 import { AddButton } from "../../molecules/buttons/AddButton";
-import { BacklogItemCard, BacklogItemTypeEnum } from "../../molecules/cards/BacklogItemCard";
+import {
+    BacklogItemCard,
+    BacklogItemTypeEnum,
+    buildBacklogItemKey,
+    buildBacklogItemPlanningItemKey,
+    buildDividerKey
+} from "../../molecules/cards/BacklogItemCard";
 import { SimpleDivider } from "../../atoms/dividers/SimpleDivider";
 
 // consts/enums
@@ -16,11 +22,11 @@ import { EditMode } from "../../molecules/buttons/EditButton";
 import { buildClassName } from "../../../utils/classNameBuilder";
 import { useDispatch } from "react-redux";
 import {
-    BacklogItemType,
     BacklogItemWithSource,
     BacklogItemSource,
     SaveableBacklogItem
 } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
+import { BacklogItemType } from "../../../types/backlogItemTypes";
 
 // actions
 import { apiDeleteBacklogItem } from "../../../actions/apiBacklogItems";
@@ -76,22 +82,6 @@ export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
     WithTranslation;
 
 /* exported components */
-
-export const buildUniqueItemKey = (props: SaveableBacklogItem, componentPrefix: string): string => {
-    return props.id ? `${componentPrefix}-id-${props.id}` : `${componentPrefix}-i-${props.instanceId}`;
-};
-
-export const buildBacklogItemKey = (props: SaveableBacklogItem): string => {
-    return buildUniqueItemKey(props, "bic");
-};
-
-export const buildBacklogItemPlanningItemKey = (props: SaveableBacklogItem): string => {
-    return buildUniqueItemKey(props, "bipi");
-};
-
-export const buildDividerKey = (props: SaveableBacklogItem): string => {
-    return buildUniqueItemKey(props, "div-l");
-};
 
 export const buildDragBacklogItemElt = (
     editMode: EditMode,

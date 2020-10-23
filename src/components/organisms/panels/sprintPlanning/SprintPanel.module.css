@@ -1,0 +1,82 @@
+.sprintContents:not(.expanded) {
+    display: none;
+}
+
+.sprintContents.expanded {
+    padding-top: 0.8rem;
+}
+
+.sprintPanel {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 0.5rem 0.5rem 0.5rem 0.2rem;
+    border: 0.0625rem solid var(--normal-light-border-color, #ccc);
+    box-sizing: border-box;
+}
+
+.sprintHeaderAndContent {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.sprintHeader {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 0 0 0 0.3rem;
+    box-sizing: border-box;
+}
+
+.sprintName {
+    min-width: 7rem;
+    font-weight: 500;
+}
+
+.sprintHeaderContent {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    flex-grow: 1;
+    font-size: 1rem;
+}
+
+.sprintHeaderContentTopRow {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.sprintDateRange {
+    width: 50%;
+    flex-grow: 1;
+}
+
+.sprintStatus {
+    flex-grow: 1;
+    text-align: right;
+    font-weight: 500;
+}
+
+.sprintHeaderContentInfoRow {
+    width: 100%;
+    flex-grow: 1;
+    padding-top: 0.4rem;
+    font-size: 0.75rem;
+}
+
+.expandCollapse {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.expandCollapse > * {
+    width: auto;
+    height: 0.9rem;
+}

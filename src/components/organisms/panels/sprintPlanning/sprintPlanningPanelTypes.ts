@@ -1,3 +1,6 @@
+// interfaces/types
+import { SprintBacklogItem } from "../../../../reducers/sprintBacklogReducer";
+
 export enum SprintStatus {
     None = 0,
     NotStarted = 1,
@@ -7,7 +10,6 @@ export enum SprintStatus {
 
 export interface SprintPlanningPanelSprint {
     id: string;
-    expanded: boolean;
     name: string;
     startDate: Date;
     finishDate: Date;
@@ -17,4 +19,7 @@ export interface SprintPlanningPanelSprint {
     velocityPoints: number | null;
     usedSplitPoints: number | null;
     remainingSplitPoints: number | null;
+    backlogItemsLoaded: boolean;
+    backlogItems: SprintBacklogItem[] | null;
+    expanded: boolean;
 }

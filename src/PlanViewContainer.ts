@@ -13,7 +13,7 @@ import { addNewBacklogItem, reorderBacklogItems } from "./actions/backlogItems";
 import { collapseSprintPanel, expandSprintPanel } from "./actions/sprintActions";
 
 // interfaces/types
-import { BacklogItemType } from "./reducers/backlogItems/backlogItemsReducerTypes";
+import { BacklogItemType } from "./types/backlogItemTypes";
 
 // utils
 import { isPlatformWindows } from "./utils";

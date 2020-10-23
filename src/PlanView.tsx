@@ -14,7 +14,8 @@ import css from "./PlanView.module.css";
 
 // interfaces/types
 import { EditMode } from "./components/molecules/buttons/EditButton";
-import { BacklogItemType, BacklogItemWithSource } from "./reducers/backlogItems/backlogItemsReducerTypes";
+import { BacklogItemWithSource } from "./reducers/backlogItems/backlogItemsReducerTypes";
+import { BacklogItemType } from "./types/backlogItemTypes";
 import { SprintPlanningPanelSprint } from "./components/organisms/panels/sprintPlanning/sprintPlanningPanelTypes";
 
 // components

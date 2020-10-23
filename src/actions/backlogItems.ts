@@ -2,7 +2,7 @@
 import * as ActionTypes from "./actionTypes";
 
 // interfaces/types
-import { BacklogItemType } from "../reducers/backlogItems/backlogItemsReducerTypes";
+import { BacklogItemType } from "../types/backlogItemTypes";
 import { BacklogItemDetailFormEditableFieldsWithInstanceId } from "../components/organisms/forms/BacklogItemDetailForm";
 
 // actions

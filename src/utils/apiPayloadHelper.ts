@@ -1,5 +1,5 @@
 // interfaces/types
-import { BacklogItemModel, BacklogItem } from "../reducers/backlogItems/backlogItemsReducerTypes";
+import { BacklogItemModel, BacklogItem } from "../types/backlogItemTypes";
 
 export const convertToBacklogItemModel = (backlogItem: BacklogItem): BacklogItemModel => ({
     createdAt: backlogItem.createdAt,

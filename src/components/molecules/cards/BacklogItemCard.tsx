@@ -18,9 +18,25 @@ import { EditButton, EditMode } from "../buttons/EditButton";
 import { buildClassName } from "../../../utils/classNameBuilder";
 
 // consts/enums
-import { PushState } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
+import { PushState, SaveableBacklogItem } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
 
 /* exported functions */
+
+export const buildUniqueItemKey = (props: SaveableBacklogItem, componentPrefix: string): string => {
+    return props.id ? `${componentPrefix}-id-${props.id}` : `${componentPrefix}-i-${props.instanceId}`;
+};
+
+export const buildBacklogItemKey = (props: SaveableBacklogItem): string => {
+    return buildUniqueItemKey(props, "bic");
+};
+
+export const buildBacklogItemPlanningItemKey = (props: SaveableBacklogItem): string => {
+    return buildUniqueItemKey(props, "bipi");
+};
+
+export const buildDividerKey = (props: SaveableBacklogItem): string => {
+    return buildUniqueItemKey(props, "div-l");
+};
 
 export const abbreviateId = (id: string): string => {
     if (!id) {

@@ -12,10 +12,10 @@ import { ApiSprint } from "../apiModelTypes";
 // utils
 import { isoDateStringToDate } from "../utils/apiPayloadConverters";
 import { CollapseSprintPanelAction, ExpandSprintPanelAction } from "../actions/sprintActions";
+import { ApiGetSprintBacklogItemsSuccessAction } from "../actions/apiSprintBacklog";
 
 export interface Sprint extends StandardModelItem {
     name: string;
-    expanded: boolean;
     displayIndex: number;
     startDate: Date;
     finishDate: Date;
@@ -25,6 +25,8 @@ export interface Sprint extends StandardModelItem {
     velocityPoints: number | null;
     usedSplitPoints: number | null;
     remainingSplitPoints: number | null;
+    backlogItemsLoaded: boolean;
+    expanded: boolean;
 }
 
 export type SprintsState = Readonly<{
@@ -37,7 +39,6 @@ export const sprintsReducerInitialState = Object.freeze<SprintsState>({
 
 export const mapApiItemToSprint = (apiItem: ApiSprint): Sprint => ({
     id: apiItem.id,
-    expanded: false, // TODO: Add smart logic for this
     name: apiItem.name,
     displayIndex: apiItem.displayindex,
     startDate: isoDateStringToDate(apiItem.startdate),
@@ -49,7 +50,9 @@ export const mapApiItemToSprint = (apiItem: ApiSprint): Sprint => ({
     acceptedPoints: apiItem.acceptedPoints,
     velocityPoints: apiItem.velocityPoints,
     usedSplitPoints: apiItem.usedSplitPoints,
-    remainingSplitPoints: apiItem.remainingSplitPoints
+    remainingSplitPoints: apiItem.remainingSplitPoints,
+    backlogItemsLoaded: false,
+    expanded: false // TODO: Add smart logic for this
 });
 
 export const mapApiItemsToSprints = (apiItems: ApiSprint[]): Sprint[] => {
@@ -84,6 +87,18 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 const actionTyped = action as ApiGetBffViewsPlanSuccessAction;
                 const { payload } = actionTyped;
                 draft.items = mapApiItemsToSprints(payload.response.data.sprints);
+                return;
+            }
+            case ActionTypes.API_GET_SPRINT_BACKLOG_ITEMS_SUCCESS: {
+                const actionTyped = action as ApiGetSprintBacklogItemsSuccessAction;
+                const sprintId = actionTyped.meta.actionParams.sprintId;
+                if (!draft.items) {
+                    return;
+                }
+                const sprintItem = draft.items.filter(item => item.id === sprintId);
+                sprintItem.forEach(item => {
+                    item.backlogItemsLoaded = true;
+                });
                 return;
             }
         }

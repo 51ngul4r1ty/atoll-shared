@@ -56,13 +56,8 @@ export { StateTree } from "./reducers/rootReducer";
 export { AppState } from "./reducers/appReducer";
 export { UserState } from "./reducers/userReducer";
 export * from "./apiModelTypes";
-export {
-    BacklogItem,
-    BacklogItemSource,
-    BacklogItemType,
-    BacklogItemWithSource,
-    BacklogItemsState
-} from "./reducers/backlogItems/backlogItemsReducerTypes";
+export { BacklogItemSource, BacklogItemWithSource, BacklogItemsState } from "./reducers/backlogItems/backlogItemsReducerTypes";
+export { BacklogItem, BacklogItemType } from "./types/backlogItemTypes";
 export { SprintStatus, SprintPlanningPanelSprint } from "./components/organisms/panels/sprintPlanning/sprintPlanningPanelTypes";
 
 // contexts

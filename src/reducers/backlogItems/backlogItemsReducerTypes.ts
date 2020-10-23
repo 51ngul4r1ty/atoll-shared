@@ -1,4 +1,6 @@
-import { BaseModelItem, WebsocketPushNotificationData } from "../../types";
+// interfaces/types
+import { WebsocketPushNotificationData } from "../../types";
+import { BacklogItem } from "../../types/backlogItemTypes";
 
 export type BacklogItemsState = Readonly<{
     addedItems: SaveableBacklogItem[];
@@ -8,30 +10,10 @@ export type BacklogItemsState = Readonly<{
     openedDetailMenuBacklogItemId: string | null;
 }>;
 
-export type BacklogItemType = "story" | "issue";
-
 export enum BacklogItemSource {
     Added,
     Loaded,
     Pushed
-}
-
-export interface BacklogItemModel extends BaseModelItem {
-    version?: number;
-    createdAt: Date;
-    updatedAt: Date;
-    estimate: number | null;
-    friendlyId: string;
-    externalId: string | null;
-    reasonPhrase: string | null;
-    rolePhrase: string | null;
-    storyPhrase: string;
-    type: BacklogItemType;
-    projectId: string; // TODO: Finish up code related to this
-}
-
-export interface BacklogItem extends BacklogItemModel {
-    instanceId?: number | null;
 }
 
 export interface EditableBacklogItem extends BacklogItem {

@@ -4,6 +4,7 @@ import { SprintPlanningPanelSprint, SprintStatus } from "../components/organisms
 
 // state
 import { StateTree } from "../reducers/rootReducer";
+import { getBacklogItemsForSprint } from "./sprintBacklogSelectors";
 
 export const determineSprintStatus = (sprint: Sprint): SprintStatus => {
     const currentTime = new Date().getTime();
@@ -24,7 +25,6 @@ export const getPlanViewSprints = (state: StateTree): SprintPlanningPanelSprint[
     const result = state.sprints.items.map((sprint) => {
         const panelSprint: SprintPlanningPanelSprint = {
             id: sprint.id,
-            expanded: sprint.expanded,
             name: sprint.name,
             startDate: sprint.startDate,
             finishDate: sprint.finishDate,
@@ -33,9 +33,23 @@ export const getPlanViewSprints = (state: StateTree): SprintPlanningPanelSprint[
             acceptedPoints: sprint.acceptedPoints,
             velocityPoints: sprint.velocityPoints,
             usedSplitPoints: sprint.usedSplitPoints,
-            remainingSplitPoints: sprint.remainingSplitPoints
+            remainingSplitPoints: sprint.remainingSplitPoints,
+            expanded: sprint.expanded,
+            backlogItems: getBacklogItemsForSprint(state, sprint.id),
+            backlogItemsLoaded: sprint.backlogItemsLoaded
         };
         return panelSprint;
     });
     return result;
+};
+
+export const getSprintById = (state: StateTree, sprintId: string): Sprint | null => {
+    const sprints = state.sprints.items.filter((sprint) => sprint.id === sprintId);
+    if (sprints.length === 1) {
+        return sprints[0];
+    } else if (sprints.length === 0) {
+        return null;
+    } else {
+        throw new Error(`Unexpected condition - ${sprints.length} sprint items have sprint ID = "${sprintId}"`);
+    }
 };

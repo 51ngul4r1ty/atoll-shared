@@ -22,7 +22,7 @@ import {
     WebsocketPushNotificationData
 } from "../types";
 import { ReceiveWebsocketMessageAction } from "../actions/wsActions";
-import { BacklogItemModel } from "../reducers/backlogItems/backlogItemsReducerTypes";
+import { BacklogItemModel } from "../types/backlogItemTypes";
 
 // selectors
 import { getPrevNextAndCurrentById } from "../selectors/backlogItemSelectors";

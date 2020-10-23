@@ -29,8 +29,6 @@ import { BacklogItemsState, BacklogItemWithSource, PushState, SaveableBacklogIte
 import {
     getBacklogItemById,
     idsMatch,
-    mapApiItemsToBacklogItems,
-    mapApiItemToBacklogItem,
     rebuildAllItems,
     targetIsInMenuButton,
     targetIsInMenuPanel,
@@ -38,6 +36,7 @@ import {
     updateItemById,
     updateItemFieldsInAllItems
 } from "./backlogItemsReducerHelper";
+import { mapApiItemsToBacklogItems, mapApiItemToBacklogItem } from "../../mappers/backlogItemMappers";
 
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],

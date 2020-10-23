@@ -1,5 +1,5 @@
 // interfaces/types
-import { BacklogItem } from "../reducers/backlogItems/backlogItemsReducerTypes";
+import { BacklogItem } from "../types/backlogItemTypes";
 
 // utils
 import { getBacklogItemById as reducerGetBacklogItemById } from "../reducers/backlogItems/backlogItemsReducerHelper";

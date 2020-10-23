@@ -1,3 +1,8 @@
+/**
+ * Purpose: To determine when to make RESTful API calls based on actions that occur.
+ * Reason to change: When new RESTful API calls are needed.
+ */
+
 // externals
 import { Action, Store } from "redux";
 import * as HttpStatus from "http-status-codes";
@@ -27,6 +32,8 @@ import {
     CancelEditBacklogItemAction
 } from "../actions/backlogItems";
 import { postLogin, ActionPostLoginSuccessAction, ActionPostRefreshTokenSuccessAction } from "../actions/authActions";
+import { routePlanView } from "../actions/routeActions";
+import { getUserPreferences, ActionGetUserPrefsSuccessAction } from "../actions/userActions";
 
 // state
 import { StateTree } from "../reducers/rootReducer";
@@ -34,12 +41,15 @@ import { StateTree } from "../reducers/rootReducer";
 // selectors
 import { buildApiPayloadBaseForResource } from "../selectors/apiSelectors";
 import { getCurrentProjectId } from "../selectors/userSelectors";
+import { getSprintById } from "../selectors/sprintSelectors";
 
 // utils
 import { convertToBacklogItemModel } from "../utils/apiPayloadHelper";
-import { routePlanView } from "../actions/routeActions";
-import { getUserPreferences, ActionGetUserPrefsSuccessAction } from "../actions/userActions";
+
+// interfaces/types
 import { ResourceTypes } from "../reducers/apiLinksReducer";
+import { ExpandSprintPanelAction } from "../actions/sprintActions";
+import { apiGetSprintBacklogItems } from "../actions/apiSprintBacklog";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
@@ -89,6 +99,7 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             }
             break;
         }
+        // TODO: Maybe consider splitting this out to its own middleware, or keeping it here and moving other code out?
         case ActionTypes.API_POST_ACTION_RETRY_TOKEN_SUCCESS: {
             const actionTyped = action as ActionPostRefreshTokenSuccessAction;
             if (actionTyped.payload.response.status === HttpStatus.OK) {
@@ -121,6 +132,16 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
                 storeTyped.dispatch(
                     apiPutBacklogItem(model, buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", itemId))
                 );
+            }
+            break;
+        }
+        case ActionTypes.EXPAND_SPRINT_PANEL: {
+            const actionTyped = action as ExpandSprintPanelAction;
+            const state = storeTyped.getState();
+            const sprintId = actionTyped.payload.sprintId;
+            const sprint = getSprintById(state, sprintId);
+            if (sprint && !sprint.backlogItemsLoaded) {
+                storeTyped.dispatch(apiGetSprintBacklogItems(sprintId));
             }
             break;
         }

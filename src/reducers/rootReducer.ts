@@ -11,27 +11,30 @@ import { featureTogglesReducer, featureTogglesReducerInitialState, FeatureToggle
 import { sprintsReducer, sprintsReducerInitialState, SprintsState } from "./sprintsReducer";
 import { userReducer, userReducerInitialState, UserState } from "./userReducer";
 import { BacklogItemsState } from "./backlogItems/backlogItemsReducerTypes";
+import { sprintBacklogReducer, sprintBacklogReducerInitialState, SprintBacklogState } from "./sprintBacklogReducer";
 
 export interface StateTree {
     apiLinks: ApiLinkState;
     app: AppState;
-    backlogItems: BacklogItemsState;
     backlogItemRanks: BacklogItemRanksState;
+    backlogItems: BacklogItemsState;
     electronClient: boolean;
     executingOnClient: boolean;
-    user: UserState;
     featureToggles: FeatureTogglesState;
+    sprintBacklog: SprintBacklogState;
     sprints: SprintsState;
+    user: UserState;
 }
 
 export const rootReducerInitialState = {
-    app: appReducerInitialState,
     apiLinks: apiLinksReducerInitialState,
-    backlogItems: backlogItemsReducerInitialState,
+    app: appReducerInitialState,
     backlogItemRanks: backlogItemRanksReducerInitialState,
-    user: userReducerInitialState,
+    backlogItems: backlogItemsReducerInitialState,
     featureToggles: featureTogglesReducerInitialState,
-    sprints: sprintsReducerInitialState
+    sprintBacklog: sprintBacklogReducerInitialState,
+    sprints: sprintsReducerInitialState,
+    user: userReducerInitialState
 };
 
 const createRootReducer = (history: any) => {
@@ -43,6 +46,7 @@ const createRootReducer = (history: any) => {
         backlogItems: backlogItemsReducer,
         featureToggles: featureTogglesReducer,
         router,
+        sprintBacklog: sprintBacklogReducer,
         sprints: sprintsReducer,
         user: userReducer
     });
