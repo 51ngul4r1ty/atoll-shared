@@ -3,7 +3,7 @@ import * as React from "react";
 // import Helmet from "react-helmet";
 
 // components
-import { PlanningPanelBacklogItem, BacklogItemPlanningPanel } from "./components/organisms/panels/BacklogItemPlanningPanel";
+import { BacklogItemPlanningPanel } from "./components/organisms/panels/backlogItemPlanning/BacklogItemPlanningPanel";
 import { TopMenuPanelContainer } from "./containers/TopMenuPanelContainer";
 
 // contexts
