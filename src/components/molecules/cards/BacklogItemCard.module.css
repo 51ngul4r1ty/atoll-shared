@@ -1,3 +1,35 @@
+.backlogItemType {
+    order: 0;
+}
+
+.checkbox {
+    order: 1;
+}
+
+.backlogItemText {
+    order: 2;
+}
+
+.backlogItemCardOuter:not(.mobile) .backlogItemDetailButton {
+    order: 3;
+}
+
+.backlogItemEstimate {
+    order: 4;
+}
+
+.backlogItemDragButton {
+    order: 5;
+}
+
+.backlogItemCardOuter.mobile .backlogItemEstimate {
+    order: 2;
+}
+
+.backlogItemCardOuter.mobile .backlogItemText {
+    order: 3;
+}
+
 .backlogItemCard {
     display: flex;
     height: 2rem;
@@ -41,11 +73,17 @@
     min-width: 5rem; /* TODO: Use constants/theme?? */
     align-items: center;
     user-select: none;
-    order: 0;
 }
 
 .backlogItemCardOuter.mobile .backlogItemType {
     flex-grow: 1;
+}
+
+.backlogItemText,
+.checkbox,
+.backlogItemCardOuter:not(.mobile) .backlogItemDetailButton {
+    border-top: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
+    border-bottom: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
 }
 
 .backlogItemText {
@@ -54,12 +92,9 @@
     padding-left: 0.25rem; /* TODO: Use constants??? */
     padding-right: 0.25rem; /* TODO: Use constants??? */
     flex-grow: 1;
-    border-top: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
-    border-bottom: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    order: 1;
 }
 
 .backlogItemCardOuter.mobile .backlogItemText {
@@ -68,7 +103,6 @@
 
 .backlogItemCardOuter.mobile .backlogItemText {
     white-space: normal;
-    order: 2;
     height: 4.15rem;
     flex-basis: 100%;
     border-left: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
@@ -81,11 +115,9 @@
     background-color: var(--inverted-page-color, black);
     color: var(--inverted-pen-color, white);
     user-select: none;
-    order: 3;
 }
 
 .backlogItemCardOuter.mobile .backlogItemEstimate {
-    order: 1;
     flex-grow: 0;
     text-align: right;
     padding-right: 0.6rem;
@@ -118,7 +150,6 @@
     display: flex;
     justify-content: center;
     flex-shrink: 0;
-    order: 4;
 }
 
 .backlogItemCardOuter.mobile .backlogItemDragButton {
@@ -128,12 +159,6 @@
 .backlogItemDragButton svg {
     width: 1.3rem;
     height: 1.3rem;
-}
-
-.backlogItemCardOuter:not(.mobile) .backlogItemDetailButton {
-    order: 2;
-    border-top: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
-    border-bottom: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
 }
 
 .backlogItemCardOuter.mobile .backlogItemDetailButton {

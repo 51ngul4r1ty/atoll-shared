@@ -70,6 +70,7 @@ export const buildDragBacklogItemElt = (
             titleText={item.storyPhrase}
             isDraggable={editMode === EditMode.Edit}
             hasDetails={editMode === EditMode.Edit}
+            isSelectable={editMode === EditMode.Edit}
             renderMobile={renderMobile}
             marginBelowItem
             offsetTop={offsetTop}
@@ -399,6 +400,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         titleText={null}
                         isDraggable={props.editMode === EditMode.Edit}
                         hasDetails={props.editMode === EditMode.Edit}
+                        isSelectable={props.editMode === EditMode.Edit}
                         renderMobile={props.renderMobile}
                         marginBelowItem
                         onDetailClicked={() => {

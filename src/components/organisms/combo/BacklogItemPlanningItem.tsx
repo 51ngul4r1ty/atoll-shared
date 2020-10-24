@@ -97,6 +97,7 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     titleText={props.storyPhrase}
                     isDraggable={props.editMode === EditMode.Edit}
                     hasDetails={props.editMode === EditMode.Edit}
+                    isSelectable={props.editMode === EditMode.Edit}
                     renderMobile={props.renderMobile}
                     marginBelowItem
                     pushState={props.pushState}

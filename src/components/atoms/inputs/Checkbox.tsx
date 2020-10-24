@@ -60,7 +60,7 @@ export const InnerCheckbox: React.FC<CheckboxProps & CheckboxInnerStateProps> = 
             <div className={css.outerWrapper}>
                 <div className={css.innerWrapper}>
                     {icon}
-                    <label htmlFor={nameToUse}>{props.labelText}</label>
+                    {props.labelText ? <label htmlFor={nameToUse}>{props.labelText}</label> : null}
                 </div>
                 <input
                     id={props.inputId}

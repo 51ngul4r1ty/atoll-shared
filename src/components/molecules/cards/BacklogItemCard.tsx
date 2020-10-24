@@ -6,13 +6,14 @@ import { withTranslation, WithTranslation } from "react-i18next";
 import css from "./BacklogItemCard.module.css";
 
 // components
-import { StoryIcon } from "../../atoms/icons/StoryIcon";
-import { IssueIcon } from "../../atoms/icons/IssueIcon";
-import { DragIcon } from "../../atoms/icons/DragIcon";
-import { EditDetailIcon } from "../../atoms/icons/EditDetailIcon";
 import { CaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
-import { RemoveButton } from "../buttons/RemoveButton";
+import { Checkbox } from "../../atoms/inputs/Checkbox";
+import { DragIcon } from "../../atoms/icons/DragIcon";
 import { EditButton, EditMode } from "../buttons/EditButton";
+import { EditDetailIcon } from "../../atoms/icons/EditDetailIcon";
+import { IssueIcon } from "../../atoms/icons/IssueIcon";
+import { RemoveButton } from "../buttons/RemoveButton";
+import { StoryIcon } from "../../atoms/icons/StoryIcon";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
@@ -71,6 +72,7 @@ export enum BacklogItemTypeEnum {
 export interface BacklogItemCardStateProps {
     estimate: number | null;
     hasDetails?: boolean;
+    isSelectable?: boolean;
     hidden?: boolean;
     isDraggable?: boolean;
     internalId: string;
@@ -140,6 +142,9 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
             <EditDetailIcon />
         </div>
     ) : null;
+    const checkboxToSelect = props.isSelectable ? (
+        <Checkbox className={css.checkbox} inputId={`backlogCheckbox_${props.itemId}`} labelText="" />
+    ) : null;
     const styleToUse: React.CSSProperties = props.offsetTop && { top: props.offsetTop, position: "absolute", zIndex: 10 };
     return (
         <div className={outerClassNameToUse} data-class="backlogitem" data-id={props.internalId} style={styleToUse}>
@@ -160,6 +165,7 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
                         </div>
                     ) : null}
                 </div>
+                {!props.renderMobile ? checkboxToSelect : null}
                 <div className={css.backlogItemText}>
                     {props.titleText}
                     {props.renderMobile ? editDetailButton : null}
