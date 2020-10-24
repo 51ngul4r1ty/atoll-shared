@@ -23,3 +23,7 @@ export interface SprintPlanningPanelSprint {
     backlogItems: SprintBacklogItem[] | null;
     expanded: boolean;
 }
+
+export interface OnAddNewSprint {
+    (): void;
+}

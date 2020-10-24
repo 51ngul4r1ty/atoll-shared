@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 
 // components
-import { LabeledInput } from "../../atoms/forms/LabeledInput";
+import { LabeledInput } from "../../atoms/inputs/LabeledInput";
 import { CancelButton } from "../../molecules/buttons/CancelButton";
 import { DoneButton } from "../../molecules/buttons/DoneButton";
 

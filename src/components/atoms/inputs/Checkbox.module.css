@@ -1,0 +1,11 @@
+.input {
+    box-sizing: border-box;
+    padding-left: 0.3rem;
+    line-height: 1.5rem;
+}
+
+.input > label {
+    font-size: 0.8rem;
+    padding-left: 0.4rem;
+    vertical-align: top;
+}

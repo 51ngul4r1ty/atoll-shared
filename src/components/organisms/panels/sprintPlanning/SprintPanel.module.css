@@ -80,3 +80,7 @@
     width: auto;
     height: 0.9rem;
 }
+
+.sprintActionButtonPanel {
+    padding: 0.5rem 0 0.1rem 0.3rem;
+}

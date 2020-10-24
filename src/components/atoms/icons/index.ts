@@ -7,6 +7,8 @@ export * from "./EditCancelIcon";
 export * from "./EditDetailIcon";
 export * from "./EditIcon";
 export * from "./HamburgerIcon";
+export * from "./CheckboxCheckedIcon";
+export * from "./CheckboxUncheckedIcon";
 export * from "./IssueIcon";
 export * from "./RefreshIcon";
 export * from "./StoryIcon";

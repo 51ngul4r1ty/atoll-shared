@@ -7,25 +7,24 @@ import css from "./SprintPlanningPanel.module.css";
 
 // utils
 import { buildClassName } from "../../../../utils/classNameBuilder";
-import { buildSprintPointInfoText, formatDateRange, sprintStatusToString } from "./sprintPlanningPanelUtils";
-
-// components
-import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 
 // interfaces/types
 import { SprintPlanningPanelSprint } from "./sprintPlanningPanelTypes";
-import { VerticalExpandIcon } from "../../../atoms/icons/VerticalExpandIcon";
-import { VerticalCollapseIcon } from "../../../atoms/icons/VerticalCollapseIcon";
 import { SprintPanel } from "./SprintPanel";
+import { addActionButtons } from "./sprintPlanningPanelJsxUtils";
+import { EditMode } from "../../../molecules/buttons/EditButton";
 
 export interface SprintPlanningPanelStateProps {
     className?: string;
     renderMobile?: boolean;
     sprints: SprintPlanningPanelSprint[];
+    editMode: EditMode;
 }
 
 export interface SprintPlanningPanelDispatchProps {
     onExpandCollapse: { (id: string, expand: boolean): void };
+    onAddNewSprint: { (): void };
+    onAddBacklogItem: { (sprintId: string): void };
 }
 
 export type SprintPlanningPanelProps = SprintPlanningPanelStateProps & SprintPlanningPanelDispatchProps & WithTranslation;
@@ -36,25 +35,44 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
             props.onExpandCollapse(id, expand);
         }
     };
+    const onAddBacklogItem = (sprintId: string) => {
+        if (props.onAddBacklogItem) {
+            props.onAddBacklogItem(sprintId);
+        }
+    };
     const classNameToUse = buildClassName(
         css.sprintPlanningPanel,
         css.backlogItemPlanningPanel,
         props.className,
         props.renderMobile ? css.mobile : null
     );
-    const sprintItemElts = props.sprints.map((sprint) => {
-        return (
+    let renderElts = [];
+    addActionButtons(
+        renderElts,
+        props.editMode,
+        false,
+        // suppressTopPadding || lastItemWasUnsaved,
+        props.onAddNewSprint,
+        props.renderMobile
+    );
+    props.sprints.forEach((sprint) => {
+        const sprintItemElt = (
             <div key={sprint.name}>
                 <SprintPanel
                     {...sprint}
+                    editMode={props.editMode}
                     onExpandCollapse={(id, expand) => {
                         onExpandCollapse(id, expand);
+                    }}
+                    onAddBacklogItem={() => {
+                        onAddBacklogItem(sprint.id);
                     }}
                 />
             </div>
         );
+        renderElts.push(sprintItemElt);
     });
-    return <div className={classNameToUse}>{sprintItemElts}</div>;
+    return <div className={classNameToUse}>{renderElts}</div>;
 };
 
 export const SprintPlanningPanel = withTranslation()(InnerSprintPlanningPanel);

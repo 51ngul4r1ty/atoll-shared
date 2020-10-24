@@ -10,7 +10,8 @@ import { StateTree } from "./reducers/rootReducer";
 
 // actions
 import { addNewBacklogItem, reorderBacklogItems } from "./actions/backlogItems";
-import { collapseSprintPanel, expandSprintPanel } from "./actions/sprintActions";
+import { addNewSprint, collapseSprintPanel, expandSprintPanel } from "./actions/sprintActions";
+import { apiBffViewsPlan } from "./actions/apiBffViewsPlan";
 
 // interfaces/types
 import { BacklogItemType } from "./types/backlogItemTypes";
@@ -20,9 +21,9 @@ import { isPlatformWindows } from "./utils";
 
 // selectors
 import { getCurrentProjectId } from "./selectors/userSelectors";
-import { apiBffViewsPlan } from "./actions/apiBffViewsPlan";
 import { getPlanViewSprints } from "./selectors/sprintSelectors";
 import { getAllBacklogItems } from "./selectors/backlogItemSelectors";
+import { addBacklogItemToSprint } from "./actions/sprintBacklogActions";
 
 const mapStateToProps = (state: StateTree): PlanViewStateProps => {
     const allItems = getAllBacklogItems(state);
@@ -45,6 +46,8 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
             dispatch(apiBffViewsPlan());
         },
         onAddNewBacklogItem: (type: BacklogItemType) => dispatch(addNewBacklogItem(type)),
+        onAddBacklogItemToSprint: (sprintId: string) => dispatch(addBacklogItemToSprint(sprintId)),
+        onAddNewSprint: () => dispatch(addNewSprint()),
         onReorderBacklogItems: (sourceItemId: string, targetItemId: string) =>
             dispatch(reorderBacklogItems(sourceItemId, targetItemId)),
         onExpandCollapse: (sprintId: string, expand: boolean) => {

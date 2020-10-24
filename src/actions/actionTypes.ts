@@ -106,3 +106,7 @@ export const LOGIN_USER = "app/user:login-user";
 
 export const EXPAND_SPRINT_PANEL = "app/expand:sprint-panel";
 export const COLLAPSE_SPRINT_PANEL = "app/collapse:sprint-panel";
+
+export const ADD_SPRINT = "app/add:sprint";
+
+export const ADD_BACKLOG_ITEM_TO_SPRINT = "app/add:sprint-backlog-item";

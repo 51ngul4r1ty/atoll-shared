@@ -28,3 +28,19 @@ export const expandSprintPanel = (sprintId: string): ExpandSprintPanelAction => 
         sprintId
     }
 });
+
+let lastInstanceId = 0;
+
+export interface AddNewSprintActionPayload {
+    instanceId: number;
+}
+export interface AddNewSprintAction {
+    type: typeof ActionTypes.ADD_SPRINT;
+    payload: AddNewSprintActionPayload;
+}
+export const addNewSprint = (): AddNewSprintAction => ({
+    type: ActionTypes.ADD_SPRINT,
+    payload: {
+        instanceId: ++lastInstanceId
+    }
+});

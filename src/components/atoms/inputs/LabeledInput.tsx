@@ -89,7 +89,7 @@ export class InnerLabeledInput extends Component<LabeledInputProps & LabeledInpu
                     }}
                     required={this.props.required}
                 />
-                <label htmlFor={this.props.inputName}>{this.props.labelText}</label>
+                <label htmlFor={nameToUse}>{this.props.labelText}</label>
             </div>
         );
     }

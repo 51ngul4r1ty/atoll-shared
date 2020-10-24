@@ -7,3 +7,10 @@
     width: 50%;
     max-width: 35rem;
 }
+
+.sprintPlanningActionPanel {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    grid-column-gap: 0.4rem; /* TODO: Move to vars */
+    padding-bottom: 0.5rem; /* TODO: Move to vars */
+}

@@ -38,10 +38,12 @@ export interface PlanViewStateProps {
 }
 
 export interface PlanViewDispatchProps {
-    onLoaded: { (projectId: string) };
-    onAddNewBacklogItem: { (type: BacklogItemType) };
-    onReorderBacklogItems: { (sourceItemId: string, targetItemId: string) };
-    onExpandCollapse: { (sprintId: string, expand: boolean) };
+    onLoaded: { (projectId: string): void };
+    onAddNewBacklogItem: { (type: BacklogItemType): void };
+    onAddBacklogItemToSprint: { (sprintId: string): void };
+    onAddNewSprint: { (): void };
+    onReorderBacklogItems: { (sourceItemId: string, targetItemId: string): void };
+    onExpandCollapse: { (sprintId: string, expand: boolean): void };
 }
 
 export type PlanViewProps = PlanViewStateProps & PlanViewDispatchProps;
@@ -79,10 +81,21 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     />
                     <SprintPlanningPanel
                         className={css.sprints}
+                        editMode={this.props.editMode}
                         sprints={this.props.sprints}
                         onExpandCollapse={(sprintId: string, expand: boolean) => {
                             if (this.props.onExpandCollapse) {
                                 this.props.onExpandCollapse(sprintId, expand);
+                            }
+                        }}
+                        onAddNewSprint={() => {
+                            if (this.props.onAddNewSprint) {
+                                this.props.onAddNewSprint();
+                            }
+                        }}
+                        onAddBacklogItem={(sprintId: string) => {
+                            if (this.props.onAddBacklogItemToSprint) {
+                                this.props.onAddBacklogItemToSprint(sprintId);
                             }
                         }}
                     />

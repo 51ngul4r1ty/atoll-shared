@@ -18,17 +18,23 @@ import { VerticalExpandIcon } from "../../../atoms/icons/VerticalExpandIcon";
 import { VerticalCollapseIcon } from "../../../atoms/icons/VerticalCollapseIcon";
 import { SprintBacklogItem } from "../../../../reducers/sprintBacklogReducer";
 import { BacklogItemCard, BacklogItemTypeEnum, buildBacklogItemKey } from "../../../molecules/cards/BacklogItemCard";
-import { EditMode } from "../../../molecules/buttons/EditButton";
 
-export interface SprintPanelStateProps extends SprintPlanningPanelSprint {}
+// consts/enums
+import { EditMode } from "../../../molecules/buttons/EditButton";
+import { AddButton } from "../../../molecules/buttons/AddButton";
+
+export interface SprintPanelStateProps extends SprintPlanningPanelSprint {
+    editMode: EditMode;
+}
 
 export interface SprintPanelDispatchProps {
+    onAddBacklogItem: { (): void };
     onExpandCollapse: { (id: string, expand: boolean): void };
 }
 
 export type SprintPanelProps = SprintPanelStateProps & SprintPanelDispatchProps & WithTranslation;
 
-export const getBacklogItemElts = (backlogItems: SprintBacklogItem[]) => {
+export const getBacklogItemElts = (editMode: EditMode, backlogItems: SprintBacklogItem[]) => {
     return backlogItems.map((backlogItem) => (
         <div key={backlogItem.id}>
             <BacklogItemCard
@@ -39,7 +45,7 @@ export const getBacklogItemElts = (backlogItems: SprintBacklogItem[]) => {
                 itemType={backlogItem.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
                 titleText={backlogItem.storyPhrase}
                 isDraggable={false}
-                hasDetails={false}
+                hasDetails={editMode === EditMode.Edit}
                 renderMobile={false}
                 marginBelowItem
                 showDetailMenu={false}
@@ -56,7 +62,22 @@ export const InnerSprintPanel: React.FC<SprintPanelProps> = (props) => {
     };
     const expandCollapseIcon = props.expanded ? <VerticalCollapseIcon /> : <VerticalExpandIcon />;
     const contentsClassName = buildClassName(css.sprintContents, props.expanded ? css.expanded : null);
-    const sprintBacklogContents = props.backlogItemsLoaded ? getBacklogItemElts(props.backlogItems) : "[ loading... ]";
+    const sprintBacklogContents = props.backlogItemsLoaded
+        ? getBacklogItemElts(props.editMode, props.backlogItems)
+        : "[ loading... ]";
+    const actionButtonElts =
+        props.expanded && props.editMode === EditMode.Edit ? (
+            <div className={css.sprintActionButtonPanel}>
+                <AddButton
+                    itemName="items"
+                    onClick={() => {
+                        if (props.onAddBacklogItem) {
+                            props.onAddBacklogItem();
+                        }
+                    }}
+                />
+            </div>
+        ) : null;
     return (
         <>
             <SimpleDivider />
@@ -73,6 +94,7 @@ export const InnerSprintPanel: React.FC<SprintPanelProps> = (props) => {
                         </div>
                     </div>
                     <div className={contentsClassName}>{sprintBacklogContents}</div>
+                    {actionButtonElts}
                 </div>
                 <div
                     className={css.expandCollapse}

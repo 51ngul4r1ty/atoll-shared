@@ -28,7 +28,7 @@ export interface BacklogItemPlanningPanelStateProps {
 }
 
 export interface OnAddedNewBacklogItem {
-    (itemType: BacklogItemType);
+    (itemType: BacklogItemType): void;
 }
 
 export interface OnReorderBacklogItems {
