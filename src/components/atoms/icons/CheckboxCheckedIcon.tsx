@@ -5,12 +5,14 @@ import * as React from "react";
 import baseCss from "../../common/base.module.css";
 
 // interfaces/types
-import { StandardInvertibleComponentProps } from "../../common/types";
+import { ElementAttribute, StandardInvertibleComponentProps } from "../../common/types";
 
 // utils
 import { getFillAndStrokeClassNames } from "../../common/propUtils";
 
-export type CheckboxCheckedIconProps = StandardInvertibleComponentProps;
+export interface CheckboxCheckedIconProps extends StandardInvertibleComponentProps {
+    includedSvgAttributes?: ElementAttribute<any>[];
+}
 
 export const CheckboxCheckedIcon: React.FC<CheckboxCheckedIconProps> = (props) => {
     const { fillClass, strokeClass } = getFillAndStrokeClassNames(
@@ -21,8 +23,16 @@ export const CheckboxCheckedIcon: React.FC<CheckboxCheckedIconProps> = (props) =
         baseCss.stroke
     );
 
+    const addedSvgProps = {};
+    if (props.includedSvgAttributes) {
+        props.includedSvgAttributes.forEach((svgAttribute) => {
+            addedSvgProps[svgAttribute.name] = svgAttribute.value;
+        });
+    }
+
     return (
         <svg
+            {...addedSvgProps}
             className={props.className}
             fill="none"
             fillRule="evenodd"

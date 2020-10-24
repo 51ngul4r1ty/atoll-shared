@@ -1,5 +1,7 @@
+// BUSY: https://webdesign.tutsplus.com/tutorials/how-to-make-custom-accessible-checkboxes-and-radio-buttons--cms-32074
+
 // externals
-import React, { forwardRef, Component, ChangeEvent, RefObject, Ref } from "react";
+import React, { forwardRef, Component, ChangeEvent, RefObject, Ref, useState } from "react";
 
 // style
 import css from "./Checkbox.module.css";
@@ -7,6 +9,7 @@ import css from "./Checkbox.module.css";
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
 import { ComponentWithForwardedRef } from "../../../types";
+import { CheckboxCheckedIcon, CheckboxUncheckedIcon } from "../icons";
 
 export type CheckboxRefType = HTMLInputElement;
 
@@ -22,46 +25,57 @@ export interface CheckboxStateProps {
     labelText: string;
 }
 
-// NOTE: Keep this private so that it isn't referenced outside this component
-interface CheckboxInnerStateProps {
-    innerRef: RefObject<CheckboxRefType>;
-}
-
 export interface CheckboxDispatchProps {
     onChange?: { (value: string) };
 }
 
 export type CheckboxProps = CheckboxStateProps & CheckboxDispatchProps;
 
-export class InnerCheckbox extends Component<CheckboxProps & CheckboxInnerStateProps> {
-    constructor(props) {
-        super(props);
-    }
-    handleChange(e: ChangeEvent<HTMLInputElement>) {
-        if (this.props.onChange) {
-            this.props.onChange(e.target.value);
+// NOTE: Keep this private so that it isn't referenced outside this component
+interface CheckboxInnerStateProps {
+    innerRef: RefObject<CheckboxRefType>;
+}
+
+export const InnerCheckbox: React.FC<CheckboxProps & CheckboxInnerStateProps> = (props) => {
+    const [isChecked, setIsChecked] = useState(props.checked || false);
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setIsChecked(e.target.checked);
+        if (props.onChange) {
+            const newCheckedState = e.target.checked;
+            props.onChange(e.target.value);
         }
-    }
-    render() {
-        const nameToUse = this.props.inputName || this.props.inputId;
-        const valueToUse = this.props.checkedValue || "checked";
-        const classToUse = buildClassName(css.input, this.props.className, this.props.disabled ? css.disabled : null);
-        return (
-            <div className={classToUse}>
+    };
+    const nameToUse = props.inputName || props.inputId;
+    const valueToUse = props.checkedValue || "checked";
+    const classToUse = buildClassName(css.input, props.className, props.disabled ? css.disabled : null);
+    const iconProps = {
+        includedSvgAttributes: [
+            { name: "aria-hidden", value: "true" },
+            { name: "focusable", value: "false" }
+        ]
+    };
+    const icon = isChecked ? <CheckboxCheckedIcon {...iconProps} /> : <CheckboxUncheckedIcon {...iconProps} />;
+    return (
+        <div className={classToUse}>
+            <div className={css.outerWrapper}>
+                <div className={css.innerWrapper}>
+                    {icon}
+                    <label htmlFor={nameToUse}>{props.labelText}</label>
+                </div>
                 <input
-                    id={this.props.inputId}
+                    id={props.inputId}
                     name={nameToUse}
                     type="checkbox"
                     value={valueToUse}
+                    checked={isChecked}
                     onChange={(e) => {
-                        this.handleChange(e);
+                        handleChange(e);
                     }}
                 />
-                <label htmlFor={nameToUse}>{this.props.labelText}</label>
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
 export const Checkbox: CheckboxType = forwardRef((props: CheckboxProps, ref: Ref<CheckboxRefType>) => (
     <InnerCheckbox innerRef={ref as RefObject<CheckboxRefType>} {...props} />
