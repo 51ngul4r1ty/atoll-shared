@@ -142,7 +142,7 @@ export class App extends React.Component<AppProps, AppState> {
     render() {
         const classNameToUse = buildClassName(
             css.app,
-            this.state?.isMobile ? css.mobile : null,
+            this.state?.isMobile ? "mobile" : null,
             this.props.electronClient ? buildOsClassName(currentPlatformValue) : null
         );
         const isWindowsElectronClient = this.props.electronClient && isPlatformWindows();

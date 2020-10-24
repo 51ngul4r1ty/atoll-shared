@@ -26,7 +26,7 @@ export const formatSameMonthRange = (startDate: Date, finishDate: Date): string 
     const startDay = startDate.getDate();
     const finishDay = finishDate.getDate();
     const monthName = monthToString(startMonth);
-    return `${monthName} ${startDay} to ${monthName} ${finishDay}, ${startYear}`;
+    return `${monthName} ${startDay} to ${finishDay}, ${startYear}`;
 };
 
 export const formatSameYearRange = (startDate: Date, finishDate: Date): string => {

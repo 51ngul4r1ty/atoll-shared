@@ -47,20 +47,14 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
         props.renderMobile ? css.mobile : null
     );
     let renderElts = [];
-    addActionButtons(
-        renderElts,
-        props.editMode,
-        false,
-        // suppressTopPadding || lastItemWasUnsaved,
-        props.onAddNewSprint,
-        props.renderMobile
-    );
+    addActionButtons(renderElts, props.editMode, false, props.onAddNewSprint, props.renderMobile);
     props.sprints.forEach((sprint) => {
         const sprintItemElt = (
             <div key={sprint.name}>
                 <SprintPanel
                     {...sprint}
                     editMode={props.editMode}
+                    renderMobile={props.renderMobile}
                     onExpandCollapse={(id, expand) => {
                         onExpandCollapse(id, expand);
                     }}

@@ -16,6 +16,10 @@
     box-sizing: border-box;
 }
 
+:global(.mobile) .sprintPanel {
+    padding: 0.3rem 0.3rem 0.3rem 0.1rem;
+}
+
 .sprintHeaderAndContent {
     position: relative;
     display: flex;
@@ -32,9 +36,23 @@
     box-sizing: border-box;
 }
 
+:global(.mobile) .sprintHeader {
+    font-size: 0.7rem;
+}
+
+.sprintHeaderRow2Mobile {
+    width: 100%;
+    padding: 0.3rem 0 0 0.3rem;
+    font-size: 0.6rem;
+}
+
 .sprintName {
-    min-width: 7rem;
+    min-width: 4.5rem;
     font-weight: 500;
+}
+
+:global(.mobile) .sprintName {
+    font-weight: 800;
 }
 
 .sprintHeaderContent {
@@ -43,6 +61,10 @@
     width: 70%;
     flex-grow: 1;
     font-size: 1rem;
+}
+
+:global(.mobile) .sprintHeaderContent {
+    font-size: 0.7rem;
 }
 
 .sprintHeaderContentTopRow {
@@ -57,10 +79,18 @@
     flex-grow: 1;
 }
 
+:global(.mobile) .sprintDateRange {
+    width: 100%;
+}
+
 .sprintStatus {
     flex-grow: 1;
     text-align: right;
     font-weight: 500;
+}
+
+:global(.mobile) .sprintStatus {
+    font-weight: 800;
 }
 
 .sprintHeaderContentInfoRow {

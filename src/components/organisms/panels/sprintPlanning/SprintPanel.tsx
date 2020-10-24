@@ -25,6 +25,7 @@ import { AddButton } from "../../../molecules/buttons/AddButton";
 
 export interface SprintPanelStateProps extends SprintPlanningPanelSprint {
     editMode: EditMode;
+    renderMobile?: boolean;
 }
 
 export interface SprintPanelDispatchProps {
@@ -34,7 +35,7 @@ export interface SprintPanelDispatchProps {
 
 export type SprintPanelProps = SprintPanelStateProps & SprintPanelDispatchProps & WithTranslation;
 
-export const getBacklogItemElts = (editMode: EditMode, backlogItems: SprintBacklogItem[]) => {
+export const getBacklogItemElts = (editMode: EditMode, renderMobile: boolean, backlogItems: SprintBacklogItem[]) => {
     return backlogItems.map((backlogItem) => (
         <div key={backlogItem.id}>
             <BacklogItemCard
@@ -46,7 +47,7 @@ export const getBacklogItemElts = (editMode: EditMode, backlogItems: SprintBackl
                 titleText={backlogItem.storyPhrase}
                 isDraggable={false}
                 hasDetails={editMode === EditMode.Edit}
-                renderMobile={false}
+                renderMobile={renderMobile}
                 marginBelowItem
                 showDetailMenu={false}
             />
@@ -63,7 +64,7 @@ export const InnerSprintPanel: React.FC<SprintPanelProps> = (props) => {
     const expandCollapseIcon = props.expanded ? <VerticalCollapseIcon /> : <VerticalExpandIcon />;
     const contentsClassName = buildClassName(css.sprintContents, props.expanded ? css.expanded : null);
     const sprintBacklogContents = props.backlogItemsLoaded
-        ? getBacklogItemElts(props.editMode, props.backlogItems)
+        ? getBacklogItemElts(props.editMode, props.renderMobile || false, props.backlogItems)
         : "[ loading... ]";
     const actionButtonElts =
         props.expanded && props.editMode === EditMode.Edit ? (
@@ -78,6 +79,10 @@ export const InnerSprintPanel: React.FC<SprintPanelProps> = (props) => {
                 />
             </div>
         ) : null;
+    const sprintStatusElts = <div className={css.sprintStatus}>{sprintStatusToString(props.status)}</div>;
+    const sprintDateRangeElts = <div className={css.sprintDateRange}>{formatDateRange(props.startDate, props.finishDate)}</div>;
+    const sprintHeaderRow2MobileElts = <div className={css.sprintHeaderRow2Mobile}>{sprintDateRangeElts}</div>;
+
     return (
         <>
             <SimpleDivider />
@@ -87,12 +92,15 @@ export const InnerSprintPanel: React.FC<SprintPanelProps> = (props) => {
                         <div className={css.sprintName}>{props.name}</div>
                         <div className={css.sprintHeaderContent}>
                             <div className={css.sprintHeaderContentTopRow}>
-                                <div className={css.sprintDateRange}>{formatDateRange(props.startDate, props.finishDate)}</div>
-                                <div className={css.sprintStatus}>{sprintStatusToString(props.status)}</div>
+                                {props.renderMobile ? null : sprintDateRangeElts}
+                                {sprintStatusElts}
                             </div>
-                            <div className={css.sprintHeaderContentInfoRow}>{buildSprintPointInfoText(props)}</div>
+                            {props.renderMobile ? null : (
+                                <div className={css.sprintHeaderContentInfoRow}>{buildSprintPointInfoText(props)}</div>
+                            )}
                         </div>
                     </div>
+                    {props.renderMobile ? sprintHeaderRow2MobileElts : null}
                     <div className={contentsClassName}>{sprintBacklogContents}</div>
                     {actionButtonElts}
                 </div>

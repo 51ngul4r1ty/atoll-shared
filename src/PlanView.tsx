@@ -70,19 +70,20 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                         className={css.backlog}
                         allItems={this.props.allItems}
                         editMode={this.props.editMode}
+                        openedDetailMenuBacklogItemId={this.props.openedDetailMenuBacklogItemId}
+                        renderMobile={this.context.state?.isMobile}
                         onAddNewBacklogItem={(type: BacklogItemType) => {
                             this.props.onAddNewBacklogItem(type);
                         }}
                         onReorderBacklogItems={(sourceItemId: string, targetItemId: string) => {
                             this.props.onReorderBacklogItems(sourceItemId, targetItemId);
                         }}
-                        renderMobile={this.context.state?.isMobile}
-                        openedDetailMenuBacklogItemId={this.props.openedDetailMenuBacklogItemId}
                     />
                     <SprintPlanningPanel
                         className={css.sprints}
                         editMode={this.props.editMode}
                         sprints={this.props.sprints}
+                        renderMobile={this.context.state?.isMobile}
                         onExpandCollapse={(sprintId: string, expand: boolean) => {
                             if (this.props.onExpandCollapse) {
                                 this.props.onExpandCollapse(sprintId, expand);
