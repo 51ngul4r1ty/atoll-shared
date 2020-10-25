@@ -145,6 +145,7 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
     const checkboxToSelect = props.isSelectable ? (
         <Checkbox className={css.checkbox} inputId={`backlogCheckbox_${props.itemId}`} labelText="" />
     ) : null;
+    const mobileCheckboxElts = props.renderMobile ? <div className={css.mobileCheckbox}>{checkboxToSelect}</div> : null;
     const styleToUse: React.CSSProperties = props.offsetTop && { top: props.offsetTop, position: "absolute", zIndex: 10 };
     return (
         <div className={outerClassNameToUse} data-class="backlogitem" data-id={props.internalId} style={styleToUse}>
@@ -177,6 +178,7 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
                         <DragIcon />
                     </div>
                 ) : null}
+                {mobileCheckboxElts}
             </div>
             <div className={css.backlogItemCardDetailMenu}>{detailMenu}</div>
         </div>

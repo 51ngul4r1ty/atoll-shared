@@ -2,7 +2,7 @@
     order: 0;
 }
 
-.checkbox {
+.backlogItemCardOuter:not(.mobile) .checkbox {
     order: 1;
 }
 
@@ -30,6 +30,16 @@
     order: 3;
 }
 
+.mobileCheckbox {
+    order: 3;
+}
+
+.mobileCheckbox {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
 .backlogItemCard {
     display: flex;
     height: 2rem;
@@ -51,9 +61,10 @@
     padding-bottom: 0.3rem;
 }
 
-/* .backlogItemCard + .backlogItemCard {
-    margin-top: 0.1875rem;
-} */
+.backlogItemCard > .mobileCheckbox {
+    padding-top: 0;
+    padding-bottom: 0;
+}
 
 .backlogItemCard.marginBelowItem {
     margin-bottom: 0.0625rem;
@@ -80,7 +91,7 @@
 }
 
 .backlogItemText,
-.checkbox,
+.backlogItemCardOuter:not(.mobile) .checkbox,
 .backlogItemCardOuter:not(.mobile) .backlogItemDetailButton {
     border-top: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
     border-bottom: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
