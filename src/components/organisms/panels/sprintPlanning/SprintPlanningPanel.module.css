@@ -6,6 +6,7 @@
     flex-grow: 1;
     width: 50%;
     max-width: 35rem;
+    box-sizing: border-box;
 }
 
 .sprintPlanningActionPanel {
@@ -13,4 +14,9 @@
     grid-template-columns: max-content max-content;
     grid-column-gap: 0.4rem; /* TODO: Move to vars */
     padding-bottom: 0.5rem; /* TODO: Move to vars */
+}
+
+:global(.mobile) .sprintPlanningActionPanel {
+    grid-template-columns: max-content;
+    grid-row-gap: 0.3rem;
 }
