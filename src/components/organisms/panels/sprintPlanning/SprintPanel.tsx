@@ -79,9 +79,41 @@ export const InnerSprintPanel: React.FC<SprintPanelProps> = (props) => {
                 />
             </div>
         ) : null;
+    const buildSprintPointInfoTextElts = (sprint: SprintPlanningPanelSprint, renderMobile: boolean) => {
+        const text = buildSprintPointInfoText(sprint, renderMobile);
+        if (!renderMobile || !text) {
+            return text;
+        } else {
+            const parts = text.split("\n");
+            const elts = [];
+            let row = 0;
+            parts.forEach((part) => {
+                if (row) {
+                    elts.push(
+                        <div key={row} className={css.pointInfoBullet}>
+                            {part}
+                        </div>
+                    );
+                } else {
+                    elts.push(
+                        <div key={row} className={css.pointInfoHeading}>
+                            {parts[0]}
+                        </div>
+                    );
+                }
+                row++;
+            });
+            return elts;
+        }
+    };
     const sprintStatusElts = <div className={css.sprintStatus}>{sprintStatusToString(props.status)}</div>;
     const sprintDateRangeElts = <div className={css.sprintDateRange}>{formatDateRange(props.startDate, props.finishDate)}</div>;
     const sprintHeaderRow2MobileElts = <div className={css.sprintHeaderRow2Mobile}>{sprintDateRangeElts}</div>;
+    const sprintHeaderContentInfoRowElts = (
+        <div className={css.sprintHeaderContentInfoRow}>
+            {buildSprintPointInfoTextElts(props as SprintPlanningPanelSprint, props.renderMobile)}
+        </div>
+    );
 
     return (
         <>
@@ -95,12 +127,11 @@ export const InnerSprintPanel: React.FC<SprintPanelProps> = (props) => {
                                 {props.renderMobile ? null : sprintDateRangeElts}
                                 {sprintStatusElts}
                             </div>
-                            {props.renderMobile ? null : (
-                                <div className={css.sprintHeaderContentInfoRow}>{buildSprintPointInfoText(props)}</div>
-                            )}
+                            {props.renderMobile ? null : sprintHeaderContentInfoRowElts}
                         </div>
                     </div>
                     {props.renderMobile ? sprintHeaderRow2MobileElts : null}
+                    {props.renderMobile ? sprintHeaderContentInfoRowElts : null}
                     <div className={contentsClassName}>{sprintBacklogContents}</div>
                     {actionButtonElts}
                 </div>

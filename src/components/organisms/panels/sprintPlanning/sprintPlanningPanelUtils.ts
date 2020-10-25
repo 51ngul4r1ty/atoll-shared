@@ -78,17 +78,25 @@ export const sprintStatusToString = (status: SprintStatus): string => {
     }
 };
 
-export const buildSprintPointInfoText = (sprint: SprintPlanningPanelSprint): string => {
+export const buildSprintPointInfoText = (sprint: SprintPlanningPanelSprint, renderMobile: boolean): string => {
     if (sprint.status === SprintStatus.Completed) {
-        return buildCompletedSprintPointInfoText(sprint);
+        return buildCompletedSprintPointInfoText(sprint, renderMobile);
     } else if (sprint.status === SprintStatus.NotStarted) {
-        return buildNotStartedSprintPointInfoText(sprint);
+        return buildNotStartedSprintPointInfoText(sprint, renderMobile);
     } else {
-        return buildInProgressSprintPointInfoText(sprint);
+        return buildInProgressSprintPointInfoText(sprint, renderMobile);
     }
 };
 
-export const buildCompletedSprintPointInfoText = (sprint: SprintPlanningPanelSprint): string => {
+export const formatForDevice = (parts: string[], renderMobile: boolean) => {
+    if (renderMobile) {
+        return `Points:\n${parts.join(",\n")}`;
+    } else {
+        return `points: ${parts.join(", ")}`;
+    }
+};
+
+export const buildCompletedSprintPointInfoText = (sprint: SprintPlanningPanelSprint, renderMobile: boolean): string => {
     const parts: string[] = [];
     if (sprint.plannedPoints) {
         parts.push(`${sprint.plannedPoints} planned`);
@@ -102,15 +110,15 @@ export const buildCompletedSprintPointInfoText = (sprint: SprintPlanningPanelSpr
     if (!parts.length) {
         return "";
     } else {
-        return `points: ${parts.join(", ")}`;
+        return formatForDevice(parts, renderMobile);
     }
 };
 
-export const buildInProgressSprintPointInfoText = (sprint: SprintPlanningPanelSprint): string => {
-    return buildCompletedSprintPointInfoText(sprint);
+export const buildInProgressSprintPointInfoText = (sprint: SprintPlanningPanelSprint, renderMobile: boolean): string => {
+    return buildCompletedSprintPointInfoText(sprint, renderMobile);
 };
 
-export const buildNotStartedSprintPointInfoText = (sprint: SprintPlanningPanelSprint): string => {
+export const buildNotStartedSprintPointInfoText = (sprint: SprintPlanningPanelSprint, renderMobile: boolean): string => {
     const parts: string[] = [];
     if (sprint.plannedPoints && sprint.velocityPoints) {
         parts.push(`${sprint.plannedPoints} of ${sprint.velocityPoints} planned`);
@@ -121,6 +129,6 @@ export const buildNotStartedSprintPointInfoText = (sprint: SprintPlanningPanelSp
     if (!parts.length) {
         return "";
     } else {
-        return `points: ${parts.join(" ")}`;
+        return formatForDevice(parts, renderMobile);
     }
 };

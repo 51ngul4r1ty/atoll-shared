@@ -40,10 +40,14 @@
     font-size: 0.7rem;
 }
 
+.sprintHeaderRow2Mobile,
+:global(.mobile) .sprintHeaderContentInfoRow {
+    font-size: 0.6rem;
+}
+
 .sprintHeaderRow2Mobile {
     width: 100%;
     padding: 0.3rem 0 0 0.3rem;
-    font-size: 0.6rem;
 }
 
 .sprintName {
@@ -113,4 +117,13 @@
 
 .sprintActionButtonPanel {
     padding: 0.5rem 0 0.1rem 0.3rem;
+}
+
+.pointInfoHeading {
+    font-weight: 800;
+    padding: 0 0 0 0.3rem;
+}
+
+.pointInfoBullet {
+    padding: 0 0 0 0.65rem;
 }
