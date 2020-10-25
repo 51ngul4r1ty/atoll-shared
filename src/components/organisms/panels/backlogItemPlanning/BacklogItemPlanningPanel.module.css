@@ -14,7 +14,9 @@
     margin-left: 0.3rem; /* TODO: Move to vars */
 }
 
-.mobile {
+:global(.mobile) .backlogItemPlanningActionPanel {
+    grid-template-columns: max-content;
+    grid-row-gap: 0.3rem;
 }
 
 .embeddedBacklogItemUserStoryFormRow {

@@ -375,10 +375,12 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 inAddedSection = false;
             }
             if (!inLoadedSection) {
+                const suppressButtonSpacing = !!props.renderMobile;
                 addActionButtons(
                     renderElts,
                     props.editMode,
                     suppressTopPadding || lastItemWasUnsaved,
+                    suppressButtonSpacing,
                     props.onAddNewBacklogItem,
                     props.renderMobile
                 );
@@ -436,10 +438,12 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
         suppressTopPadding = false;
     });
     if (!inLoadedSection) {
+        const suppressButtonSpacing = !!props.renderMobile;
         addActionButtons(
             renderElts,
             props.editMode,
             suppressTopPadding || lastItemWasUnsaved,
+            suppressButtonSpacing,
             props.onAddNewBacklogItem,
             props.renderMobile
         );
@@ -448,7 +452,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
         renderElts.push(<SimpleDivider key="last-divider" />);
     }
 
-    const classNameToUse = buildClassName(css.backlogItemPlanningPanel, props.className, props.renderMobile ? css.mobile : null);
+    const classNameToUse = buildClassName(css.backlogItemPlanningPanel, props.className);
     /* NOTE: Handlers were here */
     const isSingleTouch = (touches: React.TouchList) => touches.length === 1;
     const touchesToClientY = (touches: React.TouchList): number | null => {

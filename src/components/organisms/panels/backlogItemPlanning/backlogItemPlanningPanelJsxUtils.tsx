@@ -20,6 +20,7 @@ export const addActionButtons = (
     renderElts: any[],
     editMode: EditMode,
     suppressTopPadding: boolean,
+    suppressButtonSpacing: boolean,
     onAddNewBacklogItem: OnAddedNewBacklogItem,
     renderMobile: boolean
 ) => {
@@ -31,16 +32,19 @@ export const addActionButtons = (
         suppressTopPadding ? null : css.embeddedBacklogItemUserStoryFormRow,
         renderMobile ? css.mobile : null
     );
+    const suppressSpacing = suppressButtonSpacing;
     renderElts.push(
         <div key="backlogitem-action-buttons" className={actionButtonsClassName}>
             <AddButton
                 itemName="story"
+                suppressSpacing={suppressButtonSpacing}
                 onClick={() => {
                     onAddNewBacklogItem("story");
                 }}
             />
             <AddButton
                 itemName="issue"
+                suppressSpacing={suppressButtonSpacing}
                 onClick={() => {
                     onAddNewBacklogItem("issue");
                 }}
