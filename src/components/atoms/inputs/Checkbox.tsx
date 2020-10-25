@@ -26,7 +26,7 @@ export interface CheckboxStateProps {
 }
 
 export interface CheckboxDispatchProps {
-    onChange?: { (value: string) };
+    onChange?: { (checked: boolean, value?: string): void };
 }
 
 export type CheckboxProps = CheckboxStateProps & CheckboxDispatchProps;
@@ -42,7 +42,7 @@ export const InnerCheckbox: React.FC<CheckboxProps & CheckboxInnerStateProps> = 
         setIsChecked(e.target.checked);
         if (props.onChange) {
             const newCheckedState = e.target.checked;
-            props.onChange(e.target.value);
+            props.onChange(newCheckedState, e.target.value);
         }
     };
     const nameToUse = props.inputName || props.inputId;

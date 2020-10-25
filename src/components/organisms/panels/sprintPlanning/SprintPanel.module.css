@@ -51,11 +51,12 @@
 }
 
 .sprintName {
-    min-width: 4.5rem;
+    min-width: 7rem;
     font-weight: 500;
 }
 
 :global(.mobile) .sprintName {
+    min-width: 4.5rem;
     font-weight: 800;
 }
 

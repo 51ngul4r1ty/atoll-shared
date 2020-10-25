@@ -33,6 +33,7 @@ export interface PlanViewStateProps {
     electronClient: boolean;
     openedDetailMenuBacklogItemId: string | null;
     projectId: string;
+    selectedProductBacklogItemCount: number;
     showWindowTitleBar: boolean;
     sprints: SprintPlanningPanelSprint[];
 }
@@ -84,6 +85,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                         editMode={this.props.editMode}
                         sprints={this.props.sprints}
                         renderMobile={this.context.state?.isMobile}
+                        selectedProductBacklogItemCount={this.props.selectedProductBacklogItemCount}
                         onExpandCollapse={(sprintId: string, expand: boolean) => {
                             if (this.props.onExpandCollapse) {
                                 this.props.onExpandCollapse(sprintId, expand);

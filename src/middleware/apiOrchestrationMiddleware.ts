@@ -30,7 +30,7 @@ import {
     SaveNewBacklogItemAction,
     ReorderBacklogItemAction,
     CancelEditBacklogItemAction
-} from "../actions/backlogItems";
+} from "../actions/backlogItemActions";
 import { postLogin, ActionPostLoginSuccessAction, ActionPostRefreshTokenSuccessAction } from "../actions/authActions";
 import { routePlanView } from "../actions/routeActions";
 import { getUserPreferences, ActionGetUserPrefsSuccessAction } from "../actions/userActions";

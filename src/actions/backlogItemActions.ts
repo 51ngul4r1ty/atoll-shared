@@ -150,3 +150,29 @@ export const editBacklogItem = (itemId: string): EditBacklogItemAction => ({
         itemId
     }
 });
+
+export interface SelectOrUnselectProductBacklogItemPayload {
+    itemId: string;
+}
+
+export interface SelectProductBacklogItemAction {
+    type: typeof ActionTypes.SELECT_PRODUCT_BACKLOG_ITEM;
+    payload: SelectOrUnselectProductBacklogItemPayload;
+}
+export const selectProductBacklogItem = (itemId: string): SelectProductBacklogItemAction => ({
+    type: ActionTypes.SELECT_PRODUCT_BACKLOG_ITEM,
+    payload: {
+        itemId
+    }
+});
+
+export interface UnselectProductBacklogItemAction {
+    type: typeof ActionTypes.UNSELECT_PRODUCT_BACKLOG_ITEM;
+    payload: SelectOrUnselectProductBacklogItemPayload;
+}
+export const unselectProductBacklogItem = (itemId: string): UnselectProductBacklogItemAction => ({
+    type: ActionTypes.UNSELECT_PRODUCT_BACKLOG_ITEM,
+    payload: {
+        itemId
+    }
+});

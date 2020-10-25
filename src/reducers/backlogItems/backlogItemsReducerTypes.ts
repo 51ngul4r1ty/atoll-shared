@@ -2,11 +2,14 @@
 import { WebsocketPushNotificationData } from "../../types";
 import { BacklogItem } from "../../types/backlogItemTypes";
 
+export type SelectedBacklogItems = string[];
+
 export type BacklogItemsState = Readonly<{
     addedItems: SaveableBacklogItem[];
     pushedItems: WebsocketPushNotificationData<any>[];
     items: EditableBacklogItem[];
     allItems: BacklogItemWithSource[];
+    selectedItemIds: SelectedBacklogItems;
     openedDetailMenuBacklogItemId: string | null;
 }>;
 

@@ -88,9 +88,10 @@ export interface BacklogItemCardStateProps {
 }
 
 export interface BacklogItemCardDispatchProps {
-    onDetailClicked?: { () };
-    onEditItemClicked?: { (backlogItemId: string) };
-    onRemoveItemClicked?: { (backlogItemId: string) };
+    onDetailClicked?: { (): void };
+    onEditItemClicked?: { (backlogItemId: string): void };
+    onRemoveItemClicked?: { (backlogItemId: string): void };
+    onCheckboxChange?: { (checked: boolean): void };
 }
 
 export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDispatchProps & WithTranslation;
@@ -142,8 +143,18 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
             <EditDetailIcon />
         </div>
     ) : null;
+    const handleCheckboxChange = (checked: boolean) => {
+        if (props.onCheckboxChange) {
+            props.onCheckboxChange(checked);
+        }
+    };
     const checkboxToSelect = props.isSelectable ? (
-        <Checkbox className={css.checkbox} inputId={`backlogCheckbox_${props.itemId}`} labelText="" />
+        <Checkbox
+            className={css.checkbox}
+            inputId={`backlogCheckbox_${props.itemId}`}
+            labelText=""
+            onChange={(checked: boolean) => handleCheckboxChange(checked)}
+        />
     ) : null;
     const mobileCheckboxElts = props.renderMobile ? <div className={css.mobileCheckbox}>{checkboxToSelect}</div> : null;
     const styleToUse: React.CSSProperties = props.offsetTop && { top: props.offsetTop, position: "absolute", zIndex: 10 };

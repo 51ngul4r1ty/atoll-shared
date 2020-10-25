@@ -24,7 +24,12 @@ import { BacklogItemSource, SaveableBacklogItem } from "../../../../reducers/bac
 
 // actions
 import { apiDeleteBacklogItem } from "../../../../actions/apiBacklogItems";
-import { backlogItemDetailClicked, editBacklogItem } from "../../../../actions/backlogItems";
+import {
+    backlogItemDetailClicked,
+    editBacklogItem,
+    selectProductBacklogItem,
+    unselectProductBacklogItem
+} from "../../../../actions/backlogItemActions";
 
 // utils
 import * as logger from "../../../../utils/logger";
@@ -413,6 +418,13 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         }}
                         onEditItemClicked={(backlogItemId) => {
                             dispatch(editBacklogItem(item.id));
+                        }}
+                        onCheckboxChange={(checked) => {
+                            if (checked) {
+                                dispatch(selectProductBacklogItem(item.id));
+                            } else {
+                                dispatch(unselectProductBacklogItem(item.id));
+                            }
                         }}
                         showDetailMenu={showDetailMenu}
                     />

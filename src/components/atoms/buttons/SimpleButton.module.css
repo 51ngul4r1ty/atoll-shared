@@ -61,3 +61,13 @@
 .buttonIcon * {
     font-size: 1px;
 }
+
+.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+:not(.disabled) {
+    cursor: pointer;
+}

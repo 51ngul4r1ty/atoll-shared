@@ -22,8 +22,9 @@ import {
     ToggleBacklogItemDetailAction,
     EditBacklogItemAction,
     CancelEditBacklogItemAction,
-    UpdateBacklogItemAction
-} from "../../actions/backlogItems";
+    UpdateBacklogItemAction,
+    SelectProductBacklogItemAction
+} from "../../actions/backlogItemActions";
 import { AppClickAction, AppKeyUpAction } from "../../actions/appActions";
 import { BacklogItemsState, BacklogItemWithSource, PushState, SaveableBacklogItem } from "./backlogItemsReducerTypes";
 import {
@@ -43,6 +44,7 @@ export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>(
     pushedItems: [],
     items: [],
     allItems: [],
+    selectedItemIds: [],
     openedDetailMenuBacklogItemId: null
 });
 
@@ -268,6 +270,23 @@ export const backlogItemsReducer = (
                     draft.items.splice(idx2, 1);
                 }
                 rebuildAllItems(draft);
+                return;
+            }
+            case ActionTypes.SELECT_PRODUCT_BACKLOG_ITEM: {
+                const actionTyped = action as SelectProductBacklogItemAction;
+                const itemIdx = draft.selectedItemIds.indexOf(actionTyped.payload.itemId);
+                if (itemIdx >= 0) {
+                    draft.selectedItemIds.splice(itemIdx, 1);
+                }
+                draft.selectedItemIds.push(actionTyped.payload.itemId);
+                return;
+            }
+            case ActionTypes.UNSELECT_PRODUCT_BACKLOG_ITEM: {
+                const actionTyped = action as SelectProductBacklogItemAction;
+                const itemIdx = draft.selectedItemIds.indexOf(actionTyped.payload.itemId);
+                if (itemIdx >= 0) {
+                    draft.selectedItemIds.splice(itemIdx, 1);
+                }
                 return;
             }
         }

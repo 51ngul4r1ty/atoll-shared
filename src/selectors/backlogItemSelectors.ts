@@ -79,3 +79,19 @@ export const getPrevNextAndCurrentById = (state: StateTree, id: string): PrevNex
 };
 
 export const getAllBacklogItems = (state: StateTree) => state.backlogItems.allItems;
+
+export const getSelectedBacklogItems = (state: StateTree) => {
+    const results = [];
+    const allItemsIndexed: { [itemId: string]: BacklogItem } = {};
+    state.backlogItems.allItems.forEach((item) => {
+        allItemsIndexed[item.id] = item;
+    });
+    state.backlogItems.selectedItemIds.forEach((selectedItemId) => {
+        results.push(allItemsIndexed[selectedItemId]);
+    });
+    return results;
+};
+
+export const getSelectedBacklogItemCount = (state: StateTree) => {
+    return state.backlogItems.selectedItemIds.length;
+};

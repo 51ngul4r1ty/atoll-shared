@@ -19,8 +19,10 @@ import {
     backlogItemDetailClicked,
     editBacklogItem,
     cancelEditBacklogItem,
-    updateBacklogItem
-} from "../../../actions/backlogItems";
+    updateBacklogItem,
+    selectProductBacklogItem,
+    unselectProductBacklogItem
+} from "../../../actions/backlogItemActions";
 
 // style
 import css from "./BacklogItemPlanningItem.module.css";
@@ -88,29 +90,36 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
             <>
                 <SimpleDivider key={`divider-saved-${props.id}`} hidden={props.hidden} highlighted={props.highlightAbove} />
                 <BacklogItemCard
-                    key={props.id}
                     estimate={props.estimate}
+                    hasDetails={props.editMode === EditMode.Edit}
                     hidden={props.hidden}
                     internalId={`${props.id}`}
+                    isDraggable={props.editMode === EditMode.Edit}
+                    isSelectable={props.editMode === EditMode.Edit}
                     itemId={`${props.externalId || props.friendlyId}`}
                     itemType={props.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
-                    titleText={props.storyPhrase}
-                    isDraggable={props.editMode === EditMode.Edit}
-                    hasDetails={props.editMode === EditMode.Edit}
-                    isSelectable={props.editMode === EditMode.Edit}
-                    renderMobile={props.renderMobile}
+                    key={props.id}
                     marginBelowItem
                     pushState={props.pushState}
+                    renderMobile={props.renderMobile}
+                    showDetailMenu={props.showDetailMenu}
+                    titleText={props.storyPhrase}
                     onDetailClicked={() => {
                         dispatch(backlogItemDetailClicked(props.id));
-                    }}
-                    onRemoveItemClicked={(backlogItemId) => {
-                        dispatch(apiDeleteBacklogItem(props.id));
                     }}
                     onEditItemClicked={(itemId: string) => {
                         dispatch(editBacklogItem(props.id));
                     }}
-                    showDetailMenu={props.showDetailMenu}
+                    onRemoveItemClicked={(backlogItemId) => {
+                        dispatch(apiDeleteBacklogItem(props.id));
+                    }}
+                    onCheckboxChange={(checked) => {
+                        if (checked) {
+                            dispatch(selectProductBacklogItem(props.id));
+                        } else {
+                            dispatch(unselectProductBacklogItem(props.id));
+                        }
+                    }}
                 />
             </>
         );

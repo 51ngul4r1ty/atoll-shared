@@ -16,6 +16,7 @@ import { PropsWithClassName } from "../../common/types";
 export interface AddButtonStateProps extends PropsWithClassName {
     itemName?: string;
     suppressSpacing?: boolean;
+    disabled?: boolean;
 }
 
 export interface AddButtonDispatchProps {
@@ -35,6 +36,7 @@ export const AddButton: React.FC<AddButtonProps> = (props) => {
             className={props.className}
             iconOnLeft
             icon={icon}
+            disabled={props.disabled}
             suppressSpacing={props.suppressSpacing}
             onClick={props.onClick}
         >

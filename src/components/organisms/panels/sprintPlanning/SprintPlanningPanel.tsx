@@ -16,9 +16,10 @@ import { EditMode } from "../../../molecules/buttons/EditButton";
 
 export interface SprintPlanningPanelStateProps {
     className?: string;
-    renderMobile?: boolean;
-    sprints: SprintPlanningPanelSprint[];
     editMode: EditMode;
+    renderMobile?: boolean;
+    selectedProductBacklogItemCount: number;
+    sprints: SprintPlanningPanelSprint[];
 }
 
 export interface SprintPlanningPanelDispatchProps {
@@ -55,6 +56,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                     {...sprint}
                     editMode={props.editMode}
                     renderMobile={props.renderMobile}
+                    selectedProductBacklogItemCount={props.selectedProductBacklogItemCount}
                     onExpandCollapse={(id, expand) => {
                         onExpandCollapse(id, expand);
                     }}

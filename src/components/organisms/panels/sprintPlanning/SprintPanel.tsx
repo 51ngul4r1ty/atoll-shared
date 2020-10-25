@@ -26,6 +26,7 @@ import { AddButton } from "../../../molecules/buttons/AddButton";
 export interface SprintPanelStateProps extends SprintPlanningPanelSprint {
     editMode: EditMode;
     renderMobile?: boolean;
+    selectedProductBacklogItemCount: number;
 }
 
 export interface SprintPanelDispatchProps {
@@ -70,7 +71,8 @@ export const InnerSprintPanel: React.FC<SprintPanelProps> = (props) => {
         props.expanded && props.editMode === EditMode.Edit ? (
             <div className={css.sprintActionButtonPanel}>
                 <AddButton
-                    itemName="items"
+                    itemName={props.selectedProductBacklogItemCount === 1 ? "item" : "items"}
+                    disabled={!props.selectedProductBacklogItemCount}
                     onClick={() => {
                         if (props.onAddBacklogItem) {
                             props.onAddBacklogItem();
