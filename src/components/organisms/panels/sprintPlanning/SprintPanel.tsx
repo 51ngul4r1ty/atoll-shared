@@ -71,7 +71,9 @@ export const InnerSprintPanel: React.FC<SprintPanelProps> = (props) => {
         props.expanded && props.editMode === EditMode.Edit ? (
             <div className={css.sprintActionButtonPanel}>
                 <AddButton
-                    itemName={props.selectedProductBacklogItemCount === 1 ? "item" : "items"}
+                    itemName={
+                        props.selectedProductBacklogItemCount === 1 ? "1 item" : `${props.selectedProductBacklogItemCount} items`
+                    }
                     disabled={!props.selectedProductBacklogItemCount}
                     onClick={() => {
                         if (props.onAddBacklogItem) {
