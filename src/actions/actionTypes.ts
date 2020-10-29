@@ -78,6 +78,11 @@ export const API_POST_ACTION_RETRY_TOKEN_SUCCESS = buildActionName(Names.POST_AC
 export const API_POST_ACTION_RETRY_TOKEN_FAILURE = buildActionName(Names.POST_ACTION_REFRESH_TOKEN, "failure");
 // #endregion
 
+// #region API Batch actions
+export const API_BATCH = "API_BATCH";
+export const API_BATCH_PROCESS_QUEUE = "app/api-batch:process-queue";
+// #endregion
+
 export const ROUTE_PLAN_VIEW = "app/route:plan-view";
 export const ROUTE_SPRINT_VIEW = "app/route:sprint-view";
 export const ROUTE_REVIEW_VIEW = "app/route:review-view";
@@ -112,4 +117,4 @@ export const COLLAPSE_SPRINT_PANEL = "app/collapse:sprint-panel";
 
 export const ADD_SPRINT = "app/add:sprint";
 
-export const ADD_BACKLOG_ITEM_TO_SPRINT = "app/add:sprint-backlog-item";
+export const ADD_BACKLOG_ITEMS_TO_SPRINT = "app/add:sprint-backlog-items";

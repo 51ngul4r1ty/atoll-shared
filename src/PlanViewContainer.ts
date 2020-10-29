@@ -23,7 +23,7 @@ import { isPlatformWindows } from "./utils";
 import { getCurrentProjectId } from "./selectors/userSelectors";
 import { getPlanViewSprints } from "./selectors/sprintSelectors";
 import { getAllBacklogItems, getSelectedBacklogItemCount } from "./selectors/backlogItemSelectors";
-import { addBacklogItemToSprint } from "./actions/sprintBacklogActions";
+import { addBacklogItemsToSprint } from "./actions/sprintBacklogActions";
 
 const mapStateToProps = (state: StateTree): PlanViewStateProps => {
     const allItems = getAllBacklogItems(state);
@@ -50,7 +50,7 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
             dispatch(apiBffViewsPlan());
         },
         onAddNewBacklogItem: (type: BacklogItemType) => dispatch(addNewBacklogItem(type)),
-        onAddBacklogItemToSprint: (sprintId: string) => dispatch(addBacklogItemToSprint(sprintId)),
+        onAddBacklogItemToSprint: (sprintId: string) => dispatch(addBacklogItemsToSprint(sprintId)),
         onAddNewSprint: () => dispatch(addNewSprint()),
         onReorderBacklogItems: (sourceItemId: string, targetItemId: string) =>
             dispatch(reorderBacklogItems(sourceItemId, targetItemId)),

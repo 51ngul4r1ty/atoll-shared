@@ -80,6 +80,10 @@ export const getPrevNextAndCurrentById = (state: StateTree, id: string): PrevNex
 
 export const getAllBacklogItems = (state: StateTree) => state.backlogItems.allItems;
 
+export const getSelectedBacklogItemIds = (state: StateTree): string[] => {
+    return state.backlogItems.allItems.map((item) => item.id);
+};
+
 export const getSelectedBacklogItems = (state: StateTree) => {
     const results = [];
     const allItemsIndexed: { [itemId: string]: BacklogItem } = {};

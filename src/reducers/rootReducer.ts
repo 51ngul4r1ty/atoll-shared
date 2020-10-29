@@ -3,17 +3,19 @@ import { combineReducers } from "redux";
 import { connectRouter } from "connected-react-router";
 
 // reducers
+import { apiBatchReducer, apiBatchReducerInitialState, ApiBatchState } from "./apiBatchReducer";
 import { apiLinksReducer, apiLinksReducerInitialState, ApiLinkState } from "./apiLinksReducer";
 import { appReducer, appReducerInitialState, AppState } from "./appReducer";
 import { backlogItemRanksReducer, backlogItemRanksReducerInitialState, BacklogItemRanksState } from "./backlogItemRanksReducer";
 import { backlogItemsReducer, backlogItemsReducerInitialState } from "./backlogItems/backlogItemsReducer";
 import { featureTogglesReducer, featureTogglesReducerInitialState, FeatureTogglesState } from "./featureTogglesReducer";
+import { sprintBacklogReducer, sprintBacklogReducerInitialState, SprintBacklogState } from "./sprintBacklogReducer";
 import { sprintsReducer, sprintsReducerInitialState, SprintsState } from "./sprintsReducer";
 import { userReducer, userReducerInitialState, UserState } from "./userReducer";
 import { BacklogItemsState } from "./backlogItems/backlogItemsReducerTypes";
-import { sprintBacklogReducer, sprintBacklogReducerInitialState, SprintBacklogState } from "./sprintBacklogReducer";
 
 export interface StateTree {
+    apiBatch: ApiBatchState;
     apiLinks: ApiLinkState;
     app: AppState;
     backlogItemRanks: BacklogItemRanksState;
@@ -27,6 +29,7 @@ export interface StateTree {
 }
 
 export const rootReducerInitialState = {
+    apiBatch: apiBatchReducerInitialState,
     apiLinks: apiLinksReducerInitialState,
     app: appReducerInitialState,
     backlogItemRanks: backlogItemRanksReducerInitialState,
@@ -40,6 +43,7 @@ export const rootReducerInitialState = {
 const createRootReducer = (history: any) => {
     const router = connectRouter(history);
     return combineReducers({
+        apiBatch: apiBatchReducer,
         apiLinks: apiLinksReducer,
         app: appReducer,
         backlogItemRanks: backlogItemRanksReducer,

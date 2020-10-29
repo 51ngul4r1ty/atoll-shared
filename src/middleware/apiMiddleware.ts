@@ -18,6 +18,7 @@ import { ApiActionType, ApiActionMeta, ApiActionSuccessPayload, API, ApiAction }
 // selectors
 import { getAuthToken } from "../selectors/appSelectors";
 import { refreshTokenAndRetry } from "../actions/authActions";
+import { API_ACTION_STAGE_FAILURE, API_ACTION_STAGE_REQUEST, API_ACTION_STAGE_SUCCESS } from "../actions/apiActionStages";
 
 export interface ApiActionFailureError {
     message: string;
@@ -34,18 +35,24 @@ export interface ApiActionBaseMeta<T> {
     requestBody: T;
 }
 
+const validateTypesArray = (types: ApiActionType[]) => {
+    if (types.length !== 3) {
+        throw Error("API Action Types should have 3 items: request, success, and failure.");
+    }
+};
+
 const getRequestType = (types: ApiActionType[]) => {
-    // TODO: Add error handling
+    validateTypesArray(types);
     return types[0];
 };
 
 const getSuccessType = (types: ApiActionType[]) => {
-    // TODO: Add error handling
+    validateTypesArray(types);
     return types[1];
 };
 
 const getFailureType = (types: ApiActionType[]) => {
-    // TODO: Add error handling
+    validateTypesArray(types);
     return types[2];
 };
 
@@ -63,7 +70,8 @@ const dispatchRequest = (
         },
         meta: {
             ...{
-                requestBody
+                requestBody,
+                apiActionStage: API_ACTION_STAGE_REQUEST
             },
             ...meta
         }
@@ -82,7 +90,8 @@ const dispatchSuccess = (
     };
     const meta: ApiActionBaseMeta<any> = {
         ...{
-            requestBody
+            requestBody,
+            apiActionStage: API_ACTION_STAGE_SUCCESS
         },
         ...origMeta
     };
@@ -109,7 +118,8 @@ const dispatchFailure = (
         },
         meta: {
             ...{
-                requestBody
+                requestBody,
+                apiActionStage: API_ACTION_STAGE_FAILURE
             },
             ...meta
         }

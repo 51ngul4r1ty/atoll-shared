@@ -8,14 +8,14 @@ export interface AddNewSprintActionPayload {
     instanceId: number;
 }
 
-export interface AddBacklogItemToSprint {
-    type: typeof ActionTypes.ADD_BACKLOG_ITEM_TO_SPRINT;
+export interface AddBacklogItemsToSprintAction {
+    type: typeof ActionTypes.ADD_BACKLOG_ITEMS_TO_SPRINT;
     payload: AddNewSprintActionPayload;
 }
 
 // TODO: Consider changing this to indicate that it won't add the item yet, it is just initiating the add process
-export const addBacklogItemToSprint = (sprintId: string): AddBacklogItemToSprint => ({
-    type: ActionTypes.ADD_BACKLOG_ITEM_TO_SPRINT,
+export const addBacklogItemsToSprint = (sprintId: string): AddBacklogItemsToSprintAction => ({
+    type: ActionTypes.ADD_BACKLOG_ITEMS_TO_SPRINT,
     payload: {
         sprintId,
         instanceId: ++lastInstanceId

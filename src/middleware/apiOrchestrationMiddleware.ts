@@ -14,7 +14,8 @@ import * as ActionTypes from "../actions/actionTypes";
 import {
     getBacklogItemByInstanceId,
     getPrevSavedBacklogItemByInstanceId,
-    getBacklogItemById
+    getBacklogItemById,
+    getSelectedBacklogItemIds
 } from "../selectors/backlogItemSelectors";
 
 // actions
@@ -49,7 +50,11 @@ import { convertToBacklogItemModel } from "../utils/apiPayloadHelper";
 // interfaces/types
 import { ResourceTypes } from "../reducers/apiLinksReducer";
 import { ExpandSprintPanelAction } from "../actions/sprintActions";
-import { apiGetSprintBacklogItems } from "../actions/apiSprintBacklog";
+import { apiBatchAddBacklogItemsToSprint, apiGetSprintBacklogItems } from "../actions/apiSprintBacklog";
+import { AddBacklogItemsToSprintAction } from "../actions/sprintBacklogActions";
+import { apiBatchProcessQueue } from "../actions/apiOrchestrationActions";
+import { getRemainingApiCalls } from "../selectors/apiBatchSelectors";
+import { API } from "./apiTypes";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
@@ -143,6 +148,14 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             if (sprint && !sprint.backlogItemsLoaded) {
                 storeTyped.dispatch(apiGetSprintBacklogItems(sprintId));
             }
+            break;
+        }
+        case ActionTypes.ADD_BACKLOG_ITEMS_TO_SPRINT: {
+            const actionTyped = action as AddBacklogItemsToSprintAction;
+            const state = storeTyped.getState();
+            const sprintId = actionTyped.payload.sprintId;
+            const selectedItems = getSelectedBacklogItemIds(state);
+            storeTyped.dispatch(apiBatchAddBacklogItemsToSprint(sprintId, selectedItems));
             break;
         }
     }

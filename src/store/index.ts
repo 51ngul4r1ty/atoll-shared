@@ -12,6 +12,7 @@ import { apiMiddleware } from "../middleware/apiMiddleware";
 import { routingMiddleware } from "../middleware/routingMiddleware";
 import { wsMiddleware } from "../middleware/wsMiddleware";
 import { apiOrchestrationMiddleware } from "../middleware/apiOrchestrationMiddleware";
+import { apiBatchMiddleware } from "../middleware/apiBatchMiddleware";
 import { localStorageMiddleware } from "../middleware/localStorageMiddleware";
 
 const composeEnhancers = composeWithDevTools({
@@ -38,8 +39,9 @@ export const configureStore = ({ initialState, middleware = [], history, windowR
         thunk,
         routerMiddleware(history),
         localStorageMiddleware,
-        apiOrchestrationMiddleware,
+        apiBatchMiddleware,
         apiMiddleware,
+        apiOrchestrationMiddleware,
         routingMiddleware,
         wsMiddleware
     ].concat(...middleware);

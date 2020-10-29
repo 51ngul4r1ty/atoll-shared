@@ -11,6 +11,7 @@ import { APPLICATION_JSON } from "../constants";
 // interfaces/types
 import { API, NoDataApiAction, ApiActionSuccessPayloadForCollection, ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
 import { ApiBacklogItem } from "../apiModelTypes";
+import { ApiBatchAction } from "../middleware/apiBatchTypes";
 
 // utils
 import { buildActionTypes } from "./utils/apiActionUtils";
@@ -38,6 +39,59 @@ export const apiGetSprintBacklogItems = (sprintId: string): NoDataApiAction => {
         meta: {
             actionParams: {
                 sprintId
+            }
+        }
+    };
+};
+
+export interface ApiBatchAddBacklogItemsToSprintBody {
+    backlogitemId: string;
+}
+
+export interface ApiBatchAddBacklogItemsToSprintItemActionParams {
+    sprintId: string;
+    backlogItemId: string;
+}
+
+export interface ApiBatchAddBacklogItemsToSprintBatchActionParams {
+    sprintId: string;
+    backlogItemIds: string[];
+}
+
+export type ApiBatchAddBacklogItemsToSprintAction = ApiBatchAction<
+    ApiBatchAddBacklogItemsToSprintBody,
+    ApiBatchAddBacklogItemsToSprintItemActionParams,
+    ApiBatchAddBacklogItemsToSprintBatchActionParams
+>;
+
+export const apiBatchAddBacklogItemsToSprint = (
+    sprintId: string,
+    backlogItemIds: string[]
+): ApiBatchAddBacklogItemsToSprintAction => {
+    const calls = backlogItemIds.map((backlogItemId) => ({
+        payload: {
+            endpoint: `${getApiBaseUrl()}api/v1/sprints/${sprintId}/backlog-items`,
+            method: "POST",
+            headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+            types: buildActionTypes(ApiActionNames.POST_SPRINT_BACKLOG_ITEM),
+            data: {
+                backlogitemId: backlogItemId
+            }
+        },
+        meta: {
+            actionParams: {
+                sprintId,
+                backlogItemId
+            }
+        }
+    }));
+    return {
+        type: ActionTypes.API_BATCH,
+        calls,
+        meta: {
+            actionParams: {
+                sprintId,
+                backlogItemIds
             }
         }
     };

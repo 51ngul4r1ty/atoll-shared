@@ -1,6 +1,5 @@
 // externals
 import { Action } from "redux";
-import { AxiosRequestConfig } from "axios";
 
 export const API = "API";
 
