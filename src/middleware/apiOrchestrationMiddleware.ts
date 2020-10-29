@@ -52,9 +52,6 @@ import { ResourceTypes } from "../reducers/apiLinksReducer";
 import { ExpandSprintPanelAction } from "../actions/sprintActions";
 import { apiBatchAddBacklogItemsToSprint, apiGetSprintBacklogItems } from "../actions/apiSprintBacklog";
 import { AddBacklogItemsToSprintAction } from "../actions/sprintBacklogActions";
-import { apiBatchProcessQueue } from "../actions/apiOrchestrationActions";
-import { getRemainingApiCalls } from "../selectors/apiBatchSelectors";
-import { API } from "./apiTypes";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;

@@ -27,5 +27,13 @@ export const apiBatchReducer = (state: ApiBatchState = apiBatchReducerInitialSta
                 });
                 return;
             }
+            case ActionTypes.API_BATCH_LAST_ITEM_SUCCESS: {
+                draft.remainingApiCalls.splice(0, 1);
+                return;
+            }
+            case ActionTypes.API_BATCH_LAST_ITEM_FAILURE: {
+                draft.remainingApiCalls = [];
+                return;
+            }
         }
     });

@@ -35,3 +35,7 @@ export const apiBatchQueueItem = <T, M>(itemPayload: T, itemMeta: M): ApiBatchQu
         meta
     };
 };
+
+export const apiBatchHandleLastItemSuccess = () => ({ type: ActionTypes.API_BATCH_LAST_ITEM_SUCCESS });
+
+export const apiBatchHandleLastItemFailure = () => ({ type: ActionTypes.API_BATCH_LAST_ITEM_FAILURE });

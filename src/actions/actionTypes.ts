@@ -81,6 +81,8 @@ export const API_POST_ACTION_RETRY_TOKEN_FAILURE = buildActionName(Names.POST_AC
 // #region API Batch actions
 export const API_BATCH = "API_BATCH";
 export const API_BATCH_PROCESS_QUEUE = "app/api-batch:process-queue";
+export const API_BATCH_LAST_ITEM_SUCCESS = "app/api-batch:last-item-success";
+export const API_BATCH_LAST_ITEM_FAILURE = "app/api-batch:last-item-failure";
 // #endregion
 
 export const ROUTE_PLAN_VIEW = "app/route:plan-view";

@@ -10,9 +10,14 @@ import { Action, Store } from "redux";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { apiBatchProcessQueue, ApiBatchQueueItemAction } from "../actions/apiOrchestrationActions";
+import {
+    apiBatchHandleLastItemFailure,
+    apiBatchHandleLastItemSuccess,
+    apiBatchProcessQueue,
+    apiBatchQueueItem,
+    ApiBatchQueueItemAction
+} from "../actions/apiOrchestrationActions";
 import { getRemainingApiCalls } from "../selectors/apiBatchSelectors";
-import { API } from "./apiTypes";
 
 // state
 import { StateTree } from "../reducers/rootReducer";
@@ -23,34 +28,43 @@ export const apiBatchMiddleware = (store) => (next) => (action: Action) => {
     next(action);
     const actionTyped = action as ApiBatchQueueItemAction<any, any>;
     if (actionTyped.meta?.passthrough?.apiBatchQueueItem) {
-        // It should also have actionTyped.meta.apiActionStage - USE THAT
-        debugger;
-    }
-    switch (action.type) {
-        case ActionTypes.API_BATCH: {
-            storeTyped.dispatch(apiBatchProcessQueue());
-            break;
-        }
-        case ActionTypes.API_BATCH_PROCESS_QUEUE: {
-            const state = storeTyped.getState();
-            const apiCalls = getRemainingApiCalls(state);
-            if (!apiCalls.length) {
-                // TODO: Finish this
-                // signals the end of the batch, at this point we can report success
-            } else {
-                const firstApiCall = apiCalls[0];
-                storeTyped.dispatch({
-                    type: API,
-                    payload: firstApiCall.payload,
-                    meta: {
-                        ...firstApiCall.meta,
-                        passthrough: {
-                            apiBatchQueueItem: true
-                        }
-                    }
-                });
+        const actionStage = actionTyped.meta?.apiActionStage;
+        switch (actionStage) {
+            case "success": {
+                storeTyped.dispatch(apiBatchHandleLastItemSuccess());
+                break;
             }
-            break;
+            case "failure": {
+                storeTyped.dispatch(apiBatchHandleLastItemFailure());
+                break;
+            }
+        }
+    } else {
+        switch (action.type) {
+            case ActionTypes.API_BATCH: {
+                storeTyped.dispatch(apiBatchProcessQueue());
+                break;
+            }
+            case ActionTypes.API_BATCH_PROCESS_QUEUE: {
+                const state = storeTyped.getState();
+                const apiCalls = getRemainingApiCalls(state);
+                if (!apiCalls.length) {
+                    // TODO: Finish this
+                    // signals the end of the batch, at this point we can report success
+                } else {
+                    const firstApiCall = apiCalls[0];
+                    storeTyped.dispatch(apiBatchQueueItem(firstApiCall.payload, firstApiCall.meta));
+                }
+                break;
+            }
+            case ActionTypes.API_BATCH_LAST_ITEM_SUCCESS: {
+                storeTyped.dispatch(apiBatchProcessQueue());
+                break;
+            }
+            default: {
+                // do nothing
+                break;
+            }
         }
     }
 };
