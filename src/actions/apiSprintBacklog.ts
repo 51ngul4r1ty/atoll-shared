@@ -14,7 +14,8 @@ import {
     NoDataApiAction,
     ApiActionSuccessPayloadForCollection,
     ApiActionMetaDataRequestMeta,
-    ApiActionSuccessPayloadForItem
+    ApiActionSuccessPayloadForItem,
+    ApiActionFailurePayload
 } from "../middleware/apiTypes";
 import { ApiBacklogItem, ApiSprintBacklogItem } from "../apiModelTypes";
 import { ApiBatchAction } from "../middleware/apiBatchTypes";
@@ -74,6 +75,52 @@ export interface ApiPostSprintBacklogItemSuccessAction {
     type: typeof ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_SUCCESS;
     payload: ApiActionSuccessPayloadForItem<ApiSprintBacklogItem>;
     meta: ApiActionMetaDataRequestMeta<{}, MetaActionParams>;
+}
+
+export interface ApiPostSprintBacklogItemFailureAction {
+    type: typeof ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_FAILURE;
+    payload: {
+        response: {
+            message: string;
+            status: number;
+        };
+        error: {
+            message: string;
+            name: string;
+            stack: string;
+            config: {
+                url: string;
+                method: "post";
+                data: string;
+                headers: { [header: string]: string };
+                baseURL: "";
+                transformRequest: any[];
+                transformResponse: any[];
+                timeout: number;
+                xsrfCookieName: string;
+                xsrfHeaderName: string;
+                maxContentLength: number;
+            };
+        };
+    };
+    meta: {
+        requestBody: {
+            url: string;
+            method: "POST";
+            headers: { [header: string]: string };
+            data: {
+                backlogitemId: string;
+            };
+        };
+        apiActionStage: "failure";
+        actionParams: {
+            sprintId: string;
+            backlogItemId: string;
+        };
+        passthrough: {
+            apiBatchQueueItem: true;
+        };
+    };
 }
 
 export const apiBatchAddBacklogItemsToSprint = (

@@ -101,3 +101,5 @@ export const getSelectedBacklogItemCount = (state: StateTree) => {
 };
 
 export const getOpenedDetailMenuBacklogItemId = (state: StateTree) => state.backlogItems.openedDetailMenuBacklogItemId;
+
+export const hasPushedBacklogItems = (state: StateTree) => state.backlogItems.pushedItems.length > 0;

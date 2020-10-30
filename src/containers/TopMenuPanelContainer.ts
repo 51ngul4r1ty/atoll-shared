@@ -4,7 +4,7 @@ import { Dispatch } from "redux";
 import { push } from "connected-react-router";
 
 // actions
-import { setEditMode } from "../actions/appActions";
+import { errorPanelClick, setEditMode } from "../actions/appActions";
 import { apiGetBacklogItems } from "../actions/apiBacklogItems";
 
 // state
@@ -19,6 +19,10 @@ import { EditMode } from "../components/molecules/buttons/EditButton";
 // interfaces/types
 import { TopMenuPanelStateProps, TopMenuPanelDispatchProps } from "../components/organisms/panels/TopMenuPanel";
 
+// selectors
+import * as appSelectors from "../selectors/appSelectors";
+import * as backlogItemSelectors from "../selectors/backlogItemSelectors";
+
 export interface TopMenuPanelContainerProps {
     activeTabId: string;
     treatAsElectronTitleBar: boolean;
@@ -27,15 +31,19 @@ export interface TopMenuPanelContainerProps {
 const mapStateToProps = (state: StateTree, ownProps: TopMenuPanelContainerProps): TopMenuPanelStateProps => {
     let result: TopMenuPanelStateProps = {
         activeTabId: ownProps.activeTabId,
-        editMode: state.app.editMode,
-        showRefreshButton: state.backlogItems.pushedItems.length > 0,
-        treatAsElectronTitleBar: ownProps.treatAsElectronTitleBar
+        editMode: appSelectors.getAppEditMode(state),
+        showRefreshButton: backlogItemSelectors.hasPushedBacklogItems(state),
+        treatAsElectronTitleBar: ownProps.treatAsElectronTitleBar,
+        message: appSelectors.getAppMessage(state)
     };
     return result;
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): TopMenuPanelDispatchProps => {
     return {
+        onErrorPanelClick: () => {
+            dispatch(errorPanelClick());
+        },
         onChangeTab: (tabId: string) => {
             switch (tabId) {
                 case "plan":

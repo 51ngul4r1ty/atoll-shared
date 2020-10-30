@@ -1,4 +1,5 @@
 // externals
+import { applyMiddleware } from "redux";
 import { createSelector } from "reselect";
 
 // interfaces/types
@@ -16,3 +17,5 @@ export const getAuthToken = createSelector([app], (app: AppState): string => app
 export const getAppEditMode = createSelector([app], (app: AppState): EditMode => app.editMode);
 
 export const getElectronClient = createSelector([app], (app: AppState): boolean => app.electronClient);
+
+export const getAppMessage = createSelector([app], (app: AppState): string => app.message);

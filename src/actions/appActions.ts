@@ -66,3 +66,7 @@ export const localStoreRefreshToken = (refreshToken: string): LocalStoreRefreshT
         refreshToken
     }
 });
+
+export const errorPanelClick = () => ({
+    type: ActionTypes.ERROR_PANEL_CLICK
+});

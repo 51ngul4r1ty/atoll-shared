@@ -10,6 +10,8 @@ export const LOCAL_STORE_REFRESH_TOKEN = "app/local-store:refresh-token";
 export const SET_LOCALE = "app/set-locale";
 export const SET_EDIT_MODE = "app/set-edit-mode";
 
+export const ERROR_PANEL_CLICK = "app/error-panel:click";
+
 // #region User Prefs Resource
 export const API_GET_USER_PREFS_REQUEST = buildActionName(Names.GET_USER_PREFS, "request");
 export const API_GET_USER_PREFS_SUCCESS = buildActionName(Names.GET_USER_PREFS, "success");

@@ -183,7 +183,7 @@ export const apiMiddleware = (store) => (next) => (action: Action) => {
                 const state = getState();
                 dispatch(refreshTokenAndRetry(state.app.refreshToken, apiAction));
             } else {
-                dispatchFailure(dispatch, getFailureType(types), data, requestBody, apiAction.meta, error);
+                dispatchFailure(dispatch, getFailureType(types), error.response.data, requestBody, apiAction.meta, error);
             }
         });
 };

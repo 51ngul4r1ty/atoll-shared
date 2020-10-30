@@ -56,3 +56,30 @@ export interface ApiActionSuccessPayload<T> {
 export type ApiActionSuccessPayloadForCollection<T> = ApiActionSuccessPayload<{ data: { items: T[] } }>;
 
 export type ApiActionSuccessPayloadForItem<T> = ApiActionSuccessPayload<{ data: { item: T } }>;
+
+export interface ApiActionFailurePayloadConfig {
+    url: string;
+    method: string;
+    data: string;
+    headers: { [header: string]: string };
+    baseURL: "";
+    transformRequest: any[];
+    transformResponse: any[];
+    timeout: number;
+    xsrfCookieName: string;
+    xsrfHeaderName: string;
+    maxContentLength: number;
+}
+
+export interface ApiActionFailurePayload<T> {
+    response: {
+        message: string;
+        status: number;
+    };
+    error: {
+        message: string;
+        name: string;
+        stack: string;
+        config: ApiActionFailurePayloadConfig;
+    };
+}

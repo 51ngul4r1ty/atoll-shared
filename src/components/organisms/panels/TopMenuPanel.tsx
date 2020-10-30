@@ -24,14 +24,16 @@ import { routePlanView, routeSprintView, routeReviewView } from "../../../action
 export interface TopMenuPanelStateProps {
     activeTabId?: string;
     editMode: EditMode;
+    message: string;
     showRefreshButton: boolean;
     treatAsElectronTitleBar?: boolean; // necessary to work properly for Electron client on Windows
 }
 
 export interface TopMenuPanelDispatchProps {
     onChangeTab?: { (selectedTabId: string) };
-    setEditMode: { (editMode: EditMode) };
-    refreshData: { () };
+    onErrorPanelClick?: { (): void };
+    setEditMode: { (editMode: EditMode): void };
+    refreshData: { (): void };
 }
 
 export type TopMenuPanelProps = TopMenuPanelStateProps & TopMenuPanelDispatchProps & WithTranslation;
@@ -75,29 +77,49 @@ export const InnerTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
 
     const fillSpaceClassName = buildClassName(css.fillSpaceAvailable, props.treatAsElectronTitleBar ? css.electronDragPanel : null);
 
-    return (
-        <div className={css.topMenuPanel}>
-            <HomeButton />
-            <TabStrip
-                activeTab={(props && props.activeTabId) || "plan"}
-                tabs={tabs}
-                onChange={(tabId) => {
-                    switch (tabId) {
-                        case "plan":
-                            dispatch(routePlanView());
-                            break;
-                        case "sprint":
-                            dispatch(routeSprintView());
-                            break;
-                        case "review":
-                            dispatch(routeReviewView());
-                            break;
-                    }
-                }}
-            />
-            <div className={fillSpaceClassName}></div>
-            <div className={css.actionButtonPanel}>{buttons}</div>
+    const handleErrorPanelClick = () => {
+        if (props.onErrorPanelClick) {
+            props.onErrorPanelClick();
+        }
+    };
+
+    const messagePanel = props.message ? (
+        <div
+            onClick={() => {
+                handleErrorPanelClick();
+            }}
+            className={css.topMessagaPanel}
+        >
+            {props.message}
         </div>
+    ) : null;
+
+    return (
+        <>
+            {messagePanel}
+            <div className={css.topMenuPanel}>
+                <HomeButton />
+                <TabStrip
+                    activeTab={(props && props.activeTabId) || "plan"}
+                    tabs={tabs}
+                    onChange={(tabId) => {
+                        switch (tabId) {
+                            case "plan":
+                                dispatch(routePlanView());
+                                break;
+                            case "sprint":
+                                dispatch(routeSprintView());
+                                break;
+                            case "review":
+                                dispatch(routeReviewView());
+                                break;
+                        }
+                    }}
+                />
+                <div className={fillSpaceClassName}></div>
+                <div className={css.actionButtonPanel}>{buttons}</div>
+            </div>
+        </>
     );
 };
 
