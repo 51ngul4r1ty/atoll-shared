@@ -64,6 +64,12 @@ export const API_GET_SPRINT_BACKLOG_ITEMS_SUCCESS = buildActionName(Names.GET_SP
 export const API_GET_SPRINT_BACKLOG_ITEMS_FAILURE = buildActionName(Names.GET_SPRINT_BACKLOG_ITEMS, "failure");
 // #endregion
 
+// #region Sprint Backlog Resource
+export const API_POST_SPRINT_BACKLOG_ITEM_REQUEST = buildActionName(Names.POST_SPRINT_BACKLOG_ITEM, "request");
+export const API_POST_SPRINT_BACKLOG_ITEM_SUCCESS = buildActionName(Names.POST_SPRINT_BACKLOG_ITEM, "success");
+export const API_POST_SPRINT_BACKLOG_ITEM_FAILURE = buildActionName(Names.POST_SPRINT_BACKLOG_ITEM, "failure");
+// #endregion
+
 // #region Post Actions
 export const API_POST_ACTION_REORDER_BACKLOG_ITEM_REQUEST = buildActionName(Names.POST_ACTION_REORDER_BACKLOG_ITEM, "request");
 export const API_POST_ACTION_REORDER_BACKLOG_ITEM_SUCCESS = buildActionName(Names.POST_ACTION_REORDER_BACKLOG_ITEM, "success");
@@ -83,6 +89,7 @@ export const API_BATCH = "API_BATCH";
 export const API_BATCH_PROCESS_QUEUE = "app/api-batch:process-queue";
 export const API_BATCH_LAST_ITEM_SUCCESS = "app/api-batch:last-item-success";
 export const API_BATCH_LAST_ITEM_FAILURE = "app/api-batch:last-item-failure";
+export const API_BATCH_COMPLETED = "app/api-batch:completed";
 // #endregion
 
 export const ROUTE_PLAN_VIEW = "app/route:plan-view";
@@ -119,4 +126,5 @@ export const COLLAPSE_SPRINT_PANEL = "app/collapse:sprint-panel";
 
 export const ADD_SPRINT = "app/add:sprint";
 
-export const ADD_BACKLOG_ITEMS_TO_SPRINT = "app/add:sprint-backlog-items";
+export const MOVE_SELECTED_BACKLOG_ITEMS_TO_SPRINT = "app/add:selected-sprint-backlog-items";
+export const MOVE_BACKLOG_ITEM_TO_SPRINT = "app/add:sprint-backlog-item";

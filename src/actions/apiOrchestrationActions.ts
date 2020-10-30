@@ -6,9 +6,10 @@ export interface ApiBatchProcessQueueAction {
     type: typeof ActionTypes.API_BATCH_PROCESS_QUEUE;
 }
 
-export const apiBatchProcessQueue = () => ({
-    type: ActionTypes.API_BATCH_PROCESS_QUEUE
-});
+export const apiBatchProcessQueue = () => ({ type: ActionTypes.API_BATCH_PROCESS_QUEUE });
+
+// TODO: Implement a consumer of this dispatch item or just remove it
+export const apiBatchCompleted = () => ({ type: ActionTypes.API_BATCH_COMPLETED });
 
 export interface ApiBatchQueueItemActionMeta {
     passthrough: {

@@ -22,20 +22,22 @@ import { isPlatformWindows } from "./utils";
 // selectors
 import { getCurrentProjectId } from "./selectors/userSelectors";
 import { getPlanViewSprints } from "./selectors/sprintSelectors";
-import { getAllBacklogItems, getSelectedBacklogItemCount } from "./selectors/backlogItemSelectors";
-import { addBacklogItemsToSprint } from "./actions/sprintBacklogActions";
+import {
+    getAllBacklogItems,
+    getOpenedDetailMenuBacklogItemId,
+    getSelectedBacklogItemCount
+} from "./selectors/backlogItemSelectors";
+import { moveSelectedBacklogItemsToSprintUsingApi } from "./actions/sprintBacklogActions";
+import { getAppEditMode, getElectronClient } from "./selectors/appSelectors";
 
 const mapStateToProps = (state: StateTree): PlanViewStateProps => {
     const allItems = getAllBacklogItems(state);
     const sprints = getPlanViewSprints(state);
     let result: PlanViewStateProps = {
         allItems,
-        // TODO: Convert this to a selector
-        editMode: state.app.editMode,
-        // TODO: Convert this to a selector
-        openedDetailMenuBacklogItemId: state.backlogItems.openedDetailMenuBacklogItemId,
-        // TODO: Convert this to a selector
-        electronClient: state.app.electronClient,
+        editMode: getAppEditMode(state),
+        openedDetailMenuBacklogItemId: getOpenedDetailMenuBacklogItemId(state),
+        electronClient: getElectronClient(state),
         selectedProductBacklogItemCount: getSelectedBacklogItemCount(state),
         showWindowTitleBar: !isPlatformWindows(),
         projectId: getCurrentProjectId(state),
@@ -50,7 +52,7 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
             dispatch(apiBffViewsPlan());
         },
         onAddNewBacklogItem: (type: BacklogItemType) => dispatch(addNewBacklogItem(type)),
-        onAddBacklogItemToSprint: (sprintId: string) => dispatch(addBacklogItemsToSprint(sprintId)),
+        onAddBacklogItemToSprint: (sprintId: string) => dispatch(moveSelectedBacklogItemsToSprintUsingApi(sprintId)),
         onAddNewSprint: () => dispatch(addNewSprint()),
         onReorderBacklogItems: (sourceItemId: string, targetItemId: string) =>
             dispatch(reorderBacklogItems(sourceItemId, targetItemId)),

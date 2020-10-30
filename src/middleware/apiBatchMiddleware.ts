@@ -11,6 +11,7 @@ import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
 import {
+    apiBatchCompleted,
     apiBatchHandleLastItemFailure,
     apiBatchHandleLastItemSuccess,
     apiBatchProcessQueue,
@@ -49,8 +50,7 @@ export const apiBatchMiddleware = (store) => (next) => (action: Action) => {
                 const state = storeTyped.getState();
                 const apiCalls = getRemainingApiCalls(state);
                 if (!apiCalls.length) {
-                    // TODO: Finish this
-                    // signals the end of the batch, at this point we can report success
+                    storeTyped.dispatch(apiBatchCompleted());
                 } else {
                     const firstApiCall = apiCalls[0];
                     storeTyped.dispatch(apiBatchQueueItem(firstApiCall.payload, firstApiCall.meta));

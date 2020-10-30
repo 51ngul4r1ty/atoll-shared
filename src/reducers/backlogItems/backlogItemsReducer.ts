@@ -1,5 +1,5 @@
 // externals
-import { produce } from "immer";
+import { Draft, produce } from "immer";
 
 // consts/enums
 import * as ActionTypes from "../../actions/actionTypes";
@@ -38,6 +38,7 @@ import {
     updateItemFieldsInAllItems
 } from "./backlogItemsReducerHelper";
 import { mapApiItemsToBacklogItems, mapApiItemToBacklogItem } from "../../mappers/backlogItemMappers";
+import { MoveBacklogItemToSprintAction } from "../../actions/sprintBacklogActions";
 
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
@@ -47,6 +48,31 @@ export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>(
     selectedItemIds: [],
     openedDetailMenuBacklogItemId: null
 });
+
+export const removeBacklogItem = (draft: Draft<BacklogItemsState>, backlogItemId: string) => {
+    let result = false;
+    const idx = draft.addedItems.findIndex((item) => item.id === backlogItemId);
+    if (idx >= 0) {
+        draft.addedItems.splice(idx, 1);
+        result = true;
+    }
+    const idx2 = draft.items.findIndex((item) => item.id === backlogItemId);
+    if (idx2 >= 0) {
+        draft.items.splice(idx2, 1);
+        result = true;
+    }
+    rebuildAllItems(draft);
+    return result;
+};
+
+export const unselectProductBacklogItemId = (draft: Draft<BacklogItemsState>, backlogItemId) => {
+    const itemIdx = draft.selectedItemIds.indexOf(backlogItemId);
+    if (itemIdx >= 0) {
+        draft.selectedItemIds.splice(itemIdx, 1);
+        return true;
+    }
+    return false;
+};
 
 export const backlogItemsReducer = (
     state: BacklogItemsState = backlogItemsReducerInitialState,
@@ -261,15 +287,7 @@ export const backlogItemsReducer = (
             case ActionTypes.API_DELETE_BACKLOG_ITEM_SUCCESS: {
                 const actionTyped = action as ApiDeleteBacklogItemAction;
                 const id = actionTyped.meta.originalActionArgs.backlogItemId;
-                const idx = draft.addedItems.findIndex((item) => item.id === id);
-                if (idx >= 0) {
-                    draft.addedItems.splice(idx, 1);
-                }
-                const idx2 = draft.items.findIndex((item) => item.id === id);
-                if (idx2 >= 0) {
-                    draft.items.splice(idx2, 1);
-                }
-                rebuildAllItems(draft);
+                removeBacklogItem(draft, id);
                 return;
             }
             case ActionTypes.SELECT_PRODUCT_BACKLOG_ITEM: {
@@ -283,10 +301,14 @@ export const backlogItemsReducer = (
             }
             case ActionTypes.UNSELECT_PRODUCT_BACKLOG_ITEM: {
                 const actionTyped = action as SelectProductBacklogItemAction;
-                const itemIdx = draft.selectedItemIds.indexOf(actionTyped.payload.itemId);
-                if (itemIdx >= 0) {
-                    draft.selectedItemIds.splice(itemIdx, 1);
-                }
+                unselectProductBacklogItemId(draft, actionTyped.payload.itemId);
+                return;
+            }
+            case ActionTypes.MOVE_BACKLOG_ITEM_TO_SPRINT: {
+                const actionTyped = action as MoveBacklogItemToSprintAction;
+                const backlogItemId = actionTyped.payload.backlogItem.id;
+                removeBacklogItem(draft, backlogItemId);
+                unselectProductBacklogItemId(draft, backlogItemId);
                 return;
             }
         }

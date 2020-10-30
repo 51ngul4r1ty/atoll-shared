@@ -9,8 +9,14 @@ import { getApiBaseUrl } from "../config";
 import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
-import { API, NoDataApiAction, ApiActionSuccessPayloadForCollection, ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
-import { ApiBacklogItem } from "../apiModelTypes";
+import {
+    API,
+    NoDataApiAction,
+    ApiActionSuccessPayloadForCollection,
+    ApiActionMetaDataRequestMeta,
+    ApiActionSuccessPayloadForItem
+} from "../middleware/apiTypes";
+import { ApiBacklogItem, ApiSprintBacklogItem } from "../apiModelTypes";
 import { ApiBatchAction } from "../middleware/apiBatchTypes";
 
 // utils
@@ -63,6 +69,12 @@ export type ApiBatchAddBacklogItemsToSprintAction = ApiBatchAction<
     ApiBatchAddBacklogItemsToSprintItemActionParams,
     ApiBatchAddBacklogItemsToSprintBatchActionParams
 >;
+
+export interface ApiPostSprintBacklogItemSuccessAction {
+    type: typeof ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_SUCCESS;
+    payload: ApiActionSuccessPayloadForItem<ApiSprintBacklogItem>;
+    meta: ApiActionMetaDataRequestMeta<{}, MetaActionParams>;
+}
 
 export const apiBatchAddBacklogItemsToSprint = (
     sprintId: string,

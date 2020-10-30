@@ -69,7 +69,7 @@ export interface ApiSprint extends StandardNamedItem {
     remainingSplitPoints: number | null;
 }
 
-export interface ApiSprintBacklog extends StandardItem {
+export interface ApiSprintBacklogItem extends BaseItem {
     sprintId: string;
     backlogitemId: string;
     displayindex: number | null;
