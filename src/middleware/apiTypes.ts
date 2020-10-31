@@ -13,14 +13,17 @@ export type ComplexApiActionType = {}; // TODO: future use
 
 export type ApiActionType = SimpleApiActionType | ComplexApiActionType;
 
+export type ApiActionStage = "request" | "success" | "failure";
+
 export interface ApiActionMeta<P> {
     tryCount?: number;
     passthrough?: P;
+    apiActionStage: ApiActionStage;
 }
 
 export type ApiMethods = "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "OPTIONS";
 
-export interface ApiAction<T, U = any> extends Action {
+export interface ApiAction<T = any, U = any> extends Action {
     payload: {
         endpoint: string;
         method: ApiMethods;
@@ -71,7 +74,7 @@ export interface ApiActionFailurePayloadConfig {
     maxContentLength: number;
 }
 
-export interface ApiActionFailurePayload<T> {
+export interface ApiActionFailurePayload {
     response: {
         message: string;
         status: number;

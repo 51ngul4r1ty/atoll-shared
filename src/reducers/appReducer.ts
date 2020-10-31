@@ -14,7 +14,7 @@ import {
     ActionPostRefreshTokenSuccessAction,
     ActionPostTokenResponseBase
 } from "../actions/authActions";
-import { ApiActionSuccessPayload } from "../middleware/apiTypes";
+import { ApiAction, ApiActionSuccessPayload } from "../middleware/apiTypes";
 import { LocalStoreRefreshTokenAction } from "../actions/appActions";
 import { ApiPostSprintBacklogItemFailureAction } from "../actions/apiSprintBacklog";
 
@@ -53,8 +53,8 @@ const updateDraftWithTokenPayload = (draft: Draft<AppState>, payload: ApiActionS
 
 export const appReducer = (state: AppState = appReducerInitialState, action: AnyFSA): AppState => {
     return produce(state, (draft) => {
-        // TODO: Define a type to get apiActionStage
-        const actionStage = action.meta?.apiActionStage;
+        const actionTyped = action as ApiAction;
+        const actionStage = actionTyped.meta?.apiActionStage;
         if ((actionStage === "request" || actionStage === "success") && draft.message) {
             // clear message when new API request is made or successful response occurs
             draft.message = "";

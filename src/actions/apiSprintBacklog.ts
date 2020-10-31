@@ -79,30 +79,7 @@ export interface ApiPostSprintBacklogItemSuccessAction {
 
 export interface ApiPostSprintBacklogItemFailureAction {
     type: typeof ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_FAILURE;
-    payload: {
-        response: {
-            message: string;
-            status: number;
-        };
-        error: {
-            message: string;
-            name: string;
-            stack: string;
-            config: {
-                url: string;
-                method: "post";
-                data: string;
-                headers: { [header: string]: string };
-                baseURL: "";
-                transformRequest: any[];
-                transformResponse: any[];
-                timeout: number;
-                xsrfCookieName: string;
-                xsrfHeaderName: string;
-                maxContentLength: number;
-            };
-        };
-    };
+    payload: ApiActionFailurePayload;
     meta: {
         requestBody: {
             url: string;
