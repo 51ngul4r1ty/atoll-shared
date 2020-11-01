@@ -8,6 +8,9 @@ import { EditMode } from "../../molecules/buttons/EditButton";
 import { SimpleDivider } from "../../atoms/dividers/SimpleDivider";
 import { BacklogItemDetailForm } from "../forms/BacklogItemDetailForm";
 import { BacklogItemCard, BacklogItemTypeEnum } from "../../molecules/cards/BacklogItemCard";
+
+// utils
+import { calcItemId } from "../../molecules/cards/BacklogItemCard";
 import { buildClassName } from "../../../utils/classNameBuilder";
 
 // actions
@@ -96,7 +99,7 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     internalId={`${props.id}`}
                     isDraggable={props.editMode === EditMode.Edit}
                     isSelectable={props.editMode === EditMode.Edit}
-                    itemId={`${props.externalId || props.friendlyId}`}
+                    itemId={calcItemId(props.externalId, props.friendlyId)}
                     itemType={props.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
                     key={props.id}
                     marginBelowItem

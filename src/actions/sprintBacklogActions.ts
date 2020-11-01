@@ -39,3 +39,22 @@ export const moveBacklogItemToSprint = (sprintId: string, backlogItem: BacklogIt
         backlogItem
     }
 });
+
+export interface ToggleSprintBacklogItemDetailPayload {
+    sprintId: string;
+    itemId: string;
+}
+
+export interface ToggleSprintBacklogItemDetailAction {
+    type: typeof ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL;
+    payload: ToggleSprintBacklogItemDetailPayload;
+}
+
+export const sprintBacklogItemDetailClicked = (sprintId, backlogItemId: string): ToggleSprintBacklogItemDetailAction => ({
+    type: ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL,
+    payload: {
+        sprintId,
+        // TODO: Change itemId to backlogItemId
+        itemId: backlogItemId
+    }
+});

@@ -12,7 +12,8 @@ import {
     BacklogItemTypeEnum,
     buildBacklogItemKey,
     buildBacklogItemPlanningItemKey,
-    buildDividerKey
+    buildDividerKey,
+    calcItemId
 } from "../../../molecules/cards/BacklogItemCard";
 import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 
@@ -70,7 +71,7 @@ export const buildDragBacklogItemElt = (
             key={buildBacklogItemKey(item)}
             estimate={item.estimate}
             internalId={`${item.id}`}
-            itemId={`${item.externalId}`}
+            itemId={calcItemId(item.externalId, item.friendlyId)}
             itemType={item.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
             titleText={item.storyPhrase}
             isDraggable={editMode === EditMode.Edit}

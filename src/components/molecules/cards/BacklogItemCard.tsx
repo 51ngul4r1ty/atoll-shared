@@ -23,6 +23,10 @@ import { PushState, SaveableBacklogItem } from "../../../reducers/backlogItems/b
 
 /* exported functions */
 
+export const calcItemId = (externalId: string | null, friendlyId: string) => {
+    return externalId || friendlyId;
+};
+
 export const buildUniqueItemKey = (props: SaveableBacklogItem, componentPrefix: string): string => {
     return props.id ? `${componentPrefix}-id-${props.id}` : `${componentPrefix}-i-${props.instanceId}`;
 };
@@ -84,6 +88,7 @@ export interface BacklogItemCardStateProps {
     offsetTop?: number;
     width?: any;
     showDetailMenu: boolean;
+    showDetailMenuToLeft?: boolean;
     pushState?: PushState;
 }
 
@@ -100,7 +105,9 @@ export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDi
 
 export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
     const detailMenu = props.showDetailMenu ? (
-        <ItemMenuPanel caretPosition={props.renderMobile ? CaretPosition.RightTop : CaretPosition.TopCenter}>
+        <ItemMenuPanel
+            caretPosition={props.showDetailMenuToLeft || props.renderMobile ? CaretPosition.RightTop : CaretPosition.TopCenter}
+        >
             <RemoveButton
                 suppressSpacing
                 onClick={() => {
@@ -191,7 +198,9 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
                 ) : null}
                 {mobileCheckboxElts}
             </div>
-            <div className={css.backlogItemCardDetailMenu}>{detailMenu}</div>
+            <div className={buildClassName(css.backlogItemCardDetailMenu, props.showDetailMenuToLeft ? css.menuToLeft : null)}>
+                {detailMenu}
+            </div>
         </div>
     );
 };

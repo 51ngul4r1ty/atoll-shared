@@ -13,10 +13,12 @@ import { SprintPlanningPanelSprint } from "./sprintPlanningPanelTypes";
 import { SprintPanel } from "./SprintPanel";
 import { addActionButtons } from "./sprintPlanningPanelJsxUtils";
 import { EditMode } from "../../../molecules/buttons/EditButton";
+import { OpenedDetailMenuInfo } from "../../../../selectors/sprintBacklogSelectors";
 
 export interface SprintPlanningPanelStateProps {
     className?: string;
     editMode: EditMode;
+    openedDetailMenuInfo: OpenedDetailMenuInfo;
     renderMobile?: boolean;
     selectedProductBacklogItemCount: number;
     sprints: SprintPlanningPanelSprint[];
@@ -26,6 +28,7 @@ export interface SprintPlanningPanelDispatchProps {
     onExpandCollapse: { (id: string, expand: boolean): void };
     onAddNewSprint: { (): void };
     onAddBacklogItem: { (sprintId: string): void };
+    onDetailClicked: { (sprintId: string, backlogItemId: string): void };
 }
 
 export type SprintPlanningPanelProps = SprintPlanningPanelStateProps & SprintPlanningPanelDispatchProps & WithTranslation;
@@ -41,6 +44,11 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
             props.onAddBacklogItem(sprintId);
         }
     };
+    const onDetailClicked = (sprintId: string, backlogItemId: string) => {
+        if (props.onDetailClicked) {
+            props.onDetailClicked(sprintId, backlogItemId);
+        }
+    };
     const classNameToUse = buildClassName(
         css.sprintPlanningPanel,
         css.backlogItemPlanningPanel,
@@ -50,11 +58,14 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
     let renderElts = [];
     addActionButtons(renderElts, props.editMode, false, props.onAddNewSprint, props.renderMobile);
     props.sprints.forEach((sprint) => {
+        const openedDetailMenuBacklogItemId =
+            sprint.id && sprint.id === props.openedDetailMenuInfo.sprintId ? props.openedDetailMenuInfo.backlogItemId : null;
         const sprintItemElt = (
             <div key={sprint.name}>
                 <SprintPanel
                     {...sprint}
                     editMode={props.editMode}
+                    openedDetailMenuBacklogItemId={openedDetailMenuBacklogItemId}
                     renderMobile={props.renderMobile}
                     selectedProductBacklogItemCount={props.selectedProductBacklogItemCount}
                     onExpandCollapse={(id, expand) => {
@@ -62,6 +73,9 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                     }}
                     onAddBacklogItem={() => {
                         onAddBacklogItem(sprint.id);
+                    }}
+                    onDetailClicked={(backlogItemId: string) => {
+                        onDetailClicked(sprint.id, backlogItemId);
                     }}
                 />
             </div>

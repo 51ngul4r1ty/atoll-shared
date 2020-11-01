@@ -13,18 +13,24 @@ import { buildSprintPointInfoText, formatDateRange, sprintStatusToString } from 
 import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 
 // interfaces/types
-import { SprintPlanningPanelSprint } from "./sprintPlanningPanelTypes";
-import { VerticalExpandIcon } from "../../../atoms/icons/VerticalExpandIcon";
-import { VerticalCollapseIcon } from "../../../atoms/icons/VerticalCollapseIcon";
+import { BacklogItemCard } from "../../../molecules/cards/BacklogItemCard";
+import { OpenedDetailMenuInfo } from "../../../../selectors/sprintBacklogSelectors";
 import { SprintBacklogItem } from "../../../../reducers/sprintBacklogReducer";
-import { BacklogItemCard, BacklogItemTypeEnum, buildBacklogItemKey } from "../../../molecules/cards/BacklogItemCard";
+import { SprintPlanningPanelSprint } from "./sprintPlanningPanelTypes";
+import { VerticalCollapseIcon } from "../../../atoms/icons/VerticalCollapseIcon";
+import { VerticalExpandIcon } from "../../../atoms/icons/VerticalExpandIcon";
+
+// utils
+import { buildBacklogItemKey, calcItemId } from "../../../molecules/cards/BacklogItemCard";
 
 // consts/enums
+import { BacklogItemTypeEnum } from "../../../molecules/cards/BacklogItemCard";
 import { EditMode } from "../../../molecules/buttons/EditButton";
 import { AddButton } from "../../../molecules/buttons/AddButton";
 
 export interface SprintPanelStateProps extends SprintPlanningPanelSprint {
     editMode: EditMode;
+    openedDetailMenuBacklogItemId: string;
     renderMobile?: boolean;
     selectedProductBacklogItemCount: number;
 }
@@ -32,25 +38,36 @@ export interface SprintPanelStateProps extends SprintPlanningPanelSprint {
 export interface SprintPanelDispatchProps {
     onAddBacklogItem: { (): void };
     onExpandCollapse: { (id: string, expand: boolean): void };
+    onDetailClicked: { (id: string) };
 }
 
 export type SprintPanelProps = SprintPanelStateProps & SprintPanelDispatchProps & WithTranslation;
 
-export const getBacklogItemElts = (editMode: EditMode, renderMobile: boolean, backlogItems: SprintBacklogItem[]) => {
+export const getBacklogItemElts = (
+    editMode: EditMode,
+    openedDetailMenuBacklogItemId: string,
+    renderMobile: boolean,
+    backlogItems: SprintBacklogItem[],
+    onDetailClicked: { (backlogItemId: string) }
+) => {
     return backlogItems.map((backlogItem) => (
         <div key={backlogItem.id}>
             <BacklogItemCard
                 key={buildBacklogItemKey(backlogItem)}
                 estimate={backlogItem.estimate}
                 internalId={`${backlogItem.id}`}
-                itemId={`${backlogItem.externalId}`}
+                itemId={calcItemId(backlogItem.externalId, backlogItem.friendlyId)}
                 itemType={backlogItem.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
                 titleText={backlogItem.storyPhrase}
                 isDraggable={false}
                 hasDetails={editMode === EditMode.Edit}
                 renderMobile={renderMobile}
                 marginBelowItem
-                showDetailMenu={false}
+                showDetailMenu={backlogItem.id === openedDetailMenuBacklogItemId}
+                showDetailMenuToLeft
+                onDetailClicked={() => {
+                    onDetailClicked(backlogItem.id);
+                }}
             />
         </div>
     ));
@@ -64,8 +81,19 @@ export const InnerSprintPanel: React.FC<SprintPanelProps> = (props) => {
     };
     const expandCollapseIcon = props.expanded ? <VerticalCollapseIcon /> : <VerticalExpandIcon />;
     const contentsClassName = buildClassName(css.sprintContents, props.expanded ? css.expanded : null);
+    const handleDetailClicked = (itemId: string) => {
+        if (props.onDetailClicked) {
+            props.onDetailClicked(itemId);
+        }
+    };
     const sprintBacklogContents = props.backlogItemsLoaded
-        ? getBacklogItemElts(props.editMode, props.renderMobile || false, props.backlogItems)
+        ? getBacklogItemElts(
+              props.editMode,
+              props.openedDetailMenuBacklogItemId,
+              props.renderMobile || false,
+              props.backlogItems,
+              handleDetailClicked
+          )
         : "[ loading... ]";
     const actionButtonElts =
         props.expanded && props.editMode === EditMode.Edit ? (

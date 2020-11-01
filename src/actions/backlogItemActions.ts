@@ -126,10 +126,12 @@ export const reorderBacklogItems = (sourceItemId: string, targetItemId: string):
 export interface ToggleBacklogItemDetailPayload {
     itemId: string;
 }
+
 export interface ToggleBacklogItemDetailAction {
     type: typeof ActionTypes.TOGGLE_BACKLOG_ITEM_DETAIL;
     payload: ToggleBacklogItemDetailPayload;
 }
+
 export const backlogItemDetailClicked = (itemId: string): ToggleBacklogItemDetailAction => ({
     type: ActionTypes.TOGGLE_BACKLOG_ITEM_DETAIL,
     payload: {

@@ -27,8 +27,9 @@ import {
     getOpenedDetailMenuBacklogItemId,
     getSelectedBacklogItemCount
 } from "./selectors/backlogItemSelectors";
-import { moveSelectedBacklogItemsToSprintUsingApi } from "./actions/sprintBacklogActions";
+import { moveSelectedBacklogItemsToSprintUsingApi, sprintBacklogItemDetailClicked } from "./actions/sprintBacklogActions";
 import { getAppEditMode, getElectronClient } from "./selectors/appSelectors";
+import { getOpenedDetailMenuInfo } from "./selectors/sprintBacklogSelectors";
 
 const mapStateToProps = (state: StateTree): PlanViewStateProps => {
     const allItems = getAllBacklogItems(state);
@@ -37,6 +38,7 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
         allItems,
         editMode: getAppEditMode(state),
         openedDetailMenuBacklogItemId: getOpenedDetailMenuBacklogItemId(state),
+        openedDetailMenuSprintBacklogInfo: getOpenedDetailMenuInfo(state),
         electronClient: getElectronClient(state),
         selectedProductBacklogItemCount: getSelectedBacklogItemCount(state),
         showWindowTitleBar: !isPlatformWindows(),
@@ -62,7 +64,9 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
             } else {
                 dispatch(collapseSprintPanel(sprintId));
             }
-        }
+        },
+        onItemDetailClicked: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemDetailClicked(sprintId, backlogItemId))
     };
 };
 

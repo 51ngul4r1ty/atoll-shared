@@ -17,6 +17,7 @@ import { EditMode } from "./components/molecules/buttons/EditButton";
 import { BacklogItemWithSource } from "./reducers/backlogItems/backlogItemsReducerTypes";
 import { BacklogItemType } from "./types/backlogItemTypes";
 import { SprintPlanningPanelSprint } from "./components/organisms/panels/sprintPlanning/sprintPlanningPanelTypes";
+import { OpenedDetailMenuInfo } from "./selectors/sprintBacklogSelectors";
 
 // components
 import { SprintPlanningPanel } from "./components/organisms/panels/sprintPlanning/SprintPlanningPanel";
@@ -32,6 +33,7 @@ export interface PlanViewStateProps {
     editMode: EditMode;
     electronClient: boolean;
     openedDetailMenuBacklogItemId: string | null;
+    openedDetailMenuSprintBacklogInfo: OpenedDetailMenuInfo;
     projectId: string;
     selectedProductBacklogItemCount: number;
     showWindowTitleBar: boolean;
@@ -39,12 +41,13 @@ export interface PlanViewStateProps {
 }
 
 export interface PlanViewDispatchProps {
-    onLoaded: { (projectId: string): void };
-    onAddNewBacklogItem: { (type: BacklogItemType): void };
     onAddBacklogItemToSprint: { (sprintId: string): void };
+    onAddNewBacklogItem: { (type: BacklogItemType): void };
     onAddNewSprint: { (): void };
-    onReorderBacklogItems: { (sourceItemId: string, targetItemId: string): void };
     onExpandCollapse: { (sprintId: string, expand: boolean): void };
+    onItemDetailClicked: { (sprintId: string, backlogItemId: string): void };
+    onLoaded: { (projectId: string): void };
+    onReorderBacklogItems: { (sourceItemId: string, targetItemId: string): void };
 }
 
 export type PlanViewProps = PlanViewStateProps & PlanViewDispatchProps;
@@ -86,6 +89,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                         sprints={this.props.sprints}
                         renderMobile={this.context.state?.isMobile}
                         selectedProductBacklogItemCount={this.props.selectedProductBacklogItemCount}
+                        openedDetailMenuInfo={this.props.openedDetailMenuSprintBacklogInfo}
                         onExpandCollapse={(sprintId: string, expand: boolean) => {
                             if (this.props.onExpandCollapse) {
                                 this.props.onExpandCollapse(sprintId, expand);
@@ -99,6 +103,11 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                         onAddBacklogItem={(sprintId: string) => {
                             if (this.props.onAddBacklogItemToSprint) {
                                 this.props.onAddBacklogItemToSprint(sprintId);
+                            }
+                        }}
+                        onDetailClicked={(sprintId: string, backlogItemId: string) => {
+                            if (this.props.onItemDetailClicked) {
+                                this.props.onItemDetailClicked(sprintId, backlogItemId);
                             }
                         }}
                     />

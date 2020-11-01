@@ -9,3 +9,13 @@ export const getBacklogItemsForSprint = (state: StateTree, sprintId: string): Sp
     }
     return sprintData.items;
 };
+
+export interface OpenedDetailMenuInfo {
+    backlogItemId: string;
+    sprintId: string;
+}
+
+export const getOpenedDetailMenuInfo = (state: StateTree): OpenedDetailMenuInfo => ({
+    backlogItemId: state.sprintBacklog.openedDetailMenuBacklogItemId,
+    sprintId: state.sprintBacklog.openedDetailMenuSprintId
+});

@@ -39,6 +39,7 @@ import {
 } from "./backlogItemsReducerHelper";
 import { mapApiItemsToBacklogItems, mapApiItemToBacklogItem } from "../../mappers/backlogItemMappers";
 import { MoveBacklogItemToSprintAction } from "../../actions/sprintBacklogActions";
+import { calcDropDownMenuState } from "../../utils/dropdownMenuUtils";
 
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
@@ -219,23 +220,11 @@ export const backlogItemsReducer = (
             }
             case ActionTypes.TOGGLE_BACKLOG_ITEM_DETAIL: {
                 const actionTyped = action as ToggleBacklogItemDetailAction;
-                let openItemId: string;
-                if (draft.openedDetailMenuBacklogItemId === null) {
-                    openItemId = actionTyped.payload.itemId;
-                } else if (draft.openedDetailMenuBacklogItemId === actionTyped.payload.itemId) {
-                    openItemId = null;
-                } else {
-                    openItemId = actionTyped.payload.itemId;
-                    draft.openedDetailMenuBacklogItemId = actionTyped.payload.itemId;
-                }
-                if (openItemId) {
-                    const backlogItem = getBacklogItemById(state, openItemId);
-                    if (backlogItem.pushState === PushState.Removed) {
-                        // do not allow this menu to be shown when the item has been deleted
-                        openItemId = null;
-                    }
-                }
-                draft.openedDetailMenuBacklogItemId = openItemId;
+                draft.openedDetailMenuBacklogItemId = calcDropDownMenuState(
+                    draft.openedDetailMenuBacklogItemId,
+                    actionTyped.payload.itemId,
+                    (itemId: string) => getBacklogItemById(state, itemId)
+                );
                 return;
             }
             case ActionTypes.EDIT_BACKLOG_ITEM: {
