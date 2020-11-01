@@ -6,13 +6,10 @@ import { withTranslation, WithTranslation } from "react-i18next";
 import css from "./BacklogItemCard.module.css";
 
 // components
-import { CaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
 import { Checkbox } from "../../atoms/inputs/Checkbox";
 import { DragIcon } from "../../atoms/icons/DragIcon";
-import { EditButton, EditMode } from "../buttons/EditButton";
 import { EditDetailIcon } from "../../atoms/icons/EditDetailIcon";
 import { IssueIcon } from "../../atoms/icons/IssueIcon";
-import { RemoveButton } from "../buttons/RemoveButton";
 import { StoryIcon } from "../../atoms/icons/StoryIcon";
 
 // utils
@@ -20,6 +17,9 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 
 // consts/enums
 import { PushState, SaveableBacklogItem } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
+
+// components
+import { ProductBacklogItemMenu } from "../menus/ProductBacklogItemMenu";
 
 /* exported functions */
 
@@ -99,33 +99,18 @@ export interface BacklogItemCardDispatchProps {
     onCheckboxChange?: { (checked: boolean): void };
 }
 
-export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDispatchProps & WithTranslation;
+export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDispatchProps;
+
+export type InnerBacklogItemCardProps = BacklogItemCardProps & WithTranslation;
 
 /* exported components */
 
-export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
+export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props) => {
     const detailMenu = props.showDetailMenu ? (
-        <ItemMenuPanel
-            caretPosition={props.showDetailMenuToLeft || props.renderMobile ? CaretPosition.RightTop : CaretPosition.TopCenter}
-        >
-            <RemoveButton
-                suppressSpacing
-                onClick={() => {
-                    if (props.internalId && props.onRemoveItemClicked) {
-                        props.onRemoveItemClicked(props.internalId);
-                    }
-                }}
-            />
-            <EditButton
-                mode={EditMode.View}
-                suppressSpacing
-                onClick={() => {
-                    if (props.internalId && props.onEditItemClicked) {
-                        props.onEditItemClicked(props.internalId);
-                    }
-                }}
-            />
-        </ItemMenuPanel>
+        <ProductBacklogItemMenu
+            onEditItemClicked={() => props.onEditItemClicked(props.internalId)}
+            onRemoveItemClicked={() => props.onRemoveItemClicked(props.internalId)}
+        />
     ) : null;
     const outerClassNameToUse = buildClassName(css.backlogItemCardOuter, props.renderMobile ? css.mobile : null);
     const classNameToUse = buildClassName(
