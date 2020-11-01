@@ -11,10 +11,10 @@ import { buildSprintPointInfoText, formatDateRange, sprintStatusToString } from 
 
 // components
 import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
+import { AddButton } from "../../../molecules/buttons/AddButton";
 
 // interfaces/types
 import { BacklogItemCard } from "../../../molecules/cards/BacklogItemCard";
-import { OpenedDetailMenuInfo } from "../../../../selectors/sprintBacklogSelectors";
 import { SprintBacklogItem } from "../../../../reducers/sprintBacklogReducer";
 import { SprintPlanningPanelSprint } from "./sprintPlanningPanelTypes";
 import { VerticalCollapseIcon } from "../../../atoms/icons/VerticalCollapseIcon";
@@ -22,11 +22,11 @@ import { VerticalExpandIcon } from "../../../atoms/icons/VerticalExpandIcon";
 
 // utils
 import { buildBacklogItemKey, calcItemId } from "../../../molecules/cards/BacklogItemCard";
+import { productBacklogItemMenuBuilder } from "../../../common/itemMenuBuilders";
 
 // consts/enums
 import { BacklogItemTypeEnum } from "../../../molecules/cards/BacklogItemCard";
 import { EditMode } from "../../../molecules/buttons/EditButton";
-import { AddButton } from "../../../molecules/buttons/AddButton";
 
 export interface SprintPanelStateProps extends SprintPlanningPanelSprint {
     editMode: EditMode;
@@ -54,6 +54,7 @@ export const getBacklogItemElts = (
         <div key={backlogItem.id}>
             <BacklogItemCard
                 key={buildBacklogItemKey(backlogItem)}
+                buildItemMenu={productBacklogItemMenuBuilder}
                 estimate={backlogItem.estimate}
                 internalId={`${backlogItem.id}`}
                 itemId={calcItemId(backlogItem.externalId, backlogItem.friendlyId)}

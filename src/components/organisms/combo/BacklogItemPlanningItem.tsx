@@ -12,6 +12,7 @@ import { BacklogItemCard, BacklogItemTypeEnum } from "../../molecules/cards/Back
 // utils
 import { calcItemId } from "../../molecules/cards/BacklogItemCard";
 import { buildClassName } from "../../../utils/classNameBuilder";
+import { productBacklogItemMenuBuilder } from "../../common/itemMenuBuilders";
 
 // actions
 import { apiDeleteBacklogItem } from "../../../actions/apiBacklogItems";
@@ -93,6 +94,7 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
             <>
                 <SimpleDivider key={`divider-saved-${props.id}`} hidden={props.hidden} highlighted={props.highlightAbove} />
                 <BacklogItemCard
+                    buildItemMenu={productBacklogItemMenuBuilder}
                     estimate={props.estimate}
                     hasDetails={props.editMode === EditMode.Edit}
                     hidden={props.hidden}

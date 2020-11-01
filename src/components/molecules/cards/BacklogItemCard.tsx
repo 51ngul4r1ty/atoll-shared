@@ -73,6 +73,18 @@ export enum BacklogItemTypeEnum {
     Story
 }
 
+export interface ItemMenuEventHandler {
+    (itemId: string): void;
+}
+
+export interface ItemMenuEventHandlers {
+    [handlerName: string]: ItemMenuEventHandler;
+}
+
+export interface ItemMenuBuilder {
+    (itemId: string, showMenuToLeft: boolean, eventHandlers?: ItemMenuEventHandlers);
+}
+
 export interface BacklogItemCardStateProps {
     estimate: number | null;
     hasDetails?: boolean;
@@ -90,6 +102,7 @@ export interface BacklogItemCardStateProps {
     showDetailMenu: boolean;
     showDetailMenuToLeft?: boolean;
     pushState?: PushState;
+    buildItemMenu?: ItemMenuBuilder;
 }
 
 export interface BacklogItemCardDispatchProps {
@@ -106,12 +119,7 @@ export type InnerBacklogItemCardProps = BacklogItemCardProps & WithTranslation;
 /* exported components */
 
 export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props) => {
-    const detailMenu = props.showDetailMenu ? (
-        <ProductBacklogItemMenu
-            onEditItemClicked={() => props.onEditItemClicked(props.internalId)}
-            onRemoveItemClicked={() => props.onRemoveItemClicked(props.internalId)}
-        />
-    ) : null;
+    const detailMenu = props.showDetailMenu ? props?.buildItemMenu(props.internalId, props.showDetailMenuToLeft) : null;
     const outerClassNameToUse = buildClassName(css.backlogItemCardOuter, props.renderMobile ? css.mobile : null);
     const classNameToUse = buildClassName(
         css.backlogItemCard,

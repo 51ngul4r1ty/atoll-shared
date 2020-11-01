@@ -13,7 +13,8 @@ import {
     buildBacklogItemKey,
     buildBacklogItemPlanningItemKey,
     buildDividerKey,
-    calcItemId
+    calcItemId,
+    ItemMenuBuilder
 } from "../../../molecules/cards/BacklogItemCard";
 import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 
@@ -56,6 +57,7 @@ import {
     targetIsDragButton
 } from "./backlogItemPlanningPanelUtils";
 import { addActionButtons } from "./backlogItemPlanningPanelJsxUtils";
+import { productBacklogItemMenuBuilder } from "../../../common/itemMenuBuilders";
 
 /* exported components */
 
@@ -69,6 +71,7 @@ export const buildDragBacklogItemElt = (
     return (
         <BacklogItemCard
             key={buildBacklogItemKey(item)}
+            buildItemMenu={productBacklogItemMenuBuilder}
             estimate={item.estimate}
             internalId={`${item.id}`}
             itemId={calcItemId(item.externalId, item.friendlyId)}
@@ -401,6 +404,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 renderElts.push(
                     <BacklogItemCard
                         key={cardKey}
+                        buildItemMenu={productBacklogItemMenuBuilder}
                         estimate={null}
                         internalId={buildSpacerInternalId(item.id)}
                         itemId={null}
