@@ -14,7 +14,7 @@ import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 import { AddButton } from "../../../molecules/buttons/AddButton";
 
 // interfaces/types
-import { BacklogItemCard } from "../../../molecules/cards/BacklogItemCard";
+import { BacklogItemCard, ItemMenuEventHandlers } from "../../../molecules/cards/BacklogItemCard";
 import { SprintBacklogItem } from "../../../../reducers/sprintBacklogReducer";
 import { SprintPlanningPanelSprint } from "./sprintPlanningPanelTypes";
 import { VerticalCollapseIcon } from "../../../atoms/icons/VerticalCollapseIcon";
@@ -22,7 +22,7 @@ import { VerticalExpandIcon } from "../../../atoms/icons/VerticalExpandIcon";
 
 // utils
 import { buildBacklogItemKey, calcItemId } from "../../../molecules/cards/BacklogItemCard";
-import { productBacklogItemMenuBuilder } from "../../../common/itemMenuBuilders";
+import { sprintBacklogItemMenuBuilder } from "../../../common/itemMenuBuilders";
 
 // consts/enums
 import { BacklogItemTypeEnum } from "../../../molecules/cards/BacklogItemCard";
@@ -39,6 +39,7 @@ export interface SprintPanelDispatchProps {
     onAddBacklogItem: { (): void };
     onExpandCollapse: { (id: string, expand: boolean): void };
     onDetailClicked: { (id: string) };
+    onMoveItemToBacklogClicked: { (id: string) };
 }
 
 export type SprintPanelProps = SprintPanelStateProps & SprintPanelDispatchProps & WithTranslation;
@@ -48,13 +49,23 @@ export const getBacklogItemElts = (
     openedDetailMenuBacklogItemId: string,
     renderMobile: boolean,
     backlogItems: SprintBacklogItem[],
-    onDetailClicked: { (backlogItemId: string) }
+    onDetailClicked: { (backlogItemId: string) },
+    onMoveItemToBacklogClicked: { (itemId: string) }
 ) => {
+    const eventHandlers: ItemMenuEventHandlers = {
+        handleEvent: (eventName: string, itemId: string) => {
+            if (eventName === "onMoveItemToBacklogClicked") {
+                onMoveItemToBacklogClicked(itemId);
+            } else {
+                throw Error(`${eventName} is not handled`);
+            }
+        }
+    };
     return backlogItems.map((backlogItem) => (
         <div key={backlogItem.id}>
             <BacklogItemCard
                 key={buildBacklogItemKey(backlogItem)}
-                buildItemMenu={productBacklogItemMenuBuilder}
+                buildItemMenu={sprintBacklogItemMenuBuilder(eventHandlers)}
                 estimate={backlogItem.estimate}
                 internalId={`${backlogItem.id}`}
                 itemId={calcItemId(backlogItem.externalId, backlogItem.friendlyId)}
@@ -93,7 +104,8 @@ export const InnerSprintPanel: React.FC<SprintPanelProps> = (props) => {
               props.openedDetailMenuBacklogItemId,
               props.renderMobile || false,
               props.backlogItems,
-              handleDetailClicked
+              handleDetailClicked,
+              props.onMoveItemToBacklogClicked
           )
         : "[ loading... ]";
     const actionButtonElts =

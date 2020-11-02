@@ -14,7 +14,8 @@ import {
     buildBacklogItemPlanningItemKey,
     buildDividerKey,
     calcItemId,
-    ItemMenuBuilder
+    ItemMenuBuilder,
+    ItemMenuEventHandlers
 } from "../../../molecules/cards/BacklogItemCard";
 import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 
@@ -68,10 +69,15 @@ export const buildDragBacklogItemElt = (
     offsetTop: number,
     width: any
 ) => {
+    const itemEventHandlers: ItemMenuEventHandlers = {
+        handleEvent: (eventName: string, itemId: string) => {
+            throw Error(`unexpected condition- event ${eventName} should not be triggered while element is being dragged`);
+        }
+    };
     return (
         <BacklogItemCard
             key={buildBacklogItemKey(item)}
-            buildItemMenu={productBacklogItemMenuBuilder}
+            buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
             estimate={item.estimate}
             internalId={`${item.id}`}
             itemId={calcItemId(item.externalId, item.friendlyId)}
@@ -401,10 +407,21 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 const cardKey = `none---${item.id}---none`;
                 renderElts.push(<SimpleDivider key={`divider-${cardKey}`} />);
                 const showDetailMenu = item.id === props.openedDetailMenuBacklogItemId;
+                const itemEventHandlers: ItemMenuEventHandlers = {
+                    handleEvent: (eventName: string, itemId: string) => {
+                        if (eventName === "onRemoveItemClicked") {
+                            dispatch(apiDeleteBacklogItem(item.id));
+                        } else if (eventName === "onEditItemClicked") {
+                            dispatch(editBacklogItem(item.id));
+                        } else {
+                            throw Error(`${eventName} is not handled`);
+                        }
+                    }
+                };
                 renderElts.push(
                     <BacklogItemCard
                         key={cardKey}
-                        buildItemMenu={productBacklogItemMenuBuilder}
+                        buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
                         estimate={null}
                         internalId={buildSpacerInternalId(item.id)}
                         itemId={null}
@@ -417,12 +434,6 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         marginBelowItem
                         onDetailClicked={() => {
                             dispatch(backlogItemDetailClicked(item.id));
-                        }}
-                        onRemoveItemClicked={(backlogItemId) => {
-                            dispatch(apiDeleteBacklogItem(item.id));
-                        }}
-                        onEditItemClicked={(backlogItemId) => {
-                            dispatch(editBacklogItem(item.id));
                         }}
                         onCheckboxChange={(checked) => {
                             if (checked) {

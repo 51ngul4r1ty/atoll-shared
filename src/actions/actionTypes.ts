@@ -132,3 +132,5 @@ export const MOVE_SELECTED_BACKLOG_ITEMS_TO_SPRINT = "app/add:selected-sprint-ba
 export const MOVE_BACKLOG_ITEM_TO_SPRINT = "app/add:sprint-backlog-item";
 
 export const TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL = "app/toggle:sprint-backlog-item";
+
+export const MOVE_SPRINT_BACKLOG_ITEM_TO_BACKLOG = "app/move-to-backlog:sprint-backlog-item";

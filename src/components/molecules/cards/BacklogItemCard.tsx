@@ -74,15 +74,23 @@ export enum BacklogItemTypeEnum {
 }
 
 export interface ItemMenuEventHandler {
-    (itemId: string): void;
+    (eventName: string, itemId: string): void;
 }
 
 export interface ItemMenuEventHandlers {
-    [handlerName: string]: ItemMenuEventHandler;
+    handleEvent: ItemMenuEventHandler;
 }
 
+// export interface ItemEventHandlerMapItem {
+//     (itemId: string): void;
+// }
+
+// export interface ItemEventHandlerMap {
+//     [eventHandlerName: string]: ItemMenuEventHandler;
+// }
+
 export interface ItemMenuBuilder {
-    (itemId: string, showMenuToLeft: boolean, eventHandlers?: ItemMenuEventHandlers);
+    (itemId: string, showMenuToLeft: boolean);
 }
 
 export interface BacklogItemCardStateProps {
@@ -119,7 +127,7 @@ export type InnerBacklogItemCardProps = BacklogItemCardProps & WithTranslation;
 /* exported components */
 
 export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props) => {
-    const detailMenu = props.showDetailMenu ? props?.buildItemMenu(props.internalId, props.showDetailMenuToLeft) : null;
+    const detailMenu = props.showDetailMenu ? props.buildItemMenu(props.internalId, props.showDetailMenuToLeft) : null;
     const outerClassNameToUse = buildClassName(css.backlogItemCardOuter, props.renderMobile ? css.mobile : null);
     const classNameToUse = buildClassName(
         css.backlogItemCard,

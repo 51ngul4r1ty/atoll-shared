@@ -29,9 +29,10 @@
     "sync:core": "cd .. && cd atoll-core && npx --no-install yalc add @atoll/shared && cd .. && cd atoll-shared",
     "sync": "npm run local-publish && npm run sync:core",
     "push": "npx --no-install yalc push",
-    "test": "npm run test:ci",
+    "test": "npm run test:tsc && npm run test:ci",
     "test:watch": "jest --watch --env=jsdom --coverage",
     "test:ci": "jest --env=jsdom --coverage",
+    "test:tsc": "tsc --noEmit --project tsconfig.json",
     "test:update": "cross-env CI=true yarn-or-npm test --updateSnapshot",
     "test:report": "open-cli ./coverage/lcov-report/index.html"
   },

@@ -6,15 +6,25 @@ import { ItemMenuBuilder, ItemMenuEventHandlers } from "../molecules/cards/Backl
 
 // components
 import { ProductBacklogItemMenu } from "../molecules/menus/ProductBacklogItemMenu";
+import { SprintBacklogItemMenu } from "../molecules/menus/SprintBacklogItemMenu";
 
-export const productBacklogItemMenuBuilder: ItemMenuBuilder = (
+export const productBacklogItemMenuBuilder = (eventHandlers: ItemMenuEventHandlers): ItemMenuBuilder => (
     itemId: string,
-    showMenuToLeft: boolean,
-    eventHandlers: ItemMenuEventHandlers
+    showMenuToLeft: boolean
 ) => (
     <ProductBacklogItemMenu
         showDetailMenuToLeft={showMenuToLeft}
-        onEditItemClicked={() => eventHandlers.onEditItemClicked(itemId)}
-        onRemoveItemClicked={() => eventHandlers.onRemoveItemClicked(itemId)}
+        onEditItemClicked={() => eventHandlers.handleEvent("onEditItemClicked", itemId)}
+        onRemoveItemClicked={() => eventHandlers.handleEvent("onRemoveItemClicked", itemId)}
+    />
+);
+
+export const sprintBacklogItemMenuBuilder = (eventHandlers: ItemMenuEventHandlers): ItemMenuBuilder => (
+    itemId: string,
+    showMenuToLeft: boolean
+) => (
+    <SprintBacklogItemMenu
+        showDetailMenuToLeft={showMenuToLeft}
+        onMoveItemToBacklogClicked={() => eventHandlers.handleEvent("onMoveItemToBacklogClicked", itemId)}
     />
 );

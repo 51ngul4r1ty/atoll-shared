@@ -27,7 +27,11 @@ import {
     getOpenedDetailMenuBacklogItemId,
     getSelectedBacklogItemCount
 } from "./selectors/backlogItemSelectors";
-import { moveSelectedBacklogItemsToSprintUsingApi, sprintBacklogItemDetailClicked } from "./actions/sprintBacklogActions";
+import {
+    moveSelectedBacklogItemsToSprintUsingApi,
+    sprintBacklogItemDetailClicked,
+    sprintMoveItemToBacklogClicked
+} from "./actions/sprintBacklogActions";
 import { getAppEditMode, getElectronClient } from "./selectors/appSelectors";
 import { getOpenedDetailMenuInfo } from "./selectors/sprintBacklogSelectors";
 
@@ -66,7 +70,9 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
             }
         },
         onItemDetailClicked: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintBacklogItemDetailClicked(sprintId, backlogItemId))
+            dispatch(sprintBacklogItemDetailClicked(sprintId, backlogItemId)),
+        onMoveItemToBacklogClicked: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintMoveItemToBacklogClicked(sprintId, backlogItemId))
     };
 };
 

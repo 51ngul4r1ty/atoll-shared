@@ -58,3 +58,21 @@ export const sprintBacklogItemDetailClicked = (sprintId, backlogItemId: string):
         itemId: backlogItemId
     }
 });
+
+export interface SprintMoveItemToBacklogClickedPayload {
+    sprintId: string;
+    backlogItemId: string;
+}
+
+export interface SprintMoveItemToBacklogClickedAction {
+    type: typeof ActionTypes.MOVE_SPRINT_BACKLOG_ITEM_TO_BACKLOG;
+    payload: SprintMoveItemToBacklogClickedPayload;
+}
+
+export const sprintMoveItemToBacklogClicked = (sprintId, backlogItemId: string): SprintMoveItemToBacklogClickedAction => ({
+    type: ActionTypes.MOVE_SPRINT_BACKLOG_ITEM_TO_BACKLOG,
+    payload: {
+        sprintId,
+        backlogItemId
+    }
+});

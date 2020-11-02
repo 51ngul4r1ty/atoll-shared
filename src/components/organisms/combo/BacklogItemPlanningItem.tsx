@@ -7,7 +7,7 @@ import { BacklogItemWithSource } from "../../../reducers/backlogItems/backlogIte
 import { EditMode } from "../../molecules/buttons/EditButton";
 import { SimpleDivider } from "../../atoms/dividers/SimpleDivider";
 import { BacklogItemDetailForm } from "../forms/BacklogItemDetailForm";
-import { BacklogItemCard, BacklogItemTypeEnum } from "../../molecules/cards/BacklogItemCard";
+import { BacklogItemCard, BacklogItemTypeEnum, ItemMenuEventHandlers } from "../../molecules/cards/BacklogItemCard";
 
 // utils
 import { calcItemId } from "../../molecules/cards/BacklogItemCard";
@@ -90,11 +90,22 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
             </>
         );
     } else {
+        const itemEventHandlers: ItemMenuEventHandlers = {
+            handleEvent: (eventName: string, itemId: string) => {
+                if (eventName === "onEditItemClicked") {
+                    dispatch(editBacklogItem(props.id));
+                } else if (eventName === "onRemoveItemClicked") {
+                    dispatch(apiDeleteBacklogItem(props.id));
+                } else {
+                    throw Error(`${eventName} is not handled`);
+                }
+            }
+        };
         return (
             <>
                 <SimpleDivider key={`divider-saved-${props.id}`} hidden={props.hidden} highlighted={props.highlightAbove} />
                 <BacklogItemCard
-                    buildItemMenu={productBacklogItemMenuBuilder}
+                    buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
                     estimate={props.estimate}
                     hasDetails={props.editMode === EditMode.Edit}
                     hidden={props.hidden}
@@ -111,12 +122,6 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     titleText={props.storyPhrase}
                     onDetailClicked={() => {
                         dispatch(backlogItemDetailClicked(props.id));
-                    }}
-                    onEditItemClicked={(itemId: string) => {
-                        dispatch(editBacklogItem(props.id));
-                    }}
-                    onRemoveItemClicked={(backlogItemId) => {
-                        dispatch(apiDeleteBacklogItem(props.id));
                     }}
                     onCheckboxChange={(checked) => {
                         if (checked) {

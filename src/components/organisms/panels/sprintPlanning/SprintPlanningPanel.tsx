@@ -29,6 +29,7 @@ export interface SprintPlanningPanelDispatchProps {
     onAddNewSprint: { (): void };
     onAddBacklogItem: { (sprintId: string): void };
     onDetailClicked: { (sprintId: string, backlogItemId: string): void };
+    onMoveItemToBacklogClicked: { (sprintId: string, backlogItemId: string): void };
 }
 
 export type SprintPlanningPanelProps = SprintPlanningPanelStateProps & SprintPlanningPanelDispatchProps & WithTranslation;
@@ -47,6 +48,11 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
     const onDetailClicked = (sprintId: string, backlogItemId: string) => {
         if (props.onDetailClicked) {
             props.onDetailClicked(sprintId, backlogItemId);
+        }
+    };
+    const onMoveItemToBacklogClicked = (sprintId: string, backlogItemId: string) => {
+        if (props.onMoveItemToBacklogClicked) {
+            props.onMoveItemToBacklogClicked(sprintId, backlogItemId);
         }
     };
     const classNameToUse = buildClassName(
@@ -76,6 +82,9 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                     }}
                     onDetailClicked={(backlogItemId: string) => {
                         onDetailClicked(sprint.id, backlogItemId);
+                    }}
+                    onMoveItemToBacklogClicked={(backlogItemId: string) => {
+                        onMoveItemToBacklogClicked(sprint.id, backlogItemId);
                     }}
                 />
             </div>
