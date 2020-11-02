@@ -12,6 +12,7 @@ export const POST_ACTION_REORDER_BACKLOG_ITEM = "reorder-backlog-item";
 
 export const GET_SPRINT_BACKLOG_ITEMS = "get-sprint-backlog-items";
 export const POST_SPRINT_BACKLOG_ITEM = "post-sprint-backlog-item";
+export const DELETE_SPRINT_BACKLOG_ITEMS = "delete-sprint-backlog-item";
 
 export const POST_BACKLOG_ITEM = "add-backlog-item";
 export const PUT_BACKLOG_ITEM = "update-backlog-item";

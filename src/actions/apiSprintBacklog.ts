@@ -132,3 +132,21 @@ export const apiBatchAddBacklogItemsToSprint = (
         }
     };
 };
+
+export const apiMoveSprintItemToProductBacklog = (sprintId: string, backlogItemId: string) => {
+    return {
+        type: API,
+        payload: {
+            endpoint: `${getApiBaseUrl()}api/v1/sprints/${sprintId}/backlog-items/${backlogItemId}`,
+            method: "DELETE",
+            headers: { Accept: APPLICATION_JSON },
+            types: buildActionTypes(ApiActionNames.DELETE_SPRINT_BACKLOG_ITEMS)
+        },
+        // TODO: Provide a way to do this automatically with any dispatch API call
+        meta: {
+            actionParams: {
+                sprintId
+            }
+        }
+    };
+};

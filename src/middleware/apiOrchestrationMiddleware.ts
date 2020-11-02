@@ -50,8 +50,15 @@ import { convertToBacklogItemModel } from "../utils/apiPayloadHelper";
 // interfaces/types
 import { ResourceTypes } from "../reducers/apiLinksReducer";
 import { ExpandSprintPanelAction } from "../actions/sprintActions";
-import { apiBatchAddBacklogItemsToSprint, apiGetSprintBacklogItems } from "../actions/apiSprintBacklog";
-import { MoveSelectedBacklogItemsToSprintUsingApiAction } from "../actions/sprintBacklogActions";
+import {
+    apiBatchAddBacklogItemsToSprint,
+    apiGetSprintBacklogItems,
+    apiMoveSprintItemToProductBacklog
+} from "../actions/apiSprintBacklog";
+import {
+    MoveSelectedBacklogItemsToSprintUsingApiAction,
+    SprintMoveItemToBacklogClickedAction
+} from "../actions/sprintBacklogActions";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
@@ -153,6 +160,13 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const sprintId = actionTyped.payload.sprintId;
             const selectedItems = getSelectedBacklogItemIds(state);
             storeTyped.dispatch(apiBatchAddBacklogItemsToSprint(sprintId, selectedItems));
+            break;
+        }
+        case ActionTypes.MOVE_SPRINT_BACKLOG_ITEM_TO_BACKLOG: {
+            const actionTyped = action as SprintMoveItemToBacklogClickedAction;
+            const sprintId = actionTyped.payload.sprintId;
+            const backlogItemId = actionTyped.payload.backlogItemId;
+            storeTyped.dispatch(apiMoveSprintItemToProductBacklog(sprintId, backlogItemId));
             break;
         }
     }
