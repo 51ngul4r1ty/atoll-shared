@@ -64,12 +64,14 @@ export const API_GET_SPRINTS_FAILURE = buildActionName(Names.GET_SPRINTS, "failu
 export const API_GET_SPRINT_BACKLOG_ITEMS_REQUEST = buildActionName(Names.GET_SPRINT_BACKLOG_ITEMS, "request");
 export const API_GET_SPRINT_BACKLOG_ITEMS_SUCCESS = buildActionName(Names.GET_SPRINT_BACKLOG_ITEMS, "success");
 export const API_GET_SPRINT_BACKLOG_ITEMS_FAILURE = buildActionName(Names.GET_SPRINT_BACKLOG_ITEMS, "failure");
-// #endregion
 
-// #region Sprint Backlog Resource
 export const API_POST_SPRINT_BACKLOG_ITEM_REQUEST = buildActionName(Names.POST_SPRINT_BACKLOG_ITEM, "request");
 export const API_POST_SPRINT_BACKLOG_ITEM_SUCCESS = buildActionName(Names.POST_SPRINT_BACKLOG_ITEM, "success");
 export const API_POST_SPRINT_BACKLOG_ITEM_FAILURE = buildActionName(Names.POST_SPRINT_BACKLOG_ITEM, "failure");
+
+export const API_DELETE_SPRINT_BACKLOG_ITEM_REQUEST = buildActionName(Names.DELETE_SPRINT_BACKLOG_ITEM, "request");
+export const API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS = buildActionName(Names.DELETE_SPRINT_BACKLOG_ITEM, "success");
+export const API_DELETE_SPRINT_BACKLOG_ITEM_FAILURE = buildActionName(Names.DELETE_SPRINT_BACKLOG_ITEM, "failure");
 // #endregion
 
 // #region Post Actions
@@ -133,4 +135,8 @@ export const MOVE_BACKLOG_ITEM_TO_SPRINT = "app/add:sprint-backlog-item";
 
 export const TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL = "app/toggle:sprint-backlog-item";
 
-export const MOVE_SPRINT_BACKLOG_ITEM_TO_BACKLOG = "app/move-to-backlog:sprint-backlog-item";
+// TODO: Rename this to make it obvious UI action performed
+export const MOVE_SPRINT_ITEM_TO_PRODUCT_BACKLOG_CLICKED = "app/move-to-backlog:sprint-backlog-item";
+
+export const ADD_PRODUCT_BACKLOG_ITEM = "app/add:product-backlog-item";
+export const REMOVE_SPRINT_BACKLOG_ITEM = "app/remove:sprint-backlog-item";

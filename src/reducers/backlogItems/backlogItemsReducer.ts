@@ -23,7 +23,8 @@ import {
     EditBacklogItemAction,
     CancelEditBacklogItemAction,
     UpdateBacklogItemAction,
-    SelectProductBacklogItemAction
+    SelectProductBacklogItemAction,
+    AddProductBacklogItemAction
 } from "../../actions/backlogItemActions";
 import { AppClickAction, AppKeyUpAction } from "../../actions/appActions";
 import { BacklogItemsState, BacklogItemWithSource, PushState, SaveableBacklogItem } from "./backlogItemsReducerTypes";
@@ -38,7 +39,7 @@ import {
     updateItemFieldsInAllItems
 } from "./backlogItemsReducerHelper";
 import { mapApiItemsToBacklogItems, mapApiItemToBacklogItem } from "../../mappers/backlogItemMappers";
-import { MoveBacklogItemToSprintAction } from "../../actions/sprintBacklogActions";
+import { MoveBacklogItemToSprintAction, SprintMoveItemToBacklogClickedAction } from "../../actions/sprintBacklogActions";
 import { calcDropDownMenuState } from "../../utils/dropdownMenuUtils";
 
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
@@ -298,6 +299,20 @@ export const backlogItemsReducer = (
                 const backlogItemId = actionTyped.payload.backlogItem.id;
                 removeBacklogItem(draft, backlogItemId);
                 unselectProductBacklogItemId(draft, backlogItemId);
+                return;
+            }
+            case ActionTypes.ADD_PRODUCT_BACKLOG_ITEM: {
+                const actionTyped = action as AddProductBacklogItemAction;
+                const newItem: SaveableBacklogItem = {
+                    ...actionTyped.payload.backlogItem,
+                    saved: true
+                };
+                draft.items = [newItem, ...draft.items];
+                rebuildAllItems(draft);
+                return;
+            }
+            case ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_FAILURE: {
+                // TODO: Handle failure - it may not be here though, probably needs to be at app level for message?
                 return;
             }
         }

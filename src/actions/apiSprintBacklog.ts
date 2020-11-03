@@ -133,20 +133,34 @@ export const apiBatchAddBacklogItemsToSprint = (
     };
 };
 
+export interface ApiMoveSprintItemToProductBacklogActionParams {
+    sprintId: string;
+    backlogItemId: string;
+}
+
+export interface ApiMoveSprintItemToProductBacklogSuccessAction {
+    type: typeof ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS;
+    payload: ApiActionSuccessPayloadForItem<ApiBacklogItem>;
+    meta: ApiActionMetaDataRequestMeta<{}, ApiMoveSprintItemToProductBacklogActionParams>;
+}
+
 export const apiMoveSprintItemToProductBacklog = (sprintId: string, backlogItemId: string) => {
+    const actionParams: ApiMoveSprintItemToProductBacklogActionParams = {
+        sprintId,
+        backlogItemId
+    };
     return {
         type: API,
         payload: {
             endpoint: `${getApiBaseUrl()}api/v1/sprints/${sprintId}/backlog-items/${backlogItemId}`,
             method: "DELETE",
             headers: { Accept: APPLICATION_JSON },
-            types: buildActionTypes(ApiActionNames.DELETE_SPRINT_BACKLOG_ITEMS)
+            types: buildActionTypes(ApiActionNames.DELETE_SPRINT_BACKLOG_ITEM)
         },
         // TODO: Provide a way to do this automatically with any dispatch API call
+        // TODO: I REALLY MEAN IT - DO IT NOW!!!
         meta: {
-            actionParams: {
-                sprintId
-            }
+            actionParams
         }
     };
 };

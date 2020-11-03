@@ -30,7 +30,8 @@ import {
     UpdateBacklogItemAction,
     SaveNewBacklogItemAction,
     ReorderBacklogItemAction,
-    CancelEditBacklogItemAction
+    CancelEditBacklogItemAction,
+    addProductBacklogItem
 } from "../actions/backlogItemActions";
 import { postLogin, ActionPostLoginSuccessAction, ActionPostRefreshTokenSuccessAction } from "../actions/authActions";
 import { routePlanView } from "../actions/routeActions";
@@ -53,12 +54,15 @@ import { ExpandSprintPanelAction } from "../actions/sprintActions";
 import {
     apiBatchAddBacklogItemsToSprint,
     apiGetSprintBacklogItems,
-    apiMoveSprintItemToProductBacklog
+    apiMoveSprintItemToProductBacklog,
+    ApiMoveSprintItemToProductBacklogSuccessAction
 } from "../actions/apiSprintBacklog";
 import {
     MoveSelectedBacklogItemsToSprintUsingApiAction,
+    removeSprintBacklogItem,
     SprintMoveItemToBacklogClickedAction
 } from "../actions/sprintBacklogActions";
+import { getSprintBacklogItemById } from "../selectors/sprintBacklogSelectors";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
@@ -162,11 +166,21 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             storeTyped.dispatch(apiBatchAddBacklogItemsToSprint(sprintId, selectedItems));
             break;
         }
-        case ActionTypes.MOVE_SPRINT_BACKLOG_ITEM_TO_BACKLOG: {
+        case ActionTypes.MOVE_SPRINT_ITEM_TO_PRODUCT_BACKLOG_CLICKED: {
             const actionTyped = action as SprintMoveItemToBacklogClickedAction;
             const sprintId = actionTyped.payload.sprintId;
             const backlogItemId = actionTyped.payload.backlogItemId;
             storeTyped.dispatch(apiMoveSprintItemToProductBacklog(sprintId, backlogItemId));
+            break;
+        }
+        case ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS: {
+            const actionTyped = action as ApiMoveSprintItemToProductBacklogSuccessAction;
+            const sprintId = actionTyped.meta.actionParams.sprintId;
+            const backlogItemId = actionTyped.meta.actionParams.backlogItemId;
+            const state = storeTyped.getState();
+            const backlogItem = getSprintBacklogItemById(state, sprintId, backlogItemId);
+            storeTyped.dispatch(addProductBacklogItem(backlogItem));
+            storeTyped.dispatch(removeSprintBacklogItem(sprintId, backlogItemId));
             break;
         }
     }

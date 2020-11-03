@@ -8,6 +8,7 @@ import { BacklogItemDetailFormEditableFieldsWithInstanceId } from "../components
 // actions
 import { apiGetBacklogItems } from "./apiBacklogItems";
 import { WebsocketPushNotificationData } from "../types";
+import { BacklogItemWithSource } from "../reducers/backlogItems/backlogItemsReducerTypes";
 
 export const refreshBacklogItems = () => apiGetBacklogItems();
 
@@ -176,5 +177,19 @@ export const unselectProductBacklogItem = (itemId: string): UnselectProductBackl
     type: ActionTypes.UNSELECT_PRODUCT_BACKLOG_ITEM,
     payload: {
         itemId
+    }
+});
+
+export interface AddProductBacklogItemPayload {
+    backlogItem: BacklogItemWithSource;
+}
+export interface AddProductBacklogItemAction {
+    type: typeof ActionTypes.ADD_PRODUCT_BACKLOG_ITEM;
+    payload: AddProductBacklogItemPayload;
+}
+export const addProductBacklogItem = (backlogItem: BacklogItemWithSource) => ({
+    type: ActionTypes.ADD_PRODUCT_BACKLOG_ITEM,
+    payload: {
+        backlogItem
     }
 });
