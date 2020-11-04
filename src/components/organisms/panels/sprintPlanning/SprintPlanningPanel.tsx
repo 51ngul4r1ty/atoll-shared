@@ -11,7 +11,7 @@ import { buildClassName } from "../../../../utils/classNameBuilder";
 // interfaces/types
 import { SprintPlanningPanelSprint } from "./sprintPlanningPanelTypes";
 import { SprintPanel } from "./SprintPanel";
-import { addActionButtons } from "./sprintPlanningPanelJsxUtils";
+import { addBottomActionButtons, addTopActionButtons } from "./sprintPlanningPanelJsxUtils";
 import { EditMode } from "../../../molecules/buttons/EditButton";
 import { OpenedDetailMenuInfo } from "../../../../selectors/sprintBacklogSelectors";
 
@@ -26,7 +26,8 @@ export interface SprintPlanningPanelStateProps {
 
 export interface SprintPlanningPanelDispatchProps {
     onExpandCollapse: { (id: string, expand: boolean): void };
-    onAddNewSprint: { (): void };
+    onAddNewSprintBefore: { (): void };
+    onAddNewSprintAfter: { (): void };
     onAddBacklogItem: { (sprintId: string): void };
     onDetailClicked: { (sprintId: string, backlogItemId: string): void };
     onMoveItemToBacklogClicked: { (sprintId: string, backlogItemId: string): void };
@@ -62,7 +63,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
         props.renderMobile ? css.mobile : null
     );
     let renderElts = [];
-    addActionButtons(renderElts, props.editMode, false, props.onAddNewSprint, props.renderMobile);
+    addTopActionButtons(renderElts, css.topPanel, props.editMode, false, props.onAddNewSprintBefore, props.renderMobile);
     props.sprints.forEach((sprint) => {
         const openedDetailMenuBacklogItemId =
             sprint.id && sprint.id === props.openedDetailMenuInfo.sprintId ? props.openedDetailMenuInfo.backlogItemId : null;
@@ -91,6 +92,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
         );
         renderElts.push(sprintItemElt);
     });
+    addBottomActionButtons(renderElts, css.bottomPanel, props.editMode, false, props.onAddNewSprintAfter, props.renderMobile);
     return <div className={classNameToUse}>{renderElts}</div>;
 };
 

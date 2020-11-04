@@ -18,23 +18,28 @@ import css from "./SprintPlanningPanel.module.css";
 
 export const addActionButtons = (
     renderElts: any[],
+    className: string,
     editMode: EditMode,
     suppressTopPadding: boolean,
     onAddNewSprint: OnAddNewSprint,
-    renderMobile: boolean
+    addSprintButtonSuffix: string,
+    renderMobile: boolean,
+    buttonsEnabled: boolean
 ) => {
     if (editMode === EditMode.View) {
         return;
     }
     const actionButtonsClassName = buildClassName(
         css.sprintPlanningActionPanel,
+        className,
         //        suppressTopPadding ? null : css.embeddedBacklogItemUserStoryFormRow,
         renderMobile ? css.mobile : null
     );
     renderElts.push(
         <div key="sprint-action-buttons" className={actionButtonsClassName}>
             <AddButton
-                itemName="sprint"
+                disabled={!buttonsEnabled}
+                itemName={`sprint ${addSprintButtonSuffix}`}
                 onClick={() => {
                     onAddNewSprint();
                 }}
@@ -42,3 +47,21 @@ export const addActionButtons = (
         </div>
     );
 };
+
+export const addTopActionButtons = (
+    renderElts: any[],
+    topPanelClassName: string,
+    editMode: EditMode,
+    suppressTopPadding: boolean,
+    onAddNewSprint: OnAddNewSprint,
+    renderMobile: boolean
+) => addActionButtons(renderElts, topPanelClassName, editMode, suppressTopPadding, onAddNewSprint, "before", renderMobile, false);
+
+export const addBottomActionButtons = (
+    renderElts: any[],
+    bottomPanelClassName: string,
+    editMode: EditMode,
+    suppressTopPadding: boolean,
+    onAddNewSprint: OnAddNewSprint,
+    renderMobile: boolean
+) => addActionButtons(renderElts, bottomPanelClassName, editMode, suppressTopPadding, onAddNewSprint, "after", renderMobile, true);

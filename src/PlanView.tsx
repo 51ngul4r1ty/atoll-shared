@@ -96,7 +96,14 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                                 this.props.onExpandCollapse(sprintId, expand);
                             }
                         }}
-                        onAddNewSprint={() => {
+                        onAddNewSprintBefore={() => {
+                            // TODO: Differentiate this from "after"
+                            if (this.props.onAddNewSprint) {
+                                this.props.onAddNewSprint();
+                            }
+                        }}
+                        onAddNewSprintAfter={() => {
+                            // TODO: Differentiate this from "after"
                             if (this.props.onAddNewSprint) {
                                 this.props.onAddNewSprint();
                             }
