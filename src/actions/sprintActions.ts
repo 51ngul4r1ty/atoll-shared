@@ -35,11 +35,11 @@ export interface AddNewSprintActionPayload {
     instanceId: number;
 }
 export interface AddNewSprintAction {
-    type: typeof ActionTypes.ADD_SPRINT;
+    type: typeof ActionTypes.ADD_SPRINT_FORM;
     payload: AddNewSprintActionPayload;
 }
 export const addNewSprint = (): AddNewSprintAction => ({
-    type: ActionTypes.ADD_SPRINT,
+    type: ActionTypes.ADD_SPRINT_FORM,
     payload: {
         instanceId: ++lastInstanceId
     }
