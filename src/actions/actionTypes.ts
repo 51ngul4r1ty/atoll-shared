@@ -130,6 +130,8 @@ export const COLLAPSE_SPRINT_PANEL = "app/collapse:sprint-panel";
 
 export const ADD_SPRINT_FORM = "app/add:sprint-form";
 
+export const ADD_SPRINT = "app/add:sprint";
+
 export const MOVE_SELECTED_BACKLOG_ITEMS_TO_SPRINT = "app/add:selected-sprint-backlog-items";
 export const MOVE_BACKLOG_ITEM_TO_SPRINT = "app/add:sprint-backlog-item";
 

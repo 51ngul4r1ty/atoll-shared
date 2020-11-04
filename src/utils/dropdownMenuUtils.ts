@@ -1,5 +1,6 @@
 // interfaces/types
-import { BacklogItemWithSource, PushState } from "../reducers/backlogItems/backlogItemsReducerTypes";
+import { BacklogItemWithSource } from "../reducers/backlogItems/backlogItemsReducerTypes";
+import { PushState } from "../reducers/types";
 
 export const calcDropDownMenuState = (
     openedItemId: string | null,

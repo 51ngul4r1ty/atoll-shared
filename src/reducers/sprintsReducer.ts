@@ -1,5 +1,5 @@
 // externals
-import { produce } from "immer";
+import { Draft, produce } from "immer";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
@@ -8,11 +8,13 @@ import * as ActionTypes from "../actions/actionTypes";
 import { AnyFSA, StandardModelItem } from "../types";
 import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
 import { ApiSprint } from "../apiModelTypes";
+import { PushState, Source } from "./types";
 
 // utils
 import { isoDateStringToDate } from "../utils/apiPayloadConverters";
-import { CollapseSprintPanelAction, ExpandSprintPanelAction } from "../actions/sprintActions";
+import { AddSprintAction, CollapseSprintPanelAction, ExpandSprintPanelAction } from "../actions/sprintActions";
 import { ApiGetSprintBacklogItemsSuccessAction } from "../actions/apiSprintBacklog";
+import { NewSprintPosition } from "../actions/sprintActions";
 
 export interface Sprint extends StandardModelItem {
     name: string;
@@ -29,13 +31,43 @@ export interface Sprint extends StandardModelItem {
     expanded: boolean;
 }
 
+export interface EditableSprint extends Sprint {
+    editing?: boolean;
+}
+
+export interface SaveableSprint extends EditableSprint {
+    instanceId?: number | null;
+    saved?: boolean;
+}
+
+export interface SprintWithSource extends SaveableSprint {
+    source: Source;
+    pushState?: PushState;
+}
+
 export type SprintsState = Readonly<{
+    addedItems: SaveableSprint[];
+    allItems: SprintWithSource[];
     items: Sprint[];
 }>;
 
 export const sprintsReducerInitialState = Object.freeze<SprintsState>({
+    addedItems: [],
+    allItems: [],
     items: []
 });
+
+export const rebuildAllItems = (draft: Draft<SprintsState>) => {
+    const addedItemsWithSource = draft.addedItems.map((item) => {
+        const result: SprintWithSource = { ...item, source: Source.Added };
+        return result;
+    });
+    const itemsWithSource = draft.items.map((item) => {
+        const result: SprintWithSource = { ...item, source: Source.Loaded };
+        return result;
+    });
+    draft.allItems = [...addedItemsWithSource, ...itemsWithSource];
+};
 
 export const mapApiItemToSprint = (apiItem: ApiSprint): Sprint => ({
     id: apiItem.id,
@@ -71,6 +103,7 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                     }
                     item.id;
                 });
+                rebuildAllItems(draft);
                 return;
             }
             case ActionTypes.EXPAND_SPRINT_PANEL: {
@@ -81,12 +114,14 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                     }
                     item.id;
                 });
+                rebuildAllItems(draft);
                 return;
             }
             case ActionTypes.API_GET_BFF_VIEWS_PLAN_SUCCESS: {
                 const actionTyped = action as ApiGetBffViewsPlanSuccessAction;
                 const { payload } = actionTyped;
                 draft.items = mapApiItemsToSprints(payload.response.data.sprints);
+                rebuildAllItems(draft);
                 return;
             }
             case ActionTypes.API_GET_SPRINT_BACKLOG_ITEMS_SUCCESS: {
@@ -95,10 +130,25 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 if (!draft.items) {
                     return;
                 }
-                const sprintItem = draft.items.filter(item => item.id === sprintId);
-                sprintItem.forEach(item => {
+                const sprintItem = draft.items.filter((item) => item.id === sprintId);
+                sprintItem.forEach((item) => {
                     item.backlogItemsLoaded = true;
                 });
+                rebuildAllItems(draft);
+                return;
+            }
+            case ActionTypes.ADD_SPRINT: {
+                const actionTyped = action as AddSprintAction;
+                const position = actionTyped.payload.position;
+                const newItem = actionTyped.payload.sprint;
+                if (position === NewSprintPosition.Before) {
+                    draft.addedItems = [newItem, ...draft.addedItems];
+                } else if (position === NewSprintPosition.After) {
+                    draft.addedItems = [...draft.addedItems, newItem];
+                } else {
+                    throw Error(`Unexpected ${position}`);
+                }
+                rebuildAllItems(draft);
                 return;
             }
         }

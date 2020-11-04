@@ -23,7 +23,8 @@ import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 import { EditMode } from "../../../molecules/buttons/EditButton";
 import { buildClassName } from "../../../../utils/classNameBuilder";
 import { useDispatch } from "react-redux";
-import { BacklogItemSource, SaveableBacklogItem } from "../../../../reducers/backlogItems/backlogItemsReducerTypes";
+import { SaveableBacklogItem } from "../../../../reducers/backlogItems/backlogItemsReducerTypes";
+import { Source } from "../../../../reducers/types";
 
 // actions
 import { apiDeleteBacklogItem } from "../../../../actions/apiBacklogItems";
@@ -379,11 +380,11 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
             renderElts.push(elt);
         }
         let highlightAbove = false;
-        if (item.source === BacklogItemSource.Added) {
+        if (item.source === Source.Added) {
             inAddedSection = true;
             highlightAbove = afterPushedItem;
         }
-        if (item.source === BacklogItemSource.Loaded) {
+        if (item.source === Source.Loaded) {
             highlightAbove = afterPushedItem;
             if (inAddedSection) {
                 renderElts.push(<SimpleDivider key={buildDividerKey(item)} />);
@@ -402,7 +403,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
             }
             inLoadedSection = true;
         }
-        if (item.source === BacklogItemSource.Added || item.source === BacklogItemSource.Loaded) {
+        if (item.source === Source.Added || item.source === Source.Loaded) {
             if (isDragOverItem) {
                 const cardKey = `none---${item.id}---none`;
                 renderElts.push(<SimpleDivider key={`divider-${cardKey}`} />);
@@ -461,8 +462,8 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 />
             );
         }
-        afterPushedItem = item.source === BacklogItemSource.Pushed;
-        lastItemWasUnsaved = item.source === BacklogItemSource.Added && !item.saved;
+        afterPushedItem = item.source === Source.Pushed;
+        lastItemWasUnsaved = item.source === Source.Added && !item.saved;
         suppressTopPadding = false;
     });
     if (!inLoadedSection) {

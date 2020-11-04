@@ -1,7 +1,7 @@
 // consts/enums
 export { APPLICATION_JSON } from "./constants";
 export { FEATURE_TOGGLE_LIST } from "./constants/defaultFeatureToggles";
-export { PushState } from "./reducers/backlogItems/backlogItemsReducerTypes";
+export { PushState } from "./reducers/types";
 export { rootReducerInitialState } from "./reducers/rootReducer";
 
 // components - inputs - atoms
@@ -59,7 +59,8 @@ export { StateTree } from "./reducers/rootReducer";
 export { AppState } from "./reducers/appReducer";
 export { UserState } from "./reducers/userReducer";
 export * from "./apiModelTypes";
-export { BacklogItemSource, BacklogItemWithSource, BacklogItemsState } from "./reducers/backlogItems/backlogItemsReducerTypes";
+export { BacklogItemWithSource, BacklogItemsState } from "./reducers/backlogItems/backlogItemsReducerTypes";
+export { Source } from "./reducers/types";
 export { BacklogItem, BacklogItemType } from "./types/backlogItemTypes";
 export { SprintStatus, SprintPlanningPanelSprint } from "./components/organisms/panels/sprintPlanning/sprintPlanningPanelTypes";
 

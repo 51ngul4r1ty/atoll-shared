@@ -10,8 +10,13 @@ import { StateTree } from "./reducers/rootReducer";
 
 // actions
 import { addNewBacklogItemForm, reorderBacklogItems } from "./actions/backlogItemActions";
-import { addNewSprint, collapseSprintPanel, expandSprintPanel } from "./actions/sprintActions";
+import { addNewSprintForm, collapseSprintPanel, expandSprintPanel, NewSprintPosition } from "./actions/sprintActions";
 import { apiBffViewsPlan } from "./actions/apiBffViewsPlan";
+import {
+    moveSelectedBacklogItemsToSprintUsingApi,
+    sprintBacklogItemDetailClicked,
+    sprintMoveItemToBacklogClicked
+} from "./actions/sprintBacklogActions";
 
 // interfaces/types
 import { BacklogItemType } from "./types/backlogItemTypes";
@@ -27,11 +32,6 @@ import {
     getOpenedDetailMenuBacklogItemId,
     getSelectedBacklogItemCount
 } from "./selectors/backlogItemSelectors";
-import {
-    moveSelectedBacklogItemsToSprintUsingApi,
-    sprintBacklogItemDetailClicked,
-    sprintMoveItemToBacklogClicked
-} from "./actions/sprintBacklogActions";
 import { getAppEditMode, getElectronClient } from "./selectors/appSelectors";
 import { getOpenedDetailMenuInfo } from "./selectors/sprintBacklogSelectors";
 
@@ -59,7 +59,7 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
         },
         onAddNewBacklogItemForm: (type: BacklogItemType) => dispatch(addNewBacklogItemForm(type)),
         onAddBacklogItemToSprint: (sprintId: string) => dispatch(moveSelectedBacklogItemsToSprintUsingApi(sprintId)),
-        onAddNewSprintForm: () => dispatch(addNewSprint()),
+        onAddNewSprintForm: (position: NewSprintPosition) => dispatch(addNewSprintForm(position)),
         onReorderBacklogItems: (sourceItemId: string, targetItemId: string) =>
             dispatch(reorderBacklogItems(sourceItemId, targetItemId)),
         onExpandCollapse: (sprintId: string, expand: boolean) => {

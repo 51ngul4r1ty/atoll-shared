@@ -21,6 +21,7 @@ import { OpenedDetailMenuInfo } from "./selectors/sprintBacklogSelectors";
 
 // components
 import { SprintPlanningPanel } from "./components/organisms/panels/sprintPlanning/SprintPlanningPanel";
+import { NewSprintPosition } from "./actions/sprintActions";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
@@ -43,7 +44,7 @@ export interface PlanViewStateProps {
 export interface PlanViewDispatchProps {
     onAddBacklogItemToSprint: { (sprintId: string): void };
     onAddNewBacklogItemForm: { (type: BacklogItemType): void };
-    onAddNewSprintForm: { (): void };
+    onAddNewSprintForm: { (position: NewSprintPosition): void };
     onExpandCollapse: { (sprintId: string, expand: boolean): void };
     onItemDetailClicked: { (sprintId: string, backlogItemId: string): void };
     onMoveItemToBacklogClicked: { (sprintId: string, backlogItemId: string): void };
@@ -97,15 +98,13 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                             }
                         }}
                         onAddNewSprintBefore={() => {
-                            // TODO: Differentiate this from "after"
                             if (this.props.onAddNewSprintForm) {
-                                this.props.onAddNewSprintForm();
+                                this.props.onAddNewSprintForm(NewSprintPosition.Before);
                             }
                         }}
                         onAddNewSprintAfter={() => {
-                            // TODO: Differentiate this from "after"
                             if (this.props.onAddNewSprintForm) {
-                                this.props.onAddNewSprintForm();
+                                this.props.onAddNewSprintForm(NewSprintPosition.After);
                             }
                         }}
                         onAddBacklogItem={(sprintId: string) => {

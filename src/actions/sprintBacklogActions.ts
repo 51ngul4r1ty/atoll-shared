@@ -2,11 +2,8 @@
 import { BacklogItem } from "../types/backlogItemTypes";
 import * as ActionTypes from "./actionTypes";
 
-// let lastInstanceId = 0;
-
 export interface MoveSelectedBacklogItemsToSprintUsingApiActionPayload {
     sprintId: string;
-    //    instanceId: number;
 }
 
 export interface MoveSelectedBacklogItemsToSprintUsingApiAction {
@@ -17,8 +14,7 @@ export interface MoveSelectedBacklogItemsToSprintUsingApiAction {
 export const moveSelectedBacklogItemsToSprintUsingApi = (sprintId: string): MoveSelectedBacklogItemsToSprintUsingApiAction => ({
     type: ActionTypes.MOVE_SELECTED_BACKLOG_ITEMS_TO_SPRINT,
     payload: {
-        sprintId //,
-        //        instanceId: ++lastInstanceId
+        sprintId
     }
 });
 
@@ -91,29 +87,5 @@ export const removeSprintBacklogItem = (sprintId: string, backlogItemId: string)
     payload: {
         sprintId,
         backlogItemId
-    }
-});
-
-export enum NewSprintPosition {
-    None = 0,
-    Before = 1,
-    After = 2
-}
-
-let lastInstanceId = 0;
-
-export interface AddNewSprintFormActionPayload {
-    instanceId: number;
-    position: NewSprintPosition;
-}
-export interface AddNewSprintFormAction {
-    type: typeof ActionTypes.ADD_BACKLOG_ITEM_FORM;
-    payload: AddNewSprintFormActionPayload;
-}
-export const addNewSprintForm = (position: NewSprintPosition): AddNewSprintFormAction => ({
-    type: ActionTypes.ADD_BACKLOG_ITEM_FORM,
-    payload: {
-        instanceId: ++lastInstanceId,
-        position
     }
 });

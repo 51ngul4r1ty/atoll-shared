@@ -53,3 +53,23 @@ export const getSprintById = (state: StateTree, sprintId: string): Sprint | null
         throw new Error(`Unexpected condition - ${sprints.length} sprint items have sprint ID = "${sprintId}"`);
     }
 };
+
+export const getSprints = (state: StateTree): Sprint[] => state.sprints.allItems;
+
+export const getFirstSprint = (state: StateTree): Sprint => {
+    const items = getSprints(state);
+    if (!items.length) {
+        return null;
+    }
+    const firstItem = items[0];
+    return firstItem;
+};
+
+export const getLastSprint = (state: StateTree): Sprint => {
+    const items = getSprints(state);
+    if (!items.length) {
+        return null;
+    }
+    const lastItem = items[items.length - 1];
+    return lastItem;
+};

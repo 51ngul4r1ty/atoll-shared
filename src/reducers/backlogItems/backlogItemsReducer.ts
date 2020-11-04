@@ -27,7 +27,7 @@ import {
     AddProductBacklogItemAction
 } from "../../actions/backlogItemActions";
 import { AppClickAction, AppKeyUpAction } from "../../actions/appActions";
-import { BacklogItemsState, BacklogItemWithSource, PushState, SaveableBacklogItem } from "./backlogItemsReducerTypes";
+import { BacklogItemsState, BacklogItemWithSource, SaveableBacklogItem } from "./backlogItemsReducerTypes";
 import {
     getBacklogItemById,
     idsMatch,

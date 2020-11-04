@@ -43,6 +43,10 @@ export interface ApiBacklogItem extends StandardItem, StoryPhrases {
     projectId: string | null;
 }
 
+export interface ApiBacklogItemInSprint extends ApiBacklogItem {
+    displayindex: number | null;
+}
+
 export interface ApiBacklogItemRank extends StandardItem {
     projectId: string | null;
     backlogitemId: string | null;

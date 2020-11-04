@@ -1,3 +1,6 @@
+// TODO: Need to figure out what should go here and what should be split out into other middleware
+//       (analysis of different categories of case statements below + look at sprintBacklogItemMiddleware)
+
 /**
  * Purpose: To determine when to make RESTful API calls based on actions that occur.
  * Reason to change: When new RESTful API calls are needed.

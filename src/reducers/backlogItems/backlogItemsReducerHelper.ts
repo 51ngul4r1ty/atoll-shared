@@ -3,20 +3,14 @@ import { Draft } from "immer";
 
 // interfaces/types
 import { PushBacklogItemModel } from "../../middleware/wsMiddleware";
-import {
-    BacklogItemSource,
-    BacklogItemsState,
-    BacklogItemWithSource,
-    EditableBacklogItem,
-    PushState,
-    SaveableBacklogItem
-} from "./backlogItemsReducerTypes";
+import { BacklogItemsState, BacklogItemWithSource, EditableBacklogItem, SaveableBacklogItem } from "./backlogItemsReducerTypes";
 import { BacklogItem, BacklogItemModel } from "../../types/backlogItemTypes";
 import { PushOperationType } from "../../types";
 import {
     BacklogItemDetailFormEditableFields,
     BacklogItemDetailFormEditableFieldsWithInstanceId
 } from "../../components/organisms/forms/BacklogItemDetailForm";
+import { Source, PushState } from "../types";
 
 // utils
 import { LinkedList } from "../../utils/linkedList";
@@ -33,13 +27,13 @@ export const convertSaved = (saved: boolean | undefined): boolean => {
     }
 };
 
-export const addSource = (item: SaveableBacklogItem, source: BacklogItemSource) => ({
+export const addSource = (item: SaveableBacklogItem, source: Source) => ({
     ...item,
     source,
     saved: convertSaved(item.saved)
 });
 
-export const addSourceToPushedItem = (item: Partial<PushBacklogItemModel>, source: BacklogItemSource) => ({
+export const addSourceToPushedItem = (item: Partial<PushBacklogItemModel>, source: Source) => ({
     ...item,
     source,
     saved: convertSaved(undefined)
@@ -48,7 +42,7 @@ export const addSourceToPushedItem = (item: Partial<PushBacklogItemModel>, sourc
 export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>): BacklogItemWithSource => ({
     id: pushedItem.id,
     instanceId: undefined,
-    source: BacklogItemSource.Pushed,
+    source: Source.Pushed,
     createdAt: pushedItem.createdAt,
     updatedAt: pushedItem.updatedAt,
     estimate: pushedItem.estimate,
@@ -63,7 +57,7 @@ export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>
 
 export const addPushedAddedItemsToAllItems = (draft: Draft<BacklogItemsState>, allItems: LinkedList<BacklogItemWithSource>) => {
     const pushedAddedItems = draft.pushedItems.filter((item) => item.operation === PushOperationType.Added);
-    const pushedItems = pushedAddedItems.map((item) => addSourceToPushedItem(item.item, BacklogItemSource.Pushed));
+    const pushedItems = pushedAddedItems.map((item) => addSourceToPushedItem(item.item, Source.Pushed));
     pushedItems.forEach((pushedItem) => {
         const itemData = mapPushedToBacklogItem(pushedItem);
         // TODO: Consider turning on the strict options below for debug mode - so that we catch issues during dev
@@ -115,10 +109,10 @@ export const addPushedUpdatedItemsToAllItemsArray = (draft: Draft<BacklogItemsSt
 export const rebuildAllItems = (draft: Draft<BacklogItemsState>) => {
     const allItems = new LinkedList<BacklogItemWithSource>();
 
-    const addedItems = draft.addedItems.map((item) => addSource(item, BacklogItemSource.Added));
+    const addedItems = draft.addedItems.map((item) => addSource(item, Source.Added));
     allItems.addArray2("id", "instanceId", addedItems);
 
-    const loadedItems = draft.items.map((item) => addSource(item, BacklogItemSource.Loaded));
+    const loadedItems = draft.items.map((item) => addSource(item, Source.Loaded));
     allItems.addArray("id", loadedItems);
 
     addPushedAddedItemsToAllItems(draft, allItems);

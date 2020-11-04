@@ -1,6 +1,7 @@
 // interfaces/types
 import { WebsocketPushNotificationData } from "../../types";
 import { BacklogItem } from "../../types/backlogItemTypes";
+import { PushState, Source } from "../types";
 
 export type SelectedBacklogItems = string[];
 
@@ -13,28 +14,15 @@ export type BacklogItemsState = Readonly<{
     openedDetailMenuBacklogItemId: string | null;
 }>;
 
-export enum BacklogItemSource {
-    Added,
-    Loaded,
-    Pushed
-}
-
 export interface EditableBacklogItem extends BacklogItem {
     editing?: boolean;
 }
 
 export interface SaveableBacklogItem extends EditableBacklogItem {
-    editing?: boolean;
     saved?: boolean;
 }
 
-export enum PushState {
-    None,
-    Changed,
-    Removed
-}
-
 export interface BacklogItemWithSource extends SaveableBacklogItem {
-    source: BacklogItemSource;
+    source: Source;
     pushState?: PushState;
 }

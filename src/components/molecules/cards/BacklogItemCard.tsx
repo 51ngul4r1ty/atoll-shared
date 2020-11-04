@@ -16,7 +16,8 @@ import { StoryIcon } from "../../atoms/icons/StoryIcon";
 import { buildClassName } from "../../../utils/classNameBuilder";
 
 // consts/enums
-import { PushState, SaveableBacklogItem } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
+import { SaveableBacklogItem } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
+import { PushState } from "../../../reducers/types";
 
 // components
 import { ProductBacklogItemMenu } from "../menus/ProductBacklogItemMenu";

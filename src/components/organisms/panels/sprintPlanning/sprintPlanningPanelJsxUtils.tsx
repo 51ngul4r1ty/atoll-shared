@@ -18,6 +18,7 @@ import css from "./SprintPlanningPanel.module.css";
 
 export const addActionButtons = (
     renderElts: any[],
+    key: string,
     className: string,
     editMode: EditMode,
     suppressTopPadding: boolean,
@@ -36,7 +37,7 @@ export const addActionButtons = (
         renderMobile ? css.mobile : null
     );
     renderElts.push(
-        <div key="sprint-action-buttons" className={actionButtonsClassName}>
+        <div key={key} className={actionButtonsClassName}>
             <AddButton
                 disabled={!buttonsEnabled}
                 itemName={`sprint ${addSprintButtonSuffix}`}
@@ -55,7 +56,18 @@ export const addTopActionButtons = (
     suppressTopPadding: boolean,
     onAddNewSprint: OnAddNewSprint,
     renderMobile: boolean
-) => addActionButtons(renderElts, topPanelClassName, editMode, suppressTopPadding, onAddNewSprint, "before", renderMobile, false);
+) =>
+    addActionButtons(
+        renderElts,
+        "sprint-top-action-buttons",
+        topPanelClassName,
+        editMode,
+        suppressTopPadding,
+        onAddNewSprint,
+        "before",
+        renderMobile,
+        false
+    );
 
 export const addBottomActionButtons = (
     renderElts: any[],
@@ -64,4 +76,15 @@ export const addBottomActionButtons = (
     suppressTopPadding: boolean,
     onAddNewSprint: OnAddNewSprint,
     renderMobile: boolean
-) => addActionButtons(renderElts, bottomPanelClassName, editMode, suppressTopPadding, onAddNewSprint, "after", renderMobile, true);
+) =>
+    addActionButtons(
+        renderElts,
+        "sprint-bottom-action-buttons",
+        bottomPanelClassName,
+        editMode,
+        suppressTopPadding,
+        onAddNewSprint,
+        "after",
+        renderMobile,
+        true
+    );

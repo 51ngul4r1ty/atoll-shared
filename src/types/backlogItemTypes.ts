@@ -17,6 +17,8 @@ export interface BacklogItemModel extends BaseModelItem {
     projectId: string; // TODO: Finish up code related to this
 }
 
+// TODO: Maybe move this to "SaveableBacklogItem", is it really needed
+//       for the "base" BacklogItem?
 export interface BacklogItem extends BacklogItemModel {
     instanceId?: number | null;
 }
