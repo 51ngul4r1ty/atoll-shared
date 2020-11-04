@@ -9,7 +9,7 @@ import { PlanView, PlanViewStateProps, PlanViewDispatchProps } from "./PlanView"
 import { StateTree } from "./reducers/rootReducer";
 
 // actions
-import { addNewBacklogItem, reorderBacklogItems } from "./actions/backlogItemActions";
+import { addNewBacklogItemForm, reorderBacklogItems } from "./actions/backlogItemActions";
 import { addNewSprint, collapseSprintPanel, expandSprintPanel } from "./actions/sprintActions";
 import { apiBffViewsPlan } from "./actions/apiBffViewsPlan";
 
@@ -57,9 +57,9 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
         onLoaded: (projectId: string) => {
             dispatch(apiBffViewsPlan());
         },
-        onAddNewBacklogItem: (type: BacklogItemType) => dispatch(addNewBacklogItem(type)),
+        onAddNewBacklogItemForm: (type: BacklogItemType) => dispatch(addNewBacklogItemForm(type)),
         onAddBacklogItemToSprint: (sprintId: string) => dispatch(moveSelectedBacklogItemsToSprintUsingApi(sprintId)),
-        onAddNewSprint: () => dispatch(addNewSprint()),
+        onAddNewSprintForm: () => dispatch(addNewSprint()),
         onReorderBacklogItems: (sourceItemId: string, targetItemId: string) =>
             dispatch(reorderBacklogItems(sourceItemId, targetItemId)),
         onExpandCollapse: (sprintId: string, expand: boolean) => {

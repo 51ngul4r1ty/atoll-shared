@@ -27,7 +27,7 @@ export interface BacklogItemPlanningPanelStateProps {
     openedDetailMenuBacklogItemId: string | null;
 }
 
-export interface OnAddedNewBacklogItem {
+export interface OnAddedNewBacklogItemForm {
     (itemType: BacklogItemType): void;
 }
 
@@ -36,7 +36,7 @@ export interface OnReorderBacklogItems {
 }
 
 export interface BacklogItemPlanningPanelDispatchProps {
-    onAddNewBacklogItem: OnAddedNewBacklogItem;
+    onAddNewBacklogItemForm: OnAddedNewBacklogItemForm;
     onReorderBacklogItems: OnReorderBacklogItems;
 }
 

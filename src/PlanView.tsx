@@ -42,8 +42,8 @@ export interface PlanViewStateProps {
 
 export interface PlanViewDispatchProps {
     onAddBacklogItemToSprint: { (sprintId: string): void };
-    onAddNewBacklogItem: { (type: BacklogItemType): void };
-    onAddNewSprint: { (): void };
+    onAddNewBacklogItemForm: { (type: BacklogItemType): void };
+    onAddNewSprintForm: { (): void };
     onExpandCollapse: { (sprintId: string, expand: boolean): void };
     onItemDetailClicked: { (sprintId: string, backlogItemId: string): void };
     onMoveItemToBacklogClicked: { (sprintId: string, backlogItemId: string): void };
@@ -77,8 +77,8 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                         editMode={this.props.editMode}
                         openedDetailMenuBacklogItemId={this.props.openedDetailMenuBacklogItemId}
                         renderMobile={this.context.state?.isMobile}
-                        onAddNewBacklogItem={(type: BacklogItemType) => {
-                            this.props.onAddNewBacklogItem(type);
+                        onAddNewBacklogItemForm={(type: BacklogItemType) => {
+                            this.props.onAddNewBacklogItemForm(type);
                         }}
                         onReorderBacklogItems={(sourceItemId: string, targetItemId: string) => {
                             this.props.onReorderBacklogItems(sourceItemId, targetItemId);
@@ -98,14 +98,14 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                         }}
                         onAddNewSprintBefore={() => {
                             // TODO: Differentiate this from "after"
-                            if (this.props.onAddNewSprint) {
-                                this.props.onAddNewSprint();
+                            if (this.props.onAddNewSprintForm) {
+                                this.props.onAddNewSprintForm();
                             }
                         }}
                         onAddNewSprintAfter={() => {
                             // TODO: Differentiate this from "after"
-                            if (this.props.onAddNewSprint) {
-                                this.props.onAddNewSprint();
+                            if (this.props.onAddNewSprintForm) {
+                                this.props.onAddNewSprintForm();
                             }
                         }}
                         onAddBacklogItem={(sprintId: string) => {

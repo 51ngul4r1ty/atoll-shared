@@ -5,7 +5,7 @@ import * as React from "react";
 import { AddButton } from "../../../molecules/buttons/AddButton";
 
 // interfaces/types
-import { OnAddedNewBacklogItem } from "./backlogItemPlanningPanelTypes";
+import { OnAddedNewBacklogItemForm } from "./backlogItemPlanningPanelTypes";
 
 // consts/enums
 import { EditMode } from "../../../molecules/buttons/EditButton";
@@ -21,7 +21,7 @@ export const addActionButtons = (
     editMode: EditMode,
     suppressTopPadding: boolean,
     suppressButtonSpacing: boolean,
-    onAddNewBacklogItem: OnAddedNewBacklogItem,
+    onAddNewBacklogItemForm: OnAddedNewBacklogItemForm,
     renderMobile: boolean
 ) => {
     if (editMode === EditMode.View) {
@@ -32,21 +32,20 @@ export const addActionButtons = (
         suppressTopPadding ? null : css.embeddedBacklogItemUserStoryFormRow,
         renderMobile ? css.mobile : null
     );
-    const suppressSpacing = suppressButtonSpacing;
     renderElts.push(
         <div key="backlogitem-action-buttons" className={actionButtonsClassName}>
             <AddButton
                 itemName="story"
                 suppressSpacing={suppressButtonSpacing}
                 onClick={() => {
-                    onAddNewBacklogItem("story");
+                    onAddNewBacklogItemForm("story");
                 }}
             />
             <AddButton
                 itemName="issue"
                 suppressSpacing={suppressButtonSpacing}
                 onClick={() => {
-                    onAddNewBacklogItem("issue");
+                    onAddNewBacklogItemForm("issue");
                 }}
             />
         </div>

@@ -100,7 +100,7 @@ export const ROUTE_PLAN_VIEW = "app/route:plan-view";
 export const ROUTE_SPRINT_VIEW = "app/route:sprint-view";
 export const ROUTE_REVIEW_VIEW = "app/route:review-view";
 
-export const ADD_BACKLOG_ITEM = "app/add:backlog-item";
+export const ADD_BACKLOG_ITEM_FORM = "app/add:backlog-item-form";
 export const SAVE_NEW_BACKLOG_ITEM = "app/save:backlog-item";
 export const UPDATE_BACKLOG_ITEM = "app/update:backlog-item";
 export const CANCEL_UNSAVED_BACKLOG_ITEM = "app/cancel-unsaved:backlog-item";
@@ -128,7 +128,7 @@ export const LOGIN_USER = "app/user:login-user";
 export const EXPAND_SPRINT_PANEL = "app/expand:sprint-panel";
 export const COLLAPSE_SPRINT_PANEL = "app/collapse:sprint-panel";
 
-export const ADD_SPRINT = "app/add:sprint";
+export const ADD_SPRINT_FORM = "app/add:sprint-form";
 
 export const MOVE_SELECTED_BACKLOG_ITEMS_TO_SPRINT = "app/add:selected-sprint-backlog-items";
 export const MOVE_BACKLOG_ITEM_TO_SPRINT = "app/add:sprint-backlog-item";

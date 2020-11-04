@@ -14,7 +14,7 @@ import {
 } from "../../actions/apiBacklogItems";
 import { ApiGetBffViewsPlanSuccessAction } from "../../actions/apiBffViewsPlan";
 import {
-    AddNewBacklogItemAction,
+    AddNewBacklogItemFormAction,
     UpdateBacklogItemFieldsAction,
     CancelUnsavedBacklogItemAction,
     ReceivePushedBacklogItemAction,
@@ -131,8 +131,8 @@ export const backlogItemsReducer = (
                 rebuildAllItems(draft);
                 return;
             }
-            case ActionTypes.ADD_BACKLOG_ITEM: {
-                const actionTyped = action as AddNewBacklogItemAction;
+            case ActionTypes.ADD_BACKLOG_ITEM_FORM: {
+                const actionTyped = action as AddNewBacklogItemFormAction;
                 draft.addedItems = [
                     ...draft.addedItems,
                     {

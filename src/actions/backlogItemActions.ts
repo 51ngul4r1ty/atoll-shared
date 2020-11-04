@@ -14,16 +14,16 @@ export const refreshBacklogItems = () => apiGetBacklogItems();
 
 let lastInstanceId = 0;
 
-export interface AddNewBacklogItemActionPayload {
+export interface AddNewBacklogItemFormActionPayload {
     type: BacklogItemType;
     instanceId: number;
 }
-export interface AddNewBacklogItemAction {
-    type: typeof ActionTypes.ADD_BACKLOG_ITEM;
-    payload: AddNewBacklogItemActionPayload;
+export interface AddNewBacklogItemFormAction {
+    type: typeof ActionTypes.ADD_BACKLOG_ITEM_FORM;
+    payload: AddNewBacklogItemFormActionPayload;
 }
-export const addNewBacklogItem = (type: BacklogItemType): AddNewBacklogItemAction => ({
-    type: ActionTypes.ADD_BACKLOG_ITEM,
+export const addNewBacklogItemForm = (type: BacklogItemType): AddNewBacklogItemFormAction => ({
+    type: ActionTypes.ADD_BACKLOG_ITEM_FORM,
     payload: {
         type,
         instanceId: ++lastInstanceId

@@ -396,7 +396,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                     props.editMode,
                     suppressTopPadding || lastItemWasUnsaved,
                     suppressButtonSpacing,
-                    props.onAddNewBacklogItem,
+                    props.onAddNewBacklogItemForm,
                     props.renderMobile
                 );
             }
@@ -472,7 +472,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
             props.editMode,
             suppressTopPadding || lastItemWasUnsaved,
             suppressButtonSpacing,
-            props.onAddNewBacklogItem,
+            props.onAddNewBacklogItemForm,
             props.renderMobile
         );
     }
