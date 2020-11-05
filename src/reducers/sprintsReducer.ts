@@ -63,7 +63,7 @@ export const rebuildAllItems = (draft: Draft<SprintsState>) => {
         return result;
     });
     const itemsWithSource = draft.items.map((item) => {
-        const result: SprintWithSource = { ...item, source: Source.Loaded };
+        const result: SprintWithSource = { ...item, source: Source.Loaded, saved: true, editing: false };
         return result;
     });
     const allItemsUnsorted = [...addedItemsWithSource, ...itemsWithSource];

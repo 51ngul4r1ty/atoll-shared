@@ -22,7 +22,7 @@ export const determineSprintStatus = (sprint: Sprint): SprintStatus => {
 };
 
 export const getPlanViewSprints = (state: StateTree): SprintPlanningPanelSprint[] => {
-    const result = state.sprints.items.map((sprint) => {
+    const result = state.sprints.allItems.map((sprint) => {
         const panelSprint: SprintPlanningPanelSprint = {
             id: sprint.id,
             name: sprint.name,
@@ -36,7 +36,10 @@ export const getPlanViewSprints = (state: StateTree): SprintPlanningPanelSprint[
             remainingSplitPoints: sprint.remainingSplitPoints,
             expanded: sprint.expanded,
             backlogItems: getBacklogItemsForSprint(state, sprint.id),
-            backlogItemsLoaded: sprint.backlogItemsLoaded
+            backlogItemsLoaded: sprint.backlogItemsLoaded,
+            editing: sprint.editing,
+            saved: sprint.saved,
+            instanceId: sprint.instanceId
         };
         return panelSprint;
     });

@@ -25,6 +25,7 @@ export { BacklogItemCard, BacklogItemTypeEnum } from "./components/molecules/car
 
 // components - forms
 export { BacklogItemDetailForm } from "./components/organisms/forms/BacklogItemDetailForm";
+export { SprintDetailForm } from "./components/organisms/forms/SprintDetailForm";
 export { LoginForm } from "./components/organisms/forms/LoginForm";
 
 // components - panels

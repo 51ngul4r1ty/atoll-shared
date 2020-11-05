@@ -22,6 +22,9 @@ export interface SprintPlanningPanelSprint {
     backlogItemsLoaded: boolean;
     backlogItems: SprintBacklogItem[] | null;
     expanded: boolean;
+    saved: boolean;
+    editing: boolean;
+    instanceId: number | null;
 }
 
 export interface OnAddNewSprint {

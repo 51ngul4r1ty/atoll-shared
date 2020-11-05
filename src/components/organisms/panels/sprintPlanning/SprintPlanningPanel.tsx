@@ -14,6 +14,7 @@ import { SprintPanel } from "./SprintPanel";
 import { addBottomActionButtons, addTopActionButtons } from "./sprintPlanningPanelJsxUtils";
 import { EditMode } from "../../../molecules/buttons/EditButton";
 import { OpenedDetailMenuInfo } from "../../../../selectors/sprintBacklogSelectors";
+import { SprintDetailForm } from "../../forms/SprintDetailForm";
 
 export interface SprintPlanningPanelStateProps {
     className?: string;
@@ -64,32 +65,56 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
     );
     let renderElts = [];
     addTopActionButtons(renderElts, css.topPanel, props.editMode, false, props.onAddNewSprintBefore, props.renderMobile);
+    let lastEltWasNotEditing = true;
+    let firstElt = true;
     props.sprints.forEach((sprint) => {
         const openedDetailMenuBacklogItemId =
             sprint.id && sprint.id === props.openedDetailMenuInfo.sprintId ? props.openedDetailMenuInfo.backlogItemId : null;
-        const sprintItemElt = (
-            <div key={sprint.name}>
-                <SprintPanel
-                    {...sprint}
-                    editMode={props.editMode}
-                    openedDetailMenuBacklogItemId={openedDetailMenuBacklogItemId}
-                    renderMobile={props.renderMobile}
-                    selectedProductBacklogItemCount={props.selectedProductBacklogItemCount}
-                    onExpandCollapse={(id, expand) => {
-                        onExpandCollapse(id, expand);
-                    }}
-                    onAddBacklogItem={() => {
-                        onAddBacklogItem(sprint.id);
-                    }}
-                    onDetailClicked={(backlogItemId: string) => {
-                        onDetailClicked(sprint.id, backlogItemId);
-                    }}
-                    onMoveItemToBacklogClicked={(backlogItemId: string) => {
-                        onMoveItemToBacklogClicked(sprint.id, backlogItemId);
-                    }}
-                />
-            </div>
-        );
+        let sprintItemElt;
+        if (sprint.saved && !sprint.editing) {
+            sprintItemElt = (
+                <div key={sprint.name}>
+                    <SprintPanel
+                        {...sprint}
+                        editMode={props.editMode}
+                        openedDetailMenuBacklogItemId={openedDetailMenuBacklogItemId}
+                        renderMobile={props.renderMobile}
+                        selectedProductBacklogItemCount={props.selectedProductBacklogItemCount}
+                        onExpandCollapse={(id, expand) => {
+                            onExpandCollapse(id, expand);
+                        }}
+                        onAddBacklogItem={() => {
+                            onAddBacklogItem(sprint.id);
+                        }}
+                        onDetailClicked={(backlogItemId: string) => {
+                            onDetailClicked(sprint.id, backlogItemId);
+                        }}
+                        onMoveItemToBacklogClicked={(backlogItemId: string) => {
+                            onMoveItemToBacklogClicked(sprint.id, backlogItemId);
+                        }}
+                    />
+                </div>
+            );
+            lastEltWasNotEditing = true;
+        } else {
+            const classNameToUse = buildClassName(lastEltWasNotEditing && !firstElt ? css.topSpacingAboveForm : null);
+            sprintItemElt = (
+                <div key={sprint.name}>
+                    <SprintDetailForm
+                        id={sprint.id}
+                        className={classNameToUse}
+                        instanceId={sprint.instanceId}
+                        sprintName={sprint.name}
+                        startDate={sprint.startDate}
+                        finishDate={sprint.finishDate}
+                        editing={sprint.editing}
+                        renderMobile={props.renderMobile}
+                    />
+                </div>
+            );
+            lastEltWasNotEditing = false;
+        }
+        firstElt = false;
         renderElts.push(sprintItemElt);
     });
     addBottomActionButtons(renderElts, css.bottomPanel, props.editMode, false, props.onAddNewSprintAfter, props.renderMobile);

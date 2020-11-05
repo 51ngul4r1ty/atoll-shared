@@ -27,3 +27,7 @@
 .sprintPlanningActionPanel.bottomPanel {
     padding-top: 0.5rem; /* TODO: Move to vars */
 }
+
+.topSpacingAboveForm {
+    margin-top: 0.5rem; /* TODO: Move to vars */
+}
