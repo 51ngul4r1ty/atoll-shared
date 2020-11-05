@@ -66,7 +66,9 @@ export const rebuildAllItems = (draft: Draft<SprintsState>) => {
         const result: SprintWithSource = { ...item, source: Source.Loaded };
         return result;
     });
-    draft.allItems = [...addedItemsWithSource, ...itemsWithSource];
+    const allItemsUnsorted = [...addedItemsWithSource, ...itemsWithSource];
+    const allItemsSorted = allItemsUnsorted.sort((a, b) => (a.startDate < b.startDate ? -1 : 1));
+    draft.allItems = allItemsSorted;
 };
 
 export const mapApiItemToSprint = (apiItem: ApiSprint): Sprint => ({
