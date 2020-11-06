@@ -65,7 +65,6 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
     );
     let renderElts = [];
     addTopActionButtons(renderElts, css.topPanel, props.editMode, false, props.onAddNewSprintBefore, props.renderMobile);
-    let lastEltWasNotEditing = true;
     let firstElt = true;
     props.sprints.forEach((sprint) => {
         const openedDetailMenuBacklogItemId =
@@ -95,9 +94,8 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                     />
                 </div>
             );
-            lastEltWasNotEditing = true;
         } else {
-            const classNameToUse = buildClassName(lastEltWasNotEditing && !firstElt ? css.topSpacingAboveForm : null);
+            const classNameToUse = buildClassName(!firstElt ? css.topSpacingAboveForm : null);
             sprintItemElt = (
                 <div key={sprint.name}>
                     <SprintDetailForm
@@ -112,7 +110,6 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                     />
                 </div>
             );
-            lastEltWasNotEditing = false;
         }
         firstElt = false;
         renderElts.push(sprintItemElt);

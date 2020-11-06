@@ -30,6 +30,7 @@
 
 .actionButtonPanel {
     display: grid;
+    padding-top: 0.5rem;
     grid-template-columns: auto max-content max-content;
     grid-column-gap: 0.4rem;
 }
