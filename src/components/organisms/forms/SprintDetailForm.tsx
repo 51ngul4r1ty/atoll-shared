@@ -80,21 +80,6 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
             </div>
         </div>
     );
-    // const mobileForm = (
-    //     <>
-    //         <div className={buildClassName(css.userStoryFormMobile)}>
-    //             <div className={css.mobileFormRow}>{rolePhraseInput}</div>
-    //             <div className={css.mobileFormRow}>{storyPhraseInput}</div>
-    //             <div className={css.mobileFormRow}>{reasonPhraseInput}</div>
-    //             <div className={buildClassName(css.mobileFormRow, css.threeCellRow)}>
-    //                 {estimateInput}
-    //                 {friendlyIdInput}
-    //                 {externalIdInput}
-    //             </div>
-    //             <div className={css.mobileFormRow}>{actionButtonPanel}</div>
-    //         </div>
-    //     </>
-    // );
     const sprintNameInput = (
         <LabeledInput
             inputId="sprintName"
@@ -106,14 +91,12 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
             }}
         />
     );
-    const mobileForm = null;
-    const desktopForm = (
+    const formContent = (
         <>
             <div className={buildClassName(css.sprintName, css.formRow)}>{sprintNameInput}</div>
             {actionButtonPanel}
         </>
     );
-    const formContent = props.renderMobile ? mobileForm : desktopForm;
     return (
         <form
             data-instance-id={props.instanceId}
