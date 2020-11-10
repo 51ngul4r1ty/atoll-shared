@@ -66,6 +66,7 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
             <div />
             <div className={css.centerCell}>
                 <DoneButton
+                    className={css.doneButton}
                     onClick={() => {
                         handleDoneClick();
                     }}
@@ -73,6 +74,7 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
             </div>
             <div className={css.centerCell}>
                 <CancelButton
+                    className={css.cancelButton}
                     onClick={() => {
                         handleCancelClick();
                     }}
