@@ -9,6 +9,7 @@ import { PushState, Source } from "./types";
 import { ApiGetSprintBacklogItemsSuccessAction } from "../actions/apiSprintBacklog";
 import {
     AddSprintAction,
+    CancelEditSprintAction,
     CancelUnsavedSprintAction,
     CollapseSprintPanelAction,
     ExpandSprintPanelAction,
@@ -194,6 +195,15 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 });
                 draft.addedItems = newItems;
                 rebuildAllItems(draft);
+                return;
+            }
+            case ActionTypes.CANCEL_EDIT_SPRINT: {
+                // TODO: Implement
+                // const actionTyped = action as CancelEditSprintAction;
+                // updateItemById(draft, actionTyped.payload.itemId, (item) => {
+                //     item.editing = false;
+                // });
+                // rebuildAllItems(draft);
                 return;
             }
             case ActionTypes.UPDATE_SPRINT_FIELDS: {
