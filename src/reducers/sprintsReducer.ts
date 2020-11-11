@@ -9,13 +9,13 @@ import { PushState, Source } from "./types";
 import { ApiGetSprintBacklogItemsSuccessAction } from "../actions/apiSprintBacklog";
 import {
     AddSprintAction,
-    CancelEditSprintAction,
     CancelUnsavedSprintAction,
     CollapseSprintPanelAction,
     ExpandSprintPanelAction,
     UpdateSprintFieldsAction
 } from "../actions/sprintActions";
 import { NewSprintPosition } from "../actions/sprintActions";
+import { ApiPostSprintSuccessAction } from "../actions/apiSprints";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
@@ -31,7 +31,6 @@ import {
 
 export interface Sprint extends StandardModelItem {
     name: string;
-    displayIndex: number;
     startDate: Date;
     finishDate: Date;
     projectId: string;
@@ -87,7 +86,6 @@ export const rebuildAllItems = (draft: Draft<SprintsState>) => {
 export const mapApiItemToSprint = (apiItem: ApiSprint): Sprint => ({
     id: apiItem.id,
     name: apiItem.name,
-    displayIndex: apiItem.displayindex,
     startDate: isoDateStringToDate(apiItem.startdate),
     finishDate: isoDateStringToDate(apiItem.finishdate),
     createdAt: apiItem.createdAt,
@@ -219,6 +217,20 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                     }
                 });
                 updateItemFieldsInAllItems(draft, actionTyped.payload);
+                return;
+            }
+            case ActionTypes.API_POST_SPRINT_SUCCESS: {
+                const actionTyped = action as ApiPostSprintSuccessAction;
+                const { payload, meta } = actionTyped;
+                const updatedSprint = payload.response.data.item;
+                const instanceId = meta.instanceId;
+                draft.addedItems.forEach((addedItem) => {
+                    if (addedItem.instanceId === instanceId) {
+                        addedItem.id = updatedSprint.id;
+                        addedItem.saved = true;
+                    }
+                });
+                rebuildAllItems(draft);
                 return;
             }
         }
