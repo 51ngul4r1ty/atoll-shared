@@ -129,6 +129,12 @@ export const EXPAND_SPRINT_PANEL = "app/expand:sprint-panel";
 export const COLLAPSE_SPRINT_PANEL = "app/collapse:sprint-panel";
 
 export const ADD_SPRINT_FORM = "app/add:sprint-form";
+export const SAVE_NEW_SPRINT = "app/save:sprint";
+export const UPDATE_SPRINT = "app/update:sprint";
+export const CANCEL_UNSAVED_SPRINT = "app/cancel-unsaved:sprint";
+export const CANCEL_EDIT_SPRINT = "app/cancel-edit:sprint";
+
+export const UPDATE_SPRINT_FIELDS = "app/update:sprint-fields";
 
 export const ADD_SPRINT = "app/add:sprint";
 
@@ -142,5 +148,3 @@ export const MOVE_SPRINT_ITEM_TO_PRODUCT_BACKLOG_CLICKED = "app/move-to-backlog:
 
 export const ADD_PRODUCT_BACKLOG_ITEM = "app/add:product-backlog-item";
 export const REMOVE_SPRINT_BACKLOG_ITEM = "app/remove:sprint-backlog-item";
-
-export const UPDATE_SPRINT_FIELDS = "app/update:sprint-fields";

@@ -23,7 +23,7 @@ import { OpenedDetailMenuInfo } from "../../../../selectors/sprintBacklogSelecto
 import { SprintDetailForm } from "../../forms/SprintDetailForm";
 
 // actions
-import { updateSprintFields } from "../../../../actions/sprintActions";
+import { cancelEditSprint, cancelUnsavedSprint, updateSprintFields } from "../../../../actions/sprintActions";
 
 // style
 import css from "./SprintPlanningPanel.module.css";
@@ -126,6 +126,20 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         renderMobile={props.renderMobile}
                         onDataUpdate={(fields) => {
                             dispatch(updateSprintFields(fields));
+                        }}
+                        onCancelClick={(id, instanceId) => {
+                            if (id) {
+                                dispatch(cancelEditSprint(id));
+                            } else {
+                                dispatch(cancelUnsavedSprint(instanceId));
+                            }
+                        }}
+                        onDoneClick={(id, instanceId) => {
+                            // if (id) {
+                            //     dispatch(updateSprint(id));
+                            // } else {
+                            //     dispatch(saveNewSprint(instanceId));
+                            // }
                         }}
                     />
                 </div>

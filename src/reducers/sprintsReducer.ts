@@ -9,6 +9,7 @@ import { PushState, Source } from "./types";
 import { ApiGetSprintBacklogItemsSuccessAction } from "../actions/apiSprintBacklog";
 import {
     AddSprintAction,
+    CancelUnsavedSprintAction,
     CollapseSprintPanelAction,
     ExpandSprintPanelAction,
     UpdateSprintFieldsAction
@@ -180,6 +181,18 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 } else {
                     throw Error(`Unexpected ${position}`);
                 }
+                rebuildAllItems(draft);
+                return;
+            }
+            case ActionTypes.CANCEL_UNSAVED_SPRINT: {
+                const actionTyped = action as CancelUnsavedSprintAction;
+                const newItems = [];
+                draft.addedItems.forEach((addedItem) => {
+                    if (addedItem.instanceId !== actionTyped.payload.instanceId) {
+                        newItems.push(addedItem);
+                    }
+                });
+                draft.addedItems = newItems;
                 rebuildAllItems(draft);
                 return;
             }

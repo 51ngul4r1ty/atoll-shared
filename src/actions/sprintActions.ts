@@ -35,23 +35,6 @@ export const expandSprintPanel = (sprintId: string): ExpandSprintPanelAction => 
     }
 });
 
-// let lastInstanceId = 0;
-
-// export interface AddNewSprintActionPayload {
-//     instanceId: number;
-// }
-// export interface AddNewSprintAction {
-//     type: typeof ActionTypes.ADD_SPRINT_FORM;
-//     payload: AddNewSprintActionPayload;
-// }
-// // TODO: This should be renamed??
-// export const addNewSprint = (): AddNewSprintAction => ({
-//     type: ActionTypes.ADD_SPRINT_FORM,
-//     payload: {
-//         instanceId: ++lastInstanceId
-//     }
-// });
-
 export enum NewSprintPosition {
     None = 0,
     Before = 1,
@@ -100,4 +83,32 @@ export interface UpdateSprintFieldsAction {
 export const updateSprintFields = (fields: SprintDetailFormEditableFieldsWithInstanceId): UpdateSprintFieldsAction => ({
     type: ActionTypes.UPDATE_SPRINT_FIELDS,
     payload: fields
+});
+
+export interface CancelUnsavedSprintActionPayload {
+    instanceId: number;
+}
+export interface CancelUnsavedSprintAction {
+    type: typeof ActionTypes.CANCEL_UNSAVED_SPRINT;
+    payload: CancelUnsavedSprintActionPayload;
+}
+export const cancelUnsavedSprint = (instanceId: number): CancelUnsavedSprintAction => ({
+    type: ActionTypes.CANCEL_UNSAVED_SPRINT,
+    payload: {
+        instanceId
+    }
+});
+
+export interface CancelEditSprintActionPayload {
+    itemId: string;
+}
+export interface CancelEditSprintAction {
+    type: typeof ActionTypes.CANCEL_EDIT_SPRINT;
+    payload: CancelEditSprintActionPayload;
+}
+export const cancelEditSprint = (itemId: string): CancelEditSprintAction => ({
+    type: ActionTypes.CANCEL_EDIT_SPRINT,
+    payload: {
+        itemId
+    }
 });
