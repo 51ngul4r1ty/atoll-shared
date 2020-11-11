@@ -39,6 +39,11 @@ export interface SprintDetailFormDispatchProps {
 export type SprintDetailFormProps = SprintDetailFormStateProps & SprintDetailFormDispatchProps;
 
 export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
+    const handleDataUpdate = (fields: SprintDetailFormEditableFieldsWithInstanceId) => {
+        if (props.onDataUpdate) {
+            props.onDataUpdate(fields);
+        }
+    };
     const handleDoneClick = () => {
         const matchingForms = document.querySelectorAll(`[data-instance-id="${props.instanceId}"]`);
         let matchingForm: HTMLFormElement;
@@ -82,6 +87,13 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
             </div>
         </div>
     );
+    const prevData: SprintDetailFormEditableFieldsWithInstanceId = {
+        id: props.id,
+        sprintName: props.sprintName,
+        startDate: props.startDate,
+        instanceId: props.instanceId,
+        finishDate: props.finishDate
+    };
     const sprintNameInput = (
         <LabeledInput
             inputId="sprintName"
@@ -89,7 +101,7 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
             placeHolder="New Sprint"
             inputValue={props.sprintName}
             onChange={(value) => {
-                // handleDataUpdate({ ...prevData, rolePhrase: value });
+                handleDataUpdate({ ...prevData, sprintName: value });
             }}
         />
     );

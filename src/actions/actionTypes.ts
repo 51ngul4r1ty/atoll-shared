@@ -142,3 +142,5 @@ export const MOVE_SPRINT_ITEM_TO_PRODUCT_BACKLOG_CLICKED = "app/move-to-backlog:
 
 export const ADD_PRODUCT_BACKLOG_ITEM = "app/add:product-backlog-item";
 export const REMOVE_SPRINT_BACKLOG_ITEM = "app/remove:sprint-backlog-item";
+
+export const UPDATE_SPRINT_FIELDS = "app/update:sprint-fields";

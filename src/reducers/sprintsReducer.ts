@@ -1,20 +1,31 @@
 // externals
 import { Draft, produce } from "immer";
 
-// consts/enums
-import * as ActionTypes from "../actions/actionTypes";
-
 // interfaces/types
 import { AnyFSA, StandardModelItem } from "../types";
 import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
 import { ApiSprint } from "../apiModelTypes";
 import { PushState, Source } from "./types";
+import { ApiGetSprintBacklogItemsSuccessAction } from "../actions/apiSprintBacklog";
+import {
+    AddSprintAction,
+    CollapseSprintPanelAction,
+    ExpandSprintPanelAction,
+    UpdateSprintFieldsAction
+} from "../actions/sprintActions";
+import { NewSprintPosition } from "../actions/sprintActions";
+
+// consts/enums
+import * as ActionTypes from "../actions/actionTypes";
 
 // utils
 import { isoDateStringToDate } from "../utils/apiPayloadConverters";
-import { AddSprintAction, CollapseSprintPanelAction, ExpandSprintPanelAction } from "../actions/sprintActions";
-import { ApiGetSprintBacklogItemsSuccessAction } from "../actions/apiSprintBacklog";
-import { NewSprintPosition } from "../actions/sprintActions";
+
+// components
+import {
+    SprintDetailFormEditableFields,
+    SprintDetailFormEditableFieldsWithInstanceId
+} from "../components/organisms/forms/SprintDetailForm";
 
 export interface Sprint extends StandardModelItem {
     name: string;
@@ -93,6 +104,25 @@ export const mapApiItemsToSprints = (apiItems: ApiSprint[]): Sprint[] => {
     return apiItems.map((item) => mapApiItemToSprint(item));
 };
 
+export const idsMatch = (item1: SaveableSprint, item2: SprintDetailFormEditableFieldsWithInstanceId): boolean => {
+    const instanceIdMatch = !!item1.instanceId && item1.instanceId === item2.instanceId;
+    const idMatch = !!item1.id && item1.id === item2.id;
+    return instanceIdMatch || idMatch;
+};
+
+export const updateSprintFields = (sprint: Sprint, payload: SprintDetailFormEditableFields) => {
+    sprint.name = payload.sprintName;
+    sprint.startDate = payload.startDate;
+    sprint.finishDate = payload.finishDate;
+};
+
+export const updateItemFieldsInAllItems = (draft: Draft<SprintsState>, payload: SprintDetailFormEditableFieldsWithInstanceId) => {
+    const item = draft.allItems.filter((item) => idsMatch(item, payload));
+    if (item.length === 1) {
+        updateSprintFields(item[0], payload);
+    }
+};
+
 export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState, action: AnyFSA): SprintsState =>
     produce(state, (draft) => {
         const { type } = action;
@@ -151,6 +181,21 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                     throw Error(`Unexpected ${position}`);
                 }
                 rebuildAllItems(draft);
+                return;
+            }
+            case ActionTypes.UPDATE_SPRINT_FIELDS: {
+                const actionTyped = action as UpdateSprintFieldsAction;
+                draft.addedItems.forEach((addedItem) => {
+                    if (idsMatch(addedItem, actionTyped.payload)) {
+                        updateSprintFields(addedItem, actionTyped.payload);
+                    }
+                });
+                draft.items.forEach((item) => {
+                    if (idsMatch(item, actionTyped.payload)) {
+                        updateSprintFields(item, actionTyped.payload);
+                    }
+                });
+                updateItemFieldsInAllItems(draft, actionTyped.payload);
                 return;
             }
         }

@@ -1,9 +1,7 @@
 // externals
 import * as React from "react";
+import { useDispatch } from "react-redux";
 import { withTranslation, WithTranslation } from "react-i18next";
-
-// style
-import css from "./SprintPlanningPanel.module.css";
 
 // utils
 import { buildClassName } from "../../../../utils/classNameBuilder";
@@ -11,10 +9,24 @@ import { buildClassName } from "../../../../utils/classNameBuilder";
 // interfaces/types
 import { SprintPlanningPanelSprint } from "./sprintPlanningPanelTypes";
 import { SprintPanel } from "./SprintPanel";
+
+// utils
 import { addBottomActionButtons, addTopActionButtons } from "./sprintPlanningPanelJsxUtils";
+
+// consts/enums
 import { EditMode } from "../../../molecules/buttons/EditButton";
+
+// selectors
 import { OpenedDetailMenuInfo } from "../../../../selectors/sprintBacklogSelectors";
+
+// components
 import { SprintDetailForm } from "../../forms/SprintDetailForm";
+
+// actions
+import { updateSprintFields } from "../../../../actions/sprintActions";
+
+// style
+import css from "./SprintPlanningPanel.module.css";
 
 export interface SprintPlanningPanelStateProps {
     className?: string;
@@ -36,7 +48,12 @@ export interface SprintPlanningPanelDispatchProps {
 
 export type SprintPlanningPanelProps = SprintPlanningPanelStateProps & SprintPlanningPanelDispatchProps & WithTranslation;
 
+const buildSprintKey = (sprint: SprintPlanningPanelSprint) => {
+    return `${sprint.id}-${sprint.instanceId}`;
+};
+
 export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (props) => {
+    const dispatch = useDispatch();
     const onExpandCollapse = (id: string, expand: boolean) => {
         if (props.onExpandCollapse) {
             props.onExpandCollapse(id, expand);
@@ -72,7 +89,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
         let sprintItemElt;
         if (sprint.saved && !sprint.editing) {
             sprintItemElt = (
-                <div key={sprint.name}>
+                <div key={buildSprintKey(sprint)}>
                     <SprintPanel
                         {...sprint}
                         editMode={props.editMode}
@@ -97,7 +114,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
         } else {
             const classNameToUse = buildClassName(!firstElt ? css.topSpacingAboveForm : null);
             sprintItemElt = (
-                <div key={sprint.name}>
+                <div key={buildSprintKey(sprint)}>
                     <SprintDetailForm
                         id={sprint.id}
                         className={classNameToUse}
@@ -107,6 +124,9 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         finishDate={sprint.finishDate}
                         editing={sprint.editing}
                         renderMobile={props.renderMobile}
+                        onDataUpdate={(fields) => {
+                            dispatch(updateSprintFields(fields));
+                        }}
                     />
                 </div>
             );

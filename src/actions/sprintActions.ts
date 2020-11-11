@@ -1,6 +1,11 @@
 // actions
 import { SaveableSprint } from "../reducers/sprintsReducer";
+
+// consts/enums
 import * as ActionTypes from "./actionTypes";
+
+// interfaces/types
+import { SprintDetailFormEditableFieldsWithInstanceId } from "../components/organisms/forms/SprintDetailForm";
 
 export interface CollapseSprintPanelAction {
     type: typeof ActionTypes.COLLAPSE_SPRINT_PANEL;
@@ -86,4 +91,13 @@ export const addSprint = (sprint: SaveableSprint, position: NewSprintPosition) =
         sprint,
         position
     }
+});
+
+export interface UpdateSprintFieldsAction {
+    type: typeof ActionTypes.UPDATE_SPRINT_FIELDS;
+    payload: SprintDetailFormEditableFieldsWithInstanceId;
+}
+export const updateSprintFields = (fields: SprintDetailFormEditableFieldsWithInstanceId): UpdateSprintFieldsAction => ({
+    type: ActionTypes.UPDATE_SPRINT_FIELDS,
+    payload: fields
 });

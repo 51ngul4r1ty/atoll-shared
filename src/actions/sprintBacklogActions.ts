@@ -1,6 +1,8 @@
 // actions
-import { BacklogItem } from "../types/backlogItemTypes";
 import * as ActionTypes from "./actionTypes";
+
+// interfaces/types
+import { BacklogItem } from "../types/backlogItemTypes";
 
 export interface MoveSelectedBacklogItemsToSprintUsingApiActionPayload {
     sprintId: string;
