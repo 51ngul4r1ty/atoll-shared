@@ -32,20 +32,3 @@ export const convertToSprintModel = (sprint: Sprint): SprintModel => ({
     usedSplitPoints: sprint.usedSplitPoints,
     remainingSplitPoints: sprint.remainingSplitPoints
 });
-
-/*
-            "projectId": "69a9288264964568beb5dd243dc29008",
-            "version": 0,
-            "name": "Sprint 35",
-            "startdate": "2020-11-01T04:00:00.000Z",
-            "finishdate": "2020-11-14T04:00:00.000Z",
-            "plannedPoints": null,
-            "acceptedPoints": null,
-            "velocityPoints": null,
-            "usedSplitPoints": null,
-            "remainingSplitPoints": null,
-            "id": "c52b8053ae764944a67ef517686d2d7f",
-            "updatedAt": "2020-11-11T04:31:51.070Z",
-            "createdAt": "2020-11-11T04:31:51.070Z",
-            "displayindex": null
-*/
