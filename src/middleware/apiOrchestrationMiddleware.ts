@@ -46,14 +46,14 @@ import { StateTree } from "../reducers/rootReducer";
 // selectors
 import { buildApiPayloadBaseForResource } from "../selectors/apiSelectors";
 import { getCurrentProjectId } from "../selectors/userSelectors";
-import { getSprintById } from "../selectors/sprintSelectors";
+import { getSprintById, getSprintByInstanceId } from "../selectors/sprintSelectors";
 
 // utils
-import { convertToBacklogItemModel } from "../utils/apiPayloadHelper";
+import { convertToBacklogItemModel, convertToSprintModel } from "../utils/apiPayloadHelper";
 
 // interfaces/types
 import { ResourceTypes } from "../reducers/apiLinksReducer";
-import { ExpandSprintPanelAction } from "../actions/sprintActions";
+import { ExpandSprintPanelAction, SaveNewSprintAction, UpdateSprintAction } from "../actions/sprintActions";
 import {
     apiBatchAddBacklogItemsToSprint,
     apiGetSprintBacklogItems,
@@ -66,6 +66,7 @@ import {
     SprintMoveItemToBacklogClickedAction
 } from "../actions/sprintBacklogActions";
 import { getSprintBacklogItemById } from "../selectors/sprintBacklogSelectors";
+import { apiPostSprint } from "../actions/apiSprints";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
@@ -184,6 +185,32 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const backlogItem = getSprintBacklogItemById(state, sprintId, backlogItemId);
             storeTyped.dispatch(addProductBacklogItem(backlogItem));
             storeTyped.dispatch(removeSprintBacklogItem(sprintId, backlogItemId));
+            break;
+        }
+        case ActionTypes.SAVE_NEW_SPRINT: {
+            const actionTyped = action as SaveNewSprintAction;
+            const state = storeTyped.getState();
+            const instanceId = actionTyped.payload.instanceId;
+            const sprint = getSprintByInstanceId(state, instanceId);
+            if (sprint) {
+                const model = convertToSprintModel(sprint);
+                model.projectId = getCurrentProjectId(state);
+                storeTyped.dispatch(apiPostSprint(model, { instanceId }));
+            }
+            break;
+        }
+        case ActionTypes.UPDATE_SPRINT: {
+            // const actionTyped = action as UpdateSprintAction;
+            // const state = storeTyped.getState();
+            // const itemId = actionTyped.payload.id;
+
+            // const sprint = getSprintById(state, itemId);
+            // if (sprint) {
+            //     const model = convertToSprintModel(sprint);
+            //     storeTyped.dispatch(
+            //         apiPutSprint(model, buildApiPayloadBaseForResource(state, ResourceTypes.SPRINT, "item", itemId))
+            //     );
+            // }
             break;
         }
     }

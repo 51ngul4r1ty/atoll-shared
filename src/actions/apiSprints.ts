@@ -9,11 +9,21 @@ import { getApiBaseUrl } from "../config";
 import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
-import { API, NoDataApiAction, ApiActionSuccessPayloadForCollection, ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
+import {
+    API,
+    NoDataApiAction,
+    ApiActionSuccessPayloadForCollection,
+    ApiActionMetaDataRequestMeta,
+    ApiAction,
+    ApiActionSuccessPayload,
+    ApiActionMetaDataRequestBodyWithOriginal
+} from "../middleware/apiTypes";
 import { ApiSprint } from "../apiModelTypes";
 
 // utils
 import { buildActionTypes } from "./utils/apiActionUtils";
+import { SprintModel } from "../types/sprintTypes";
+import { Sprint } from "../reducers/sprintsReducer";
 
 // #region Collection
 
@@ -33,3 +43,36 @@ export const apiGetSprints = (projectId: string): NoDataApiAction => ({
 });
 
 // #endregion
+
+export interface ApiPostSprintSuccessResponse {
+    status: number;
+    data: {
+        item: Sprint;
+    };
+}
+
+export type ApiPostSprintSuccessActionPayload = ApiActionSuccessPayload<ApiPostSprintSuccessResponse>;
+export interface ApiPostSprintSuccessActionMeta {
+    instanceId: number;
+    // TODO: Replace "any" with correct type
+    requestBody: ApiActionMetaDataRequestBodyWithOriginal<any>; // PushSprintModel>;
+}
+export interface ApiPostSprintSuccessAction {
+    type: typeof ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS;
+    payload: ApiPostSprintSuccessActionPayload;
+    meta: ApiPostSprintSuccessActionMeta;
+}
+export interface ApiPostSprintPayload {}
+export const apiPostSprint = (sprint: SprintModel, meta: any): ApiAction<ApiPostSprintPayload> => {
+    return {
+        type: API,
+        payload: {
+            endpoint: `${getApiBaseUrl()}api/v1/sprints`,
+            method: "POST",
+            headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+            data: sprint,
+            types: buildActionTypes(ApiActionNames.POST_SPRINT)
+        },
+        meta
+    };
+};

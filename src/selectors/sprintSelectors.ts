@@ -76,3 +76,13 @@ export const getLastSprint = (state: StateTree): Sprint => {
     const lastItem = items[items.length - 1];
     return lastItem;
 };
+
+export const getSprintByInstanceId = (state: StateTree, instanceId: number): Sprint | null => {
+    const matchingItems = state.sprints.addedItems.filter((addedItem) => addedItem.instanceId === instanceId);
+    if (matchingItems.length === 1) {
+        const matchingItem = matchingItems[0];
+        return matchingItem;
+    } else {
+        return null;
+    }
+};

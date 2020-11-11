@@ -112,3 +112,31 @@ export const cancelEditSprint = (itemId: string): CancelEditSprintAction => ({
         itemId
     }
 });
+
+export interface SaveNewSprintActionPayload {
+    instanceId: number;
+}
+export interface SaveNewSprintAction {
+    type: typeof ActionTypes.SAVE_NEW_SPRINT;
+    payload: SaveNewSprintActionPayload;
+}
+export const saveNewSprint = (instanceId: number): SaveNewSprintAction => ({
+    type: ActionTypes.SAVE_NEW_SPRINT,
+    payload: {
+        instanceId
+    }
+});
+
+export interface UpdateSprintActionPayload {
+    id: string;
+}
+export interface UpdateSprintAction {
+    type: typeof ActionTypes.UPDATE_SPRINT;
+    payload: UpdateSprintActionPayload;
+}
+export const updateSprint = (id: string): UpdateSprintAction => ({
+    type: ActionTypes.UPDATE_SPRINT,
+    payload: {
+        id
+    }
+});

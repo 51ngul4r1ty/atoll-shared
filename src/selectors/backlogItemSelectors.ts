@@ -5,8 +5,6 @@ import { BacklogItem } from "../types/backlogItemTypes";
 import { getBacklogItemById as reducerGetBacklogItemById } from "../reducers/backlogItems/backlogItemsReducerHelper";
 import { StateTree } from "../reducers/rootReducer";
 
-// reducers
-
 export const getBacklogItemByInstanceId = (state: StateTree, instanceId: number): BacklogItem | null => {
     const matchingItems = state.backlogItems.addedItems.filter((addedItem) => addedItem.instanceId === instanceId);
     if (matchingItems.length === 1) {

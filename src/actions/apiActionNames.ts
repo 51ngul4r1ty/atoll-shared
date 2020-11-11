@@ -1,5 +1,6 @@
 export const GET_SPRINTS = "get-sprints";
 export const GET_SPRINT = "get-sprint";
+export const POST_SPRINT = "add-sprint";
 
 export const GET_BACKLOG_ITEMS = "get-backlog-items";
 export const GET_BACKLOG_ITEM = "get-backlog-item";

@@ -23,7 +23,13 @@ import { OpenedDetailMenuInfo } from "../../../../selectors/sprintBacklogSelecto
 import { SprintDetailForm } from "../../forms/SprintDetailForm";
 
 // actions
-import { cancelEditSprint, cancelUnsavedSprint, updateSprintFields } from "../../../../actions/sprintActions";
+import {
+    cancelEditSprint,
+    cancelUnsavedSprint,
+    saveNewSprint,
+    updateSprint,
+    updateSprintFields
+} from "../../../../actions/sprintActions";
 
 // style
 import css from "./SprintPlanningPanel.module.css";
@@ -135,11 +141,11 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                             }
                         }}
                         onDoneClick={(id, instanceId) => {
-                            // if (id) {
-                            //     dispatch(updateSprint(id));
-                            // } else {
-                            //     dispatch(saveNewSprint(instanceId));
-                            // }
+                            if (id) {
+                                dispatch(updateSprint(id));
+                            } else {
+                                dispatch(saveNewSprint(instanceId));
+                            }
                         }}
                     />
                 </div>
