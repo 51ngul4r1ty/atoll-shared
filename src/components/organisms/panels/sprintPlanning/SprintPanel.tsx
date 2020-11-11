@@ -61,6 +61,9 @@ export const getBacklogItemElts = (
             }
         }
     };
+    if (!backlogItems) {
+        return null;
+    }
     return backlogItems.map((backlogItem) => (
         <div key={backlogItem.id}>
             <BacklogItemCard
