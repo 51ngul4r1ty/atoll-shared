@@ -19,9 +19,6 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 import { SaveableBacklogItem } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
 import { PushState } from "../../../reducers/types";
 
-// components
-import { ProductBacklogItemMenu } from "../menus/ProductBacklogItemMenu";
-
 /* exported functions */
 
 export const calcItemId = (externalId: string | null, friendlyId: string) => {
@@ -81,14 +78,6 @@ export interface ItemMenuEventHandler {
 export interface ItemMenuEventHandlers {
     handleEvent: ItemMenuEventHandler;
 }
-
-// export interface ItemEventHandlerMapItem {
-//     (itemId: string): void;
-// }
-
-// export interface ItemEventHandlerMap {
-//     [eventHandlerName: string]: ItemMenuEventHandler;
-// }
 
 export interface ItemMenuBuilder {
     (itemId: string, showMenuToLeft: boolean);
