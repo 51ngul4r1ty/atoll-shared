@@ -16,8 +16,15 @@ const MONTH_NAMES = [
     "December"
 ];
 
+export const abbreviateMonth = (val: string) => {
+    if (!val) {
+        return val;
+    }
+    return val.substr(0, Math.min(val.length, 3));
+};
+
 export const monthToString = (month: number) => {
-    return MONTH_NAMES[month];
+    return abbreviateMonth(MONTH_NAMES[month]);
 };
 
 export const formatSameMonthRange = (startDate: Date, finishDate: Date): string => {
