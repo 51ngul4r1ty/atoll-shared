@@ -32,6 +32,7 @@ export { LoginForm } from "./components/organisms/forms/LoginForm";
 export { CaretPosition, ItemMenuPanel } from "./components/atoms/panels/ItemMenuPanel";
 export { BacklogItemPlanningPanel } from "./components/organisms/panels/backlogItemPlanning/BacklogItemPlanningPanel";
 export { SprintPlanningPanel } from "./components/organisms/panels/sprintPlanning/SprintPlanningPanel";
+export { SprintPanel } from "./components/organisms/panels/sprintPlanning/SprintPanel";
 
 // components - misc
 export { App } from "./App";

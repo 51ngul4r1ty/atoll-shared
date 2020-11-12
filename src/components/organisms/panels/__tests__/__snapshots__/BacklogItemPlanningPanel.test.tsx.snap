@@ -3,7 +3,7 @@
 exports[`BacklogItemPlanningPanel should handle scenario where 3 unsaved added items shown in sequence 1`] = `
 <div>
   <div
-    class="backlogItemPlanningPanel mobile"
+    class="backlogItemPlanningPanel"
   >
     [Mock SimpleDivider]
     [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow" instanceId=5000 externalId=item-1-added id=fake-id-1]
@@ -13,7 +13,7 @@ exports[`BacklogItemPlanningPanel should handle scenario where 3 unsaved added i
     [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow" instanceId=5002 externalId=item-3-added id=fake-id-3]
     [Mock SimpleDivider]
     <div
-      class="backlogItemPlanningActionPanel mobile"
+      class="backlogItemPlanningActionPanel"
     >
       [Mock AddButton itemName=story]
       [Mock AddButton itemName=issue]
@@ -28,7 +28,7 @@ exports[`BacklogItemPlanningPanel should handle scenario where 3 unsaved added i
 exports[`BacklogItemPlanningPanel should handle scenario where unsaved form visible and user switches from edit to view mode 1`] = `
 <div>
   <div
-    class="backlogItemPlanningPanel mobile"
+    class="backlogItemPlanningPanel"
   >
     [Mock SimpleDivider]
     [Mock BacklogItemCard internalId=fake-id-1 itemId=item-1-added titleText="added story 1" marginBelowItem=true]
@@ -43,13 +43,13 @@ exports[`BacklogItemPlanningPanel should handle scenario where unsaved form visi
 exports[`BacklogItemPlanningPanel should include spacing between added items, action buttons and loaded items 1`] = `
 <div>
   <div
-    class="backlogItemPlanningPanel mobile"
+    class="backlogItemPlanningPanel"
   >
     [Mock SimpleDivider]
     [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow" instanceId=1000 externalId=item-1-added id=fake-id-1]
     [Mock SimpleDivider]
     <div
-      class="backlogItemPlanningActionPanel mobile"
+      class="backlogItemPlanningActionPanel"
     >
       [Mock AddButton itemName=story]
       [Mock AddButton itemName=issue]
@@ -66,7 +66,7 @@ exports[`BacklogItemPlanningPanel should include spacing between added items, ac
 exports[`BacklogItemPlanningPanel should include spacing between added saved, added unsaved, and loaded item 1`] = `
 <div>
   <div
-    class="backlogItemPlanningPanel mobile"
+    class="backlogItemPlanningPanel"
   >
     [Mock SimpleDivider]
     [Mock BacklogItemCard internalId=fake-id-1 itemId=item-1-added titleText="added story 1" marginBelowItem=true]
@@ -74,7 +74,7 @@ exports[`BacklogItemPlanningPanel should include spacing between added saved, ad
     [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow embeddedBacklogItemUserStoryFormRow" instanceId=2001 externalId=item-2-added id=fake-id-2]
     [Mock SimpleDivider]
     <div
-      class="backlogItemPlanningActionPanel mobile"
+      class="backlogItemPlanningActionPanel"
     >
       [Mock AddButton itemName=story]
       [Mock AddButton itemName=issue]
@@ -89,14 +89,14 @@ exports[`BacklogItemPlanningPanel should include spacing between added saved, ad
 exports[`BacklogItemPlanningPanel should not include double spacing between added saved, added unsaved and action buttons 1`] = `
 <div>
   <div
-    class="backlogItemPlanningPanel mobile"
+    class="backlogItemPlanningPanel"
   >
     [Mock SimpleDivider]
     [Mock BacklogItemCard internalId=fake-id-1 itemId=item-1-added titleText="added story 1" marginBelowItem=true]
     [Mock SimpleDivider]
     [Mock BacklogItemDetailForm className="backlogItemUserStoryFormRow embeddedBacklogItemUserStoryFormRow" instanceId=3001 externalId=item-2-added id=fake-id-2]
     <div
-      class="backlogItemPlanningActionPanel mobile"
+      class="backlogItemPlanningActionPanel"
     >
       [Mock AddButton itemName=story]
       [Mock AddButton itemName=issue]

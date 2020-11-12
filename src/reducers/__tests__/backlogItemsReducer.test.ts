@@ -7,12 +7,13 @@ import produce, { Draft } from "immer";
 // code under test
 import { rebuildAllItems } from "../backlogItems/backlogItemsReducerHelper";
 import { backlogItemsReducerInitialState } from "../backlogItems/backlogItemsReducer";
-import { BacklogItemSource, BacklogItemWithSource, SaveableBacklogItem } from "../backlogItems/backlogItemsReducerTypes";
+import { BacklogItemWithSource, SaveableBacklogItem } from "../backlogItems/backlogItemsReducerTypes";
 
 // interfaces/types
 import { PushOperationType, WebsocketPushNotificationData } from "../../types";
 import { PushBacklogItemModel } from "../../middleware/wsMiddleware";
 import { backlogItemsReducer } from "../backlogItems/backlogItemsReducer";
+import { Source } from "../types";
 
 // consts/enums
 import { selectProductBacklogItem, unselectProductBacklogItem } from "../../actions/backlogItemActions";
@@ -37,7 +38,7 @@ describe("Backlog Items Reducer", () => {
             };
             const addedItem1InAllItems: BacklogItemWithSource = {
                 ...addedItem,
-                source: BacklogItemSource.Added
+                source: Source.Added
             };
             const item: BacklogItemWithSource = {
                 createdAt: new Date("2020-05-16T17:49:30.265Z"),
@@ -49,7 +50,7 @@ describe("Backlog Items Reducer", () => {
                 reasonPhrase: null,
                 rolePhrase: null,
                 saved: true,
-                source: BacklogItemSource.Loaded,
+                source: Source.Loaded,
                 storyPhrase: "test",
                 type: "story",
                 updatedAt: new Date("2020-05-16T17:49:30.265Z")
@@ -83,7 +84,7 @@ describe("Backlog Items Reducer", () => {
                 projectId: null,
                 reasonPhrase: null,
                 rolePhrase: null,
-                source: BacklogItemSource.Pushed,
+                source: Source.Pushed,
                 storyPhrase: "test 2",
                 type: "story",
                 updatedAt: new Date("2020-06-02T01:15:54.715Z")
