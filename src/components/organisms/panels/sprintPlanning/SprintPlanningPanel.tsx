@@ -91,7 +91,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
     let firstElt = true;
     props.sprints.forEach((sprint) => {
         const openedDetailMenuBacklogItemId =
-            sprint.id && sprint.id === props.openedDetailMenuInfo.sprintId ? props.openedDetailMenuInfo.backlogItemId : null;
+            sprint.id && sprint.id === props.openedDetailMenuInfo?.sprintId ? props.openedDetailMenuInfo.backlogItemId : null;
         let sprintItemElt;
         if (sprint.saved && !sprint.editing) {
             sprintItemElt = (
