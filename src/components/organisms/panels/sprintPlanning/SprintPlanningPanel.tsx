@@ -7,8 +7,7 @@ import { withTranslation, WithTranslation } from "react-i18next";
 import { buildClassName } from "../../../../utils/classNameBuilder";
 
 // interfaces/types
-import { SprintPlanningPanelSprint } from "./sprintPlanningPanelTypes";
-import { SprintPanel } from "./SprintPanel";
+import { SprintPlanningPanelSprint } from "../../../molecules/cards/sprintCard/sprintCardTypes";
 
 // utils
 import { addBottomActionButtons, addTopActionButtons } from "./sprintPlanningPanelJsxUtils";
@@ -21,6 +20,8 @@ import { OpenedDetailMenuInfo } from "../../../../selectors/sprintBacklogSelecto
 
 // components
 import { SprintDetailForm } from "../../forms/SprintDetailForm";
+import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
+import { SprintCard } from "../../../molecules/cards/sprintCard/SprintCard";
 
 // actions
 import {
@@ -96,7 +97,8 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
         if (sprint.saved && !sprint.editing) {
             sprintItemElt = (
                 <div key={buildSprintKey(sprint)}>
-                    <SprintPanel
+                    <SimpleDivider />
+                    <SprintCard
                         {...sprint}
                         editMode={props.editMode}
                         openedDetailMenuBacklogItemId={openedDetailMenuBacklogItemId}

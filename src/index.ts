@@ -32,7 +32,7 @@ export { LoginForm } from "./components/organisms/forms/LoginForm";
 export { CaretPosition, ItemMenuPanel } from "./components/atoms/panels/ItemMenuPanel";
 export { BacklogItemPlanningPanel } from "./components/organisms/panels/backlogItemPlanning/BacklogItemPlanningPanel";
 export { SprintPlanningPanel } from "./components/organisms/panels/sprintPlanning/SprintPlanningPanel";
-export { SprintPanel } from "./components/organisms/panels/sprintPlanning/SprintPanel";
+export { SprintCard } from "./components/molecules/cards/sprintCard/SprintCard";
 
 // components - misc
 export { App } from "./App";
@@ -64,7 +64,7 @@ export * from "./apiModelTypes";
 export { BacklogItemWithSource, BacklogItemsState } from "./reducers/backlogItems/backlogItemsReducerTypes";
 export { Source } from "./reducers/types";
 export { BacklogItem, BacklogItemType } from "./types/backlogItemTypes";
-export { SprintStatus, SprintPlanningPanelSprint } from "./components/organisms/panels/sprintPlanning/sprintPlanningPanelTypes";
+export { SprintStatus, SprintPlanningPanelSprint } from "./components/molecules/cards/sprintCard/sprintCardTypes";
 
 // contexts
 export { AppContext, AppProvider, AppConsumer } from "./contexts/appContextUtil";

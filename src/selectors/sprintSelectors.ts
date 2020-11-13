@@ -1,6 +1,6 @@
 // interfaces/types
 import { Sprint } from "../reducers/sprintsReducer";
-import { SprintPlanningPanelSprint, SprintStatus } from "../components/organisms/panels/sprintPlanning/sprintPlanningPanelTypes";
+import { SprintPlanningPanelSprint, SprintStatus } from "../components/molecules/cards/sprintCard/sprintCardTypes";
 
 // state
 import { StateTree } from "../reducers/rootReducer";

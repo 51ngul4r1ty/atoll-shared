@@ -6,7 +6,7 @@
     padding-top: 0.8rem;
 }
 
-.sprintPanel {
+.sprintCard {
     position: relative;
     display: flex;
     flex-direction: row;
@@ -16,7 +16,7 @@
     box-sizing: border-box;
 }
 
-:global(.mobile) .sprintPanel {
+:global(.mobile) .sprintCard {
     padding: 0.3rem 0.3rem 0.3rem 0.1rem;
 }
 
