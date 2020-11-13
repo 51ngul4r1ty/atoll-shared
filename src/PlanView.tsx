@@ -16,7 +16,7 @@ import css from "./PlanView.module.css";
 import { EditMode } from "./components/molecules/buttons/EditButton";
 import { BacklogItemWithSource } from "./reducers/backlogItems/backlogItemsReducerTypes";
 import { BacklogItemType } from "./types/backlogItemTypes";
-import { SprintPlanningPanelSprint } from "./components/molecules/cards/sprintCard/sprintCardTypes";
+import { SprintCardSprint } from "./components/molecules/cards/sprintCard/sprintCardTypes";
 import { OpenedDetailMenuInfo } from "./selectors/sprintBacklogSelectors";
 
 // components
@@ -38,7 +38,7 @@ export interface PlanViewStateProps {
     projectId: string;
     selectedProductBacklogItemCount: number;
     showWindowTitleBar: boolean;
-    sprints: SprintPlanningPanelSprint[];
+    sprints: SprintCardSprint[];
 }
 
 export interface PlanViewDispatchProps {

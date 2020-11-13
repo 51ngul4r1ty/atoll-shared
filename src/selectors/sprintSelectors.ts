@@ -1,6 +1,6 @@
 // interfaces/types
 import { Sprint } from "../reducers/sprintsReducer";
-import { SprintPlanningPanelSprint, SprintStatus } from "../components/molecules/cards/sprintCard/sprintCardTypes";
+import { SprintCardSprint, SprintStatus } from "../components/molecules/cards/sprintCard/sprintCardTypes";
 
 // state
 import { StateTree } from "../reducers/rootReducer";
@@ -21,9 +21,9 @@ export const determineSprintStatus = (sprint: Sprint): SprintStatus => {
     }
 };
 
-export const getPlanViewSprints = (state: StateTree): SprintPlanningPanelSprint[] => {
+export const getPlanViewSprints = (state: StateTree): SprintCardSprint[] => {
     const result = state.sprints.allItems.map((sprint) => {
-        const panelSprint: SprintPlanningPanelSprint = {
+        const panelSprint: SprintCardSprint = {
             id: sprint.id,
             name: sprint.name,
             startDate: sprint.startDate,

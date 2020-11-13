@@ -7,7 +7,7 @@ import { withTranslation, WithTranslation } from "react-i18next";
 import { buildClassName } from "../../../../utils/classNameBuilder";
 
 // interfaces/types
-import { SprintPlanningPanelSprint } from "../../../molecules/cards/sprintCard/sprintCardTypes";
+import { SprintCardSprint } from "../../../molecules/cards/sprintCard/sprintCardTypes";
 
 // utils
 import { addBottomActionButtons, addTopActionButtons } from "./sprintPlanningPanelJsxUtils";
@@ -41,7 +41,7 @@ export interface SprintPlanningPanelStateProps {
     openedDetailMenuInfo: OpenedDetailMenuInfo;
     renderMobile?: boolean;
     selectedProductBacklogItemCount: number;
-    sprints: SprintPlanningPanelSprint[];
+    sprints: SprintCardSprint[];
 }
 
 export interface SprintPlanningPanelDispatchProps {
@@ -55,7 +55,7 @@ export interface SprintPlanningPanelDispatchProps {
 
 export type SprintPlanningPanelProps = SprintPlanningPanelStateProps & SprintPlanningPanelDispatchProps & WithTranslation;
 
-const buildSprintKey = (sprint: SprintPlanningPanelSprint) => {
+const buildSprintKey = (sprint: SprintCardSprint) => {
     return `${sprint.id}-${sprint.instanceId}`;
 };
 

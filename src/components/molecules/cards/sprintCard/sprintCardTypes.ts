@@ -7,7 +7,7 @@ export enum SprintStatus {
     Completed = 3
 }
 
-export interface SprintPlanningPanelSprint {
+export interface SprintCardSprint {
     id: string;
     name: string;
     startDate: Date;

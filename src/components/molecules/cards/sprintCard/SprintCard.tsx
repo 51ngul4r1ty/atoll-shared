@@ -11,7 +11,7 @@ import { buildSprintPointInfoText, formatDateRange, sprintStatusToString } from 
 import { getBacklogItemElts } from "./sprintCardJsxUtils";
 
 // interfaces/types
-import { SprintPlanningPanelSprint } from "./sprintCardTypes";
+import { SprintCardSprint } from "./sprintCardTypes";
 
 // consts/enums
 import { EditMode } from "../../buttons/EditButton";
@@ -21,7 +21,7 @@ import { VerticalCollapseIcon } from "../../../atoms/icons/VerticalCollapseIcon"
 import { VerticalExpandIcon } from "../../../atoms/icons/VerticalExpandIcon";
 import { AddButton } from "../../buttons/AddButton";
 
-export interface SprintCardStateProps extends SprintPlanningPanelSprint {
+export interface SprintCardStateProps extends SprintCardSprint {
     className?: string;
     editMode: EditMode;
     openedDetailMenuBacklogItemId: string;
@@ -46,7 +46,7 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
     const sprintStatusElts = <div className={css.sprintStatus}>{sprintStatusToString(props.status)}</div>;
     const sprintDateRangeElts = <div className={css.sprintDateRange}>{formatDateRange(props.startDate, props.finishDate)}</div>;
     const sprintHeaderRow2MobileElts = <div className={css.sprintHeaderRow2Mobile}>{sprintDateRangeElts}</div>;
-    const buildSprintPointInfoTextElts = (sprint: SprintPlanningPanelSprint, renderMobile: boolean) => {
+    const buildSprintPointInfoTextElts = (sprint: SprintCardSprint, renderMobile: boolean) => {
         const text = buildSprintPointInfoText(sprint, renderMobile);
         if (!renderMobile || !text) {
             return text;
@@ -75,7 +75,7 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
     };
     const sprintHeaderContentInfoRowElts = (
         <div className={css.sprintHeaderContentInfoRow}>
-            {buildSprintPointInfoTextElts(props as SprintPlanningPanelSprint, props.renderMobile)}
+            {buildSprintPointInfoTextElts(props as SprintCardSprint, props.renderMobile)}
         </div>
     );
     const onExpandCollapse = (id: string, expand: boolean) => {

@@ -2,7 +2,7 @@
 import { addDays } from "../../../../utils/dateHelper";
 
 // interfaces/types
-import { SprintPlanningPanelSprint, SprintStatus } from "./sprintCardTypes";
+import { SprintCardSprint, SprintStatus } from "./sprintCardTypes";
 
 const MONTH_NAMES = [
     "January",
@@ -88,7 +88,7 @@ export const sprintStatusToString = (status: SprintStatus): string => {
     }
 };
 
-export const buildSprintPointInfoText = (sprint: SprintPlanningPanelSprint, renderMobile: boolean): string => {
+export const buildSprintPointInfoText = (sprint: SprintCardSprint, renderMobile: boolean): string => {
     if (sprint.status === SprintStatus.Completed) {
         return buildCompletedSprintPointInfoText(sprint, renderMobile);
     } else if (sprint.status === SprintStatus.NotStarted) {
@@ -106,7 +106,7 @@ export const formatForDevice = (parts: string[], renderMobile: boolean) => {
     }
 };
 
-export const buildCompletedSprintPointInfoText = (sprint: SprintPlanningPanelSprint, renderMobile: boolean): string => {
+export const buildCompletedSprintPointInfoText = (sprint: SprintCardSprint, renderMobile: boolean): string => {
     const parts: string[] = [];
     if (sprint.plannedPoints) {
         parts.push(`${sprint.plannedPoints} planned`);
@@ -124,11 +124,11 @@ export const buildCompletedSprintPointInfoText = (sprint: SprintPlanningPanelSpr
     }
 };
 
-export const buildInProgressSprintPointInfoText = (sprint: SprintPlanningPanelSprint, renderMobile: boolean): string => {
+export const buildInProgressSprintPointInfoText = (sprint: SprintCardSprint, renderMobile: boolean): string => {
     return buildCompletedSprintPointInfoText(sprint, renderMobile);
 };
 
-export const buildNotStartedSprintPointInfoText = (sprint: SprintPlanningPanelSprint, renderMobile: boolean): string => {
+export const buildNotStartedSprintPointInfoText = (sprint: SprintCardSprint, renderMobile: boolean): string => {
     const parts: string[] = [];
     if (sprint.plannedPoints && sprint.velocityPoints) {
         parts.push(`${sprint.plannedPoints} of ${sprint.velocityPoints} planned`);
