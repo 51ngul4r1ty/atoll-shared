@@ -23,13 +23,17 @@ import * as ActionTypes from "../actions/actionTypes";
 
 // utils
 import { isoDateStringToDate } from "../utils/apiPayloadConverters";
+import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
+import { targetIsInMenuButton, targetIsInMenuPanel } from "./backlogItems/backlogItemsReducerHelper";
 
 // components
 import {
     SprintDetailFormEditableFields,
     SprintDetailFormEditableFieldsWithInstanceId
 } from "../components/organisms/forms/SprintDetailForm";
-import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
+
+// actions
+import { AppClickAction } from "../actions/appActions";
 
 export interface Sprint extends StandardModelItem {
     name: string;
@@ -252,6 +256,16 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 const actionTyped = action as ToggleSprintDetailAction;
                 const sprintId = actionTyped.payload.sprintId;
                 draft.openedDetailMenuSprintId = calcDropDownMenuState(draft.openedDetailMenuSprintId, sprintId);
+                return;
+            }
+            case ActionTypes.APP_CLICK: {
+                if (draft.openedDetailMenuSprintId) {
+                    const actionTyped = action as AppClickAction;
+                    const targetElt = actionTyped.payload.target;
+                    if (!targetIsInMenuPanel(targetElt) && !targetIsInMenuButton(targetElt)) {
+                        draft.openedDetailMenuSprintId = null;
+                    }
+                }
                 return;
             }
         }
