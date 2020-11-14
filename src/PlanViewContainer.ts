@@ -32,7 +32,7 @@ import { isPlatformWindows } from "./utils";
 
 // selectors
 import { getCurrentProjectId } from "./selectors/userSelectors";
-import { getPlanViewSprints } from "./selectors/sprintSelectors";
+import { getOpenedDetailMenuSprintId, getPlanViewSprints } from "./selectors/sprintSelectors";
 import {
     getAllBacklogItems,
     getOpenedDetailMenuBacklogItemId,
@@ -47,6 +47,7 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
     let result: PlanViewStateProps = {
         allItems,
         editMode: getAppEditMode(state),
+        openedDetailMenuSprintId: getOpenedDetailMenuSprintId(state),
         openedDetailMenuBacklogItemId: getOpenedDetailMenuBacklogItemId(state),
         openedDetailMenuSprintBacklogInfo: getOpenedDetailMenuInfo(state),
         electronClient: getElectronClient(state),

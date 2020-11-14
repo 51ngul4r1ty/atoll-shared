@@ -33,6 +33,7 @@ export interface PlanViewStateProps {
     allItems: BacklogItemWithSource[];
     editMode: EditMode;
     electronClient: boolean;
+    openedDetailMenuSprintId: string | null;
     openedDetailMenuBacklogItemId: string | null;
     openedDetailMenuSprintBacklogInfo: OpenedDetailMenuInfo;
     projectId: string;
@@ -90,8 +91,10 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                         className={css.sprints}
                         editMode={this.props.editMode}
                         sprints={this.props.sprints}
+                        showDetailMenuToLeft
                         renderMobile={this.context.state?.isMobile}
                         selectedProductBacklogItemCount={this.props.selectedProductBacklogItemCount}
+                        openedDetailMenuSprintId={this.props.openedDetailMenuSprintId}
                         openedDetailMenuInfo={this.props.openedDetailMenuSprintBacklogInfo}
                         onExpandCollapse={(sprintId: string, expand: boolean) => {
                             if (this.props.onExpandCollapse) {

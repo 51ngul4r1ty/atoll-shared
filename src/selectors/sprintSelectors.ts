@@ -82,3 +82,5 @@ export const getSprintByInstanceId = (state: StateTree, instanceId: number): Spr
         return null;
     }
 };
+
+export const getOpenedDetailMenuSprintId = (state: StateTree) => state.sprints.openedDetailMenuSprintId;

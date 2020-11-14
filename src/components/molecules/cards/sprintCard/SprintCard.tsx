@@ -50,7 +50,8 @@ export type InnerSprintCardProps = SprintCardProps & WithTranslation;
 /* exported components */
 
 export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
-    const detailMenu = props.showDetailMenu ? props.buildItemMenu(props.id, props.showDetailMenuToLeft) : null;
+    const detailMenu =
+        props.showDetailMenu && props.buildItemMenu ? props.buildItemMenu(props.id, props.showDetailMenuToLeft) : null;
     const sprintStatusElts = <div className={css.sprintStatus}>{sprintStatusToString(props.status)}</div>;
     const sprintDateRangeElts = <div className={css.sprintDateRange}>{formatDateRange(props.startDate, props.finishDate)}</div>;
     const sprintHeaderRow2MobileElts = <div className={css.sprintHeaderRow2Mobile}>{sprintDateRangeElts}</div>;
@@ -103,6 +104,7 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
               props.editMode,
               props.openedDetailMenuBacklogItemId,
               props.renderMobile || false,
+              props.showDetailMenuToLeft,
               props.backlogItems,
               handleDetailClicked,
               props.onMoveItemToBacklogClicked

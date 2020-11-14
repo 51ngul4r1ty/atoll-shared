@@ -17,6 +17,7 @@ export const getBacklogItemElts = (
     editMode: EditMode,
     openedDetailMenuBacklogItemId: string,
     renderMobile: boolean,
+    showDetailMenuToLeft: boolean,
     backlogItems: SprintBacklogItem[],
     onDetailClicked: { (backlogItemId: string) },
     onMoveItemToBacklogClicked: { (itemId: string) }

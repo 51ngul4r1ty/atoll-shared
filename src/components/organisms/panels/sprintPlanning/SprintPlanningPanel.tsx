@@ -34,13 +34,17 @@ import {
 
 // style
 import css from "./SprintPlanningPanel.module.css";
+import { sprintMenuBuilder } from "../../../common/itemMenuBuilders";
+import { ItemMenuEventHandlers } from "../../../molecules/cards/BacklogItemCard";
 
 export interface SprintPlanningPanelStateProps {
     className?: string;
     editMode: EditMode;
     openedDetailMenuInfo: OpenedDetailMenuInfo;
+    openedDetailMenuSprintId: string | null;
     renderMobile?: boolean;
     selectedProductBacklogItemCount: number;
+    showDetailMenuToLeft?: boolean;
     sprints: SprintCardSprint[];
 }
 
@@ -101,12 +105,28 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
             sprint.id && sprint.id === props.openedDetailMenuInfo?.sprintId ? props.openedDetailMenuInfo.backlogItemId : null;
         let sprintItemElt;
         if (sprint.saved && !sprint.editing) {
+            const itemEventHandlers: ItemMenuEventHandlers = {
+                handleEvent: (eventName: string, itemId: string) => {
+                    if (eventName === "onEditItemClicked") {
+                        // BUSY: Implement this
+                        //                        dispatch(editBacklogItem(props.id));
+                    } else if (eventName === "onRemoveItemClicked") {
+                        // BUSY: Implement this
+                        //                        dispatch(apiDeleteBacklogItem(props.id));
+                    } else {
+                        throw Error(`${eventName} is not handled`);
+                    }
+                }
+            };
             sprintItemElt = (
                 <div key={buildSprintKey(sprint)}>
                     <SimpleDivider />
                     <SprintCard
                         {...sprint}
                         editMode={props.editMode}
+                        showDetailMenuToLeft={props.showDetailMenuToLeft}
+                        showDetailMenu={props.openedDetailMenuSprintId === sprint.id}
+                        buildItemMenu={sprintMenuBuilder(itemEventHandlers)}
                         openedDetailMenuBacklogItemId={openedDetailMenuBacklogItemId}
                         renderMobile={props.renderMobile}
                         selectedProductBacklogItemCount={props.selectedProductBacklogItemCount}
