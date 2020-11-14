@@ -97,7 +97,7 @@ export const sprintBacklogReducer = (
                     draft.openedDetailMenuBacklogItemId,
                     actionTyped.payload.itemId,
                     (itemId: string) => getSprintBacklogItemById(state, sprintId, itemId),
-                    (item) => item.pushState === PushState.Removed
+                    (item) => item.pushState !== PushState.Removed
                 );
                 draft.openedDetailMenuSprintId = draft.openedDetailMenuBacklogItemId ? sprintId : null;
                 return;
