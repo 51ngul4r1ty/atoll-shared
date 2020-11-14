@@ -9,6 +9,7 @@ import css from "./SprintCard.module.css";
 import { buildClassName } from "../../../../utils/classNameBuilder";
 import { buildSprintPointInfoText, formatDateRange, sprintStatusToString } from "./sprintCardUtils";
 import { getBacklogItemElts } from "./sprintCardJsxUtils";
+import { ItemMenuBuilder } from "../BacklogItemCard";
 
 // interfaces/types
 import { SprintCardSprint } from "./sprintCardTypes";
@@ -20,19 +21,25 @@ import { EditMode } from "../../buttons/EditButton";
 import { VerticalCollapseIcon } from "../../../atoms/icons/VerticalCollapseIcon";
 import { VerticalExpandIcon } from "../../../atoms/icons/VerticalExpandIcon";
 import { AddButton } from "../../buttons/AddButton";
+import { ItemDetailButton } from "../../buttons/ItemDetailButton";
 
 export interface SprintCardStateProps extends SprintCardSprint {
+    buildItemMenu?: ItemMenuBuilder;
     className?: string;
     editMode: EditMode;
     openedDetailMenuBacklogItemId: string;
     renderMobile?: boolean;
     selectedProductBacklogItemCount: number;
+    showDetailMenu?: boolean;
+    showDetailMenuToLeft?: boolean;
 }
 
 export interface SprintCardDispatchProps {
     onAddBacklogItem: { (): void };
+    onSprintDetailClicked: { (): void };
+    // TODO: Rename to onBacklogItemDetailClicked
+    onDetailClicked: { (id: string): void };
     onExpandCollapse: { (id: string, expand: boolean): void };
-    onDetailClicked: { (id: string) };
     onMoveItemToBacklogClicked: { (id: string) };
 }
 
@@ -43,6 +50,7 @@ export type InnerSprintCardProps = SprintCardProps & WithTranslation;
 /* exported components */
 
 export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
+    const detailMenu = props.showDetailMenu ? props.buildItemMenu(props.id, props.showDetailMenuToLeft) : null;
     const sprintStatusElts = <div className={css.sprintStatus}>{sprintStatusToString(props.status)}</div>;
     const sprintDateRangeElts = <div className={css.sprintDateRange}>{formatDateRange(props.startDate, props.finishDate)}</div>;
     const sprintHeaderRow2MobileElts = <div className={css.sprintHeaderRow2Mobile}>{sprintDateRangeElts}</div>;
@@ -117,6 +125,10 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
             </div>
         ) : null;
     const classNameToUse = buildClassName(props.className, css.sprintCard);
+    const itemDetailMenuElts =
+        props.editMode === EditMode.View ? null : (
+            <div className={buildClassName(css.detailMenu, props.showDetailMenuToLeft ? css.menuToLeft : null)}>{detailMenu}</div>
+        );
     return (
         <div className={classNameToUse} tabIndex={0}>
             <div className={css.sprintHeaderAndContent}>
@@ -126,6 +138,11 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
                         <div className={css.sprintHeaderContentTopRow}>
                             {props.renderMobile ? null : sprintDateRangeElts}
                             {sprintStatusElts}
+                            <ItemDetailButton
+                                hasDetails={props.editMode === EditMode.Edit}
+                                className={css.detailButton}
+                                onDetailClicked={() => props.onSprintDetailClicked()}
+                            />
                         </div>
                         {props.renderMobile ? null : sprintHeaderContentInfoRowElts}
                     </div>
@@ -143,6 +160,7 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
             >
                 {expandCollapseIcon}
             </div>
+            {itemDetailMenuElts}
         </div>
     );
 };

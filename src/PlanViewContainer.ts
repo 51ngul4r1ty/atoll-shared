@@ -10,7 +10,13 @@ import { StateTree } from "./reducers/rootReducer";
 
 // actions
 import { addNewBacklogItemForm, reorderBacklogItems } from "./actions/backlogItemActions";
-import { addNewSprintForm, collapseSprintPanel, expandSprintPanel, NewSprintPosition } from "./actions/sprintActions";
+import {
+    addNewSprintForm,
+    collapseSprintPanel,
+    expandSprintPanel,
+    NewSprintPosition,
+    sprintDetailClicked
+} from "./actions/sprintActions";
 import { apiBffViewsPlan } from "./actions/apiBffViewsPlan";
 import {
     moveSelectedBacklogItemsToSprintUsingApi,
@@ -69,6 +75,7 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
                 dispatch(collapseSprintPanel(sprintId));
             }
         },
+        onSprintDetailClicked: (sprintId: string) => dispatch(sprintDetailClicked(sprintId)),
         onItemDetailClicked: (sprintId: string, backlogItemId: string) =>
             dispatch(sprintBacklogItemDetailClicked(sprintId, backlogItemId)),
         onMoveItemToBacklogClicked: (sprintId: string, backlogItemId: string) =>

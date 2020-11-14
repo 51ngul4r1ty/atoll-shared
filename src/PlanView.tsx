@@ -47,6 +47,7 @@ export interface PlanViewDispatchProps {
     onAddNewSprintForm: { (position: NewSprintPosition): void };
     onExpandCollapse: { (sprintId: string, expand: boolean): void };
     onItemDetailClicked: { (sprintId: string, backlogItemId: string): void };
+    onSprintDetailClicked: { (sprintId: string): void };
     onMoveItemToBacklogClicked: { (sprintId: string, backlogItemId: string): void };
     onLoaded: { (projectId: string): void };
     onReorderBacklogItems: { (sourceItemId: string, targetItemId: string): void };
@@ -110,6 +111,11 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                         onAddBacklogItem={(sprintId: string) => {
                             if (this.props.onAddBacklogItemToSprint) {
                                 this.props.onAddBacklogItemToSprint(sprintId);
+                            }
+                        }}
+                        onSprintDetailClicked={(sprintId: string) => {
+                            if (this.props.onSprintDetailClicked) {
+                                this.props.onSprintDetailClicked(sprintId);
                             }
                         }}
                         onDetailClicked={(sprintId: string, backlogItemId: string) => {

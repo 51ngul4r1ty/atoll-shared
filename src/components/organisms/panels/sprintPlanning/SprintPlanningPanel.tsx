@@ -50,6 +50,7 @@ export interface SprintPlanningPanelDispatchProps {
     onAddNewSprintAfter: { (): void };
     onAddBacklogItem: { (sprintId: string): void };
     onDetailClicked: { (sprintId: string, backlogItemId: string): void };
+    onSprintDetailClicked: { (sprintId: string): void };
     onMoveItemToBacklogClicked: { (sprintId: string, backlogItemId: string): void };
 }
 
@@ -74,6 +75,11 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
     const onDetailClicked = (sprintId: string, backlogItemId: string) => {
         if (props.onDetailClicked) {
             props.onDetailClicked(sprintId, backlogItemId);
+        }
+    };
+    const onSprintDetailClicked = (sprintId: string) => {
+        if (props.onSprintDetailClicked) {
+            props.onSprintDetailClicked(sprintId);
         }
     };
     const onMoveItemToBacklogClicked = (sprintId: string, backlogItemId: string) => {
@@ -112,6 +118,9 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         }}
                         onDetailClicked={(backlogItemId: string) => {
                             onDetailClicked(sprint.id, backlogItemId);
+                        }}
+                        onSprintDetailClicked={() => {
+                            onSprintDetailClicked(sprint.id);
                         }}
                         onMoveItemToBacklogClicked={(backlogItemId: string) => {
                             onMoveItemToBacklogClicked(sprint.id, backlogItemId);

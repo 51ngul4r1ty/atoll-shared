@@ -8,9 +8,9 @@ import css from "./BacklogItemCard.module.css";
 // components
 import { Checkbox } from "../../atoms/inputs/Checkbox";
 import { DragIcon } from "../../atoms/icons/DragIcon";
-import { EditDetailIcon } from "../../atoms/icons/EditDetailIcon";
 import { IssueIcon } from "../../atoms/icons/IssueIcon";
 import { StoryIcon } from "../../atoms/icons/StoryIcon";
+import { ItemDetailButton } from "../buttons/ItemDetailButton";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
@@ -128,19 +128,13 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
         props.pushState === PushState.Removed ? css.pushStateRemoved : null,
         props.hidden ? css.hidden : null
     );
-    const editDetailButton = props.hasDetails ? (
-        <div
-            data-class="item-menu-button"
+    const editDetailButton = (
+        <ItemDetailButton
+            hasDetails={props.hasDetails}
             className={css.backlogItemDetailButton}
-            onClick={() => {
-                if (props.onDetailClicked) {
-                    props.onDetailClicked();
-                }
-            }}
-        >
-            <EditDetailIcon />
-        </div>
-    ) : null;
+            onDetailClicked={() => props.onDetailClicked()}
+        />
+    );
     const handleCheckboxChange = (checked: boolean) => {
         if (props.onCheckboxChange) {
             props.onCheckboxChange(checked);

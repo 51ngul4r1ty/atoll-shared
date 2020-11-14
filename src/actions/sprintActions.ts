@@ -140,3 +140,19 @@ export const updateSprint = (id: string): UpdateSprintAction => ({
         id
     }
 });
+
+export interface ToggleSprintDetailPayload {
+    sprintId: string;
+}
+
+export interface ToggleSprintDetailAction {
+    type: typeof ActionTypes.TOGGLE_SPRINT_ITEM_DETAIL;
+    payload: ToggleSprintDetailPayload;
+}
+
+export const sprintDetailClicked = (sprintId: string): ToggleSprintDetailAction => ({
+    type: ActionTypes.TOGGLE_SPRINT_ITEM_DETAIL,
+    payload: {
+        sprintId
+    }
+});
