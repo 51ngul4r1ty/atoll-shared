@@ -12,6 +12,7 @@ import { EditMode } from "../../buttons/EditButton";
 
 // utils
 import { sprintBacklogItemMenuBuilder } from "../../../common/itemMenuBuilders";
+import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 
 export const getBacklogItemElts = (
     editMode: EditMode,
@@ -36,6 +37,7 @@ export const getBacklogItemElts = (
     }
     return backlogItems.map((backlogItem) => (
         <div key={backlogItem.id}>
+            <SimpleDivider />
             <BacklogItemCard
                 key={buildBacklogItemKey(backlogItem)}
                 buildItemMenu={sprintBacklogItemMenuBuilder(eventHandlers)}
@@ -49,7 +51,7 @@ export const getBacklogItemElts = (
                 renderMobile={renderMobile}
                 marginBelowItem
                 showDetailMenu={backlogItem.id === openedDetailMenuBacklogItemId}
-                showDetailMenuToLeft
+                showDetailMenuToLeft={showDetailMenuToLeft}
                 onDetailClicked={() => {
                     onDetailClicked(backlogItem.id);
                 }}
