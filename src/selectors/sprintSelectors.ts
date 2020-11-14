@@ -6,6 +6,9 @@ import { SprintCardSprint, SprintStatus } from "../components/molecules/cards/sp
 import { StateTree } from "../reducers/rootReducer";
 import { getBacklogItemsForSprint } from "./sprintBacklogSelectors";
 
+// utils
+import { getSprintById as getSprintByIdReducer } from "../reducers/sprintsReducer";
+
 export const determineSprintStatus = (sprint: Sprint): SprintStatus => {
     const currentTime = new Date().getTime();
     const afterSprintStart = currentTime >= sprint.startDate.getTime();
@@ -47,14 +50,7 @@ export const getPlanViewSprints = (state: StateTree): SprintCardSprint[] => {
 };
 
 export const getSprintById = (state: StateTree, sprintId: string): Sprint | null => {
-    const sprints = state.sprints.items.filter((sprint) => sprint.id === sprintId);
-    if (sprints.length === 1) {
-        return sprints[0];
-    } else if (sprints.length === 0) {
-        return null;
-    } else {
-        throw new Error(`Unexpected condition - ${sprints.length} sprint items have sprint ID = "${sprintId}"`);
-    }
+    return getSprintByIdReducer(state.sprints, sprintId);
 };
 
 export const getSprints = (state: StateTree): Sprint[] => state.sprints.allItems;

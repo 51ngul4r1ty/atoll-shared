@@ -12,6 +12,7 @@ import {
     CancelUnsavedSprintAction,
     CollapseSprintPanelAction,
     ExpandSprintPanelAction,
+    ToggleSprintDetailAction,
     UpdateSprintFieldsAction
 } from "../actions/sprintActions";
 import { NewSprintPosition } from "../actions/sprintActions";
@@ -28,6 +29,7 @@ import {
     SprintDetailFormEditableFields,
     SprintDetailFormEditableFieldsWithInstanceId
 } from "../components/organisms/forms/SprintDetailForm";
+import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
 
 export interface Sprint extends StandardModelItem {
     name: string;
@@ -58,12 +60,14 @@ export interface SprintWithSource extends SaveableSprint {
 }
 
 export type SprintsState = Readonly<{
+    openedDetailMenuSprintId: string | null;
     addedItems: SaveableSprint[];
     allItems: SprintWithSource[];
     items: Sprint[];
 }>;
 
 export const sprintsReducerInitialState = Object.freeze<SprintsState>({
+    openedDetailMenuSprintId: null,
     addedItems: [],
     allItems: [],
     items: []
@@ -120,6 +124,17 @@ export const updateItemFieldsInAllItems = (draft: Draft<SprintsState>, payload: 
     const item = draft.allItems.filter((item) => idsMatch(item, payload));
     if (item.length === 1) {
         updateSprintFields(item[0], payload);
+    }
+};
+
+export const getSprintById = (sprintsState: SprintsState, sprintId: string): Sprint | null => {
+    const sprints = sprintsState.items.filter((sprint) => sprint.id === sprintId);
+    if (sprints.length === 1) {
+        return sprints[0];
+    } else if (sprints.length === 0) {
+        return null;
+    } else {
+        throw new Error(`Unexpected condition - ${sprints.length} sprint items have sprint ID = "${sprintId}"`);
     }
 };
 
@@ -231,6 +246,12 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                     }
                 });
                 rebuildAllItems(draft);
+                return;
+            }
+            case ActionTypes.TOGGLE_SPRINT_ITEM_DETAIL: {
+                const actionTyped = action as ToggleSprintDetailAction;
+                const sprintId = actionTyped.payload.sprintId;
+                draft.openedDetailMenuSprintId = calcDropDownMenuState(draft.openedDetailMenuSprintId, sprintId);
                 return;
             }
         }

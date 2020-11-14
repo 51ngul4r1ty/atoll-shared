@@ -18,6 +18,7 @@ import {
 } from "../actions/sprintBacklogActions";
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
 import { BacklogItemWithSource } from "./backlogItems/backlogItemsReducerTypes";
+import { PushState } from "./types";
 
 export type SprintBacklogItem = BacklogItem;
 
@@ -95,7 +96,8 @@ export const sprintBacklogReducer = (
                 draft.openedDetailMenuBacklogItemId = calcDropDownMenuState(
                     draft.openedDetailMenuBacklogItemId,
                     actionTyped.payload.itemId,
-                    (itemId: string) => getSprintBacklogItemById(state, sprintId, itemId)
+                    (itemId: string) => getSprintBacklogItemById(state, sprintId, itemId),
+                    (item) => item.pushState === PushState.Removed
                 );
                 draft.openedDetailMenuSprintId = draft.openedDetailMenuBacklogItemId ? sprintId : null;
                 return;

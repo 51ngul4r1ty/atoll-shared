@@ -41,6 +41,7 @@ import {
 import { mapApiItemsToBacklogItems, mapApiItemToBacklogItem } from "../../mappers/backlogItemMappers";
 import { MoveBacklogItemToSprintAction, SprintMoveItemToBacklogClickedAction } from "../../actions/sprintBacklogActions";
 import { calcDropDownMenuState } from "../../utils/dropdownMenuUtils";
+import { PushState } from "../types";
 
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
@@ -224,7 +225,8 @@ export const backlogItemsReducer = (
                 draft.openedDetailMenuBacklogItemId = calcDropDownMenuState(
                     draft.openedDetailMenuBacklogItemId,
                     actionTyped.payload.itemId,
-                    (itemId: string) => getBacklogItemById(state, itemId)
+                    (itemId: string) => getBacklogItemById(state, itemId),
+                    (item) => item.pushState === PushState.Removed
                 );
                 return;
             }

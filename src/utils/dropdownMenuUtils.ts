@@ -2,10 +2,13 @@
 import { BacklogItemWithSource } from "../reducers/backlogItems/backlogItemsReducerTypes";
 import { PushState } from "../reducers/types";
 
-export const calcDropDownMenuState = (
+// BacklogItemWithSource
+
+export const calcDropDownMenuState = <T>(
     openedItemId: string | null,
     actionItemId: string | null,
-    getBacklogItemById: { (openItemId: string | null): BacklogItemWithSource }
+    getItemById?: { (openItemId: string | null): T },
+    includeItemCheck?: { (item: T): boolean }
 ) => {
     let result: string;
     if (openedItemId === null) {
@@ -16,10 +19,13 @@ export const calcDropDownMenuState = (
         result = actionItemId;
     }
     if (result) {
-        const backlogItem = getBacklogItemById(result);
-        if (backlogItem.pushState === PushState.Removed) {
-            // do not allow this menu to be shown when the item has been deleted
-            result = null;
+        if (getItemById) {
+            const item = getItemById(result);
+            if (includeItemCheck && !includeItemCheck(item)) {
+                //        if (backlogItem.pushState === PushState.Removed) {
+                // do not allow this menu to be shown when the item has been deleted
+                result = null;
+            }
         }
     }
     return result;
