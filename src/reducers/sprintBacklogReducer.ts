@@ -19,6 +19,8 @@ import {
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
 import { BacklogItemWithSource } from "./backlogItems/backlogItemsReducerTypes";
 import { PushState } from "./types";
+import { AppClickAction } from "../actions/appActions";
+import { targetIsInMenuButton, targetIsInMenuPanel } from "./backlogItems/backlogItemsReducerHelper";
 
 export type SprintBacklogItem = BacklogItem;
 
@@ -132,6 +134,16 @@ export const sprintBacklogReducer = (
             }
             case ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_FAILURE: {
                 // TODO: Handle failure - it may not be here though, probably needs to be at app level for message?
+                return;
+            }
+            case ActionTypes.APP_CLICK: {
+                if (draft.openedDetailMenuBacklogItemId) {
+                    const actionTyped = action as AppClickAction;
+                    const targetElt = actionTyped.payload.target;
+                    if (!targetIsInMenuPanel(targetElt) && !targetIsInMenuButton(targetElt)) {
+                        draft.openedDetailMenuBacklogItemId = null;
+                    }
+                }
                 return;
             }
             default:
