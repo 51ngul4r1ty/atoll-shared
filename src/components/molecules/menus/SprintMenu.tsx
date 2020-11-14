@@ -36,7 +36,7 @@ export const InnerSprintMenu: React.FC<InnerSprintMenuProps> = (props) => (
                 }
             }}
         />
-        <EditButton
+        {/* <EditButton
             mode={EditMode.View}
             suppressSpacing
             onClick={() => {
@@ -44,7 +44,7 @@ export const InnerSprintMenu: React.FC<InnerSprintMenuProps> = (props) => (
                     props.onEditItemClicked();
                 }
             }}
-        />
+        /> */}
     </ItemMenuPanel>
 );
 

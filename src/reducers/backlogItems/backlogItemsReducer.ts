@@ -226,7 +226,7 @@ export const backlogItemsReducer = (
                     draft.openedDetailMenuBacklogItemId,
                     actionTyped.payload.itemId,
                     (itemId: string) => getBacklogItemById(state, itemId),
-                    (item) => item.pushState === PushState.Removed
+                    (item) => item.pushState !== PushState.Removed
                 );
                 return;
             }
