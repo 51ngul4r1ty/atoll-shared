@@ -54,8 +54,7 @@ export interface ApiPostSprintSuccessResponse {
 export type ApiPostSprintSuccessActionPayload = ApiActionSuccessPayload<ApiPostSprintSuccessResponse>;
 export interface ApiPostSprintSuccessActionMeta {
     instanceId: number;
-    // TODO: Replace "any" with correct type
-    requestBody: ApiActionMetaDataRequestBodyWithOriginal<any>; // PushSprintModel>;
+    requestBody: ApiActionMetaDataRequestBodyWithOriginal<ApiSprint>;
 }
 export interface ApiPostSprintSuccessAction {
     type: typeof ActionTypes.API_POST_SPRINT_SUCCESS;

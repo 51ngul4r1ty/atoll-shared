@@ -12,7 +12,7 @@ export interface BaseItem {
 }
 
 export interface ItemWithId {
-    id: uuid;
+    id: uuid | null;
 }
 
 export interface ItemWithName {
@@ -62,15 +62,14 @@ export interface ApiCounter extends StandardItem {
 }
 
 export interface ApiSprint extends StandardNamedItem {
-    startdate: ISODateString;
-    finishdate: ISODateString;
-    displayindex: number;
-    projectId: string;
-    plannedPoints: number | null;
     acceptedPoints: number | null;
-    velocityPoints: number | null;
-    usedSplitPoints: number | null;
+    finishdate: ISODateString;
+    plannedPoints: number | null;
+    projectId: string;
     remainingSplitPoints: number | null;
+    startdate: ISODateString;
+    usedSplitPoints: number | null;
+    velocityPoints: number | null;
 }
 
 export interface ApiSprintBacklogItem extends BaseItem {
