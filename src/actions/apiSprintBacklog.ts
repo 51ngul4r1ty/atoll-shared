@@ -157,8 +157,6 @@ export const apiMoveSprintItemToProductBacklog = (sprintId: string, backlogItemI
             headers: { Accept: APPLICATION_JSON },
             types: buildActionTypes(ApiActionNames.DELETE_SPRINT_BACKLOG_ITEM)
         },
-        // TODO: Provide a way to do this automatically with any dispatch API call
-        // TODO: I REALLY MEAN IT - DO IT NOW!!!
         meta: {
             actionParams
         }
