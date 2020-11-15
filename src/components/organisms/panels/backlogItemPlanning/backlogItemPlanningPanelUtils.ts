@@ -8,6 +8,9 @@ import { CardPosition } from "./backlogItemPlanningPanelTypes";
 import * as logger from "../../../../utils/logger";
 import { getParentWithDataClass } from "../../../common/domUtils";
 
+// costs/enums
+import { BELOW_LAST_CARD_ID, PAGE_EDGE_PERCENTAGE, PAGE_SCROLL_PERCENTAGE, SPACER_PREFIX } from "./backlogItemPlanningPanelConsts";
+
 const getDragItemIdUnderDocumentTop = (documentTop: number, cardPositions: CardPosition[]) => {
     return getDragItemIdUnderCommon(documentTop, cardPositions);
 };
