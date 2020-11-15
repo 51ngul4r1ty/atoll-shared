@@ -54,7 +54,7 @@ export interface ApiActionMetaDataRequestBodyWithOriginal<T> extends ApiActionMe
     original?: T;
 }
 
-export interface ApiActionMetaDataRequestMeta<T, U = undefined, OA = undefined> {
+export interface ApiActionMetaDataRequestMeta<T = any, U = undefined, OA = undefined> {
     originalActionArgs?: OA;
     requestBody: ApiActionMetaDataRequestBody<T>;
     actionParams?: U;
