@@ -8,9 +8,11 @@ import { buildClassName } from "../../../../utils/classNameBuilder";
 
 // interfaces/types
 import { SprintCardSprint } from "../../../molecules/cards/sprintCard/sprintCardTypes";
+import { ItemMenuEventHandlers } from "../../../molecules/cards/BacklogItemCard";
 
 // utils
 import { addBottomActionButtons, addTopActionButtons } from "./sprintPlanningPanelJsxUtils";
+import { sprintMenuBuilder } from "../../../common/itemMenuBuilders";
 
 // consts/enums
 import { EditMode } from "../../../molecules/buttons/EditButton";
@@ -31,11 +33,10 @@ import {
     updateSprint,
     updateSprintFields
 } from "../../../../actions/sprintActions";
+import { apiDeleteSprint } from "../../../../actions/apiSprints";
 
 // style
 import css from "./SprintPlanningPanel.module.css";
-import { sprintMenuBuilder } from "../../../common/itemMenuBuilders";
-import { ItemMenuEventHandlers } from "../../../molecules/cards/BacklogItemCard";
 
 export interface SprintPlanningPanelStateProps {
     className?: string;
@@ -111,8 +112,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         // BUSY: Implement this
                         //                        dispatch(editBacklogItem(props.id));
                     } else if (eventName === "onRemoveItemClicked") {
-                        // BUSY: Implement this
-                        //                        dispatch(apiDeleteBacklogItem(props.id));
+                        dispatch(apiDeleteSprint(itemId));
                     } else {
                         throw Error(`${eventName} is not handled`);
                     }

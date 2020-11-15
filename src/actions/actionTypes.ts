@@ -67,6 +67,12 @@ export const API_POST_SPRINT_SUCCESS = buildSuccessActionName(Names.POST_SPRINT)
 export const API_POST_SPRINT_FAILURE = buildFailureActionName(Names.POST_SPRINT);
 // #endregion
 
+// #region Sprint Resource Item
+export const API_DELETE_SPRINT_REQUEST = buildRequestActionName(Names.DELETE_SPRINT);
+export const API_DELETE_SPRINT_SUCCESS = buildSuccessActionName(Names.DELETE_SPRINT);
+export const API_DELETE_SPRINT_FAILURE = buildFailureActionName(Names.DELETE_SPRINT);
+// #endregion
+
 // #region Sprint Backlog Resource
 export const API_GET_SPRINT_BACKLOG_ITEMS_REQUEST = buildRequestActionName(Names.GET_SPRINT_BACKLOG_ITEMS);
 export const API_GET_SPRINT_BACKLOG_ITEMS_SUCCESS = buildSuccessActionName(Names.GET_SPRINT_BACKLOG_ITEMS);

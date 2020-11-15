@@ -16,7 +16,7 @@ import {
     UpdateSprintFieldsAction
 } from "../actions/sprintActions";
 import { NewSprintPosition } from "../actions/sprintActions";
-import { ApiPostSprintSuccessAction } from "../actions/apiSprints";
+import { ApiDeleteSprintSuccessAction, ApiPostSprintSuccessAction } from "../actions/apiSprints";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
@@ -140,6 +140,22 @@ export const getSprintById = (sprintsState: SprintsState, sprintId: string): Spr
     } else {
         throw new Error(`Unexpected condition - ${sprints.length} sprint items have sprint ID = "${sprintId}"`);
     }
+};
+
+export const removeSprint = (draft: Draft<SprintsState>, sprintId: string) => {
+    let result = false;
+    const idx = draft.addedItems.findIndex((item) => item.id === sprintId);
+    if (idx >= 0) {
+        draft.addedItems.splice(idx, 1);
+        result = true;
+    }
+    const idx2 = draft.items.findIndex((item) => item.id === sprintId);
+    if (idx2 >= 0) {
+        draft.items.splice(idx2, 1);
+        result = true;
+    }
+    rebuildAllItems(draft);
+    return result;
 };
 
 export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState, action: AnyFSA): SprintsState =>
@@ -266,6 +282,12 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                         draft.openedDetailMenuSprintId = null;
                     }
                 }
+                return;
+            }
+            case ActionTypes.API_DELETE_SPRINT_SUCCESS: {
+                const actionTyped = action as ApiDeleteSprintSuccessAction;
+                const id = actionTyped.meta.originalActionArgs.sprintId;
+                removeSprint(draft, id);
                 return;
             }
         }

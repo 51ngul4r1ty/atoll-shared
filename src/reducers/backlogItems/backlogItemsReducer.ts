@@ -10,7 +10,8 @@ import {
     ApiPostBacklogItemSuccessAction,
     ApiDeleteBacklogItemAction,
     ApiGetBacklogItemsSuccessAction,
-    ApiGetBacklogItemSuccessAction
+    ApiGetBacklogItemSuccessAction,
+    ApiDeleteBacklogItemSuccessAction
 } from "../../actions/apiBacklogItems";
 import { ApiGetBffViewsPlanSuccessAction } from "../../actions/apiBffViewsPlan";
 import {
@@ -277,7 +278,7 @@ export const backlogItemsReducer = (
                 return;
             }
             case ActionTypes.API_DELETE_BACKLOG_ITEM_SUCCESS: {
-                const actionTyped = action as ApiDeleteBacklogItemAction;
+                const actionTyped = action as ApiDeleteBacklogItemSuccessAction;
                 const id = actionTyped.meta.originalActionArgs.backlogItemId;
                 removeBacklogItem(draft, id);
                 return;

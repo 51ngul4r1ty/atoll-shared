@@ -132,15 +132,17 @@ export interface ApiDeleteBacklogItemSuccessResponse {
     };
 }
 export type ApiDeleteBacklogItemSuccessActionPayload = ApiActionSuccessPayload<ApiDeleteBacklogItemSuccessResponse>;
+
+export interface ApiDeleteBacklogItemMetaOriginalActionArgs {
+    backlogItemId: string;
+}
 export interface ApiDeleteBacklogItemMeta {
-    originalActionArgs: {
-        backlogItemId: string;
-    };
+    originalActionArgs: ApiDeleteBacklogItemMetaOriginalActionArgs;
 }
 export interface ApiDeleteBacklogItemSuccessAction {
     type: typeof ActionTypes.API_DELETE_BACKLOG_ITEM_SUCCESS;
     payload: ApiDeleteBacklogItemSuccessActionPayload;
-    meta: ApiActionMetaDataRequestMeta<{}>;
+    meta: ApiActionMetaDataRequestMeta<{}, undefined, ApiDeleteBacklogItemMetaOriginalActionArgs>;
 }
 export type ApiDeleteBacklogItemAction = NoDataApiAction<ApiDeleteBacklogItemMeta>;
 export const apiDeleteBacklogItem = (backlogItemId: string): ApiDeleteBacklogItemAction => {

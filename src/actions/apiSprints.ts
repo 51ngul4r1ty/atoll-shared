@@ -38,7 +38,7 @@ export const apiGetSprints = (projectId: string): NoDataApiAction => ({
         endpoint: `${getApiBaseUrl()}api/v1/sprints?projectId=${projectId}`,
         method: "GET",
         headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
-        types: buildActionTypes(ApiActionNames.GET_BACKLOG_ITEMS)
+        types: buildActionTypes(ApiActionNames.GET_SPRINTS)
     }
 });
 
@@ -58,7 +58,7 @@ export interface ApiPostSprintSuccessActionMeta {
     requestBody: ApiActionMetaDataRequestBodyWithOriginal<any>; // PushSprintModel>;
 }
 export interface ApiPostSprintSuccessAction {
-    type: typeof ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS;
+    type: typeof ActionTypes.API_POST_SPRINT_SUCCESS;
     payload: ApiPostSprintSuccessActionPayload;
     meta: ApiPostSprintSuccessActionMeta;
 }
@@ -74,5 +74,41 @@ export const apiPostSprint = (sprint: SprintModel, meta: any): ApiAction<ApiPost
             types: buildActionTypes(ApiActionNames.POST_SPRINT)
         },
         meta
+    };
+};
+
+export interface ApiDeleteSprintSuccessResponse {
+    status: number;
+    data: {
+        item: Sprint;
+    };
+}
+export type ApiDeleteSprintSuccessActionPayload = ApiActionSuccessPayload<ApiDeleteSprintSuccessResponse>;
+export interface ApiDeleteSprintMetaOrginalActionArgs {
+    sprintId: string;
+}
+export interface ApiDeleteSprintMeta {
+    originalActionArgs: ApiDeleteSprintMetaOrginalActionArgs;
+}
+export interface ApiDeleteSprintSuccessAction {
+    type: typeof ActionTypes.API_DELETE_SPRINT_SUCCESS;
+    payload: ApiDeleteSprintSuccessActionPayload;
+    meta: ApiActionMetaDataRequestMeta<{}, undefined, ApiDeleteSprintMetaOrginalActionArgs>;
+}
+export type ApiDeleteSprintAction = NoDataApiAction<ApiDeleteSprintMeta>;
+export const apiDeleteSprint = (sprintId: string): ApiDeleteSprintAction => {
+    return {
+        type: API,
+        payload: {
+            endpoint: `${getApiBaseUrl()}api/v1/sprints/${sprintId}`,
+            method: "DELETE",
+            headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+            types: buildActionTypes(ApiActionNames.DELETE_SPRINT)
+        },
+        meta: {
+            originalActionArgs: {
+                sprintId
+            }
+        }
     };
 };
