@@ -109,8 +109,8 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
             const itemEventHandlers: ItemMenuEventHandlers = {
                 handleEvent: (eventName: string, itemId: string) => {
                     if (eventName === "onEditItemClicked") {
-                        // BUSY: Implement this
-                        //                        dispatch(editBacklogItem(props.id));
+                        // TODO: Implement this
+                        // dispatch(editBacklogItem(props.id));
                     } else if (eventName === "onRemoveItemClicked") {
                         dispatch(apiDeleteSprint(itemId));
                     } else {
