@@ -21,7 +21,6 @@ export const addActionButtons = (
     key: string,
     className: string,
     editMode: EditMode,
-    suppressTopPadding: boolean,
     onAddNewSprint: OnAddNewSprint,
     addSprintButtonSuffix: string,
     renderMobile: boolean,
@@ -30,12 +29,7 @@ export const addActionButtons = (
     if (editMode === EditMode.View) {
         return;
     }
-    const actionButtonsClassName = buildClassName(
-        css.sprintPlanningActionPanel,
-        className,
-        //        suppressTopPadding ? null : css.embeddedBacklogItemUserStoryFormRow,
-        renderMobile ? css.mobile : null
-    );
+    const actionButtonsClassName = buildClassName(css.sprintPlanningActionPanel, className, renderMobile ? css.mobile : null);
     renderElts.push(
         <div key={key} className={actionButtonsClassName}>
             <AddButton
@@ -53,7 +47,6 @@ export const addTopActionButtons = (
     renderElts: any[],
     topPanelClassName: string,
     editMode: EditMode,
-    suppressTopPadding: boolean,
     onAddNewSprint: OnAddNewSprint,
     renderMobile: boolean
 ) =>
@@ -62,7 +55,6 @@ export const addTopActionButtons = (
         "sprint-top-action-buttons",
         topPanelClassName,
         editMode,
-        suppressTopPadding,
         onAddNewSprint,
         "before",
         renderMobile,
@@ -73,7 +65,6 @@ export const addBottomActionButtons = (
     renderElts: any[],
     bottomPanelClassName: string,
     editMode: EditMode,
-    suppressTopPadding: boolean,
     onAddNewSprint: OnAddNewSprint,
     renderMobile: boolean
 ) =>
@@ -82,7 +73,6 @@ export const addBottomActionButtons = (
         "sprint-bottom-action-buttons",
         bottomPanelClassName,
         editMode,
-        suppressTopPadding,
         onAddNewSprint,
         "after",
         renderMobile,
