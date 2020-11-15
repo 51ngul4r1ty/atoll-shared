@@ -2,28 +2,28 @@
 import * as ActionTypes from "./actionTypes";
 
 // interfaces/types
-import { BacklogItemType } from "../reducers/backlogItemsReducer";
+import { BacklogItemType } from "../types/backlogItemTypes";
 import { BacklogItemDetailFormEditableFieldsWithInstanceId } from "../components/organisms/forms/BacklogItemDetailForm";
-import { PushBacklogItemModel } from "../middleware/wsMiddleware";
 
 // actions
 import { apiGetBacklogItems } from "./apiBacklogItems";
 import { WebsocketPushNotificationData } from "../types";
+import { BacklogItemWithSource } from "../reducers/backlogItems/backlogItemsReducerTypes";
 
 export const refreshBacklogItems = () => apiGetBacklogItems();
 
 let lastInstanceId = 0;
 
-export interface AddNewBacklogItemActionPayload {
+export interface AddNewBacklogItemFormActionPayload {
     type: BacklogItemType;
     instanceId: number;
 }
-export interface AddNewBacklogItemAction {
-    type: typeof ActionTypes.ADD_BACKLOG_ITEM;
-    payload: AddNewBacklogItemActionPayload;
+export interface AddNewBacklogItemFormAction {
+    type: typeof ActionTypes.ADD_BACKLOG_ITEM_FORM;
+    payload: AddNewBacklogItemFormActionPayload;
 }
-export const addNewBacklogItem = (type: BacklogItemType): AddNewBacklogItemAction => ({
-    type: ActionTypes.ADD_BACKLOG_ITEM,
+export const addNewBacklogItemForm = (type: BacklogItemType): AddNewBacklogItemFormAction => ({
+    type: ActionTypes.ADD_BACKLOG_ITEM_FORM,
     payload: {
         type,
         instanceId: ++lastInstanceId
@@ -127,10 +127,12 @@ export const reorderBacklogItems = (sourceItemId: string, targetItemId: string):
 export interface ToggleBacklogItemDetailPayload {
     itemId: string;
 }
+
 export interface ToggleBacklogItemDetailAction {
     type: typeof ActionTypes.TOGGLE_BACKLOG_ITEM_DETAIL;
     payload: ToggleBacklogItemDetailPayload;
 }
+
 export const backlogItemDetailClicked = (itemId: string): ToggleBacklogItemDetailAction => ({
     type: ActionTypes.TOGGLE_BACKLOG_ITEM_DETAIL,
     payload: {
@@ -149,5 +151,45 @@ export const editBacklogItem = (itemId: string): EditBacklogItemAction => ({
     type: ActionTypes.EDIT_BACKLOG_ITEM,
     payload: {
         itemId
+    }
+});
+
+export interface SelectOrUnselectProductBacklogItemPayload {
+    itemId: string;
+}
+
+export interface SelectProductBacklogItemAction {
+    type: typeof ActionTypes.SELECT_PRODUCT_BACKLOG_ITEM;
+    payload: SelectOrUnselectProductBacklogItemPayload;
+}
+export const selectProductBacklogItem = (itemId: string): SelectProductBacklogItemAction => ({
+    type: ActionTypes.SELECT_PRODUCT_BACKLOG_ITEM,
+    payload: {
+        itemId
+    }
+});
+
+export interface UnselectProductBacklogItemAction {
+    type: typeof ActionTypes.UNSELECT_PRODUCT_BACKLOG_ITEM;
+    payload: SelectOrUnselectProductBacklogItemPayload;
+}
+export const unselectProductBacklogItem = (itemId: string): UnselectProductBacklogItemAction => ({
+    type: ActionTypes.UNSELECT_PRODUCT_BACKLOG_ITEM,
+    payload: {
+        itemId
+    }
+});
+
+export interface AddProductBacklogItemPayload {
+    backlogItem: BacklogItemWithSource;
+}
+export interface AddProductBacklogItemAction {
+    type: typeof ActionTypes.ADD_PRODUCT_BACKLOG_ITEM;
+    payload: AddProductBacklogItemPayload;
+}
+export const addProductBacklogItem = (backlogItem: BacklogItemWithSource) => ({
+    type: ActionTypes.ADD_PRODUCT_BACKLOG_ITEM,
+    payload: {
+        backlogItem
     }
 });

@@ -1,8 +1,9 @@
 // interfaces/types
-import { BacklogItem, getBacklogItemById as reducerGetBacklogItemById } from "../reducers/backlogItemsReducer";
-import { StateTree } from "../types";
+import { BacklogItem } from "../types/backlogItemTypes";
 
-// reducers
+// utils
+import { getBacklogItemById as reducerGetBacklogItemById } from "../reducers/backlogItems/backlogItemsReducerHelper";
+import { StateTree } from "../reducers/rootReducer";
 
 export const getBacklogItemByInstanceId = (state: StateTree, instanceId: number): BacklogItem | null => {
     const matchingItems = state.backlogItems.addedItems.filter((addedItem) => addedItem.instanceId === instanceId);
@@ -74,3 +75,29 @@ export const getPrevNextAndCurrentById = (state: StateTree, id: string): PrevNex
         next: resultNextItem
     };
 };
+
+export const getAllBacklogItems = (state: StateTree) => state.backlogItems.allItems;
+
+export const getSelectedBacklogItemIds = (state: StateTree): string[] => {
+    return state.backlogItems.selectedItemIds;
+};
+
+export const getSelectedBacklogItems = (state: StateTree) => {
+    const results = [];
+    const allItemsIndexed: { [itemId: string]: BacklogItem } = {};
+    state.backlogItems.allItems.forEach((item) => {
+        allItemsIndexed[item.id] = item;
+    });
+    state.backlogItems.selectedItemIds.forEach((selectedItemId) => {
+        results.push(allItemsIndexed[selectedItemId]);
+    });
+    return results;
+};
+
+export const getSelectedBacklogItemCount = (state: StateTree) => {
+    return state.backlogItems.selectedItemIds.length;
+};
+
+export const getOpenedDetailMenuBacklogItemId = (state: StateTree) => state.backlogItems.openedDetailMenuBacklogItemId;
+
+export const hasPushedBacklogItems = (state: StateTree) => state.backlogItems.pushedItems.length > 0;

@@ -6,7 +6,7 @@ import { Dispatch } from "redux";
 import { LoginView, LoginViewStateProps, LoginViewDispatchProps } from "./LoginView";
 
 // state
-import { StateTree } from "./types";
+import { StateTree } from "./reducers/rootReducer";
 
 // actions
 import { loginUser, setUsername, setPassword } from "./actions/authActions";

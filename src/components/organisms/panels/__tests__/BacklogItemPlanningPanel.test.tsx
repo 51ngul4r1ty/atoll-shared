@@ -6,9 +6,10 @@ import "jest";
 import { render } from "@testing-library/react";
 
 // code under test
-import { BacklogItemPlanningPanel } from "../BacklogItemPlanningPanel";
+import { BacklogItemPlanningPanel } from "../backlogItemPlanning/BacklogItemPlanningPanel";
 import { EditMode } from "../../../molecules/buttons/EditButton";
-import { BacklogItemWithSource, BacklogItemSource } from "../../../../reducers/backlogItemsReducer";
+import { Source } from "../../../../reducers/types";
+import { BacklogItemWithSource } from "../../../../reducers/backlogItems/backlogItemsReducerTypes";
 
 // mocks
 const mockUseDispatch = jest.fn();
@@ -42,18 +43,18 @@ jest.mock("react-i18next", () => ({
     withTranslation: () => (elt) => elt
 }));
 
-const sourceToString = (source: BacklogItemSource) => {
+const sourceToString = (source: Source) => {
     let result: string;
     switch (source) {
-        case BacklogItemSource.Added: {
+        case Source.Added: {
             result = "added";
             break;
         }
-        case BacklogItemSource.Loaded: {
+        case Source.Loaded: {
             result = "loaded";
             break;
         }
-        case BacklogItemSource.Pushed: {
+        case Source.Pushed: {
             result = "pushed";
             break;
         }
@@ -64,12 +65,12 @@ const sourceToString = (source: BacklogItemSource) => {
     return result;
 };
 
-const buildExternalId = (source: BacklogItemSource, itemNumber: number) => {
+const buildExternalId = (source: Source, itemNumber: number) => {
     const suffix = sourceToString(source);
     return `item-${itemNumber}-${suffix}`;
 };
 
-const buildStoryPhrase = (source: BacklogItemSource, itemNumber: number) => {
+const buildStoryPhrase = (source: Source, itemNumber: number) => {
     const sourceText = sourceToString(source);
     return `${sourceText} story ${itemNumber}`;
 };
@@ -83,7 +84,7 @@ const buildFriendlyId = (isStory: boolean, itemNumber: number) => {
 };
 
 const buildCommonItem = (
-    source: BacklogItemSource,
+    source: Source,
     itemNumber: number,
     instanceId: number | null,
     estimate: number,
@@ -106,10 +107,10 @@ const buildCommonItem = (
 });
 
 const buildAddedItem = (itemNumber: number, instanceId: number | null, estimate: number, saved: boolean): BacklogItemWithSource =>
-    buildCommonItem(BacklogItemSource.Added, itemNumber, instanceId, estimate, saved);
+    buildCommonItem(Source.Added, itemNumber, instanceId, estimate, saved);
 
 const buildLoadedItem = (itemNumber: number, estimate: number): BacklogItemWithSource =>
-    buildCommonItem(BacklogItemSource.Loaded, itemNumber, null, estimate);
+    buildCommonItem(Source.Loaded, itemNumber, null, estimate);
 
 describe("BacklogItemPlanningPanel", () => {
     it("should include spacing between added items, action buttons and loaded items", () => {
@@ -124,7 +125,7 @@ describe("BacklogItemPlanningPanel", () => {
                 allItems={allItems}
                 editMode={editMode}
                 renderMobile
-                onAddNewBacklogItem={() => {}}
+                onAddNewBacklogItemForm={() => {}}
                 onReorderBacklogItems={() => {}}
             />
         );
@@ -142,7 +143,7 @@ describe("BacklogItemPlanningPanel", () => {
                 allItems={allItems}
                 editMode={editMode}
                 renderMobile
-                onAddNewBacklogItem={() => {}}
+                onAddNewBacklogItemForm={() => {}}
                 onReorderBacklogItems={() => {}}
             />
         );
@@ -159,7 +160,7 @@ describe("BacklogItemPlanningPanel", () => {
                 allItems={allItems}
                 editMode={editMode}
                 renderMobile
-                onAddNewBacklogItem={() => {}}
+                onAddNewBacklogItemForm={() => {}}
                 onReorderBacklogItems={() => {}}
             />
         );
@@ -176,7 +177,7 @@ describe("BacklogItemPlanningPanel", () => {
                 allItems={allItems}
                 editMode={editMode}
                 renderMobile
-                onAddNewBacklogItem={() => {}}
+                onAddNewBacklogItemForm={() => {}}
                 onReorderBacklogItems={() => {}}
             />
         );
@@ -195,7 +196,7 @@ describe("BacklogItemPlanningPanel", () => {
                 allItems={allItems}
                 editMode={editMode}
                 renderMobile
-                onAddNewBacklogItem={() => {}}
+                onAddNewBacklogItemForm={() => {}}
                 onReorderBacklogItems={() => {}}
             />
         );

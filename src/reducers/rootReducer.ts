@@ -3,32 +3,56 @@ import { combineReducers } from "redux";
 import { connectRouter } from "connected-react-router";
 
 // reducers
-import { appReducer, appReducerInitialState } from "./appReducer";
-import { apiLinksReducer, apiLinksReducerInitialState } from "./apiLinksReducer";
-import { backlogItemsReducer, backlogItemsReducerInitialState } from "./backlogItemsReducer";
-import { backlogItemRanksReducer, backlogItemRanksReducerInitialState } from "./backlogItemRanksReducer";
-import { userReducer, userReducerInitialState } from "./userReducer";
-import { featureTogglesReducer, featureTogglesReducerInitialState } from "./featureTogglesReducer";
+import { apiBatchReducer, apiBatchReducerInitialState, ApiBatchState } from "./apiBatchReducer";
+import { apiLinksReducer, apiLinksReducerInitialState, ApiLinkState } from "./apiLinksReducer";
+import { appReducer, appReducerInitialState, AppState } from "./appReducer";
+import { backlogItemRanksReducer, backlogItemRanksReducerInitialState, BacklogItemRanksState } from "./backlogItemRanksReducer";
+import { backlogItemsReducer, backlogItemsReducerInitialState } from "./backlogItems/backlogItemsReducer";
+import { featureTogglesReducer, featureTogglesReducerInitialState, FeatureTogglesState } from "./featureTogglesReducer";
+import { sprintBacklogReducer, sprintBacklogReducerInitialState, SprintBacklogState } from "./sprintBacklogReducer";
+import { sprintsReducer, sprintsReducerInitialState, SprintsState } from "./sprintsReducer";
+import { userReducer, userReducerInitialState, UserState } from "./userReducer";
+import { BacklogItemsState } from "./backlogItems/backlogItemsReducerTypes";
+
+export interface StateTree {
+    apiBatch: ApiBatchState;
+    apiLinks: ApiLinkState;
+    app: AppState;
+    backlogItemRanks: BacklogItemRanksState;
+    backlogItems: BacklogItemsState;
+    electronClient: boolean;
+    executingOnClient: boolean;
+    featureToggles: FeatureTogglesState;
+    sprintBacklog: SprintBacklogState;
+    sprints: SprintsState;
+    user: UserState;
+}
 
 export const rootReducerInitialState = {
-    app: appReducerInitialState,
+    apiBatch: apiBatchReducerInitialState,
     apiLinks: apiLinksReducerInitialState,
-    backlogItems: backlogItemsReducerInitialState,
+    app: appReducerInitialState,
     backlogItemRanks: backlogItemRanksReducerInitialState,
-    user: userReducerInitialState,
-    featureToggles: featureTogglesReducerInitialState
+    backlogItems: backlogItemsReducerInitialState,
+    featureToggles: featureTogglesReducerInitialState,
+    sprintBacklog: sprintBacklogReducerInitialState,
+    sprints: sprintsReducerInitialState,
+    user: userReducerInitialState
 };
 
 const createRootReducer = (history: any) => {
     const router = connectRouter(history);
     return combineReducers({
-        router,
-        app: appReducer,
+        apiBatch: apiBatchReducer,
         apiLinks: apiLinksReducer,
-        backlogItems: backlogItemsReducer,
+        app: appReducer,
         backlogItemRanks: backlogItemRanksReducer,
-        user: userReducer,
-        featureToggles: featureTogglesReducer
+        backlogItems: backlogItemsReducer,
+        featureToggles: featureTogglesReducer,
+        router,
+        sprintBacklog: sprintBacklogReducer,
+        sprints: sprintsReducer,
+        user: userReducer
     });
 };
 

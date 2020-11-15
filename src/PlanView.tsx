@@ -3,18 +3,25 @@ import * as React from "react";
 // import Helmet from "react-helmet";
 
 // components
-import { PlanningPanelBacklogItem, BacklogItemPlanningPanel } from "./components/organisms/panels/BacklogItemPlanningPanel";
+import { BacklogItemPlanningPanel } from "./components/organisms/panels/backlogItemPlanning/BacklogItemPlanningPanel";
 import { TopMenuPanelContainer } from "./containers/TopMenuPanelContainer";
 
 // contexts
 import { AppContext } from "./contexts/appContextUtil";
 
 // style
-import css from "./App.module.css";
+import css from "./PlanView.module.css";
 
 // interfaces/types
 import { EditMode } from "./components/molecules/buttons/EditButton";
-import { BacklogItemType, BacklogItemWithSource, SaveableBacklogItem } from "./reducers/backlogItemsReducer";
+import { BacklogItemWithSource } from "./reducers/backlogItems/backlogItemsReducerTypes";
+import { BacklogItemType } from "./types/backlogItemTypes";
+import { SprintCardSprint } from "./components/molecules/cards/sprintCard/sprintCardTypes";
+import { OpenedDetailMenuInfo } from "./selectors/sprintBacklogSelectors";
+
+// components
+import { SprintPlanningPanel } from "./components/organisms/panels/sprintPlanning/SprintPlanningPanel";
+import { NewSprintPosition } from "./actions/sprintActions";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
@@ -25,15 +32,26 @@ import { BacklogItemType, BacklogItemWithSource, SaveableBacklogItem } from "./r
 export interface PlanViewStateProps {
     allItems: BacklogItemWithSource[];
     editMode: EditMode;
-    openedDetailMenuBacklogItemId: string | null;
     electronClient: boolean;
+    openedDetailMenuSprintId: string | null;
+    openedDetailMenuBacklogItemId: string | null;
+    openedDetailMenuSprintBacklogInfo: OpenedDetailMenuInfo;
+    projectId: string;
+    selectedProductBacklogItemCount: number;
     showWindowTitleBar: boolean;
+    sprints: SprintCardSprint[];
 }
 
 export interface PlanViewDispatchProps {
-    onLoaded: { () };
-    onAddNewBacklogItem: { (type: BacklogItemType) };
-    onReorderBacklogItems: { (sourceItemId: string, targetItemId: string) };
+    onAddBacklogItemToSprint: { (sprintId: string): void };
+    onAddNewBacklogItemForm: { (type: BacklogItemType): void };
+    onAddNewSprintForm: { (position: NewSprintPosition): void };
+    onExpandCollapse: { (sprintId: string, expand: boolean): void };
+    onItemDetailClicked: { (sprintId: string, backlogItemId: string): void };
+    onSprintDetailClicked: { (sprintId: string): void };
+    onMoveItemToBacklogClicked: { (sprintId: string, backlogItemId: string): void };
+    onLoaded: { (projectId: string): void };
+    onReorderBacklogItems: { (sourceItemId: string, targetItemId: string): void };
 }
 
 export type PlanViewProps = PlanViewStateProps & PlanViewDispatchProps;
@@ -46,7 +64,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
         super(props);
     }
     componentDidMount() {
-        this.props.onLoaded();
+        this.props.onLoaded(this.props.projectId);
     }
     render() {
         return (
@@ -55,18 +73,66 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     activeTabId="plan"
                     treatAsElectronTitleBar={this.props.electronClient && !this.props.showWindowTitleBar}
                 />
-                <BacklogItemPlanningPanel
-                    allItems={this.props.allItems}
-                    editMode={this.props.editMode}
-                    onAddNewBacklogItem={(type: BacklogItemType) => {
-                        this.props.onAddNewBacklogItem(type);
-                    }}
-                    onReorderBacklogItems={(sourceItemId: string, targetItemId: string) => {
-                        this.props.onReorderBacklogItems(sourceItemId, targetItemId);
-                    }}
-                    renderMobile={this.context.state?.isMobile}
-                    openedDetailMenuBacklogItemId={this.props.openedDetailMenuBacklogItemId}
-                />
+                <div className={css.content}>
+                    <BacklogItemPlanningPanel
+                        className={css.backlog}
+                        allItems={this.props.allItems}
+                        editMode={this.props.editMode}
+                        openedDetailMenuBacklogItemId={this.props.openedDetailMenuBacklogItemId}
+                        renderMobile={this.context.state?.isMobile}
+                        onAddNewBacklogItemForm={(type: BacklogItemType) => {
+                            this.props.onAddNewBacklogItemForm(type);
+                        }}
+                        onReorderBacklogItems={(sourceItemId: string, targetItemId: string) => {
+                            this.props.onReorderBacklogItems(sourceItemId, targetItemId);
+                        }}
+                    />
+                    <SprintPlanningPanel
+                        className={css.sprints}
+                        editMode={this.props.editMode}
+                        sprints={this.props.sprints}
+                        showDetailMenuToLeft
+                        renderMobile={this.context.state?.isMobile}
+                        selectedProductBacklogItemCount={this.props.selectedProductBacklogItemCount}
+                        openedDetailMenuSprintId={this.props.openedDetailMenuSprintId}
+                        openedDetailMenuInfo={this.props.openedDetailMenuSprintBacklogInfo}
+                        onExpandCollapse={(sprintId: string, expand: boolean) => {
+                            if (this.props.onExpandCollapse) {
+                                this.props.onExpandCollapse(sprintId, expand);
+                            }
+                        }}
+                        onAddNewSprintBefore={() => {
+                            if (this.props.onAddNewSprintForm) {
+                                this.props.onAddNewSprintForm(NewSprintPosition.Before);
+                            }
+                        }}
+                        onAddNewSprintAfter={() => {
+                            if (this.props.onAddNewSprintForm) {
+                                this.props.onAddNewSprintForm(NewSprintPosition.After);
+                            }
+                        }}
+                        onAddBacklogItem={(sprintId: string) => {
+                            if (this.props.onAddBacklogItemToSprint) {
+                                this.props.onAddBacklogItemToSprint(sprintId);
+                            }
+                        }}
+                        onSprintDetailClicked={(sprintId: string) => {
+                            if (this.props.onSprintDetailClicked) {
+                                this.props.onSprintDetailClicked(sprintId);
+                            }
+                        }}
+                        onDetailClicked={(sprintId: string, backlogItemId: string) => {
+                            if (this.props.onItemDetailClicked) {
+                                this.props.onItemDetailClicked(sprintId, backlogItemId);
+                            }
+                        }}
+                        onMoveItemToBacklogClicked={(sprintId: string, backlogItemId: string) => {
+                            if (this.props.onMoveItemToBacklogClicked) {
+                                this.props.onMoveItemToBacklogClicked(sprintId, backlogItemId);
+                            }
+                        }}
+                    />
+                </div>
             </>
         );
     }

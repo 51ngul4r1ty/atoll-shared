@@ -1,3 +1,8 @@
+/**
+ * Purpose: To make RESTful API calls.
+ * Reason to change: If new features are needed for making RESTful API calls.
+ */
+
 // externals
 import axios, { AxiosRequestConfig } from "axios";
 import { Action, Dispatch, Store } from "redux";
@@ -7,12 +12,13 @@ import * as HttpStatus from "http-status-codes";
 import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
-import { StateTree } from "../types";
+import { StateTree } from "../reducers/rootReducer";
 import { ApiActionType, ApiActionMeta, ApiActionSuccessPayload, API, ApiAction } from "./apiTypes";
 
 // selectors
 import { getAuthToken } from "../selectors/appSelectors";
 import { refreshTokenAndRetry } from "../actions/authActions";
+import { API_ACTION_STAGE_FAILURE, API_ACTION_STAGE_REQUEST, API_ACTION_STAGE_SUCCESS } from "../actions/apiActionStages";
 
 export interface ApiActionFailureError {
     message: string;
@@ -29,18 +35,24 @@ export interface ApiActionBaseMeta<T> {
     requestBody: T;
 }
 
+const validateTypesArray = (types: ApiActionType[]) => {
+    if (types.length !== 3) {
+        throw Error("API Action Types should have 3 items: request, success, and failure.");
+    }
+};
+
 const getRequestType = (types: ApiActionType[]) => {
-    // TODO: Add error handling
+    validateTypesArray(types);
     return types[0];
 };
 
 const getSuccessType = (types: ApiActionType[]) => {
-    // TODO: Add error handling
+    validateTypesArray(types);
     return types[1];
 };
 
 const getFailureType = (types: ApiActionType[]) => {
-    // TODO: Add error handling
+    validateTypesArray(types);
     return types[2];
 };
 
@@ -58,7 +70,8 @@ const dispatchRequest = (
         },
         meta: {
             ...{
-                requestBody
+                requestBody,
+                apiActionStage: API_ACTION_STAGE_REQUEST
             },
             ...meta
         }
@@ -77,7 +90,8 @@ const dispatchSuccess = (
     };
     const meta: ApiActionBaseMeta<any> = {
         ...{
-            requestBody
+            requestBody,
+            apiActionStage: API_ACTION_STAGE_SUCCESS
         },
         ...origMeta
     };
@@ -104,7 +118,8 @@ const dispatchFailure = (
         },
         meta: {
             ...{
-                requestBody
+                requestBody,
+                apiActionStage: API_ACTION_STAGE_FAILURE
             },
             ...meta
         }
@@ -168,7 +183,7 @@ export const apiMiddleware = (store) => (next) => (action: Action) => {
                 const state = getState();
                 dispatch(refreshTokenAndRetry(state.app.refreshToken, apiAction));
             } else {
-                dispatchFailure(dispatch, getFailureType(types), data, requestBody, apiAction.meta, error);
+                dispatchFailure(dispatch, getFailureType(types), error.response.data, requestBody, apiAction.meta, error);
             }
         });
 };

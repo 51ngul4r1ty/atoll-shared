@@ -1,0 +1,72 @@
+@keyframes rotateIn {
+    0% {
+        transform: rotate3d(1, 0, 0, 90deg);
+    }
+    100% {
+        transform: rotate3d(1, 0, 0, 0deg);
+    }
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.userStoryDescription {
+    display: grid;
+    grid-template-columns: 10rem auto 15rem;
+    grid-column-gap: 0.7rem;
+}
+
+.userStoryExtraFields {
+    display: grid;
+    grid-template-columns: 3.5rem 5.5rem 5.5rem auto;
+    grid-column-gap: 0.7rem;
+}
+
+.formRow + .formRow {
+    margin-top: 0.7rem;
+}
+
+.actionButtonPanel {
+    display: grid;
+    padding-top: 0.5rem;
+    grid-template-columns: auto max-content max-content;
+    grid-column-gap: 0.4rem;
+}
+
+:global(.mobile) .actionButtonPanel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.centerCell {
+    display: flex;
+    align-items: center;
+}
+
+.userStoryFormMobile {
+    display: grid;
+    grid-template-columns: auto;
+    grid-row-gap: 0.7rem;
+}
+
+.mobileFormRow {
+    width: 100%;
+}
+
+.threeCellRow {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-column-gap: 0.7rem;
+}
+
+:global(.mobile) .doneButton,
+.cancelButton {
+    min-width: 4.75rem;
+}
+
+:global(.mobile) .doneButton {
+    margin-bottom: 0.3rem;
+}

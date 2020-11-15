@@ -5,7 +5,7 @@ import { APPLICATION_JSON } from "../constants";
 import { ApiMethods } from "../middleware/apiTypes";
 
 // state
-import { StateTree } from "../types";
+import { StateTree } from "../reducers/rootReducer";
 
 // reducers
 import { getLinkForItem } from "../reducers/apiLinksReducer";

@@ -6,7 +6,7 @@ import { Dispatch } from "redux";
 import { BacklogItemRankView, BacklogItemRankViewDispatchProps, BacklogItemRankViewStateProps } from "./BacklogItemRankView";
 
 // state
-import { StateTree } from "../../types";
+import { StateTree } from "../../reducers/rootReducer";
 
 // actions
 import { apiGetBacklogItemRanks } from "../../actions/apiBacklogItemRanks";

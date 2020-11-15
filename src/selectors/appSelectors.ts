@@ -1,9 +1,21 @@
-/* eslint-disable import/prefer-default-export */
+// externals
+import { applyMiddleware } from "redux";
 import { createSelector } from "reselect";
-import { AppState, Locale } from "../types";
+
+// interfaces/types
+import { EditMode } from "../components/molecules/buttons/EditButton";
+
+// interfaces/types
+import { AppState, Locale } from "../reducers/appReducer";
 
 export const app = (state: { app: AppState }): AppState => state.app;
 
 export const getLocale = createSelector([app], (app: AppState): Locale => app.locale);
 
 export const getAuthToken = createSelector([app], (app: AppState): string => app.authToken);
+
+export const getAppEditMode = createSelector([app], (app: AppState): EditMode => app.editMode);
+
+export const getElectronClient = createSelector([app], (app: AppState): boolean => app.electronClient);
+
+export const getAppMessage = createSelector([app], (app: AppState): string => app.message);

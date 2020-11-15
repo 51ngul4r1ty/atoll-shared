@@ -9,3 +9,8 @@ export interface PropsWithInvertColors {
 export type StandardComponentProps = PropsWithClassName;
 
 export type StandardInvertibleComponentProps = StandardComponentProps & PropsWithInvertColors;
+
+export interface ElementAttribute<T = any> {
+    name: string;
+    value: T;
+}

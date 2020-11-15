@@ -1,0 +1,9 @@
+.content {
+    display: flex;
+}
+
+.backlog,
+.sprints {
+    flex-grow: 1;
+    width: 50%;
+}

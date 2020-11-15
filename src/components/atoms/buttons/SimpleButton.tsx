@@ -17,6 +17,7 @@ export type SimpleButtonRefType = HTMLInputElement;
 export type SimpleButtonType = ComponentWithForwardedRef<SimpleButtonProps>;
 
 export interface SimpleButtonStateProps extends PropsWithClassName {
+    disabled?: boolean;
     draggable?: boolean;
     icon?: any; // TODO: Define type
     iconOnLeft?: boolean;
@@ -58,7 +59,8 @@ const InnerSimpleButton: FC<SimpleButtonProps & SimpleButtonInnerStateProps> = (
         css.button,
         props.className,
         classNameToAdd,
-        props.suppressSpacing ? css.suppressSpacing : null
+        props.suppressSpacing ? css.suppressSpacing : null,
+        props.disabled ? css.disabled : null
     );
     const contents = props.iconOnLeft ? (
         <>

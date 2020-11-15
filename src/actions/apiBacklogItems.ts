@@ -9,7 +9,7 @@ import { getApiBaseUrl } from "../config";
 import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
-import { BacklogItemModel, BacklogItem } from "../reducers/backlogItemsReducer";
+import { BacklogItemModel, BacklogItem } from "../types/backlogItemTypes";
 import { PushBacklogItemModel } from "../middleware/wsMiddleware";
 import {
     API,
@@ -34,15 +34,17 @@ export interface ApiGetBacklogItemsSuccessAction {
     payload: ApiActionSuccessPayloadForCollection<ApiBacklogItem>;
     meta: ApiActionMetaDataRequestMeta<{}>;
 }
-export const apiGetBacklogItems = (): NoDataApiAction => ({
-    type: API,
-    payload: {
-        endpoint: `${getApiBaseUrl()}api/v1/backlog-items`,
-        method: "GET",
-        headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
-        types: buildActionTypes(ApiActionNames.GET_BACKLOG_ITEMS)
-    }
-});
+export const apiGetBacklogItems = (): NoDataApiAction => {
+    return {
+        type: API,
+        payload: {
+            endpoint: `${getApiBaseUrl()}api/v1/backlog-items`,
+            method: "GET",
+            headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+            types: buildActionTypes(ApiActionNames.GET_BACKLOG_ITEMS)
+        }
+    };
+};
 
 // #endregion
 
@@ -130,15 +132,17 @@ export interface ApiDeleteBacklogItemSuccessResponse {
     };
 }
 export type ApiDeleteBacklogItemSuccessActionPayload = ApiActionSuccessPayload<ApiDeleteBacklogItemSuccessResponse>;
+
+export interface ApiDeleteBacklogItemMetaOriginalActionArgs {
+    backlogItemId: string;
+}
 export interface ApiDeleteBacklogItemMeta {
-    originalActionArgs: {
-        backlogItemId: string;
-    };
+    originalActionArgs: ApiDeleteBacklogItemMetaOriginalActionArgs;
 }
 export interface ApiDeleteBacklogItemSuccessAction {
     type: typeof ActionTypes.API_DELETE_BACKLOG_ITEM_SUCCESS;
     payload: ApiDeleteBacklogItemSuccessActionPayload;
-    meta: ApiActionMetaDataRequestMeta<{}>;
+    meta: ApiActionMetaDataRequestMeta<{}, undefined, ApiDeleteBacklogItemMetaOriginalActionArgs>;
 }
 export type ApiDeleteBacklogItemAction = NoDataApiAction<ApiDeleteBacklogItemMeta>;
 export const apiDeleteBacklogItem = (backlogItemId: string): ApiDeleteBacklogItemAction => {

@@ -1,96 +1,66 @@
 // externals
 import * as React from "react";
 import { useState } from "react";
-import { withTranslation, WithTranslation } from "react-i18next";
+import { withTranslation } from "react-i18next";
 
 // style
 import css from "./BacklogItemPlanningPanel.module.css";
 
 // components
-import { AddButton } from "../../molecules/buttons/AddButton";
-import { BacklogItemCard, BacklogItemTypeEnum } from "../../molecules/cards/BacklogItemCard";
-import { SimpleDivider } from "../../atoms/dividers/SimpleDivider";
+import {
+    BacklogItemCard,
+    BacklogItemTypeEnum,
+    buildBacklogItemKey,
+    buildBacklogItemPlanningItemKey,
+    buildDividerKey,
+    calcItemId,
+    ItemMenuEventHandlers
+} from "../../../molecules/cards/BacklogItemCard";
+import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 
 // consts/enums
-import { EditMode } from "../../molecules/buttons/EditButton";
-import { buildClassName } from "../../../utils/classNameBuilder";
+import { EditMode } from "../../../molecules/buttons/EditButton";
+import { buildClassName } from "../../../../utils/classNameBuilder";
 import { useDispatch } from "react-redux";
-import {
-    BacklogItemType,
-    BacklogItemWithSource,
-    BacklogItemSource,
-    SaveableBacklogItem
-} from "../../../reducers/backlogItemsReducer";
+import { SaveableBacklogItem } from "../../../../reducers/backlogItems/backlogItemsReducerTypes";
+import { Source } from "../../../../reducers/types";
 
 // actions
-import { apiDeleteBacklogItem } from "../../../actions/apiBacklogItems";
-import { backlogItemDetailClicked, editBacklogItem } from "../../../actions/backlogItems";
+import { apiDeleteBacklogItem } from "../../../../actions/apiBacklogItems";
+import {
+    backlogItemDetailClicked,
+    editBacklogItem,
+    selectProductBacklogItem,
+    unselectProductBacklogItem
+} from "../../../../actions/backlogItemActions";
 
 // utils
-import * as logger from "../../../utils/logger";
-import { useRecursiveTimeout } from "../../common/setTimeoutHook";
-import { BacklogItemPlanningItem } from "../combo/BacklogItemPlanningItem";
-import { getParentWithDataClass } from "../../common/domUtils";
+import * as logger from "../../../../utils/logger";
+import { useRecursiveTimeout } from "../../../common/setTimeoutHook";
+import { BacklogItemPlanningItem } from "../../combo/BacklogItemPlanningItem";
 
 // consts/enums
-import * as loggingTags from "../../../constants/loggingTags";
-
-// interfaces/types
-import { StoryPhrases } from "../../../types";
-
-/* exported interfaces */
-
-export interface PlanningPanelBacklogItem extends StoryPhrases {
-    estimate: number | null;
-    friendlyId: string;
-    externalId: string;
-    id: string;
-    instanceId: number | null;
-    type: BacklogItemType;
-    saved: boolean;
-}
-
-export interface BacklogItemPlanningPanelStateProps {
-    allItems: BacklogItemWithSource[];
-    editMode: EditMode;
-    renderMobile?: boolean;
-    openedDetailMenuBacklogItemId: string | null;
-}
-
-export interface OnAddedNewBacklogItem {
-    (itemType: BacklogItemType);
-}
-
-export interface OnReorderBacklogItems {
-    (sourceItemId: string, targerItemId: string);
-}
-
-export interface BacklogItemPlanningPanelDispatchProps {
-    onAddNewBacklogItem: OnAddedNewBacklogItem;
-    onReorderBacklogItems: OnReorderBacklogItems;
-}
-
-export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
-    BacklogItemPlanningPanelDispatchProps &
-    WithTranslation;
+import * as loggingTags from "../../../../constants/loggingTags";
+import { BacklogItemPlanningPanelProps, CardPosition } from "./backlogItemPlanningPanelTypes";
+import {
+    atBottomOfPage,
+    atTopOfPage,
+    buildSpacerInternalId,
+    getDragItemDocumentTop,
+    getDragItemId,
+    getDragItemIdUnderTarget,
+    getDragItemOffsetTop,
+    getDragItemWidth,
+    handleScroll,
+    preventDefault,
+    scrollDown,
+    scrollUp,
+    targetIsDragButton
+} from "./backlogItemPlanningPanelUtils";
+import { addActionButtons } from "./backlogItemPlanningPanelJsxUtils";
+import { productBacklogItemMenuBuilder } from "../../../common/itemMenuBuilders";
 
 /* exported components */
-
-export const buildUniqueItemKey = (props: SaveableBacklogItem, componentPrefix: string): string => {
-    return props.id ? `${componentPrefix}-id-${props.id}` : `${componentPrefix}-i-${props.instanceId}`;
-};
-
-export const buildBacklogItemKey = (props: SaveableBacklogItem): string => {
-    return buildUniqueItemKey(props, "bic");
-};
-
-export const buildBacklogItemPlanningItemKey = (props: SaveableBacklogItem): string => {
-    return buildUniqueItemKey(props, "bipi");
-};
-
-export const buildDividerKey = (props: SaveableBacklogItem): string => {
-    return buildUniqueItemKey(props, "div-l");
-};
 
 export const buildDragBacklogItemElt = (
     editMode: EditMode,
@@ -99,16 +69,23 @@ export const buildDragBacklogItemElt = (
     offsetTop: number,
     width: any
 ) => {
+    const itemEventHandlers: ItemMenuEventHandlers = {
+        handleEvent: (eventName: string, itemId: string) => {
+            throw Error(`unexpected condition- event ${eventName} should not be triggered while element is being dragged`);
+        }
+    };
     return (
         <BacklogItemCard
             key={buildBacklogItemKey(item)}
+            buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
             estimate={item.estimate}
             internalId={`${item.id}`}
-            itemId={`${item.externalId}`}
+            itemId={calcItemId(item.externalId, item.friendlyId)}
             itemType={item.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
             titleText={item.storyPhrase}
             isDraggable={editMode === EditMode.Edit}
             hasDetails={editMode === EditMode.Edit}
+            isSelectable={editMode === EditMode.Edit}
             renderMobile={renderMobile}
             marginBelowItem
             offsetTop={offsetTop}
@@ -116,218 +93,6 @@ export const buildDragBacklogItemElt = (
             showDetailMenu={false}
         />
     );
-};
-
-const BELOW_LAST_CARD_ID = "##below#last#card##";
-
-const getDragItemIdUnderDocumentTop = (documentTop: number, cardPositions: CardPosition[]) => {
-    return getDragItemIdUnderCommon(documentTop, cardPositions);
-};
-
-const getHtmlClientHeight = () => {
-    const htmlElt = document.getElementsByTagName("html")[0];
-    const clientHeight = htmlElt.clientHeight;
-    return clientHeight;
-};
-
-const PAGE_EDGE_PERCENTAGE = 5;
-const PAGE_SCROLL_PERCENTAGE = 5;
-
-const percentageToFraction = (percentage: number) => {
-    return percentage / 100.0;
-};
-
-const atTopOfPage = (clientY: number) => {
-    const clientHeight = getHtmlClientHeight();
-    return clientY < clientHeight * percentageToFraction(PAGE_EDGE_PERCENTAGE);
-};
-
-const atBottomOfPage = (clientY: number) => {
-    const clientHeight = getHtmlClientHeight();
-    return clientY > clientHeight * percentageToFraction(100 - PAGE_EDGE_PERCENTAGE);
-};
-
-const SPACER_PREFIX = "spacer---";
-
-export const buildSpacerInternalId = (id: string) => {
-    return `${SPACER_PREFIX}${id}`;
-};
-
-export const isSpacerInternalId = (id: string) => {
-    return id.startsWith(SPACER_PREFIX);
-};
-
-export const parseSpacerInternalId = (id: string) => {
-    return isSpacerInternalId(id) ? id.substring(SPACER_PREFIX.length) : null;
-};
-
-interface CardPosition {
-    id: string;
-    documentTop: number;
-    documentBottom: number;
-}
-
-const scrollByPageHeightPercentage = (scrollPercent: number, onScroll: { (scrollByY: number) }) => {
-    const clientHeight = getHtmlClientHeight();
-    const scrollByY = Math.round(clientHeight * percentageToFraction(scrollPercent));
-    const beforeScrollY = window.scrollY;
-    window.scrollBy(0, scrollByY);
-    const afterScrollY = window.scrollY;
-    const deltaScrollY = afterScrollY - beforeScrollY;
-    if (deltaScrollY) {
-        onScroll(deltaScrollY);
-    }
-};
-
-const scrollDown = (onScroll: { (scrollByY: number) }) => {
-    scrollByPageHeightPercentage(PAGE_SCROLL_PERCENTAGE, (scrollByY) => onScroll(scrollByY));
-};
-
-const scrollUp = (onScroll: { (scrollByY: number) }) => {
-    scrollByPageHeightPercentage(-PAGE_SCROLL_PERCENTAGE, (scrollByY) => onScroll(scrollByY));
-};
-
-const handleScroll = (
-    deltaY: number,
-    cardPositions: CardPosition[],
-    dragItemDocumentTop: number,
-    dragItemOffsetTop: number,
-    setDragItemDocumentTop: { (value: number) },
-    setDragItemOffsetTop: { (value: number) },
-    dragOverItemId: string,
-    setDragOverItemId: { (value: string) }
-) => {
-    const newDragItemDocumentTop = dragItemDocumentTop + deltaY;
-    const newDragItemOffsetTop = dragItemOffsetTop + deltaY;
-    setDragItemDocumentTop(newDragItemDocumentTop);
-    setDragItemOffsetTop(newDragItemOffsetTop);
-    const overItemId = getDragItemIdUnderDocumentTop(newDragItemDocumentTop, cardPositions);
-    if (overItemId && overItemId !== dragOverItemId) {
-        setDragOverItemId(overItemId);
-    }
-};
-
-const addActionButtons = (
-    renderElts: any[],
-    editMode: EditMode,
-    suppressTopPadding: boolean,
-    onAddNewBacklogItem: OnAddedNewBacklogItem,
-    renderMobile: boolean
-) => {
-    if (editMode === EditMode.View) {
-        return;
-    }
-    const actionButtonsClassName = buildClassName(
-        css.backlogItemPlanningActionPanel,
-        suppressTopPadding ? null : css.embeddedBacklogItemUserStoryFormRow,
-        renderMobile ? css.mobile : null
-    );
-    renderElts.push(
-        <div key="backlogitem-action-buttons" className={actionButtonsClassName}>
-            <AddButton
-                itemName="story"
-                onClick={() => {
-                    onAddNewBacklogItem("story");
-                }}
-            />
-            <AddButton
-                itemName="issue"
-                onClick={() => {
-                    onAddNewBacklogItem("issue");
-                }}
-            />
-        </div>
-    );
-};
-
-const preventDefault = (e: React.BaseSyntheticEvent<HTMLDivElement>) => {
-    logger.info("preventDefault", [loggingTags.DRAG_BACKLOGITEM]);
-    e.preventDefault();
-};
-
-const targetIsDragButton = (e: React.BaseSyntheticEvent<HTMLElement>) => {
-    return !!getParentWithDataClass(e.target as HTMLElement, "drag-button");
-};
-
-const isBacklogItem = (elt: HTMLElement) => elt && elt.getAttribute("data-class") === "backlogitem";
-
-const getDragItem = (target: EventTarget) => {
-    let elt = target as HTMLElement;
-    while (elt && !isBacklogItem(elt)) {
-        elt = elt.parentElement;
-    }
-    if (isBacklogItem(elt)) {
-        return elt;
-    }
-    return null;
-};
-
-const getDragItemId = (target: EventTarget) => {
-    const item = getDragItem(target);
-    if (item) {
-        const id = item.getAttribute("data-id");
-        return id;
-    }
-    return null;
-};
-
-const getDragItemWidth = (target: EventTarget) => {
-    const item = getDragItem(target);
-    if (item) {
-        const width = item.offsetWidth;
-        return width;
-    }
-    return null;
-};
-
-const getDragItemDocumentTop = (target: EventTarget) => {
-    const item = getDragItem(target);
-    if (item) {
-        const rect = item.getBoundingClientRect();
-        return rect.top + window.scrollY;
-    }
-    return null;
-};
-
-const getDragItemOffsetTop = (target: EventTarget): number | null => {
-    const item = getDragItem(target);
-    if (item) {
-        const backlogItemDiv = getParentWithDataClass(item, "backlogitem");
-        return item.offsetTop;
-    }
-    return null;
-};
-
-const getDragItemIdUnderCommon = (documentTop: number, cardPositions: CardPosition[]) => {
-    let result: string = null;
-    let lastTop = 0;
-    let lastCard: CardPosition = null;
-    cardPositions.forEach((item) => {
-        if (!result) {
-            const dataId = item.id;
-            if (documentTop > lastTop && documentTop <= item.documentTop) {
-                result = dataId;
-            }
-            lastTop = item.documentTop;
-            lastCard = item;
-        }
-    });
-    if (!result && lastCard) {
-        if (documentTop > lastTop && documentTop <= lastCard.documentBottom) {
-            result = BELOW_LAST_CARD_ID;
-        }
-    }
-    return result;
-};
-
-const getDragItemIdUnderTarget = (
-    e: React.BaseSyntheticEvent<HTMLElement>,
-    clientY,
-    adjustY: number,
-    cardPositions: CardPosition[]
-) => {
-    const documentTop = clientY + window.scrollY + adjustY;
-    return getDragItemIdUnderCommon(documentTop, cardPositions);
 };
 
 export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps> = (props) => {
@@ -614,35 +379,49 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
             renderElts.push(elt);
         }
         let highlightAbove = false;
-        if (item.source === BacklogItemSource.Added) {
+        if (item.source === Source.Added) {
             inAddedSection = true;
             highlightAbove = afterPushedItem;
         }
-        if (item.source === BacklogItemSource.Loaded) {
+        if (item.source === Source.Loaded) {
             highlightAbove = afterPushedItem;
             if (inAddedSection) {
                 renderElts.push(<SimpleDivider key={buildDividerKey(item)} />);
                 inAddedSection = false;
             }
             if (!inLoadedSection) {
+                const suppressButtonSpacing = !!props.renderMobile;
                 addActionButtons(
                     renderElts,
                     props.editMode,
                     suppressTopPadding || lastItemWasUnsaved,
-                    props.onAddNewBacklogItem,
+                    suppressButtonSpacing,
+                    props.onAddNewBacklogItemForm,
                     props.renderMobile
                 );
             }
             inLoadedSection = true;
         }
-        if (item.source === BacklogItemSource.Added || item.source === BacklogItemSource.Loaded) {
+        if (item.source === Source.Added || item.source === Source.Loaded) {
             if (isDragOverItem) {
                 const cardKey = `none---${item.id}---none`;
                 renderElts.push(<SimpleDivider key={`divider-${cardKey}`} />);
                 const showDetailMenu = item.id === props.openedDetailMenuBacklogItemId;
+                const itemEventHandlers: ItemMenuEventHandlers = {
+                    handleEvent: (eventName: string, itemId: string) => {
+                        if (eventName === "onRemoveItemClicked") {
+                            dispatch(apiDeleteBacklogItem(item.id));
+                        } else if (eventName === "onEditItemClicked") {
+                            dispatch(editBacklogItem(item.id));
+                        } else {
+                            throw Error(`${eventName} is not handled`);
+                        }
+                    }
+                };
                 renderElts.push(
                     <BacklogItemCard
                         key={cardKey}
+                        buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
                         estimate={null}
                         internalId={buildSpacerInternalId(item.id)}
                         itemId={null}
@@ -650,16 +429,18 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         titleText={null}
                         isDraggable={props.editMode === EditMode.Edit}
                         hasDetails={props.editMode === EditMode.Edit}
+                        isSelectable={props.editMode === EditMode.Edit}
                         renderMobile={props.renderMobile}
                         marginBelowItem
                         onDetailClicked={() => {
                             dispatch(backlogItemDetailClicked(item.id));
                         }}
-                        onRemoveItemClicked={(backlogItemId) => {
-                            dispatch(apiDeleteBacklogItem(item.id));
-                        }}
-                        onEditItemClicked={(backlogItemId) => {
-                            dispatch(editBacklogItem(item.id));
+                        onCheckboxChange={(checked) => {
+                            if (checked) {
+                                dispatch(selectProductBacklogItem(item.id));
+                            } else {
+                                dispatch(unselectProductBacklogItem(item.id));
+                            }
                         }}
                         showDetailMenu={showDetailMenu}
                     />
@@ -680,16 +461,18 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 />
             );
         }
-        afterPushedItem = item.source === BacklogItemSource.Pushed;
-        lastItemWasUnsaved = item.source === BacklogItemSource.Added && !item.saved;
+        afterPushedItem = item.source === Source.Pushed;
+        lastItemWasUnsaved = item.source === Source.Added && !item.saved;
         suppressTopPadding = false;
     });
     if (!inLoadedSection) {
+        const suppressButtonSpacing = !!props.renderMobile;
         addActionButtons(
             renderElts,
             props.editMode,
             suppressTopPadding || lastItemWasUnsaved,
-            props.onAddNewBacklogItem,
+            suppressButtonSpacing,
+            props.onAddNewBacklogItemForm,
             props.renderMobile
         );
     }
@@ -697,7 +480,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
         renderElts.push(<SimpleDivider key="last-divider" />);
     }
 
-    const classNameToUse = buildClassName(css.backlogItemPlanningPanel, props.renderMobile ? css.mobile : null);
+    const classNameToUse = buildClassName(css.backlogItemPlanningPanel, props.className);
     /* NOTE: Handlers were here */
     const isSingleTouch = (touches: React.TouchList) => touches.length === 1;
     const touchesToClientY = (touches: React.TouchList): number | null => {

@@ -5,26 +5,16 @@ import { Action } from "redux";
 // consts/enums
 import { EditMode } from "./components/molecules/buttons/EditButton";
 
-// state
-import { BacklogItemsState } from "./reducers/backlogItemsReducer";
-import { ApiLinkState } from "./reducers/apiLinksReducer";
-import { BacklogItemRanksState } from "./reducers/backlogItemRanksReducer";
-
-export type Locale = "en_US" | "de_DE";
-
-export interface StateTree {
-    apiLinks: ApiLinkState;
-    app: AppState;
-    backlogItems: BacklogItemsState;
-    backlogItemRanks: BacklogItemRanksState;
-    user: UserState;
-    featureToggles: FeatureTogglesState;
-}
-
 /* Data model related */
 
 export interface BaseModelItem {
     id: string;
+}
+
+export interface StandardModelItem extends BaseModelItem {
+    version?: number;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 /* App state related */
@@ -65,44 +55,6 @@ export interface WebsocketPushNotificationV0<T> extends BasePushNotification {
     data: T;
 }
 
-export type AppState = Readonly<{
-    authToken: string;
-    editMode: EditMode;
-    electronClient: boolean;
-    executingOnClient: boolean;
-    locale: Locale;
-    password: string;
-    refreshToken: string;
-    username: string;
-}>;
-
-/* User state related */
-
-export interface UserPreferences {
-    detectBrowserDarkMode: boolean;
-    selectedProject: string | null;
-}
-
-export type UserState = Readonly<{
-    preferences: UserPreferences;
-}>;
-
-/* Feature Toggles state related */
-
-export interface FeatureToggle {
-    enabled: boolean;
-    createdDateTime: Date;
-    modifiedDateTime: Date;
-}
-
-export type FeatureToggles = {
-    [key: string]: FeatureToggle;
-};
-
-export type FeatureTogglesState = Readonly<{
-    toggles: FeatureToggles;
-}>;
-
 /* Flux Standard Action related */
 
 export interface AnyFSA extends FSAWithMeta<any, any, any> {}
@@ -128,3 +80,5 @@ export interface StoryPhrases {
     storyPhrase: string;
     reasonPhrase: string | null;
 }
+
+export type ISODateString = string;

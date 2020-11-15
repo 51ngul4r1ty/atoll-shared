@@ -1,4 +1,5 @@
-import { FeatureToggles } from "../types";
+// interfaces/types
+import { FeatureToggles } from "../reducers/featureTogglesReducer";
 
 export const buildFeatureTogglesList = (featureToggles: FeatureToggles) => {
     const result = {};

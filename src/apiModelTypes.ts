@@ -1,4 +1,5 @@
-import { StoryPhrases } from "./types";
+// interfaces/types
+import { ISODateString, StoryPhrases } from "./types";
 
 export type uuid = string;
 
@@ -11,7 +12,7 @@ export interface BaseItem {
 }
 
 export interface ItemWithId {
-    id: uuid;
+    id: uuid | null;
 }
 
 export interface ItemWithName {
@@ -42,6 +43,10 @@ export interface ApiBacklogItem extends StandardItem, StoryPhrases {
     projectId: string | null;
 }
 
+export interface ApiBacklogItemInSprint extends ApiBacklogItem {
+    displayindex: number | null;
+}
+
 export interface ApiBacklogItemRank extends StandardItem {
     projectId: string | null;
     backlogitemId: string | null;
@@ -57,8 +62,20 @@ export interface ApiCounter extends StandardItem {
 }
 
 export interface ApiSprint extends StandardNamedItem {
-    startDate: Date;
-    finishDate: Date;
+    acceptedPoints: number | null;
+    finishdate: ISODateString;
+    plannedPoints: number | null;
+    projectId: string;
+    remainingSplitPoints: number | null;
+    startdate: ISODateString;
+    usedSplitPoints: number | null;
+    velocityPoints: number | null;
+}
+
+export interface ApiSprintBacklogItem extends BaseItem {
+    sprintId: string;
+    backlogitemId: string;
+    displayindex: number | null;
 }
 
 export interface CounterSettings {
@@ -80,7 +97,13 @@ export interface ApiProjectSettings extends StandardItem {
     settings: ProjectSettings;
 }
 
+export interface UserSettings {
+    detectBrowserDarkMode: boolean;
+    selectedProject: string | null;
+    selectedSprint: string | null;
+}
+
 export interface ApiUserSettings extends StandardItem {
     appuserId: string | null;
-    settings: ProjectSettings;
+    settings: UserSettings;
 }

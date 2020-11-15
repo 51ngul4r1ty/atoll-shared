@@ -1,6 +1,5 @@
 // externals
 import { Action } from "redux";
-import { AxiosRequestConfig } from "axios";
 
 export const API = "API";
 
@@ -14,14 +13,20 @@ export type ComplexApiActionType = {}; // TODO: future use
 
 export type ApiActionType = SimpleApiActionType | ComplexApiActionType;
 
+export type ApiActionStage = "request" | "success" | "failure";
+
 export interface ApiActionMeta<P> {
     tryCount?: number;
     passthrough?: P;
 }
 
+export interface ApiStageActionMeta<P> extends ApiActionMeta<P> {
+    apiActionStage: ApiActionStage;
+}
+
 export type ApiMethods = "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "OPTIONS";
 
-export interface ApiAction<T, U = any> extends Action {
+export interface ApiAction<T = {}, U = {}> extends Action {
     payload: {
         endpoint: string;
         method: ApiMethods;
@@ -30,6 +35,10 @@ export interface ApiAction<T, U = any> extends Action {
         types: ApiActionType[];
     };
     meta?: ApiActionMeta<any> & U;
+}
+
+export interface ApiStageAction<T = {}, U = {}> extends ApiAction {
+    meta?: ApiStageActionMeta<any> & U;
 }
 
 export interface NoDataApiAction<U = any> extends ApiAction<undefined, U> {}
@@ -45,8 +54,10 @@ export interface ApiActionMetaDataRequestBodyWithOriginal<T> extends ApiActionMe
     original?: T;
 }
 
-export interface ApiActionMetaDataRequestMeta<T> {
+export interface ApiActionMetaDataRequestMeta<T, U = undefined, OA = undefined> {
+    originalActionArgs?: OA;
     requestBody: ApiActionMetaDataRequestBody<T>;
+    actionParams?: U;
 }
 
 export interface ApiActionSuccessPayload<T> {
@@ -56,3 +67,30 @@ export interface ApiActionSuccessPayload<T> {
 export type ApiActionSuccessPayloadForCollection<T> = ApiActionSuccessPayload<{ data: { items: T[] } }>;
 
 export type ApiActionSuccessPayloadForItem<T> = ApiActionSuccessPayload<{ data: { item: T } }>;
+
+export interface ApiActionFailurePayloadConfig {
+    url: string;
+    method: string;
+    data: string;
+    headers: { [header: string]: string };
+    baseURL: "";
+    transformRequest: any[];
+    transformResponse: any[];
+    timeout: number;
+    xsrfCookieName: string;
+    xsrfHeaderName: string;
+    maxContentLength: number;
+}
+
+export interface ApiActionFailurePayload {
+    response: {
+        message: string;
+        status: number;
+    };
+    error: {
+        message: string;
+        name: string;
+        stack: string;
+        config: ApiActionFailurePayloadConfig;
+    };
+}

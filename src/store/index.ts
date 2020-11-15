@@ -1,18 +1,20 @@
 // externals
 import thunk from "redux-thunk";
 import { compose, createStore, applyMiddleware } from "redux";
-import { routerMiddleware } from "connected-react-router";
 import { composeWithDevTools } from "redux-devtools-extension";
+import { routerMiddleware } from "connected-react-router";
 
 // reducers
 import createRootReducer from "../reducers/rootReducer";
 
 // middleware
+import { apiBatchMiddleware } from "../middleware/apiBatchMiddleware";
 import { apiMiddleware } from "../middleware/apiMiddleware";
-import { routingMiddleware } from "../middleware/routingMiddleware";
-import { wsMiddleware } from "../middleware/wsMiddleware";
 import { apiOrchestrationMiddleware } from "../middleware/apiOrchestrationMiddleware";
 import { localStorageMiddleware } from "../middleware/localStorageMiddleware";
+import { routingMiddleware } from "../middleware/routingMiddleware";
+import { sprintBacklogItemMiddleware } from "../middleware/sprintBacklogItemMiddleware";
+import { wsMiddleware } from "../middleware/wsMiddleware";
 
 const composeEnhancers = composeWithDevTools({
     name: "Atoll",
@@ -38,9 +40,11 @@ export const configureStore = ({ initialState, middleware = [], history, windowR
         thunk,
         routerMiddleware(history),
         localStorageMiddleware,
-        apiOrchestrationMiddleware,
+        apiBatchMiddleware,
         apiMiddleware,
+        apiOrchestrationMiddleware,
         routingMiddleware,
+        sprintBacklogItemMiddleware,
         wsMiddleware
     ].concat(...middleware);
 

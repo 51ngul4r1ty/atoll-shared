@@ -13,7 +13,7 @@ import {
     ApiDeleteBacklogItemSuccessAction,
     ApiPutBacklogItemSuccessAction
 } from "../actions/apiBacklogItems";
-import { receivePushedBacklogItem } from "../actions/backlogItems";
+import { receivePushedBacklogItem } from "../actions/backlogItemActions";
 import {
     WebsocketPushNotification,
     PushNotificationType,
@@ -22,7 +22,7 @@ import {
     WebsocketPushNotificationData
 } from "../types";
 import { ReceiveWebsocketMessageAction } from "../actions/wsActions";
-import { BacklogItemModel } from "../reducers/backlogItemsReducer";
+import { BacklogItemModel } from "../types/backlogItemTypes";
 
 // selectors
 import { getPrevNextAndCurrentById } from "../selectors/backlogItemSelectors";

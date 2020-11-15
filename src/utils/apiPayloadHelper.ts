@@ -1,5 +1,7 @@
 // interfaces/types
-import { BacklogItemModel, BacklogItem } from "../reducers/backlogItemsReducer";
+import { Sprint } from "../reducers/sprintsReducer";
+import { BacklogItemModel, BacklogItem } from "../types/backlogItemTypes";
+import { SprintModel } from "../types/sprintTypes";
 
 export const convertToBacklogItemModel = (backlogItem: BacklogItem): BacklogItemModel => ({
     createdAt: backlogItem.createdAt,
@@ -14,4 +16,19 @@ export const convertToBacklogItemModel = (backlogItem: BacklogItem): BacklogItem
     storyPhrase: backlogItem.storyPhrase,
     type: backlogItem.type,
     projectId: backlogItem.projectId
+});
+
+export const convertToSprintModel = (sprint: Sprint): SprintModel => ({
+    createdAt: sprint.createdAt,
+    updatedAt: sprint.updatedAt,
+    projectId: sprint.projectId,
+    id: sprint.id,
+    name: sprint.name,
+    startdate: sprint.startDate,
+    finishdate: sprint.finishDate,
+    plannedPoints: sprint.plannedPoints,
+    acceptedPoints: sprint.acceptedPoints,
+    velocityPoints: sprint.velocityPoints,
+    usedSplitPoints: sprint.usedSplitPoints,
+    remainingSplitPoints: sprint.remainingSplitPoints
 });

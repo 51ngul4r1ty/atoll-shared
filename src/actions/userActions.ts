@@ -1,11 +1,5 @@
 // interfaces/types
-import {
-    API,
-    NoDataApiAction,
-    ApiActionMetaDataRequestBody,
-    ApiActionSuccessPayload,
-    ApiActionSuccessPayloadForItem
-} from "../middleware/apiTypes";
+import { API, NoDataApiAction, ApiActionMetaDataRequestBody, ApiActionSuccessPayloadForItem } from "../middleware/apiTypes";
 
 // actions
 import * as ActionTypes from "./actionTypes";
@@ -24,6 +18,8 @@ export interface ActionGetUserPrefsSuccessResponse {
     id: string;
     settings: {
         selectedProject: string;
+        selectedSprint: string;
+        detectBrowserDarkMode: boolean;
     };
     updatedAt: string; // ISO Date String
     version: number;

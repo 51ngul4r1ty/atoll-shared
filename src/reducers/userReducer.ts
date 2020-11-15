@@ -5,13 +5,19 @@ import { produce } from "immer";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { UserState, AnyFSA } from "../types";
+import { AnyFSA } from "../types";
 import { ActionGetUserPrefsSuccessAction } from "../actions/userActions";
+import { UserSettings } from "../apiModelTypes";
+
+export type UserState = Readonly<{
+    preferences: UserSettings;
+}>;
 
 export const userReducerInitialState = Object.freeze<UserState>({
     preferences: {
         detectBrowserDarkMode: false,
-        selectedProject: null
+        selectedProject: null,
+        selectedSprint: null
     }
 });
 
@@ -25,7 +31,9 @@ export const userReducer = (state: UserState = userReducerInitialState, action: 
                 const item = actionTyped.payload.response?.data?.item;
                 draft.preferences = {
                     ...draft.preferences,
-                    selectedProject: item?.settings?.selectedProject
+                    selectedProject: item?.settings?.selectedProject,
+                    selectedSprint: item?.settings?.selectedSprint,
+                    detectBrowserDarkMode: item?.settings?.detectBrowserDarkMode
                 };
                 return;
             }

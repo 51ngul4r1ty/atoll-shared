@@ -1,5 +1,5 @@
 // interfaces/types
-import { Locale, FSA, SimpleFSA } from "../types";
+import { Locale } from "../reducers/appReducer";
 
 // consts/enums
 import * as ActionTypes from "./actionTypes";
@@ -65,4 +65,8 @@ export const localStoreRefreshToken = (refreshToken: string): LocalStoreRefreshT
     payload: {
         refreshToken
     }
+});
+
+export const errorPanelClick = () => ({
+    type: ActionTypes.ERROR_PANEL_CLICK
 });

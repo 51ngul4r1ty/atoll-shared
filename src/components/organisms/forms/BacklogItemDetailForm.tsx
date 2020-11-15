@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 
 // components
-import { LabeledInput } from "../../atoms/forms/LabeledInput";
+import { LabeledInput } from "../../atoms/inputs/LabeledInput";
 import { CancelButton } from "../../molecules/buttons/CancelButton";
 import { DoneButton } from "../../molecules/buttons/DoneButton";
 
@@ -14,7 +14,7 @@ import css from "./BacklogItemDetailForm.module.css";
 import { buildClassName } from "../../../utils/classNameBuilder";
 
 // interfaces/types
-import { BacklogItemType } from "../../../reducers/backlogItemsReducer";
+import { BacklogItemType } from "../../../types/backlogItemTypes";
 import { getStoryPhrases, isStoryPaste } from "./pasteFormatUtils";
 import { StoryPhrases } from "../../../types";
 

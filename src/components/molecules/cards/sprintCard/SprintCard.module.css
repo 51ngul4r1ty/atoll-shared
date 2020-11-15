@@ -1,0 +1,145 @@
+.sprintContents:not(.expanded) {
+    display: none;
+}
+
+.sprintContents.expanded {
+    padding-top: 0.8rem;
+}
+
+.sprintCard {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 0.5rem 0.5rem 0.5rem 0.2rem;
+    border: 0.0625rem solid var(--normal-light-border-color, #ccc);
+    box-sizing: border-box;
+}
+
+:global(.mobile) .sprintCard {
+    padding: 0.3rem 0.3rem 0.3rem 0.1rem;
+}
+
+.sprintHeaderAndContent {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.sprintHeader {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 0 0 0 0.3rem;
+    box-sizing: border-box;
+}
+
+:global(.mobile) .sprintHeader {
+    font-size: 0.7rem;
+}
+
+.sprintHeaderRow2Mobile,
+:global(.mobile) .sprintHeaderContentInfoRow {
+    font-size: 0.6rem;
+}
+
+.sprintHeaderRow2Mobile {
+    width: 100%;
+    padding: 0.3rem 0 0 0.3rem;
+}
+
+.sprintName {
+    min-width: 7rem;
+    font-weight: 500;
+}
+
+:global(.mobile) .sprintName {
+    min-width: 4.5rem;
+    font-weight: 800;
+}
+
+.sprintHeaderContent {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    flex-grow: 1;
+    font-size: 1rem;
+}
+
+:global(.mobile) .sprintHeaderContent {
+    font-size: 0.7rem;
+}
+
+.sprintHeaderContentTopRow {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.sprintDateRange {
+    width: 50%;
+    flex-grow: 1;
+}
+
+:global(.mobile) .sprintDateRange {
+    width: 100%;
+}
+
+.sprintStatus {
+    flex-grow: 1;
+    text-align: right;
+    font-weight: 500;
+}
+
+:global(.mobile) .sprintStatus {
+    font-weight: 800;
+}
+
+.sprintHeaderContentInfoRow {
+    width: 100%;
+    flex-grow: 1;
+    padding-top: 0.4rem;
+    font-size: 0.75rem;
+}
+
+.expandCollapse {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.expandCollapse > * {
+    width: auto;
+    height: 0.9rem;
+}
+
+.sprintActionButtonPanel {
+    padding: 0.5rem 0 0.1rem 0.3rem;
+}
+
+.pointInfoHeading {
+    font-weight: 800;
+    padding: 0 0 0 0.3rem;
+}
+
+.pointInfoBullet {
+    padding: 0 0 0 0.65rem;
+}
+
+.detailMenu {
+    position: absolute;
+    right: 1.3rem;
+    top: -0.5rem;
+    z-index: 1;
+}
+
+.detailButton {
+    width: 1.2rem;
+    text-align: right;
+}
+
+.menuToLeft {
+}

@@ -6,38 +6,81 @@ import { Dispatch } from "redux";
 import { PlanView, PlanViewStateProps, PlanViewDispatchProps } from "./PlanView";
 
 // state
-import { StateTree } from "./types";
+import { StateTree } from "./reducers/rootReducer";
 
 // actions
-import { apiGetBacklogItems } from "./actions/apiBacklogItems";
-import { addNewBacklogItem, reorderBacklogItems } from "./actions/backlogItems";
+import { addNewBacklogItemForm, reorderBacklogItems } from "./actions/backlogItemActions";
+import {
+    addNewSprintForm,
+    collapseSprintPanel,
+    expandSprintPanel,
+    NewSprintPosition,
+    sprintDetailClicked
+} from "./actions/sprintActions";
+import { apiBffViewsPlan } from "./actions/apiBffViewsPlan";
+import {
+    moveSelectedBacklogItemsToSprintUsingApi,
+    sprintBacklogItemDetailClicked,
+    sprintMoveItemToBacklogClicked
+} from "./actions/sprintBacklogActions";
 
 // interfaces/types
-import { BacklogItemType } from "./reducers/backlogItemsReducer";
+import { BacklogItemType } from "./types/backlogItemTypes";
 
 // utils
 import { isPlatformWindows } from "./utils";
 
+// selectors
+import { getCurrentProjectId } from "./selectors/userSelectors";
+import { getOpenedDetailMenuSprintId, getPlanViewSprints } from "./selectors/sprintSelectors";
+import {
+    getAllBacklogItems,
+    getOpenedDetailMenuBacklogItemId,
+    getSelectedBacklogItemCount
+} from "./selectors/backlogItemSelectors";
+import { getAppEditMode, getElectronClient } from "./selectors/appSelectors";
+import { getOpenedDetailMenuInfo } from "./selectors/sprintBacklogSelectors";
+
 const mapStateToProps = (state: StateTree): PlanViewStateProps => {
-    // TODO: Switch to using selectors?
-    const allItems = state.backlogItems.allItems;
-    // const highlightedDividers = state.backlogItems.pushedItems.map((item) => item.displayIndex);
+    const allItems = getAllBacklogItems(state);
+    const sprints = getPlanViewSprints(state);
     let result: PlanViewStateProps = {
         allItems,
-        editMode: state.app.editMode,
-        openedDetailMenuBacklogItemId: state.backlogItems.openedDetailMenuBacklogItemId,
-        electronClient: state.app.electronClient,
-        showWindowTitleBar: !isPlatformWindows()
+        editMode: getAppEditMode(state),
+        openedDetailMenuSprintId: getOpenedDetailMenuSprintId(state),
+        openedDetailMenuBacklogItemId: getOpenedDetailMenuBacklogItemId(state),
+        openedDetailMenuSprintBacklogInfo: getOpenedDetailMenuInfo(state),
+        electronClient: getElectronClient(state),
+        selectedProductBacklogItemCount: getSelectedBacklogItemCount(state),
+        showWindowTitleBar: !isPlatformWindows(),
+        projectId: getCurrentProjectId(state),
+        sprints
     };
     return result;
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
     return {
-        onLoaded: () => dispatch(apiGetBacklogItems()),
-        onAddNewBacklogItem: (type: BacklogItemType) => dispatch(addNewBacklogItem(type)),
+        onLoaded: (projectId: string) => {
+            dispatch(apiBffViewsPlan());
+        },
+        onAddNewBacklogItemForm: (type: BacklogItemType) => dispatch(addNewBacklogItemForm(type)),
+        onAddBacklogItemToSprint: (sprintId: string) => dispatch(moveSelectedBacklogItemsToSprintUsingApi(sprintId)),
+        onAddNewSprintForm: (position: NewSprintPosition) => dispatch(addNewSprintForm(position)),
         onReorderBacklogItems: (sourceItemId: string, targetItemId: string) =>
-            dispatch(reorderBacklogItems(sourceItemId, targetItemId))
+            dispatch(reorderBacklogItems(sourceItemId, targetItemId)),
+        onExpandCollapse: (sprintId: string, expand: boolean) => {
+            if (expand) {
+                dispatch(expandSprintPanel(sprintId));
+            } else {
+                dispatch(collapseSprintPanel(sprintId));
+            }
+        },
+        onSprintDetailClicked: (sprintId: string) => dispatch(sprintDetailClicked(sprintId)),
+        onItemDetailClicked: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemDetailClicked(sprintId, backlogItemId)),
+        onMoveItemToBacklogClicked: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintMoveItemToBacklogClicked(sprintId, backlogItemId))
     };
 };
 

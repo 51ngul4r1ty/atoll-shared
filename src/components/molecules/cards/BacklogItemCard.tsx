@@ -6,21 +6,40 @@ import { withTranslation, WithTranslation } from "react-i18next";
 import css from "./BacklogItemCard.module.css";
 
 // components
-import { StoryIcon } from "../../atoms/icons/StoryIcon";
-import { IssueIcon } from "../../atoms/icons/IssueIcon";
+import { Checkbox } from "../../atoms/inputs/Checkbox";
 import { DragIcon } from "../../atoms/icons/DragIcon";
-import { EditDetailIcon } from "../../atoms/icons/EditDetailIcon";
-import { CaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
-import { RemoveButton } from "../buttons/RemoveButton";
-import { EditButton, EditMode } from "../buttons/EditButton";
+import { IssueIcon } from "../../atoms/icons/IssueIcon";
+import { StoryIcon } from "../../atoms/icons/StoryIcon";
+import { ItemDetailButton } from "../buttons/ItemDetailButton";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
 
 // consts/enums
-import { PushState } from "../../../reducers/backlogItemsReducer";
+import { SaveableBacklogItem } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
+import { PushState } from "../../../reducers/types";
 
 /* exported functions */
+
+export const calcItemId = (externalId: string | null, friendlyId: string) => {
+    return externalId || friendlyId;
+};
+
+export const buildUniqueItemKey = (props: SaveableBacklogItem, componentPrefix: string): string => {
+    return props.id ? `${componentPrefix}-id-${props.id}` : `${componentPrefix}-i-${props.instanceId}`;
+};
+
+export const buildBacklogItemKey = (props: SaveableBacklogItem): string => {
+    return buildUniqueItemKey(props, "bic");
+};
+
+export const buildBacklogItemPlanningItemKey = (props: SaveableBacklogItem): string => {
+    return buildUniqueItemKey(props, "bipi");
+};
+
+export const buildDividerKey = (props: SaveableBacklogItem): string => {
+    return buildUniqueItemKey(props, "div-l");
+};
 
 export const abbreviateId = (id: string): string => {
     if (!id) {
@@ -52,9 +71,22 @@ export enum BacklogItemTypeEnum {
     Story
 }
 
+export interface ItemMenuEventHandler {
+    (eventName: string, itemId: string): void;
+}
+
+export interface ItemMenuEventHandlers {
+    handleEvent: ItemMenuEventHandler;
+}
+
+export interface ItemMenuBuilder {
+    (itemId: string, showMenuToLeft: boolean);
+}
+
 export interface BacklogItemCardStateProps {
     estimate: number | null;
     hasDetails?: boolean;
+    isSelectable?: boolean;
     hidden?: boolean;
     isDraggable?: boolean;
     internalId: string;
@@ -66,41 +98,26 @@ export interface BacklogItemCardStateProps {
     offsetTop?: number;
     width?: any;
     showDetailMenu: boolean;
+    showDetailMenuToLeft?: boolean;
     pushState?: PushState;
+    buildItemMenu?: ItemMenuBuilder;
 }
 
 export interface BacklogItemCardDispatchProps {
-    onDetailClicked?: { () };
-    onEditItemClicked?: { (backlogItemId: string) };
-    onRemoveItemClicked?: { (backlogItemId: string) };
+    onDetailClicked?: { (): void };
+    onEditItemClicked?: { (backlogItemId: string): void };
+    onRemoveItemClicked?: { (backlogItemId: string): void };
+    onCheckboxChange?: { (checked: boolean): void };
 }
 
-export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDispatchProps & WithTranslation;
+export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDispatchProps;
+
+export type InnerBacklogItemCardProps = BacklogItemCardProps & WithTranslation;
 
 /* exported components */
 
-export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
-    const detailMenu = props.showDetailMenu ? (
-        <ItemMenuPanel caretPosition={props.renderMobile ? CaretPosition.RightTop : CaretPosition.TopCenter}>
-            <RemoveButton
-                suppressSpacing
-                onClick={() => {
-                    if (props.internalId && props.onRemoveItemClicked) {
-                        props.onRemoveItemClicked(props.internalId);
-                    }
-                }}
-            />
-            <EditButton
-                mode={EditMode.View}
-                suppressSpacing
-                onClick={() => {
-                    if (props.internalId && props.onEditItemClicked) {
-                        props.onEditItemClicked(props.internalId);
-                    }
-                }}
-            />
-        </ItemMenuPanel>
-    ) : null;
+export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props) => {
+    const detailMenu = props.showDetailMenu ? props.buildItemMenu(props.internalId, props.showDetailMenuToLeft) : null;
     const outerClassNameToUse = buildClassName(css.backlogItemCardOuter, props.renderMobile ? css.mobile : null);
     const classNameToUse = buildClassName(
         css.backlogItemCard,
@@ -111,19 +128,27 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
         props.pushState === PushState.Removed ? css.pushStateRemoved : null,
         props.hidden ? css.hidden : null
     );
-    const editDetailButton = props.hasDetails ? (
-        <div
-            data-class="item-menu-button"
+    const editDetailButton = (
+        <ItemDetailButton
+            hasDetails={props.hasDetails}
             className={css.backlogItemDetailButton}
-            onClick={() => {
-                if (props.onDetailClicked) {
-                    props.onDetailClicked();
-                }
-            }}
-        >
-            <EditDetailIcon />
-        </div>
+            onDetailClicked={() => props.onDetailClicked()}
+        />
+    );
+    const handleCheckboxChange = (checked: boolean) => {
+        if (props.onCheckboxChange) {
+            props.onCheckboxChange(checked);
+        }
+    };
+    const checkboxToSelect = props.isSelectable ? (
+        <Checkbox
+            className={css.checkbox}
+            inputId={`backlogCheckbox_${props.itemId}`}
+            labelText=""
+            onChange={(checked: boolean) => handleCheckboxChange(checked)}
+        />
     ) : null;
+    const mobileCheckboxElts = props.renderMobile ? <div className={css.mobileCheckbox}>{checkboxToSelect}</div> : null;
     const styleToUse: React.CSSProperties = props.offsetTop && { top: props.offsetTop, position: "absolute", zIndex: 10 };
     return (
         <div className={outerClassNameToUse} data-class="backlogitem" data-id={props.internalId} style={styleToUse}>
@@ -144,6 +169,7 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
                         </div>
                     ) : null}
                 </div>
+                {!props.renderMobile ? checkboxToSelect : null}
                 <div className={css.backlogItemText}>
                     {props.titleText}
                     {props.renderMobile ? editDetailButton : null}
@@ -155,8 +181,11 @@ export const InnerBacklogItemCard: React.FC<BacklogItemCardProps> = (props) => {
                         <DragIcon />
                     </div>
                 ) : null}
+                {mobileCheckboxElts}
             </div>
-            <div className={css.backlogItemCardDetailMenu}>{detailMenu}</div>
+            <div className={buildClassName(css.backlogItemCardDetailMenu, props.showDetailMenuToLeft ? css.menuToLeft : null)}>
+                {detailMenu}
+            </div>
         </div>
     );
 };
