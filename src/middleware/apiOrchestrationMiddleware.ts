@@ -36,21 +36,6 @@ import {
 import { postLogin, ActionPostLoginSuccessAction, ActionPostRefreshTokenSuccessAction } from "../actions/authActions";
 import { routePlanView } from "../actions/routeActions";
 import { getUserPreferences, ActionGetUserPrefsSuccessAction } from "../actions/userActions";
-
-// state
-import { StateTree } from "../reducers/rootReducer";
-
-// selectors
-import { buildApiPayloadBaseForResource } from "../selectors/apiSelectors";
-import { getCurrentProjectId } from "../selectors/userSelectors";
-import { getSprintById, getSprintByInstanceId } from "../selectors/sprintSelectors";
-
-// utils
-import { convertToBacklogItemModel, convertToSprintModel } from "../utils/apiPayloadHelper";
-
-// interfaces/types
-import { ResourceTypes } from "../reducers/apiLinksReducer";
-import { ExpandSprintPanelAction, SaveNewSprintAction, UpdateSprintAction } from "../actions/sprintActions";
 import {
     apiBatchAddBacklogItemsToSprint,
     apiGetSprintBacklogItems,
@@ -62,8 +47,23 @@ import {
     removeSprintBacklogItem,
     SprintMoveItemToBacklogClickedAction
 } from "../actions/sprintBacklogActions";
-import { getSprintBacklogItemById } from "../selectors/sprintBacklogSelectors";
 import { apiPostSprint } from "../actions/apiSprints";
+
+// state
+import { StateTree } from "../reducers/rootReducer";
+
+// selectors
+import { buildApiPayloadBaseForResource } from "../selectors/apiSelectors";
+import { getCurrentProjectId } from "../selectors/userSelectors";
+import { getSprintById, getSprintByInstanceId } from "../selectors/sprintSelectors";
+import { getSprintBacklogItemById } from "../selectors/sprintBacklogSelectors";
+
+// utils
+import { convertToBacklogItemModel, convertToSprintModel } from "../utils/apiPayloadHelper";
+
+// interfaces/types
+import { ResourceTypes } from "../reducers/apiLinksReducer";
+import { ExpandSprintPanelAction, SaveNewSprintAction } from "../actions/sprintActions";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
