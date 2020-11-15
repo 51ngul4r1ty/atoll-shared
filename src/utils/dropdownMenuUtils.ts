@@ -1,9 +1,3 @@
-// interfaces/types
-import { BacklogItemWithSource } from "../reducers/backlogItems/backlogItemsReducerTypes";
-import { PushState } from "../reducers/types";
-
-// BacklogItemWithSource
-
 export const calcDropDownMenuState = <T>(
     openedItemId: string | null,
     actionItemId: string | null,
@@ -22,8 +16,6 @@ export const calcDropDownMenuState = <T>(
         if (getItemById) {
             const item = getItemById(result);
             if (includeItemCheck && !includeItemCheck(item)) {
-                //        if (backlogItem.pushState === PushState.Removed) {
-                // do not allow this menu to be shown when the item has been deleted
                 result = null;
             }
         }
