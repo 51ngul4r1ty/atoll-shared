@@ -136,7 +136,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         onAddBacklogItem={() => {
                             onAddBacklogItem(sprint.id);
                         }}
-                        onDetailClicked={(backlogItemId: string) => {
+                        onBacklogItemDetailClicked={(backlogItemId: string) => {
                             onDetailClicked(sprint.id, backlogItemId);
                         }}
                         onSprintDetailClicked={() => {

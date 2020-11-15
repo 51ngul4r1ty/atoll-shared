@@ -37,8 +37,7 @@ export interface SprintCardStateProps extends SprintCardSprint {
 export interface SprintCardDispatchProps {
     onAddBacklogItem: { (): void };
     onSprintDetailClicked: { (): void };
-    // TODO: Rename to onBacklogItemDetailClicked
-    onDetailClicked: { (id: string): void };
+    onBacklogItemDetailClicked: { (id: string): void };
     onExpandCollapse: { (id: string, expand: boolean): void };
     onMoveItemToBacklogClicked: { (id: string) };
 }
@@ -95,8 +94,8 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
     const expandCollapseIcon = props.expanded ? <VerticalCollapseIcon /> : <VerticalExpandIcon />;
     const contentsClassName = buildClassName(css.sprintContents, props.expanded ? css.expanded : null);
     const handleDetailClicked = (itemId: string) => {
-        if (props.onDetailClicked) {
-            props.onDetailClicked(itemId);
+        if (props.onBacklogItemDetailClicked) {
+            props.onBacklogItemDetailClicked(itemId);
         }
     };
     const sprintBacklogContents = props.backlogItemsLoaded
