@@ -8,18 +8,18 @@ import * as ActionTypes from "../actions/actionTypes";
 import { AnyFSA } from "../types";
 import { ApiGetSprintBacklogItemsSuccessAction } from "../actions/apiSprintBacklog";
 import { BacklogItem } from "../types/backlogItemTypes";
-
-// utils
-import { mapApiItemsToBacklogItems } from "../mappers/backlogItemMappers";
+import { BacklogItemWithSource } from "./backlogItems/backlogItemsReducerTypes";
 import {
     MoveBacklogItemToSprintAction,
     RemoveSprintBacklogItemAction,
     ToggleSprintBacklogItemDetailAction
 } from "../actions/sprintBacklogActions";
-import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
-import { BacklogItemWithSource } from "./backlogItems/backlogItemsReducerTypes";
 import { PushState } from "./types";
 import { AppClickAction } from "../actions/appActions";
+
+// utils
+import { mapApiItemsToBacklogItems } from "../mappers/backlogItemMappers";
+import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
 import { targetIsInMenuButton, targetIsInMenuPanel } from "./backlogItems/backlogItemsReducerHelper";
 
 export type SprintBacklogItem = BacklogItem;
