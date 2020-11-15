@@ -8,7 +8,6 @@ import * as ActionTypes from "../../actions/actionTypes";
 import { AnyFSA, PushOperationType } from "../../types";
 import {
     ApiPostBacklogItemSuccessAction,
-    ApiDeleteBacklogItemAction,
     ApiGetBacklogItemsSuccessAction,
     ApiGetBacklogItemSuccessAction,
     ApiDeleteBacklogItemSuccessAction
@@ -29,6 +28,10 @@ import {
 } from "../../actions/backlogItemActions";
 import { AppClickAction, AppKeyUpAction } from "../../actions/appActions";
 import { BacklogItemsState, BacklogItemWithSource, SaveableBacklogItem } from "./backlogItemsReducerTypes";
+import { MoveBacklogItemToSprintAction } from "../../actions/sprintBacklogActions";
+import { PushState } from "../types";
+
+// utils
 import {
     getBacklogItemById,
     idsMatch,
@@ -40,9 +43,7 @@ import {
     updateItemFieldsInAllItems
 } from "./backlogItemsReducerHelper";
 import { mapApiItemsToBacklogItems, mapApiItemToBacklogItem } from "../../mappers/backlogItemMappers";
-import { MoveBacklogItemToSprintAction, SprintMoveItemToBacklogClickedAction } from "../../actions/sprintBacklogActions";
 import { calcDropDownMenuState } from "../../utils/dropdownMenuUtils";
-import { PushState } from "../types";
 
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
