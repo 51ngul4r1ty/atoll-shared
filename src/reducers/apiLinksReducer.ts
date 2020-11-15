@@ -1,5 +1,5 @@
 // externals
-import { produce } from "immer";
+import { Draft, produce } from "immer";
 import urlParse from "url-parse";
 
 // consts/enums
@@ -8,6 +8,9 @@ import * as ActionTypes from "../actions/actionTypes";
 // interfaces/types
 import { AnyFSA } from "../types";
 import { ApiGetBacklogItemsSuccessAction } from "../actions/apiBacklogItems";
+import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
+import { ApiBacklogItem } from "../apiModelTypes";
+import { ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
 
 export const ResourceTypes = {
     BACKLOG_ITEM: "backlogItems"
@@ -58,28 +61,42 @@ export const buildUri = (requestUrl: string, linkUri: string): string => {
     return `${parsed.protocol}//${hostAndPort}${linkUri}`;
 };
 
+export const processBacklogItems = (
+    backlogItems: ApiBacklogItem[],
+    draft: Draft<ApiLinkState>,
+    meta: ApiActionMetaDataRequestMeta
+) => {
+    backlogItems.forEach((item) => {
+        if (item.links?.length) {
+            item.links.forEach((link) => {
+                if (link.rel === "self") {
+                    const resourceLinks = draft.linksByType[ResourceTypes.BACKLOG_ITEM];
+                    if (!resourceLinks[item.id]) {
+                        resourceLinks[item.id] = { item: null };
+                    }
+                    resourceLinks[item.id].item = {
+                        type: link.type,
+                        uri: buildUri(meta.requestBody.url, link.uri)
+                    };
+                }
+            });
+        }
+    });
+};
+
 export const apiLinksReducer = (state: ApiLinkState = apiLinksReducerInitialState, action: AnyFSA): ApiLinkState =>
     produce(state, (draft) => {
         switch (action.type) {
             case ActionTypes.API_GET_BACKLOG_ITEMS_SUCCESS: {
                 const actionTyped = action as ApiGetBacklogItemsSuccessAction;
                 const { payload } = actionTyped;
-                payload.response.data.items.forEach((item) => {
-                    if (item.links?.length) {
-                        item.links.forEach((link) => {
-                            if (link.rel === "self") {
-                                const resourceLinks = draft.linksByType[ResourceTypes.BACKLOG_ITEM];
-                                if (!resourceLinks[item.id]) {
-                                    resourceLinks[item.id] = { item: null };
-                                }
-                                resourceLinks[item.id].item = {
-                                    type: link.type,
-                                    uri: buildUri(actionTyped.meta.requestBody.url, link.uri)
-                                };
-                            }
-                        });
-                    }
-                });
+                processBacklogItems(payload.response.data.items, draft, actionTyped.meta);
+                return;
+            }
+            case ActionTypes.API_GET_BFF_VIEWS_PLAN_SUCCESS: {
+                const actionTyped = action as ApiGetBffViewsPlanSuccessAction;
+                const { payload } = actionTyped;
+                processBacklogItems(payload.response.data.backlogItems, draft, actionTyped.meta);
                 return;
             }
         }
