@@ -40,7 +40,7 @@ export const moveBacklogItemToSprint = (sprintId: string, backlogItem: BacklogIt
 
 export interface ToggleSprintBacklogItemDetailPayload {
     sprintId: string;
-    itemId: string;
+    backlogItemId: string;
 }
 
 export interface ToggleSprintBacklogItemDetailAction {
@@ -52,8 +52,7 @@ export const sprintBacklogItemDetailClicked = (sprintId, backlogItemId: string):
     type: ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL,
     payload: {
         sprintId,
-        // TODO: Change itemId to backlogItemId
-        itemId: backlogItemId
+        backlogItemId
     }
 });
 
