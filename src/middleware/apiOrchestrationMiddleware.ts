@@ -197,6 +197,7 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             break;
         }
         case ActionTypes.UPDATE_SPRINT: {
+            // TODO: Implement editing sprint item
             // const actionTyped = action as UpdateSprintAction;
             // const state = storeTyped.getState();
             // const itemId = actionTyped.payload.id;
