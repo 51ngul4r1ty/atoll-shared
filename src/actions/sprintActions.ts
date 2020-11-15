@@ -64,11 +64,10 @@ export interface AddSprintActionPayload {
     position: NewSprintPosition;
 }
 export interface AddSprintAction {
-    type: typeof ActionTypes.ADD_SPRINT_FORM;
+    type: typeof ActionTypes.ADD_SPRINT;
     payload: AddSprintActionPayload;
 }
-// TODO: When addNewSprint is renamed, also rename this
-export const addSprint = (sprint: SaveableSprint, position: NewSprintPosition) => ({
+export const addSprint = (sprint: SaveableSprint, position: NewSprintPosition): AddSprintAction => ({
     type: ActionTypes.ADD_SPRINT,
     payload: {
         sprint,
