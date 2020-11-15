@@ -59,6 +59,7 @@ import {
 } from "./backlogItemPlanningPanelUtils";
 import { addActionButtons } from "./backlogItemPlanningPanelJsxUtils";
 import { productBacklogItemMenuBuilder } from "../../../common/itemMenuBuilders";
+import { BELOW_LAST_CARD_ID } from "./backlogItemPlanningPanelConsts";
 
 /* exported components */
 
