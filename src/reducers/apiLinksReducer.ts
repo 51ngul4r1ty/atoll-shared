@@ -39,16 +39,44 @@ export const apiLinksReducerInitialState = Object.freeze<ApiLinkState>({
     }
 });
 
-export const getLinkForItem = (state: ApiLinkState, itemType: string, rel: string, itemId: string): ApiLinkDefn | null => {
+export enum ApiLinkDefnMissingReason {
+    None = 0,
+    TypeNotFound = 1,
+    ItemNotFound = 2,
+    RelNotFound = 3
+}
+
+export interface LinkForItemResult {
+    link: ApiLinkDefn | null;
+    missingReason?: ApiLinkDefnMissingReason;
+}
+
+export const getLinkForItem = (state: ApiLinkState, itemType: string, rel: string, itemId: string): LinkForItemResult => {
     const forItemType = state.linksByType[itemType];
     if (!forItemType) {
-        return null;
+        return {
+            link: null,
+            missingReason: ApiLinkDefnMissingReason.TypeNotFound
+        };
     }
     const forItemId = forItemType[itemId];
     if (!forItemId) {
-        return null;
+        return {
+            link: null,
+            missingReason: ApiLinkDefnMissingReason.ItemNotFound
+        };
     }
-    return forItemId[rel] || null;
+    const result = forItemId[rel];
+    if (!result) {
+        return {
+            link: null,
+            missingReason: ApiLinkDefnMissingReason.RelNotFound
+        };
+    }
+    return {
+        link: result,
+        missingReason: ApiLinkDefnMissingReason.None
+    };
 };
 
 export const buildUri = (requestUrl: string, linkUri: string): string => {
