@@ -53,8 +53,28 @@ export const abbreviateId = (id: string): string => {
     return `${prefix}..${suffix}`;
 };
 
-export const formatEstimateForDisplay = (estimate: number | null): string => {
-    return estimate ? `${estimate}` : "-";
+export const formatNumberForDisplay = (val: number | null): string => {
+    return val ? `${val}` : "-";
+};
+
+export const getFractionElts = (topVal: number, bottomVal: number) => {
+    return (
+        <>
+            <div className={css.fractionTop}>{topVal}</div>
+            <div className={css.fractionSlash}>/</div>
+            <div className={css.fractionBottom}>{bottomVal}</div>
+        </>
+    );
+};
+
+export const getEstimateElts = (estimate: number | null) => {
+    if (estimate >= 0.24 && estimate <= 0.26) {
+        return getFractionElts(1, 4);
+    } else if (estimate >= 0.49 && estimate <= 0.51) {
+        return getFractionElts(1, 2);
+    } else {
+        return formatNumberForDisplay(estimate);
+    }
 };
 
 export const titleForItemId = (id: string): string | undefined => {
@@ -174,7 +194,7 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
                     {props.titleText}
                     {props.renderMobile ? editDetailButton : null}
                 </div>
-                <div className={css.backlogItemEstimate}>{formatEstimateForDisplay(props.estimate)}</div>
+                <div className={css.backlogItemEstimate}>{getEstimateElts(props.estimate)}</div>
                 {!props.renderMobile ? editDetailButton : null}
                 {props.isDraggable && !props.renderMobile ? (
                     <div data-class="drag-button" className={css.backlogItemDragButton}>
