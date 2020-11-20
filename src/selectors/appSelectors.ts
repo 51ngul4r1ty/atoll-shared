@@ -1,5 +1,4 @@
 // externals
-import { applyMiddleware } from "redux";
 import { createSelector } from "reselect";
 
 // interfaces/types

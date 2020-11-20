@@ -31,7 +31,7 @@ export const getPrevSavedBacklogItemByInstanceId = (state: StateTree, instanceId
             prevItem = addedItem;
         }
     });
-    return prevItem;
+    return foundPrevItem;
 };
 
 interface PrevNextAndCurrentBacklogItem {

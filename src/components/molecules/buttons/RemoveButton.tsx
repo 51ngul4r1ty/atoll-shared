@@ -8,7 +8,6 @@ import { SimpleButton, SimpleButtonProps, cleanPassthroughProps } from "../../at
 import { TrashIcon } from "../../atoms/icons/TrashIcon";
 
 // style
-import css from "./RemoveButton.module.css";
 import { PropsWithClassName } from "../../common/types";
 
 export interface RemoveButtonStateProps extends PropsWithClassName {}

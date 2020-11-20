@@ -8,7 +8,6 @@ import { SimpleButton } from "../../atoms/buttons/SimpleButton";
 import { RefreshIcon } from "../../atoms/icons/RefreshIcon";
 
 // style
-import css from "./RefreshButton.module.css";
 import { PropsWithClassName } from "../../common/types";
 
 export interface RefreshButtonStateProps extends PropsWithClassName {}

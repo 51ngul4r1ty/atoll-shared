@@ -3,12 +3,8 @@ import React from "react";
 import { WithTranslation, withTranslation } from "react-i18next";
 
 // components
-import { EditButton } from "../buttons/EditButton";
 import { CaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
 import { RemoveButton } from "../buttons/RemoveButton";
-
-// consts/enums
-import { EditMode } from "../buttons/EditButton";
 
 export interface BacklogItemMenuStateProps {
     renderMobile?: boolean;

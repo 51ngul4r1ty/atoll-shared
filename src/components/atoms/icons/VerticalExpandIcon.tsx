@@ -13,7 +13,7 @@ import { getFillAndStrokeClassNames } from "../../common/propUtils";
 export type VerticalExpandIconProps = StandardInvertibleComponentProps;
 
 export const VerticalExpandIcon: React.FC<VerticalExpandIconProps> = (props) => {
-    const { fillClass, strokeClass } = getFillAndStrokeClassNames(
+    const { fillClass } = getFillAndStrokeClassNames(
         props,
         baseCss.fillInverted,
         baseCss.fill,

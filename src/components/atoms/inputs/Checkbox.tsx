@@ -1,7 +1,7 @@
 // BUSY: https://webdesign.tutsplus.com/tutorials/how-to-make-custom-accessible-checkboxes-and-radio-buttons--cms-32074
 
 // externals
-import React, { forwardRef, Component, ChangeEvent, RefObject, Ref, useState } from "react";
+import React, { forwardRef, ChangeEvent, RefObject, Ref, useState } from "react";
 
 // style
 import css from "./Checkbox.module.css";

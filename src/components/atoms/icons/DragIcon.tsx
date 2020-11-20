@@ -13,7 +13,7 @@ import { getFillAndStrokeClassNames } from "../../common/propUtils";
 export type DragIconProps = StandardInvertibleComponentProps;
 
 export const DragIcon: React.FC<DragIconProps> = (props) => {
-    const { fillClass, strokeClass } = getFillAndStrokeClassNames(
+    const { fillClass } = getFillAndStrokeClassNames(
         props,
         baseCss.fillInverted,
         baseCss.fill,

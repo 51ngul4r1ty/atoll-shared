@@ -8,7 +8,6 @@ import { SimpleButton } from "../../atoms/buttons/SimpleButton";
 import { EditDetailIcon } from "../../atoms/icons/EditDetailIcon";
 
 // style
-import css from "./EditDetailButton.module.css";
 import { PropsWithClassName } from "../../common/types";
 
 export interface EditDetailButtonStateProps extends PropsWithClassName {

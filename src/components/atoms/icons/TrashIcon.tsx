@@ -13,7 +13,7 @@ import { getFillAndStrokeClassNames } from "../../common/propUtils";
 export type TrashIconProps = StandardInvertibleComponentProps;
 
 export const TrashIcon: React.FC<TrashIconProps> = (props) => {
-    const { fillClass, strokeClass } = getFillAndStrokeClassNames(
+    const { fillClass } = getFillAndStrokeClassNames(
         props,
         baseCss.fillInverted,
         baseCss.fill,

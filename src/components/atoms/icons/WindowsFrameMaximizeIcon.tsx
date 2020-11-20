@@ -18,7 +18,7 @@ export interface WindowsFrameMaximizeIconDispatchProps {
 export interface WindowsFrameMaximizeIconProps extends StandardInvertibleComponentProps, WindowsFrameMaximizeIconDispatchProps {}
 
 export const WindowsFrameMaximizeIcon: React.FC<WindowsFrameMaximizeIconProps> = (props) => {
-    const { fillClass, strokeClass } = getFillAndStrokeClassNames(
+    const { fillClass } = getFillAndStrokeClassNames(
         props,
         baseCss.fillInverted,
         baseCss.fill,

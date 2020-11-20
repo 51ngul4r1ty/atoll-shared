@@ -77,6 +77,8 @@ const InnerSimpleButton: FC<SimpleButtonProps & SimpleButtonInnerStateProps> = (
         if (!props.draggable) {
             return false;
         }
+        // FIXME: This may be a bug?
+        return undefined;
     };
     const draggableToUse = !!props.draggable;
     return (

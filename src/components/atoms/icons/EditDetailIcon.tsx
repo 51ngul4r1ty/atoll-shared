@@ -13,7 +13,7 @@ import { getFillAndStrokeClassNames } from "../../common/propUtils";
 export type EditDetailIconProps = StandardInvertibleComponentProps;
 
 export const EditDetailIcon: React.FC<EditDetailIconProps> = (props) => {
-    const { fillClass, strokeClass } = getFillAndStrokeClassNames(
+    const { fillClass } = getFillAndStrokeClassNames(
         props,
         baseCss.fillInverted,
         baseCss.fill,
