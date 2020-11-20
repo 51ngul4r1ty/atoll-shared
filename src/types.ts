@@ -2,9 +2,6 @@
 import { ForwardRefExoticComponent, PropsWithoutRef, PropsWithChildren, RefAttributes } from "react";
 import { Action } from "redux";
 
-// consts/enums
-import { EditMode } from "./components/molecules/buttons/EditButton";
-
 /* Data model related */
 
 export interface BaseModelItem {

@@ -140,7 +140,8 @@ export const getDragItemOffsetTop = (target: EventTarget): number | null => {
     const item = getDragItem(target);
     if (item) {
         const backlogItemDiv = getParentWithDataClass(item, "backlogitem");
-        return item.offsetTop;
+        // TODO: Verify that this was necessary by testing drag & drop
+        return backlogItemDiv.offsetTop;
     }
     return null;
 };

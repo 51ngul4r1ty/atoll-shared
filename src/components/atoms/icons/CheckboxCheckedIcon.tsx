@@ -15,7 +15,7 @@ export interface CheckboxCheckedIconProps extends StandardInvertibleComponentPro
 }
 
 export const CheckboxCheckedIcon: React.FC<CheckboxCheckedIconProps> = (props) => {
-    const { fillClass, strokeClass } = getFillAndStrokeClassNames(
+    const { fillClass } = getFillAndStrokeClassNames(
         props,
         baseCss.fillInverted,
         baseCss.fill,

@@ -18,7 +18,7 @@ export interface WindowsFrameCloseIconDispatchProps {
 export interface WindowsFrameCloseIconProps extends StandardInvertibleComponentProps, WindowsFrameCloseIconDispatchProps {}
 
 export const WindowsFrameCloseIcon: React.FC<WindowsFrameCloseIconProps> = (props) => {
-    const { fillClass, strokeClass } = getFillAndStrokeClassNames(
+    const { fillClass } = getFillAndStrokeClassNames(
         props,
         baseCss.fillInverted,
         baseCss.fill,

@@ -2,7 +2,7 @@
 import "jest";
 
 // externals
-import produce, { Draft } from "immer";
+import produce from "immer";
 
 // code under test
 import { rebuildAllItems } from "../backlogItems/backlogItemsReducerHelper";

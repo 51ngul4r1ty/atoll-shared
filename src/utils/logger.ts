@@ -28,7 +28,7 @@ export const getNextLoggingNestLevel = (loggingNestLevel: number | null): number
 export const formatMessage = (msg: string, loggingNestLevel: number | null): string => {
     const nestLevel = loggingNestLevel || 0;
     let result = "";
-    for (let i = 0; i < loggingNestLevel; i++) {
+    for (let i = 0; i < nestLevel; i++) {
         result += "  ";
     }
     result += msg;

@@ -237,7 +237,7 @@ export class LinkedList<T> {
         const nodesExist = Object.keys(this.nodeInfo).length > 0;
         if (!nodesExist) {
             // nothing added yet, that's a valid state
-            return true;
+            return;
         }
         const firstItem = this.getFirstItemNodeInfo();
         if (!firstItem) {

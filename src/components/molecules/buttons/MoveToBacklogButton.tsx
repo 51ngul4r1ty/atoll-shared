@@ -9,7 +9,6 @@ import { SimpleButton, SimpleButtonProps, cleanPassthroughProps } from "../../at
 import { TrashIcon } from "../../atoms/icons/TrashIcon";
 
 // style
-import css from "./MoveToBacklogButton.module.css";
 import { PropsWithClassName } from "../../common/types";
 
 export interface MoveToBacklogButtonStateProps extends PropsWithClassName {}

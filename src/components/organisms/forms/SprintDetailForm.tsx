@@ -1,5 +1,5 @@
 // externals
-import React, { Component } from "react";
+import React from "react";
 
 // components
 import { LabeledInput } from "../../atoms/inputs/LabeledInput";
