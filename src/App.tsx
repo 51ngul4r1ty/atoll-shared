@@ -4,7 +4,7 @@ import * as React from "react";
 // components
 import { AppContext, AppProvider } from "./contexts/appContextUtil";
 import { FrameCloseButton } from "./components/molecules/buttons/FrameCloseButton";
-import { FrameMaximizeButton, MaximizedState } from "./components/molecules/buttons/FrameMaximizeButton";
+import { FrameMaximizeButton } from "./components/molecules/buttons/FrameMaximizeButton";
 import { FrameMinimizeButton } from "./components/molecules/buttons/FrameMinimizeButton";
 
 // utils
@@ -107,14 +107,14 @@ export class App extends React.Component<AppProps, AppState> {
         }, 500);
     };
     handleClick = (e: MouseEvent) => {
-        const logContainer = logger.info("app click", [loggingTags.APP_EVENTS]);
+        logger.info("app click", [loggingTags.APP_EVENTS]);
         if (this.props.onAppClick) {
             this.props.onAppClick(e);
         }
         return true;
     };
     handleKeyUp = (e: KeyboardEvent) => {
-        const logContainer = logger.info("app key", [loggingTags.APP_EVENTS]);
+        logger.info("app key", [loggingTags.APP_EVENTS]);
         if (this.props.onAppKeyUp) {
             this.props.onAppKeyUp(e);
         }

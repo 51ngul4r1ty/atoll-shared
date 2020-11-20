@@ -7,9 +7,6 @@ import { SimpleButton } from "../../atoms/buttons/SimpleButton";
 // icons
 import { CancelIcon } from "../../atoms/icons/CancelIcon";
 
-// style
-import css from "./CancelButton.module.css";
-
 // interfaces/types
 import { PropsWithClassName } from "../../common/types";
 

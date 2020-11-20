@@ -7,9 +7,6 @@ import { TopMenuPanelContainer } from "./containers/TopMenuPanelContainer";
 // consts/enums
 import { EditMode } from "./components/molecules/buttons/EditButton";
 
-// style
-import css from "./App.module.css";
-
 export interface ReviewViewStateProps {
     editMode: EditMode;
     electronClient: boolean;

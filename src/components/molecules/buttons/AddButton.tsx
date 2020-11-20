@@ -7,9 +7,6 @@ import { SimpleButton } from "../../atoms/buttons/SimpleButton";
 // icons
 import { AddIcon } from "../../atoms/icons/AddIcon";
 
-// style
-import css from "./AddButton.module.css";
-
 // interfaces/types
 import { PropsWithClassName } from "../../common/types";
 

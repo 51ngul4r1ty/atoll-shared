@@ -18,7 +18,7 @@ export interface WindowsFrameMinimizeIconDispatchProps {
 export interface WindowsFrameMinimizeIconProps extends StandardInvertibleComponentProps, WindowsFrameMinimizeIconDispatchProps {}
 
 export const WindowsFrameMinimizeIcon: React.FC<WindowsFrameMinimizeIconProps> = (props) => {
-    const { fillClass, strokeClass } = getFillAndStrokeClassNames(
+    const { fillClass } = getFillAndStrokeClassNames(
         props,
         baseCss.fillInverted,
         baseCss.fill,

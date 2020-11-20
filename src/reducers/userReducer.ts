@@ -23,7 +23,7 @@ export const userReducerInitialState = Object.freeze<UserState>({
 
 export const userReducer = (state: UserState = userReducerInitialState, action: AnyFSA): UserState =>
     produce(state, (draft) => {
-        const { type, payload } = action;
+        const { type } = action;
 
         switch (type) {
             case ActionTypes.API_GET_USER_PREFS_SUCCESS: {

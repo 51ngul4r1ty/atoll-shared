@@ -14,7 +14,7 @@ import {
     ActionPostRefreshTokenSuccessAction,
     ActionPostTokenResponseBase
 } from "../actions/authActions";
-import { ApiAction, ApiActionSuccessPayload, ApiStageAction } from "../middleware/apiTypes";
+import { ApiActionSuccessPayload, ApiStageAction } from "../middleware/apiTypes";
 import { LocalStoreRefreshTokenAction } from "../actions/appActions";
 import { ApiPostSprintBacklogItemFailureAction } from "../actions/apiSprintBacklog";
 
@@ -62,12 +62,12 @@ export const appReducer = (state: AppState = appReducerInitialState, action: Any
 
         switch (action.type) {
             case ActionTypes.SET_LOCALE: {
-                const { type, payload } = action;
+                const { payload } = action;
                 draft.locale = payload;
                 return;
             }
             case ActionTypes.SET_EDIT_MODE: {
-                const { type, payload } = action;
+                const { payload } = action;
                 draft.editMode = payload;
                 return;
             }

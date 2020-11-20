@@ -9,7 +9,6 @@ import { EditIcon } from "../../atoms/icons/EditIcon";
 import { EditCancelIcon } from "../../atoms/icons/EditCancelIcon";
 
 // style
-import css from "./EditButton.module.css";
 import { PropsWithClassName } from "../../common/types";
 
 export enum EditMode {

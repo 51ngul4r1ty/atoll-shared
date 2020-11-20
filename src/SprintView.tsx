@@ -10,9 +10,6 @@ import { AppConsumer } from "./contexts/appContextUtil";
 // consts/enums
 import { EditMode } from "./components/molecules/buttons/EditButton";
 
-// style
-import css from "./App.module.css";
-
 export interface SprintViewStateProps {
     editMode: EditMode;
     electronClient: boolean;

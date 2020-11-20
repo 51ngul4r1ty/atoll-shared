@@ -7,9 +7,6 @@ import { SimpleButton, SimpleButtonRefType } from "../../atoms/buttons/SimpleBut
 // icons
 import { DoneIcon } from "../../atoms/icons/DoneIcon";
 
-// style
-import css from "./DoneButton.module.css";
-
 // interfaces/types
 import { PropsWithClassName } from "../../common/types";
 import { ComponentWithForwardedRef } from "../../../types";

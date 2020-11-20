@@ -18,7 +18,7 @@ export interface WindowsFrameRestoreIconDispatchProps {
 export interface WindowsFrameRestoreIconProps extends StandardInvertibleComponentProps, WindowsFrameRestoreIconDispatchProps {}
 
 export const WindowsFrameRestoreIcon: React.FC<WindowsFrameRestoreIconProps> = (props) => {
-    const { fillClass, strokeClass } = getFillAndStrokeClassNames(
+    const { fillClass } = getFillAndStrokeClassNames(
         props,
         baseCss.fillInverted,
         baseCss.fill,
