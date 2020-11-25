@@ -20,6 +20,7 @@ import {
     RefreshButton,
     RemoveButton,
     SimpleText,
+    StandardInput,
     TabStrip
 } from "../dist/index.es";
 
@@ -80,6 +81,17 @@ storiesOf("Atoms/Inputs/Checkbox", module).add("Checkbox", () => (
         labelText="Remember me"
         onClick={action("clicked menu")}
     />
+));
+
+storiesOf("Atoms/Inputs/Standard", module).add("Standard", () => (
+    <div className="storybook-form-background">
+        <StandardInput
+            inputName="standardinput1"
+            inputId="standardinput1"
+            labelText="Standard Input"
+            onClick={action("clicked menu")}
+        />
+    </div>
 ));
 
 let activeTabId = "plan";

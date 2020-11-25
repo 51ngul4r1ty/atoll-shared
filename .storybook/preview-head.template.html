@@ -1,8 +1,8 @@
-<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
-<link href="./shared-bundle.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
+<link href="./shared-bundle.css" rel="stylesheet" />
 <style>
     html {
-        font-family: 'Open Sans', sans-serif;
+        font-family: "Open Sans", sans-serif;
         font-size: 100%;
     }
 
@@ -32,11 +32,11 @@
         border: 0.05rem solid #888;
     }
 
-    .icon+.icon {
+    .icon + .icon {
         margin-top: 0.5rem;
     }
 
-    .icon>svg {
+    .icon > svg {
         width: 1.9rem;
         height: 1.9rem;
         grid-column: 1;
@@ -44,16 +44,16 @@
         justify-self: center;
     }
 
-    .icon>.caption {
+    .icon > .caption {
         text-align: center;
     }
 
-    .icon.x2>svg {
+    .icon.x2 > svg {
         width: 3.8rem;
         height: 3.8rem;
     }
 
-    .icon.x4>svg {
+    .icon.x4 > svg {
         width: 7.6rem;
         height: 7.6rem;
     }
@@ -66,20 +66,24 @@
         width: 7.7rem;
     }
 
+    .storybook-form-background {
+        padding: 0.5rem;
+        background-color: var(--normal-form-page-color, #d0d0d0);
+    }
 </style>
 <script>
     function getThemeAttribute() {
-        const prefix = 'theme-';
+        const prefix = "theme-";
         let result = null;
-        let html = document.querySelector('html');
-        html.classList.forEach(item => {
+        let html = document.querySelector("html");
+        html.classList.forEach((item) => {
             if (item.indexOf(prefix) === 0) {
                 const themeName = item.substr(prefix.length);
                 result = themeName;
             }
         });
         if (!result) {
-            result = 'default';
+            result = "default";
         }
         return result;
     }
@@ -88,7 +92,7 @@
     ];
 
     function getTheme(themeName) {
-        var items = themeList.filter(item => item.name === themeName);
+        var items = themeList.filter((item) => item.name === themeName);
         if (items.length) {
             return items[0] && items[0].theme;
         } else {
@@ -108,14 +112,14 @@
     function setThemeVars(themeName) {
         var bodyStyles = document.body.style;
         switch (themeName) {
-            case 'default':
-            case 'dark': {
+            case "default":
+            case "dark": {
                 addBodyStylesForTheme(themeName);
-                console.log(themeName + ' theme vars set');
+                console.log(themeName + " theme vars set");
                 break;
             }
             default: {
-                console.log(themeName + ' theme vars NOT set');
+                console.log(themeName + " theme vars NOT set");
                 break;
             }
         }
@@ -123,17 +127,17 @@
 
     function setDefaultThemeVars() {
         const themeName = getThemeAttribute();
-        setThemeVars('default');
+        setThemeVars("default");
     }
 
     function setDarkThemeVars() {
-        setThemeVars('dark');
+        setThemeVars("dark");
     }
 
     function checkForThemeChange() {
         const themeName = getThemeAttribute();
         if (themeName !== lastThemeName) {
-            console.log('THEME CHANGE DETECTED');
+            console.log("THEME CHANGE DETECTED");
             setThemeVars(themeName);
             storeLastThemeName(themeName);
         }
@@ -154,6 +158,5 @@
         setThemeVars(themeName);
         setupNextCheck();
     }
-    window.addEventListener('load', themeEngineSetup);
-
+    window.addEventListener("load", themeEngineSetup);
 </script>
