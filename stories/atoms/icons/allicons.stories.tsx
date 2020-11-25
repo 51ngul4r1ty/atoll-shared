@@ -91,8 +91,8 @@ iconNames.forEach((iconName) => {
     const icon = getComponent(iconName, false);
     if (isInvertibleIcon(iconName)) {
         const invertedIcon = getComponent(iconName, true);
-        storiesOf("Atoms|Icons", module).add(iconName, () => <SideBySideIconContainers icon={icon} invertedIcon={invertedIcon} />);
+        storiesOf("Atoms/Icons", module).add(iconName, () => <SideBySideIconContainers icon={icon} invertedIcon={invertedIcon} />);
     } else {
-        storiesOf("Atoms|Icons", module).add(iconName, () => <SingleIconContainer icon={icon} />);
+        storiesOf("Atoms/Icons", module).add(iconName, () => <SingleIconContainer icon={icon} />);
     }
 });

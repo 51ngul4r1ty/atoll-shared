@@ -42,7 +42,7 @@ addParameters({
     }
 });
 
-storiesOf("Atoms|Font Sizes", module).add("Font Sizes", () => (
+storiesOf("Atoms/Font Sizes", module).add("Font Sizes", () => (
     <div>
         <h1>Font Sizes</h1>
         <ul>
@@ -65,13 +65,13 @@ storiesOf("Atoms|Font Sizes", module).add("Font Sizes", () => (
     </div>
 ));
 
-storiesOf("Molecules|Buttons/HomeButton", module)
+storiesOf("Molecules/Buttons/HomeButton", module)
     .add("HomeButton (default)", () => <HomeButton onClick={action("clicked")} />)
     .add("HomeButton (hover)", () => <HomeButton forceStateHover onClick={action("clicked")} />)
     .add("HomeButton (active)", () => <HomeButton forceStateActive onClick={action("clicked")} />)
     .add("HomeButton (focus)", () => <HomeButton forceStateFocus onClick={action("clicked")} />);
 
-storiesOf("Atoms|Inputs/Checkbox", module).add("Checkbox", () => (
+storiesOf("Atoms/Inputs/Checkbox", module).add("Checkbox", () => (
     <Checkbox
         checked
         checkedValue="on"
@@ -84,7 +84,7 @@ storiesOf("Atoms|Inputs/Checkbox", module).add("Checkbox", () => (
 
 let activeTabId = "plan";
 
-storiesOf("Atoms|Tabs/TabStrip", module).add("TabStrip", () => (
+storiesOf("Atoms/Tabs/TabStrip", module).add("TabStrip", () => (
     <div>
         <TabStrip
             activeTab={text("activeTab", activeTabId)}
@@ -101,7 +101,7 @@ storiesOf("Atoms|Tabs/TabStrip", module).add("TabStrip", () => (
     </div>
 ));
 
-storiesOf("Molecules|Cards/BacklogItemCard", module)
+storiesOf("Molecules/Cards/BacklogItemCard", module)
     .add("BacklogItemCard (story)", () => (
         <div>
             <BacklogItemCard
@@ -113,6 +113,20 @@ storiesOf("Molecules|Cards/BacklogItemCard", module)
                 )}
                 titleText={text("titleText", "Example story")}
                 estimate={number("estimate", 5)}
+            />
+        </div>
+    ))
+    .add("BacklogItemCard (fractions)", () => (
+        <div>
+            <BacklogItemCard
+                itemId={text("itemId", "123")}
+                itemType={select(
+                    "itemType",
+                    { Story: BacklogItemTypeEnum.Story, Bug: BacklogItemTypeEnum.Bug },
+                    BacklogItemTypeEnum.Story
+                )}
+                titleText={text("titleText", "A really, really small story")}
+                estimate={number("estimate", 0.5)}
             />
         </div>
     ))
@@ -164,7 +178,7 @@ storiesOf("Molecules|Cards/BacklogItemCard", module)
         </div>
     ));
 
-storiesOf("Molecules|Buttons/EditButton", module)
+storiesOf("Molecules/Buttons/EditButton", module)
     .add("EditButton (view mode)", () => (
         <div>
             <EditButton
@@ -200,7 +214,7 @@ storiesOf("Molecules|Buttons/EditButton", module)
         </div>
     ));
 
-storiesOf("Molecules|Buttons/RefreshButton", module).add("RefreshButton", () => (
+storiesOf("Molecules/Buttons/RefreshButton", module).add("RefreshButton", () => (
     <div>
         <RefreshButton
             onClick={() => {
@@ -210,7 +224,7 @@ storiesOf("Molecules|Buttons/RefreshButton", module).add("RefreshButton", () => 
     </div>
 ));
 
-storiesOf("Molecules|Buttons/AddButton", module)
+storiesOf("Molecules/Buttons/AddButton", module)
     .add("AddButton (story)", () => (
         <div>
             <AddButton
@@ -234,7 +248,7 @@ storiesOf("Molecules|Buttons/AddButton", module)
         </div>
     ));
 
-storiesOf("Molecules|Buttons/RemoveButton", module).add("RemoveButton", () => (
+storiesOf("Molecules/Buttons/RemoveButton", module).add("RemoveButton", () => (
     <div>
         <RemoveButton
             onClick={() => {

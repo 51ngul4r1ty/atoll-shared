@@ -11,7 +11,7 @@ import { CaretPosition, ItemMenuPanel, RemoveButton } from "../../../dist/index.
 // common
 import "../../storybook";
 
-storiesOf("Atoms|Panels", module)
+storiesOf("Atoms/Panels", module)
     .add("ItemMenuPanel (caret top-center)", () => (
         <ItemMenuPanel
             className="item-menu-panel caret-top-center"
