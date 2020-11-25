@@ -6,6 +6,7 @@ export { rootReducerInitialState } from "./reducers/rootReducer";
 
 // components - inputs - atoms
 export { Checkbox } from "./components/atoms/inputs/Checkbox";
+export { StandardInput } from "./components/atoms/inputs/StandardInput";
 
 // components - buttons - atoms
 export { SimpleButton } from "./components/atoms/buttons/SimpleButton";

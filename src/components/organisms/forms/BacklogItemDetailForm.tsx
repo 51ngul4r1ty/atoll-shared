@@ -17,6 +17,7 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 import { BacklogItemType } from "../../../types/backlogItemTypes";
 import { getStoryPhrases, isStoryPaste } from "./pasteFormatUtils";
 import { StoryPhrases } from "../../../types";
+import { StandardInput } from "../../atoms/inputs/StandardInput";
 
 export interface BacklogItemDetailFormEditableFields extends StoryPhrases {
     estimate: number | null;
@@ -139,15 +140,18 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
             />
         );
         const estimateInput = (
-            <LabeledInput
+            <StandardInput
                 inputId="userStoryEstimate"
                 labelText="Estimate"
                 size={3}
                 inputValue={estimateValue}
                 onChange={(value) => {
                     const valueToUse = value.trim();
-                    const estimate = valueToUse ? parseInt(valueToUse) : null;
+                    const estimate = valueToUse ? parseFloat(valueToUse) : null;
                     this.handleDataUpdate({ ...prevData, estimate });
+                }}
+                validator={(value) => {
+                    return !isNaN(Number(value));
                 }}
             />
         );

@@ -28,7 +28,7 @@ const store = mockStore({});
 
 const bugStoryPhrase = "Filter seems to be taking longer & longer (investigate)";
 
-storiesOf("Organisms|Forms/BacklogItemDetailForm", module)
+storiesOf("Organisms/Forms/BacklogItemDetailForm", module)
     .add("BacklogItemDetailForm (issue)", () => (
         <div>
             <BacklogItemDetailForm
@@ -180,7 +180,7 @@ for (let i = 5; i <= 50; i++) {
     });
 }
 
-storiesOf("Molecules|Cards/SprintCard", module).add("SprintCard", () => (
+storiesOf("Molecules/Cards/SprintCard", module).add("SprintCard", () => (
     <div>
         <SprintCard
             id="sprint-1"
@@ -211,7 +211,7 @@ storiesOf("Molecules|Cards/SprintCard", module).add("SprintCard", () => (
     </div>
 ));
 
-storiesOf("Organisms|Panels/SprintPlanningPanel", module).add("SprintPlanningPanel", () => (
+storiesOf("Organisms/Panels/SprintPlanningPanel", module).add("SprintPlanningPanel", () => (
     <div>
         <Provider store={store}>
             <SprintPlanningPanel
@@ -249,7 +249,7 @@ storiesOf("Organisms|Panels/SprintPlanningPanel", module).add("SprintPlanningPan
     </div>
 ));
 
-storiesOf("Organisms|Panels/BacklogItemPlanningPanel", module).add("BacklogItemPlanningPanel", () => (
+storiesOf("Organisms/Panels/BacklogItemPlanningPanel", module).add("BacklogItemPlanningPanel", () => (
     <div>
         <Provider store={store}>
             <BacklogItemPlanningPanel
@@ -267,7 +267,7 @@ storiesOf("Organisms|Panels/BacklogItemPlanningPanel", module).add("BacklogItemP
     </div>
 ));
 
-storiesOf("Organisms|Forms/LoginForm", module).add("LoginForm", () => (
+storiesOf("Organisms/Forms/LoginForm", module).add("LoginForm", () => (
     <div>
         <LoginForm username="username" password="password" />
     </div>

@@ -15,6 +15,7 @@
 }
 
 .backlogItemEstimate {
+    position: relative;
     order: 4;
 }
 
@@ -242,4 +243,26 @@
 
 .pushStateRemoved .backlogItemPushState > div {
     background-color: #0c0;
+}
+
+.fractionTop,
+.fractionSlash,
+.fractionBottom {
+    position: absolute;
+    font-size: 0.66rem;
+    width: 100%;
+}
+
+.fractionTop {
+    top: 0;
+    left: -0.45rem;
+}
+
+.fractionSlash {
+    font-size: 1rem;
+}
+
+.fractionBottom {
+    top: 0.66rem;
+    left: 0.45rem;
 }
