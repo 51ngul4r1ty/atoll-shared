@@ -5,6 +5,7 @@ import React, { Component } from "react";
 import { LabeledInput } from "../../atoms/inputs/LabeledInput";
 import { CancelButton } from "../../molecules/buttons/CancelButton";
 import { DoneButton } from "../../molecules/buttons/DoneButton";
+import { StandardInput } from "../../atoms/inputs/StandardInput";
 
 // style
 import commonCss from "./common/common.module.css";
@@ -12,12 +13,12 @@ import css from "./BacklogItemDetailForm.module.css";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
+import { isNumber } from "../../../utils/validationUtils";
+import { getStoryPhrases, isStoryPaste } from "./pasteFormatUtils";
 
 // interfaces/types
 import { BacklogItemType } from "../../../types/backlogItemTypes";
-import { getStoryPhrases, isStoryPaste } from "./pasteFormatUtils";
 import { StoryPhrases } from "../../../types";
-import { StandardInput } from "../../atoms/inputs/StandardInput";
 
 export interface BacklogItemDetailFormEditableFields extends StoryPhrases {
     estimate: number | null;
@@ -151,7 +152,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                     this.handleDataUpdate({ ...prevData, estimate });
                 }}
                 validator={(value) => {
-                    return !isNaN(Number(value));
+                    return isNumber(value);
                 }}
             />
         );

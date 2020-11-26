@@ -109,6 +109,11 @@
     overflow: hidden;
 }
 
+.backlogItemTextContent {
+    position: relative;
+    top: -0.075rem;
+}
+
 .backlogItemCardOuter.mobile .backlogItemText {
     margin-left: 0.3rem; /* TODO: Use constants??? */
 }
@@ -265,4 +270,8 @@
 .fractionBottom {
     top: 0.66rem;
     left: 0.45rem;
+}
+
+.checkbox {
+    padding-top: 0.225rem;
 }
