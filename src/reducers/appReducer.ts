@@ -3,6 +3,7 @@ import { produce, Draft } from "immer";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
+import { API_ACTION_STAGE_FAILURE, API_ACTION_STAGE_REQUEST, API_ACTION_STAGE_SUCCESS } from "../actions/apiActionStages";
 
 // interfaces/types
 import { AnyFSA } from "../types";
@@ -55,9 +56,15 @@ export const appReducer = (state: AppState = appReducerInitialState, action: Any
     return produce(state, (draft) => {
         const actionTyped = action as ApiStageAction<{}, {}>;
         const actionStage = actionTyped.meta?.apiActionStage;
-        if ((actionStage === "request" || actionStage === "success") && draft.message) {
+        if ((actionStage === API_ACTION_STAGE_REQUEST || actionStage === API_ACTION_STAGE_SUCCESS) && draft.message) {
             // clear message when new API request is made or successful response occurs
             draft.message = "";
+        }
+        if (actionStage === API_ACTION_STAGE_FAILURE) {
+            const actionTyped = action as ApiPostSprintBacklogItemFailureAction;
+            const apiErrorMessage = actionTyped.payload.response.message;
+            const axiosErrorMessage = actionTyped.payload.error.message;
+            draft.message = apiErrorMessage ? `API Error: ${apiErrorMessage}` : `Error: ${axiosErrorMessage}`;
         }
 
         switch (action.type) {
@@ -98,13 +105,6 @@ export const appReducer = (state: AppState = appReducerInitialState, action: Any
             }
             case ActionTypes.ERROR_PANEL_CLICK: {
                 draft.message = "";
-                return;
-            }
-            case ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_FAILURE: {
-                const actionTyped = action as ApiPostSprintBacklogItemFailureAction;
-                const apiErrorMessage = actionTyped.payload.response.message;
-                const axiosErrorMessage = actionTyped.payload.error.message;
-                draft.message = apiErrorMessage ? `API Error: ${apiErrorMessage}` : `Error: ${axiosErrorMessage}`;
                 return;
             }
         }
