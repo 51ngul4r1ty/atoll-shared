@@ -39,4 +39,9 @@
 
 .invalid input {
     background-color: var(--normal-error-page-color, #900);
+    color: var(--normal-error-pen-color, #fff);
+}
+
+.input.invalid > label {
+    color: var(--normal-error-pen-color, #fff);
 }
