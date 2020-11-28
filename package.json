@@ -41,6 +41,7 @@
     "build:storybook-html": "npx --no-install ts-node  --project ./scripts/tsconfig.json ./scripts/build-storybook-html",
     "build:storybook-ts": "npx --no-install tsc -p tsconfig.storybook.json",
     "build:lib": "npm run build:storybook-ts && npm run copy-css-to-lib",
+    "build:react-svg": "deno run --allow-read --allow-write --unstable ../atoll-scripts/build-svg-component/index.ts",
     "copy-css-to-lib": "npx --no-install cpx \"./dist/index.cjs.css\" ./build/storybook",
     "storybook-serve": "start-storybook -p 6006"
   },
