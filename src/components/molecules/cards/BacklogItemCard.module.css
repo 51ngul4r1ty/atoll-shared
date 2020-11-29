@@ -116,25 +116,25 @@
 .backlogItemTextContent {
     position: relative;
     top: -0.075rem;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    min-height: 3.5rem;
+}
+
+.mobile .backlogItemTextContent {
+    min-height: 3rem;
 }
 
 .backlogItemTextTitleText {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
     padding-right: 1.5rem;
 }
 
-.backlogItemCardOuter.mobile .backlogItemText {
-    margin-left: 0.3rem; /* TODO: Use constants??? */
-}
-
-.backlogItemCardOuter.mobile .backlogItemTextContent {
+.backlogItemCardOuter.mobile .backlogItemTextTitleText {
     white-space: normal;
 }
 
 .backlogItemCardOuter.mobile .backlogItemText {
+    margin-left: 0.3rem; /* TODO: Use constants??? */
     height: 4.15rem;
     flex-basis: 100%;
     border-left: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
