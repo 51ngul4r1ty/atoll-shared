@@ -13,7 +13,7 @@ import { getFillAndStrokeClassNames } from "../../common/propUtils";
 export type StatusDoneIconProps = StandardInvertibleComponentProps;
 
 export const StatusDoneIcon: React.FC<StatusDoneIconProps> = (props) => {
-    const { fillClass } = getFillAndStrokeClassNames(
+    const { fillClass, strokeClass } = getFillAndStrokeClassNames(
         props,
         baseCss.fillInverted,
         baseCss.fill,
@@ -24,6 +24,7 @@ export const StatusDoneIcon: React.FC<StatusDoneIconProps> = (props) => {
     return (
         <svg
             fill="none"
+            className={strokeClass}
             fillRule="evenodd"
             stroke="black"
             strokeWidth="0.501"
@@ -39,9 +40,19 @@ export const StatusDoneIcon: React.FC<StatusDoneIconProps> = (props) => {
             height="75pt"
             viewBox="0 -75 75 75"
         >
-            <defs></defs>
-            <g id="Layer 1" transform="scale(1 -1)">
-                <g id="Group" strokeLinejoin="miter" stroke="none" fill="#0d2644">
+            <defs>
+            </defs>
+            <g
+                id="Layer 1"
+                transform="scale(1 -1)"
+            >
+                <g
+                    id="Group"
+                    className={fillClass}
+                    strokeLinejoin="miter"
+                    stroke="none"
+                    fill="#0d2644"
+                >
                     <path
                         d="M 35.444,28.821 L 29.136,34.359 C 28.863,34.636 28.786,35.017 28.962,35.197 L 30.471,37.035 C 30.652,37.22 31.025,37.139 31.297,36.862 L 35.188,33.579 L 42.27,44.801 C 42.543,45.078 42.914,45.158 43.092,44.976 L 45.12,43.365 C 45.303,43.18 45.223,42.802 44.95,42.523 L 36.275,29 C 36.001,28.721 35.626,28.636 35.444,28.821 Z"
                         strokeWidth="0.023"

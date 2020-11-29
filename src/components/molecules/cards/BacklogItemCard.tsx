@@ -18,6 +18,7 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 // consts/enums
 import { SaveableBacklogItem } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
 import { PushState } from "../../../reducers/types";
+import { StatusDoneIcon } from "../../atoms/icons";
 
 /* exported functions */
 
@@ -91,6 +92,12 @@ export enum BacklogItemTypeEnum {
     Story
 }
 
+export enum BacklogItemStatus {
+    NotStarted = 0,
+    InProgress = 1,
+    Done = 2
+}
+
 export interface ItemMenuEventHandler {
     (eventName: string, itemId: string): void;
 }
@@ -119,6 +126,7 @@ export interface BacklogItemCardStateProps {
     width?: any;
     showDetailMenu: boolean;
     showDetailMenuToLeft?: boolean;
+    status?: BacklogItemStatus;
     pushState?: PushState;
     buildItemMenu?: ItemMenuBuilder;
 }
@@ -170,6 +178,12 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
     ) : null;
     const mobileCheckboxElts = props.renderMobile ? <div className={css.mobileCheckbox}>{checkboxToSelect}</div> : null;
     const styleToUse: React.CSSProperties = props.offsetTop && { top: props.offsetTop, position: "absolute", zIndex: 10 };
+    const statusIconElts =
+        props.status === BacklogItemStatus.Done ? (
+            <div className={css.status}>
+                <StatusDoneIcon />
+            </div>
+        ) : null;
     return (
         <div className={outerClassNameToUse} data-class="backlogitem" data-id={props.internalId} style={styleToUse}>
             <div className={classNameToUse} style={{ width: props.width }} tabIndex={0}>
@@ -193,10 +207,12 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
                 <div className={css.backlogItemText}>
                     <div className={css.backlogItemTextContent}>
                         {props.titleText}
+                        {props.renderMobile ? statusIconElts : null}
                         {props.renderMobile ? editDetailButton : null}
                     </div>
                 </div>
                 <div className={css.backlogItemEstimate}>{getEstimateElts(props.estimate)}</div>
+                {!props.renderMobile ? statusIconElts : null}
                 {!props.renderMobile ? editDetailButton : null}
                 {props.isDraggable && !props.renderMobile ? (
                     <div data-class="drag-button" className={css.backlogItemDragButton}>

@@ -22,7 +22,7 @@ export { RemoveButton } from "./components/molecules/buttons/RemoveButton";
 export { FrameCloseButton } from "./components/molecules/buttons/FrameCloseButton";
 
 // components - cards
-export { BacklogItemCard, BacklogItemTypeEnum } from "./components/molecules/cards/BacklogItemCard";
+export { BacklogItemCard, BacklogItemStatus, BacklogItemTypeEnum } from "./components/molecules/cards/BacklogItemCard";
 
 // components - forms
 export { BacklogItemDetailForm } from "./components/organisms/forms/BacklogItemDetailForm";
