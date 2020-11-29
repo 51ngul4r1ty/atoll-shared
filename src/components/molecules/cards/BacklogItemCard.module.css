@@ -91,6 +91,10 @@
     flex-grow: 1;
 }
 
+.backlogItemCardOuter.mobile .backlogItemText {
+    padding-right: 0;
+}
+
 .backlogItemText,
 .backlogItemCardOuter:not(.mobile) .checkbox,
 .backlogItemCardOuter:not(.mobile) .backlogItemDetailButton,
@@ -108,7 +112,7 @@
     overflow: hidden;
 }
 
-.mobileBacklogItemTextContent {
+.backlogItemTextContent {
     position: relative;
     top: -0.075rem;
     text-overflow: ellipsis;
@@ -117,12 +121,19 @@
     min-height: 3.5rem;
 }
 
+.backlogItemTextTitleText {
+    padding-right: 1.5rem;
+}
+
 .backlogItemCardOuter.mobile .backlogItemText {
     margin-left: 0.3rem; /* TODO: Use constants??? */
 }
 
-.backlogItemCardOuter.mobile .backlogItemText {
+.backlogItemCardOuter.mobile .backlogItemTextContent {
     white-space: normal;
+}
+
+.backlogItemCardOuter.mobile .backlogItemText {
     height: 4.15rem;
     flex-basis: 100%;
     border-left: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
