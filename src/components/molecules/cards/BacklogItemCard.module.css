@@ -305,7 +305,7 @@
     right: -0.2rem;
 }
 
-.backlogItemCardOuter:not(.mobile) svg {
+.backlogItemCardOuter:not(.mobile) .status svg {
     left: -0.45rem;
 }
 
