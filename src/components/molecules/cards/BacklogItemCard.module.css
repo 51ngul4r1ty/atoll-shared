@@ -151,8 +151,7 @@
 
 .backlogItemCardOuter.mobile .backlogItemEstimate {
     flex-grow: 0;
-    text-align: right;
-    padding-right: 0.6rem;
+    padding-right: 0;
 }
 
 .backlogItemIcon {
