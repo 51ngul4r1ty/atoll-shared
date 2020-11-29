@@ -205,7 +205,7 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
                 </div>
                 {!props.renderMobile ? checkboxToSelect : null}
                 <div className={css.backlogItemText}>
-                    <div className={css.backlogItemTextContent}>
+                    <div className={css.mobileBacklogItemTextContent}>
                         {props.titleText}
                         {props.renderMobile ? statusIconElts : null}
                         {props.renderMobile ? editDetailButton : null}
