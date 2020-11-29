@@ -22,7 +22,7 @@ export { RemoveButton } from "./components/molecules/buttons/RemoveButton";
 export { FrameCloseButton } from "./components/molecules/buttons/FrameCloseButton";
 
 // components - cards
-export { BacklogItemCard, BacklogItemStatus, BacklogItemTypeEnum } from "./components/molecules/cards/BacklogItemCard";
+export { BacklogItemCard, BacklogItemTypeEnum } from "./components/molecules/cards/BacklogItemCard";
 
 // components - forms
 export { BacklogItemDetailForm } from "./components/organisms/forms/BacklogItemDetailForm";
@@ -64,7 +64,7 @@ export { UserState } from "./reducers/userReducer";
 export * from "./apiModelTypes";
 export { BacklogItemWithSource, BacklogItemsState } from "./reducers/backlogItems/backlogItemsReducerTypes";
 export { Source } from "./reducers/types";
-export { BacklogItem, BacklogItemType } from "./types/backlogItemTypes";
+export { BacklogItem, BacklogItemStatus, BacklogItemType } from "./types/backlogItemTypes";
 export { SprintStatus, SprintCardSprint } from "./components/molecules/cards/sprintCard/sprintCardTypes";
 
 // contexts

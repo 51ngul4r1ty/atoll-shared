@@ -41,6 +41,7 @@ export interface ApiBacklogItem extends StandardItem, StoryPhrases {
     estimate: number | null;
     type: BacklogItemType;
     projectId: string | null;
+    status: string | null;
 }
 
 export interface ApiBacklogItemInSprint extends ApiBacklogItem {

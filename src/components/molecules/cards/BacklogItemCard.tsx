@@ -19,6 +19,7 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 import { SaveableBacklogItem } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
 import { PushState } from "../../../reducers/types";
 import { StatusDoneIcon } from "../../atoms/icons";
+import { BacklogItemStatus } from "../../../types/backlogItemTypes";
 
 /* exported functions */
 
@@ -90,12 +91,6 @@ export enum BacklogItemTypeEnum {
     None,
     Bug,
     Story
-}
-
-export enum BacklogItemStatus {
-    NotStarted = 0,
-    InProgress = 1,
-    Done = 2
 }
 
 export interface ItemMenuEventHandler {
