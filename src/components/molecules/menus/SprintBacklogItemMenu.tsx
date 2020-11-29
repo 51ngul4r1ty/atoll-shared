@@ -6,6 +6,9 @@ import { WithTranslation, withTranslation } from "react-i18next";
 import { CaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
 import { MoveToBacklogButton } from "../buttons/MoveToBacklogButton";
 
+// style
+import css from "./SprintBacklogItemMenu.module.css";
+
 export interface BacklogItemMenuStateProps {
     renderMobile?: boolean;
     showDetailMenuToLeft?: boolean;
@@ -21,6 +24,7 @@ export type InnerSprintBacklogItemMenuProps = SprintBacklogItemMenuProps & WithT
 
 export const InnerSprintBacklogItemMenu: React.FC<InnerSprintBacklogItemMenuProps> = (props) => (
     <ItemMenuPanel
+        className={css.sprintBacklogItemMenu}
         caretPosition={props.showDetailMenuToLeft || props.renderMobile ? CaretPosition.RightTop : CaretPosition.TopCenter}
     >
         <MoveToBacklogButton
