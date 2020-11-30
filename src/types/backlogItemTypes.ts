@@ -3,6 +3,12 @@ import { BaseModelItem } from "../types";
 
 export type BacklogItemType = "story" | "issue";
 
+export enum BacklogItemStatus {
+    NotStarted = 0, // DB: null
+    InProgress = 1, // DB: 'P' = in progress
+    Done = 2 // DB: 'D' = done
+}
+
 export interface BacklogItemModel extends BaseModelItem {
     version?: number;
     createdAt: Date;
@@ -14,6 +20,7 @@ export interface BacklogItemModel extends BaseModelItem {
     rolePhrase: string | null;
     storyPhrase: string;
     type: BacklogItemType;
+    status: BacklogItemStatus;
     projectId: string; // TODO: Finish up code related to this
 }
 

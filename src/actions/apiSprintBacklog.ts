@@ -22,6 +22,8 @@ import { ApiBatchAction } from "../middleware/apiBatchTypes";
 
 // utils
 import { buildActionTypes } from "./utils/apiActionUtils";
+import { BacklogItemStatus } from "../types/backlogItemTypes";
+import { mapApiStatusToBacklogItem, mapBacklogItemStatusToApi } from "../mappers/backlogItemMappers";
 
 export interface MetaActionParams {
     sprintId: string;
@@ -156,6 +158,46 @@ export const apiMoveSprintItemToProductBacklog = (sprintId: string, backlogItemI
             method: "DELETE",
             headers: { Accept: APPLICATION_JSON },
             types: buildActionTypes(ApiActionNames.DELETE_SPRINT_BACKLOG_ITEM)
+        },
+        meta: {
+            actionParams
+        }
+    };
+};
+
+export interface ApiSprintBacklogItemSetStatusActionParams {
+    sprintId: string;
+    backlogItemId: string;
+    status: BacklogItemStatus;
+}
+
+export interface ApiSprintBacklogItemSetStatusData {
+    status: string;
+}
+
+export interface ApiSprintBacklogItemSetStatusSuccessAction {
+    type: typeof ActionTypes.API_PATCH_BACKLOG_ITEM_SUCCESS;
+    payload: ApiActionSuccessPayloadForItem<ApiBacklogItem>;
+    meta: ApiActionMetaDataRequestMeta<ApiSprintBacklogItemSetStatusData, ApiSprintBacklogItemSetStatusActionParams>;
+}
+
+export const apiSprintBacklogItemSetStatus = (sprintId: string, backlogItemId: string, status: BacklogItemStatus) => {
+    const actionParams: ApiSprintBacklogItemSetStatusActionParams = {
+        sprintId,
+        backlogItemId,
+        status
+    };
+    return {
+        type: API,
+        payload: {
+            // TODO: Change this to use HATEOAS (and the sprint backlog item URL)
+            endpoint: `${getApiBaseUrl()}api/v1/backlog-items/${backlogItemId}`,
+            method: "PATCH",
+            headers: { Accept: APPLICATION_JSON },
+            types: buildActionTypes(ApiActionNames.PATCH_BACKLOG_ITEM),
+            data: {
+                status: mapBacklogItemStatusToApi(status)
+            }
         },
         meta: {
             actionParams

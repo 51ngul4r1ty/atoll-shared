@@ -57,6 +57,9 @@ export interface SprintPlanningPanelDispatchProps {
     onDetailClicked: { (sprintId: string, backlogItemId: string): void };
     onSprintDetailClicked: { (sprintId: string): void };
     onMoveItemToBacklogClicked: { (sprintId: string, backlogItemId: string): void };
+    onBacklogItemDoneClicked: { (sprintId: string, backlogItemId: string): void };
+    onBacklogItemInProgressClicked: { (sprintId: string, backlogItemId: string): void };
+    onBacklogItemNotStartedClicked: { (sprintId: string, backlogItemId: string): void };
 }
 
 export type SprintPlanningPanelProps = SprintPlanningPanelStateProps & SprintPlanningPanelDispatchProps & WithTranslation;
@@ -90,6 +93,21 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
     const onMoveItemToBacklogClicked = (sprintId: string, backlogItemId: string) => {
         if (props.onMoveItemToBacklogClicked) {
             props.onMoveItemToBacklogClicked(sprintId, backlogItemId);
+        }
+    };
+    const onBacklogItemDoneClicked = (sprintId: string, backlogItemId: string) => {
+        if (props.onBacklogItemDoneClicked) {
+            props.onBacklogItemDoneClicked(sprintId, backlogItemId);
+        }
+    };
+    const onBacklogItemInProgressClicked = (sprintId: string, backlogItemId: string) => {
+        if (props.onBacklogItemInProgressClicked) {
+            props.onBacklogItemInProgressClicked(sprintId, backlogItemId);
+        }
+    };
+    const onBacklogItemNotStartedClicked = (sprintId: string, backlogItemId: string) => {
+        if (props.onBacklogItemNotStartedClicked) {
+            props.onBacklogItemNotStartedClicked(sprintId, backlogItemId);
         }
     };
     const classNameToUse = buildClassName(
@@ -144,6 +162,15 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         }}
                         onMoveItemToBacklogClicked={(backlogItemId: string) => {
                             onMoveItemToBacklogClicked(sprint.id, backlogItemId);
+                        }}
+                        onBacklogItemDoneClicked={(backlogItemId: string) => {
+                            onBacklogItemDoneClicked(sprint.id, backlogItemId);
+                        }}
+                        onBacklogItemInProgressClicked={(backlogItemId: string) => {
+                            onBacklogItemInProgressClicked(sprint.id, backlogItemId);
+                        }}
+                        onBacklogItemNotStartedClicked={(backlogItemId: string) => {
+                            onBacklogItemNotStartedClicked(sprint.id, backlogItemId);
                         }}
                     />
                 </div>

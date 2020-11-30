@@ -64,7 +64,7 @@ export { UserState } from "./reducers/userReducer";
 export * from "./apiModelTypes";
 export { BacklogItemWithSource, BacklogItemsState } from "./reducers/backlogItems/backlogItemsReducerTypes";
 export { Source } from "./reducers/types";
-export { BacklogItem, BacklogItemType } from "./types/backlogItemTypes";
+export { BacklogItem, BacklogItemStatus, BacklogItemType } from "./types/backlogItemTypes";
 export { SprintStatus, SprintCardSprint } from "./components/molecules/cards/sprintCard/sprintCardTypes";
 
 // contexts

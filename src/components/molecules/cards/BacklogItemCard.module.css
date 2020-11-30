@@ -11,16 +11,18 @@
 }
 
 .backlogItemCardOuter:not(.mobile) .backlogItemDetailButton {
-    order: 3;
+    margin-left: -0.5rem;
+    min-width: 1.6rem;
+    order: 4;
 }
 
 .backlogItemEstimate {
     position: relative;
-    order: 4;
+    order: 5;
 }
 
 .backlogItemDragButton {
-    order: 5;
+    order: 6;
 }
 
 .backlogItemCardOuter.mobile .backlogItemEstimate {
@@ -91,9 +93,14 @@
     flex-grow: 1;
 }
 
+.backlogItemCardOuter.mobile .backlogItemText {
+    padding-right: 0;
+}
+
 .backlogItemText,
 .backlogItemCardOuter:not(.mobile) .checkbox,
-.backlogItemCardOuter:not(.mobile) .backlogItemDetailButton {
+.backlogItemCardOuter:not(.mobile) .backlogItemDetailButton,
+.backlogItemCardOuter:not(.mobile) .status {
     border-top: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
     border-bottom: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
 }
@@ -110,17 +117,25 @@
 .backlogItemTextContent {
     position: relative;
     top: -0.075rem;
+}
+
+.mobile .backlogItemTextContent {
+    min-height: 3rem;
+}
+
+.backlogItemTextTitleText {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
 }
 
-.backlogItemCardOuter.mobile .backlogItemText {
-    margin-left: 0.3rem; /* TODO: Use constants??? */
+.backlogItemCardOuter.mobile .backlogItemTextTitleText {
+    white-space: normal;
+    padding-right: 1.5rem;
 }
 
 .backlogItemCardOuter.mobile .backlogItemText {
-    white-space: normal;
+    margin-left: 0.3rem; /* TODO: Use constants??? */
     height: 4.15rem;
     flex-basis: 100%;
     border-left: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
@@ -137,8 +152,7 @@
 
 .backlogItemCardOuter.mobile .backlogItemEstimate {
     flex-grow: 0;
-    text-align: right;
-    padding-right: 0.6rem;
+    padding-right: 0;
 }
 
 .backlogItemIcon {
@@ -182,7 +196,7 @@
 .backlogItemCardOuter.mobile .backlogItemDetailButton {
     position: absolute;
     top: 0.3rem;
-    right: -0.2rem;
+    right: 0;
 }
 
 .backlogItemDetailButton svg {
@@ -275,4 +289,30 @@
 
 .checkbox {
     padding-top: 0.225rem;
+}
+
+.status {
+    padding: 0;
+    min-width: 1.7rem;
+    max-width: 2rem;
+    order: 3;
+    overflow: hidden;
+}
+
+.backlogItemCardOuter.mobile .status {
+    position: absolute;
+    top: 1.45rem;
+    right: -0.2rem;
+}
+
+.backlogItemCardOuter:not(.mobile) .status svg {
+    left: -0.45rem;
+}
+
+.status svg {
+    width: 2.4rem;
+    height: 2.4rem;
+    top: -0.275rem;
+    position: relative;
+    left: -0.25rem;
 }

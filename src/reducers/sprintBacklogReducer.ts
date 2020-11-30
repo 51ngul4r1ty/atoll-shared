@@ -6,8 +6,8 @@ import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
 import { AnyFSA } from "../types";
-import { ApiGetSprintBacklogItemsSuccessAction } from "../actions/apiSprintBacklog";
-import { BacklogItem } from "../types/backlogItemTypes";
+import { ApiGetSprintBacklogItemsSuccessAction, ApiSprintBacklogItemSetStatusSuccessAction } from "../actions/apiSprintBacklog";
+import { BacklogItem, BacklogItemStatus } from "../types/backlogItemTypes";
 import { BacklogItemWithSource } from "./backlogItems/backlogItemsReducerTypes";
 import {
     MoveBacklogItemToSprintAction,
@@ -18,7 +18,7 @@ import { PushState } from "./types";
 import { AppClickAction } from "../actions/appActions";
 
 // utils
-import { mapApiItemsToBacklogItems } from "../mappers/backlogItemMappers";
+import { mapApiItemsToBacklogItems, mapApiStatusToBacklogItem } from "../mappers/backlogItemMappers";
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
 import { targetIsInMenuButton, targetIsInMenuPanel } from "./backlogItems/backlogItemsReducerHelper";
 
@@ -104,9 +104,27 @@ export const sprintBacklogReducer = (
                 draft.openedDetailMenuSprintId = draft.openedDetailMenuBacklogItemId ? sprintId : null;
                 return;
             }
-            case ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS:
+            case ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS: {
                 draft.openedDetailMenuSprintId = null;
                 return;
+            }
+            case ActionTypes.API_PATCH_BACKLOG_ITEM_SUCCESS: {
+                const actionTyped = action as ApiSprintBacklogItemSetStatusSuccessAction;
+                const sprintId = actionTyped.meta.actionParams.sprintId;
+                const backlogItemId = actionTyped.meta.actionParams.backlogItemId;
+
+                const sprint = draft.sprints[sprintId];
+                if (!sprint) {
+                    return;
+                }
+                sprint.items.forEach((item) => {
+                    if (item.id === backlogItemId) {
+                        item.status = mapApiStatusToBacklogItem(actionTyped.meta.requestBody.data.status);
+                    }
+                });
+                draft.openedDetailMenuSprintId = null;
+                return;
+            }
             case ActionTypes.REMOVE_SPRINT_BACKLOG_ITEM: {
                 const actionTyped = action as RemoveSprintBacklogItemAction;
                 const sprintId = actionTyped.payload.sprintId;

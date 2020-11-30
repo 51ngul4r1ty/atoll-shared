@@ -1,6 +1,42 @@
 // interfaces/types
 import { ApiBacklogItem } from "../apiModelTypes";
-import { BacklogItem } from "../types/backlogItemTypes";
+import { BacklogItem, BacklogItemStatus } from "../types/backlogItemTypes";
+
+export const mapApiStatusToBacklogItem = (status: string | null): BacklogItemStatus => {
+    switch (status) {
+        case undefined:
+        case null:
+        case "N": {
+            return BacklogItemStatus.NotStarted;
+        }
+        case "P": {
+            return BacklogItemStatus.InProgress;
+        }
+        case "D": {
+            return BacklogItemStatus.Done;
+        }
+        default: {
+            throw new Error(`Unknown backlog item status "${status}"`);
+        }
+    }
+};
+
+export const mapBacklogItemStatusToApi = (status: BacklogItemStatus): string | null => {
+    switch (status) {
+        case BacklogItemStatus.NotStarted: {
+            return "N";
+        }
+        case BacklogItemStatus.InProgress: {
+            return "P";
+        }
+        case BacklogItemStatus.Done: {
+            return "D";
+        }
+        default: {
+            throw new Error(`Unknown backlog item status "${status}"`);
+        }
+    }
+};
 
 export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem => ({
     id: apiItem.id,
@@ -13,7 +49,8 @@ export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem =>
     type: apiItem.type,
     createdAt: apiItem.createdAt,
     updatedAt: apiItem.updatedAt,
-    projectId: apiItem.projectId
+    projectId: apiItem.projectId,
+    status: mapApiStatusToBacklogItem(apiItem.status)
 });
 
 export const mapApiItemsToBacklogItems = (apiItems: ApiBacklogItem[]): BacklogItem[] => {

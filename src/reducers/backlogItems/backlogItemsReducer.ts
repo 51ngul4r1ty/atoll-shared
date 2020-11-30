@@ -15,16 +15,16 @@ import {
 import { ApiGetBffViewsPlanSuccessAction } from "../../actions/apiBffViewsPlan";
 import {
     AddNewBacklogItemFormAction,
-    UpdateBacklogItemFieldsAction,
+    AddProductBacklogItemAction,
+    CancelEditBacklogItemAction,
     CancelUnsavedBacklogItemAction,
+    EditBacklogItemAction,
     ReceivePushedBacklogItemAction,
     ReorderBacklogItemAction,
-    ToggleBacklogItemDetailAction,
-    EditBacklogItemAction,
-    CancelEditBacklogItemAction,
-    UpdateBacklogItemAction,
     SelectProductBacklogItemAction,
-    AddProductBacklogItemAction
+    ToggleBacklogItemDetailAction,
+    UpdateBacklogItemAction,
+    UpdateBacklogItemFieldsAction
 } from "../../actions/backlogItemActions";
 import { AppClickAction, AppKeyUpAction } from "../../actions/appActions";
 import { BacklogItemsState, BacklogItemWithSource, SaveableBacklogItem } from "./backlogItemsReducerTypes";
@@ -47,11 +47,11 @@ import { calcDropDownMenuState } from "../../utils/dropdownMenuUtils";
 
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
-    pushedItems: [],
-    items: [],
     allItems: [],
-    selectedItemIds: [],
-    openedDetailMenuBacklogItemId: null
+    items: [],
+    openedDetailMenuBacklogItemId: null,
+    pushedItems: [],
+    selectedItemIds: []
 });
 
 export const removeBacklogItem = (draft: Draft<BacklogItemsState>, backlogItemId: string) => {

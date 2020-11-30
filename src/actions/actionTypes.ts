@@ -46,6 +46,10 @@ export const API_PUT_BACKLOG_ITEM_REQUEST = buildRequestActionName(Names.PUT_BAC
 export const API_PUT_BACKLOG_ITEM_SUCCESS = buildSuccessActionName(Names.PUT_BACKLOG_ITEM);
 export const API_PUT_BACKLOG_ITEM_FAILURE = buildFailureActionName(Names.PUT_BACKLOG_ITEM);
 
+export const API_PATCH_BACKLOG_ITEM_REQUEST = buildRequestActionName(Names.PATCH_BACKLOG_ITEM);
+export const API_PATCH_BACKLOG_ITEM_SUCCESS = buildSuccessActionName(Names.PATCH_BACKLOG_ITEM);
+export const API_PATCH_BACKLOG_ITEM_FAILURE = buildFailureActionName(Names.PATCH_BACKLOG_ITEM);
+
 export const API_DELETE_BACKLOG_ITEM_REQUEST = buildRequestActionName(Names.DELETE_BACKLOG_ITEM);
 export const API_DELETE_BACKLOG_ITEM_SUCCESS = buildSuccessActionName(Names.DELETE_BACKLOG_ITEM);
 export const API_DELETE_BACKLOG_ITEM_FAILURE = buildFailureActionName(Names.DELETE_BACKLOG_ITEM);
@@ -158,6 +162,9 @@ export const TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL = "app/toggle:sprint-backlog-item
 export const TOGGLE_SPRINT_ITEM_DETAIL = "app/toggle:sprint";
 
 export const MOVE_SPRINT_ITEM_TO_PRODUCT_BACKLOG_CLICKED = "app/move-to-backlog:sprint-backlog-item";
+export const SPRINT_BACKLOG_ITEM_DONE_CLICKED = "app/status-done:sprint-backlog-item";
+export const SPRINT_BACKLOG_ITEM_IN_PROGRESS_CLICKED = "app/status-in-progress:sprint-backlog-item";
+export const SPRINT_BACKLOG_ITEM_NOT_STARTED_CLICKED = "app/status-not-started:sprint-backlog-item";
 
 export const ADD_PRODUCT_BACKLOG_ITEM = "app/add:product-backlog-item";
 export const REMOVE_SPRINT_BACKLOG_ITEM = "app/remove:sprint-backlog-item";

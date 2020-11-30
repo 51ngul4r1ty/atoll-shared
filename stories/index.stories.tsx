@@ -12,6 +12,7 @@ import { withRootAttribute } from "storybook-addon-root-attribute";
 import {
     AddButton,
     BacklogItemCard,
+    BacklogItemStatus,
     BacklogItemTypeEnum,
     Checkbox,
     EditButton,
@@ -123,6 +124,7 @@ storiesOf("Molecules/Cards/BacklogItemCard", module)
                     { Story: BacklogItemTypeEnum.Story, Bug: BacklogItemTypeEnum.Bug },
                     BacklogItemTypeEnum.Story
                 )}
+                status={BacklogItemStatus.Done}
                 titleText={text("titleText", "Example story")}
                 estimate={number("estimate", 5)}
             />
@@ -183,6 +185,24 @@ storiesOf("Molecules/Cards/BacklogItemCard", module)
                 )}
                 titleText={text("titleText", "Example bug")}
                 estimate={number("estimate", null)}
+                isDraggable
+                hasDetails
+                renderMobile
+            />
+        </div>
+    ))
+    .add("BacklogItemCard Mobile (all elts)", () => (
+        <div>
+            <BacklogItemCard
+                itemId={text("itemId", "456")}
+                itemType={select(
+                    "itemType",
+                    { Story: BacklogItemTypeEnum.Story, Bug: BacklogItemTypeEnum.Bug },
+                    BacklogItemTypeEnum.Bug
+                )}
+                titleText={text("titleText", "Example bug")}
+                estimate={number("estimate", null)}
+                status={BacklogItemStatus.Done}
                 isDraggable
                 hasDetails
                 renderMobile

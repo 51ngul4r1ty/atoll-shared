@@ -17,6 +17,7 @@ import { Source } from "../types";
 
 // consts/enums
 import { selectProductBacklogItem, unselectProductBacklogItem } from "../../actions/backlogItemActions";
+import { BacklogItemStatus } from "../../types/backlogItemTypes";
 
 describe("Backlog Items Reducer", () => {
     describe("rebuildAllItems", () => {
@@ -34,7 +35,8 @@ describe("Backlog Items Reducer", () => {
                 saved: false,
                 storyPhrase: undefined,
                 type: "issue",
-                updatedAt: undefined
+                updatedAt: undefined,
+                status: undefined
             };
             const addedItem1InAllItems: BacklogItemWithSource = {
                 ...addedItem,
@@ -53,7 +55,8 @@ describe("Backlog Items Reducer", () => {
                 source: Source.Loaded,
                 storyPhrase: "test",
                 type: "story",
-                updatedAt: new Date("2020-05-16T17:49:30.265Z")
+                updatedAt: new Date("2020-05-16T17:49:30.265Z"),
+                status: BacklogItemStatus.NotStarted
             };
             const pushedItem1: WebsocketPushNotificationData<PushBacklogItemModel> = {
                 item: {
@@ -70,7 +73,8 @@ describe("Backlog Items Reducer", () => {
                     storyPhrase: "test 2",
                     type: "story",
                     updatedAt: new Date("2020-06-02T01:15:54.715Z"),
-                    version: 0
+                    version: 0,
+                    status: BacklogItemStatus.NotStarted
                 },
                 operation: PushOperationType.Added
             };
@@ -87,7 +91,8 @@ describe("Backlog Items Reducer", () => {
                 source: Source.Pushed,
                 storyPhrase: "test 2",
                 type: "story",
-                updatedAt: new Date("2020-06-02T01:15:54.715Z")
+                updatedAt: new Date("2020-06-02T01:15:54.715Z"),
+                status: BacklogItemStatus.NotStarted
             };
             produce(
                 { ...backlogItemsReducerInitialState, addedItems: [addedItem], items: [item], pushedItems: [pushedItem1] },

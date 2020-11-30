@@ -37,5 +37,6 @@
   "css.lint.unknownAtRules": "ignore",
   "css.lint.unknownProperties": "ignore",
   "css.lint.vendorPrefix": "ignore",
-  "css.validate": false
+  "css.validate": false,
+  "deno.enable": false
 }

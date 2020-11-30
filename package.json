@@ -1,6 +1,6 @@
 {
   "name": "@atoll/shared",
-  "version": "0.22.5",
+  "version": "0.23.0",
   "author": {
     "name": "Kevin Berry",
     "email": "41717340+51ngul4r1ty@users.noreply.github.com"
@@ -42,7 +42,8 @@
     "build:storybook-ts": "npx --no-install tsc -p tsconfig.storybook.json",
     "build:lib": "npm run build:storybook-ts && npm run copy-css-to-lib",
     "copy-css-to-lib": "npx --no-install cpx \"./dist/index.cjs.css\" ./build/storybook",
-    "storybook-serve": "start-storybook -p 6006"
+    "storybook-serve": "start-storybook -p 6006",
+    "gen:react-svg": "deno run --allow-read --allow-write --unstable ../atoll-scripts/build-svg-component/index.ts"
   },
   "dependencies": {
     "@csstools/normalize.css": "10.1.0",
