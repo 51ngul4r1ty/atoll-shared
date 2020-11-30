@@ -5,7 +5,6 @@ import * as React from "react";
 import { SimpleButton, SimpleButtonProps, cleanPassthroughProps } from "../../atoms/buttons/SimpleButton";
 
 // icons
-// TODO: Change this icon
 import { StatusDoneIcon } from "../../atoms/icons/StatusDoneIcon";
 
 // style
@@ -22,7 +21,7 @@ export type BacklogItemDoneButtonProps = BacklogItemDoneButtonStateProps & Simpl
 export const BacklogItemDoneButton: React.FC<BacklogItemDoneButtonProps> = (props) => {
     return (
         <SimpleButton {...cleanPassthroughProps(props)} iconOnLeft icon={<StatusDoneIcon />} onClick={props.onClick}>
-            Progress: Complete
+            Progress: Done
         </SimpleButton>
     );
 };

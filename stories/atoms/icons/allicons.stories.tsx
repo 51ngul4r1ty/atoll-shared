@@ -20,6 +20,7 @@ import {
     IssueIcon,
     RefreshIcon,
     StatusDoneIcon,
+    StatusInProgressIcon,
     StoryIcon,
     TrashIcon,
     VerticalCollapseIcon,
@@ -38,6 +39,7 @@ const invertibleIcons = {
     EditDetailIcon,
     IssueIcon,
     StatusDoneIcon,
+    StatusInProgressIcon,
     StoryIcon,
     TrashIcon,
     VerticalCollapseIcon,
@@ -55,6 +57,7 @@ const icons = {
     HamburgerIcon,
     RefreshIcon,
     StatusDoneIcon,
+    StatusInProgressIcon,
     VerticalCollapseIcon,
     VerticalExpandIcon
 };
@@ -73,6 +76,7 @@ const iconNames = [
     "HamburgerIcon",
     "IssueIcon",
     "StatusDoneIcon",
+    "StatusInProgressIcon",
     "StoryIcon",
     "TrashIcon",
     "VerticalCollapseIcon",

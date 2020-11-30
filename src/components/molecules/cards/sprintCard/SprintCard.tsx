@@ -41,6 +41,7 @@ export interface SprintCardDispatchProps {
     onExpandCollapse: { (id: string, expand: boolean): void };
     onMoveItemToBacklogClicked: { (id: string): void };
     onBacklogItemDoneClicked: { (id: string): void };
+    onBacklogItemInProgressClicked: { (id: string): void };
 }
 
 export type SprintCardProps = SprintCardStateProps & SprintCardDispatchProps;
@@ -108,7 +109,8 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
               props.backlogItems,
               handleDetailClicked,
               props.onMoveItemToBacklogClicked,
-              props.onBacklogItemDoneClicked
+              props.onBacklogItemDoneClicked,
+              props.onBacklogItemInProgressClicked
           )
         : "[ loading... ]";
     const actionButtonElts =

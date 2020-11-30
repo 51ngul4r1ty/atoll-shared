@@ -22,6 +22,8 @@ import { ApiBatchAction } from "../middleware/apiBatchTypes";
 
 // utils
 import { buildActionTypes } from "./utils/apiActionUtils";
+import { BacklogItemStatus } from "../types/backlogItemTypes";
+import { mapApiStatusToBacklogItem, mapBacklogItemStatusToApi } from "../mappers/backlogItemMappers";
 
 export interface MetaActionParams {
     sprintId: string;
@@ -163,9 +165,10 @@ export const apiMoveSprintItemToProductBacklog = (sprintId: string, backlogItemI
     };
 };
 
-export interface ApiSprintBacklogItemSetStatusDoneActionParams {
+export interface ApiSprintBacklogItemSetStatusActionParams {
     sprintId: string;
     backlogItemId: string;
+    status: BacklogItemStatus;
 }
 
 export interface ApiSprintBacklogItemSetStatusData {
@@ -175,13 +178,14 @@ export interface ApiSprintBacklogItemSetStatusData {
 export interface ApiSprintBacklogItemSetStatusSuccessAction {
     type: typeof ActionTypes.API_PATCH_BACKLOG_ITEM_SUCCESS;
     payload: ApiActionSuccessPayloadForItem<ApiBacklogItem>;
-    meta: ApiActionMetaDataRequestMeta<ApiSprintBacklogItemSetStatusData, ApiSprintBacklogItemSetStatusDoneActionParams>;
+    meta: ApiActionMetaDataRequestMeta<ApiSprintBacklogItemSetStatusData, ApiSprintBacklogItemSetStatusActionParams>;
 }
 
-export const apiSprintBacklogItemSetStatusDone = (sprintId: string, backlogItemId: string) => {
-    const actionParams: ApiSprintBacklogItemSetStatusDoneActionParams = {
+export const apiSprintBacklogItemSetStatus = (sprintId: string, backlogItemId: string, status: BacklogItemStatus) => {
+    const actionParams: ApiSprintBacklogItemSetStatusActionParams = {
         sprintId,
-        backlogItemId
+        backlogItemId,
+        status
     };
     return {
         type: API,
@@ -192,7 +196,7 @@ export const apiSprintBacklogItemSetStatusDone = (sprintId: string, backlogItemI
             headers: { Accept: APPLICATION_JSON },
             types: buildActionTypes(ApiActionNames.PATCH_BACKLOG_ITEM),
             data: {
-                status: "D" // TODO: Should this be "C" instead?
+                status: mapBacklogItemStatusToApi(status)
             }
         },
         meta: {

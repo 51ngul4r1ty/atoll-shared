@@ -92,6 +92,27 @@ export const sprintBacklogItemDoneClicked = (sprintId: string, backlogItemId: st
     }
 });
 
+export interface SprintBacklogItemInProgressClickedPayload {
+    sprintId: string;
+    backlogItemId: string;
+}
+
+export interface SprintBacklogItemInProgressClickedAction {
+    type: typeof ActionTypes.SPRINT_BACKLOG_ITEM_IN_PROGRESS_CLICKED;
+    payload: SprintBacklogItemInProgressClickedPayload;
+}
+
+export const sprintBacklogItemInProgressClicked = (
+    sprintId: string,
+    backlogItemId: string
+): SprintBacklogItemInProgressClickedAction => ({
+    type: ActionTypes.SPRINT_BACKLOG_ITEM_IN_PROGRESS_CLICKED,
+    payload: {
+        sprintId,
+        backlogItemId
+    }
+});
+
 export interface RemoveSprintBacklogItemActionPayload {
     sprintId: string;
     backlogItemId: string;

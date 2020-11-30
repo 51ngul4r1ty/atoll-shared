@@ -41,12 +41,13 @@ import {
     apiGetSprintBacklogItems,
     apiMoveSprintItemToProductBacklog,
     ApiMoveSprintItemToProductBacklogSuccessAction,
-    apiSprintBacklogItemSetStatusDone
+    apiSprintBacklogItemSetStatus
 } from "../actions/apiSprintBacklog";
 import {
     MoveSelectedBacklogItemsToSprintUsingApiAction,
     removeSprintBacklogItem,
     SprintBacklogItemDoneClickedAction,
+    SprintBacklogItemInProgressClickedAction,
     SprintMoveItemToBacklogClickedAction
 } from "../actions/sprintBacklogActions";
 import { apiPostSprint } from "../actions/apiSprints";
@@ -66,6 +67,7 @@ import { convertToBacklogItemModel, convertToSprintModel } from "../utils/apiPay
 // interfaces/types
 import { ResourceTypes } from "../reducers/apiLinksReducer";
 import { ExpandSprintPanelAction, SaveNewSprintAction } from "../actions/sprintActions";
+import { BacklogItemStatus } from "../types/backlogItemTypes";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
@@ -180,7 +182,14 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const actionTyped = action as SprintBacklogItemDoneClickedAction;
             const sprintId = actionTyped.payload.sprintId;
             const backlogItemId = actionTyped.payload.backlogItemId;
-            storeTyped.dispatch(apiSprintBacklogItemSetStatusDone(sprintId, backlogItemId));
+            storeTyped.dispatch(apiSprintBacklogItemSetStatus(sprintId, backlogItemId, BacklogItemStatus.Done));
+            break;
+        }
+        case ActionTypes.SPRINT_BACKLOG_ITEM_IN_PROGRESS_CLICKED: {
+            const actionTyped = action as SprintBacklogItemInProgressClickedAction;
+            const sprintId = actionTyped.payload.sprintId;
+            const backlogItemId = actionTyped.payload.backlogItemId;
+            storeTyped.dispatch(apiSprintBacklogItemSetStatus(sprintId, backlogItemId, BacklogItemStatus.InProgress));
             break;
         }
         case ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS: {

@@ -18,7 +18,7 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 // consts/enums
 import { SaveableBacklogItem } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
 import { PushState } from "../../../reducers/types";
-import { StatusDoneIcon } from "../../atoms/icons";
+import { StatusDoneIcon, StatusInProgressIcon } from "../../atoms/icons";
 import { BacklogItemStatus } from "../../../types/backlogItemTypes";
 
 /* exported functions */
@@ -173,12 +173,18 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
     ) : null;
     const mobileCheckboxElts = props.renderMobile ? <div className={css.mobileCheckbox}>{checkboxToSelect}</div> : null;
     const styleToUse: React.CSSProperties = props.offsetTop && { top: props.offsetTop, position: "absolute", zIndex: 10 };
-    const statusIconElts =
-        props.status === BacklogItemStatus.Done ? (
-            <div className={css.status}>
-                <StatusDoneIcon />
-            </div>
-        ) : null;
+    let statusIcon: any = null;
+    switch (props.status) {
+        case BacklogItemStatus.InProgress: {
+            statusIcon = <StatusInProgressIcon />;
+            break;
+        }
+        case BacklogItemStatus.Done: {
+            statusIcon = <StatusDoneIcon />;
+            break;
+        }
+    }
+    const statusIconElts = (props.status === statusIcon) !== null ? <div className={css.status}>{statusIcon}</div> : null;
     return (
         <div className={outerClassNameToUse} data-class="backlogitem" data-id={props.internalId} style={styleToUse}>
             <div className={classNameToUse} style={{ width: props.width }} tabIndex={0}>
