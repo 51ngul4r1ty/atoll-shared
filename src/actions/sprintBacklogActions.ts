@@ -74,6 +74,24 @@ export const sprintMoveItemToBacklogClicked = (sprintId: string, backlogItemId: 
     }
 });
 
+export interface SprintBacklogItemDoneClickedPayload {
+    sprintId: string;
+    backlogItemId: string;
+}
+
+export interface SprintBacklogItemDoneClickedAction {
+    type: typeof ActionTypes.SPRINT_BACKLOG_ITEM_DONE_CLICKED;
+    payload: SprintBacklogItemDoneClickedPayload;
+}
+
+export const sprintBacklogItemDoneClicked = (sprintId: string, backlogItemId: string): SprintBacklogItemDoneClickedAction => ({
+    type: ActionTypes.SPRINT_BACKLOG_ITEM_DONE_CLICKED,
+    payload: {
+        sprintId,
+        backlogItemId
+    }
+});
+
 export interface RemoveSprintBacklogItemActionPayload {
     sprintId: string;
     backlogItemId: string;

@@ -10,6 +10,7 @@ import { BacklogItemPlanningPanel } from "../backlogItemPlanning/BacklogItemPlan
 import { EditMode } from "../../../molecules/buttons/EditButton";
 import { Source } from "../../../../reducers/types";
 import { BacklogItemWithSource } from "../../../../reducers/backlogItems/backlogItemsReducerTypes";
+import { BacklogItemStatus } from "../../../../types/backlogItemTypes";
 
 // mocks
 const mockUseDispatch = jest.fn();
@@ -103,7 +104,8 @@ const buildCommonItem = (
     source,
     storyPhrase: buildStoryPhrase(source, itemNumber),
     type: "story",
-    updatedAt: new Date()
+    updatedAt: new Date(),
+    status: BacklogItemStatus.NotStarted
 });
 
 const buildAddedItem = (itemNumber: number, instanceId: number | null, estimate: number, saved: boolean): BacklogItemWithSource =>

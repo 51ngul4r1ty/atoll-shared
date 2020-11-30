@@ -21,6 +21,7 @@ import { apiBffViewsPlan } from "./actions/apiBffViewsPlan";
 import {
     moveSelectedBacklogItemsToSprintUsingApi,
     sprintBacklogItemDetailClicked,
+    sprintBacklogItemDoneClicked,
     sprintMoveItemToBacklogClicked
 } from "./actions/sprintBacklogActions";
 
@@ -80,7 +81,9 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
         onItemDetailClicked: (sprintId: string, backlogItemId: string) =>
             dispatch(sprintBacklogItemDetailClicked(sprintId, backlogItemId)),
         onMoveItemToBacklogClicked: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintMoveItemToBacklogClicked(sprintId, backlogItemId))
+            dispatch(sprintMoveItemToBacklogClicked(sprintId, backlogItemId)),
+        onBacklogItemDoneClicked: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemDoneClicked(sprintId, backlogItemId))
     };
 };
 

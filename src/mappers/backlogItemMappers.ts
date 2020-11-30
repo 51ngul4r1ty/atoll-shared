@@ -5,7 +5,8 @@ import { BacklogItem, BacklogItemStatus } from "../types/backlogItemTypes";
 export const mapApiStatusToBacklogItem = (status: string | null): BacklogItemStatus => {
     switch (status) {
         case undefined:
-        case null: {
+        case null:
+        case "N": {
             return BacklogItemStatus.NotStarted;
         }
         case "P": {
@@ -13,6 +14,23 @@ export const mapApiStatusToBacklogItem = (status: string | null): BacklogItemSta
         }
         case "D": {
             return BacklogItemStatus.Done;
+        }
+        default: {
+            throw new Error(`Unknown backlog item status "${status}"`);
+        }
+    }
+};
+
+export const mapBacklogItemStatusToApi = (status: BacklogItemStatus): string | null => {
+    switch (status) {
+        case BacklogItemStatus.NotStarted: {
+            return "N";
+        }
+        case BacklogItemStatus.InProgress: {
+            return "P";
+        }
+        case BacklogItemStatus.Done: {
+            return "D";
         }
         default: {
             throw new Error(`Unknown backlog item status "${status}"`);

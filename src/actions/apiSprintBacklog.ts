@@ -162,3 +162,41 @@ export const apiMoveSprintItemToProductBacklog = (sprintId: string, backlogItemI
         }
     };
 };
+
+export interface ApiSprintBacklogItemSetStatusDoneActionParams {
+    sprintId: string;
+    backlogItemId: string;
+}
+
+export interface ApiSprintBacklogItemSetStatusData {
+    status: string;
+}
+
+export interface ApiSprintBacklogItemSetStatusSuccessAction {
+    type: typeof ActionTypes.API_PATCH_BACKLOG_ITEM_SUCCESS;
+    payload: ApiActionSuccessPayloadForItem<ApiBacklogItem>;
+    meta: ApiActionMetaDataRequestMeta<ApiSprintBacklogItemSetStatusData, ApiSprintBacklogItemSetStatusDoneActionParams>;
+}
+
+export const apiSprintBacklogItemSetStatusDone = (sprintId: string, backlogItemId: string) => {
+    const actionParams: ApiSprintBacklogItemSetStatusDoneActionParams = {
+        sprintId,
+        backlogItemId
+    };
+    return {
+        type: API,
+        payload: {
+            // TODO: Change this to use HATEOAS (and the sprint backlog item URL)
+            endpoint: `${getApiBaseUrl()}api/v1/backlog-items/${backlogItemId}`,
+            method: "PATCH",
+            headers: { Accept: APPLICATION_JSON },
+            types: buildActionTypes(ApiActionNames.PATCH_BACKLOG_ITEM),
+            data: {
+                status: "D" // TODO: Should this be "C" instead?
+            }
+        },
+        meta: {
+            actionParams
+        }
+    };
+};

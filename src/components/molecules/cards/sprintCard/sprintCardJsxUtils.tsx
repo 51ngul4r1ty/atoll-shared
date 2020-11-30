@@ -21,12 +21,15 @@ export const getBacklogItemElts = (
     showDetailMenuToLeft: boolean,
     backlogItems: SprintBacklogItem[],
     onDetailClicked: { (backlogItemId: string) },
-    onMoveItemToBacklogClicked: { (itemId: string) }
+    onMoveItemToBacklogClicked: { (itemId: string) },
+    onBacklogItemDoneClicked: { (itemId: string) }
 ) => {
     const eventHandlers: ItemMenuEventHandlers = {
         handleEvent: (eventName: string, itemId: string) => {
             if (eventName === "onMoveItemToBacklogClicked") {
                 onMoveItemToBacklogClicked(itemId);
+            } else if (eventName === "onBacklogItemDoneClicked") {
+                onBacklogItemDoneClicked(itemId);
             } else {
                 throw Error(`${eventName} is not handled`);
             }

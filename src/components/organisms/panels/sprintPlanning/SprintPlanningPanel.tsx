@@ -57,6 +57,7 @@ export interface SprintPlanningPanelDispatchProps {
     onDetailClicked: { (sprintId: string, backlogItemId: string): void };
     onSprintDetailClicked: { (sprintId: string): void };
     onMoveItemToBacklogClicked: { (sprintId: string, backlogItemId: string): void };
+    onBacklogItemDoneClicked: { (sprintId: string, backlogItemId: string): void };
 }
 
 export type SprintPlanningPanelProps = SprintPlanningPanelStateProps & SprintPlanningPanelDispatchProps & WithTranslation;
@@ -90,6 +91,11 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
     const onMoveItemToBacklogClicked = (sprintId: string, backlogItemId: string) => {
         if (props.onMoveItemToBacklogClicked) {
             props.onMoveItemToBacklogClicked(sprintId, backlogItemId);
+        }
+    };
+    const onBacklogItemDoneClicked = (sprintId: string, backlogItemId: string) => {
+        if (props.onBacklogItemDoneClicked) {
+            props.onBacklogItemDoneClicked(sprintId, backlogItemId);
         }
     };
     const classNameToUse = buildClassName(
@@ -144,6 +150,9 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         }}
                         onMoveItemToBacklogClicked={(backlogItemId: string) => {
                             onMoveItemToBacklogClicked(sprint.id, backlogItemId);
+                        }}
+                        onBacklogItemDoneClicked={(backlogItemId: string) => {
+                            onBacklogItemDoneClicked(sprint.id, backlogItemId);
                         }}
                     />
                 </div>

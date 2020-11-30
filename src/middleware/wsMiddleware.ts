@@ -6,6 +6,7 @@ import * as ActionTypes from "../actions/actionTypes";
 
 // utils
 import * as wsClient from "../utils/wsClient";
+import { mapApiItemToBacklogItem } from "../mappers/backlogItemMappers";
 
 // interfaces/types
 import {
@@ -94,7 +95,7 @@ export const wsMiddleware = (store) => (next) => (action: Action) => {
         case ActionTypes.API_PUT_BACKLOG_ITEM_SUCCESS: {
             const actionTyped = action as ApiPutBacklogItemSuccessAction;
             const item = actionTyped.payload.response.data?.item;
-            pushBacklogItemUpdated(item);
+            pushBacklogItemUpdated(mapApiItemToBacklogItem(item));
             break;
         }
         case ActionTypes.RECEIVE_WEBSOCKET_MESSAGE: {
