@@ -7,6 +7,7 @@ import { WithTranslation, withTranslation } from "react-i18next";
 import { CaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
 import { BacklogItemDoneButton } from "../buttons/BacklogItemDoneButton";
 import { BacklogItemInProgressButton } from "../buttons/BacklogItemInProgressButton";
+import { BacklogItemNotStartedButton } from "../buttons/BacklogItemNotStartedButton";
 import { MoveToBacklogButton } from "../buttons/MoveToBacklogButton";
 
 // style
@@ -21,6 +22,7 @@ export interface BacklogItemMenuDispatchProps {
     onMoveItemToBacklogClicked?: { (): void };
     onBacklogItemDoneClicked?: { (): void };
     onBacklogItemInProgressClicked?: { (): void };
+    onBacklogItemNotStartedClicked?: { (): void };
 }
 
 export type SprintBacklogItemMenuProps = BacklogItemMenuStateProps & BacklogItemMenuDispatchProps;
@@ -32,6 +34,14 @@ export const InnerSprintBacklogItemMenu: React.FC<InnerSprintBacklogItemMenuProp
         className={css.sprintBacklogItemMenu}
         caretPosition={props.showDetailMenuToLeft || props.renderMobile ? CaretPosition.RightTop : CaretPosition.TopCenter}
     >
+        <BacklogItemNotStartedButton
+            suppressSpacing
+            onClick={() => {
+                if (props.onBacklogItemNotStartedClicked) {
+                    props.onBacklogItemNotStartedClicked();
+                }
+            }}
+        />
         <BacklogItemInProgressButton
             suppressSpacing
             onClick={() => {

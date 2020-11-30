@@ -48,6 +48,7 @@ import {
     removeSprintBacklogItem,
     SprintBacklogItemDoneClickedAction,
     SprintBacklogItemInProgressClickedAction,
+    SprintBacklogItemNotStartedClickedAction,
     SprintMoveItemToBacklogClickedAction
 } from "../actions/sprintBacklogActions";
 import { apiPostSprint } from "../actions/apiSprints";
@@ -190,6 +191,13 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const sprintId = actionTyped.payload.sprintId;
             const backlogItemId = actionTyped.payload.backlogItemId;
             storeTyped.dispatch(apiSprintBacklogItemSetStatus(sprintId, backlogItemId, BacklogItemStatus.InProgress));
+            break;
+        }
+        case ActionTypes.SPRINT_BACKLOG_ITEM_NOT_STARTED_CLICKED: {
+            const actionTyped = action as SprintBacklogItemNotStartedClickedAction;
+            const sprintId = actionTyped.payload.sprintId;
+            const backlogItemId = actionTyped.payload.backlogItemId;
+            storeTyped.dispatch(apiSprintBacklogItemSetStatus(sprintId, backlogItemId, BacklogItemStatus.NotStarted));
             break;
         }
         case ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS: {

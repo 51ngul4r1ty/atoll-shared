@@ -23,7 +23,8 @@ export const getBacklogItemElts = (
     onDetailClicked: { (backlogItemId: string) },
     onMoveItemToBacklogClicked: { (itemId: string) },
     onBacklogItemDoneClicked: { (itemId: string) },
-    onBacklogItemInProgressClicked: { (itemId: string) }
+    onBacklogItemInProgressClicked: { (itemId: string) },
+    onBacklogItemNotStartedClicked: { (itemId: string) }
 ) => {
     const eventHandlers: ItemMenuEventHandlers = {
         handleEvent: (eventName: string, itemId: string) => {
@@ -33,6 +34,8 @@ export const getBacklogItemElts = (
                 onBacklogItemDoneClicked(itemId);
             } else if (eventName === "onBacklogItemInProgressClicked") {
                 onBacklogItemInProgressClicked(itemId);
+            } else if (eventName === "onBacklogItemNotStartedClicked") {
+                onBacklogItemNotStartedClicked(itemId);
             } else {
                 throw Error(`${eventName} is not handled`);
             }

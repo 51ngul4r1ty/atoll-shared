@@ -23,6 +23,7 @@ import {
     sprintBacklogItemDetailClicked,
     sprintBacklogItemDoneClicked,
     sprintBacklogItemInProgressClicked,
+    sprintBacklogItemNotStartedClicked,
     sprintMoveItemToBacklogClicked
 } from "./actions/sprintBacklogActions";
 
@@ -86,7 +87,9 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
         onBacklogItemDoneClicked: (sprintId: string, backlogItemId: string) =>
             dispatch(sprintBacklogItemDoneClicked(sprintId, backlogItemId)),
         onBacklogItemInProgressClicked: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintBacklogItemInProgressClicked(sprintId, backlogItemId))
+            dispatch(sprintBacklogItemInProgressClicked(sprintId, backlogItemId)),
+        onBacklogItemNotStartedClicked: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemNotStartedClicked(sprintId, backlogItemId))
     };
 };
 
