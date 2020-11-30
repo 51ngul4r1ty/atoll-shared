@@ -21,6 +21,7 @@ import {
     RefreshIcon,
     StatusDoneIcon,
     StatusInProgressIcon,
+    StatusNotStartedIcon,
     StoryIcon,
     TrashIcon,
     VerticalCollapseIcon,
@@ -40,6 +41,7 @@ const invertibleIcons = {
     IssueIcon,
     StatusDoneIcon,
     StatusInProgressIcon,
+    StatusNotStartedIcon,
     StoryIcon,
     TrashIcon,
     VerticalCollapseIcon,
@@ -58,6 +60,7 @@ const icons = {
     RefreshIcon,
     StatusDoneIcon,
     StatusInProgressIcon,
+    StatusNotStartedIcon,
     VerticalCollapseIcon,
     VerticalExpandIcon
 };
@@ -77,6 +80,7 @@ const iconNames = [
     "IssueIcon",
     "StatusDoneIcon",
     "StatusInProgressIcon",
+    "StatusNotStartedIcon",
     "StoryIcon",
     "TrashIcon",
     "VerticalCollapseIcon",
