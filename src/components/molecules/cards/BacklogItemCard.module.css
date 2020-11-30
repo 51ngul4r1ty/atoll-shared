@@ -12,7 +12,8 @@
 
 .backlogItemCardOuter:not(.mobile) .backlogItemDetailButton {
     margin-left: -0.5rem;
-    min-width: 1.6rem;
+    min-width: 1.7rem;
+    max-width: 1.7rem;
     order: 4;
 }
 
@@ -293,7 +294,7 @@
 
 .status {
     padding: 0;
-    min-width: 1.7rem;
+    min-width: 2rem;
     max-width: 2rem;
     order: 3;
     overflow: hidden;
