@@ -310,14 +310,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
 
         if (isDraggingRef.current) {
             if (props.onReorderBacklogItems) {
-                // FIXME: Improve this comment below... it doesn't explain this properly.
-                // NOTE: We always drag the item to a position before the "drag over item"
-                if (
-                    !isOverSameCard(
-                        dragOverItemIdRef.current,
-                        dragItemIdRef.current
-                    ) /* && dragItemIdRef.current !== dragOverItemIdToUse */
-                ) {
+                if (!isOverSameCard(dragOverItemIdRef.current, dragItemIdRef.current)) {
                     props.onReorderBacklogItems(dragItemIdRef.current, getTrueItemId(dragOverItemIdRef.current));
                 }
             }
