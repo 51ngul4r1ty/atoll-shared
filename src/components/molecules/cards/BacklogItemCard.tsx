@@ -172,7 +172,9 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
         />
     ) : null;
     const mobileCheckboxElts = props.renderMobile ? <div className={css.mobileCheckbox}>{checkboxToSelect}</div> : null;
-    const styleToUse: React.CSSProperties = props.offsetTop && { top: props.offsetTop, position: "absolute", zIndex: 10 };
+    const styleToUse: React.CSSProperties = props.offsetTop
+        ? { top: props.offsetTop, position: "absolute", zIndex: 10 }
+        : undefined;
     let statusIcon: any = null;
     switch (props.status) {
         case BacklogItemStatus.InProgress: {
