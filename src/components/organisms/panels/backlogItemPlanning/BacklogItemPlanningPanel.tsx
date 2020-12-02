@@ -270,15 +270,48 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
         return true;
     };
 
+    const isLastCard = (id: string) => id === lastItemId;
+
+    const getPrevIdForItem = (id: string) => {
+        let idx = 0;
+        let lastId: string = null;
+        let result: string = null;
+        while (idx < props.allItems.length && !result) {
+            const item = props.allItems[idx];
+            if (item.id === id) {
+                result = lastId;
+            }
+            lastId = item.id;
+            idx++;
+        }
+        return result;
+    };
+
+    const draggingAboveTopItem = (dragOverItemId: string, dragItemId: string) => dragOverItemId === dragItemId;
+
+    const draggingBelowBottomItem = (dragOverItemId: string, dragItemId: string) =>
+        dragOverItemId === BELOW_LAST_CARD_ID && isLastCard(dragItemId);
+
+    const draggingOverSameMiddleItem = (dragOverItemId: string, dragItemId: string) =>
+        dragItemId === getPrevIdForItem(dragOverItemId);
+
+    const isOverSameCard = (overItemId: string, itemId: string) => {
+        return (
+            draggingBelowBottomItem(overItemId, itemId) ||
+            draggingAboveTopItem(overItemId, itemId) ||
+            draggingOverSameMiddleItem(overItemId, itemId)
+        );
+    };
+
+    const getTrueItemId = (id: string) => (id === BELOW_LAST_CARD_ID ? null : id);
+
     const onMouseUp = (e: React.BaseSyntheticEvent<HTMLDivElement>) => {
         logger.info(`onMouseUp`, [loggingTags.DRAG_BACKLOGITEM]);
 
         if (isDraggingRef.current) {
             if (props.onReorderBacklogItems) {
-                const dragOverItemIdToUse = dragOverItemIdRef.current === BELOW_LAST_CARD_ID ? null : dragOverItemIdRef.current;
-                // NOTE: We always drag the item to a position before the "drag over item"
-                if (dragItemIdRef.current !== dragOverItemIdToUse) {
-                    props.onReorderBacklogItems(dragItemIdRef.current, dragOverItemIdToUse);
+                if (!isOverSameCard(dragOverItemIdRef.current, dragItemIdRef.current)) {
+                    props.onReorderBacklogItems(dragItemIdRef.current, getTrueItemId(dragOverItemIdRef.current));
                 }
             }
             setIsDragging(false);
@@ -366,6 +399,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
     let renderElts = [];
     let suppressTopPadding = true;
     let lastItemWasUnsaved = false;
+    let lastItemId: string = null;
     props.allItems.forEach((item) => {
         const isDragItem = isDraggingRef.current && dragItemIdRef.current === item.id;
         const isDragOverItem = isDraggingRef.current && dragOverItemIdRef.current === item.id;
@@ -465,6 +499,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
         afterPushedItem = item.source === Source.Pushed;
         lastItemWasUnsaved = item.source === Source.Added && !item.saved;
         suppressTopPadding = false;
+        lastItemId = item.id;
     });
     if (!inLoadedSection) {
         const suppressButtonSpacing = !!props.renderMobile;
