@@ -84,6 +84,18 @@ export const titleForItemId = (id: string): string | undefined => {
     return abbreviatedId === id ? undefined : id;
 };
 
+export const fullStoryText = (rolePhrase: string, storyPhrase: string, reasonPhrase: string) => {
+    if (!rolePhrase && !reasonPhrase) {
+        return storyPhrase;
+    } else if (!reasonPhrase) {
+        return `${rolePhrase}, ${storyPhrase}`;
+    } else if (!rolePhrase) {
+        return `${storyPhrase}, ${reasonPhrase}`;
+    } else {
+        return `${rolePhrase}, ${storyPhrase}, ${reasonPhrase}`;
+    }
+};
+
 /* exported interfaces */
 
 // TODO: See if this is defined elsewhere:
@@ -116,7 +128,9 @@ export interface BacklogItemCardStateProps {
     itemType: BacklogItemTypeEnum;
     marginBelowItem?: boolean;
     renderMobile?: boolean;
+    roleText: string;
     titleText: string;
+    reasonText: string;
     offsetTop?: number;
     width?: any;
     showDetailMenu: boolean;
@@ -209,7 +223,12 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
                 {!props.renderMobile ? checkboxToSelect : null}
                 <div className={css.backlogItemText}>
                     <div className={css.backlogItemTextContent}>
-                        <div className={css.backlogItemTextTitleText}>{props.titleText}</div>
+                        <div
+                            className={css.backlogItemTextTitleText}
+                            title={fullStoryText(props.roleText, props.titleText, props.reasonText)}
+                        >
+                            {props.titleText}
+                        </div>
                         {props.renderMobile ? statusIconElts : null}
                         {props.renderMobile ? editDetailButton : null}
                     </div>

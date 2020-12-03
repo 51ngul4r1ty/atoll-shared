@@ -83,7 +83,9 @@ export const buildDragBacklogItemElt = (
             internalId={`${item.id}`}
             itemId={calcItemId(item.externalId, item.friendlyId)}
             itemType={item.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
+            roleText={item.rolePhrase}
             titleText={item.storyPhrase}
+            reasonText={item.reasonPhrase}
             isDraggable={editMode === EditMode.Edit}
             hasDetails={editMode === EditMode.Edit}
             isSelectable={editMode === EditMode.Edit}
@@ -461,7 +463,9 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         internalId={buildSpacerInternalId(item.id)}
                         itemId={null}
                         itemType={BacklogItemTypeEnum.None}
+                        roleText={null}
                         titleText={null}
+                        reasonText={null}
                         isDraggable={props.editMode === EditMode.Edit}
                         hasDetails={props.editMode === EditMode.Edit}
                         isSelectable={props.editMode === EditMode.Edit}

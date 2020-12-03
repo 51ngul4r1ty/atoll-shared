@@ -54,7 +54,9 @@ export const getBacklogItemElts = (
                 internalId={`${backlogItem.id}`}
                 itemId={calcItemId(backlogItem.externalId, backlogItem.friendlyId)}
                 itemType={backlogItem.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
+                roleText={backlogItem.rolePhrase}
                 titleText={backlogItem.storyPhrase}
+                reasonText={backlogItem.reasonPhrase}
                 isDraggable={false}
                 hasDetails={editMode === EditMode.Edit}
                 renderMobile={renderMobile}
