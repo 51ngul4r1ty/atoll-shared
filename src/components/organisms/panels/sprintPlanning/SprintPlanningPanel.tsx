@@ -33,7 +33,7 @@ import {
     updateSprint,
     updateSprintFields
 } from "../../../../actions/sprintActions";
-import { apiDeleteSprint } from "../../../../actions/apiSprints";
+import { apiArchiveSprint, apiDeleteSprint } from "../../../../actions/apiSprints";
 
 // style
 import css from "./SprintPlanningPanel.module.css";
@@ -131,6 +131,8 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         // dispatch(editBacklogItem(props.id));
                     } else if (eventName === "onRemoveItemClicked") {
                         dispatch(apiDeleteSprint(itemId));
+                    } else if (eventName === "onArchiveItemClicked") {
+                        dispatch(apiArchiveSprint(itemId));
                     } else {
                         throw Error(`${eventName} is not handled`);
                     }

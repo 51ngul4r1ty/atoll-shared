@@ -75,6 +75,10 @@ export const API_POST_SPRINT_FAILURE = buildFailureActionName(Names.POST_SPRINT)
 export const API_DELETE_SPRINT_REQUEST = buildRequestActionName(Names.DELETE_SPRINT);
 export const API_DELETE_SPRINT_SUCCESS = buildSuccessActionName(Names.DELETE_SPRINT);
 export const API_DELETE_SPRINT_FAILURE = buildFailureActionName(Names.DELETE_SPRINT);
+
+export const API_ARCHIVE_SPRINT_REQUEST = buildRequestActionName(Names.ARCHIVE_SPRINT);
+export const API_ARCHIVE_SPRINT_SUCCESS = buildSuccessActionName(Names.ARCHIVE_SPRINT);
+export const API_ARCHIVE_SPRINT_FAILURE = buildFailureActionName(Names.ARCHIVE_SPRINT);
 // #endregion
 
 // #region Sprint Backlog Resource

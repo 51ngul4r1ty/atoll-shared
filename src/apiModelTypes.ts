@@ -71,6 +71,7 @@ export interface ApiSprint extends StandardNamedItem {
     startdate: ISODateString;
     usedSplitPoints: number | null;
     velocityPoints: number | null;
+    archived: boolean;
 }
 
 export interface ApiSprintBacklogItem extends BaseItem {
