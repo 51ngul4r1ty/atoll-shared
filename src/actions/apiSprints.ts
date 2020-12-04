@@ -35,7 +35,7 @@ export interface ApiGetSprintsSuccessAction {
 export const apiGetSprints = (projectId: string): NoDataApiAction => ({
     type: API,
     payload: {
-        endpoint: `${getApiBaseUrl()}api/v1/sprints?projectId=${projectId}`,
+        endpoint: `${getApiBaseUrl()}api/v1/sprints?projectId=${projectId}&archived=false`,
         method: "GET",
         headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
         types: buildActionTypes(ApiActionNames.GET_SPRINTS)
@@ -103,6 +103,48 @@ export const apiDeleteSprint = (sprintId: string): ApiDeleteSprintAction => {
             method: "DELETE",
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
             types: buildActionTypes(ApiActionNames.DELETE_SPRINT)
+        },
+        meta: {
+            originalActionArgs: {
+                sprintId
+            }
+        }
+    };
+};
+
+export interface ApiArchiveSprintSuccessResponse {
+    status: number;
+    data: {
+        item: Sprint;
+    };
+}
+export type ApiArchiveSprintSuccessActionPayload = ApiActionSuccessPayload<ApiArchiveSprintSuccessResponse>;
+export interface ApiArchiveSprintMetaOrginalActionArgs {
+    sprintId: string;
+}
+export interface ApiArchiveSprintMeta {
+    originalActionArgs: ApiArchiveSprintMetaOrginalActionArgs;
+}
+export interface ApiArchiveSprintSuccessAction {
+    type: typeof ActionTypes.API_DELETE_SPRINT_SUCCESS;
+    payload: ApiArchiveSprintSuccessActionPayload;
+    meta: ApiActionMetaDataRequestMeta<{}, undefined, ApiArchiveSprintMetaOrginalActionArgs>;
+}
+export interface ApiArchiveSprintData {
+    archived: boolean;
+}
+export type ApiArchiveSprintAction = ApiAction<ApiArchiveSprintData, ApiArchiveSprintMeta>;
+export const apiArchiveSprint = (sprintId: string): ApiArchiveSprintAction => {
+    return {
+        type: API,
+        payload: {
+            endpoint: `${getApiBaseUrl()}api/v1/sprints/${sprintId}`,
+            method: "PATCH",
+            headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+            types: buildActionTypes(ApiActionNames.ARCHIVE_SPRINT),
+            data: {
+                archived: true
+            }
         },
         meta: {
             originalActionArgs: {

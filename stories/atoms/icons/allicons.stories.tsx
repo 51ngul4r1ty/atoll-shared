@@ -9,6 +9,7 @@ import { storiesOf } from "@storybook/react";
 import {
     AddIcon,
     AppIcon,
+    ArchiveIcon,
     CancelIcon,
     CheckboxCheckedIcon,
     CheckboxUncheckedIcon,
@@ -34,6 +35,7 @@ import "../../storybook";
 
 const invertibleIcons = {
     AppIcon,
+    ArchiveIcon,
     CheckboxCheckedIcon,
     CheckboxUncheckedIcon,
     DragIcon,
@@ -51,6 +53,7 @@ const invertibleIcons = {
 const icons = {
     ...invertibleIcons,
     AddIcon,
+    ArchiveIcon,
     CancelIcon,
     CheckboxCheckedIcon,
     CheckboxUncheckedIcon,
@@ -68,6 +71,7 @@ const icons = {
 const iconNames = [
     "AddIcon",
     "AppIcon",
+    "ArchiveIcon",
     "CancelIcon",
     "CheckboxCheckedIcon",
     "CheckboxUncheckedIcon",

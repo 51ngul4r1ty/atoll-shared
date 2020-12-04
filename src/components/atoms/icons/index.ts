@@ -1,5 +1,6 @@
 export * from "./AddIcon";
 export * from "./AppIcon";
+export * from "./ArchiveIcon";
 export * from "./CancelIcon";
 export * from "./CheckboxCheckedIcon";
 export * from "./CheckboxUncheckedIcon";

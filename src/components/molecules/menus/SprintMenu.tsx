@@ -4,6 +4,7 @@ import { WithTranslation, withTranslation } from "react-i18next";
 
 // components
 import { CaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
+import { ArchiveButton } from "../buttons/ArchiveButton";
 import { RemoveButton } from "../buttons/RemoveButton";
 
 export interface BacklogItemMenuStateProps {
@@ -12,6 +13,7 @@ export interface BacklogItemMenuStateProps {
 }
 
 export interface BacklogItemMenuDispatchProps {
+    onArchiveItemClicked?: { (): void };
     onEditItemClicked?: { (): void };
     onRemoveItemClicked?: { (): void };
 }
@@ -29,6 +31,14 @@ export const InnerSprintMenu: React.FC<InnerSprintMenuProps> = (props) => (
             onClick={() => {
                 if (props.onRemoveItemClicked) {
                     props.onRemoveItemClicked();
+                }
+            }}
+        />
+        <ArchiveButton
+            suppressSpacing
+            onClick={() => {
+                if (props.onArchiveItemClicked) {
+                    props.onArchiveItemClicked();
                 }
             }}
         />

@@ -16,7 +16,7 @@ import {
     UpdateSprintFieldsAction
 } from "../actions/sprintActions";
 import { NewSprintPosition } from "../actions/sprintActions";
-import { ApiDeleteSprintSuccessAction, ApiPostSprintSuccessAction } from "../actions/apiSprints";
+import { ApiArchiveSprintSuccessAction, ApiDeleteSprintSuccessAction, ApiPostSprintSuccessAction } from "../actions/apiSprints";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
@@ -286,6 +286,12 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             }
             case ActionTypes.API_DELETE_SPRINT_SUCCESS: {
                 const actionTyped = action as ApiDeleteSprintSuccessAction;
+                const id = actionTyped.meta.originalActionArgs.sprintId;
+                removeSprint(draft, id);
+                return;
+            }
+            case ActionTypes.API_ARCHIVE_SPRINT_SUCCESS: {
+                const actionTyped = action as ApiArchiveSprintSuccessAction;
                 const id = actionTyped.meta.originalActionArgs.sprintId;
                 removeSprint(draft, id);
                 return;
