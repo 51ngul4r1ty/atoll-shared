@@ -32,10 +32,14 @@ export interface ApiGetSprintsSuccessAction {
     payload: ApiActionSuccessPayloadForCollection<ApiSprint>;
     meta: ApiActionMetaDataRequestMeta<{}>;
 }
-export const apiGetSprints = (projectId: string): NoDataApiAction => ({
+export const buildQueryStringForGetSprints = (projectId: string, includeArchived: boolean) => {
+    const baseQueryString = `?projectId=${projectId}`;
+    return baseQueryString + (includeArchived ? "" : `&archived=${includeArchived}`);
+};
+export const apiGetSprints = (projectId: string, includeArchived: boolean): NoDataApiAction => ({
     type: API,
     payload: {
-        endpoint: `${getApiBaseUrl()}api/v1/sprints?projectId=${projectId}&archived=false`,
+        endpoint: `${getApiBaseUrl()}api/v1/sprints${buildQueryStringForGetSprints(projectId, includeArchived)}`,
         method: "GET",
         headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
         types: buildActionTypes(ApiActionNames.GET_SPRINTS)

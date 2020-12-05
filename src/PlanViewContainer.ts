@@ -19,6 +19,7 @@ import {
 } from "./actions/sprintActions";
 import { apiBffViewsPlan } from "./actions/apiBffViewsPlan";
 import {
+    changeSprintPlanningArchivedFilter,
     moveSelectedBacklogItemsToSprintUsingApi,
     sprintBacklogItemDetailClicked,
     sprintBacklogItemDoneClicked,
@@ -42,21 +43,23 @@ import {
     getSelectedBacklogItemCount
 } from "./selectors/backlogItemSelectors";
 import { getAppEditMode, getElectronClient } from "./selectors/appSelectors";
-import { getOpenedDetailMenuInfo } from "./selectors/sprintBacklogSelectors";
+import { getIncludeArchivedSprints, getOpenedDetailMenuInfo } from "./selectors/sprintBacklogSelectors";
 
 const mapStateToProps = (state: StateTree): PlanViewStateProps => {
     const allItems = getAllBacklogItems(state);
-    const sprints = getPlanViewSprints(state);
+    const includeArchivedSprints = getIncludeArchivedSprints(state);
+    const sprints = getPlanViewSprints(state, includeArchivedSprints);
     let result: PlanViewStateProps = {
         allItems,
         editMode: getAppEditMode(state),
-        openedDetailMenuSprintId: getOpenedDetailMenuSprintId(state),
+        electronClient: getElectronClient(state),
+        includeArchivedSprints,
         openedDetailMenuBacklogItemId: getOpenedDetailMenuBacklogItemId(state),
         openedDetailMenuSprintBacklogInfo: getOpenedDetailMenuInfo(state),
-        electronClient: getElectronClient(state),
+        openedDetailMenuSprintId: getOpenedDetailMenuSprintId(state),
+        projectId: getCurrentProjectId(state),
         selectedProductBacklogItemCount: getSelectedBacklogItemCount(state),
         showWindowTitleBar: !isPlatformWindows(),
-        projectId: getCurrentProjectId(state),
         sprints
     };
     return result;
@@ -70,6 +73,9 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
         onAddNewBacklogItemForm: (type: BacklogItemType) => dispatch(addNewBacklogItemForm(type)),
         onAddBacklogItemToSprint: (sprintId: string) => dispatch(moveSelectedBacklogItemsToSprintUsingApi(sprintId)),
         onAddNewSprintForm: (position: NewSprintPosition) => dispatch(addNewSprintForm(position)),
+        onArchivedFilterChange: (checked: boolean) => {
+            dispatch(changeSprintPlanningArchivedFilter(checked));
+        },
         onReorderBacklogItems: (sourceItemId: string, targetItemId: string) =>
             dispatch(reorderBacklogItems(sourceItemId, targetItemId)),
         onExpandCollapse: (sprintId: string, expand: boolean) => {

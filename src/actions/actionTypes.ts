@@ -172,3 +172,5 @@ export const SPRINT_BACKLOG_ITEM_NOT_STARTED_CLICKED = "app/status-not-started:s
 
 export const ADD_PRODUCT_BACKLOG_ITEM = "app/add:product-backlog-item";
 export const REMOVE_SPRINT_BACKLOG_ITEM = "app/remove:sprint-backlog-item";
+
+export const SET_SPRINT_PLANNING_ARCHIVED_FILTER = "app/set-filter:sprint-planning-archived";

@@ -10,6 +10,7 @@ import { ApiGetSprintBacklogItemsSuccessAction, ApiSprintBacklogItemSetStatusSuc
 import { BacklogItem, BacklogItemStatus } from "../types/backlogItemTypes";
 import { BacklogItemWithSource } from "./backlogItems/backlogItemsReducerTypes";
 import {
+    ChangeSprintPlanningArchivedFilterAction,
     MoveBacklogItemToSprintAction,
     RemoveSprintBacklogItemAction,
     ToggleSprintBacklogItemDetailAction
@@ -29,12 +30,14 @@ export interface SprintBacklogSprint {
 }
 
 export type SprintBacklogState = Readonly<{
-    sprints: { [sprintId: string]: SprintBacklogSprint };
+    includeArchivedSprints: boolean;
     openedDetailMenuBacklogItemId: string | null;
     openedDetailMenuSprintId: string | null;
+    sprints: { [sprintId: string]: SprintBacklogSprint };
 }>;
 
 export const sprintBacklogReducerInitialState = Object.freeze<SprintBacklogState>({
+    includeArchivedSprints: false,
     sprints: {},
     openedDetailMenuBacklogItemId: null,
     openedDetailMenuSprintId: null
@@ -152,6 +155,13 @@ export const sprintBacklogReducer = (
             }
             case ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_FAILURE: {
                 // TODO: Handle failure - it may not be here though, probably needs to be at app level for message?
+                return;
+            }
+            case ActionTypes.SET_SPRINT_PLANNING_ARCHIVED_FILTER: {
+                const actionTyped = action as ChangeSprintPlanningArchivedFilterAction;
+                if (draft.includeArchivedSprints !== actionTyped.payload.includeArchived) {
+                    draft.includeArchivedSprints = actionTyped.payload.includeArchived;
+                }
                 return;
             }
             case ActionTypes.APP_CLICK: {

@@ -37,3 +37,8 @@
 
 .actionButtonPanel {
 }
+
+.includeArchivedCheckbox {
+    dispay: flex;
+    alignitems: center;
+}

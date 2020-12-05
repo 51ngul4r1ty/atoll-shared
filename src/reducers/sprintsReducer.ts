@@ -16,7 +16,12 @@ import {
     UpdateSprintFieldsAction
 } from "../actions/sprintActions";
 import { NewSprintPosition } from "../actions/sprintActions";
-import { ApiArchiveSprintSuccessAction, ApiDeleteSprintSuccessAction, ApiPostSprintSuccessAction } from "../actions/apiSprints";
+import {
+    ApiArchiveSprintSuccessAction,
+    ApiDeleteSprintSuccessAction,
+    ApiGetSprintsSuccessAction,
+    ApiPostSprintSuccessAction
+} from "../actions/apiSprints";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
@@ -36,17 +41,18 @@ import {
 import { AppClickAction } from "../actions/appActions";
 
 export interface Sprint extends StandardModelItem {
-    name: string;
-    startDate: Date;
-    finishDate: Date;
-    projectId: string;
-    plannedPoints: number | null;
     acceptedPoints: number | null;
-    velocityPoints: number | null;
-    usedSplitPoints: number | null;
-    remainingSplitPoints: number | null;
+    archived: boolean;
     backlogItemsLoaded: boolean;
     expanded: boolean;
+    finishDate: Date;
+    name: string;
+    plannedPoints: number | null;
+    projectId: string;
+    remainingSplitPoints: number | null;
+    startDate: Date;
+    usedSplitPoints: number | null;
+    velocityPoints: number | null;
 }
 
 export interface EditableSprint extends Sprint {
@@ -59,22 +65,22 @@ export interface SaveableSprint extends EditableSprint {
 }
 
 export interface SprintWithSource extends SaveableSprint {
-    source: Source;
     pushState?: PushState;
+    source: Source;
 }
 
 export type SprintsState = Readonly<{
-    openedDetailMenuSprintId: string | null;
     addedItems: SaveableSprint[];
     allItems: SprintWithSource[];
     items: Sprint[];
+    openedDetailMenuSprintId: string | null;
 }>;
 
 export const sprintsReducerInitialState = Object.freeze<SprintsState>({
-    openedDetailMenuSprintId: null,
     addedItems: [],
     allItems: [],
-    items: []
+    items: [],
+    openedDetailMenuSprintId: null
 });
 
 export const rebuildAllItems = (draft: Draft<SprintsState>) => {
@@ -92,20 +98,21 @@ export const rebuildAllItems = (draft: Draft<SprintsState>) => {
 };
 
 export const mapApiItemToSprint = (apiItem: ApiSprint): Sprint => ({
+    acceptedPoints: apiItem.acceptedPoints,
+    archived: apiItem.archived,
+    backlogItemsLoaded: false,
+    createdAt: apiItem.createdAt,
+    expanded: false, // TODO: Add smart logic for this
+    finishDate: isoDateStringToDate(apiItem.finishdate),
     id: apiItem.id,
     name: apiItem.name,
-    startDate: isoDateStringToDate(apiItem.startdate),
-    finishDate: isoDateStringToDate(apiItem.finishdate),
-    createdAt: apiItem.createdAt,
-    updatedAt: apiItem.updatedAt,
-    projectId: apiItem.projectId,
     plannedPoints: apiItem.plannedPoints,
-    acceptedPoints: apiItem.acceptedPoints,
-    velocityPoints: apiItem.velocityPoints,
-    usedSplitPoints: apiItem.usedSplitPoints,
+    projectId: apiItem.projectId,
     remainingSplitPoints: apiItem.remainingSplitPoints,
-    backlogItemsLoaded: false,
-    expanded: false // TODO: Add smart logic for this
+    startDate: isoDateStringToDate(apiItem.startdate),
+    updatedAt: apiItem.updatedAt,
+    usedSplitPoints: apiItem.usedSplitPoints,
+    velocityPoints: apiItem.velocityPoints
 });
 
 export const mapApiItemsToSprints = (apiItems: ApiSprint[]): Sprint[] => {
@@ -188,6 +195,13 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 const actionTyped = action as ApiGetBffViewsPlanSuccessAction;
                 const { payload } = actionTyped;
                 draft.items = mapApiItemsToSprints(payload.response.data.sprints);
+                rebuildAllItems(draft);
+                return;
+            }
+            case ActionTypes.API_GET_SPRINTS_SUCCESS: {
+                const actionTyped = action as ApiGetSprintsSuccessAction;
+                const { payload } = actionTyped;
+                draft.items = mapApiItemsToSprints(payload.response.data.items);
                 rebuildAllItems(draft);
                 return;
             }
