@@ -32,10 +32,14 @@ export interface ApiGetSprintsSuccessAction {
     payload: ApiActionSuccessPayloadForCollection<ApiSprint>;
     meta: ApiActionMetaDataRequestMeta<{}>;
 }
-export const apiGetSprints = (projectId: string): NoDataApiAction => ({
+export const buildQueryStringForGetSprints = (projectId: string, includeArchived: boolean) => {
+    const baseQueryString = `?projectId=${projectId}`;
+    return baseQueryString + (includeArchived ? "" : `&archived=${includeArchived}`);
+};
+export const apiGetSprints = (projectId: string, includeArchived: boolean): NoDataApiAction => ({
     type: API,
     payload: {
-        endpoint: `${getApiBaseUrl()}api/v1/sprints?projectId=${projectId}&archived=false`,
+        endpoint: `${getApiBaseUrl()}api/v1/sprints${buildQueryStringForGetSprints(projectId, includeArchived)}`,
         method: "GET",
         headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
         types: buildActionTypes(ApiActionNames.GET_SPRINTS)
@@ -112,44 +116,53 @@ export const apiDeleteSprint = (sprintId: string): ApiDeleteSprintAction => {
     };
 };
 
-export interface ApiArchiveSprintSuccessResponse {
+export interface ApiSetSprintArchiveFlagSuccessResponse {
     status: number;
     data: {
         item: Sprint;
     };
 }
-export type ApiArchiveSprintSuccessActionPayload = ApiActionSuccessPayload<ApiArchiveSprintSuccessResponse>;
-export interface ApiArchiveSprintMetaOrginalActionArgs {
+export type ApiSetSprintArchiveFlagSuccessActionPayload = ApiActionSuccessPayload<ApiSetSprintArchiveFlagSuccessResponse>;
+export interface ApiSetSprintArchiveFlagMetaOrginalActionArgs {
     sprintId: string;
-}
-export interface ApiArchiveSprintMeta {
-    originalActionArgs: ApiArchiveSprintMetaOrginalActionArgs;
-}
-export interface ApiArchiveSprintSuccessAction {
-    type: typeof ActionTypes.API_DELETE_SPRINT_SUCCESS;
-    payload: ApiArchiveSprintSuccessActionPayload;
-    meta: ApiActionMetaDataRequestMeta<{}, undefined, ApiArchiveSprintMetaOrginalActionArgs>;
-}
-export interface ApiArchiveSprintData {
     archived: boolean;
 }
-export type ApiArchiveSprintAction = ApiAction<ApiArchiveSprintData, ApiArchiveSprintMeta>;
-export const apiArchiveSprint = (sprintId: string): ApiArchiveSprintAction => {
+export interface ApiSprintSetArchiveFlagMeta {
+    originalActionArgs: ApiSetSprintArchiveFlagMetaOrginalActionArgs;
+}
+export interface ApiSetSprintArchiveFlagSuccessAction {
+    type: typeof ActionTypes.API_SET_SPRINT_ARCHIVE_FLAG_SUCCESS;
+    payload: ApiSetSprintArchiveFlagSuccessActionPayload;
+    meta: ApiActionMetaDataRequestMeta<{}, undefined, ApiSetSprintArchiveFlagMetaOrginalActionArgs>;
+}
+export interface ApiSetSprintArchiveFlagData {
+    archived: boolean;
+}
+export type ApiSetSprintArchiveFlagAction = ApiAction<ApiSetSprintArchiveFlagData, ApiSprintSetArchiveFlagMeta>;
+export const setSprintArchiveFlag = (sprintId: string, archived: boolean): ApiSetSprintArchiveFlagAction => {
     return {
         type: API,
         payload: {
             endpoint: `${getApiBaseUrl()}api/v1/sprints/${sprintId}`,
             method: "PATCH",
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
-            types: buildActionTypes(ApiActionNames.ARCHIVE_SPRINT),
+            types: buildActionTypes(ApiActionNames.SET_SPRINT_ARCHIVE_FLAG),
             data: {
-                archived: true
+                archived
             }
         },
         meta: {
             originalActionArgs: {
-                sprintId
+                sprintId,
+                archived
             }
         }
     };
+};
+export const apiArchiveSprint = (sprintId: string): ApiSetSprintArchiveFlagAction => {
+    return setSprintArchiveFlag(sprintId, true);
+};
+
+export const apiUnarchiveSprint = (sprintId: string): ApiSetSprintArchiveFlagAction => {
+    return setSprintArchiveFlag(sprintId, false);
 };

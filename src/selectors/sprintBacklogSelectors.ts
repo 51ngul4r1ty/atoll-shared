@@ -1,11 +1,17 @@
+// externals
+import { createSelector } from "reselect";
+
 // interfaces/types
 import { StateTree } from "../reducers/rootReducer";
 
 // reducers
 import {
     getSprintBacklogItemById as getSprintBacklogItemByIdFromReducer,
-    SprintBacklogItem
+    SprintBacklogItem,
+    SprintBacklogState
 } from "../reducers/sprintBacklogReducer";
+
+export const sprintBacklog = (state: { sprintBacklog: SprintBacklogState }): SprintBacklogState => state.sprintBacklog;
 
 export const getBacklogItemsForSprint = (state: StateTree, sprintId: string): SprintBacklogItem[] | null => {
     const sprintData = state.sprintBacklog.sprints[sprintId];
@@ -28,3 +34,8 @@ export const getOpenedDetailMenuInfo = (state: StateTree): OpenedDetailMenuInfo 
 export const getSprintBacklogItemById = (state: StateTree, sprintId: string, backlogItemId: string) => {
     return getSprintBacklogItemByIdFromReducer(state.sprintBacklog, sprintId, backlogItemId);
 };
+
+export const getIncludeArchivedSprints = createSelector(
+    [sprintBacklog],
+    (sprintBacklog: SprintBacklogState): boolean => sprintBacklog.includeArchivedSprints
+);

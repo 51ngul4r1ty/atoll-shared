@@ -69,6 +69,7 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
 
             const newItem: SaveableSprint = {
                 id: null,
+                archived: false,
                 name: "New Sprint", // TODO: Add story to configure a default formatting rule?
                 startDate,
                 finishDate,

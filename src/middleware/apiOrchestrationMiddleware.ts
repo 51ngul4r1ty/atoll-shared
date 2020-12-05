@@ -44,6 +44,7 @@ import {
     apiSprintBacklogItemSetStatus
 } from "../actions/apiSprintBacklog";
 import {
+    ChangeSprintPlanningArchivedFilterAction,
     MoveSelectedBacklogItemsToSprintUsingApiAction,
     removeSprintBacklogItem,
     SprintBacklogItemDoneClickedAction,
@@ -51,7 +52,7 @@ import {
     SprintBacklogItemNotStartedClickedAction,
     SprintMoveItemToBacklogClickedAction
 } from "../actions/sprintBacklogActions";
-import { apiPostSprint } from "../actions/apiSprints";
+import { apiGetSprints, apiPostSprint } from "../actions/apiSprints";
 
 // state
 import { StateTree } from "../reducers/rootReducer";
@@ -220,6 +221,14 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
                 model.projectId = getCurrentProjectId(state);
                 storeTyped.dispatch(apiPostSprint(model, { instanceId }));
             }
+            break;
+        }
+        case ActionTypes.SET_SPRINT_PLANNING_ARCHIVED_FILTER: {
+            const actionTyped = action as ChangeSprintPlanningArchivedFilterAction;
+            const state = storeTyped.getState();
+            const projectId = getCurrentProjectId(state);
+            const includeArchived = actionTyped.payload.includeArchived;
+            storeTyped.dispatch(apiGetSprints(projectId, includeArchived));
             break;
         }
         case ActionTypes.UPDATE_SPRINT: {

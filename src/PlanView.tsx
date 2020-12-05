@@ -33,6 +33,7 @@ export interface PlanViewStateProps {
     allItems: BacklogItemWithSource[];
     editMode: EditMode;
     electronClient: boolean;
+    includeArchivedSprints: boolean;
     openedDetailMenuSprintId: string | null;
     openedDetailMenuBacklogItemId: string | null;
     openedDetailMenuSprintBacklogInfo: OpenedDetailMenuInfo;
@@ -46,6 +47,7 @@ export interface PlanViewDispatchProps {
     onAddBacklogItemToSprint: { (sprintId: string): void };
     onAddNewBacklogItemForm: { (type: BacklogItemType): void };
     onAddNewSprintForm: { (position: NewSprintPosition): void };
+    onArchivedFilterChange: { (checked: boolean): void };
     onExpandCollapse: { (sprintId: string, expand: boolean): void };
     onItemDetailClicked: { (sprintId: string, backlogItemId: string): void };
     onSprintDetailClicked: { (sprintId: string): void };
@@ -93,15 +95,16 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     <SprintPlanningPanel
                         className={css.sprints}
                         editMode={this.props.editMode}
+                        includeArchived={this.props.includeArchivedSprints}
                         sprints={this.props.sprints}
                         showDetailMenuToLeft
                         renderMobile={this.context.state?.isMobile}
                         selectedProductBacklogItemCount={this.props.selectedProductBacklogItemCount}
                         openedDetailMenuSprintId={this.props.openedDetailMenuSprintId}
                         openedDetailMenuInfo={this.props.openedDetailMenuSprintBacklogInfo}
-                        onExpandCollapse={(sprintId: string, expand: boolean) => {
-                            if (this.props.onExpandCollapse) {
-                                this.props.onExpandCollapse(sprintId, expand);
+                        onAddBacklogItem={(sprintId: string) => {
+                            if (this.props.onAddBacklogItemToSprint) {
+                                this.props.onAddBacklogItemToSprint(sprintId);
                             }
                         }}
                         onAddNewSprintBefore={() => {
@@ -114,24 +117,9 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                                 this.props.onAddNewSprintForm(NewSprintPosition.After);
                             }
                         }}
-                        onAddBacklogItem={(sprintId: string) => {
-                            if (this.props.onAddBacklogItemToSprint) {
-                                this.props.onAddBacklogItemToSprint(sprintId);
-                            }
-                        }}
-                        onSprintDetailClicked={(sprintId: string) => {
-                            if (this.props.onSprintDetailClicked) {
-                                this.props.onSprintDetailClicked(sprintId);
-                            }
-                        }}
-                        onDetailClicked={(sprintId: string, backlogItemId: string) => {
-                            if (this.props.onItemDetailClicked) {
-                                this.props.onItemDetailClicked(sprintId, backlogItemId);
-                            }
-                        }}
-                        onMoveItemToBacklogClicked={(sprintId: string, backlogItemId: string) => {
-                            if (this.props.onMoveItemToBacklogClicked) {
-                                this.props.onMoveItemToBacklogClicked(sprintId, backlogItemId);
+                        onArchivedFilterChange={(checked: boolean) => {
+                            if (this.props.onArchivedFilterChange) {
+                                this.props.onArchivedFilterChange(checked);
                             }
                         }}
                         onBacklogItemDoneClicked={(sprintId: string, backlogItemId: string) => {
@@ -147,6 +135,26 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                         onBacklogItemNotStartedClicked={(sprintId: string, backlogItemId: string) => {
                             if (this.props.onBacklogItemNotStartedClicked) {
                                 this.props.onBacklogItemNotStartedClicked(sprintId, backlogItemId);
+                            }
+                        }}
+                        onDetailClicked={(sprintId: string, backlogItemId: string) => {
+                            if (this.props.onItemDetailClicked) {
+                                this.props.onItemDetailClicked(sprintId, backlogItemId);
+                            }
+                        }}
+                        onExpandCollapse={(sprintId: string, expand: boolean) => {
+                            if (this.props.onExpandCollapse) {
+                                this.props.onExpandCollapse(sprintId, expand);
+                            }
+                        }}
+                        onMoveItemToBacklogClicked={(sprintId: string, backlogItemId: string) => {
+                            if (this.props.onMoveItemToBacklogClicked) {
+                                this.props.onMoveItemToBacklogClicked(sprintId, backlogItemId);
+                            }
+                        }}
+                        onSprintDetailClicked={(sprintId: string) => {
+                            if (this.props.onSprintDetailClicked) {
+                                this.props.onSprintDetailClicked(sprintId);
                             }
                         }}
                     />

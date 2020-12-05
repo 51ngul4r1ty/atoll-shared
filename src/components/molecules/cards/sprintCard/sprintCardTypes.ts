@@ -9,20 +9,21 @@ export enum SprintStatus {
 }
 
 export interface SprintCardSprint {
-    id: string;
-    name: string;
-    startDate: Date;
-    finishDate: Date;
-    status: SprintStatus;
-    plannedPoints: number | null;
     acceptedPoints: number | null;
-    velocityPoints: number | null;
-    usedSplitPoints: number | null;
-    remainingSplitPoints: number | null;
-    backlogItemsLoaded: boolean;
+    archived: boolean;
     backlogItems: SprintBacklogItem[] | null;
-    expanded: boolean;
-    saved: boolean;
+    backlogItemsLoaded: boolean;
     editing: boolean;
+    expanded: boolean;
+    finishDate: Date;
+    id: string;
     instanceId: number | null;
+    name: string;
+    plannedPoints: number | null;
+    remainingSplitPoints: number | null;
+    saved: boolean;
+    startDate: Date;
+    status: SprintStatus;
+    usedSplitPoints: number | null;
+    velocityPoints: number | null;
 }

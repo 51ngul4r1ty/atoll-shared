@@ -143,10 +143,26 @@ export interface RemoveSprintBacklogItemAction {
     payload: RemoveSprintBacklogItemActionPayload;
 }
 
-export const removeSprintBacklogItem = (sprintId: string, backlogItemId: string) => ({
+export const removeSprintBacklogItem = (sprintId: string, backlogItemId: string): RemoveSprintBacklogItemAction => ({
     type: ActionTypes.REMOVE_SPRINT_BACKLOG_ITEM,
     payload: {
         sprintId,
         backlogItemId
+    }
+});
+
+export interface ChangeSprintPlanningArchivedFilterActionPayload {
+    includeArchived: boolean;
+}
+
+export interface ChangeSprintPlanningArchivedFilterAction {
+    type: typeof ActionTypes.SET_SPRINT_PLANNING_ARCHIVED_FILTER;
+    payload: ChangeSprintPlanningArchivedFilterActionPayload;
+}
+
+export const changeSprintPlanningArchivedFilter = (includeArchived: boolean): ChangeSprintPlanningArchivedFilterAction => ({
+    type: ActionTypes.SET_SPRINT_PLANNING_ARCHIVED_FILTER,
+    payload: {
+        includeArchived
     }
 });

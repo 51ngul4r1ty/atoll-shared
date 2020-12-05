@@ -24,28 +24,31 @@ export const determineSprintStatus = (sprint: Sprint): SprintStatus => {
     }
 };
 
-export const getPlanViewSprints = (state: StateTree): SprintCardSprint[] => {
-    const result = state.sprints.allItems.map((sprint) => {
-        const panelSprint: SprintCardSprint = {
-            id: sprint.id,
-            name: sprint.name,
-            startDate: sprint.startDate,
-            finishDate: sprint.finishDate,
-            status: determineSprintStatus(sprint),
-            plannedPoints: sprint.plannedPoints,
-            acceptedPoints: sprint.acceptedPoints,
-            velocityPoints: sprint.velocityPoints,
-            usedSplitPoints: sprint.usedSplitPoints,
-            remainingSplitPoints: sprint.remainingSplitPoints,
-            expanded: sprint.expanded,
-            backlogItems: getBacklogItemsForSprint(state, sprint.id),
-            backlogItemsLoaded: sprint.backlogItemsLoaded,
-            editing: sprint.editing,
-            saved: sprint.saved,
-            instanceId: sprint.instanceId
-        };
-        return panelSprint;
-    });
+export const getPlanViewSprints = (state: StateTree, includeArchived: boolean): SprintCardSprint[] => {
+    const result = state.sprints.allItems
+        .filter((item) => (includeArchived && item.archived) || !item.archived)
+        .map((sprint) => {
+            const panelSprint: SprintCardSprint = {
+                id: sprint.id,
+                archived: sprint.archived,
+                name: sprint.name,
+                startDate: sprint.startDate,
+                finishDate: sprint.finishDate,
+                status: determineSprintStatus(sprint),
+                plannedPoints: sprint.plannedPoints,
+                acceptedPoints: sprint.acceptedPoints,
+                velocityPoints: sprint.velocityPoints,
+                usedSplitPoints: sprint.usedSplitPoints,
+                remainingSplitPoints: sprint.remainingSplitPoints,
+                expanded: sprint.expanded,
+                backlogItems: getBacklogItemsForSprint(state, sprint.id),
+                backlogItemsLoaded: sprint.backlogItemsLoaded,
+                editing: sprint.editing,
+                saved: sprint.saved,
+                instanceId: sprint.instanceId
+            };
+            return panelSprint;
+        });
     return result;
 };
 

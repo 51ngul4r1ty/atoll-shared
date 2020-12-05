@@ -3,12 +3,16 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { withTranslation, WithTranslation } from "react-i18next";
 
+// style
+import css from "./SprintPlanningPanel.module.css";
+
 // utils
 import { buildClassName } from "../../../../utils/classNameBuilder";
 
 // interfaces/types
 import { SprintCardSprint } from "../../../molecules/cards/sprintCard/sprintCardTypes";
 import { ItemMenuEventHandlers } from "../../../molecules/cards/BacklogItemCard";
+import { OnAddNewSprint, OnArchivedFilterChange } from "./sprintPlanningPanelTypes";
 
 // utils
 import { addBottomActionButtons, addTopActionButtons } from "./sprintPlanningPanelJsxUtils";
@@ -33,14 +37,12 @@ import {
     updateSprint,
     updateSprintFields
 } from "../../../../actions/sprintActions";
-import { apiArchiveSprint, apiDeleteSprint } from "../../../../actions/apiSprints";
-
-// style
-import css from "./SprintPlanningPanel.module.css";
+import { apiArchiveSprint, apiDeleteSprint, apiUnarchiveSprint } from "../../../../actions/apiSprints";
 
 export interface SprintPlanningPanelStateProps {
     className?: string;
     editMode: EditMode;
+    includeArchived: boolean;
     openedDetailMenuInfo: OpenedDetailMenuInfo;
     openedDetailMenuSprintId: string | null;
     renderMobile?: boolean;
@@ -51,8 +53,9 @@ export interface SprintPlanningPanelStateProps {
 
 export interface SprintPlanningPanelDispatchProps {
     onExpandCollapse: { (id: string, expand: boolean): void };
-    onAddNewSprintBefore: { (): void };
-    onAddNewSprintAfter: { (): void };
+    onAddNewSprintBefore: OnAddNewSprint;
+    onArchivedFilterChange: OnArchivedFilterChange;
+    onAddNewSprintAfter: OnAddNewSprint;
     onAddBacklogItem: { (sprintId: string): void };
     onDetailClicked: { (sprintId: string, backlogItemId: string): void };
     onSprintDetailClicked: { (sprintId: string): void };
@@ -117,7 +120,15 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
         props.renderMobile ? css.mobile : null
     );
     let renderElts = [];
-    addTopActionButtons(renderElts, css.topPanel, props.editMode, props.onAddNewSprintBefore, props.renderMobile);
+    addTopActionButtons(
+        renderElts,
+        css.topPanel,
+        props.editMode,
+        props.includeArchived,
+        props.onAddNewSprintBefore,
+        props.onArchivedFilterChange,
+        props.renderMobile
+    );
     let firstElt = true;
     props.sprints.forEach((sprint) => {
         const openedDetailMenuBacklogItemId =
@@ -133,6 +144,8 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         dispatch(apiDeleteSprint(itemId));
                     } else if (eventName === "onArchiveItemClicked") {
                         dispatch(apiArchiveSprint(itemId));
+                    } else if (eventName === "onUnarchiveItemClicked") {
+                        dispatch(apiUnarchiveSprint(itemId));
                     } else {
                         throw Error(`${eventName} is not handled`);
                     }

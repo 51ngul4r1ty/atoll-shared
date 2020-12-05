@@ -76,9 +76,9 @@ export const API_DELETE_SPRINT_REQUEST = buildRequestActionName(Names.DELETE_SPR
 export const API_DELETE_SPRINT_SUCCESS = buildSuccessActionName(Names.DELETE_SPRINT);
 export const API_DELETE_SPRINT_FAILURE = buildFailureActionName(Names.DELETE_SPRINT);
 
-export const API_ARCHIVE_SPRINT_REQUEST = buildRequestActionName(Names.ARCHIVE_SPRINT);
-export const API_ARCHIVE_SPRINT_SUCCESS = buildSuccessActionName(Names.ARCHIVE_SPRINT);
-export const API_ARCHIVE_SPRINT_FAILURE = buildFailureActionName(Names.ARCHIVE_SPRINT);
+export const API_SET_SPRINT_ARCHIVE_FLAG_REQUEST = buildRequestActionName(Names.SET_SPRINT_ARCHIVE_FLAG);
+export const API_SET_SPRINT_ARCHIVE_FLAG_SUCCESS = buildSuccessActionName(Names.SET_SPRINT_ARCHIVE_FLAG);
+export const API_SET_SPRINT_ARCHIVE_FLAG_FAILURE = buildFailureActionName(Names.SET_SPRINT_ARCHIVE_FLAG);
 // #endregion
 
 // #region Sprint Backlog Resource
@@ -172,3 +172,5 @@ export const SPRINT_BACKLOG_ITEM_NOT_STARTED_CLICKED = "app/status-not-started:s
 
 export const ADD_PRODUCT_BACKLOG_ITEM = "app/add:product-backlog-item";
 export const REMOVE_SPRINT_BACKLOG_ITEM = "app/remove:sprint-backlog-item";
+
+export const SET_SPRINT_PLANNING_ARCHIVED_FILTER = "app/set-filter:sprint-planning-archived";
