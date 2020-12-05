@@ -11,7 +11,7 @@
 
 .sprintPlanningActionPanel {
     display: grid;
-    grid-template-columns: max-content max-content;
+    grid-template-columns: max-content auto; /* make second column fill remaining space */
     grid-column-gap: 0.4rem; /* TODO: Move to vars */
 }
 
@@ -41,4 +41,6 @@
 .includeArchivedCheckbox {
     display: flex;
     align-items: center;
+    justify-self: right;
+    margin-right: 0.6rem;
 }
