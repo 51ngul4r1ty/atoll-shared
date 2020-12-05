@@ -116,37 +116,37 @@ export const apiDeleteSprint = (sprintId: string): ApiDeleteSprintAction => {
     };
 };
 
-export interface ApiArchiveSprintSuccessResponse {
+export interface ApiSetSprintArchiveFlagSuccessResponse {
     status: number;
     data: {
         item: Sprint;
     };
 }
-export type ApiArchiveSprintSuccessActionPayload = ApiActionSuccessPayload<ApiArchiveSprintSuccessResponse>;
-export interface ApiArchiveSprintMetaOrginalActionArgs {
+export type ApiSetSprintArchiveFlagSuccessActionPayload = ApiActionSuccessPayload<ApiSetSprintArchiveFlagSuccessResponse>;
+export interface ApiSetSprintArchiveFlagMetaOrginalActionArgs {
     sprintId: string;
     archived: boolean;
 }
-export interface ApiArchiveSprintMeta {
-    originalActionArgs: ApiArchiveSprintMetaOrginalActionArgs;
+export interface ApiSprintSetArchiveFlagMeta {
+    originalActionArgs: ApiSetSprintArchiveFlagMetaOrginalActionArgs;
 }
-export interface ApiArchiveSprintSuccessAction {
-    type: typeof ActionTypes.API_ARCHIVE_SPRINT_SUCCESS;
-    payload: ApiArchiveSprintSuccessActionPayload;
-    meta: ApiActionMetaDataRequestMeta<{}, undefined, ApiArchiveSprintMetaOrginalActionArgs>;
+export interface ApiSetSprintArchiveFlagSuccessAction {
+    type: typeof ActionTypes.API_SET_SPRINT_ARCHIVE_FLAG_SUCCESS;
+    payload: ApiSetSprintArchiveFlagSuccessActionPayload;
+    meta: ApiActionMetaDataRequestMeta<{}, undefined, ApiSetSprintArchiveFlagMetaOrginalActionArgs>;
 }
-export interface ApiArchiveSprintData {
+export interface ApiSetSprintArchiveFlagData {
     archived: boolean;
 }
-export type ApiArchiveSprintAction = ApiAction<ApiArchiveSprintData, ApiArchiveSprintMeta>;
-export const apiCommonArchiveSprint = (sprintId: string, archived: boolean): ApiArchiveSprintAction => {
+export type ApiSetSprintArchiveFlagAction = ApiAction<ApiSetSprintArchiveFlagData, ApiSprintSetArchiveFlagMeta>;
+export const setSprintArchiveFlag = (sprintId: string, archived: boolean): ApiSetSprintArchiveFlagAction => {
     return {
         type: API,
         payload: {
             endpoint: `${getApiBaseUrl()}api/v1/sprints/${sprintId}`,
             method: "PATCH",
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
-            types: buildActionTypes(ApiActionNames.ARCHIVE_SPRINT),
+            types: buildActionTypes(ApiActionNames.SET_SPRINT_ARCHIVE_FLAG),
             data: {
                 archived
             }
@@ -159,10 +159,10 @@ export const apiCommonArchiveSprint = (sprintId: string, archived: boolean): Api
         }
     };
 };
-export const apiArchiveSprint = (sprintId: string): ApiArchiveSprintAction => {
-    return apiCommonArchiveSprint(sprintId, true);
+export const apiArchiveSprint = (sprintId: string): ApiSetSprintArchiveFlagAction => {
+    return setSprintArchiveFlag(sprintId, true);
 };
 
-export const apiUnarchiveSprint = (sprintId: string): ApiArchiveSprintAction => {
-    return apiCommonArchiveSprint(sprintId, false);
+export const apiUnarchiveSprint = (sprintId: string): ApiSetSprintArchiveFlagAction => {
+    return setSprintArchiveFlag(sprintId, false);
 };

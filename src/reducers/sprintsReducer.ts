@@ -17,7 +17,7 @@ import {
 } from "../actions/sprintActions";
 import { NewSprintPosition } from "../actions/sprintActions";
 import {
-    ApiArchiveSprintSuccessAction,
+    ApiSetSprintArchiveFlagSuccessAction,
     ApiDeleteSprintSuccessAction,
     ApiGetSprintsSuccessAction,
     ApiPostSprintSuccessAction
@@ -304,8 +304,8 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 removeSprint(draft, id);
                 return;
             }
-            case ActionTypes.API_ARCHIVE_SPRINT_SUCCESS: {
-                const actionTyped = action as ApiArchiveSprintSuccessAction;
+            case ActionTypes.API_SET_SPRINT_ARCHIVE_FLAG_SUCCESS: {
+                const actionTyped = action as ApiSetSprintArchiveFlagSuccessAction;
                 const meta = actionTyped.meta;
                 const id = meta.originalActionArgs.sprintId;
                 draft.items.forEach((item) => {

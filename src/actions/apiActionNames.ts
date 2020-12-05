@@ -2,7 +2,7 @@ export const GET_SPRINTS = "get-sprints";
 export const GET_SPRINT = "get-sprint";
 export const POST_SPRINT = "add-sprint";
 export const DELETE_SPRINT = "delete-sprint";
-export const ARCHIVE_SPRINT = "archive-sprint";
+export const SET_SPRINT_ARCHIVE_FLAG = "set-sprint-archive";
 
 export const GET_BACKLOG_ITEMS = "get-backlog-items";
 export const GET_BACKLOG_ITEM = "get-backlog-item";
