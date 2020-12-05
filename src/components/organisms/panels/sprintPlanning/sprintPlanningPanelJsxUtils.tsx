@@ -36,7 +36,7 @@ export const addActionButtons = (
         <Checkbox
             className={css.includeArchivedCheckbox}
             inputId="sprintPlanningIncludeArchived"
-            labelText="Include Archived Sprints"
+            labelText="View Archived Sprints"
             onChange={(checked) => onArchivedFilterChange(checked)}
         />
     );
