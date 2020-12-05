@@ -9,6 +9,7 @@ import { StandardInvertibleComponentProps } from "../../common/types";
 
 // utils
 import { getFillAndStrokeClassNames } from "../../common/propUtils";
+import { buildClassName } from "../../../utils/classNameBuilder";
 
 export type ArchiveIconProps = StandardInvertibleComponentProps;
 
@@ -21,10 +22,12 @@ export const ArchiveIcon: React.FC<ArchiveIconProps> = (props) => {
         baseCss.stroke
     );
 
+    const classNameToUse = buildClassName(strokeClass, props.className);
+
     return (
         <svg
             fill="none"
-            className={strokeClass}
+            className={classNameToUse}
             fillRule="evenodd"
             stroke="black"
             strokeWidth="0.501"

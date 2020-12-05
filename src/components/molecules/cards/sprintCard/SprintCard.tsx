@@ -57,7 +57,13 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
     const detailMenu =
         props.showDetailMenu && props.buildItemMenu ? props.buildItemMenu(props.id, props.showDetailMenuToLeft) : null;
     const sprintStatusElts = <div className={css.sprintStatus}>{sprintStatusToString(props.status)}</div>;
-    const sprintDateRangeElts = <div className={css.sprintDateRange}>{formatDateRange(props.startDate, props.finishDate)}</div>;
+    const dateRangeArchiveStatusElts = props.archived ? <ArchiveIcon className={css.dateRangeArchiveIcon} /> : null;
+    const sprintDateRangeElts = (
+        <div className={css.sprintDateRange}>
+            <div className={css.dateRangeText}>{formatDateRange(props.startDate, props.finishDate)}</div>
+            <div className={css.sprintDateRangeArchiveStatus}>{dateRangeArchiveStatusElts}</div>
+        </div>
+    );
     const sprintHeaderRow2MobileElts = <div className={css.sprintHeaderRow2Mobile}>{sprintDateRangeElts}</div>;
     const buildSprintPointInfoTextElts = (sprint: SprintCardSprint, renderMobile: boolean) => {
         const text = buildSprintPointInfoText(sprint, renderMobile);
@@ -138,7 +144,7 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
         props.editMode === EditMode.View ? null : (
             <div className={buildClassName(css.detailMenu, props.showDetailMenuToLeft ? css.menuToLeft : null)}>{detailMenu}</div>
         );
-    const sprintArchivedStatusElts = props.archived ? <ArchiveIcon /> : null;
+    const sprintArchivedStatusElts = props.archived ? <ArchiveIcon className={css.sprintNameArchiveIcon} /> : null;
 
     return (
         <div className={classNameToUse} tabIndex={0}>

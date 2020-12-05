@@ -95,6 +95,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     <SprintPlanningPanel
                         className={css.sprints}
                         editMode={this.props.editMode}
+                        includeArchived={this.props.includeArchivedSprints}
                         sprints={this.props.sprints}
                         showDetailMenuToLeft
                         renderMobile={this.context.state?.isMobile}

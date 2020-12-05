@@ -42,6 +42,7 @@ import { apiArchiveSprint, apiDeleteSprint, apiUnarchiveSprint } from "../../../
 export interface SprintPlanningPanelStateProps {
     className?: string;
     editMode: EditMode;
+    includeArchived: boolean;
     openedDetailMenuInfo: OpenedDetailMenuInfo;
     openedDetailMenuSprintId: string | null;
     renderMobile?: boolean;
@@ -123,6 +124,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
         renderElts,
         css.topPanel,
         props.editMode,
+        props.includeArchived,
         props.onAddNewSprintBefore,
         props.onArchivedFilterChange,
         props.renderMobile
