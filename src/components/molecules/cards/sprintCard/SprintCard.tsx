@@ -18,12 +18,14 @@ import { SprintCardSprint } from "./sprintCardTypes";
 import { EditMode } from "../../buttons/EditButton";
 
 // components
+import { ArchiveIcon } from "../../../atoms/icons/ArchiveIcon";
 import { VerticalCollapseIcon } from "../../../atoms/icons/VerticalCollapseIcon";
 import { VerticalExpandIcon } from "../../../atoms/icons/VerticalExpandIcon";
 import { AddButton } from "../../buttons/AddButton";
 import { ItemDetailButton } from "../../buttons/ItemDetailButton";
 
 export interface SprintCardStateProps extends SprintCardSprint {
+    archived: boolean;
     buildItemMenu?: ItemMenuBuilder;
     className?: string;
     editMode: EditMode;
@@ -136,11 +138,16 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
         props.editMode === EditMode.View ? null : (
             <div className={buildClassName(css.detailMenu, props.showDetailMenuToLeft ? css.menuToLeft : null)}>{detailMenu}</div>
         );
+    const sprintArchivedStatusElts = props.archived ? <ArchiveIcon /> : null;
+
     return (
         <div className={classNameToUse} tabIndex={0}>
             <div className={css.sprintHeaderAndContent}>
                 <div className={css.sprintHeader}>
-                    <div className={css.sprintName}>{props.name}</div>
+                    <div className={css.sprintName}>
+                        {props.name}
+                        {sprintArchivedStatusElts}
+                    </div>
                     <div className={css.sprintHeaderContent}>
                         <div className={css.sprintHeaderContentTopRow}>
                             {props.renderMobile ? null : sprintDateRangeElts}

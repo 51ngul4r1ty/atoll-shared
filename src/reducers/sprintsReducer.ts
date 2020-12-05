@@ -306,8 +306,15 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             }
             case ActionTypes.API_ARCHIVE_SPRINT_SUCCESS: {
                 const actionTyped = action as ApiArchiveSprintSuccessAction;
-                const id = actionTyped.meta.originalActionArgs.sprintId;
-                removeSprint(draft, id);
+                const meta = actionTyped.meta;
+                const id = meta.originalActionArgs.sprintId;
+                draft.items.forEach((item) => {
+                    if (item.id === id) {
+                        item.archived = meta.originalActionArgs.archived;
+                    }
+                });
+                rebuildAllItems(draft);
+                draft.openedDetailMenuSprintId = null;
                 return;
             }
         }

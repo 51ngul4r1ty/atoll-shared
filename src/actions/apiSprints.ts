@@ -125,12 +125,13 @@ export interface ApiArchiveSprintSuccessResponse {
 export type ApiArchiveSprintSuccessActionPayload = ApiActionSuccessPayload<ApiArchiveSprintSuccessResponse>;
 export interface ApiArchiveSprintMetaOrginalActionArgs {
     sprintId: string;
+    archived: boolean;
 }
 export interface ApiArchiveSprintMeta {
     originalActionArgs: ApiArchiveSprintMetaOrginalActionArgs;
 }
 export interface ApiArchiveSprintSuccessAction {
-    type: typeof ActionTypes.API_DELETE_SPRINT_SUCCESS;
+    type: typeof ActionTypes.API_ARCHIVE_SPRINT_SUCCESS;
     payload: ApiArchiveSprintSuccessActionPayload;
     meta: ApiActionMetaDataRequestMeta<{}, undefined, ApiArchiveSprintMetaOrginalActionArgs>;
 }
@@ -138,7 +139,7 @@ export interface ApiArchiveSprintData {
     archived: boolean;
 }
 export type ApiArchiveSprintAction = ApiAction<ApiArchiveSprintData, ApiArchiveSprintMeta>;
-export const apiArchiveSprint = (sprintId: string): ApiArchiveSprintAction => {
+export const apiCommonArchiveSprint = (sprintId: string, archived: boolean): ApiArchiveSprintAction => {
     return {
         type: API,
         payload: {
@@ -147,13 +148,21 @@ export const apiArchiveSprint = (sprintId: string): ApiArchiveSprintAction => {
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
             types: buildActionTypes(ApiActionNames.ARCHIVE_SPRINT),
             data: {
-                archived: true
+                archived
             }
         },
         meta: {
             originalActionArgs: {
-                sprintId
+                sprintId,
+                archived
             }
         }
     };
+};
+export const apiArchiveSprint = (sprintId: string): ApiArchiveSprintAction => {
+    return apiCommonArchiveSprint(sprintId, true);
+};
+
+export const apiUnarchiveSprint = (sprintId: string): ApiArchiveSprintAction => {
+    return apiCommonArchiveSprint(sprintId, false);
 };

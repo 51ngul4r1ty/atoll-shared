@@ -37,7 +37,7 @@ import {
     updateSprint,
     updateSprintFields
 } from "../../../../actions/sprintActions";
-import { apiArchiveSprint, apiDeleteSprint } from "../../../../actions/apiSprints";
+import { apiArchiveSprint, apiDeleteSprint, apiUnarchiveSprint } from "../../../../actions/apiSprints";
 
 export interface SprintPlanningPanelStateProps {
     className?: string;
@@ -142,6 +142,8 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         dispatch(apiDeleteSprint(itemId));
                     } else if (eventName === "onArchiveItemClicked") {
                         dispatch(apiArchiveSprint(itemId));
+                    } else if (eventName === "onUnarchiveItemClicked") {
+                        dispatch(apiUnarchiveSprint(itemId));
                     } else {
                         throw Error(`${eventName} is not handled`);
                     }
