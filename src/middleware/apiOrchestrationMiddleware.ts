@@ -85,6 +85,7 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
                 const prevItemId = prevBacklogItem ? prevBacklogItem.id : null;
                 const model = convertToBacklogItemModel(backlogItem);
                 model.projectId = getCurrentProjectId(state);
+                model.status = BacklogItemStatus.NotStarted;
                 storeTyped.dispatch(apiPostBacklogItem(model, prevItemId, { instanceId }));
             }
             break;

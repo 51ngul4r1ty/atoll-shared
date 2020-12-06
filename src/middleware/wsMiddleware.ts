@@ -83,13 +83,13 @@ export const wsMiddleware = (store) => (next) => (action: Action) => {
             const prevBacklogItemId = meta?.requestBody?.data?.prevBacklogItemId || null;
             const prevNextAndCurrent = getPrevNextAndCurrentById(state, item.id);
             const nextBacklogItemId = prevNextAndCurrent.next?.id;
-            pushBacklogItemSaved(item, prevBacklogItemId, nextBacklogItemId);
+            pushBacklogItemSaved(mapApiItemToBacklogItem(item), prevBacklogItemId, nextBacklogItemId);
             break;
         }
         case ActionTypes.API_DELETE_BACKLOG_ITEM_SUCCESS: {
             const actionTyped = action as ApiDeleteBacklogItemSuccessAction;
             const item = actionTyped.payload.response.data?.item;
-            pushBacklogItemDeleted(item);
+            pushBacklogItemDeleted(mapApiItemToBacklogItem(item));
             break;
         }
         case ActionTypes.API_PUT_BACKLOG_ITEM_SUCCESS: {

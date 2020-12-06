@@ -6,9 +6,9 @@ export type uuid = string;
 export type BacklogItemType = "story" | "issue";
 
 export interface BaseItem {
-    createdAt: Date; // sequelize standard field
-    updatedAt: Date; // sequelize standard field
-    version: number; // sequelize standard field
+    createdAt?: Date; // sequelize standard field
+    updatedAt?: Date; // sequelize standard field
+    version?: number; // sequelize standard field
 }
 
 export interface ItemWithId {
