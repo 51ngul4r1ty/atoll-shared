@@ -77,23 +77,24 @@ export const buildDragBacklogItemElt = (
     };
     return (
         <BacklogItemCard
-            key={buildBacklogItemKey(item)}
             buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
             estimate={item.estimate}
+            hasDetails={editMode === EditMode.Edit}
             internalId={`${item.id}`}
+            isDraggable={editMode === EditMode.Edit}
+            isSelectable={editMode === EditMode.Edit}
             itemId={calcItemId(item.externalId, item.friendlyId)}
             itemType={item.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
-            roleText={item.rolePhrase}
-            titleText={item.storyPhrase}
-            reasonText={item.reasonPhrase}
-            isDraggable={editMode === EditMode.Edit}
-            hasDetails={editMode === EditMode.Edit}
-            isSelectable={editMode === EditMode.Edit}
-            renderMobile={renderMobile}
+            key={buildBacklogItemKey(item)}
             marginBelowItem
             offsetTop={offsetTop}
-            width={width}
+            reasonText={item.reasonPhrase}
+            renderMobile={renderMobile}
+            roleText={item.rolePhrase}
             showDetailMenu={false}
+            status={item.status}
+            titleText={item.storyPhrase}
+            width={width}
         />
     );
 };
@@ -460,17 +461,18 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         key={cardKey}
                         buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
                         estimate={null}
+                        hasDetails={props.editMode === EditMode.Edit}
                         internalId={buildSpacerInternalId(item.id)}
+                        isDraggable={props.editMode === EditMode.Edit}
+                        isSelectable={props.editMode === EditMode.Edit}
                         itemId={null}
                         itemType={BacklogItemTypeEnum.None}
-                        roleText={null}
-                        titleText={null}
-                        reasonText={null}
-                        isDraggable={props.editMode === EditMode.Edit}
-                        hasDetails={props.editMode === EditMode.Edit}
-                        isSelectable={props.editMode === EditMode.Edit}
-                        renderMobile={props.renderMobile}
                         marginBelowItem
+                        reasonText={null}
+                        renderMobile={props.renderMobile}
+                        roleText={null}
+                        status={item.status}
+                        titleText={null}
                         onDetailClicked={() => {
                             dispatch(backlogItemDetailClicked(item.id));
                         }}
