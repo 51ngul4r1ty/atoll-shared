@@ -26,6 +26,7 @@ import { ApiPayloadBase } from "../selectors/apiSelectors";
 
 // utils
 import { buildActionTypes } from "./utils/apiActionUtils";
+import { mapBacklogItemToApiItem } from "../mappers/backlogItemMappers";
 
 // #region Collection
 
@@ -71,7 +72,7 @@ export const apiGetBacklogItem = (itemId: string, payloadOverride: ApiPayloadBas
 export interface ApiPostBacklogItemSuccessResponse {
     status: number;
     data: {
-        item: BacklogItem;
+        item: ApiBacklogItem;
     };
 }
 export type ApiPostBacklogItemSuccessActionPayload = ApiActionSuccessPayload<ApiPostBacklogItemSuccessResponse>;
@@ -84,7 +85,9 @@ export interface ApiPostBacklogItemSuccessAction {
     payload: ApiPostBacklogItemSuccessActionPayload;
     meta: ApiPostBacklogItemSuccessActionMeta;
 }
-export interface ApiPostBacklogItemPayload {}
+export interface ApiPostBacklogItemPayload extends ApiBacklogItem {
+    prevBacklogItemId: string;
+}
 export const apiPostBacklogItem = (
     backlogItem: BacklogItemModel,
     prevBacklogItemId: string,
@@ -96,7 +99,7 @@ export const apiPostBacklogItem = (
             endpoint: `${getApiBaseUrl()}api/v1/backlog-items`,
             method: "POST",
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
-            data: { ...backlogItem, prevBacklogItemId },
+            data: { ...mapBacklogItemToApiItem(backlogItem), prevBacklogItemId },
             types: buildActionTypes(ApiActionNames.POST_BACKLOG_ITEM)
         },
         meta
@@ -111,13 +114,13 @@ export interface ApiPutBacklogItemSuccessAction {
 export const apiPutBacklogItem = (
     backlogItem: BacklogItemModel,
     payloadOverride: ApiPayloadBase = {}
-): ApiAction<BacklogItemModel> => ({
+): ApiAction<ApiBacklogItem> => ({
     type: API,
     payload: {
         ...{
             endpoint: `${getApiBaseUrl()}api/v1/backlog-items/${backlogItem.id}`,
             method: "PUT",
-            data: backlogItem,
+            data: mapBacklogItemToApiItem(backlogItem),
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
             types: buildActionTypes(ApiActionNames.PUT_BACKLOG_ITEM)
         },
@@ -128,7 +131,7 @@ export const apiPutBacklogItem = (
 export interface ApiDeleteBacklogItemSuccessResponse {
     status: number;
     data: {
-        item: BacklogItem;
+        item: ApiBacklogItem;
     };
 }
 export type ApiDeleteBacklogItemSuccessActionPayload = ApiActionSuccessPayload<ApiDeleteBacklogItemSuccessResponse>;

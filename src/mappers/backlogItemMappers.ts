@@ -53,6 +53,19 @@ export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem =>
     status: mapApiStatusToBacklogItem(apiItem.status)
 });
 
+export const mapBacklogItemToApiItem = (item: BacklogItem): ApiBacklogItem => ({
+    id: item.id,
+    friendlyId: item.friendlyId,
+    externalId: item.externalId,
+    rolePhrase: item.rolePhrase,
+    storyPhrase: item.storyPhrase,
+    reasonPhrase: item.reasonPhrase,
+    estimate: item.estimate,
+    type: item.type,
+    projectId: item.projectId,
+    status: mapBacklogItemStatusToApi(item.status)
+});
+
 export const mapApiItemsToBacklogItems = (apiItems: ApiBacklogItem[]): BacklogItem[] => {
     return apiItems.map((item) => mapApiItemToBacklogItem(item));
 };
