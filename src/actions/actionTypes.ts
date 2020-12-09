@@ -166,9 +166,12 @@ export const TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL = "app/toggle:sprint-backlog-item
 export const TOGGLE_SPRINT_ITEM_DETAIL = "app/toggle:sprint";
 
 export const MOVE_SPRINT_ITEM_TO_PRODUCT_BACKLOG_CLICKED = "app/move-to-backlog:sprint-backlog-item";
+
+export const SPRINT_BACKLOG_ITEM_ACCEPTED_CLICKED = "app/status-accepted:sprint-backlog-item";
 export const SPRINT_BACKLOG_ITEM_DONE_CLICKED = "app/status-done:sprint-backlog-item";
 export const SPRINT_BACKLOG_ITEM_IN_PROGRESS_CLICKED = "app/status-in-progress:sprint-backlog-item";
 export const SPRINT_BACKLOG_ITEM_NOT_STARTED_CLICKED = "app/status-not-started:sprint-backlog-item";
+export const SPRINT_BACKLOG_ITEM_RELEASED_CLICKED = "app/status-released:sprint-backlog-item";
 
 export const ADD_PRODUCT_BACKLOG_ITEM = "app/add:product-backlog-item";
 export const REMOVE_SPRINT_BACKLOG_ITEM = "app/remove:sprint-backlog-item";

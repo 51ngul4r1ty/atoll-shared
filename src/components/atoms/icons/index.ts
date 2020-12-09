@@ -1,3 +1,5 @@
+
+
 export * from "./AddIcon";
 export * from "./AppIcon";
 export * from "./ArchiveCancelIcon";
@@ -13,6 +15,7 @@ export * from "./EditIcon";
 export * from "./HamburgerIcon";
 export * from "./IssueIcon";
 export * from "./RefreshIcon";
+export * from "./StatusAcceptedIcon";
 export * from "./StatusDoneIcon";
 export * from "./StatusInProgressIcon";
 export * from "./StatusNotStartedIcon";
@@ -22,4 +25,4 @@ export * from "./VerticalCollapseIcon";
 export * from "./VerticalExpandIcon";
 export * from "./WindowsFrameCloseIcon";
 export * from "./WindowsFrameMaximizeIcon";
-export * from "./WindowsFrameMinimizeIcon";
+export * from "./WindowsFrameMinimizeIcon";export * from "./StatusReleasedIcon";

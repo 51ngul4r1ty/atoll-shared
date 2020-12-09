@@ -8,21 +8,7 @@ import { getBacklogItemsForSprint } from "./sprintBacklogSelectors";
 
 // utils
 import { getSprintById as getSprintByIdReducer } from "../reducers/sprintsReducer";
-
-export const determineSprintStatus = (sprint: Sprint): SprintStatus => {
-    const currentTime = new Date().getTime();
-    const afterSprintStart = currentTime >= sprint.startDate.getTime();
-    const beforeSprintFinish = currentTime < sprint.finishDate.getTime();
-    if (afterSprintStart && beforeSprintFinish) {
-        return SprintStatus.InProgress;
-    } else if (afterSprintStart) {
-        // actually, this condition means "After Sprint Finish"
-        return SprintStatus.Completed;
-    } else {
-        // and this condition means "Before Sprint Start"
-        return SprintStatus.NotStarted;
-    }
-};
+import { determineSprintStatus } from "../utils/sprintStatusHelper";
 
 export const getPlanViewSprints = (state: StateTree, includeArchived: boolean): SprintCardSprint[] => {
     const result = state.sprints.allItems

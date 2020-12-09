@@ -21,10 +21,12 @@ import { apiBffViewsPlan } from "./actions/apiBffViewsPlan";
 import {
     changeSprintPlanningArchivedFilter,
     moveSelectedBacklogItemsToSprintUsingApi,
+    sprintBacklogItemAcceptedClicked,
     sprintBacklogItemDetailClicked,
     sprintBacklogItemDoneClicked,
     sprintBacklogItemInProgressClicked,
     sprintBacklogItemNotStartedClicked,
+    sprintBacklogItemReleasedClicked,
     sprintMoveItemToBacklogClicked
 } from "./actions/sprintBacklogActions";
 
@@ -90,12 +92,16 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
             dispatch(sprintBacklogItemDetailClicked(sprintId, backlogItemId)),
         onMoveItemToBacklogClicked: (sprintId: string, backlogItemId: string) =>
             dispatch(sprintMoveItemToBacklogClicked(sprintId, backlogItemId)),
+        onBacklogItemAcceptedClicked: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemAcceptedClicked(sprintId, backlogItemId)),
         onBacklogItemDoneClicked: (sprintId: string, backlogItemId: string) =>
             dispatch(sprintBacklogItemDoneClicked(sprintId, backlogItemId)),
         onBacklogItemInProgressClicked: (sprintId: string, backlogItemId: string) =>
             dispatch(sprintBacklogItemInProgressClicked(sprintId, backlogItemId)),
         onBacklogItemNotStartedClicked: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintBacklogItemNotStartedClicked(sprintId, backlogItemId))
+            dispatch(sprintBacklogItemNotStartedClicked(sprintId, backlogItemId)),
+        onBacklogItemReleasedClicked: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemReleasedClicked(sprintId, backlogItemId))
     };
 };
 

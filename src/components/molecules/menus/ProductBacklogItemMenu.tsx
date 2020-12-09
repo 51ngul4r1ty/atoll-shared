@@ -1,5 +1,5 @@
 // externals
-import React from "react";
+import * as React from "react";
 import { WithTranslation, withTranslation } from "react-i18next";
 
 // components

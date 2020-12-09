@@ -47,9 +47,11 @@ import {
     ChangeSprintPlanningArchivedFilterAction,
     MoveSelectedBacklogItemsToSprintUsingApiAction,
     removeSprintBacklogItem,
+    SprintBacklogItemAcceptedClickedAction,
     SprintBacklogItemDoneClickedAction,
     SprintBacklogItemInProgressClickedAction,
     SprintBacklogItemNotStartedClickedAction,
+    SprintBacklogItemReleasedClickedAction,
     SprintMoveItemToBacklogClickedAction
 } from "../actions/sprintBacklogActions";
 import { apiGetSprints, apiPostSprint } from "../actions/apiSprints";
@@ -181,6 +183,13 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             storeTyped.dispatch(apiMoveSprintItemToProductBacklog(sprintId, backlogItemId));
             break;
         }
+        case ActionTypes.SPRINT_BACKLOG_ITEM_ACCEPTED_CLICKED: {
+            const actionTyped = action as SprintBacklogItemAcceptedClickedAction;
+            const sprintId = actionTyped.payload.sprintId;
+            const backlogItemId = actionTyped.payload.backlogItemId;
+            storeTyped.dispatch(apiSprintBacklogItemSetStatus(sprintId, backlogItemId, BacklogItemStatus.Accepted));
+            break;
+        }
         case ActionTypes.SPRINT_BACKLOG_ITEM_DONE_CLICKED: {
             const actionTyped = action as SprintBacklogItemDoneClickedAction;
             const sprintId = actionTyped.payload.sprintId;
@@ -200,6 +209,13 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const sprintId = actionTyped.payload.sprintId;
             const backlogItemId = actionTyped.payload.backlogItemId;
             storeTyped.dispatch(apiSprintBacklogItemSetStatus(sprintId, backlogItemId, BacklogItemStatus.NotStarted));
+            break;
+        }
+        case ActionTypes.SPRINT_BACKLOG_ITEM_RELEASED_CLICKED: {
+            const actionTyped = action as SprintBacklogItemReleasedClickedAction;
+            const sprintId = actionTyped.payload.sprintId;
+            const backlogItemId = actionTyped.payload.backlogItemId;
+            storeTyped.dispatch(apiSprintBacklogItemSetStatus(sprintId, backlogItemId, BacklogItemStatus.Released));
             break;
         }
         case ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS: {
