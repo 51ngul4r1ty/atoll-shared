@@ -1,8 +1,8 @@
 // externals
-import React from "react";
+import * as React from "react";
 
 // components
-import { LabeledInput } from "../../atoms/inputs/LabeledInput";
+import { StandardInput } from "../../atoms/inputs/StandardInput";
 import { CancelButton } from "../../molecules/buttons/CancelButton";
 import { DoneButton } from "../../molecules/buttons/DoneButton";
 
@@ -95,7 +95,7 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
         finishDate: props.finishDate
     };
     const sprintNameInput = (
-        <LabeledInput
+        <StandardInput
             inputId="sprintName"
             labelText="Sprint Name"
             placeHolder="New Sprint"

@@ -1,5 +1,5 @@
 // externals
-import React, { forwardRef, ChangeEvent, RefObject, Ref, useState } from "react";
+import React, { forwardRef, ChangeEvent, RefObject, Ref, useState, KeyboardEvent, useEffect } from "react";
 
 // style
 import css from "./StandardInput.module.css";
@@ -28,6 +28,8 @@ export interface StandardInputStateProps {
 
 export interface StandardInputDispatchProps {
     onChange?: { (value: string): void };
+    onEnterKeyPress?: { () };
+    onKeyPress?: { (keyCode: number) };
 }
 
 export type StandardInputProps = StandardInputStateProps & StandardInputDispatchProps;
@@ -56,6 +58,27 @@ export const InnerStandardInput: React.FC<StandardInputProps & StandardInputInne
             props.onChange(lastValidInputText);
         }
     };
+    const handleKeyUp = (event) => {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            if (props.onEnterKeyPress) {
+                props.onEnterKeyPress();
+            }
+        }
+        if (props.onKeyPress) {
+            props.onKeyPress(event.keyCode);
+        }
+    };
+    useEffect(() => {
+        if (props.innerRef?.current) {
+            props.innerRef.current.addEventListener("keyup", handleKeyUp.bind(this));
+        }
+        return function cleanup() {
+            if (props.innerRef?.current) {
+                props.innerRef.current.removeEventListener("keyup", handleKeyUp);
+            }
+        };
+    });
     const nameToUse = props.inputName || props.inputId;
     const classToUse = buildClassName(
         css.input,
