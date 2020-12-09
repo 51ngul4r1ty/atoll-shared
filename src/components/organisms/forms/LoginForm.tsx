@@ -2,7 +2,7 @@
 import React, { Component, RefObject } from "react";
 
 // components
-import { LabeledInput, LabeledInputRefType } from "../../atoms/inputs/LabeledInput";
+import { StandardInput, StandardInputRefType } from "../../atoms/inputs/StandardInput";
 import { DoneButton, DoneButtonRefType } from "../../molecules/buttons/DoneButton";
 
 // style
@@ -28,8 +28,8 @@ export type LoginFormProps = LoginFormStateProps & LoginFormDispatchProps;
 
 export class LoginForm extends Component<LoginFormProps> {
     private formRef: RefObject<HTMLFormElement>;
-    private passwordInputRef: RefObject<LabeledInputRefType>;
-    private usernameInputRef: RefObject<LabeledInputRefType>;
+    private passwordInputRef: RefObject<StandardInputRefType>;
+    private usernameInputRef: RefObject<StandardInputRefType>;
     private doneButtonRef: RefObject<DoneButtonRefType>;
     constructor(props) {
         super(props);
@@ -50,7 +50,7 @@ export class LoginForm extends Component<LoginFormProps> {
         const formContent = (
             <section className={css.formFields}>
                 <div className={buildClassName(css.userName, css.formRow)}>
-                    <LabeledInput
+                    <StandardInput
                         ref={this.usernameInputRef}
                         inputId="username"
                         labelText="Username"
@@ -69,7 +69,7 @@ export class LoginForm extends Component<LoginFormProps> {
                     />
                 </div>
                 <div className={buildClassName(css.password, css.formRow)}>
-                    <LabeledInput
+                    <StandardInput
                         ref={this.passwordInputRef}
                         inputId="password"
                         labelText="Password"

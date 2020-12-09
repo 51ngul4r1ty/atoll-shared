@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 
 // components
-import { LabeledInput } from "../../atoms/inputs/LabeledInput";
 import { CancelButton } from "../../molecules/buttons/CancelButton";
 import { DoneButton } from "../../molecules/buttons/DoneButton";
 import { StandardInput } from "../../atoms/inputs/StandardInput";
@@ -107,7 +106,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
             reasonPhrase: this.props.reasonPhrase
         };
         const rolePhraseInput = (
-            <LabeledInput
+            <StandardInput
                 inputId="userStoryRolePhrase"
                 labelText="Role phrase"
                 placeHolder="As a <role>"
@@ -118,7 +117,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
             />
         );
         const storyPhraseInput = (
-            <LabeledInput
+            <StandardInput
                 inputId="userStoryStoryPhrase"
                 labelText="Story phrase"
                 placeHolder="I can <something>"
@@ -130,7 +129,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
             />
         );
         const reasonPhraseInput = (
-            <LabeledInput
+            <StandardInput
                 inputId="userStoryReasonPhrase"
                 labelText="Reason phrase"
                 placeHolder={placeholderText}
@@ -157,7 +156,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
             />
         );
         const externalIdInput = (
-            <LabeledInput
+            <StandardInput
                 inputId="userStoryExternalId"
                 labelText="External ID"
                 inputValue={this.props.externalId}
@@ -167,7 +166,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
             />
         );
         const friendlyIdInput = (
-            <LabeledInput
+            <StandardInput
                 inputId="userStoryFriendlyId"
                 labelText="ID"
                 inputValue={this.props.friendlyId}
