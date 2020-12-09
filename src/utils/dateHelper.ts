@@ -22,3 +22,13 @@ export const addSeconds = (date: Date, seconds: number): Date => {
     const result = new Date(date.getTime() + seconds * ONE_SECOND_AS_MILLISECONDS);
     return result;
 };
+
+export const roundDateToDayBoundary = (dateTime: Date): Date => {
+    const time = dateTime.getTime();
+    const newTime = time + ONE_HOUR_AS_MILLISECONDS; // add 1 hour to make sure we go beyond any daylight savings adjust value
+    const dateWithOffset = new Date(newTime);
+    const newYear = dateWithOffset.getFullYear();
+    const newMonth = dateWithOffset.getMonth();
+    const newDay = dateWithOffset.getDate();
+    return new Date(newYear, newMonth, newDay);
+};

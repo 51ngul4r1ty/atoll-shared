@@ -60,9 +60,11 @@ export interface SprintPlanningPanelDispatchProps {
     onDetailClicked: { (sprintId: string, backlogItemId: string): void };
     onSprintDetailClicked: { (sprintId: string): void };
     onMoveItemToBacklogClicked: { (sprintId: string, backlogItemId: string): void };
+    onBacklogItemAcceptedClicked: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemDoneClicked: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemInProgressClicked: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemNotStartedClicked: { (sprintId: string, backlogItemId: string): void };
+    onBacklogItemReleasedClicked: { (sprintId: string, backlogItemId: string): void };
 }
 
 export type SprintPlanningPanelProps = SprintPlanningPanelStateProps & SprintPlanningPanelDispatchProps & WithTranslation;
@@ -98,6 +100,11 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
             props.onMoveItemToBacklogClicked(sprintId, backlogItemId);
         }
     };
+    const onBacklogItemAcceptedClicked = (sprintId: string, backlogItemId: string) => {
+        if (props.onBacklogItemAcceptedClicked) {
+            props.onBacklogItemAcceptedClicked(sprintId, backlogItemId);
+        }
+    };
     const onBacklogItemDoneClicked = (sprintId: string, backlogItemId: string) => {
         if (props.onBacklogItemDoneClicked) {
             props.onBacklogItemDoneClicked(sprintId, backlogItemId);
@@ -111,6 +118,11 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
     const onBacklogItemNotStartedClicked = (sprintId: string, backlogItemId: string) => {
         if (props.onBacklogItemNotStartedClicked) {
             props.onBacklogItemNotStartedClicked(sprintId, backlogItemId);
+        }
+    };
+    const onBacklogItemReleasedClicked = (sprintId: string, backlogItemId: string) => {
+        if (props.onBacklogItemReleasedClicked) {
+            props.onBacklogItemReleasedClicked(sprintId, backlogItemId);
         }
     };
     const classNameToUse = buildClassName(
@@ -178,6 +190,9 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         onMoveItemToBacklogClicked={(backlogItemId: string) => {
                             onMoveItemToBacklogClicked(sprint.id, backlogItemId);
                         }}
+                        onBacklogItemAcceptedClicked={(backlogItemId: string) => {
+                            onBacklogItemAcceptedClicked(sprint.id, backlogItemId);
+                        }}
                         onBacklogItemDoneClicked={(backlogItemId: string) => {
                             onBacklogItemDoneClicked(sprint.id, backlogItemId);
                         }}
@@ -186,6 +201,9 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         }}
                         onBacklogItemNotStartedClicked={(backlogItemId: string) => {
                             onBacklogItemNotStartedClicked(sprint.id, backlogItemId);
+                        }}
+                        onBacklogItemReleasedClicked={(backlogItemId: string) => {
+                            onBacklogItemReleasedClicked(sprint.id, backlogItemId);
                         }}
                     />
                 </div>

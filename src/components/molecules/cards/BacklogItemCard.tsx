@@ -18,7 +18,7 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 // consts/enums
 import { SaveableBacklogItem } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
 import { PushState } from "../../../reducers/types";
-import { StatusDoneIcon, StatusInProgressIcon } from "../../atoms/icons";
+import { StatusAcceptedIcon, StatusDoneIcon, StatusInProgressIcon, StatusReleasedIcon } from "../../atoms/icons";
 import { BacklogItemStatus } from "../../../types/backlogItemTypes";
 
 /* exported functions */
@@ -114,7 +114,7 @@ export interface ItemMenuEventHandlers {
 }
 
 export interface ItemMenuBuilder {
-    (itemId: string, showMenuToLeft: boolean);
+    (itemId: string, showMenuToLeft: boolean): React.ReactElement<any, any>;
 }
 
 export interface BacklogItemCardStateProps {
@@ -197,6 +197,14 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
         }
         case BacklogItemStatus.Done: {
             statusIcon = <StatusDoneIcon />;
+            break;
+        }
+        case BacklogItemStatus.Accepted: {
+            statusIcon = <StatusAcceptedIcon />;
+            break;
+        }
+        case BacklogItemStatus.Released: {
+            statusIcon = <StatusReleasedIcon />;
             break;
         }
     }

@@ -5,9 +5,11 @@ import { WithTranslation, withTranslation } from "react-i18next";
 
 // components
 import { CaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
+import { BacklogItemAcceptedButton } from "../buttons/BacklogItemAcceptedButton";
 import { BacklogItemDoneButton } from "../buttons/BacklogItemDoneButton";
 import { BacklogItemInProgressButton } from "../buttons/BacklogItemInProgressButton";
 import { BacklogItemNotStartedButton } from "../buttons/BacklogItemNotStartedButton";
+import { BacklogItemReleasedButton } from "../buttons/BacklogItemReleasedButton";
 import { MoveToBacklogButton } from "../buttons/MoveToBacklogButton";
 
 // style
@@ -20,9 +22,11 @@ export interface BacklogItemMenuStateProps {
 
 export interface BacklogItemMenuDispatchProps {
     onMoveItemToBacklogClicked?: { (): void };
+    onBacklogItemAcceptedClicked?: { (): void };
     onBacklogItemDoneClicked?: { (): void };
     onBacklogItemInProgressClicked?: { (): void };
     onBacklogItemNotStartedClicked?: { (): void };
+    onBacklogItemReleasedClicked?: { (): void };
 }
 
 export type SprintBacklogItemMenuProps = BacklogItemMenuStateProps & BacklogItemMenuDispatchProps;
@@ -55,6 +59,22 @@ export const InnerSprintBacklogItemMenu: React.FC<InnerSprintBacklogItemMenuProp
             onClick={() => {
                 if (props.onBacklogItemDoneClicked) {
                     props.onBacklogItemDoneClicked();
+                }
+            }}
+        />
+        <BacklogItemAcceptedButton
+            suppressSpacing
+            onClick={() => {
+                if (props.onBacklogItemAcceptedClicked) {
+                    props.onBacklogItemAcceptedClicked();
+                }
+            }}
+        />
+        <BacklogItemReleasedButton
+            suppressSpacing
+            onClick={() => {
+                if (props.onBacklogItemReleasedClicked) {
+                    props.onBacklogItemReleasedClicked();
                 }
             }}
         />

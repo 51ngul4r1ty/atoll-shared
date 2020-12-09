@@ -15,6 +15,12 @@ export const mapApiStatusToBacklogItem = (status: string | null): BacklogItemSta
         case "D": {
             return BacklogItemStatus.Done;
         }
+        case "A": {
+            return BacklogItemStatus.Accepted;
+        }
+        case "R": {
+            return BacklogItemStatus.Released;
+        }
         default: {
             throw new Error(`Unknown backlog item status "${status}"`);
         }
@@ -31,6 +37,12 @@ export const mapBacklogItemStatusToApi = (status: BacklogItemStatus): string | n
         }
         case BacklogItemStatus.Done: {
             return "D";
+        }
+        case BacklogItemStatus.Accepted: {
+            return "A";
+        }
+        case BacklogItemStatus.Released: {
+            return "R";
         }
         default: {
             throw new Error(`Unknown backlog item status "${status}"`);

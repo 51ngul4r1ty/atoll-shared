@@ -6,7 +6,9 @@ export type BacklogItemType = "story" | "issue";
 export enum BacklogItemStatus {
     NotStarted = 0, // DB: null
     InProgress = 1, // DB: 'P' = in progress
-    Done = 2 // DB: 'D' = done
+    Done = 2, // DB: 'D' = done
+    Accepted = 3, // DB: 'A' = accepted
+    Released = 4 // DB: 'R' = released
 }
 
 export interface BacklogItemModel extends BaseModelItem {
