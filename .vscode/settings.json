@@ -13,6 +13,8 @@
     "**/.hg": true,
     "**/CVS": true,
     "**/.DS_Store": true,
+    "docs/storybook": true,
+    "storybook-static": true,
     "build": true,
     "dist": true,
     "coverage": true,
