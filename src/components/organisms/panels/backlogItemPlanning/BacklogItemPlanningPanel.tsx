@@ -245,13 +245,13 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
     }
 
     const onMouseMove = (e: React.BaseSyntheticEvent<HTMLDivElement>, clientY: number, eventType: EventType = EventType.Mouse) => {
-        const loggingContainer = logger.info(`onMouseMove:${clientY}`, [loggingTags.DRAG_BACKLOGITEM]);
+        const logContext = logger.info(`onMouseMove:${clientY}`, [loggingTags.DRAG_BACKLOGITEM]);
         if (dragStartClientYRef.current) {
             if (eventType === EventType.Touch) {
                 preventDefault(e);
             }
             const mouseDeltaClientY = getMouseDragDistance(clientY);
-            logger.info(`mouseDelta:${mouseDeltaClientY}`, [loggingTags.DRAG_BACKLOGITEM], loggingContainer);
+            logger.info(`mouseDelta:${mouseDeltaClientY}`, [loggingTags.DRAG_BACKLOGITEM], logContext);
             if (Math.abs(mouseDeltaClientY) > 5) {
                 setIsDragging(true);
             }
@@ -269,7 +269,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
             }
             return false;
         }
-        logger.info("not dragging, bypassed preventDefault", [loggingTags.DRAG_BACKLOGITEM], loggingContainer);
+        logger.info("not dragging, bypassed preventDefault", [loggingTags.DRAG_BACKLOGITEM], logContext);
         return true;
     };
 
