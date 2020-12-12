@@ -20,7 +20,7 @@ import { StateTree } from "../reducers/rootReducer";
 
 // actions
 import { moveBacklogItemToSprint } from "../actions/sprintBacklogActions";
-import { AddNewSprintFormAction, addSprint, NewSprintPosition } from "../actions/sprintActions";
+import { AddNewSprintFormAction, addSprint, NewSprintPosition, updateSprintStats } from "../actions/sprintActions";
 
 // utils
 import { addDays } from "../utils/dateHelper";
@@ -45,6 +45,8 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
                 throw new Error(`Unable to find backlog item with ID ${backlogItemId}`);
             }
             storeTyped.dispatch(moveBacklogItemToSprint(sprintId, backlogItem));
+            const response = actionTyped.payload.response;
+            storeTyped.dispatch(updateSprintStats(sprintId, response.data.extra.sprintStats));
             return;
         }
         case ActionTypes.ADD_SPRINT_FORM: {

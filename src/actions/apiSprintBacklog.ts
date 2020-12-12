@@ -73,9 +73,10 @@ export type ApiBatchAddBacklogItemsToSprintAction = ApiBatchAction<
     ApiBatchAddBacklogItemsToSprintBatchActionParams
 >;
 
+export type ApiPostSprintBacklogItemSuccessActionPayload = ApiActionSuccessPayloadForItem<ApiSprintBacklogItem, SprintStats>;
 export interface ApiPostSprintBacklogItemSuccessAction {
     type: typeof ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_SUCCESS;
-    payload: ApiActionSuccessPayloadForItem<ApiSprintBacklogItem>;
+    payload: ApiPostSprintBacklogItemSuccessActionPayload;
     meta: ApiActionMetaDataRequestMeta<{}, MetaActionParams>;
 }
 
