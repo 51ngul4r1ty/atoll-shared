@@ -160,23 +160,17 @@ export const sprintBacklogItemReleasedClicked = (
 export interface RemoveSprintBacklogItemActionPayload {
     sprintId: string;
     backlogItemId: string;
-    sprintStats: ApiSprintStats;
 }
 export interface RemoveSprintBacklogItemAction {
     type: typeof ActionTypes.REMOVE_SPRINT_BACKLOG_ITEM;
     payload: RemoveSprintBacklogItemActionPayload;
 }
 
-export const removeSprintBacklogItem = (
-    sprintId: string,
-    backlogItemId: string,
-    sprintStats: ApiSprintStats
-): RemoveSprintBacklogItemAction => ({
+export const removeSprintBacklogItem = (sprintId: string, backlogItemId: string): RemoveSprintBacklogItemAction => ({
     type: ActionTypes.REMOVE_SPRINT_BACKLOG_ITEM,
     payload: {
         sprintId,
-        backlogItemId,
-        sprintStats
+        backlogItemId
     }
 });
 

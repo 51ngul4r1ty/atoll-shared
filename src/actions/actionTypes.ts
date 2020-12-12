@@ -158,6 +158,7 @@ export const CANCEL_EDIT_SPRINT = "app/cancel-edit:sprint";
 export const UPDATE_SPRINT_FIELDS = "app/update:sprint-fields";
 
 export const ADD_SPRINT = "app/add:sprint";
+export const UPDATE_SPRINT_STATS = "app/update:sprint-stats";
 
 export const MOVE_SELECTED_BACKLOG_ITEMS_TO_SPRINT = "app/add:selected-sprint-backlog-items";
 export const MOVE_BACKLOG_ITEM_TO_SPRINT = "app/add:sprint-backlog-item";

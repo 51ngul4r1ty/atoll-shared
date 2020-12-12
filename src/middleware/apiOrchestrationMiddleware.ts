@@ -70,7 +70,7 @@ import { convertToBacklogItemModel, convertToSprintModel } from "../utils/apiPay
 
 // interfaces/types
 import { ResourceTypes } from "../reducers/apiLinksReducer";
-import { ExpandSprintPanelAction, SaveNewSprintAction } from "../actions/sprintActions";
+import { ExpandSprintPanelAction, SaveNewSprintAction, updateSprintStats } from "../actions/sprintActions";
 import { BacklogItemStatus } from "../types/backlogItemTypes";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
@@ -226,7 +226,8 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const backlogItem = getSprintBacklogItemById(state, sprintId, backlogItemId);
             storeTyped.dispatch(addProductBacklogItem(backlogItem));
             const response = actionTyped.payload.response;
-            storeTyped.dispatch(removeSprintBacklogItem(sprintId, backlogItemId, response.data.extra.sprintStats));
+            storeTyped.dispatch(removeSprintBacklogItem(sprintId, backlogItemId));
+            storeTyped.dispatch(updateSprintStats(sprintId, response.data.extra.sprintStats));
             break;
         }
         case ActionTypes.SAVE_NEW_SPRINT: {
