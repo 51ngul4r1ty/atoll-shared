@@ -1,4 +1,5 @@
-import { BacklogItem, BacklogItemStatus } from "../types/backlogItemTypes";
+// consts/enums
+import { BacklogItemStatus } from "../types/backlogItemTypes";
 
-export const hasBacklogItemAtLeastBeenAccepted = (backlogItem: BacklogItem) =>
-    backlogItem.status === BacklogItemStatus.Accepted || backlogItem.status === BacklogItemStatus.Released;
+export const hasBacklogItemAtLeastBeenAccepted = (backlogItemStatus: BacklogItemStatus) =>
+    backlogItemStatus === BacklogItemStatus.Accepted || backlogItemStatus === BacklogItemStatus.Released;
