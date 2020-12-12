@@ -38,6 +38,7 @@ import {
 
 // actions
 import { AppClickAction } from "../actions/appActions";
+import { RemoveSprintBacklogItemAction } from "../actions/sprintBacklogActions";
 
 export interface Sprint extends StandardModelItem {
     acceptedPoints: number | null;
@@ -292,6 +293,29 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 });
                 rebuildAllItems(draft);
                 draft.openedDetailMenuSprintId = null;
+                return;
+            }
+            case ActionTypes.REMOVE_SPRINT_BACKLOG_ITEM: {
+                // TODO: Consider rather dispatching an "update sprint stats" action and handling that here
+                const actionTyped = action as RemoveSprintBacklogItemAction;
+                const sprintId = actionTyped.payload.sprintId;
+                const newSprintStats = actionTyped.payload.sprintStats;
+                let changed = false;
+                draft.items.forEach((item) => {
+                    if (item.id === sprintId) {
+                        if (item.plannedPoints !== newSprintStats.plannedPoints) {
+                            item.plannedPoints = newSprintStats.plannedPoints;
+                            changed = true;
+                        }
+                        if (item.acceptedPoints !== newSprintStats.acceptedPoints) {
+                            item.acceptedPoints = newSprintStats.acceptedPoints;
+                            changed = true;
+                        }
+                    }
+                });
+                if (changed) {
+                    rebuildAllItems(draft);
+                }
                 return;
             }
         }

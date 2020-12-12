@@ -225,7 +225,8 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const state = storeTyped.getState();
             const backlogItem = getSprintBacklogItemById(state, sprintId, backlogItemId);
             storeTyped.dispatch(addProductBacklogItem(backlogItem));
-            storeTyped.dispatch(removeSprintBacklogItem(sprintId, backlogItemId));
+            const response = actionTyped.payload.response;
+            storeTyped.dispatch(removeSprintBacklogItem(sprintId, backlogItemId, response.data.extra.sprintStats));
             break;
         }
         case ActionTypes.SAVE_NEW_SPRINT: {

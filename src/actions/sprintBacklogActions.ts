@@ -3,6 +3,7 @@ import * as ActionTypes from "./actionTypes";
 
 // interfaces/types
 import { BacklogItem } from "../types/backlogItemTypes";
+import { ApiSprintStats } from "../apiModelTypes";
 
 export interface MoveSelectedBacklogItemsToSprintUsingApiActionPayload {
     sprintId: string;
@@ -159,17 +160,23 @@ export const sprintBacklogItemReleasedClicked = (
 export interface RemoveSprintBacklogItemActionPayload {
     sprintId: string;
     backlogItemId: string;
+    sprintStats: ApiSprintStats;
 }
 export interface RemoveSprintBacklogItemAction {
     type: typeof ActionTypes.REMOVE_SPRINT_BACKLOG_ITEM;
     payload: RemoveSprintBacklogItemActionPayload;
 }
 
-export const removeSprintBacklogItem = (sprintId: string, backlogItemId: string): RemoveSprintBacklogItemAction => ({
+export const removeSprintBacklogItem = (
+    sprintId: string,
+    backlogItemId: string,
+    sprintStats: ApiSprintStats
+): RemoveSprintBacklogItemAction => ({
     type: ActionTypes.REMOVE_SPRINT_BACKLOG_ITEM,
     payload: {
         sprintId,
-        backlogItemId
+        backlogItemId,
+        sprintStats
     }
 });
 

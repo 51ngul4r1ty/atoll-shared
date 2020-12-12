@@ -17,7 +17,7 @@ import {
     ApiActionSuccessPayloadForItem,
     ApiActionFailurePayload
 } from "../middleware/apiTypes";
-import { ApiBacklogItem, ApiSprintBacklogItem } from "../apiModelTypes";
+import { ApiBacklogItem, ApiSprintBacklogItem, ApiSprintStats } from "../apiModelTypes";
 import { ApiBatchAction } from "../middleware/apiBatchTypes";
 
 // utils
@@ -140,9 +140,14 @@ export interface ApiMoveSprintItemToProductBacklogActionParams {
     backlogItemId: string;
 }
 
+export interface SprintStats {
+    sprintStats: ApiSprintStats;
+}
+
+export type ApiMoveSprintItemToProductBacklogSuccessActionPayload = ApiActionSuccessPayloadForItem<ApiBacklogItem, SprintStats>;
 export interface ApiMoveSprintItemToProductBacklogSuccessAction {
     type: typeof ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS;
-    payload: ApiActionSuccessPayloadForItem<ApiBacklogItem>;
+    payload: ApiMoveSprintItemToProductBacklogSuccessActionPayload;
     meta: ApiActionMetaDataRequestMeta<{}, ApiMoveSprintItemToProductBacklogActionParams>;
 }
 

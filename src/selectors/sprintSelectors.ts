@@ -20,7 +20,7 @@ export const getPlanViewSprints = (state: StateTree, includeArchived: boolean): 
                 name: sprint.name,
                 startDate: sprint.startDate,
                 finishDate: sprint.finishDate,
-                status: determineSprintStatus(sprint),
+                status: determineSprintStatus(sprint.startDate, sprint.finishDate),
                 plannedPoints: sprint.plannedPoints,
                 acceptedPoints: sprint.acceptedPoints,
                 velocityPoints: sprint.velocityPoints,

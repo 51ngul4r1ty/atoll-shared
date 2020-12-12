@@ -65,8 +65,7 @@ export { AppContext, AppProvider, AppConsumer } from "./contexts/appContextUtil"
 
 // utils
 export * from "./utils/index";
-export * from "./mappers/backlogItemMappers";
-export * from "./mappers/sprintMappers";
+export * from "./mappers/index";
 export * as logger from "./utils/logger";
 export { configureStore } from "./store";
 export { createClientHistory, createElectronClientHistory, createServerHistory } from "./store/history";
