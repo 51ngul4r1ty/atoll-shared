@@ -12,7 +12,7 @@ import { getCurrentProjectId } from "../selectors/userSelectors";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { ApiPostSprintBacklogItemSuccessAction } from "../actions/apiSprintBacklog";
+import { ApiPostSprintBacklogItemSuccessAction, ApiSprintBacklogItemSetStatusSuccessAction } from "../actions/apiSprintBacklog";
 import { SaveableSprint } from "../reducers/sprintsReducer";
 
 // state
@@ -29,6 +29,14 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
     next(action);
     const storeTyped = store as Store<StateTree>;
     switch (action.type) {
+        case ActionTypes.API_PATCH_BACKLOG_ITEM_SUCCESS: {
+            const actionTyped = action as ApiSprintBacklogItemSetStatusSuccessAction;
+            const sprintId = actionTyped.meta.actionParams.sprintId;
+            const response = actionTyped.payload.response;
+            const sprintStats = response.data.extra.sprintStats;
+            storeTyped.dispatch(updateSprintStats(sprintId, sprintStats));
+            return;
+        }
         case ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_SUCCESS: {
             const state = storeTyped.getState();
             const actionTyped = action as ApiPostSprintBacklogItemSuccessAction;

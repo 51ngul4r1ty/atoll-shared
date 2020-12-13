@@ -7,7 +7,7 @@ import * as ActionTypes from "../actions/actionTypes";
 // interfaces/types
 import { AnyFSA } from "../types";
 import { ApiGetSprintBacklogItemsSuccessAction, ApiSprintBacklogItemSetStatusSuccessAction } from "../actions/apiSprintBacklog";
-import { BacklogItem, BacklogItemStatus } from "../types/backlogItemTypes";
+import { BacklogItem } from "../types/backlogItemTypes";
 import { BacklogItemWithSource } from "./backlogItems/backlogItemsReducerTypes";
 import {
     ChangeSprintPlanningArchivedFilterAction,

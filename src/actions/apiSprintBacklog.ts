@@ -181,9 +181,11 @@ export interface ApiSprintBacklogItemSetStatusData {
     status: string;
 }
 
+export type ApiSprintBacklogItemSetStatusActionPayload = ApiActionSuccessPayloadForItem<ApiBacklogItem, SprintStats>;
+
 export interface ApiSprintBacklogItemSetStatusSuccessAction {
     type: typeof ActionTypes.API_PATCH_BACKLOG_ITEM_SUCCESS;
-    payload: ApiActionSuccessPayloadForItem<ApiBacklogItem>;
+    payload: ApiSprintBacklogItemSetStatusActionPayload;
     meta: ApiActionMetaDataRequestMeta<ApiSprintBacklogItemSetStatusData, ApiSprintBacklogItemSetStatusActionParams>;
 }
 
