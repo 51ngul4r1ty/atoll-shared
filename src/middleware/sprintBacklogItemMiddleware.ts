@@ -33,8 +33,10 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
             const actionTyped = action as ApiSprintBacklogItemSetStatusSuccessAction;
             const sprintId = actionTyped.meta.actionParams.sprintId;
             const response = actionTyped.payload.response;
-            const sprintStats = response.data.extra.sprintStats;
-            storeTyped.dispatch(updateSprintStats(sprintId, sprintStats));
+            const sprintStats = response.data.extra?.sprintStats;
+            if (sprintStats) {
+                storeTyped.dispatch(updateSprintStats(sprintId, sprintStats));
+            }
             return;
         }
         case ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_SUCCESS: {
@@ -54,7 +56,11 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
             }
             storeTyped.dispatch(moveBacklogItemToSprint(sprintId, backlogItem));
             const response = actionTyped.payload.response;
-            storeTyped.dispatch(updateSprintStats(sprintId, response.data.extra.sprintStats));
+            const sprintStats = response.data.extra?.sprintStats;
+            if (sprintStats) {
+                storeTyped.dispatch(updateSprintStats(sprintId, sprintStats));
+            }
+
             return;
         }
         case ActionTypes.ADD_SPRINT_FORM: {
