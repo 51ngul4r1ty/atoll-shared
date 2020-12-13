@@ -161,6 +161,7 @@ export interface UpdateSprintStatsActionPayload {
     sprintId: string;
     sprintStats: ApiSprintStats;
 }
+
 export interface UpdateSprintStatsAction {
     type: typeof ActionTypes.UPDATE_SPRINT_STATS;
     payload: UpdateSprintStatsActionPayload;
