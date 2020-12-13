@@ -64,9 +64,9 @@ export interface ApiActionSuccessPayload<T> {
     response: T;
 }
 
-export type ApiActionSuccessPayloadForCollection<T> = ApiActionSuccessPayload<{ data: { items: T[] } }>;
+export type ApiActionSuccessPayloadForCollection<T, X = undefined> = ApiActionSuccessPayload<{ data: { items: T[]; extra: X } }>;
 
-export type ApiActionSuccessPayloadForItem<T> = ApiActionSuccessPayload<{ data: { item: T } }>;
+export type ApiActionSuccessPayloadForItem<T, X = undefined> = ApiActionSuccessPayload<{ data: { item: T; extra: X } }>;
 
 export interface ApiActionFailurePayloadConfig {
     url: string;

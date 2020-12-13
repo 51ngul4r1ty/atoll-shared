@@ -6,6 +6,7 @@ import * as ActionTypes from "./actionTypes";
 
 // interfaces/types
 import { SprintDetailFormEditableFieldsWithInstanceId } from "../components/organisms/forms/SprintDetailForm";
+import { ApiSprintStats } from "../apiModelTypes";
 
 export interface CollapseSprintPanelAction {
     type: typeof ActionTypes.COLLAPSE_SPRINT_PANEL;
@@ -153,5 +154,23 @@ export const sprintDetailClicked = (sprintId: string): ToggleSprintDetailAction 
     type: ActionTypes.TOGGLE_SPRINT_ITEM_DETAIL,
     payload: {
         sprintId
+    }
+});
+
+export interface UpdateSprintStatsActionPayload {
+    sprintId: string;
+    sprintStats: ApiSprintStats;
+}
+
+export interface UpdateSprintStatsAction {
+    type: typeof ActionTypes.UPDATE_SPRINT_STATS;
+    payload: UpdateSprintStatsActionPayload;
+}
+
+export const updateSprintStats = (sprintId: string, sprintStats: ApiSprintStats): UpdateSprintStatsAction => ({
+    type: ActionTypes.UPDATE_SPRINT_STATS,
+    payload: {
+        sprintId,
+        sprintStats
     }
 });

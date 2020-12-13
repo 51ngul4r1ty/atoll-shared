@@ -130,8 +130,9 @@ export const buildInProgressSprintPointInfoText = (sprint: SprintCardSprint, ren
 
 export const buildNotStartedSprintPointInfoText = (sprint: SprintCardSprint, renderMobile: boolean): string => {
     const parts: string[] = [];
-    if (sprint.plannedPoints && sprint.velocityPoints) {
-        parts.push(`${sprint.plannedPoints} of ${sprint.velocityPoints} planned`);
+    if (sprint.plannedPoints) {
+        const ofText = sprint.velocityPoints ? " of ${sprint.velocityPoints}" : "";
+        parts.push(`${sprint.plannedPoints}${ofText} planned`);
         if (sprint.remainingSplitPoints) {
             parts.push(`(${sprint.remainingSplitPoints} from split)`);
         }

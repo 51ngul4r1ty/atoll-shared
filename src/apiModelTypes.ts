@@ -62,16 +62,19 @@ export interface ApiCounter extends StandardItem {
     lastCounterValue: string | null;
 }
 
-export interface ApiSprint extends StandardNamedItem {
+export interface ApiSprintStats {
     acceptedPoints: number | null;
-    finishdate: ISODateString;
     plannedPoints: number | null;
+}
+
+export interface ApiSprint extends StandardNamedItem, ApiSprintStats {
+    archived: boolean;
+    finishdate: ISODateString;
     projectId: string;
     remainingSplitPoints: number | null;
     startdate: ISODateString;
     usedSplitPoints: number | null;
     velocityPoints: number | null;
-    archived: boolean;
 }
 
 export interface ApiSprintBacklogItem extends BaseItem {

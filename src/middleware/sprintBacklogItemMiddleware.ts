@@ -12,7 +12,7 @@ import { getCurrentProjectId } from "../selectors/userSelectors";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { ApiPostSprintBacklogItemSuccessAction } from "../actions/apiSprintBacklog";
+import { ApiPostSprintBacklogItemSuccessAction, ApiSprintBacklogItemSetStatusSuccessAction } from "../actions/apiSprintBacklog";
 import { SaveableSprint } from "../reducers/sprintsReducer";
 
 // state
@@ -20,7 +20,7 @@ import { StateTree } from "../reducers/rootReducer";
 
 // actions
 import { moveBacklogItemToSprint } from "../actions/sprintBacklogActions";
-import { AddNewSprintFormAction, addSprint, NewSprintPosition } from "../actions/sprintActions";
+import { AddNewSprintFormAction, addSprint, NewSprintPosition, updateSprintStats } from "../actions/sprintActions";
 
 // utils
 import { addDays } from "../utils/dateHelper";
@@ -29,6 +29,16 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
     next(action);
     const storeTyped = store as Store<StateTree>;
     switch (action.type) {
+        case ActionTypes.API_PATCH_BACKLOG_ITEM_SUCCESS: {
+            const actionTyped = action as ApiSprintBacklogItemSetStatusSuccessAction;
+            const sprintId = actionTyped.meta.actionParams.sprintId;
+            const response = actionTyped.payload.response;
+            const sprintStats = response.data.extra?.sprintStats;
+            if (sprintStats) {
+                storeTyped.dispatch(updateSprintStats(sprintId, sprintStats));
+            }
+            return;
+        }
         case ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_SUCCESS: {
             const state = storeTyped.getState();
             const actionTyped = action as ApiPostSprintBacklogItemSuccessAction;
@@ -45,6 +55,12 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
                 throw new Error(`Unable to find backlog item with ID ${backlogItemId}`);
             }
             storeTyped.dispatch(moveBacklogItemToSprint(sprintId, backlogItem));
+            const response = actionTyped.payload.response;
+            const sprintStats = response.data.extra?.sprintStats;
+            if (sprintStats) {
+                storeTyped.dispatch(updateSprintStats(sprintId, sprintStats));
+            }
+
             return;
         }
         case ActionTypes.ADD_SPRINT_FORM: {

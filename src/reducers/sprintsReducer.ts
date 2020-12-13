@@ -4,7 +4,6 @@ import { Draft, produce } from "immer";
 // interfaces/types
 import { AnyFSA, StandardModelItem } from "../types";
 import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
-import { ApiSprint } from "../apiModelTypes";
 import { PushState, Source } from "./types";
 import { ApiGetSprintBacklogItemsSuccessAction } from "../actions/apiSprintBacklog";
 import {
@@ -27,9 +26,9 @@ import {
 import * as ActionTypes from "../actions/actionTypes";
 
 // utils
-import { isoDateStringToDate } from "../utils/apiPayloadConverters";
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
 import { targetIsInMenuButton, targetIsInMenuPanel } from "./backlogItems/backlogItemsReducerHelper";
+import { mapApiItemsToSprints } from "../mappers/sprintMappers";
 
 // components
 import {
@@ -39,6 +38,7 @@ import {
 
 // actions
 import { AppClickAction } from "../actions/appActions";
+import { UpdateSprintStatsAction } from "../actions/sprintActions";
 
 export interface Sprint extends StandardModelItem {
     acceptedPoints: number | null;
@@ -95,28 +95,6 @@ export const rebuildAllItems = (draft: Draft<SprintsState>) => {
     const allItemsUnsorted = [...addedItemsWithSource, ...itemsWithSource];
     const allItemsSorted = allItemsUnsorted.sort((a, b) => (a.startDate < b.startDate ? -1 : 1));
     draft.allItems = allItemsSorted;
-};
-
-export const mapApiItemToSprint = (apiItem: ApiSprint): Sprint => ({
-    acceptedPoints: apiItem.acceptedPoints,
-    archived: apiItem.archived,
-    backlogItemsLoaded: false,
-    createdAt: apiItem.createdAt,
-    expanded: false, // TODO: Add smart logic for this
-    finishDate: isoDateStringToDate(apiItem.finishdate),
-    id: apiItem.id,
-    name: apiItem.name,
-    plannedPoints: apiItem.plannedPoints,
-    projectId: apiItem.projectId,
-    remainingSplitPoints: apiItem.remainingSplitPoints,
-    startDate: isoDateStringToDate(apiItem.startdate),
-    updatedAt: apiItem.updatedAt,
-    usedSplitPoints: apiItem.usedSplitPoints,
-    velocityPoints: apiItem.velocityPoints
-});
-
-export const mapApiItemsToSprints = (apiItems: ApiSprint[]): Sprint[] => {
-    return apiItems.map((item) => mapApiItemToSprint(item));
 };
 
 export const idsMatch = (item1: SaveableSprint, item2: SprintDetailFormEditableFieldsWithInstanceId): boolean => {
@@ -315,6 +293,28 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 });
                 rebuildAllItems(draft);
                 draft.openedDetailMenuSprintId = null;
+                return;
+            }
+            case ActionTypes.UPDATE_SPRINT_STATS: {
+                const actionTyped = action as UpdateSprintStatsAction;
+                const sprintId = actionTyped.payload.sprintId;
+                const newSprintStats = actionTyped.payload.sprintStats;
+                let changed = false;
+                draft.items.forEach((item) => {
+                    if (item.id === sprintId) {
+                        if (item.plannedPoints !== newSprintStats.plannedPoints) {
+                            item.plannedPoints = newSprintStats.plannedPoints;
+                            changed = true;
+                        }
+                        if (item.acceptedPoints !== newSprintStats.acceptedPoints) {
+                            item.acceptedPoints = newSprintStats.acceptedPoints;
+                            changed = true;
+                        }
+                    }
+                });
+                if (changed) {
+                    rebuildAllItems(draft);
+                }
                 return;
             }
         }

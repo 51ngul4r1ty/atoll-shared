@@ -35,20 +35,20 @@ export const formatMessage = (msg: string, loggingNestLevel: number | null): str
     return result;
 };
 
-export interface LoggingContainer {
+export interface LoggingContext {
     nestLevel: number;
 }
 
-export const info = (msg: string, tags: string[], loggingContainer: LoggingContainer = { nestLevel: 1 }): LoggingContainer => {
+export const info = (msg: string, tags: string[], logContext: LoggingContext = { nestLevel: 1 }): LoggingContext => {
     if (shouldLogThis(tags, "info")) {
-        console.log(formatMessage(msg, loggingContainer.nestLevel));
+        console.log(formatMessage(msg, logContext.nestLevel));
     }
-    return { nestLevel: getNextLoggingNestLevel(loggingContainer.nestLevel) };
+    return { nestLevel: getNextLoggingNestLevel(logContext.nestLevel) };
 };
 
-export const warn = (msg: string, tags: string[], loggingNestLevel: LoggingContainer = { nestLevel: 1 }): number => {
+export const warn = (msg: string, tags: string[], logContext: LoggingContext = { nestLevel: 1 }): LoggingContext => {
     if (shouldLogThis(tags, "warn")) {
-        console.warn(formatMessage(msg, loggingNestLevel.nestLevel));
+        console.warn(formatMessage(msg, logContext.nestLevel));
     }
-    return getNextLoggingNestLevel(loggingNestLevel.nestLevel);
+    return { nestLevel: getNextLoggingNestLevel(logContext.nestLevel) };
 };

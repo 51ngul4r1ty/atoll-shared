@@ -49,12 +49,12 @@ export { SprintViewContainer } from "./SprintViewContainer";
 export * from "./config";
 
 // interfaces/types
+export * from "./apiModelTypes";
 export { BasePushNotification, WebsocketPushNotification as PushNotification, PushNotificationType } from "./types";
 export { FeatureToggle, FeatureTogglesState } from "./reducers/featureTogglesReducer";
 export { StateTree } from "./reducers/rootReducer";
 export { AppState } from "./reducers/appReducer";
 export { UserState } from "./reducers/userReducer";
-export * from "./apiModelTypes";
 export { BacklogItemWithSource, BacklogItemsState } from "./reducers/backlogItems/backlogItemsReducerTypes";
 export { Source } from "./reducers/types";
 export { BacklogItem, BacklogItemStatus, BacklogItemType } from "./types/backlogItemTypes";
@@ -65,7 +65,8 @@ export { AppContext, AppProvider, AppConsumer } from "./contexts/appContextUtil"
 
 // utils
 export * from "./utils/index";
-export * from "./mappers/backlogItemMappers";
+export * from "./mappers/index";
+export * as logger from "./utils/logger";
 export { configureStore } from "./store";
 export { createClientHistory, createElectronClientHistory, createServerHistory } from "./store/history";
 export { storeHistoryInstance, getHistoryInstance } from "./config";

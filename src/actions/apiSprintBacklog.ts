@@ -17,7 +17,7 @@ import {
     ApiActionSuccessPayloadForItem,
     ApiActionFailurePayload
 } from "../middleware/apiTypes";
-import { ApiBacklogItem, ApiSprintBacklogItem } from "../apiModelTypes";
+import { ApiBacklogItem, ApiSprintBacklogItem, ApiSprintStats } from "../apiModelTypes";
 import { ApiBatchAction } from "../middleware/apiBatchTypes";
 
 // utils
@@ -73,9 +73,10 @@ export type ApiBatchAddBacklogItemsToSprintAction = ApiBatchAction<
     ApiBatchAddBacklogItemsToSprintBatchActionParams
 >;
 
+export type ApiPostSprintBacklogItemSuccessActionPayload = ApiActionSuccessPayloadForItem<ApiSprintBacklogItem, SprintStats>;
 export interface ApiPostSprintBacklogItemSuccessAction {
     type: typeof ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_SUCCESS;
-    payload: ApiActionSuccessPayloadForItem<ApiSprintBacklogItem>;
+    payload: ApiPostSprintBacklogItemSuccessActionPayload;
     meta: ApiActionMetaDataRequestMeta<{}, MetaActionParams>;
 }
 
@@ -140,9 +141,14 @@ export interface ApiMoveSprintItemToProductBacklogActionParams {
     backlogItemId: string;
 }
 
+export interface SprintStats {
+    sprintStats: ApiSprintStats;
+}
+
+export type ApiMoveSprintItemToProductBacklogSuccessActionPayload = ApiActionSuccessPayloadForItem<ApiBacklogItem, SprintStats>;
 export interface ApiMoveSprintItemToProductBacklogSuccessAction {
     type: typeof ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS;
-    payload: ApiActionSuccessPayloadForItem<ApiBacklogItem>;
+    payload: ApiMoveSprintItemToProductBacklogSuccessActionPayload;
     meta: ApiActionMetaDataRequestMeta<{}, ApiMoveSprintItemToProductBacklogActionParams>;
 }
 
@@ -175,9 +181,11 @@ export interface ApiSprintBacklogItemSetStatusData {
     status: string;
 }
 
+export type ApiSprintBacklogItemSetStatusActionPayload = ApiActionSuccessPayloadForItem<ApiBacklogItem, SprintStats>;
+
 export interface ApiSprintBacklogItemSetStatusSuccessAction {
     type: typeof ActionTypes.API_PATCH_BACKLOG_ITEM_SUCCESS;
-    payload: ApiActionSuccessPayloadForItem<ApiBacklogItem>;
+    payload: ApiSprintBacklogItemSetStatusActionPayload;
     meta: ApiActionMetaDataRequestMeta<ApiSprintBacklogItemSetStatusData, ApiSprintBacklogItemSetStatusActionParams>;
 }
 

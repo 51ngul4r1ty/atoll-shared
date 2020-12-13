@@ -7,10 +7,10 @@ import { Sprint } from "../reducers/sprintsReducer";
 // utils
 import { roundDateToDayBoundary } from "./dateHelper";
 
-export const determineSprintStatus = (sprint: Sprint): SprintStatus => {
+export const determineSprintStatus = (startDate: Date, finishDate: Date): SprintStatus => {
     const currentTime = new Date().getTime();
-    const afterSprintStart = currentTime >= roundDateToDayBoundary(sprint.startDate).getTime();
-    const beforeSprintFinish = currentTime < roundDateToDayBoundary(sprint.finishDate).getTime();
+    const afterSprintStart = currentTime >= roundDateToDayBoundary(startDate).getTime();
+    const beforeSprintFinish = currentTime < roundDateToDayBoundary(finishDate).getTime();
     if (afterSprintStart && beforeSprintFinish) {
         return SprintStatus.InProgress;
     } else if (afterSprintStart) {
