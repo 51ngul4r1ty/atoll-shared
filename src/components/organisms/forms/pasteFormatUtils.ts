@@ -15,9 +15,6 @@ export const getStoryPhrases = (text: string): StoryPhrases => {
         const rawReasonPhrase = captureGroups.length > 4 ? captureGroups[5] : null;
         const reasonPhrase = rawReasonPhrase?.length > 2 ? rawReasonPhrase.substr(2).trim() : null;
         const asText = text.substr(0, 2);
-        console.log("asText", asText);
-        console.log("aOrAnCaptureGroup", aOrAnCaptureGroup);
-        console.log("roleCaptureGroup", roleCaptureGroup);
         const rolePhrase = `${asText} ${aOrAnCaptureGroup} ${roleCaptureGroup}`;
         const storyPhrase = `I ${storyAdverbCaptureGroup} ${storyActionPhraseCaptureGroup}`;
         return {
