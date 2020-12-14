@@ -7,6 +7,7 @@ import css from "./StandardInput.module.css";
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
 import { ComponentWithForwardedRef } from "../../../types";
+import { usePrevious } from "../../common/usePreviousHook";
 
 export type StandardInputRefType = HTMLInputElement;
 
@@ -79,6 +80,15 @@ export const InnerStandardInput: React.FC<StandardInputProps & StandardInputInne
             }
         };
     });
+    const prevProps = usePrevious({ inputValue: props.inputValue });
+    const prevState = usePrevious({ inputText });
+    useEffect(() => {
+        if (prevProps?.inputValue !== props.inputValue && prevState?.inputText === inputText) {
+            if (inputText !== props.inputValue) {
+                setInputText(props.inputValue);
+            }
+        }
+    }, [props.inputValue, inputText]);
     const nameToUse = props.inputName || props.inputId;
     const classToUse = buildClassName(
         css.input,
