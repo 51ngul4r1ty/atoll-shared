@@ -38,6 +38,12 @@
 .actionButtonPanel {
 }
 
+:global(.mobile) .includeArchivedCheckbox {
+    margin-left: -0.5rem;
+    justify-self: auto;
+    margin-right: 0;
+}
+
 .includeArchivedCheckbox {
     display: flex;
     align-items: center;
