@@ -2,7 +2,7 @@
     order: 0;
 }
 
-.backlogItemCardOuter:not(.mobile) .checkbox {
+:global(.all-devices):not(:global(.mobile)) .backlogItemCardOuter .checkbox {
     order: 1;
 }
 
@@ -10,7 +10,7 @@
     order: 2;
 }
 
-.backlogItemCardOuter:not(.mobile) .backlogItemDetailButton {
+:global(.all-devices):not(:global(.mobile)) .backlogItemCardOuter .backlogItemDetailButton {
     margin-left: -0.5rem;
     min-width: 1.7rem;
     max-width: 1.7rem;
@@ -26,11 +26,11 @@
     order: 6;
 }
 
-.backlogItemCardOuter.mobile .backlogItemEstimate {
+:global(.mobile) .backlogItemCardOuter .backlogItemEstimate {
     order: 2;
 }
 
-.backlogItemCardOuter.mobile .backlogItemText {
+:global(.mobile) .backlogItemCardOuter .backlogItemText {
     order: 3;
 }
 
@@ -54,7 +54,7 @@
     display: none;
 }
 
-.backlogItemCardOuter.mobile .backlogItemCard {
+:global(.mobile) .backlogItemCardOuter .backlogItemCard {
     height: auto;
     flex-wrap: wrap;
 }
@@ -90,18 +90,18 @@
     user-select: none;
 }
 
-.backlogItemCardOuter.mobile .backlogItemType {
+:global(.mobile) .backlogItemCardOuter .backlogItemType {
     flex-grow: 1;
 }
 
-.backlogItemCardOuter.mobile .backlogItemText {
+:global(.mobile) .backlogItemCardOuter .backlogItemText {
     padding-right: 0;
 }
 
 .backlogItemText,
-.backlogItemCardOuter:not(.mobile) .checkbox,
-.backlogItemCardOuter:not(.mobile) .backlogItemDetailButton,
-.backlogItemCardOuter:not(.mobile) .status {
+:global(.all-devices):not(:global(.mobile)) .backlogItemCardOuter .checkbox,
+:global(.all-devices):not(:global(.mobile)) .backlogItemCardOuter .backlogItemDetailButton,
+:global(.all-devices):not(:global(.mobile)) .backlogItemCardOuter .status {
     border-top: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
     border-bottom: 0.0625rem solid var(--normal-light-border-color, #ccc); /* TODO: Use constants??? */
 }
@@ -120,7 +120,7 @@
     top: -0.075rem;
 }
 
-.mobile .backlogItemTextContent {
+:global(.mobile) .backlogItemTextContent {
     min-height: 3rem;
 }
 
@@ -130,12 +130,12 @@
     white-space: nowrap;
 }
 
-.backlogItemCardOuter.mobile .backlogItemTextTitleText {
+:global(.mobile) .backlogItemCardOuter .backlogItemTextTitleText {
     white-space: normal;
     padding-right: 1.5rem;
 }
 
-.backlogItemCardOuter.mobile .backlogItemText {
+:global(.mobile) .backlogItemCardOuter .backlogItemText {
     margin-left: 0.3rem; /* TODO: Use constants??? */
     height: 4.15rem;
     flex-basis: 100%;
@@ -151,7 +151,7 @@
     user-select: none;
 }
 
-.backlogItemCardOuter.mobile .backlogItemEstimate {
+:global(.mobile) .backlogItemCardOuter .backlogItemEstimate {
     flex-grow: 0;
     padding-right: 0;
 }
@@ -172,7 +172,7 @@
     text-align: center;
 }
 
-.backlogItemCardOuter.mobile .backlogItemId {
+:global(.mobile) .backlogItemCardOuter .backlogItemId {
     flex-grow: 0;
 }
 
@@ -185,7 +185,7 @@
     flex-shrink: 0;
 }
 
-.backlogItemCardOuter.mobile .backlogItemDragButton {
+:global(.mobile) .backlogItemCardOuter .backlogItemDragButton {
     flex-grow: 1;
 }
 
@@ -194,7 +194,7 @@
     height: 1.3rem;
 }
 
-.backlogItemCardOuter.mobile .backlogItemDetailButton {
+:global(.mobile) .backlogItemCardOuter .backlogItemDetailButton {
     position: absolute;
     top: 0.3rem;
     right: 0;
@@ -221,7 +221,7 @@
     z-index: 1;
 }
 
-.backlogItemCardOuter.mobile .backlogItemCardDetailMenu {
+:global(.mobile) .backlogItemCardOuter .backlogItemCardDetailMenu {
     right: 1.2rem;
     top: 1.95rem;
 }
@@ -300,13 +300,13 @@
     overflow: hidden;
 }
 
-.backlogItemCardOuter.mobile .status {
+:global(.mobile) .backlogItemCardOuter .status {
     position: absolute;
     top: 1.45rem;
     right: -0.2rem;
 }
 
-.backlogItemCardOuter:not(.mobile) .status svg {
+:global(.all-devices):not(:global(.mobile)) .backlogItemCardOuter .status svg {
     left: -0.45rem;
 }
 
