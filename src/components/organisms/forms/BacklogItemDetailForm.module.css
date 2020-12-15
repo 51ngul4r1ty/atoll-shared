@@ -28,10 +28,29 @@
     margin-top: 0.7rem;
 }
 
+.actionButtonPanelContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+:global(.mobile) .actionButtonPanel {
+    grid-row-gap: 0.4rem;
+    justify-items: right;
+    grid-template-columns: max-content;
+}
+
 .actionButtonPanel {
     display: grid;
     grid-template-columns: auto max-content max-content;
     grid-column-gap: 0.4rem;
+}
+
+:global(.mobile) .actionButtonContainer {
+    width: 100%;
+}
+
+:global(.mobile) .actionButton {
+    width: 100%;
 }
 
 .centerCell {
@@ -47,6 +66,11 @@
 
 .mobileFormRow {
     width: 100%;
+}
+
+:global(.mobile) .threeCellRow {
+    grid-template-columns: auto;
+    grid-row-gap: 0.7rem;
 }
 
 .threeCellRow {

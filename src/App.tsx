@@ -16,7 +16,7 @@ import { buildClassName, buildOsClassName } from "./utils";
 
 // consts/enums
 import * as loggingTags from "./constants/loggingTags";
-import { GLOBAL_CSS_CLASS_MOBILE } from "./constants";
+import { GLOBAL_CSS_CLASS_ALL, GLOBAL_CSS_CLASS_MOBILE } from "./constants";
 
 // style
 import css from "./App.module.css";
@@ -143,6 +143,7 @@ export class App extends React.Component<AppProps, AppState> {
     render() {
         const classNameToUse = buildClassName(
             css.app,
+            GLOBAL_CSS_CLASS_ALL,
             this.state?.isMobile ? GLOBAL_CSS_CLASS_MOBILE : null,
             this.props.electronClient ? buildOsClassName(currentPlatformValue) : null
         );

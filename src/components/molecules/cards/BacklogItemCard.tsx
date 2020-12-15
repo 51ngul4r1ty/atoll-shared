@@ -155,7 +155,6 @@ export type InnerBacklogItemCardProps = BacklogItemCardProps & WithTranslation;
 
 export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props) => {
     const detailMenu = props.showDetailMenu ? props.buildItemMenu(props.internalId, props.showDetailMenuToLeft) : null;
-    const outerClassNameToUse = buildClassName(css.backlogItemCardOuter, props.renderMobile ? css.mobile : null);
     const classNameToUse = buildClassName(
         css.backlogItemCard,
         props.marginBelowItem ? css.marginBelowItem : null,
@@ -210,7 +209,7 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
     }
     const statusIconElts = (props.status === statusIcon) !== null ? <div className={css.status}>{statusIcon}</div> : null;
     return (
-        <div className={outerClassNameToUse} data-class="backlogitem" data-id={props.internalId} style={styleToUse}>
+        <div className={css.backlogItemCardOuter} data-class="backlogitem" data-id={props.internalId} style={styleToUse}>
             <div className={classNameToUse} style={{ width: props.width }} tabIndex={0}>
                 <div className={css.backlogItemPushState}>
                     <div />

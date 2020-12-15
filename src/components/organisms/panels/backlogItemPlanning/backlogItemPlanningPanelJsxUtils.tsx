@@ -21,16 +21,14 @@ export const addActionButtons = (
     editMode: EditMode,
     suppressTopPadding: boolean,
     suppressButtonSpacing: boolean,
-    onAddNewBacklogItemForm: OnAddedNewBacklogItemForm,
-    renderMobile: boolean
+    onAddNewBacklogItemForm: OnAddedNewBacklogItemForm
 ) => {
     if (editMode === EditMode.View) {
         return;
     }
     const actionButtonsClassName = buildClassName(
         css.backlogItemPlanningActionPanel,
-        suppressTopPadding ? null : css.embeddedBacklogItemUserStoryFormRow,
-        renderMobile ? css.mobile : null
+        suppressTopPadding ? null : css.embeddedBacklogItemUserStoryFormRow
     );
     renderElts.push(
         <div key="backlogitem-action-buttons" className={actionButtonsClassName}>

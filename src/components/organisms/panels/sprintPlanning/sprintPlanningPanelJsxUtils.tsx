@@ -26,13 +26,12 @@ export const addActionButtons = (
     onAddNewSprint: OnAddNewSprint,
     onArchivedFilterChange: OnArchivedFilterChange,
     addSprintButtonSuffix: string,
-    renderMobile: boolean,
     buttonsEnabled: boolean
 ) => {
     if (editMode === EditMode.View) {
         return;
     }
-    const actionButtonsClassName = buildClassName(css.sprintPlanningActionPanel, className, renderMobile ? css.mobile : null);
+    const actionButtonsClassName = buildClassName(css.sprintPlanningActionPanel, className);
     const archivedFilterUiElts = !onArchivedFilterChange ? null : (
         <Checkbox
             checked={includeArchiveChecked}
@@ -62,8 +61,7 @@ export const addTopActionButtons = (
     editMode: EditMode,
     includeArchiveChecked: boolean,
     onAddNewSprint: OnAddNewSprint,
-    onArchivedFilterChanged: OnArchivedFilterChange,
-    renderMobile: boolean
+    onArchivedFilterChanged: OnArchivedFilterChange
 ) =>
     addActionButtons(
         renderElts,
@@ -74,7 +72,6 @@ export const addTopActionButtons = (
         onAddNewSprint,
         onArchivedFilterChanged,
         "before",
-        renderMobile,
         false
     );
 
@@ -82,8 +79,7 @@ export const addBottomActionButtons = (
     renderElts: any[],
     bottomPanelClassName: string,
     editMode: EditMode,
-    onAddNewSprint: OnAddNewSprint,
-    renderMobile: boolean
+    onAddNewSprint: OnAddNewSprint
 ) =>
     addActionButtons(
         renderElts,
@@ -94,6 +90,5 @@ export const addBottomActionButtons = (
         onAddNewSprint,
         null,
         "after",
-        renderMobile,
         true
     );
