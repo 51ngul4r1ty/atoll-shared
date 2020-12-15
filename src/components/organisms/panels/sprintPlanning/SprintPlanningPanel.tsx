@@ -125,12 +125,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
             props.onBacklogItemReleasedClicked(sprintId, backlogItemId);
         }
     };
-    const classNameToUse = buildClassName(
-        css.sprintPlanningPanel,
-        css.backlogItemPlanningPanel,
-        props.className,
-        props.renderMobile ? css.mobile : null
-    );
+    const classNameToUse = buildClassName(css.sprintPlanningPanel, css.backlogItemPlanningPanel, props.className);
     let renderElts = [];
     addTopActionButtons(
         renderElts,

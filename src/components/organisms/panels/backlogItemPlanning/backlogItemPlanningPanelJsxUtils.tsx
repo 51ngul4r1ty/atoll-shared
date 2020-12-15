@@ -29,8 +29,7 @@ export const addActionButtons = (
     }
     const actionButtonsClassName = buildClassName(
         css.backlogItemPlanningActionPanel,
-        suppressTopPadding ? null : css.embeddedBacklogItemUserStoryFormRow,
-        renderMobile ? css.mobile : null
+        suppressTopPadding ? null : css.embeddedBacklogItemUserStoryFormRow
     );
     renderElts.push(
         <div key="backlogitem-action-buttons" className={actionButtonsClassName}>

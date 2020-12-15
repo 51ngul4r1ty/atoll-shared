@@ -32,7 +32,7 @@ export const addActionButtons = (
     if (editMode === EditMode.View) {
         return;
     }
-    const actionButtonsClassName = buildClassName(css.sprintPlanningActionPanel, className, renderMobile ? css.mobile : null);
+    const actionButtonsClassName = buildClassName(css.sprintPlanningActionPanel, className);
     const archivedFilterUiElts = !onArchivedFilterChange ? null : (
         <Checkbox
             checked={includeArchiveChecked}
