@@ -176,18 +176,21 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                 }}
             />
         );
+        const actionButtonContainerClassName = buildClassName(css.centerCell, css.actionButtonContainer);
         const actionButtonPanel = (
             <div className={css.actionButtonPanel}>
                 <div />
-                <div className={css.centerCell}>
+                <div className={actionButtonContainerClassName}>
                     <DoneButton
+                        className={css.actionButton}
                         onClick={() => {
                             this.handleDoneClick();
                         }}
                     />
                 </div>
-                <div className={css.centerCell}>
+                <div className={actionButtonContainerClassName}>
                     <CancelButton
+                        className={css.actionButton}
                         onClick={() => {
                             this.handleCancelClick();
                         }}
@@ -195,6 +198,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                 </div>
             </div>
         );
+        const actionButtonPanelContainerClassName = buildClassName(css.mobileFormRow, css.actionButtonPanelContainer);
         const formContent = this.props.renderMobile ? (
             <>
                 <div className={buildClassName(css.userStoryFormMobile)}>
@@ -206,7 +210,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                         {friendlyIdInput}
                         {externalIdInput}
                     </div>
-                    <div className={css.mobileFormRow}>{actionButtonPanel}</div>
+                    <div className={actionButtonPanelContainerClassName}>{actionButtonPanel}</div>
                 </div>
             </>
         ) : (
