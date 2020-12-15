@@ -21,8 +21,7 @@ export const addActionButtons = (
     editMode: EditMode,
     suppressTopPadding: boolean,
     suppressButtonSpacing: boolean,
-    onAddNewBacklogItemForm: OnAddedNewBacklogItemForm,
-    renderMobile: boolean
+    onAddNewBacklogItemForm: OnAddedNewBacklogItemForm
 ) => {
     if (editMode === EditMode.View) {
         return;

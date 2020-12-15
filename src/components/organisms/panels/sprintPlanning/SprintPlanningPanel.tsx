@@ -133,8 +133,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
         props.editMode,
         props.includeArchived,
         props.onAddNewSprintBefore,
-        props.onArchivedFilterChange,
-        props.renderMobile
+        props.onArchivedFilterChange
     );
     let firstElt = true;
     props.sprints.forEach((sprint) => {
@@ -240,7 +239,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
         firstElt = false;
         renderElts.push(sprintItemElt);
     });
-    addBottomActionButtons(renderElts, css.bottomPanel, props.editMode, props.onAddNewSprintAfter, props.renderMobile);
+    addBottomActionButtons(renderElts, css.bottomPanel, props.editMode, props.onAddNewSprintAfter);
     return <div className={classNameToUse}>{renderElts}</div>;
 };
 
