@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // components
-import { LoginForm } from "./components/organisms/forms/LoginForm";
+import { LoginForm } from "../components/organisms/forms/LoginForm";
 
 // style
 import css from "./LoginView.module.css";

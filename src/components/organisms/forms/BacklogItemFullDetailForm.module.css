@@ -1,0 +1,81 @@
+@keyframes rotateIn {
+    0% {
+        transform: rotate3d(1, 0, 0, 90deg);
+    }
+    100% {
+        transform: rotate3d(1, 0, 0, 0deg);
+    }
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    margin: 0.7rem;
+}
+
+.userStoryDescription {
+    display: grid;
+    grid-template-columns: 10rem auto 15rem;
+    grid-column-gap: 0.7rem;
+}
+
+.userStoryExtraFields {
+    display: grid;
+    grid-template-columns: 3.5rem 5.5rem 5.5rem auto;
+    grid-column-gap: 0.7rem;
+}
+
+.formRow + .formRow {
+    margin-top: 0.7rem;
+}
+
+.actionButtonPanelContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+:global(.mobile) .actionButtonPanel {
+    grid-row-gap: 0.4rem;
+    justify-items: right;
+    grid-template-columns: max-content;
+}
+
+.actionButtonPanel {
+    display: grid;
+    grid-template-columns: auto max-content max-content;
+    grid-column-gap: 0.4rem;
+}
+
+:global(.mobile) .actionButtonContainer {
+    width: 100%;
+}
+
+:global(.mobile) .actionButton {
+    width: 100%;
+}
+
+.centerCell {
+    display: flex;
+    align-items: center;
+}
+
+.userStoryFormMobile {
+    display: grid;
+    grid-template-columns: auto;
+    grid-row-gap: 0.7rem;
+}
+
+.mobileFormRow {
+    width: 100%;
+}
+
+:global(.mobile) .threeCellRow {
+    grid-template-columns: auto;
+    grid-row-gap: 0.7rem;
+}
+
+.idAndEstimateRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 0.7rem;
+}

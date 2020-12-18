@@ -3,25 +3,25 @@ import * as React from "react";
 // import Helmet from "react-helmet";
 
 // components
-import { BacklogItemPlanningPanel } from "./components/organisms/panels/backlogItemPlanning/BacklogItemPlanningPanel";
-import { TopMenuPanelContainer } from "./containers/TopMenuPanelContainer";
+import { BacklogItemPlanningPanel } from "../components/organisms/panels/backlogItemPlanning/BacklogItemPlanningPanel";
+import { TopMenuPanelContainer } from "../containers/TopMenuPanelContainer";
 
 // contexts
-import { AppContext } from "./contexts/appContextUtil";
+import { AppContext } from "../contexts/appContextUtil";
 
 // style
 import css from "./PlanView.module.css";
 
 // interfaces/types
-import { EditMode } from "./components/molecules/buttons/EditButton";
-import { BacklogItemWithSource } from "./reducers/backlogItems/backlogItemsReducerTypes";
-import { BacklogItemType } from "./types/backlogItemTypes";
-import { SprintCardSprint } from "./components/molecules/cards/sprintCard/sprintCardTypes";
-import { OpenedDetailMenuInfo } from "./selectors/sprintBacklogSelectors";
+import { EditMode } from "../components/molecules/buttons/EditButton";
+import { BacklogItemWithSource } from "../reducers/backlogItems/backlogItemsReducerTypes";
+import { BacklogItemType } from "../types/backlogItemTypes";
+import { SprintCardSprint } from "../components/molecules/cards/sprintCard/sprintCardTypes";
+import { OpenedDetailMenuInfo } from "../selectors/sprintBacklogSelectors";
 
 // components
-import { SprintPlanningPanel } from "./components/organisms/panels/sprintPlanning/SprintPlanningPanel";
-import { NewSprintPosition } from "./actions/sprintActions";
+import { SprintPlanningPanel } from "../components/organisms/panels/sprintPlanning/SprintPlanningPanel";
+import { NewSprintPosition } from "../actions/sprintActions";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build

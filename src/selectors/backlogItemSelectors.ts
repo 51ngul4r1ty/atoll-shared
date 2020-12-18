@@ -1,9 +1,11 @@
 // interfaces/types
-import { BacklogItem } from "../types/backlogItemTypes";
+import { BacklogItem, BacklogItemType } from "../types/backlogItemTypes";
 
 // utils
 import { getBacklogItemById as reducerGetBacklogItemById } from "../reducers/backlogItems/backlogItemsReducerHelper";
 import { StateTree } from "../reducers/rootReducer";
+import { createSelector } from "reselect";
+import { BacklogItemsState } from "../reducers/backlogItems/backlogItemsReducerTypes";
 
 export const getBacklogItemByInstanceId = (state: StateTree, instanceId: number): BacklogItem | null => {
     const matchingItems = state.backlogItems.addedItems.filter((addedItem) => addedItem.instanceId === instanceId);
@@ -101,3 +103,50 @@ export const getSelectedBacklogItemCount = (state: StateTree) => {
 export const getOpenedDetailMenuBacklogItemId = (state: StateTree) => state.backlogItems.openedDetailMenuBacklogItemId;
 
 export const hasPushedBacklogItems = (state: StateTree) => state.backlogItems.pushedItems.length > 0;
+
+export const backlogItems = (state: { backlogItems: BacklogItemsState }): BacklogItemsState => state.backlogItems;
+
+export const getCurrentBacklogItemId = createSelector(
+    [backlogItems],
+    (backlogItems: BacklogItemsState): string => backlogItems.currentItem?.id
+);
+
+export const getCurrentBacklogItemFriendlyId = createSelector(
+    [backlogItems],
+    (backlogItems: BacklogItemsState): string => backlogItems.currentItem?.friendlyId
+);
+
+export const getCurrentBacklogItemExternalId = createSelector(
+    [backlogItems],
+    (backlogItems: BacklogItemsState): string => backlogItems.currentItem?.externalId
+);
+
+export const getCurrentBacklogItemSaved = createSelector(
+    [backlogItems],
+    (backlogItems: BacklogItemsState): boolean => backlogItems.currentItem?.saved
+);
+
+export const getCurrentBacklogItemEstimate = createSelector(
+    [backlogItems],
+    (backlogItems: BacklogItemsState): number => backlogItems.currentItem?.estimate
+);
+
+export const getCurrentBacklogItemRolePhrase = createSelector(
+    [backlogItems],
+    (backlogItems: BacklogItemsState): string => backlogItems.currentItem?.rolePhrase
+);
+
+export const getCurrentBacklogItemStoryPhrase = createSelector(
+    [backlogItems],
+    (backlogItems: BacklogItemsState): string => backlogItems.currentItem?.storyPhrase
+);
+
+export const getCurrentBacklogItemReasonPhrase = createSelector(
+    [backlogItems],
+    (backlogItems: BacklogItemsState): string => backlogItems.currentItem?.reasonPhrase
+);
+
+export const getCurrentBacklogItemType = createSelector(
+    [backlogItems],
+    (backlogItems: BacklogItemsState): BacklogItemType => backlogItems.currentItem?.type
+);

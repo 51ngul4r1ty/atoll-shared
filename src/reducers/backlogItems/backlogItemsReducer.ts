@@ -51,7 +51,8 @@ export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>(
     items: [],
     openedDetailMenuBacklogItemId: null,
     pushedItems: [],
-    selectedItemIds: []
+    selectedItemIds: [],
+    currentItem: null
 });
 
 export const removeBacklogItem = (draft: Draft<BacklogItemsState>, backlogItemId: string) => {

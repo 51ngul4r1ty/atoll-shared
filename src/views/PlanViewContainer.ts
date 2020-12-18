@@ -6,18 +6,18 @@ import { Dispatch } from "redux";
 import { PlanView, PlanViewStateProps, PlanViewDispatchProps } from "./PlanView";
 
 // state
-import { StateTree } from "./reducers/rootReducer";
+import { StateTree } from "../reducers/rootReducer";
 
 // actions
-import { addNewBacklogItemForm, reorderBacklogItems } from "./actions/backlogItemActions";
+import { addNewBacklogItemForm, reorderBacklogItems } from "../actions/backlogItemActions";
 import {
     addNewSprintForm,
     collapseSprintPanel,
     expandSprintPanel,
     NewSprintPosition,
     sprintDetailClicked
-} from "./actions/sprintActions";
-import { apiBffViewsPlan } from "./actions/apiBffViewsPlan";
+} from "../actions/sprintActions";
+import { apiBffViewsPlan } from "../actions/apiBffViewsPlan";
 import {
     changeSprintPlanningArchivedFilter,
     moveSelectedBacklogItemsToSprintUsingApi,
@@ -28,24 +28,24 @@ import {
     sprintBacklogItemNotStartedClicked,
     sprintBacklogItemReleasedClicked,
     sprintMoveItemToBacklogClicked
-} from "./actions/sprintBacklogActions";
+} from "../actions/sprintBacklogActions";
 
 // interfaces/types
-import { BacklogItemType } from "./types/backlogItemTypes";
+import { BacklogItemType } from "../types/backlogItemTypes";
 
 // utils
-import { isPlatformWindows } from "./utils";
+import { isPlatformWindows } from "../utils";
 
 // selectors
-import { getCurrentProjectId } from "./selectors/userSelectors";
-import { getOpenedDetailMenuSprintId, getPlanViewSprints } from "./selectors/sprintSelectors";
+import { getCurrentProjectId } from "../selectors/userSelectors";
+import { getOpenedDetailMenuSprintId, getPlanViewSprints } from "../selectors/sprintSelectors";
 import {
     getAllBacklogItems,
     getOpenedDetailMenuBacklogItemId,
     getSelectedBacklogItemCount
-} from "./selectors/backlogItemSelectors";
-import { getAppEditMode, getElectronClient } from "./selectors/appSelectors";
-import { getIncludeArchivedSprints, getOpenedDetailMenuInfo } from "./selectors/sprintBacklogSelectors";
+} from "../selectors/backlogItemSelectors";
+import { getAppEditMode, getElectronClient } from "../selectors/appSelectors";
+import { getIncludeArchivedSprints, getOpenedDetailMenuInfo } from "../selectors/sprintBacklogSelectors";
 
 const mapStateToProps = (state: StateTree): PlanViewStateProps => {
     const allItems = getAllBacklogItems(state);

@@ -6,10 +6,10 @@ import { Dispatch } from "redux";
 import { LoginView, LoginViewStateProps, LoginViewDispatchProps } from "./LoginView";
 
 // state
-import { StateTree } from "./reducers/rootReducer";
+import { StateTree } from "../reducers/rootReducer";
 
 // actions
-import { loginUser, setUsername, setPassword } from "./actions/authActions";
+import { loginUser, setUsername, setPassword } from "../actions/authActions";
 
 const mapStateToProps = (state: StateTree): LoginViewStateProps => {
     let result: LoginViewStateProps = {
