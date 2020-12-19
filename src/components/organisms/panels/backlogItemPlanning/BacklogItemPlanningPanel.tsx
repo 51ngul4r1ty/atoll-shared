@@ -455,7 +455,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         }
                     }
                 };
-                renderElts.push(
+                const dragOverItemBacklogItemCard = (
                     <BacklogItemCard
                         key={cardKey}
                         buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
@@ -485,6 +485,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         showDetailMenu={showDetailMenu}
                     />
                 );
+                renderElts.push(dragOverItemBacklogItemCard);
             }
             const showItem = !isDragItem;
             const showDetailMenu = item.id === props.openedDetailMenuBacklogItemId;

@@ -140,6 +140,22 @@ export const backlogItemDetailClicked = (itemId: string): ToggleBacklogItemDetai
     }
 });
 
+export interface BacklogItemIdClickedPayload {
+    backlogItemId: string;
+}
+
+export interface BacklogItemIdClickedAction {
+    type: typeof ActionTypes.BACKLOG_ITEM_ID_CLICKED;
+    payload: BacklogItemIdClickedPayload;
+}
+
+export const backlogItemIdClicked = (backlogItemId: string): BacklogItemIdClickedAction => ({
+    type: ActionTypes.BACKLOG_ITEM_ID_CLICKED,
+    payload: {
+        backlogItemId
+    }
+});
+
 export interface EditBacklogItemPayload {
     itemId: string;
 }

@@ -145,6 +145,7 @@ export interface BacklogItemCardDispatchProps {
     onEditItemClicked?: { (backlogItemId: string): void };
     onRemoveItemClicked?: { (backlogItemId: string): void };
     onCheckboxChange?: { (checked: boolean): void };
+    onBacklogItemIdClick?: { (backlogItemId: string): void };
 }
 
 export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDispatchProps;
@@ -174,6 +175,11 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
     const handleCheckboxChange = (checked: boolean) => {
         if (props.onCheckboxChange) {
             props.onCheckboxChange(checked);
+        }
+    };
+    const handleBacklogItemIdClick = (id: string) => {
+        if (props.onBacklogItemIdClick) {
+            props.onBacklogItemIdClick(id);
         }
     };
     const checkboxToSelect = props.isSelectable ? (
@@ -218,7 +224,11 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
                     <div className={css.backlogItemIcon}>
                         {props.itemType === BacklogItemTypeEnum.Story ? <StoryIcon invertColors /> : <IssueIcon invertColors />}
                     </div>
-                    <div className={css.backlogItemId} title={titleForItemId(props.itemId)}>
+                    <div
+                        className={css.backlogItemId}
+                        title={titleForItemId(props.itemId)}
+                        onClick={() => handleBacklogItemIdClick(props.internalId)}
+                    >
                         {abbreviateId(props.itemId)}
                     </div>
                     {props.isDraggable && props.renderMobile ? (

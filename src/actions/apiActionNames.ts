@@ -1,3 +1,5 @@
+export const GET_PROJECT = "get-project";
+
 export const GET_SPRINTS = "get-sprints";
 export const GET_SPRINT = "get-sprint";
 export const POST_SPRINT = "add-sprint";

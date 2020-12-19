@@ -31,7 +31,8 @@ import {
     SaveNewBacklogItemAction,
     ReorderBacklogItemAction,
     CancelEditBacklogItemAction,
-    addProductBacklogItem
+    addProductBacklogItem,
+    BacklogItemIdClickedAction
 } from "../actions/backlogItemActions";
 import { postLogin, ActionPostLoginSuccessAction, ActionPostRefreshTokenSuccessAction } from "../actions/authActions";
 import { routePlanView } from "../actions/routeActions";
@@ -72,6 +73,7 @@ import { convertToBacklogItemModel, convertToSprintModel } from "../utils/apiPay
 import { ResourceTypes } from "../reducers/apiLinksReducer";
 import { ExpandSprintPanelAction, SaveNewSprintAction, updateSprintStats } from "../actions/sprintActions";
 import { BacklogItemStatus } from "../types/backlogItemTypes";
+import { apiBatchGetProjectAndRouteToBacklogItemView } from "../actions/apiProjects";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
@@ -251,6 +253,15 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const projectId = getCurrentProjectId(state);
             const includeArchived = actionTyped.payload.includeArchived;
             storeTyped.dispatch(apiGetSprints(projectId, includeArchived));
+            break;
+        }
+        case ActionTypes.BACKLOG_ITEM_ID_CLICKED: {
+            const actionTyped = action as BacklogItemIdClickedAction;
+            const backlogItemId = actionTyped.payload.backlogItemId;
+            const state = storeTyped.getState();
+            const backlogItem = getBacklogItemById(state, backlogItemId);
+            const projectId = backlogItem.projectId;
+            storeTyped.dispatch(apiBatchGetProjectAndRouteToBacklogItemView(projectId, backlogItemId));
             break;
         }
         case ActionTypes.UPDATE_SPRINT: {

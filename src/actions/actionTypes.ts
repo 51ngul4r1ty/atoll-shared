@@ -142,6 +142,8 @@ export const REORDER_BACKLOG_ITEM = "app/reorder:backlog-item";
 export const TOGGLE_BACKLOG_ITEM_DETAIL = "app/toggle:backlog-item-detail";
 export const EDIT_BACKLOG_ITEM = "app/edit:backlog-item";
 
+export const BACKLOG_ITEM_ID_CLICKED = "app/click:backlog-item-id";
+
 export const SELECT_PRODUCT_BACKLOG_ITEM = "app/select:product-backlog-item";
 export const UNSELECT_PRODUCT_BACKLOG_ITEM = "app/unselect:product-backlog-item";
 

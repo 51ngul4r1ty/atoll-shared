@@ -25,7 +25,8 @@ import {
     cancelEditBacklogItem,
     updateBacklogItem,
     selectProductBacklogItem,
-    unselectProductBacklogItem
+    unselectProductBacklogItem,
+    backlogItemIdClicked
 } from "../../../actions/backlogItemActions";
 
 // style
@@ -132,6 +133,9 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                         } else {
                             dispatch(unselectProductBacklogItem(props.id));
                         }
+                    }}
+                    onBacklogItemIdClick={(itemId) => {
+                        dispatch(backlogItemIdClicked(itemId));
                     }}
                 />
             </>
