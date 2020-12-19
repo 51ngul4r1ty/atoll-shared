@@ -112,3 +112,8 @@ export interface ApiUserSettings extends StandardItem {
     appuserId: string | null;
     settings: UserSettings;
 }
+
+export interface ApiProject extends StandardItem {
+    name: string;
+    description: string;
+}
