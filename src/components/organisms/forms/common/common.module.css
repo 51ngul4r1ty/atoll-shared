@@ -7,3 +7,7 @@
     backface-visibility: hidden;
     transform-origin: center top;
 }
+
+.form.readOnly {
+    background-color: var(--normal-form-page-readonly-color, #e8e8e8); /* #202020 for dark mode */
+}

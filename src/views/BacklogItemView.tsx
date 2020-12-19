@@ -55,8 +55,9 @@ export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
                 friendlyId={props.friendlyId}
                 friendlyIdDisabled={!props.saved}
                 externalId={props.externalId}
-                editing
-                saved
+                editable={false}
+                editing={false}
+                saved={true}
                 estimate={props.estimate}
                 rolePhrase={props.rolePhrase}
                 storyPhrase={props.storyPhrase}

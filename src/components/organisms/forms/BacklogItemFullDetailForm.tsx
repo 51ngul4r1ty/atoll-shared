@@ -35,6 +35,7 @@ export interface BacklogItemFullDetailFormStateProps extends BacklogItemFullDeta
     className?: string;
     type: BacklogItemType;
     editing: boolean;
+    editable?: boolean;
 }
 
 export interface BacklogItemFullDetailFormDispatchProps {
@@ -67,28 +68,13 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
         }
     };
     handleDoneClick = () => {
-        // const matchingForms = document.querySelectorAll(`[data-instance-id="${this.props.instanceId}"]`);
-        // let matchingForm: HTMLFormElement;
-        // if (matchingForms.length === 1) {
-        //     matchingForm = matchingForms[0] as HTMLFormElement;
-        // } else {
-        //     const matchingForms = document.querySelectorAll(`[data-item-id="${this.props.id}"]`);
-        //     if (matchingForms.length === 1) {
-        //         matchingForm = matchingForms[0] as HTMLFormElement;
-        //     }
-        // }
-        // if (matchingForm && matchingForm.reportValidity()) {
-        //     if (this.props.onDoneClick) {
-        //         this.props.onDoneClick(this.props.id, this.props.instanceId);
-        //     }
-        // }
+        // TODO: Implement later
     };
     handleCancelClick = () => {
-        if (this.props.onCancelClick) {
-            //            this.props.onCancelClick(this.props.id, this.props.instanceId);
-        }
+        // TODO: Implement later
     };
     render() {
+        const isReadOnly = !this.props.editable;
         const estimateValue = this.props.estimate ? `${this.props.estimate}` : "";
         const issuePlaceholder = "without <issue reason>";
         const storyPlaceholder = "so that I can <derive value>";
@@ -108,6 +94,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 inputId="userStoryRolePhrase"
                 labelText="Role phrase"
                 placeHolder="As a <role>"
+                readOnly={isReadOnly}
                 inputValue={this.props.rolePhrase}
                 onChange={(value) => {
                     this.handleDataUpdate({ ...prevData, rolePhrase: value });
@@ -119,6 +106,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 inputId="userStoryStoryPhrase"
                 labelText="Story phrase"
                 placeHolder="I can <something>"
+                readOnly={isReadOnly}
                 inputValue={this.props.storyPhrase}
                 required
                 onChange={(value) => {
@@ -131,6 +119,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 inputId="userStoryReasonPhrase"
                 labelText="Reason phrase"
                 placeHolder={placeholderText}
+                readOnly={isReadOnly}
                 inputValue={this.props.reasonPhrase}
                 onChange={(value) => {
                     this.handleDataUpdate({ ...prevData, reasonPhrase: value });
@@ -142,6 +131,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 inputId="userStoryEstimate"
                 labelText="Estimate"
                 size={3}
+                readOnly={isReadOnly}
                 inputValue={estimateValue}
                 onChange={(value) => {
                     const valueToUse = value.trim();
@@ -157,6 +147,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
             <StandardInput
                 inputId="userStoryExternalId"
                 labelText="External ID"
+                readOnly={isReadOnly}
                 inputValue={this.props.externalId}
                 onChange={(value) => {
                     this.handleDataUpdate({ ...prevData, externalId: value });
@@ -167,6 +158,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
             <StandardInput
                 inputId="userStoryFriendlyId"
                 labelText="ID"
+                readOnly={isReadOnly}
                 inputValue={this.props.friendlyId}
                 disabled={this.props.friendlyIdDisabled}
                 onChange={(value) => {
@@ -175,25 +167,31 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
             />
         );
         const actionButtonContainerClassName = buildClassName(css.centerCell, css.actionButtonContainer);
+        const doneButtonElts = this.props.editable ? (
+            <div className={actionButtonContainerClassName}>
+                <DoneButton
+                    className={css.actionButton}
+                    onClick={() => {
+                        this.handleDoneClick();
+                    }}
+                />
+            </div>
+        ) : null;
+        const cancelButtonElts = this.props.editable ? (
+            <div className={actionButtonContainerClassName}>
+                <CancelButton
+                    className={css.actionButton}
+                    onClick={() => {
+                        this.handleCancelClick();
+                    }}
+                />
+            </div>
+        ) : null;
         const actionButtonPanel = (
             <div className={css.actionButtonPanel}>
                 <div />
-                <div className={actionButtonContainerClassName}>
-                    <DoneButton
-                        className={css.actionButton}
-                        onClick={() => {
-                            this.handleDoneClick();
-                        }}
-                    />
-                </div>
-                <div className={actionButtonContainerClassName}>
-                    <CancelButton
-                        className={css.actionButton}
-                        onClick={() => {
-                            this.handleCancelClick();
-                        }}
-                    />
-                </div>
+                {doneButtonElts}
+                {cancelButtonElts}
             </div>
         );
         const formContent = (
@@ -209,8 +207,15 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 <div className={css.formRow}>{actionButtonPanel}</div>
             </>
         );
+        const formClassName = buildClassName(
+            commonCss.form,
+            isReadOnly ? commonCss.readOnly : null,
+            css.form,
+            isReadOnly ? css.readOnly : null,
+            this.props.className
+        );
         return (
-            <form data-item-id={this.props.id} className={buildClassName(commonCss.form, css.form, this.props.className)}>
+            <form data-item-id={this.props.id} className={formClassName}>
                 {formContent}
             </form>
         );
