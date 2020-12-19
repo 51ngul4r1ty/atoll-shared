@@ -8,27 +8,35 @@ import { BacklogItemFullDetailForm } from "../components/organisms/forms/Backlog
 // consts/enums
 import { EditMode } from "../components/molecules/buttons/EditButton";
 import { BacklogItemType } from "../types/backlogItemTypes";
+import { useEffect } from "react";
 
 export interface BacklogItemViewStateProps {
+    backlogItemDisplayId: string;
     editMode: EditMode;
     electronClient: boolean;
-    showWindowTitleBar: boolean;
-    id: string;
-    friendlyId: string;
-    externalId: string;
-    saved: boolean;
     estimate: number;
-    rolePhrase: string;
-    storyPhrase: string;
+    externalId: string;
+    friendlyId: string;
+    id: string;
+    projectDisplayId: string;
     reasonPhrase: string;
+    rolePhrase: string;
+    saved: boolean;
+    showWindowTitleBar: boolean;
+    storyPhrase: string;
     type: BacklogItemType;
 }
 
-export interface BacklogItemViewDispatchProps {}
+export interface BacklogItemViewDispatchProps {
+    onLoaded: { (projectDisplayId: string, backlogItemDisplayId: string): void };
+}
 
 export type BacklogItemViewProps = BacklogItemViewStateProps & BacklogItemViewDispatchProps;
 
 export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
+    useEffect(() => {
+        props.onLoaded(props.projectDisplayId, props.backlogItemDisplayId);
+    }, []);
     const classNameToUse = "";
     return (
         <>

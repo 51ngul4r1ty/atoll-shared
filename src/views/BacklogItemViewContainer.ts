@@ -22,8 +22,19 @@ import {
     getCurrentBacklogItemType
 } from "../selectors/backlogItemSelectors";
 import { getAppEditMode, getElectronClient } from "../selectors/appSelectors";
+import { apiBffViewsBacklogItem } from "../actions/apiBffViewsBacklogItem";
 
-const mapStateToProps = (state: StateTree): BacklogItemViewStateProps => {
+// BUSY: This isn't working... OwnProps not passing in route params
+export interface BacklogItemViewContainerOwnProps {
+    match: {
+        params: {
+            projectDisplayId: string;
+            backlogItemDisplayId: string;
+        };
+    };
+}
+
+const mapStateToProps = (state: StateTree, ownProps: BacklogItemViewContainerOwnProps): BacklogItemViewStateProps => {
     let result: BacklogItemViewStateProps = {
         editMode: getAppEditMode(state),
         electronClient: getElectronClient(state),
@@ -36,20 +47,19 @@ const mapStateToProps = (state: StateTree): BacklogItemViewStateProps => {
         rolePhrase: getCurrentBacklogItemRolePhrase(state),
         storyPhrase: getCurrentBacklogItemStoryPhrase(state),
         reasonPhrase: getCurrentBacklogItemReasonPhrase(state),
-        type: getCurrentBacklogItemType(state)
+        type: getCurrentBacklogItemType(state),
+        projectDisplayId: ownProps.match.params.projectDisplayId,
+        backlogItemDisplayId: ownProps.match.params.backlogItemDisplayId
     };
     return result;
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): BacklogItemViewDispatchProps => {
-    return {};
+    return {
+        onLoaded: (projectDisplayId: string, backlogItemDisplayId: string) => {
+            dispatch(apiBffViewsBacklogItem(projectDisplayId, backlogItemDisplayId));
+        }
+    };
 };
-
-// const AppContainer = withRouter(
-//     connect(
-//         mapStateToProps,
-//         mapDispatchToProps
-//     )(App)
-// ); // withTranslation()<any>(App));
 
 export const BacklogItemViewContainer = connect(mapStateToProps, mapDispatchToProps)(BacklogItemView);

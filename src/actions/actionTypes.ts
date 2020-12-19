@@ -31,6 +31,10 @@ export const API_GET_BACKLOG_ITEMS_FAILURE = buildFailureActionName(Names.GET_BA
 export const API_GET_BFF_VIEWS_PLAN_REQUEST = buildRequestActionName(Names.GET_BFF_VIEWS_PLAN);
 export const API_GET_BFF_VIEWS_PLAN_SUCCESS = buildSuccessActionName(Names.GET_BFF_VIEWS_PLAN);
 export const API_GET_BFF_VIEWS_PLAN_FAILURE = buildFailureActionName(Names.GET_BFF_VIEWS_PLAN);
+
+export const API_GET_BFF_VIEWS_BACKLOG_ITEM_REQUEST = buildRequestActionName(Names.GET_BFF_VIEWS_BACKLOG_ITEM);
+export const API_GET_BFF_VIEWS_BACKLOG_ITEM_SUCCESS = buildSuccessActionName(Names.GET_BFF_VIEWS_BACKLOG_ITEM);
+export const API_GET_BFF_VIEWS_BACKLOG_ITEM_FAILURE = buildFailureActionName(Names.GET_BFF_VIEWS_BACKLOG_ITEM);
 //#endregion
 
 // #region Backlog Item Resource

@@ -42,8 +42,9 @@ import {
     updateItemById,
     updateItemFieldsInAllItems
 } from "./backlogItemsReducerHelper";
-import { mapApiItemsToBacklogItems, mapApiItemToBacklogItem } from "../../mappers/backlogItemMappers";
+import { mapApiItemsToBacklogItems, mapApiItemToBacklogItem, mapApiStatusToBacklogItem } from "../../mappers/backlogItemMappers";
 import { calcDropDownMenuState } from "../../utils/dropdownMenuUtils";
+import { ApiGetBffViewsBacklogItemSuccessAction } from "../../actions/apiBffViewsBacklogItem";
 
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
@@ -314,6 +315,31 @@ export const backlogItemsReducer = (
                 };
                 draft.items = [newItem, ...draft.items];
                 rebuildAllItems(draft);
+                return;
+            }
+            case ActionTypes.API_GET_BFF_VIEWS_BACKLOG_ITEM_SUCCESS: {
+                const actionTyped = action as ApiGetBffViewsBacklogItemSuccessAction;
+                const backlogItems = actionTyped.payload.response.data.backlogItems;
+                if (backlogItems.length === 1) {
+                    const backlogItem = backlogItems[0];
+                    draft.currentItem = {
+                        saved: true,
+                        editing: false,
+                        instanceId: undefined,
+                        estimate: backlogItem.estimate,
+                        id: backlogItem.id,
+                        friendlyId: backlogItem.friendlyId,
+                        externalId: backlogItem.externalId,
+                        rolePhrase: backlogItem.rolePhrase,
+                        storyPhrase: backlogItem.storyPhrase,
+                        reasonPhrase: backlogItem.reasonPhrase,
+                        type: backlogItem.type,
+                        status: mapApiStatusToBacklogItem(backlogItem.status),
+                        projectId: backlogItem.projectId,
+                        createdAt: backlogItem.createdAt,
+                        updatedAt: backlogItem.updatedAt
+                    };
+                }
                 return;
             }
             case ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_FAILURE: {

@@ -57,7 +57,7 @@ export interface PlanViewDispatchProps {
     onBacklogItemInProgressClicked: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemNotStartedClicked: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemReleasedClicked: { (sprintId: string, backlogItemId: string): void };
-    onLoaded: { (projectId: string): void };
+    onLoaded: { (): void };
     onReorderBacklogItems: { (sourceItemId: string, targetItemId: string): void };
 }
 
@@ -71,7 +71,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
         super(props);
     }
     componentDidMount() {
-        this.props.onLoaded(this.props.projectId);
+        this.props.onLoaded();
     }
     render() {
         return (
