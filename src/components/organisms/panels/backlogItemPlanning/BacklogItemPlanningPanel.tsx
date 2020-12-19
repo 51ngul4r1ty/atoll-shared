@@ -13,7 +13,6 @@ import {
     buildBacklogItemKey,
     buildBacklogItemPlanningItemKey,
     buildDividerKey,
-    calcItemId,
     ItemMenuEventHandlers
 } from "../../../molecules/cards/BacklogItemCard";
 import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
@@ -38,6 +37,7 @@ import {
 import * as logger from "../../../../utils/logger";
 import { useRecursiveTimeout } from "../../../common/setTimeoutHook";
 import { BacklogItemPlanningItem } from "../../combo/BacklogItemPlanningItem";
+import { buildBacklogDisplayId } from "../../../../utils/backlogItemHelper";
 
 // consts/enums
 import * as loggingTags from "../../../../constants/loggingTags";
@@ -83,7 +83,7 @@ export const buildDragBacklogItemElt = (
             internalId={`${item.id}`}
             isDraggable={editMode === EditMode.Edit}
             isSelectable={editMode === EditMode.Edit}
-            itemId={calcItemId(item.externalId, item.friendlyId)}
+            itemId={buildBacklogDisplayId(item.externalId, item.friendlyId)}
             itemType={item.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
             key={buildBacklogItemKey(item)}
             marginBelowItem

@@ -11,59 +11,54 @@ import { ApiBatchAction } from "../middleware/apiBatchTypes";
 
 // utils
 import { buildActionTypes } from "./utils/apiActionUtils";
+import { ApiProject } from "../apiModelTypes";
+import { API, ApiAction, ApiActionMetaDataRequestMeta, NoDataApiAction } from "../middleware/apiTypes";
 
-export interface ApiBatchGetProjectAndRouteToBacklogItemViewBody {
-    backlogitemId: string;
-}
-
-export interface ApiBatchGetProjectAndRouteToBacklogItemViewItemActionParams {
-    projectId: string;
-}
-
-export interface ApiBatchGetProjectAndRouteToBacklogItemViewBatchActionParams {
-    projectId: string;
+export interface ApiGetProjectRouteToBacklogItemViewMeta {
     backlogItemId: string;
+    routeToBacklogItemView: boolean;
 }
 
-export type ApiBatchGetProjectAndRouteToBacklogItemViewAction = ApiBatchAction<
-    ApiBatchGetProjectAndRouteToBacklogItemViewBody,
-    ApiBatchGetProjectAndRouteToBacklogItemViewItemActionParams,
-    ApiBatchGetProjectAndRouteToBacklogItemViewBatchActionParams
->;
+export interface ApiGetProjectResponsePayload {
+    response: {
+        status: number;
+        data: {
+            item: ApiProject;
+        };
+    };
+}
+
+export interface ApiGetProjectSuccessAction<P> {
+    type: typeof ActionTypes.API_GET_BACKLOG_ITEMS_SUCCESS;
+    payload: ApiGetProjectResponsePayload;
+    meta?: ApiActionMetaDataRequestMeta<any, undefined, undefined, P>;
+}
+
+export type ApiGetProjectSuccessRouteToBacklogItemViewAction = ApiGetProjectSuccessAction<ApiGetProjectRouteToBacklogItemViewMeta>;
 
 /**
- * Retrieves the project (so it can get the "display id" for the route) and then route to the
- * URL that we can build for the backlog item under that project.
- * @param projectId Used to get project "display id."
- * @param backlogItemId The ID of the backlog item to view.
+ * Make an API call to retrieve the project data.
+ * @param projectId ID to find specific project.
+ * @param metaPassthrough If provided, the downstream code can use this information however it needs to.
  */
-export const apiBatchGetProjectAndRouteToBacklogItemView = (
-    projectId: string,
-    backlogItemId: string
-): ApiBatchGetProjectAndRouteToBacklogItemViewAction => {
-    const calls = [
-        {
-            payload: {
-                endpoint: `${getApiBaseUrl()}api/v1/projects/${projectId}`,
-                method: "GET",
-                headers: { Accept: APPLICATION_JSON },
-                types: buildActionTypes(ApiActionNames.GET_PROJECT)
-            },
-            meta: {
-                actionParams: {
-                    projectId
-                }
-            }
-        }
-    ];
-    return {
-        type: ActionTypes.API_BATCH,
-        calls,
-        meta: {
-            actionParams: {
-                projectId,
-                backlogItemId
-            }
+export const apiGetProject = <P>(projectId: string, metaPassthrough?: P): ApiAction<undefined, any, P> => {
+    const result: NoDataApiAction = {
+        type: API,
+        payload: {
+            endpoint: `${getApiBaseUrl()}api/v1/projects/${projectId}`,
+            method: "GET",
+            headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+            types: buildActionTypes(ApiActionNames.GET_PROJECT)
         }
     };
+    if (metaPassthrough) {
+        return {
+            ...result,
+            meta: {
+                passthrough: metaPassthrough
+            }
+        };
+    } else {
+        return result;
+    }
 };

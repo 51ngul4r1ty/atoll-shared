@@ -65,6 +65,10 @@ export const API_GET_BACKLOG_ITEM_RANKS_SUCCESS = buildSuccessActionName(Names.G
 export const API_GET_BACKLOG_ITEM_RANKS_FAILURE = buildFailureActionName(Names.GET_BACKLOG_ITEM_RANKS);
 // #endregion
 
+// #region Project Resource Collection
+export const API_GET_PROJECT_SUCCESS = buildSuccessActionName(Names.GET_PROJECT);
+// //#endregion
+
 // #region Sprint Resource Collection
 export const API_GET_SPRINTS_REQUEST = buildRequestActionName(Names.GET_SPRINTS);
 export const API_GET_SPRINTS_SUCCESS = buildSuccessActionName(Names.GET_SPRINTS);

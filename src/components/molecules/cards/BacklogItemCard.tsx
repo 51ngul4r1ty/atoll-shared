@@ -23,10 +23,6 @@ import { BacklogItemStatus } from "../../../types/backlogItemTypes";
 
 /* exported functions */
 
-export const calcItemId = (externalId: string | null, friendlyId: string) => {
-    return externalId || friendlyId;
-};
-
 export const buildUniqueItemKey = (props: SaveableBacklogItem, componentPrefix: string): string => {
     return props.id ? `${componentPrefix}-id-${props.id}` : `${componentPrefix}-i-${props.instanceId}`;
 };

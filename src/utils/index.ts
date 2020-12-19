@@ -9,4 +9,5 @@ export * from "./logger";
 export * from "./osUtils";
 export * from "./sprintStatusHelper";
 export * from "./themeHelper";
+export * from "./urlUtils";
 export * from "./wsClient";
