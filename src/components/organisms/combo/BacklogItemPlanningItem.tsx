@@ -20,13 +20,13 @@ import {
     updateBacklogItemFields,
     saveNewBacklogItem,
     cancelUnsavedBacklogItem,
-    backlogItemDetailClicked,
+    backlogItemDetailClick,
     editBacklogItem,
     cancelEditBacklogItem,
     updateBacklogItem,
     selectProductBacklogItem,
     unselectProductBacklogItem,
-    backlogItemIdClicked
+    backlogItemIdClick
 } from "../../../actions/backlogItemActions";
 
 // style
@@ -93,9 +93,9 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
     } else {
         const itemEventHandlers: ItemMenuEventHandlers = {
             handleEvent: (eventName: string, itemId: string) => {
-                if (eventName === "onEditItemClicked") {
+                if (eventName === "onEditItemClick") {
                     dispatch(editBacklogItem(props.id));
-                } else if (eventName === "onRemoveItemClicked") {
+                } else if (eventName === "onRemoveItemClick") {
                     dispatch(apiDeleteBacklogItem(props.id));
                 } else {
                     throw Error(`${eventName} is not handled`);
@@ -124,8 +124,8 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     showDetailMenu={props.showDetailMenu}
                     status={props.status}
                     titleText={props.storyPhrase}
-                    onDetailClicked={() => {
-                        dispatch(backlogItemDetailClicked(props.id));
+                    onDetailClick={() => {
+                        dispatch(backlogItemDetailClick(props.id));
                     }}
                     onCheckboxChange={(checked) => {
                         if (checked) {
@@ -135,7 +135,7 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                         }
                     }}
                     onBacklogItemIdClick={(itemId) => {
-                        dispatch(backlogItemIdClicked(itemId));
+                        dispatch(backlogItemIdClick(itemId));
                     }}
                 />
             </>

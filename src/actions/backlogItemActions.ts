@@ -133,24 +133,24 @@ export interface ToggleBacklogItemDetailAction {
     payload: ToggleBacklogItemDetailPayload;
 }
 
-export const backlogItemDetailClicked = (itemId: string): ToggleBacklogItemDetailAction => ({
+export const backlogItemDetailClick = (itemId: string): ToggleBacklogItemDetailAction => ({
     type: ActionTypes.TOGGLE_BACKLOG_ITEM_DETAIL,
     payload: {
         itemId
     }
 });
 
-export interface BacklogItemIdClickedPayload {
+export interface BacklogItemIdClickPayload {
     backlogItemId: string;
 }
 
-export interface BacklogItemIdClickedAction {
-    type: typeof ActionTypes.BACKLOG_ITEM_ID_CLICKED;
-    payload: BacklogItemIdClickedPayload;
+export interface BacklogItemIdClickAction {
+    type: typeof ActionTypes.BACKLOG_ITEM_ID_CLICK;
+    payload: BacklogItemIdClickPayload;
 }
 
-export const backlogItemIdClicked = (backlogItemId: string): BacklogItemIdClickedAction => ({
-    type: ActionTypes.BACKLOG_ITEM_ID_CLICKED,
+export const backlogItemIdClick = (backlogItemId: string): BacklogItemIdClickAction => ({
+    type: ActionTypes.BACKLOG_ITEM_ID_CLICK,
     payload: {
         backlogItemId
     }

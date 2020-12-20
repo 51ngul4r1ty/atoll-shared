@@ -38,15 +38,16 @@ export interface SprintCardStateProps extends SprintCardSprint {
 
 export interface SprintCardDispatchProps {
     onAddBacklogItem: { (): void };
-    onSprintDetailClicked: { (): void };
-    onBacklogItemDetailClicked: { (id: string): void };
+    onSprintDetailClick: { (): void };
+    onBacklogItemDetailClick: { (id: string): void };
+    onBacklogItemIdClick: { (id: string): void };
     onExpandCollapse: { (id: string, expand: boolean): void };
-    onMoveItemToBacklogClicked: { (id: string): void };
-    onBacklogItemAcceptedClicked: { (id: string): void };
-    onBacklogItemDoneClicked: { (id: string): void };
-    onBacklogItemInProgressClicked: { (id: string): void };
-    onBacklogItemNotStartedClicked: { (id: string): void };
-    onBacklogItemReleasedClicked: { (id: string): void };
+    onMoveItemToBacklogClick: { (id: string): void };
+    onBacklogItemAcceptedClick: { (id: string): void };
+    onBacklogItemDoneClick: { (id: string): void };
+    onBacklogItemInProgressClick: { (id: string): void };
+    onBacklogItemNotStartedClick: { (id: string): void };
+    onBacklogItemReleasedClick: { (id: string): void };
 }
 
 export type SprintCardProps = SprintCardStateProps & SprintCardDispatchProps;
@@ -106,9 +107,14 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
     };
     const expandCollapseIcon = props.expanded ? <VerticalCollapseIcon /> : <VerticalExpandIcon />;
     const contentsClassName = buildClassName(css.sprintContents, props.expanded ? css.expanded : null);
-    const handleDetailClicked = (itemId: string) => {
-        if (props.onBacklogItemDetailClicked) {
-            props.onBacklogItemDetailClicked(itemId);
+    const handleDetailClick = (itemId: string) => {
+        if (props.onBacklogItemDetailClick) {
+            props.onBacklogItemDetailClick(itemId);
+        }
+    };
+    const handleBacklogItemIdClick = (id: string) => {
+        if (props.onBacklogItemIdClick) {
+            props.onBacklogItemIdClick(id);
         }
     };
     const sprintBacklogContents = props.backlogItemsLoaded
@@ -118,13 +124,14 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
               props.renderMobile || false,
               props.showDetailMenuToLeft,
               props.backlogItems,
-              handleDetailClicked,
-              props.onMoveItemToBacklogClicked,
-              props.onBacklogItemAcceptedClicked,
-              props.onBacklogItemDoneClicked,
-              props.onBacklogItemInProgressClicked,
-              props.onBacklogItemNotStartedClicked,
-              props.onBacklogItemReleasedClicked
+              handleDetailClick,
+              handleBacklogItemIdClick,
+              props.onMoveItemToBacklogClick,
+              props.onBacklogItemAcceptedClick,
+              props.onBacklogItemDoneClick,
+              props.onBacklogItemInProgressClick,
+              props.onBacklogItemNotStartedClick,
+              props.onBacklogItemReleasedClick
           )
         : "[ loading... ]";
     const actionButtonElts =
@@ -165,7 +172,7 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
                             <ItemDetailButton
                                 hasDetails={props.editMode === EditMode.Edit}
                                 className={css.detailButton}
-                                onDetailClicked={() => props.onSprintDetailClicked()}
+                                onDetailClick={() => props.onSprintDetailClick()}
                             />
                         </div>
                         {props.renderMobile ? null : sprintHeaderContentInfoRowElts}

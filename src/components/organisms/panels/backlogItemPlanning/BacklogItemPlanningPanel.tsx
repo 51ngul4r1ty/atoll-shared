@@ -27,7 +27,7 @@ import { Source } from "../../../../reducers/types";
 // actions
 import { apiDeleteBacklogItem } from "../../../../actions/apiBacklogItems";
 import {
-    backlogItemDetailClicked,
+    backlogItemDetailClick,
     editBacklogItem,
     selectProductBacklogItem,
     unselectProductBacklogItem
@@ -446,9 +446,9 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 const showDetailMenu = item.id === props.openedDetailMenuBacklogItemId;
                 const itemEventHandlers: ItemMenuEventHandlers = {
                     handleEvent: (eventName: string, itemId: string) => {
-                        if (eventName === "onRemoveItemClicked") {
+                        if (eventName === "onRemoveItemClick") {
                             dispatch(apiDeleteBacklogItem(item.id));
-                        } else if (eventName === "onEditItemClicked") {
+                        } else if (eventName === "onEditItemClick") {
                             dispatch(editBacklogItem(item.id));
                         } else {
                             throw Error(`${eventName} is not handled`);
@@ -472,8 +472,8 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         roleText={null}
                         status={item.status}
                         titleText={null}
-                        onDetailClicked={() => {
-                            dispatch(backlogItemDetailClicked(item.id));
+                        onDetailClick={() => {
+                            dispatch(backlogItemDetailClick(item.id));
                         }}
                         onCheckboxChange={(checked) => {
                             if (checked) {

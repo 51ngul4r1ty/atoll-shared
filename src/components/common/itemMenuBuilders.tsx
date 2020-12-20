@@ -15,8 +15,8 @@ export const productBacklogItemMenuBuilder = (eventHandlers: ItemMenuEventHandle
 ) => (
     <ProductBacklogItemMenu
         showDetailMenuToLeft={showMenuToLeft}
-        onEditItemClicked={() => eventHandlers.handleEvent("onEditItemClicked", itemId)}
-        onRemoveItemClicked={() => eventHandlers.handleEvent("onRemoveItemClicked", itemId)}
+        onEditItemClick={() => eventHandlers.handleEvent("onEditItemClick", itemId)}
+        onRemoveItemClick={() => eventHandlers.handleEvent("onRemoveItemClick", itemId)}
     />
 );
 
@@ -26,12 +26,12 @@ export const sprintBacklogItemMenuBuilder = (eventHandlers: ItemMenuEventHandler
 ) => (
     <SprintBacklogItemMenu
         showDetailMenuToLeft={showMenuToLeft}
-        onMoveItemToBacklogClicked={() => eventHandlers.handleEvent("onMoveItemToBacklogClicked", itemId)}
-        onBacklogItemAcceptedClicked={() => eventHandlers.handleEvent("onBacklogItemAcceptedClicked", itemId)}
-        onBacklogItemDoneClicked={() => eventHandlers.handleEvent("onBacklogItemDoneClicked", itemId)}
-        onBacklogItemInProgressClicked={() => eventHandlers.handleEvent("onBacklogItemInProgressClicked", itemId)}
-        onBacklogItemNotStartedClicked={() => eventHandlers.handleEvent("onBacklogItemNotStartedClicked", itemId)}
-        onBacklogItemReleasedClicked={() => eventHandlers.handleEvent("onBacklogItemReleasedClicked", itemId)}
+        onMoveItemToBacklogClick={() => eventHandlers.handleEvent("onMoveItemToBacklogClick", itemId)}
+        onBacklogItemAcceptedClick={() => eventHandlers.handleEvent("onBacklogItemAcceptedClick", itemId)}
+        onBacklogItemDoneClick={() => eventHandlers.handleEvent("onBacklogItemDoneClick", itemId)}
+        onBacklogItemInProgressClick={() => eventHandlers.handleEvent("onBacklogItemInProgressClick", itemId)}
+        onBacklogItemNotStartedClick={() => eventHandlers.handleEvent("onBacklogItemNotStartedClick", itemId)}
+        onBacklogItemReleasedClick={() => eventHandlers.handleEvent("onBacklogItemReleasedClick", itemId)}
     />
 );
 
@@ -41,9 +41,8 @@ export const sprintMenuBuilder = (eventHandlers: ItemMenuEventHandlers): ItemMen
 ) => (
     <SprintMenu
         showDetailMenuToLeft={showMenuToLeft}
-        // onEditItemClicked={() => eventHandlers.handleEvent("onEditItemClicked", itemId)}
-        onRemoveItemClicked={() => eventHandlers.handleEvent("onRemoveItemClicked", itemId)}
-        onArchiveItemClicked={() => eventHandlers.handleEvent("onArchiveItemClicked", itemId)}
-        onUnarchiveItemClicked={() => eventHandlers.handleEvent("onUnarchiveItemClicked", itemId)}
+        onRemoveItemClick={() => eventHandlers.handleEvent("onRemoveItemClick", itemId)}
+        onArchiveItemClick={() => eventHandlers.handleEvent("onArchiveItemClick", itemId)}
+        onUnarchiveItemClick={() => eventHandlers.handleEvent("onUnarchiveItemClick", itemId)}
     />
 );

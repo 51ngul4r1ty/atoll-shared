@@ -21,12 +21,12 @@ export interface BacklogItemMenuStateProps {
 }
 
 export interface BacklogItemMenuDispatchProps {
-    onMoveItemToBacklogClicked?: { (): void };
-    onBacklogItemAcceptedClicked?: { (): void };
-    onBacklogItemDoneClicked?: { (): void };
-    onBacklogItemInProgressClicked?: { (): void };
-    onBacklogItemNotStartedClicked?: { (): void };
-    onBacklogItemReleasedClicked?: { (): void };
+    onMoveItemToBacklogClick?: { (): void };
+    onBacklogItemAcceptedClick?: { (): void };
+    onBacklogItemDoneClick?: { (): void };
+    onBacklogItemInProgressClick?: { (): void };
+    onBacklogItemNotStartedClick?: { (): void };
+    onBacklogItemReleasedClick?: { (): void };
 }
 
 export type SprintBacklogItemMenuProps = BacklogItemMenuStateProps & BacklogItemMenuDispatchProps;
@@ -41,48 +41,48 @@ export const InnerSprintBacklogItemMenu: React.FC<InnerSprintBacklogItemMenuProp
         <BacklogItemNotStartedButton
             suppressSpacing
             onClick={() => {
-                if (props.onBacklogItemNotStartedClicked) {
-                    props.onBacklogItemNotStartedClicked();
+                if (props.onBacklogItemNotStartedClick) {
+                    props.onBacklogItemNotStartedClick();
                 }
             }}
         />
         <BacklogItemInProgressButton
             suppressSpacing
             onClick={() => {
-                if (props.onBacklogItemInProgressClicked) {
-                    props.onBacklogItemInProgressClicked();
+                if (props.onBacklogItemInProgressClick) {
+                    props.onBacklogItemInProgressClick();
                 }
             }}
         />
         <BacklogItemDoneButton
             suppressSpacing
             onClick={() => {
-                if (props.onBacklogItemDoneClicked) {
-                    props.onBacklogItemDoneClicked();
+                if (props.onBacklogItemDoneClick) {
+                    props.onBacklogItemDoneClick();
                 }
             }}
         />
         <BacklogItemAcceptedButton
             suppressSpacing
             onClick={() => {
-                if (props.onBacklogItemAcceptedClicked) {
-                    props.onBacklogItemAcceptedClicked();
+                if (props.onBacklogItemAcceptedClick) {
+                    props.onBacklogItemAcceptedClick();
                 }
             }}
         />
         <BacklogItemReleasedButton
             suppressSpacing
             onClick={() => {
-                if (props.onBacklogItemReleasedClicked) {
-                    props.onBacklogItemReleasedClicked();
+                if (props.onBacklogItemReleasedClick) {
+                    props.onBacklogItemReleasedClick();
                 }
             }}
         />
         <MoveToBacklogButton
             suppressSpacing
             onClick={() => {
-                if (props.onMoveItemToBacklogClicked) {
-                    props.onMoveItemToBacklogClicked();
+                if (props.onMoveItemToBacklogClick) {
+                    props.onMoveItemToBacklogClick();
                 }
             }}
         />

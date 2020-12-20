@@ -137,9 +137,9 @@ export interface BacklogItemCardStateProps {
 }
 
 export interface BacklogItemCardDispatchProps {
-    onDetailClicked?: { (): void };
-    onEditItemClicked?: { (backlogItemId: string): void };
-    onRemoveItemClicked?: { (backlogItemId: string): void };
+    onDetailClick?: { (): void };
+    onEditItemClick?: { (backlogItemId: string): void };
+    onRemoveItemClick?: { (backlogItemId: string): void };
     onCheckboxChange?: { (checked: boolean): void };
     onBacklogItemIdClick?: { (backlogItemId: string): void };
 }
@@ -165,7 +165,7 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
         <ItemDetailButton
             hasDetails={props.hasDetails}
             className={css.backlogItemDetailButton}
-            onDetailClicked={() => props.onDetailClicked()}
+            onDetailClick={() => props.onDetailClick()}
         />
     );
     const handleCheckboxChange = (checked: boolean) => {

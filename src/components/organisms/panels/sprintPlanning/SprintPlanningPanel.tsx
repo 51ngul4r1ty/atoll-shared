@@ -57,14 +57,15 @@ export interface SprintPlanningPanelDispatchProps {
     onArchivedFilterChange: OnArchivedFilterChange;
     onAddNewSprintAfter: OnAddNewSprint;
     onAddBacklogItem: { (sprintId: string): void };
-    onDetailClicked: { (sprintId: string, backlogItemId: string): void };
-    onSprintDetailClicked: { (sprintId: string): void };
-    onMoveItemToBacklogClicked: { (sprintId: string, backlogItemId: string): void };
-    onBacklogItemAcceptedClicked: { (sprintId: string, backlogItemId: string): void };
-    onBacklogItemDoneClicked: { (sprintId: string, backlogItemId: string): void };
-    onBacklogItemInProgressClicked: { (sprintId: string, backlogItemId: string): void };
-    onBacklogItemNotStartedClicked: { (sprintId: string, backlogItemId: string): void };
-    onBacklogItemReleasedClicked: { (sprintId: string, backlogItemId: string): void };
+    onDetailClick: { (sprintId: string, backlogItemId: string): void };
+    onBacklogItemIdClick: { (sprintId: string, backlogItemId: string): void };
+    onSprintDetailClick: { (sprintId: string): void };
+    onMoveItemToBacklogClick: { (sprintId: string, backlogItemId: string): void };
+    onBacklogItemAcceptedClick: { (sprintId: string, backlogItemId: string): void };
+    onBacklogItemDoneClick: { (sprintId: string, backlogItemId: string): void };
+    onBacklogItemInProgressClick: { (sprintId: string, backlogItemId: string): void };
+    onBacklogItemNotStartedClick: { (sprintId: string, backlogItemId: string): void };
+    onBacklogItemReleasedClick: { (sprintId: string, backlogItemId: string): void };
 }
 
 export type SprintPlanningPanelProps = SprintPlanningPanelStateProps & SprintPlanningPanelDispatchProps & WithTranslation;
@@ -85,44 +86,49 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
             props.onAddBacklogItem(sprintId);
         }
     };
-    const onDetailClicked = (sprintId: string, backlogItemId: string) => {
-        if (props.onDetailClicked) {
-            props.onDetailClicked(sprintId, backlogItemId);
+    const onDetailClick = (sprintId: string, backlogItemId: string) => {
+        if (props.onDetailClick) {
+            props.onDetailClick(sprintId, backlogItemId);
         }
     };
-    const onSprintDetailClicked = (sprintId: string) => {
-        if (props.onSprintDetailClicked) {
-            props.onSprintDetailClicked(sprintId);
+    const onBacklogItemIdClick = (sprintId: string, backlogItemId: string) => {
+        if (props.onBacklogItemIdClick) {
+            props.onBacklogItemIdClick(sprintId, backlogItemId);
         }
     };
-    const onMoveItemToBacklogClicked = (sprintId: string, backlogItemId: string) => {
-        if (props.onMoveItemToBacklogClicked) {
-            props.onMoveItemToBacklogClicked(sprintId, backlogItemId);
+    const onSprintDetailClick = (sprintId: string) => {
+        if (props.onSprintDetailClick) {
+            props.onSprintDetailClick(sprintId);
         }
     };
-    const onBacklogItemAcceptedClicked = (sprintId: string, backlogItemId: string) => {
-        if (props.onBacklogItemAcceptedClicked) {
-            props.onBacklogItemAcceptedClicked(sprintId, backlogItemId);
+    const onMoveItemToBacklogClick = (sprintId: string, backlogItemId: string) => {
+        if (props.onMoveItemToBacklogClick) {
+            props.onMoveItemToBacklogClick(sprintId, backlogItemId);
         }
     };
-    const onBacklogItemDoneClicked = (sprintId: string, backlogItemId: string) => {
-        if (props.onBacklogItemDoneClicked) {
-            props.onBacklogItemDoneClicked(sprintId, backlogItemId);
+    const onBacklogItemAcceptedClick = (sprintId: string, backlogItemId: string) => {
+        if (props.onBacklogItemAcceptedClick) {
+            props.onBacklogItemAcceptedClick(sprintId, backlogItemId);
         }
     };
-    const onBacklogItemInProgressClicked = (sprintId: string, backlogItemId: string) => {
-        if (props.onBacklogItemInProgressClicked) {
-            props.onBacklogItemInProgressClicked(sprintId, backlogItemId);
+    const onBacklogItemDoneClick = (sprintId: string, backlogItemId: string) => {
+        if (props.onBacklogItemDoneClick) {
+            props.onBacklogItemDoneClick(sprintId, backlogItemId);
         }
     };
-    const onBacklogItemNotStartedClicked = (sprintId: string, backlogItemId: string) => {
-        if (props.onBacklogItemNotStartedClicked) {
-            props.onBacklogItemNotStartedClicked(sprintId, backlogItemId);
+    const onBacklogItemInProgressClick = (sprintId: string, backlogItemId: string) => {
+        if (props.onBacklogItemInProgressClick) {
+            props.onBacklogItemInProgressClick(sprintId, backlogItemId);
         }
     };
-    const onBacklogItemReleasedClicked = (sprintId: string, backlogItemId: string) => {
-        if (props.onBacklogItemReleasedClicked) {
-            props.onBacklogItemReleasedClicked(sprintId, backlogItemId);
+    const onBacklogItemNotStartedClick = (sprintId: string, backlogItemId: string) => {
+        if (props.onBacklogItemNotStartedClick) {
+            props.onBacklogItemNotStartedClick(sprintId, backlogItemId);
+        }
+    };
+    const onBacklogItemReleasedClick = (sprintId: string, backlogItemId: string) => {
+        if (props.onBacklogItemReleasedClick) {
+            props.onBacklogItemReleasedClick(sprintId, backlogItemId);
         }
     };
     const classNameToUse = buildClassName(css.sprintPlanningPanel, css.backlogItemPlanningPanel, props.className);
@@ -143,14 +149,14 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
         if (sprint.saved && !sprint.editing) {
             const itemEventHandlers: ItemMenuEventHandlers = {
                 handleEvent: (eventName: string, itemId: string) => {
-                    if (eventName === "onEditItemClicked") {
+                    if (eventName === "onEditItemClick") {
                         // TODO: Implement this
                         // dispatch(editBacklogItem(props.id));
-                    } else if (eventName === "onRemoveItemClicked") {
+                    } else if (eventName === "onRemoveItemClick") {
                         dispatch(apiDeleteSprint(itemId));
-                    } else if (eventName === "onArchiveItemClicked") {
+                    } else if (eventName === "onArchiveItemClick") {
                         dispatch(apiArchiveSprint(itemId));
-                    } else if (eventName === "onUnarchiveItemClicked") {
+                    } else if (eventName === "onUnarchiveItemClick") {
                         dispatch(apiUnarchiveSprint(itemId));
                     } else {
                         throw Error(`${eventName} is not handled`);
@@ -175,29 +181,32 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         onAddBacklogItem={() => {
                             onAddBacklogItem(sprint.id);
                         }}
-                        onBacklogItemDetailClicked={(backlogItemId: string) => {
-                            onDetailClicked(sprint.id, backlogItemId);
+                        onBacklogItemDetailClick={(backlogItemId: string) => {
+                            onDetailClick(sprint.id, backlogItemId);
                         }}
-                        onSprintDetailClicked={() => {
-                            onSprintDetailClicked(sprint.id);
+                        onBacklogItemIdClick={(backlogItemId: string) => {
+                            onBacklogItemIdClick(sprint.id, backlogItemId);
                         }}
-                        onMoveItemToBacklogClicked={(backlogItemId: string) => {
-                            onMoveItemToBacklogClicked(sprint.id, backlogItemId);
+                        onSprintDetailClick={() => {
+                            onSprintDetailClick(sprint.id);
                         }}
-                        onBacklogItemAcceptedClicked={(backlogItemId: string) => {
-                            onBacklogItemAcceptedClicked(sprint.id, backlogItemId);
+                        onMoveItemToBacklogClick={(backlogItemId: string) => {
+                            onMoveItemToBacklogClick(sprint.id, backlogItemId);
                         }}
-                        onBacklogItemDoneClicked={(backlogItemId: string) => {
-                            onBacklogItemDoneClicked(sprint.id, backlogItemId);
+                        onBacklogItemAcceptedClick={(backlogItemId: string) => {
+                            onBacklogItemAcceptedClick(sprint.id, backlogItemId);
                         }}
-                        onBacklogItemInProgressClicked={(backlogItemId: string) => {
-                            onBacklogItemInProgressClicked(sprint.id, backlogItemId);
+                        onBacklogItemDoneClick={(backlogItemId: string) => {
+                            onBacklogItemDoneClick(sprint.id, backlogItemId);
                         }}
-                        onBacklogItemNotStartedClicked={(backlogItemId: string) => {
-                            onBacklogItemNotStartedClicked(sprint.id, backlogItemId);
+                        onBacklogItemInProgressClick={(backlogItemId: string) => {
+                            onBacklogItemInProgressClick(sprint.id, backlogItemId);
                         }}
-                        onBacklogItemReleasedClicked={(backlogItemId: string) => {
-                            onBacklogItemReleasedClicked(sprint.id, backlogItemId);
+                        onBacklogItemNotStartedClick={(backlogItemId: string) => {
+                            onBacklogItemNotStartedClick(sprint.id, backlogItemId);
+                        }}
+                        onBacklogItemReleasedClick={(backlogItemId: string) => {
+                            onBacklogItemReleasedClick(sprint.id, backlogItemId);
                         }}
                     />
                 </div>

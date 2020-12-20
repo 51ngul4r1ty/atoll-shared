@@ -15,7 +15,7 @@ import { ApiProject } from "../apiModelTypes";
 import { API, ApiAction, ApiActionMetaDataRequestMeta, NoDataApiAction } from "../middleware/apiTypes";
 
 export interface ApiGetProjectRouteToBacklogItemViewMeta {
-    backlogItemId: string;
+    backlogItemDisplayId: string;
     routeToBacklogItemView: boolean;
 }
 

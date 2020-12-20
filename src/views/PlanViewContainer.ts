@@ -15,19 +15,20 @@ import {
     collapseSprintPanel,
     expandSprintPanel,
     NewSprintPosition,
-    sprintDetailClicked
+    sprintDetailClick
 } from "../actions/sprintActions";
 import { apiBffViewsPlan } from "../actions/apiBffViewsPlan";
 import {
     changeSprintPlanningArchivedFilter,
     moveSelectedBacklogItemsToSprintUsingApi,
-    sprintBacklogItemAcceptedClicked,
-    sprintBacklogItemDetailClicked,
-    sprintBacklogItemDoneClicked,
-    sprintBacklogItemInProgressClicked,
-    sprintBacklogItemNotStartedClicked,
-    sprintBacklogItemReleasedClicked,
-    sprintMoveItemToBacklogClicked
+    sprintBacklogItemAcceptedClick,
+    sprintBacklogItemDetailClick,
+    sprintBacklogItemDoneClick,
+    sprintBacklogItemIdClick,
+    sprintBacklogItemInProgressClick,
+    sprintBacklogItemNotStartedClick,
+    sprintBacklogItemReleasedClick,
+    sprintMoveItemToBacklogClick
 } from "../actions/sprintBacklogActions";
 
 // interfaces/types
@@ -87,21 +88,23 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
                 dispatch(collapseSprintPanel(sprintId));
             }
         },
-        onSprintDetailClicked: (sprintId: string) => dispatch(sprintDetailClicked(sprintId)),
-        onItemDetailClicked: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintBacklogItemDetailClicked(sprintId, backlogItemId)),
-        onMoveItemToBacklogClicked: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintMoveItemToBacklogClicked(sprintId, backlogItemId)),
-        onBacklogItemAcceptedClicked: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintBacklogItemAcceptedClicked(sprintId, backlogItemId)),
-        onBacklogItemDoneClicked: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintBacklogItemDoneClicked(sprintId, backlogItemId)),
-        onBacklogItemInProgressClicked: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintBacklogItemInProgressClicked(sprintId, backlogItemId)),
-        onBacklogItemNotStartedClicked: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintBacklogItemNotStartedClicked(sprintId, backlogItemId)),
-        onBacklogItemReleasedClicked: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintBacklogItemReleasedClicked(sprintId, backlogItemId))
+        onSprintDetailClick: (sprintId: string) => dispatch(sprintDetailClick(sprintId)),
+        onItemDetailClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemDetailClick(sprintId, backlogItemId)),
+        onBacklogItemIdClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemIdClick(sprintId, backlogItemId)),
+        onMoveItemToBacklogClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintMoveItemToBacklogClick(sprintId, backlogItemId)),
+        onBacklogItemAcceptedClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemAcceptedClick(sprintId, backlogItemId)),
+        onBacklogItemDoneClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemDoneClick(sprintId, backlogItemId)),
+        onBacklogItemInProgressClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemInProgressClick(sprintId, backlogItemId)),
+        onBacklogItemNotStartedClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemNotStartedClick(sprintId, backlogItemId)),
+        onBacklogItemReleasedClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemReleasedClick(sprintId, backlogItemId))
     };
 };
 

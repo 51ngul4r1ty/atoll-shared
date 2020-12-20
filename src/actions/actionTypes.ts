@@ -146,7 +146,7 @@ export const REORDER_BACKLOG_ITEM = "app/reorder:backlog-item";
 export const TOGGLE_BACKLOG_ITEM_DETAIL = "app/toggle:backlog-item-detail";
 export const EDIT_BACKLOG_ITEM = "app/edit:backlog-item";
 
-export const BACKLOG_ITEM_ID_CLICKED = "app/click:backlog-item-id";
+export const BACKLOG_ITEM_ID_CLICK = "app/click:backlog-item-id";
 
 export const SELECT_PRODUCT_BACKLOG_ITEM = "app/select:product-backlog-item";
 export const UNSELECT_PRODUCT_BACKLOG_ITEM = "app/unselect:product-backlog-item";
@@ -176,13 +176,15 @@ export const MOVE_BACKLOG_ITEM_TO_SPRINT = "app/add:sprint-backlog-item";
 export const TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL = "app/toggle:sprint-backlog-item";
 export const TOGGLE_SPRINT_ITEM_DETAIL = "app/toggle:sprint";
 
-export const MOVE_SPRINT_ITEM_TO_PRODUCT_BACKLOG_CLICKED = "app/move-to-backlog:sprint-backlog-item";
+export const MOVE_SPRINT_ITEM_TO_PRODUCT_BACKLOG_CLICK = "app/move-to-backlog:sprint-backlog-item";
 
-export const SPRINT_BACKLOG_ITEM_ACCEPTED_CLICKED = "app/status-accepted:sprint-backlog-item";
-export const SPRINT_BACKLOG_ITEM_DONE_CLICKED = "app/status-done:sprint-backlog-item";
-export const SPRINT_BACKLOG_ITEM_IN_PROGRESS_CLICKED = "app/status-in-progress:sprint-backlog-item";
-export const SPRINT_BACKLOG_ITEM_NOT_STARTED_CLICKED = "app/status-not-started:sprint-backlog-item";
-export const SPRINT_BACKLOG_ITEM_RELEASED_CLICKED = "app/status-released:sprint-backlog-item";
+export const SPRINT_BACKLOG_ITEM_ID_CLICK = "app/click:sprint-backlog-item-id";
+
+export const SPRINT_BACKLOG_ITEM_ACCEPTED_CLICK = "app/status-accepted:sprint-backlog-item";
+export const SPRINT_BACKLOG_ITEM_DONE_CLICK = "app/status-done:sprint-backlog-item";
+export const SPRINT_BACKLOG_ITEM_IN_PROGRESS_CLICK = "app/status-in-progress:sprint-backlog-item";
+export const SPRINT_BACKLOG_ITEM_NOT_STARTED_CLICK = "app/status-not-started:sprint-backlog-item";
+export const SPRINT_BACKLOG_ITEM_RELEASED_CLICK = "app/status-released:sprint-backlog-item";
 
 export const ADD_PRODUCT_BACKLOG_ITEM = "app/add:product-backlog-item";
 export const REMOVE_SPRINT_BACKLOG_ITEM = "app/remove:sprint-backlog-item";
