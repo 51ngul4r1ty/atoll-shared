@@ -18,12 +18,13 @@ export interface StandardInputStateProps {
     disabled?: boolean;
     inputId: string;
     inputName?: string;
+    inputValue?: string;
     labelText: string;
     placeHolder?: string;
+    readOnly?: boolean;
     required?: boolean;
     size?: number;
     type?: string;
-    inputValue?: string;
     validator?: { (value: string): boolean };
 }
 
@@ -41,7 +42,9 @@ interface StandardInputInnerStateProps {
 }
 
 export const InnerStandardInput: React.FC<StandardInputProps & StandardInputInnerStateProps> = (props) => {
-    const [inputText, setInputText] = useState(props.inputValue || "");
+    const inputTextStartingEmptyValue = props.readOnly ? "-" : "";
+    const propsInputValueToUse = props.inputValue || inputTextStartingEmptyValue;
+    const [inputText, setInputText] = useState(propsInputValueToUse);
     const [validInputText, setValidInputText] = useState(props.inputValue || "");
     const [isValid, setIsValid] = useState(true); // start off "valid", even if starting value is invalid
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +56,6 @@ export const InnerStandardInput: React.FC<StandardInputProps & StandardInputInne
             lastValidInputText = e.target.value;
             setIsValid(true);
         }
-
         setInputText(e.target.value);
         if (props.onChange) {
             props.onChange(lastValidInputText);
@@ -80,21 +82,22 @@ export const InnerStandardInput: React.FC<StandardInputProps & StandardInputInne
             }
         };
     });
-    const prevProps = usePrevious({ inputValue: props.inputValue });
+    const prevProps = usePrevious({ inputValue: propsInputValueToUse });
     const prevState = usePrevious({ inputText });
     useEffect(() => {
-        if (prevProps?.inputValue !== props.inputValue && prevState?.inputText === inputText) {
-            if (inputText !== props.inputValue) {
-                setInputText(props.inputValue);
+        if (prevProps?.inputValue !== propsInputValueToUse && prevState?.inputText === inputText) {
+            if (inputText !== propsInputValueToUse) {
+                setInputText(propsInputValueToUse);
             }
         }
-    }, [props.inputValue, inputText]);
+    }, [propsInputValueToUse, inputText]);
     const nameToUse = props.inputName || props.inputId;
     const classToUse = buildClassName(
         css.input,
         props.className,
         props.disabled ? css.disabled : null,
-        isValid ? css.valid : css.invalid
+        isValid ? css.valid : css.invalid,
+        props.readOnly ? css.readOnly : null
     );
     const typeToUse = props.type || "text";
     return (
@@ -102,7 +105,7 @@ export const InnerStandardInput: React.FC<StandardInputProps & StandardInputInne
             <input
                 id={props.inputId}
                 ref={props.innerRef}
-                disabled={props.disabled}
+                disabled={props.disabled || props.readOnly}
                 name={nameToUse}
                 type={typeToUse}
                 placeholder={props.placeHolder}

@@ -4,10 +4,10 @@ import { Dispatch } from "redux";
 
 // components
 import { ReviewView, ReviewViewDispatchProps, ReviewViewStateProps } from "./ReviewView";
-import { StateTree } from "./reducers/rootReducer";
+import { StateTree } from "../reducers/rootReducer";
 
 // utils
-import { isPlatformWindows } from "./utils/osUtils";
+import { isPlatformWindows } from "../utils/osUtils";
 
 const mapStateToProps = (state: StateTree): ReviewViewStateProps => {
     let result: ReviewViewStateProps = {

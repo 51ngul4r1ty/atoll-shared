@@ -19,6 +19,7 @@ export { BacklogItemCard, BacklogItemTypeEnum } from "./components/molecules/car
 
 // components - forms
 export { BacklogItemDetailForm } from "./components/organisms/forms/BacklogItemDetailForm";
+export { BacklogItemFullDetailForm } from "./components/organisms/forms/BacklogItemFullDetailForm";
 export { SprintDetailForm } from "./components/organisms/forms/SprintDetailForm";
 export { LoginForm } from "./components/organisms/forms/LoginForm";
 
@@ -36,14 +37,17 @@ export { TabStrip } from "./components/atoms/tabs/TabStrip";
 // components - icons
 export * from "./components/atoms/icons";
 
-// containers
+// containers - app
 export { default as IntlProvider } from "./i18n/IntlProvider";
 export { AppContainer } from "./AppContainer";
-export { LoginViewContainer } from "./LoginViewContainer";
-export { PlanViewContainer } from "./PlanViewContainer";
-export { ReviewViewContainer } from "./ReviewViewContainer";
+
+// containers - views
 export { BacklogItemRankViewContainer } from "./containers/debug/BacklogItemRankViewContainer";
-export { SprintViewContainer } from "./SprintViewContainer";
+export { BacklogItemViewContainer } from "./views/BacklogItemViewContainer";
+export { LoginViewContainer } from "./views/LoginViewContainer";
+export { PlanViewContainer } from "./views/PlanViewContainer";
+export { ReviewViewContainer } from "./views/ReviewViewContainer";
+export { SprintViewContainer } from "./views/SprintViewContainer";
 
 // config
 export * from "./config";

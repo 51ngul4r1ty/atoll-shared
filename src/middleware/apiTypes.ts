@@ -26,7 +26,7 @@ export interface ApiStageActionMeta<P> extends ApiActionMeta<P> {
 
 export type ApiMethods = "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "OPTIONS";
 
-export interface ApiAction<T = {}, U = {}> extends Action {
+export interface ApiAction<T = {}, U = {}, P = any> extends Action {
     payload: {
         endpoint: string;
         method: ApiMethods;
@@ -34,7 +34,7 @@ export interface ApiAction<T = {}, U = {}> extends Action {
         data?: T;
         types: ApiActionType[];
     };
-    meta?: ApiActionMeta<any> & U;
+    meta?: ApiActionMeta<P> & U;
 }
 
 export interface ApiStageAction<T = {}, U = {}> extends ApiAction {
@@ -54,10 +54,11 @@ export interface ApiActionMetaDataRequestBodyWithOriginal<T> extends ApiActionMe
     original?: T;
 }
 
-export interface ApiActionMetaDataRequestMeta<T = any, U = undefined, OA = undefined> {
+export interface ApiActionMetaDataRequestMeta<T = any, U = undefined, OA = undefined, P = undefined> {
     originalActionArgs?: OA;
     requestBody: ApiActionMetaDataRequestBody<T>;
     actionParams?: U;
+    passthrough?: P;
 }
 
 export interface ApiActionSuccessPayload<T> {

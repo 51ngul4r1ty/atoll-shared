@@ -170,6 +170,7 @@
     padding-left: 0.375rem;
     flex-grow: 1;
     text-align: center;
+    cursor: pointer;
 }
 
 :global(.mobile) .backlogItemCardOuter .backlogItemId {

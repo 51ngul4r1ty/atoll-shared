@@ -4,10 +4,10 @@ import { Dispatch } from "redux";
 
 // components
 import { SprintView, SprintViewDispatchProps, SprintViewStateProps } from "./SprintView";
-import { StateTree } from "./reducers/rootReducer";
+import { StateTree } from "../reducers/rootReducer";
 
 // utils
-import { isPlatformWindows } from "./utils/osUtils";
+import { isPlatformWindows } from "../utils/osUtils";
 
 const mapStateToProps = (state: StateTree): SprintViewStateProps => {
     let result: SprintViewStateProps = {

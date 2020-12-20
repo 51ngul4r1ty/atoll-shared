@@ -11,6 +11,7 @@ export type BacklogItemsState = Readonly<{
     items: EditableBacklogItem[];
     allItems: BacklogItemWithSource[];
     selectedItemIds: SelectedBacklogItems;
+    currentItem: SaveableBacklogItem;
     openedDetailMenuBacklogItemId: string | null;
 }>;
 

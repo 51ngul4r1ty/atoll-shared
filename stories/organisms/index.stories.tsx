@@ -205,8 +205,8 @@ storiesOf("Molecules/Cards/SprintCard", module).add("SprintCard", () => (
             selectedProductBacklogItemCount={4}
             onExpandCollapse={(id, expand) => {}}
             onAddBacklogItem={() => {}}
-            onDetailClicked={(backlogItemId: string) => {}}
-            onMoveItemToBacklogClicked={(backlogItemId: string) => {}}
+            onDetailClick={(backlogItemId: string) => {}}
+            onMoveItemToBacklogClick={(backlogItemId: string) => {}}
         />
     </div>
 ));
@@ -242,8 +242,8 @@ storiesOf("Organisms/Panels/SprintPlanningPanel", module).add("SprintPlanningPan
                 onAddBacklogItem={undefined}
                 onAddNewSprintAfter={undefined}
                 onAddNewSprintBefore={undefined}
-                onDetailClicked={undefined}
-                onMoveItemToBacklogClicked={undefined}
+                onDetailClick={undefined}
+                onMoveItemToBacklogClick={undefined}
             />
         </Provider>
     </div>

@@ -13,6 +13,10 @@
     color: var(--normal-pen-color, black);
 }
 
+.input.readOnly > input {
+    background-color: var(--normal-form-page-readonly-color, #e8e8e8);
+}
+
 .input > label {
     position: absolute;
     top: 0.08rem;

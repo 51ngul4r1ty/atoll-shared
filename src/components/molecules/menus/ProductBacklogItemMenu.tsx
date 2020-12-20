@@ -16,8 +16,8 @@ export interface BacklogItemMenuStateProps {
 }
 
 export interface BacklogItemMenuDispatchProps {
-    onEditItemClicked?: { (): void };
-    onRemoveItemClicked?: { (): void };
+    onEditItemClick?: { (): void };
+    onRemoveItemClick?: { (): void };
 }
 
 export type ProductBacklogItemMenuProps = BacklogItemMenuStateProps & BacklogItemMenuDispatchProps;
@@ -31,8 +31,8 @@ export const InnerProductBacklogItemMenu: React.FC<InnerProductBacklogItemMenuPr
         <RemoveButton
             suppressSpacing
             onClick={() => {
-                if (props.onRemoveItemClicked) {
-                    props.onRemoveItemClicked();
+                if (props.onRemoveItemClick) {
+                    props.onRemoveItemClick();
                 }
             }}
         />
@@ -40,8 +40,8 @@ export const InnerProductBacklogItemMenu: React.FC<InnerProductBacklogItemMenuPr
             mode={EditMode.View}
             suppressSpacing
             onClick={() => {
-                if (props.onEditItemClicked) {
-                    props.onEditItemClicked();
+                if (props.onEditItemClick) {
+                    props.onEditItemClick();
                 }
             }}
         />

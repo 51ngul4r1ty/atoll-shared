@@ -13,7 +13,6 @@ import {
     buildBacklogItemKey,
     buildBacklogItemPlanningItemKey,
     buildDividerKey,
-    calcItemId,
     ItemMenuEventHandlers
 } from "../../../molecules/cards/BacklogItemCard";
 import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
@@ -28,7 +27,7 @@ import { Source } from "../../../../reducers/types";
 // actions
 import { apiDeleteBacklogItem } from "../../../../actions/apiBacklogItems";
 import {
-    backlogItemDetailClicked,
+    backlogItemDetailClick,
     editBacklogItem,
     selectProductBacklogItem,
     unselectProductBacklogItem
@@ -38,6 +37,7 @@ import {
 import * as logger from "../../../../utils/logger";
 import { useRecursiveTimeout } from "../../../common/setTimeoutHook";
 import { BacklogItemPlanningItem } from "../../combo/BacklogItemPlanningItem";
+import { buildBacklogDisplayId } from "../../../../utils/backlogItemHelper";
 
 // consts/enums
 import * as loggingTags from "../../../../constants/loggingTags";
@@ -83,7 +83,7 @@ export const buildDragBacklogItemElt = (
             internalId={`${item.id}`}
             isDraggable={editMode === EditMode.Edit}
             isSelectable={editMode === EditMode.Edit}
-            itemId={calcItemId(item.externalId, item.friendlyId)}
+            itemId={buildBacklogDisplayId(item.externalId, item.friendlyId)}
             itemType={item.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
             key={buildBacklogItemKey(item)}
             marginBelowItem
@@ -446,16 +446,16 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 const showDetailMenu = item.id === props.openedDetailMenuBacklogItemId;
                 const itemEventHandlers: ItemMenuEventHandlers = {
                     handleEvent: (eventName: string, itemId: string) => {
-                        if (eventName === "onRemoveItemClicked") {
+                        if (eventName === "onRemoveItemClick") {
                             dispatch(apiDeleteBacklogItem(item.id));
-                        } else if (eventName === "onEditItemClicked") {
+                        } else if (eventName === "onEditItemClick") {
                             dispatch(editBacklogItem(item.id));
                         } else {
                             throw Error(`${eventName} is not handled`);
                         }
                     }
                 };
-                renderElts.push(
+                const dragOverItemBacklogItemCard = (
                     <BacklogItemCard
                         key={cardKey}
                         buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
@@ -472,8 +472,8 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         roleText={null}
                         status={item.status}
                         titleText={null}
-                        onDetailClicked={() => {
-                            dispatch(backlogItemDetailClicked(item.id));
+                        onDetailClick={() => {
+                            dispatch(backlogItemDetailClick(item.id));
                         }}
                         onCheckboxChange={(checked) => {
                             if (checked) {
@@ -485,6 +485,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         showDetailMenu={showDetailMenu}
                     />
                 );
+                renderElts.push(dragOverItemBacklogItemCard);
             }
             const showItem = !isDragItem;
             const showDetailMenu = item.id === props.openedDetailMenuBacklogItemId;

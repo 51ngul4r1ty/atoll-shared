@@ -6,6 +6,7 @@
 // externals
 import { Action, Store } from "redux";
 import * as HttpStatus from "http-status-codes";
+import { push } from "connected-react-router";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
@@ -31,7 +32,8 @@ import {
     SaveNewBacklogItemAction,
     ReorderBacklogItemAction,
     CancelEditBacklogItemAction,
-    addProductBacklogItem
+    addProductBacklogItem,
+    BacklogItemIdClickAction
 } from "../actions/backlogItemActions";
 import { postLogin, ActionPostLoginSuccessAction, ActionPostRefreshTokenSuccessAction } from "../actions/authActions";
 import { routePlanView } from "../actions/routeActions";
@@ -47,12 +49,13 @@ import {
     ChangeSprintPlanningArchivedFilterAction,
     MoveSelectedBacklogItemsToSprintUsingApiAction,
     removeSprintBacklogItem,
-    SprintBacklogItemAcceptedClickedAction,
-    SprintBacklogItemDoneClickedAction,
-    SprintBacklogItemInProgressClickedAction,
-    SprintBacklogItemNotStartedClickedAction,
-    SprintBacklogItemReleasedClickedAction,
-    SprintMoveItemToBacklogClickedAction
+    SprintBacklogItemAcceptedClickAction,
+    SprintBacklogItemDoneClickAction,
+    SprintBacklogItemIdClickAction,
+    SprintBacklogItemInProgressClickAction,
+    SprintBacklogItemNotStartedClickAction,
+    SprintBacklogItemReleasedClickAction,
+    SprintMoveItemToBacklogClickAction
 } from "../actions/sprintBacklogActions";
 import { apiGetSprints, apiPostSprint } from "../actions/apiSprints";
 
@@ -67,11 +70,18 @@ import { getSprintBacklogItemById } from "../selectors/sprintBacklogSelectors";
 
 // utils
 import { convertToBacklogItemModel, convertToSprintModel } from "../utils/apiPayloadHelper";
+import {
+    apiGetProject,
+    ApiGetProjectRouteToBacklogItemViewMeta,
+    ApiGetProjectSuccessRouteToBacklogItemViewAction
+} from "../actions/apiProjects";
 
 // interfaces/types
 import { ResourceTypes } from "../reducers/apiLinksReducer";
 import { ExpandSprintPanelAction, SaveNewSprintAction, updateSprintStats } from "../actions/sprintActions";
 import { BacklogItemStatus } from "../types/backlogItemTypes";
+import { buildBacklogDisplayId } from "../utils/backlogItemHelper";
+import { encodeForUrl } from "../utils/urlUtils";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
@@ -176,43 +186,43 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             storeTyped.dispatch(apiBatchAddBacklogItemsToSprint(sprintId, selectedItems));
             break;
         }
-        case ActionTypes.MOVE_SPRINT_ITEM_TO_PRODUCT_BACKLOG_CLICKED: {
-            const actionTyped = action as SprintMoveItemToBacklogClickedAction;
+        case ActionTypes.MOVE_SPRINT_ITEM_TO_PRODUCT_BACKLOG_CLICK: {
+            const actionTyped = action as SprintMoveItemToBacklogClickAction;
             const sprintId = actionTyped.payload.sprintId;
             const backlogItemId = actionTyped.payload.backlogItemId;
             storeTyped.dispatch(apiMoveSprintItemToProductBacklog(sprintId, backlogItemId));
             break;
         }
-        case ActionTypes.SPRINT_BACKLOG_ITEM_ACCEPTED_CLICKED: {
-            const actionTyped = action as SprintBacklogItemAcceptedClickedAction;
+        case ActionTypes.SPRINT_BACKLOG_ITEM_ACCEPTED_CLICK: {
+            const actionTyped = action as SprintBacklogItemAcceptedClickAction;
             const sprintId = actionTyped.payload.sprintId;
             const backlogItemId = actionTyped.payload.backlogItemId;
             storeTyped.dispatch(apiSprintBacklogItemSetStatus(sprintId, backlogItemId, BacklogItemStatus.Accepted));
             break;
         }
-        case ActionTypes.SPRINT_BACKLOG_ITEM_DONE_CLICKED: {
-            const actionTyped = action as SprintBacklogItemDoneClickedAction;
+        case ActionTypes.SPRINT_BACKLOG_ITEM_DONE_CLICK: {
+            const actionTyped = action as SprintBacklogItemDoneClickAction;
             const sprintId = actionTyped.payload.sprintId;
             const backlogItemId = actionTyped.payload.backlogItemId;
             storeTyped.dispatch(apiSprintBacklogItemSetStatus(sprintId, backlogItemId, BacklogItemStatus.Done));
             break;
         }
-        case ActionTypes.SPRINT_BACKLOG_ITEM_IN_PROGRESS_CLICKED: {
-            const actionTyped = action as SprintBacklogItemInProgressClickedAction;
+        case ActionTypes.SPRINT_BACKLOG_ITEM_IN_PROGRESS_CLICK: {
+            const actionTyped = action as SprintBacklogItemInProgressClickAction;
             const sprintId = actionTyped.payload.sprintId;
             const backlogItemId = actionTyped.payload.backlogItemId;
             storeTyped.dispatch(apiSprintBacklogItemSetStatus(sprintId, backlogItemId, BacklogItemStatus.InProgress));
             break;
         }
-        case ActionTypes.SPRINT_BACKLOG_ITEM_NOT_STARTED_CLICKED: {
-            const actionTyped = action as SprintBacklogItemNotStartedClickedAction;
+        case ActionTypes.SPRINT_BACKLOG_ITEM_NOT_STARTED_CLICK: {
+            const actionTyped = action as SprintBacklogItemNotStartedClickAction;
             const sprintId = actionTyped.payload.sprintId;
             const backlogItemId = actionTyped.payload.backlogItemId;
             storeTyped.dispatch(apiSprintBacklogItemSetStatus(sprintId, backlogItemId, BacklogItemStatus.NotStarted));
             break;
         }
-        case ActionTypes.SPRINT_BACKLOG_ITEM_RELEASED_CLICKED: {
-            const actionTyped = action as SprintBacklogItemReleasedClickedAction;
+        case ActionTypes.SPRINT_BACKLOG_ITEM_RELEASED_CLICK: {
+            const actionTyped = action as SprintBacklogItemReleasedClickAction;
             const sprintId = actionTyped.payload.sprintId;
             const backlogItemId = actionTyped.payload.backlogItemId;
             storeTyped.dispatch(apiSprintBacklogItemSetStatus(sprintId, backlogItemId, BacklogItemStatus.Released));
@@ -251,6 +261,49 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const projectId = getCurrentProjectId(state);
             const includeArchived = actionTyped.payload.includeArchived;
             storeTyped.dispatch(apiGetSprints(projectId, includeArchived));
+            break;
+        }
+        case ActionTypes.BACKLOG_ITEM_ID_CLICK: {
+            const actionTyped = action as BacklogItemIdClickAction;
+            const backlogItemId = actionTyped.payload.backlogItemId;
+            const state = storeTyped.getState();
+            const backlogItem = getBacklogItemById(state, backlogItemId);
+            const projectId = backlogItem.projectId;
+            const backlogItemDisplayId = buildBacklogDisplayId(backlogItem.externalId, backlogItem.friendlyId);
+            storeTyped.dispatch(
+                apiGetProject(projectId, {
+                    routeToBacklogItemView: true,
+                    backlogItemDisplayId
+                } as ApiGetProjectRouteToBacklogItemViewMeta)
+            );
+            break;
+        }
+        case ActionTypes.SPRINT_BACKLOG_ITEM_ID_CLICK: {
+            const actionTyped = action as SprintBacklogItemIdClickAction;
+            const backlogItemId = actionTyped.payload.backlogItemId;
+            const sprintId = actionTyped.payload.sprintId;
+            const state = storeTyped.getState();
+            const backlogItem = getSprintBacklogItemById(state, sprintId, backlogItemId);
+            const projectId = backlogItem.projectId;
+            const backlogItemDisplayId = buildBacklogDisplayId(backlogItem.externalId, backlogItem.friendlyId);
+            storeTyped.dispatch(
+                apiGetProject(projectId, {
+                    routeToBacklogItemView: true,
+                    backlogItemDisplayId
+                } as ApiGetProjectRouteToBacklogItemViewMeta)
+            );
+            break;
+        }
+        case ActionTypes.API_GET_PROJECT_SUCCESS: {
+            const actionTyped = action as ApiGetProjectSuccessRouteToBacklogItemViewAction;
+            const metaPassthrough = actionTyped.meta.passthrough as ApiGetProjectRouteToBacklogItemViewMeta;
+            if (metaPassthrough.routeToBacklogItemView) {
+                const projectDisplayId = actionTyped.payload.response.data.item.name;
+                const backlogItemDisplayId = metaPassthrough.backlogItemDisplayId;
+                const basePath = `/project/${encodeForUrl(projectDisplayId)}`;
+                const newRoute = `${basePath}/backlog-item/${encodeForUrl(backlogItemDisplayId)}`;
+                storeTyped.dispatch(push(newRoute));
+            }
             break;
         }
         case ActionTypes.UPDATE_SPRINT: {

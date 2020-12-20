@@ -6,46 +6,47 @@ import { Dispatch } from "redux";
 import { PlanView, PlanViewStateProps, PlanViewDispatchProps } from "./PlanView";
 
 // state
-import { StateTree } from "./reducers/rootReducer";
+import { StateTree } from "../reducers/rootReducer";
 
 // actions
-import { addNewBacklogItemForm, reorderBacklogItems } from "./actions/backlogItemActions";
+import { addNewBacklogItemForm, reorderBacklogItems } from "../actions/backlogItemActions";
 import {
     addNewSprintForm,
     collapseSprintPanel,
     expandSprintPanel,
     NewSprintPosition,
-    sprintDetailClicked
-} from "./actions/sprintActions";
-import { apiBffViewsPlan } from "./actions/apiBffViewsPlan";
+    sprintDetailClick
+} from "../actions/sprintActions";
+import { apiBffViewsPlan } from "../actions/apiBffViewsPlan";
 import {
     changeSprintPlanningArchivedFilter,
     moveSelectedBacklogItemsToSprintUsingApi,
-    sprintBacklogItemAcceptedClicked,
-    sprintBacklogItemDetailClicked,
-    sprintBacklogItemDoneClicked,
-    sprintBacklogItemInProgressClicked,
-    sprintBacklogItemNotStartedClicked,
-    sprintBacklogItemReleasedClicked,
-    sprintMoveItemToBacklogClicked
-} from "./actions/sprintBacklogActions";
+    sprintBacklogItemAcceptedClick,
+    sprintBacklogItemDetailClick,
+    sprintBacklogItemDoneClick,
+    sprintBacklogItemIdClick,
+    sprintBacklogItemInProgressClick,
+    sprintBacklogItemNotStartedClick,
+    sprintBacklogItemReleasedClick,
+    sprintMoveItemToBacklogClick
+} from "../actions/sprintBacklogActions";
 
 // interfaces/types
-import { BacklogItemType } from "./types/backlogItemTypes";
+import { BacklogItemType } from "../types/backlogItemTypes";
 
 // utils
-import { isPlatformWindows } from "./utils";
+import { isPlatformWindows } from "../utils";
 
 // selectors
-import { getCurrentProjectId } from "./selectors/userSelectors";
-import { getOpenedDetailMenuSprintId, getPlanViewSprints } from "./selectors/sprintSelectors";
+import { getCurrentProjectId } from "../selectors/userSelectors";
+import { getOpenedDetailMenuSprintId, getPlanViewSprints } from "../selectors/sprintSelectors";
 import {
     getAllBacklogItems,
     getOpenedDetailMenuBacklogItemId,
     getSelectedBacklogItemCount
-} from "./selectors/backlogItemSelectors";
-import { getAppEditMode, getElectronClient } from "./selectors/appSelectors";
-import { getIncludeArchivedSprints, getOpenedDetailMenuInfo } from "./selectors/sprintBacklogSelectors";
+} from "../selectors/backlogItemSelectors";
+import { getAppEditMode, getElectronClient } from "../selectors/appSelectors";
+import { getIncludeArchivedSprints, getOpenedDetailMenuInfo } from "../selectors/sprintBacklogSelectors";
 
 const mapStateToProps = (state: StateTree): PlanViewStateProps => {
     const allItems = getAllBacklogItems(state);
@@ -69,7 +70,7 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
     return {
-        onLoaded: (projectId: string) => {
+        onLoaded: () => {
             dispatch(apiBffViewsPlan());
         },
         onAddNewBacklogItemForm: (type: BacklogItemType) => dispatch(addNewBacklogItemForm(type)),
@@ -87,21 +88,23 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
                 dispatch(collapseSprintPanel(sprintId));
             }
         },
-        onSprintDetailClicked: (sprintId: string) => dispatch(sprintDetailClicked(sprintId)),
-        onItemDetailClicked: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintBacklogItemDetailClicked(sprintId, backlogItemId)),
-        onMoveItemToBacklogClicked: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintMoveItemToBacklogClicked(sprintId, backlogItemId)),
-        onBacklogItemAcceptedClicked: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintBacklogItemAcceptedClicked(sprintId, backlogItemId)),
-        onBacklogItemDoneClicked: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintBacklogItemDoneClicked(sprintId, backlogItemId)),
-        onBacklogItemInProgressClicked: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintBacklogItemInProgressClicked(sprintId, backlogItemId)),
-        onBacklogItemNotStartedClicked: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintBacklogItemNotStartedClicked(sprintId, backlogItemId)),
-        onBacklogItemReleasedClicked: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintBacklogItemReleasedClicked(sprintId, backlogItemId))
+        onSprintDetailClick: (sprintId: string) => dispatch(sprintDetailClick(sprintId)),
+        onItemDetailClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemDetailClick(sprintId, backlogItemId)),
+        onBacklogItemIdClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemIdClick(sprintId, backlogItemId)),
+        onMoveItemToBacklogClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintMoveItemToBacklogClick(sprintId, backlogItemId)),
+        onBacklogItemAcceptedClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemAcceptedClick(sprintId, backlogItemId)),
+        onBacklogItemDoneClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemDoneClick(sprintId, backlogItemId)),
+        onBacklogItemInProgressClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemInProgressClick(sprintId, backlogItemId)),
+        onBacklogItemNotStartedClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemNotStartedClick(sprintId, backlogItemId)),
+        onBacklogItemReleasedClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemReleasedClick(sprintId, backlogItemId))
     };
 };
 

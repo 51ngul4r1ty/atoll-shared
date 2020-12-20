@@ -14,10 +14,10 @@ export interface BacklogItemMenuStateProps {
 }
 
 export interface BacklogItemMenuDispatchProps {
-    onArchiveItemClicked?: { (): void };
-    onUnarchiveItemClicked?: { (): void };
-    onEditItemClicked?: { (): void };
-    onRemoveItemClicked?: { (): void };
+    onArchiveItemClick?: { (): void };
+    onUnarchiveItemClick?: { (): void };
+    onEditItemClick?: { (): void };
+    onRemoveItemClick?: { (): void };
 }
 
 export type SprintMenuProps = BacklogItemMenuStateProps & BacklogItemMenuDispatchProps;
@@ -31,36 +31,27 @@ export const InnerSprintMenu: React.FC<InnerSprintMenuProps> = (props) => (
         <RemoveButton
             suppressSpacing
             onClick={() => {
-                if (props.onRemoveItemClicked) {
-                    props.onRemoveItemClicked();
+                if (props.onRemoveItemClick) {
+                    props.onRemoveItemClick();
                 }
             }}
         />
         <ArchiveButton
             suppressSpacing
             onClick={() => {
-                if (props.onArchiveItemClicked) {
-                    props.onArchiveItemClicked();
+                if (props.onArchiveItemClick) {
+                    props.onArchiveItemClick();
                 }
             }}
         />
         <ArchiveCancelButton
             suppressSpacing
             onClick={() => {
-                if (props.onUnarchiveItemClicked) {
-                    props.onUnarchiveItemClicked();
+                if (props.onUnarchiveItemClick) {
+                    props.onUnarchiveItemClick();
                 }
             }}
         />
-        {/* <EditButton
-            mode={EditMode.View}
-            suppressSpacing
-            onClick={() => {
-                if (props.onEditItemClicked) {
-                    props.onEditItemClicked();
-                }
-            }}
-        /> */}
     </ItemMenuPanel>
 );
 

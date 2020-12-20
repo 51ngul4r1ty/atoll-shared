@@ -2,13 +2,13 @@
 import * as React from "react";
 
 // components
-import { TopMenuPanelContainer } from "./containers/TopMenuPanelContainer";
+import { TopMenuPanelContainer } from "../containers/TopMenuPanelContainer";
 
 // contexts
-import { AppConsumer } from "./contexts/appContextUtil";
+import { AppConsumer } from "../contexts/appContextUtil";
 
 // consts/enums
-import { EditMode } from "./components/molecules/buttons/EditButton";
+import { EditMode } from "../components/molecules/buttons/EditButton";
 
 export interface SprintViewStateProps {
     editMode: EditMode;

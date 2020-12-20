@@ -165,8 +165,9 @@ export const apiMiddleware = (store) => (next) => (action: Action) => {
     axios
         .request(requestBody)
         .then(({ data }) => {
+            const successType = getSuccessType(types);
             try {
-                dispatchSuccess(dispatch, getSuccessType(types), data, requestBody, apiAction.meta);
+                dispatchSuccess(dispatch, successType, data, requestBody, apiAction.meta);
             } catch (err) {
                 console.error(`Error occurred while dispatching success: ${err}`);
             }

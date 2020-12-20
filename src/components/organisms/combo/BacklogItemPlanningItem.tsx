@@ -10,8 +10,8 @@ import { BacklogItemDetailForm } from "../forms/BacklogItemDetailForm";
 import { BacklogItemCard, BacklogItemTypeEnum, ItemMenuEventHandlers } from "../../molecules/cards/BacklogItemCard";
 
 // utils
-import { calcItemId } from "../../molecules/cards/BacklogItemCard";
 import { buildClassName } from "../../../utils/classNameBuilder";
+import { buildBacklogDisplayId } from "../../../utils/backlogItemHelper";
 import { productBacklogItemMenuBuilder } from "../../common/itemMenuBuilders";
 
 // actions
@@ -20,12 +20,13 @@ import {
     updateBacklogItemFields,
     saveNewBacklogItem,
     cancelUnsavedBacklogItem,
-    backlogItemDetailClicked,
+    backlogItemDetailClick,
     editBacklogItem,
     cancelEditBacklogItem,
     updateBacklogItem,
     selectProductBacklogItem,
-    unselectProductBacklogItem
+    unselectProductBacklogItem,
+    backlogItemIdClick
 } from "../../../actions/backlogItemActions";
 
 // style
@@ -92,9 +93,9 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
     } else {
         const itemEventHandlers: ItemMenuEventHandlers = {
             handleEvent: (eventName: string, itemId: string) => {
-                if (eventName === "onEditItemClicked") {
+                if (eventName === "onEditItemClick") {
                     dispatch(editBacklogItem(props.id));
-                } else if (eventName === "onRemoveItemClicked") {
+                } else if (eventName === "onRemoveItemClick") {
                     dispatch(apiDeleteBacklogItem(props.id));
                 } else {
                     throw Error(`${eventName} is not handled`);
@@ -112,7 +113,7 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     internalId={`${props.id}`}
                     isDraggable={props.editMode === EditMode.Edit}
                     isSelectable={props.editMode === EditMode.Edit}
-                    itemId={calcItemId(props.externalId, props.friendlyId)}
+                    itemId={buildBacklogDisplayId(props.externalId, props.friendlyId)}
                     itemType={props.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
                     key={props.id}
                     marginBelowItem
@@ -123,8 +124,8 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     showDetailMenu={props.showDetailMenu}
                     status={props.status}
                     titleText={props.storyPhrase}
-                    onDetailClicked={() => {
-                        dispatch(backlogItemDetailClicked(props.id));
+                    onDetailClick={() => {
+                        dispatch(backlogItemDetailClick(props.id));
                     }}
                     onCheckboxChange={(checked) => {
                         if (checked) {
@@ -132,6 +133,9 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                         } else {
                             dispatch(unselectProductBacklogItem(props.id));
                         }
+                    }}
+                    onBacklogItemIdClick={(itemId) => {
+                        dispatch(backlogItemIdClick(itemId));
                     }}
                 />
             </>

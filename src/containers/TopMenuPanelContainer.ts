@@ -26,6 +26,7 @@ import * as backlogItemSelectors from "../selectors/backlogItemSelectors";
 export interface TopMenuPanelContainerProps {
     activeTabId: string;
     treatAsElectronTitleBar: boolean;
+    hideEditViewButton?: boolean;
 }
 
 const mapStateToProps = (state: StateTree, ownProps: TopMenuPanelContainerProps): TopMenuPanelStateProps => {
@@ -34,7 +35,8 @@ const mapStateToProps = (state: StateTree, ownProps: TopMenuPanelContainerProps)
         editMode: appSelectors.getAppEditMode(state),
         showRefreshButton: backlogItemSelectors.hasPushedBacklogItems(state),
         treatAsElectronTitleBar: ownProps.treatAsElectronTitleBar,
-        message: appSelectors.getAppMessage(state)
+        message: appSelectors.getAppMessage(state),
+        hideEditViewButton: ownProps.hideEditViewButton
     };
     return result;
 };

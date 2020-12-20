@@ -14,7 +14,7 @@ export interface ItemDetailButtonStateProps {
 }
 
 export interface ItemDetailButtonDispatchProps {
-    onDetailClicked: { (): void };
+    onDetailClick: { (): void };
 }
 
 export type ItemDetailButtonProps = ItemDetailButtonStateProps & ItemDetailButtonDispatchProps;
@@ -25,8 +25,8 @@ export const ItemDetailButton: React.FC<ItemDetailButtonProps> = (props) =>
             data-class="item-menu-button"
             className={buildClassName(css.itemDetailButton, props.className)}
             onClick={() => {
-                if (props.onDetailClicked) {
-                    props.onDetailClicked();
+                if (props.onDetailClick) {
+                    props.onDetailClick();
                 }
             }}
         >

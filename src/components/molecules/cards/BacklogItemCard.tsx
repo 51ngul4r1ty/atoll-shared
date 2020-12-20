@@ -23,10 +23,6 @@ import { BacklogItemStatus } from "../../../types/backlogItemTypes";
 
 /* exported functions */
 
-export const calcItemId = (externalId: string | null, friendlyId: string) => {
-    return externalId || friendlyId;
-};
-
 export const buildUniqueItemKey = (props: SaveableBacklogItem, componentPrefix: string): string => {
     return props.id ? `${componentPrefix}-id-${props.id}` : `${componentPrefix}-i-${props.instanceId}`;
 };
@@ -141,10 +137,11 @@ export interface BacklogItemCardStateProps {
 }
 
 export interface BacklogItemCardDispatchProps {
-    onDetailClicked?: { (): void };
-    onEditItemClicked?: { (backlogItemId: string): void };
-    onRemoveItemClicked?: { (backlogItemId: string): void };
+    onDetailClick?: { (): void };
+    onEditItemClick?: { (backlogItemId: string): void };
+    onRemoveItemClick?: { (backlogItemId: string): void };
     onCheckboxChange?: { (checked: boolean): void };
+    onBacklogItemIdClick?: { (backlogItemId: string): void };
 }
 
 export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDispatchProps;
@@ -168,12 +165,17 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
         <ItemDetailButton
             hasDetails={props.hasDetails}
             className={css.backlogItemDetailButton}
-            onDetailClicked={() => props.onDetailClicked()}
+            onDetailClick={() => props.onDetailClick()}
         />
     );
     const handleCheckboxChange = (checked: boolean) => {
         if (props.onCheckboxChange) {
             props.onCheckboxChange(checked);
+        }
+    };
+    const handleBacklogItemIdClick = (id: string) => {
+        if (props.onBacklogItemIdClick) {
+            props.onBacklogItemIdClick(id);
         }
     };
     const checkboxToSelect = props.isSelectable ? (
@@ -218,7 +220,11 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
                     <div className={css.backlogItemIcon}>
                         {props.itemType === BacklogItemTypeEnum.Story ? <StoryIcon invertColors /> : <IssueIcon invertColors />}
                     </div>
-                    <div className={css.backlogItemId} title={titleForItemId(props.itemId)}>
+                    <div
+                        className={css.backlogItemId}
+                        title={titleForItemId(props.itemId)}
+                        onClick={() => handleBacklogItemIdClick(props.internalId)}
+                    >
                         {abbreviateId(props.itemId)}
                     </div>
                     {props.isDraggable && props.renderMobile ? (

@@ -150,7 +150,7 @@ export interface ToggleSprintDetailAction {
     payload: ToggleSprintDetailPayload;
 }
 
-export const sprintDetailClicked = (sprintId: string): ToggleSprintDetailAction => ({
+export const sprintDetailClick = (sprintId: string): ToggleSprintDetailAction => ({
     type: ActionTypes.TOGGLE_SPRINT_ITEM_DETAIL,
     payload: {
         sprintId

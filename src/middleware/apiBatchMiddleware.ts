@@ -1,6 +1,6 @@
 /**
  * Purpose: To co-ordinate the API batch calling process.
- * Reason to change: When new RESTful API calls are needed.
+ * Reason to change: When a new sequence of operations related to RESTful API calls are needed.
  */
 
 // externals
