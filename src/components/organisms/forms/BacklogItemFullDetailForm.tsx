@@ -25,7 +25,7 @@ export interface BacklogItemFullDetailFormStateProps extends BacklogItemEditable
 }
 
 export interface BacklogItemFullDetailFormDispatchProps {
-    onDoneClick?: { () };
+    onSaveClick?: { () };
     onCancelClick?: { () };
     onDataUpdate?: { (props: BacklogItemEditableFields) };
 }
@@ -53,9 +53,9 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
             this.props.onDataUpdate(fields);
         }
     };
-    handleDoneClick = () => {
-        if (this.props.onDoneClick) {
-            this.props.onDoneClick();
+    handleSaveClick = () => {
+        if (this.props.onSaveClick) {
+            this.props.onSaveClick();
         }
     };
     handleResetClick = () => {
@@ -162,7 +162,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 <SaveButton
                     className={css.actionButton}
                     onClick={() => {
-                        this.handleDoneClick();
+                        this.handleSaveClick();
                     }}
                 />
             </div>

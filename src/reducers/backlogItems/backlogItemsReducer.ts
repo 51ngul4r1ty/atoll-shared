@@ -34,6 +34,7 @@ import { PushState } from "../types";
 // utils
 import {
     getBacklogItemById,
+    updateBacklogItemFieldsInItemsAndAddedItems,
     idsMatch,
     rebuildAllItems,
     targetIsInMenuButton,
@@ -46,6 +47,7 @@ import { mapApiItemsToBacklogItems, mapApiItemToBacklogItem, mapApiStatusToBackl
 import { calcDropDownMenuState } from "../../utils/dropdownMenuUtils";
 import { ApiGetBffViewsBacklogItemSuccessAction } from "../../actions/apiBffViewsBacklogItem";
 import { UpdateCurrentBacklogItemFieldsAction } from "../../actions/currentBacklogItemActions";
+import { BacklogItemInstanceEditableFields } from "../../components/organisms/forms/backlogItemFormTypes";
 
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
@@ -187,17 +189,8 @@ export const backlogItemsReducer = (
                     updateBacklogItemFields(draft.currentItem, actionTyped.payload);
                 }
                 const actionTyped = action as UpdateBacklogItemFieldsAction;
-                draft.addedItems.forEach((addedItem) => {
-                    if (idsMatch(addedItem, actionTyped.payload)) {
-                        updateBacklogItemFields(addedItem, actionTyped.payload);
-                    }
-                });
-                draft.items.forEach((addedItem) => {
-                    if (idsMatch(addedItem, actionTyped.payload)) {
-                        updateBacklogItemFields(addedItem, actionTyped.payload);
-                    }
-                });
-                updateItemFieldsInAllItems(draft, actionTyped.payload);
+                const payload = actionTyped.payload;
+                updateBacklogItemFieldsInItemsAndAddedItems(draft, payload);
                 return;
             }
             case ActionTypes.RECEIVE_PUSHED_BACKLOG_ITEM: {
@@ -352,7 +345,20 @@ export const backlogItemsReducer = (
                 return;
             }
             case ActionTypes.RESET_CURRENT_BACKLOG_ITEM: {
-                draft.currentItem = { ...draft.savedCurrentItem };
+                const resetItem = { ...draft.savedCurrentItem };
+                draft.currentItem = resetItem;
+                const item: BacklogItemInstanceEditableFields = {
+                    instanceId: undefined,
+                    estimate: resetItem.estimate,
+                    id: resetItem.id,
+                    friendlyId: resetItem.friendlyId,
+                    externalId: resetItem.externalId,
+                    type: resetItem.type,
+                    rolePhrase: resetItem.rolePhrase,
+                    storyPhrase: resetItem.storyPhrase,
+                    reasonPhrase: resetItem.reasonPhrase
+                };
+                updateBacklogItemFieldsInItemsAndAddedItems(draft, item);
                 return;
             }
             case ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_FAILURE: {

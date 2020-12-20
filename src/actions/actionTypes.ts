@@ -139,6 +139,7 @@ export const UPDATE_BACKLOG_ITEM_FIELDS = "app/update:backlog-item-fields";
 
 export const UPDATE_CURRENT_BACKLOG_ITEM_FIELDS = "app/update:current-backlog-item-fields";
 export const RESET_CURRENT_BACKLOG_ITEM = "app/reset:current-backlog-item";
+export const SAVE_CURRENT_BACKLOG_ITEM = "app/save:current-backlog-item";
 
 export const RECEIVE_WEBSOCKET_MESSAGE = "app/ws:receive-message";
 

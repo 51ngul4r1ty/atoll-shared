@@ -5,12 +5,14 @@ import { Draft } from "immer";
 import { PushBacklogItemModel } from "../../middleware/wsMiddleware";
 import { BacklogItemsState, BacklogItemWithSource, EditableBacklogItem, SaveableBacklogItem } from "./backlogItemsReducerTypes";
 import { BacklogItem, BacklogItemModel } from "../../types/backlogItemTypes";
-import { PushOperationType } from "../../types";
+import { AnyFSA, PushOperationType } from "../../types";
 import {
     BacklogItemEditableFields,
     BacklogItemInstanceEditableFields
 } from "../../components/organisms/forms/backlogItemFormTypes";
 import { Source, PushState } from "../types";
+import { UpdateCurrentBacklogItemFieldsAction } from "../../actions/currentBacklogItemActions";
+import { UpdateBacklogItemFieldsAction } from "../../actions/backlogItemActions";
 
 // utils
 import { LinkedList } from "../../utils/linkedList";
@@ -176,4 +178,21 @@ export const targetIsInMenuPanel = (target: EventTarget) => {
 
 export const targetIsInMenuButton = (target: EventTarget) => {
     return !!getParentWithDataClass(target as HTMLElement, "item-menu-button");
+};
+
+export const updateBacklogItemFieldsInItemsAndAddedItems = (
+    draft: Draft<BacklogItemsState>,
+    payload: BacklogItemInstanceEditableFields
+) => {
+    draft.addedItems.forEach((addedItem) => {
+        if (idsMatch(addedItem, payload)) {
+            updateBacklogItemFields(addedItem, payload);
+        }
+    });
+    draft.items.forEach((addedItem) => {
+        if (idsMatch(addedItem, payload)) {
+            updateBacklogItemFields(addedItem, payload);
+        }
+    });
+    updateItemFieldsInAllItems(draft, payload);
 };

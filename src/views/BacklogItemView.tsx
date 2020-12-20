@@ -1,5 +1,7 @@
 // externals
 import * as React from "react";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 // components
 import { TopMenuPanelContainer } from "../containers/TopMenuPanelContainer";
@@ -8,9 +10,11 @@ import { BacklogItemFullDetailForm } from "../components/organisms/forms/Backlog
 // consts/enums
 import { EditMode } from "../components/molecules/buttons/EditButton";
 import { BacklogItemType } from "../types/backlogItemTypes";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { resetCurrentBacklogItem, updateCurrentBacklogItemFields } from "../actions/currentBacklogItemActions";
+import {
+    resetCurrentBacklogItem,
+    saveCurrentBacklogItem,
+    updateCurrentBacklogItemFields
+} from "../actions/currentBacklogItemActions";
 
 export interface BacklogItemViewStateProps {
     backlogItemDisplayId: string;
@@ -67,8 +71,8 @@ export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
                 onDataUpdate={(fields) => {
                     dispatch(updateCurrentBacklogItemFields(fields));
                 }}
-                onDoneClick={() => {
-                    //                    dispatch(saveCurrentBacklogItem(props.id));
+                onSaveClick={() => {
+                    dispatch(saveCurrentBacklogItem());
                 }}
                 onCancelClick={() => {
                     dispatch(resetCurrentBacklogItem());

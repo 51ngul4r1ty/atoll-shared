@@ -17,3 +17,10 @@ export interface ResetCurrentBacklogItemAction {
 export const resetCurrentBacklogItem = (): ResetCurrentBacklogItemAction => ({
     type: ActionTypes.RESET_CURRENT_BACKLOG_ITEM
 });
+
+export interface SaveCurrentBacklogItemAction {
+    type: typeof ActionTypes.SAVE_CURRENT_BACKLOG_ITEM;
+}
+export const saveCurrentBacklogItem = (): SaveCurrentBacklogItemAction => ({
+    type: ActionTypes.SAVE_CURRENT_BACKLOG_ITEM
+});
