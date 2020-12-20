@@ -27,7 +27,7 @@ export interface TopMenuPanelStateProps {
     message: string;
     showRefreshButton: boolean;
     treatAsElectronTitleBar?: boolean; // necessary to work properly for Electron client on Windows
-    showEditViewButton?: boolean;
+    hideEditViewButton?: boolean;
 }
 
 export interface TopMenuPanelDispatchProps {
@@ -56,7 +56,7 @@ export const InnerTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
             />
         );
     }
-    if (props.showEditViewButton !== false) {
+    if (!props.hideEditViewButton) {
         buttons.push(
             <ToggleFeature key="edit-button-key" flag="showEditButton">
                 <EditButton
