@@ -23,7 +23,6 @@ export interface BacklogItemDetailFormEditableFields extends StoryPhrases {
     estimate: number | null;
     id: string;
     friendlyId: string;
-    friendlyIdDisabled: boolean;
     externalId: string;
 }
 
@@ -97,7 +96,6 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
         const prevData: BacklogItemDetailFormEditableFieldsWithInstanceId = {
             id: this.props.id,
             friendlyId: this.props.friendlyId,
-            friendlyIdDisabled: this.props.friendlyIdDisabled,
             instanceId: this.props.instanceId,
             estimate: this.props.estimate,
             externalId: this.props.externalId,
@@ -170,7 +168,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                 inputId="userStoryFriendlyId"
                 labelText="ID"
                 inputValue={this.props.friendlyId}
-                disabled={this.props.friendlyIdDisabled}
+                disabled
                 onChange={(value) => {
                     this.handleDataUpdate({ ...prevData, friendlyId: value });
                 }}

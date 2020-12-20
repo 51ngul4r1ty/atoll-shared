@@ -48,17 +48,14 @@ export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
             <TopMenuPanelContainer
                 activeTabId="backlogitem"
                 treatAsElectronTitleBar={props.electronClient && !props.showWindowTitleBar}
-                hideEditViewButton
             />
             <BacklogItemFullDetailForm
                 className={classNameToUse}
                 id={props.id}
                 friendlyId={props.friendlyId}
-                friendlyIdDisabled={!props.saved}
                 externalId={props.externalId}
-                editable={false}
-                editing={false}
-                saved={true}
+                editable={props.editMode === EditMode.Edit}
+                saved={props.saved}
                 estimate={props.estimate}
                 rolePhrase={props.rolePhrase}
                 storyPhrase={props.storyPhrase}

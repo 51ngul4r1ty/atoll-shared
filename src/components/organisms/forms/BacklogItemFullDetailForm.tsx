@@ -23,7 +23,6 @@ export interface BacklogItemFullDetailFormEditableFields extends StoryPhrases {
     estimate: number | null;
     id: string;
     friendlyId: string;
-    friendlyIdDisabled: boolean;
     externalId: string;
 }
 
@@ -34,7 +33,6 @@ export interface BacklogItemFullDetailFormSaveableFields extends BacklogItemFull
 export interface BacklogItemFullDetailFormStateProps extends BacklogItemFullDetailFormSaveableFields {
     className?: string;
     type: BacklogItemType;
-    editing: boolean;
     editable?: boolean;
 }
 
@@ -82,7 +80,6 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
         const prevData: BacklogItemFullDetailFormEditableFields = {
             id: this.props.id,
             friendlyId: this.props.friendlyId,
-            friendlyIdDisabled: this.props.friendlyIdDisabled,
             estimate: this.props.estimate,
             externalId: this.props.externalId,
             storyPhrase: this.props.storyPhrase,
@@ -160,7 +157,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 labelText="ID"
                 readOnly={isReadOnly}
                 inputValue={this.props.friendlyId}
-                disabled={this.props.friendlyIdDisabled}
+                disabled={!isReadOnly}
                 onChange={(value) => {
                     this.handleDataUpdate({ ...prevData, friendlyId: value });
                 }}

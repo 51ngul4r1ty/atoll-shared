@@ -36,7 +36,6 @@ storiesOf("Organisms/Forms/BacklogItemDetailForm", module)
                 type={select("type", ["issue", "story"], "issue")}
                 estimate={number("estimate", 13)}
                 friendlyId={text("friendlyId", "i-42")}
-                friendlyIdDisabled={boolean("disabled", false)}
                 externalId={text("externalId", "B1000032")}
                 rolePhrase={text("rolePhrase", null)}
                 storyPhrase={text("storyPhrase", bugStoryPhrase)}
@@ -53,7 +52,6 @@ storiesOf("Organisms/Forms/BacklogItemDetailForm", module)
                 type={select("type", ["issue", "story"], "story")}
                 estimate={number("estimate", 8)}
                 friendlyId={text("friendlyId", "s-19")}
-                friendlyIdDisabled={boolean("disabled", false)}
                 externalId={text("externalId", "527")}
                 rolePhrase={text("rolePhrase", "as a developer")}
                 storyPhrase={text("storyPhrase", "use the v3 api to sign up a user")}
@@ -70,7 +68,6 @@ storiesOf("Organisms/Forms/BacklogItemDetailForm", module)
                 type={select("type", ["issue", "story"], "story")}
                 estimate={number("estimate", 8)}
                 friendlyId={text("friendlyId", "s-19")}
-                friendlyIdDisabled={boolean("disabled", false)}
                 externalId={text("externalId", "527")}
                 rolePhrase={text("rolePhrase", "as a developer")}
                 storyPhrase={text("storyPhrase", "use the v3 api to sign up a user")}
