@@ -21,6 +21,10 @@ export const getBacklogItemById = (state: StateTree, itemId: string): BacklogIte
     return reducerGetBacklogItemById(state.backlogItems, itemId);
 };
 
+export const getCurrentBacklogItem = (state: StateTree): BacklogItem | null => {
+    return state.backlogItems.currentItem;
+};
+
 export const getPrevSavedBacklogItemByInstanceId = (state: StateTree, instanceId: number): BacklogItem | null => {
     let prevItem = null;
     let foundPrevItem = null;

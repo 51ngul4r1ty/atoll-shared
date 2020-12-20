@@ -16,7 +16,8 @@ import {
     getBacklogItemByInstanceId,
     getPrevSavedBacklogItemByInstanceId,
     getBacklogItemById,
-    getSelectedBacklogItemIds
+    getSelectedBacklogItemIds,
+    getCurrentBacklogItem
 } from "../selectors/backlogItemSelectors";
 
 // actions
@@ -164,6 +165,20 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
                 const model = convertToBacklogItemModel(backlogItem);
                 storeTyped.dispatch(
                     apiPutBacklogItem(model, buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", itemId))
+                );
+            }
+            break;
+        }
+        case ActionTypes.SAVE_CURRENT_BACKLOG_ITEM: {
+            const state = storeTyped.getState();
+            const backlogItem = getCurrentBacklogItem(state);
+            if (backlogItem) {
+                const model = convertToBacklogItemModel(backlogItem);
+                storeTyped.dispatch(
+                    apiPutBacklogItem(
+                        model,
+                        buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", backlogItem.id)
+                    )
                 );
             }
             break;
