@@ -27,6 +27,7 @@ export interface TopMenuPanelStateProps {
     message: string;
     showRefreshButton: boolean;
     treatAsElectronTitleBar?: boolean; // necessary to work properly for Electron client on Windows
+    showEditViewButton?: boolean;
 }
 
 export interface TopMenuPanelDispatchProps {
@@ -55,17 +56,19 @@ export const InnerTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
             />
         );
     }
-    buttons.push(
-        <ToggleFeature key="edit-button-key" flag="showEditButton">
-            <EditButton
-                key="edit-button"
-                mode={props.editMode}
-                onClick={() => {
-                    props.setEditMode(props.editMode === EditMode.View ? EditMode.Edit : EditMode.View);
-                }}
-            />
-        </ToggleFeature>
-    );
+    if (props.showEditViewButton !== false) {
+        buttons.push(
+            <ToggleFeature key="edit-button-key" flag="showEditButton">
+                <EditButton
+                    key="edit-button"
+                    mode={props.editMode}
+                    onClick={() => {
+                        props.setEditMode(props.editMode === EditMode.View ? EditMode.Edit : EditMode.View);
+                    }}
+                />
+            </ToggleFeature>
+        );
+    }
 
     const tabs = [{ id: "plan", caption: props.t("Plan") }];
     if (enableSprintTab) {
