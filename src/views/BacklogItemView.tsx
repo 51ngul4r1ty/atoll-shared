@@ -9,6 +9,8 @@ import { BacklogItemFullDetailForm } from "../components/organisms/forms/Backlog
 import { EditMode } from "../components/molecules/buttons/EditButton";
 import { BacklogItemType } from "../types/backlogItemTypes";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { resetCurrentBacklogItem, updateCurrentBacklogItemFields } from "../actions/currentBacklogItemActions";
 
 export interface BacklogItemViewStateProps {
     backlogItemDisplayId: string;
@@ -34,6 +36,7 @@ export interface BacklogItemViewDispatchProps {
 export type BacklogItemViewProps = BacklogItemViewStateProps & BacklogItemViewDispatchProps;
 
 export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
+    const dispatch = useDispatch();
     useEffect(() => {
         props.onLoaded(props.projectDisplayId, props.backlogItemDisplayId);
     }, []);
@@ -62,21 +65,13 @@ export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
                 reasonPhrase={props.reasonPhrase}
                 type={props.type}
                 onDataUpdate={(fields) => {
-                    //                    dispatch(updateBacklogItemFields(fields));
+                    dispatch(updateCurrentBacklogItemFields(fields));
                 }}
-                onDoneClick={(id, instanceId) => {
-                    // if (id) {
-                    //     dispatch(updateBacklogItem(id));
-                    // } else {
-                    //     dispatch(saveNewBacklogItem(instanceId));
-                    // }
+                onDoneClick={() => {
+                    //                    dispatch(saveCurrentBacklogItem(props.id));
                 }}
-                onCancelClick={(id, instanceId) => {
-                    // if (id) {
-                    //     dispatch(cancelEditBacklogItem(id));
-                    // } else {
-                    //     dispatch(cancelUnsavedBacklogItem(instanceId));
-                    // }
+                onCancelClick={() => {
+                    dispatch(resetCurrentBacklogItem());
                 }}
             />
         </>

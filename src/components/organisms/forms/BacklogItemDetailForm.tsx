@@ -17,20 +17,9 @@ import { getStoryPhrases, isStoryPaste } from "./pasteFormatUtils";
 
 // interfaces/types
 import { BacklogItemType } from "../../../types/backlogItemTypes";
-import { StoryPhrases } from "../../../types";
+import { BacklogItemInstanceEditableFields } from "./backlogItemFormTypes";
 
-export interface BacklogItemDetailFormEditableFields extends StoryPhrases {
-    estimate: number | null;
-    id: string;
-    friendlyId: string;
-    externalId: string;
-}
-
-export interface BacklogItemDetailFormEditableFieldsWithInstanceId extends BacklogItemDetailFormEditableFields {
-    instanceId: number;
-}
-
-export interface BacklogItemDetailFormStateProps extends BacklogItemDetailFormEditableFieldsWithInstanceId {
+export interface BacklogItemDetailFormStateProps extends BacklogItemInstanceEditableFields {
     className?: string;
     type: BacklogItemType;
     editing: boolean;
@@ -40,7 +29,7 @@ export interface BacklogItemDetailFormStateProps extends BacklogItemDetailFormEd
 export interface BacklogItemDetailFormDispatchProps {
     onDoneClick?: { (id: string, instanceId: number) };
     onCancelClick?: { (id: string, instanceId: number) };
-    onDataUpdate?: { (props: BacklogItemDetailFormEditableFieldsWithInstanceId) };
+    onDataUpdate?: { (props: BacklogItemInstanceEditableFields) };
 }
 
 export type BacklogItemDetailFormProps = BacklogItemDetailFormStateProps & BacklogItemDetailFormDispatchProps;
@@ -49,7 +38,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
     constructor(props) {
         super(props);
     }
-    handleStoryPaste = (fields: BacklogItemDetailFormEditableFieldsWithInstanceId) => {
+    handleStoryPaste = (fields: BacklogItemInstanceEditableFields) => {
         const previousRolePhrase = this.props.rolePhrase || "";
         const newRolePhrase = fields.rolePhrase || "";
         const isPaste = previousRolePhrase.length === 0 && newRolePhrase.length > 1;
@@ -60,7 +49,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
             fields.reasonPhrase = storyPhrases.reasonPhrase || "";
         }
     };
-    handleDataUpdate = (fields: BacklogItemDetailFormEditableFieldsWithInstanceId) => {
+    handleDataUpdate = (fields: BacklogItemInstanceEditableFields) => {
         this.handleStoryPaste(fields);
         if (this.props.onDataUpdate) {
             this.props.onDataUpdate(fields);
@@ -93,7 +82,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
         const issuePlaceholder = "without <issue reason>";
         const storyPlaceholder = "so that I can <derive value>";
         const placeholderText = this.props.type === "issue" ? issuePlaceholder : storyPlaceholder;
-        const prevData: BacklogItemDetailFormEditableFieldsWithInstanceId = {
+        const prevData: BacklogItemInstanceEditableFields = {
             id: this.props.id,
             friendlyId: this.props.friendlyId,
             instanceId: this.props.instanceId,
@@ -101,7 +90,8 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
             externalId: this.props.externalId,
             storyPhrase: this.props.storyPhrase,
             rolePhrase: this.props.rolePhrase,
-            reasonPhrase: this.props.reasonPhrase
+            reasonPhrase: this.props.reasonPhrase,
+            type: this.props.type
         };
         const rolePhraseInput = (
             <StandardInput

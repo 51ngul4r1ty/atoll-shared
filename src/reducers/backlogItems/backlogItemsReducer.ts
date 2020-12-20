@@ -45,6 +45,7 @@ import {
 import { mapApiItemsToBacklogItems, mapApiItemToBacklogItem, mapApiStatusToBacklogItem } from "../../mappers/backlogItemMappers";
 import { calcDropDownMenuState } from "../../utils/dropdownMenuUtils";
 import { ApiGetBffViewsBacklogItemSuccessAction } from "../../actions/apiBffViewsBacklogItem";
+import { UpdateCurrentBacklogItemFieldsAction } from "../../actions/currentBacklogItemActions";
 
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
@@ -53,7 +54,8 @@ export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>(
     openedDetailMenuBacklogItemId: null,
     pushedItems: [],
     selectedItemIds: [],
-    currentItem: null
+    currentItem: null,
+    savedCurrentItem: null
 });
 
 export const removeBacklogItem = (draft: Draft<BacklogItemsState>, backlogItemId: string) => {
@@ -177,7 +179,13 @@ export const backlogItemsReducer = (
                 rebuildAllItems(draft);
                 return;
             }
+            case ActionTypes.UPDATE_CURRENT_BACKLOG_ITEM_FIELDS:
             case ActionTypes.UPDATE_BACKLOG_ITEM_FIELDS: {
+                const updateCurrentItem = action.type === ActionTypes.UPDATE_CURRENT_BACKLOG_ITEM_FIELDS;
+                if (updateCurrentItem) {
+                    const actionTyped = action as UpdateCurrentBacklogItemFieldsAction;
+                    updateBacklogItemFields(draft.currentItem, actionTyped.payload);
+                }
                 const actionTyped = action as UpdateBacklogItemFieldsAction;
                 draft.addedItems.forEach((addedItem) => {
                     if (idsMatch(addedItem, actionTyped.payload)) {
@@ -339,7 +347,12 @@ export const backlogItemsReducer = (
                         createdAt: backlogItem.createdAt,
                         updatedAt: backlogItem.updatedAt
                     };
+                    draft.savedCurrentItem = { ...draft.currentItem };
                 }
+                return;
+            }
+            case ActionTypes.RESET_CURRENT_BACKLOG_ITEM: {
+                draft.currentItem = { ...draft.savedCurrentItem };
                 return;
             }
             case ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_FAILURE: {

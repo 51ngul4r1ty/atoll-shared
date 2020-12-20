@@ -2,8 +2,8 @@
 import React, { Component } from "react";
 
 // components
-import { CancelButton } from "../../molecules/buttons/CancelButton";
-import { DoneButton } from "../../molecules/buttons/DoneButton";
+import { SaveButton } from "../../molecules/buttons/SaveButton";
+import { ResetButton } from "../../molecules/buttons/ResetButton";
 import { StandardInput } from "../../atoms/inputs/StandardInput";
 
 // style
@@ -16,30 +16,18 @@ import { isNumber } from "../../../utils/validationUtils";
 import { getStoryPhrases, isStoryPaste } from "./pasteFormatUtils";
 
 // interfaces/types
-import { BacklogItemType } from "../../../types/backlogItemTypes";
-import { StoryPhrases } from "../../../types";
+import { BacklogItemEditableFields } from "./backlogItemFormTypes";
 
-export interface BacklogItemFullDetailFormEditableFields extends StoryPhrases {
-    estimate: number | null;
-    id: string;
-    friendlyId: string;
-    externalId: string;
-}
-
-export interface BacklogItemFullDetailFormSaveableFields extends BacklogItemFullDetailFormEditableFields {
+export interface BacklogItemFullDetailFormStateProps extends BacklogItemEditableFields {
     saved: boolean;
-}
-
-export interface BacklogItemFullDetailFormStateProps extends BacklogItemFullDetailFormSaveableFields {
     className?: string;
-    type: BacklogItemType;
     editable?: boolean;
 }
 
 export interface BacklogItemFullDetailFormDispatchProps {
-    onDoneClick?: { (id: string, instanceId: number) };
-    onCancelClick?: { (id: string, instanceId: number) };
-    onDataUpdate?: { (props: BacklogItemFullDetailFormEditableFields) };
+    onDoneClick?: { () };
+    onCancelClick?: { () };
+    onDataUpdate?: { (props: BacklogItemEditableFields) };
 }
 
 export type BacklogItemFullDetailFormProps = BacklogItemFullDetailFormStateProps & BacklogItemFullDetailFormDispatchProps;
@@ -48,7 +36,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
     constructor(props) {
         super(props);
     }
-    handleStoryPaste = (fields: BacklogItemFullDetailFormEditableFields) => {
+    handleStoryPaste = (fields: BacklogItemEditableFields) => {
         const previousRolePhrase = this.props.rolePhrase || "";
         const newRolePhrase = fields.rolePhrase || "";
         const isPaste = previousRolePhrase.length === 0 && newRolePhrase.length > 1;
@@ -59,17 +47,21 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
             fields.reasonPhrase = storyPhrases.reasonPhrase || "";
         }
     };
-    handleDataUpdate = (fields: BacklogItemFullDetailFormEditableFields) => {
+    handleDataUpdate = (fields: BacklogItemEditableFields) => {
         this.handleStoryPaste(fields);
         if (this.props.onDataUpdate) {
             this.props.onDataUpdate(fields);
         }
     };
     handleDoneClick = () => {
-        // TODO: Implement later
+        if (this.props.onDoneClick) {
+            this.props.onDoneClick();
+        }
     };
-    handleCancelClick = () => {
-        // TODO: Implement later
+    handleResetClick = () => {
+        if (this.props.onCancelClick) {
+            this.props.onCancelClick();
+        }
     };
     render() {
         const isReadOnly = !this.props.editable;
@@ -77,14 +69,15 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
         const issuePlaceholder = "without <issue reason>";
         const storyPlaceholder = "so that I can <derive value>";
         const placeholderText = this.props.type === "issue" ? issuePlaceholder : storyPlaceholder;
-        const prevData: BacklogItemFullDetailFormEditableFields = {
+        const prevData: BacklogItemEditableFields = {
             id: this.props.id,
             friendlyId: this.props.friendlyId,
             estimate: this.props.estimate,
             externalId: this.props.externalId,
             storyPhrase: this.props.storyPhrase,
             rolePhrase: this.props.rolePhrase,
-            reasonPhrase: this.props.reasonPhrase
+            reasonPhrase: this.props.reasonPhrase,
+            type: this.props.type
         };
         const rolePhraseInput = (
             <StandardInput
@@ -166,7 +159,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
         const actionButtonContainerClassName = buildClassName(css.centerCell, css.actionButtonContainer);
         const doneButtonElts = this.props.editable ? (
             <div className={actionButtonContainerClassName}>
-                <DoneButton
+                <SaveButton
                     className={css.actionButton}
                     onClick={() => {
                         this.handleDoneClick();
@@ -174,12 +167,12 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 />
             </div>
         ) : null;
-        const cancelButtonElts = this.props.editable ? (
+        const resetButtonElts = this.props.editable ? (
             <div className={actionButtonContainerClassName}>
-                <CancelButton
+                <ResetButton
                     className={css.actionButton}
                     onClick={() => {
-                        this.handleCancelClick();
+                        this.handleResetClick();
                     }}
                 />
             </div>
@@ -188,7 +181,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
             <div className={css.actionButtonPanel}>
                 <div />
                 {doneButtonElts}
-                {cancelButtonElts}
+                {resetButtonElts}
             </div>
         );
         const formContent = (

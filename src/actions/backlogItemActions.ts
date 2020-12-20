@@ -3,7 +3,7 @@ import * as ActionTypes from "./actionTypes";
 
 // interfaces/types
 import { BacklogItemType } from "../types/backlogItemTypes";
-import { BacklogItemDetailFormEditableFieldsWithInstanceId } from "../components/organisms/forms/BacklogItemDetailForm";
+import { BacklogItemInstanceEditableFields } from "../components/organisms/forms/backlogItemFormTypes";
 
 // actions
 import { apiGetBacklogItems } from "./apiBacklogItems";
@@ -88,11 +88,9 @@ export const updateBacklogItem = (id: string): UpdateBacklogItemAction => ({
 
 export interface UpdateBacklogItemFieldsAction {
     type: typeof ActionTypes.UPDATE_BACKLOG_ITEM_FIELDS;
-    payload: BacklogItemDetailFormEditableFieldsWithInstanceId;
+    payload: BacklogItemInstanceEditableFields;
 }
-export const updateBacklogItemFields = (
-    fields: BacklogItemDetailFormEditableFieldsWithInstanceId
-): UpdateBacklogItemFieldsAction => ({
+export const updateBacklogItemFields = (fields: BacklogItemInstanceEditableFields): UpdateBacklogItemFieldsAction => ({
     type: ActionTypes.UPDATE_BACKLOG_ITEM_FIELDS,
     payload: fields
 });

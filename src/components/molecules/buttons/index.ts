@@ -7,3 +7,5 @@ export { FrameCloseButton } from "./FrameCloseButton";
 export { HomeButton } from "./HomeButton";
 export { RefreshButton } from "./RefreshButton";
 export { RemoveButton } from "./RemoveButton";
+export { ResetButton } from "./ResetButton";
+export { SaveButton } from "./SaveButton";

@@ -7,9 +7,9 @@ import { BacklogItemsState, BacklogItemWithSource, EditableBacklogItem, Saveable
 import { BacklogItem, BacklogItemModel } from "../../types/backlogItemTypes";
 import { PushOperationType } from "../../types";
 import {
-    BacklogItemDetailFormEditableFields,
-    BacklogItemDetailFormEditableFieldsWithInstanceId
-} from "../../components/organisms/forms/BacklogItemDetailForm";
+    BacklogItemEditableFields,
+    BacklogItemInstanceEditableFields
+} from "../../components/organisms/forms/backlogItemFormTypes";
 import { Source, PushState } from "../types";
 
 // utils
@@ -126,23 +126,21 @@ export const rebuildAllItems = (draft: Draft<BacklogItemsState>) => {
     draft.allItems = allItemsArray;
 };
 
-export const idsMatch = (item1: BacklogItem, item2: BacklogItemDetailFormEditableFieldsWithInstanceId): boolean => {
-    const instanceIdMatch = !!item1.instanceId && item1.instanceId === item2.instanceId;
-    const idMatch = !!item1.id && item1.id === item2.id;
+export const idsMatch = (item1: BacklogItem, item2: BacklogItemEditableFields): boolean => {
+    const item2withInstanceId = item2 as BacklogItemInstanceEditableFields;
+    const instanceIdMatch = !!item1.instanceId && item1.instanceId === item2withInstanceId.instanceId;
+    const idMatch = !!item1.id && item1.id === item2withInstanceId.id;
     return instanceIdMatch || idMatch;
 };
 
-export const updateItemFieldsInAllItems = (
-    draft: Draft<BacklogItemsState>,
-    payload: BacklogItemDetailFormEditableFieldsWithInstanceId
-) => {
-    const item = draft.allItems.filter((item) => idsMatch(item, payload));
+export const updateItemFieldsInAllItems = (draft: Draft<BacklogItemsState>, backlogItem: BacklogItemEditableFields) => {
+    const item = draft.allItems.filter((item) => idsMatch(item, backlogItem));
     if (item.length === 1) {
-        updateBacklogItemFields(item[0], payload);
+        updateBacklogItemFields(item[0], backlogItem);
     }
 };
 
-export const updateBacklogItemFields = (backlogItem: BacklogItem, payload: BacklogItemDetailFormEditableFields) => {
+export const updateBacklogItemFields = (backlogItem: BacklogItem, payload: BacklogItemEditableFields) => {
     backlogItem.estimate = payload.estimate;
     backlogItem.friendlyId = payload.friendlyId;
     backlogItem.externalId = payload.externalId;
