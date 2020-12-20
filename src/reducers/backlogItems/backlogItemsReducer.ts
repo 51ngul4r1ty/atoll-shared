@@ -324,20 +324,21 @@ export const backlogItemsReducer = (
                 if (backlogItems.length === 1) {
                     const backlogItem = backlogItems[0];
                     draft.currentItem = {
-                        saved: true,
-                        editing: false,
-                        instanceId: undefined,
-                        estimate: backlogItem.estimate,
-                        id: backlogItem.id,
-                        friendlyId: backlogItem.friendlyId,
-                        externalId: backlogItem.externalId,
-                        rolePhrase: backlogItem.rolePhrase,
-                        storyPhrase: backlogItem.storyPhrase,
-                        reasonPhrase: backlogItem.reasonPhrase,
-                        type: backlogItem.type,
-                        status: mapApiStatusToBacklogItem(backlogItem.status),
-                        projectId: backlogItem.projectId,
+                        acceptanceCriteria: backlogItem.acceptanceCriteria,
                         createdAt: backlogItem.createdAt,
+                        editing: false,
+                        estimate: backlogItem.estimate,
+                        externalId: backlogItem.externalId,
+                        friendlyId: backlogItem.friendlyId,
+                        id: backlogItem.id,
+                        instanceId: undefined,
+                        projectId: backlogItem.projectId,
+                        reasonPhrase: backlogItem.reasonPhrase,
+                        rolePhrase: backlogItem.rolePhrase,
+                        saved: true,
+                        status: mapApiStatusToBacklogItem(backlogItem.status),
+                        storyPhrase: backlogItem.storyPhrase,
+                        type: backlogItem.type,
                         updatedAt: backlogItem.updatedAt
                     };
                     draft.savedCurrentItem = { ...draft.currentItem };
@@ -348,15 +349,16 @@ export const backlogItemsReducer = (
                 const resetItem = { ...draft.savedCurrentItem };
                 draft.currentItem = resetItem;
                 const item: BacklogItemInstanceEditableFields = {
-                    instanceId: undefined,
+                    acceptanceCriteria: resetItem.acceptanceCriteria,
                     estimate: resetItem.estimate,
-                    id: resetItem.id,
-                    friendlyId: resetItem.friendlyId,
                     externalId: resetItem.externalId,
-                    type: resetItem.type,
+                    friendlyId: resetItem.friendlyId,
+                    id: resetItem.id,
+                    instanceId: undefined,
+                    reasonPhrase: resetItem.reasonPhrase,
                     rolePhrase: resetItem.rolePhrase,
                     storyPhrase: resetItem.storyPhrase,
-                    reasonPhrase: resetItem.reasonPhrase
+                    type: resetItem.type
                 };
                 updateBacklogItemFieldsInItemsAndAddedItems(draft, item);
                 return;

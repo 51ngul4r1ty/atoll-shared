@@ -42,20 +42,21 @@ export const addSourceToPushedItem = (item: Partial<PushBacklogItemModel>, sourc
 });
 
 export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>): BacklogItemWithSource => ({
+    acceptanceCriteria: pushedItem.acceptanceCriteria,
+    createdAt: pushedItem.createdAt,
+    estimate: pushedItem.estimate,
+    externalId: pushedItem.externalId,
+    friendlyId: pushedItem.friendlyId,
     id: pushedItem.id,
     instanceId: undefined,
-    source: Source.Pushed,
-    createdAt: pushedItem.createdAt,
-    updatedAt: pushedItem.updatedAt,
-    estimate: pushedItem.estimate,
-    friendlyId: pushedItem.friendlyId,
-    externalId: pushedItem.externalId,
+    projectId: pushedItem.projectId,
     reasonPhrase: pushedItem.reasonPhrase,
     rolePhrase: pushedItem.rolePhrase,
+    source: Source.Pushed,
+    status: pushedItem.status,
     storyPhrase: pushedItem.storyPhrase,
     type: pushedItem.type,
-    projectId: pushedItem.projectId,
-    status: pushedItem.status
+    updatedAt: pushedItem.updatedAt
 });
 
 export const addPushedAddedItemsToAllItems = (draft: Draft<BacklogItemsState>, allItems: LinkedList<BacklogItemWithSource>) => {
@@ -143,12 +144,13 @@ export const updateItemFieldsInAllItems = (draft: Draft<BacklogItemsState>, back
 };
 
 export const updateBacklogItemFields = (backlogItem: BacklogItem, payload: BacklogItemEditableFields) => {
+    backlogItem.acceptanceCriteria = payload.acceptanceCriteria;
     backlogItem.estimate = payload.estimate;
-    backlogItem.friendlyId = payload.friendlyId;
     backlogItem.externalId = payload.externalId;
-    backlogItem.storyPhrase = payload.storyPhrase;
+    backlogItem.friendlyId = payload.friendlyId;
     backlogItem.reasonPhrase = payload.reasonPhrase;
     backlogItem.rolePhrase = payload.rolePhrase;
+    backlogItem.storyPhrase = payload.storyPhrase;
 };
 
 export const getBacklogItemById = (backlogItems: BacklogItemsState, itemId: string): BacklogItemWithSource | null => {

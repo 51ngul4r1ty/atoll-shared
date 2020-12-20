@@ -154,3 +154,8 @@ export const getCurrentBacklogItemType = createSelector(
     [backlogItems],
     (backlogItems: BacklogItemsState): BacklogItemType => backlogItems.currentItem?.type
 );
+
+export const getCurrentBacklogItemAcceptanceCriteria = createSelector(
+    [backlogItems],
+    (backlogItems: BacklogItemsState): string => backlogItems.currentItem?.acceptanceCriteria
+);

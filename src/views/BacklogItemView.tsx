@@ -17,6 +17,7 @@ import {
 } from "../actions/currentBacklogItemActions";
 
 export interface BacklogItemViewStateProps {
+    acceptanceCriteria: string;
     backlogItemDisplayId: string;
     editMode: EditMode;
     electronClient: boolean;
@@ -67,6 +68,7 @@ export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
                 rolePhrase={props.rolePhrase}
                 storyPhrase={props.storyPhrase}
                 reasonPhrase={props.reasonPhrase}
+                acceptanceCriteria={props.acceptanceCriteria}
                 type={props.type}
                 onDataUpdate={(fields) => {
                     dispatch(updateCurrentBacklogItemFields(fields));

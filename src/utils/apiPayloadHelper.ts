@@ -5,19 +5,19 @@ import { BacklogItemModel, BacklogItem } from "../types/backlogItemTypes";
 import { SprintModel } from "../types/sprintTypes";
 
 export const convertToBacklogItemModel = (backlogItem: BacklogItem): BacklogItemModel => ({
+    acceptanceCriteria: backlogItem.acceptanceCriteria,
     createdAt: backlogItem.createdAt,
-    updatedAt: backlogItem.updatedAt,
-    // displayIndex: backlogItem.displayIndex,
     estimate: backlogItem.estimate,
-    friendlyId: backlogItem.friendlyId,
     externalId: backlogItem.externalId,
+    friendlyId: backlogItem.friendlyId,
     id: backlogItem.id,
+    projectId: backlogItem.projectId,
     reasonPhrase: backlogItem.reasonPhrase,
     rolePhrase: backlogItem.rolePhrase,
+    status: backlogItem.status,
     storyPhrase: backlogItem.storyPhrase,
     type: backlogItem.type,
-    projectId: backlogItem.projectId,
-    status: backlogItem.status
+    updatedAt: backlogItem.updatedAt
 });
 
 export const convertToSprintModel = (sprint: Sprint): SprintModel => ({

@@ -67,6 +67,7 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     rolePhrase={props.rolePhrase}
                     storyPhrase={props.storyPhrase}
                     reasonPhrase={props.reasonPhrase}
+                    acceptanceCriteria={props.acceptanceCriteria}
                     type={props.type}
                     renderMobile={props.renderMobile}
                     onDataUpdate={(fields) => {

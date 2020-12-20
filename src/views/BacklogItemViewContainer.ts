@@ -11,6 +11,7 @@ import { isPlatformWindows } from "../utils/osUtils";
 
 // selectors
 import {
+    getCurrentBacklogItemAcceptanceCriteria,
     getCurrentBacklogItemEstimate,
     getCurrentBacklogItemExternalId,
     getCurrentBacklogItemFriendlyId,
@@ -36,6 +37,7 @@ export interface BacklogItemViewContainerOwnProps {
 
 const mapStateToProps = (state: StateTree, ownProps: BacklogItemViewContainerOwnProps): BacklogItemViewStateProps => {
     let result: BacklogItemViewStateProps = {
+        acceptanceCriteria: getCurrentBacklogItemAcceptanceCriteria(state),
         editMode: getAppEditMode(state),
         electronClient: getElectronClient(state),
         showWindowTitleBar: !isPlatformWindows(),

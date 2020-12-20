@@ -91,7 +91,8 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
             storyPhrase: this.props.storyPhrase,
             rolePhrase: this.props.rolePhrase,
             reasonPhrase: this.props.reasonPhrase,
-            type: this.props.type
+            type: this.props.type,
+            acceptanceCriteria: this.props.acceptanceCriteria
         };
         const rolePhraseInput = (
             <StandardInput

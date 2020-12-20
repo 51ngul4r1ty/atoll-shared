@@ -6,10 +6,11 @@ import { BacklogItemType } from "../../../types/backlogItemTypes";
  * BacklogItemEditableFields can only be used for backlog items that have been persisted.
  */
 export interface BacklogItemEditableFields extends StoryPhrases {
+    acceptanceCriteria: string;
     estimate: number | null;
-    id: string;
-    friendlyId: string;
     externalId: string;
+    friendlyId: string;
+    id: string;
     type: BacklogItemType;
 }
 

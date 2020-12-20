@@ -5,6 +5,7 @@ import React, { Component } from "react";
 import { SaveButton } from "../../molecules/buttons/SaveButton";
 import { ResetButton } from "../../molecules/buttons/ResetButton";
 import { StandardInput } from "../../atoms/inputs/StandardInput";
+import { StandardTextArea } from "../../atoms/inputs/StandardTextArea";
 
 // style
 import commonCss from "./common/common.module.css";
@@ -70,13 +71,14 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
         const storyPlaceholder = "so that I can <derive value>";
         const placeholderText = this.props.type === "issue" ? issuePlaceholder : storyPlaceholder;
         const prevData: BacklogItemEditableFields = {
-            id: this.props.id,
-            friendlyId: this.props.friendlyId,
+            acceptanceCriteria: this.props.acceptanceCriteria,
             estimate: this.props.estimate,
             externalId: this.props.externalId,
-            storyPhrase: this.props.storyPhrase,
-            rolePhrase: this.props.rolePhrase,
+            friendlyId: this.props.friendlyId,
+            id: this.props.id,
             reasonPhrase: this.props.reasonPhrase,
+            rolePhrase: this.props.rolePhrase,
+            storyPhrase: this.props.storyPhrase,
             type: this.props.type
         };
         const rolePhraseInput = (
@@ -156,6 +158,18 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 }}
             />
         );
+        const acceptanceCriteriaInput = (
+            <StandardTextArea
+                inputId="acceptanceCriteriaId"
+                labelText="Acceptance Criteria"
+                readOnly={isReadOnly}
+                inputValue={this.props.acceptanceCriteria}
+                rows={3}
+                onChange={(value) => {
+                    this.handleDataUpdate({ ...prevData, acceptanceCriteria: value });
+                }}
+            />
+        );
         const actionButtonContainerClassName = buildClassName(css.centerCell, css.actionButtonContainer);
         const doneButtonElts = this.props.editable ? (
             <div className={actionButtonContainerClassName}>
@@ -194,6 +208,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 <div className={css.formRow}>{rolePhraseInput}</div>
                 <div className={css.formRow}>{storyPhraseInput}</div>
                 <div className={css.formRow}>{reasonPhraseInput}</div>
+                <div className={css.formRow}>{acceptanceCriteriaInput}</div>
                 <div className={css.formRow}>{actionButtonPanel}</div>
             </>
         );
