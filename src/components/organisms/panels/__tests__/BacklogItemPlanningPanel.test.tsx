@@ -91,6 +91,7 @@ const buildCommonItem = (
     estimate: number,
     saved: boolean = true
 ): BacklogItemWithSource => ({
+    acceptanceCriteria: "",
     createdAt: new Date(),
     estimate,
     externalId: buildExternalId(source, itemNumber),
