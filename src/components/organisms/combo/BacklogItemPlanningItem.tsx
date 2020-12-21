@@ -4,10 +4,12 @@ import { useDispatch } from "react-redux";
 
 // interfaces/types
 import { BacklogItemWithSource } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
-import { EditMode } from "../../molecules/buttons/EditButton";
 import { SimpleDivider } from "../../atoms/dividers/SimpleDivider";
 import { BacklogItemDetailForm } from "../forms/BacklogItemDetailForm";
 import { BacklogItemCard, BacklogItemTypeEnum, ItemMenuEventHandlers } from "../../molecules/cards/BacklogItemCard";
+
+// consts/enums
+import { EditMode } from "../../common/componentEnums";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
@@ -61,13 +63,13 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     id={props.id}
                     instanceId={props.instanceId}
                     friendlyId={props.friendlyId}
-                    friendlyIdDisabled={!props.saved}
                     externalId={props.externalId}
                     editing
                     estimate={props.estimate}
                     rolePhrase={props.rolePhrase}
                     storyPhrase={props.storyPhrase}
                     reasonPhrase={props.reasonPhrase}
+                    acceptanceCriteria={props.acceptanceCriteria}
                     type={props.type}
                     renderMobile={props.renderMobile}
                     onDataUpdate={(fields) => {

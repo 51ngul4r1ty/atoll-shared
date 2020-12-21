@@ -106,27 +106,51 @@ export const apiPostBacklogItem = (
     };
 };
 
+export enum PutBacklogItemCallReason {
+    None = 0,
+    SaveCurrentBacklogItem = 1
+}
+
+export interface ApiPutBacklogItemMetaPassthrough {
+    apiCallReason: PutBacklogItemCallReason;
+}
+
 export interface ApiPutBacklogItemSuccessAction {
     type: typeof ActionTypes.API_PUT_BACKLOG_ITEM_SUCCESS;
     payload: ApiActionSuccessPayloadForItem<ApiBacklogItem>;
-    meta: ApiActionMetaDataRequestMeta<{}>;
+    meta: ApiActionMetaDataRequestMeta<{}, undefined, undefined, ApiPutBacklogItemMetaPassthrough>;
 }
+
 export const apiPutBacklogItem = (
     backlogItem: BacklogItemModel,
-    payloadOverride: ApiPayloadBase = {}
-): ApiAction<ApiBacklogItem> => ({
-    type: API,
-    payload: {
-        ...{
-            endpoint: `${getApiBaseUrl()}api/v1/backlog-items/${backlogItem.id}`,
-            method: "PUT",
-            data: mapBacklogItemToApiItem(backlogItem),
-            headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
-            types: buildActionTypes(ApiActionNames.PUT_BACKLOG_ITEM)
-        },
-        ...payloadOverride
+    payloadOverride: ApiPayloadBase = {},
+    apiCallReason: PutBacklogItemCallReason = PutBacklogItemCallReason.None
+): ApiAction<ApiBacklogItem> => {
+    let result: ApiAction<ApiBacklogItem, {}, ApiPutBacklogItemMetaPassthrough> = {
+        type: API,
+        payload: {
+            ...{
+                endpoint: `${getApiBaseUrl()}api/v1/backlog-items/${backlogItem.id}`,
+                method: "PUT",
+                data: mapBacklogItemToApiItem(backlogItem),
+                headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+                types: buildActionTypes(ApiActionNames.PUT_BACKLOG_ITEM)
+            },
+            ...payloadOverride
+        }
+    };
+    if (apiCallReason !== PutBacklogItemCallReason.None) {
+        result = {
+            ...result,
+            meta: {
+                passthrough: {
+                    apiCallReason
+                }
+            }
+        };
     }
-});
+    return result;
+};
 
 export interface ApiDeleteBacklogItemSuccessResponse {
     status: number;

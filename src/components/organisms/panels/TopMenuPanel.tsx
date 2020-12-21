@@ -8,7 +8,7 @@ import { useFeatureToggle, ToggleFeature } from "@flopflip/react-broadcast";
 import { TabStrip } from "../../atoms/tabs/TabStrip";
 
 // molecules
-import { EditButton, EditMode } from "../../molecules/buttons/EditButton";
+import { EditButton } from "../../molecules/buttons/EditButton";
 import { HomeButton } from "../../molecules/buttons/HomeButton";
 import { RefreshButton } from "../../molecules/buttons/RefreshButton";
 
@@ -18,6 +18,9 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 // style
 import css from "./TopMenuPanel.module.css";
 import { routePlanView, routeSprintView, routeReviewView } from "../../../actions/routeActions";
+
+// consts/enums
+import { EditMode } from "../../common/componentEnums";
 
 /* exported interfaces */
 

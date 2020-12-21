@@ -10,13 +10,15 @@ import { push } from "connected-react-router";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
+import { EditMode } from "../components/common/componentEnums";
 
 // selectors
 import {
     getBacklogItemByInstanceId,
     getPrevSavedBacklogItemByInstanceId,
     getBacklogItemById,
-    getSelectedBacklogItemIds
+    getSelectedBacklogItemIds,
+    getCurrentBacklogItem
 } from "../selectors/backlogItemSelectors";
 
 // actions
@@ -24,7 +26,9 @@ import {
     apiPutBacklogItem,
     apiPostBacklogItem,
     apiPostActionBacklogItemReorder,
-    apiGetBacklogItem
+    apiGetBacklogItem,
+    PutBacklogItemCallReason,
+    ApiPutBacklogItemSuccessAction
 } from "../actions/apiBacklogItems";
 import {
     refreshBacklogItems,
@@ -58,6 +62,7 @@ import {
     SprintMoveItemToBacklogClickAction
 } from "../actions/sprintBacklogActions";
 import { apiGetSprints, apiPostSprint } from "../actions/apiSprints";
+import { setEditMode } from "../actions/appActions";
 
 // state
 import { StateTree } from "../reducers/rootReducer";
@@ -75,13 +80,13 @@ import {
     ApiGetProjectRouteToBacklogItemViewMeta,
     ApiGetProjectSuccessRouteToBacklogItemViewAction
 } from "../actions/apiProjects";
+import { buildBacklogDisplayId } from "../utils/backlogItemHelper";
+import { encodeForUrl } from "../utils/urlUtils";
 
 // interfaces/types
 import { ResourceTypes } from "../reducers/apiLinksReducer";
 import { ExpandSprintPanelAction, SaveNewSprintAction, updateSprintStats } from "../actions/sprintActions";
 import { BacklogItemStatus } from "../types/backlogItemTypes";
-import { buildBacklogDisplayId } from "../utils/backlogItemHelper";
-import { encodeForUrl } from "../utils/urlUtils";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
@@ -165,6 +170,29 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
                 storeTyped.dispatch(
                     apiPutBacklogItem(model, buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", itemId))
                 );
+            }
+            break;
+        }
+        case ActionTypes.SAVE_CURRENT_BACKLOG_ITEM: {
+            const state = storeTyped.getState();
+            const backlogItem = getCurrentBacklogItem(state);
+            if (backlogItem) {
+                const model = convertToBacklogItemModel(backlogItem);
+                const apiCallReason = PutBacklogItemCallReason.SaveCurrentBacklogItem;
+                storeTyped.dispatch(
+                    apiPutBacklogItem(
+                        model,
+                        buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", backlogItem.id),
+                        apiCallReason
+                    )
+                );
+            }
+            break;
+        }
+        case ActionTypes.API_PUT_BACKLOG_ITEM_SUCCESS: {
+            const actionTyped = action as ApiPutBacklogItemSuccessAction;
+            if (actionTyped.meta.passthrough.apiCallReason === PutBacklogItemCallReason.SaveCurrentBacklogItem) {
+                storeTyped.dispatch(setEditMode(EditMode.View));
             }
             break;
         }

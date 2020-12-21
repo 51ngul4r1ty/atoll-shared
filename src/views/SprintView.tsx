@@ -8,7 +8,7 @@ import { TopMenuPanelContainer } from "../containers/TopMenuPanelContainer";
 import { AppConsumer } from "../contexts/appContextUtil";
 
 // consts/enums
-import { EditMode } from "../components/molecules/buttons/EditButton";
+import { EditMode } from "../components/common/componentEnums";
 
 export interface SprintViewStateProps {
     editMode: EditMode;

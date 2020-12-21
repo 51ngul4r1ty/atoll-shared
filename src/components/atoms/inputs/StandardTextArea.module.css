@@ -1,0 +1,101 @@
+.input {
+    position: relative;
+    display: flex;
+}
+
+.input > textarea {
+    width: 100%;
+    border-width: 0;
+    min-height: 2.4rem;
+    padding: 0.55rem 0.4rem 0.4rem 0.4rem;
+    box-sizing: border-box;
+    color: var(--normal-pen-color, black);
+    background-color: var(--normal-input-page-color, white);
+    font-family: inherit;
+    font-size: inherit;
+    resize: vertical;
+}
+
+.input > .markdownContainer {
+    position: relative;
+    width: 100%;
+    padding: 0.55rem 0.4rem 0.4rem 0.4rem;
+    box-sizing: border-box;
+    color: var(--normal-pen-color, black);
+    background-color: var(--normal-input-page-color, white);
+}
+
+.input > .markdownContainer > .markdown {
+    position: relative;
+    width: 100%;
+}
+
+.input > textarea.noVertResize {
+    resize: none;
+}
+
+.input.readOnly > textarea {
+    background-color: var(--normal-form-page-readonly-color, #e8e8e8);
+}
+
+.input.readOnly > .markdownContainer {
+    background-color: var(--normal-form-page-readonly-color, #e8e8e8);
+}
+
+.input > label {
+    position: absolute;
+    top: 0.08rem;
+    left: 0.08rem;
+    font-size: 0.5833rem; /* 7pt */
+    opacity: 0.6;
+    text-transform: uppercase;
+}
+
+.input > textarea::placeholder {
+    color: var(--normal-placeholder-color, #777);
+}
+
+.input.disabled > textarea {
+    background-color: var(--normal-input-page-disabled-color, #e0e0e0);
+}
+
+.input.disabled > .markdownContainer {
+    background-color: var(--normal-input-page-disabled-color, #e0e0e0);
+}
+
+.input.disabled > label {
+    color: var(--normal-pen-disabled-color, #999);
+}
+
+.valid {
+}
+
+.invalid textarea {
+    background-color: var(--normal-error-page-color, #900);
+    color: var(--normal-error-pen-color, #fff);
+}
+
+.invalid .markdownContainer {
+    background-color: var(--normal-error-page-color, #900);
+    color: var(--normal-error-pen-color, #fff);
+}
+
+.input.invalid > label {
+    color: var(--normal-error-pen-color, #fff);
+}
+
+.markdown :first-child {
+    margin-top: 0.4rem;
+}
+
+.markdown :last-child {
+    margin-bottom: 0;
+}
+
+.markdown code {
+    opacity: 0.4;
+}
+
+.markdown ul {
+    padding-left: 1.2rem;
+}

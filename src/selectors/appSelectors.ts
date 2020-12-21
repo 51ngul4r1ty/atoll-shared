@@ -2,7 +2,7 @@
 import { createSelector } from "reselect";
 
 // interfaces/types
-import { EditMode } from "../components/molecules/buttons/EditButton";
+import { EditMode } from "../components/common/componentEnums";
 
 // interfaces/types
 import { AppState, Locale } from "../reducers/appReducer";

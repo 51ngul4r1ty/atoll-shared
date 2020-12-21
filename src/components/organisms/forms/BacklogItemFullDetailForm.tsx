@@ -2,9 +2,10 @@
 import React, { Component } from "react";
 
 // components
-import { CancelButton } from "../../molecules/buttons/CancelButton";
-import { DoneButton } from "../../molecules/buttons/DoneButton";
+import { SaveButton } from "../../molecules/buttons/SaveButton";
+import { ResetButton } from "../../molecules/buttons/ResetButton";
 import { StandardInput } from "../../atoms/inputs/StandardInput";
+import { StandardTextArea } from "../../atoms/inputs/StandardTextArea";
 
 // style
 import commonCss from "./common/common.module.css";
@@ -16,32 +17,18 @@ import { isNumber } from "../../../utils/validationUtils";
 import { getStoryPhrases, isStoryPaste } from "./pasteFormatUtils";
 
 // interfaces/types
-import { BacklogItemType } from "../../../types/backlogItemTypes";
-import { StoryPhrases } from "../../../types";
+import { BacklogItemEditableFields } from "./backlogItemFormTypes";
 
-export interface BacklogItemFullDetailFormEditableFields extends StoryPhrases {
-    estimate: number | null;
-    id: string;
-    friendlyId: string;
-    friendlyIdDisabled: boolean;
-    externalId: string;
-}
-
-export interface BacklogItemFullDetailFormSaveableFields extends BacklogItemFullDetailFormEditableFields {
+export interface BacklogItemFullDetailFormStateProps extends BacklogItemEditableFields {
     saved: boolean;
-}
-
-export interface BacklogItemFullDetailFormStateProps extends BacklogItemFullDetailFormSaveableFields {
     className?: string;
-    type: BacklogItemType;
-    editing: boolean;
     editable?: boolean;
 }
 
 export interface BacklogItemFullDetailFormDispatchProps {
-    onDoneClick?: { (id: string, instanceId: number) };
-    onCancelClick?: { (id: string, instanceId: number) };
-    onDataUpdate?: { (props: BacklogItemFullDetailFormEditableFields) };
+    onSaveClick?: { () };
+    onCancelClick?: { () };
+    onDataUpdate?: { (props: BacklogItemEditableFields) };
 }
 
 export type BacklogItemFullDetailFormProps = BacklogItemFullDetailFormStateProps & BacklogItemFullDetailFormDispatchProps;
@@ -50,7 +37,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
     constructor(props) {
         super(props);
     }
-    handleStoryPaste = (fields: BacklogItemFullDetailFormEditableFields) => {
+    handleStoryPaste = (fields: BacklogItemEditableFields) => {
         const previousRolePhrase = this.props.rolePhrase || "";
         const newRolePhrase = fields.rolePhrase || "";
         const isPaste = previousRolePhrase.length === 0 && newRolePhrase.length > 1;
@@ -61,17 +48,21 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
             fields.reasonPhrase = storyPhrases.reasonPhrase || "";
         }
     };
-    handleDataUpdate = (fields: BacklogItemFullDetailFormEditableFields) => {
+    handleDataUpdate = (fields: BacklogItemEditableFields) => {
         this.handleStoryPaste(fields);
         if (this.props.onDataUpdate) {
             this.props.onDataUpdate(fields);
         }
     };
-    handleDoneClick = () => {
-        // TODO: Implement later
+    handleSaveClick = () => {
+        if (this.props.onSaveClick) {
+            this.props.onSaveClick();
+        }
     };
-    handleCancelClick = () => {
-        // TODO: Implement later
+    handleResetClick = () => {
+        if (this.props.onCancelClick) {
+            this.props.onCancelClick();
+        }
     };
     render() {
         const isReadOnly = !this.props.editable;
@@ -79,15 +70,16 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
         const issuePlaceholder = "without <issue reason>";
         const storyPlaceholder = "so that I can <derive value>";
         const placeholderText = this.props.type === "issue" ? issuePlaceholder : storyPlaceholder;
-        const prevData: BacklogItemFullDetailFormEditableFields = {
-            id: this.props.id,
-            friendlyId: this.props.friendlyId,
-            friendlyIdDisabled: this.props.friendlyIdDisabled,
+        const prevData: BacklogItemEditableFields = {
+            acceptanceCriteria: this.props.acceptanceCriteria,
             estimate: this.props.estimate,
             externalId: this.props.externalId,
-            storyPhrase: this.props.storyPhrase,
+            friendlyId: this.props.friendlyId,
+            id: this.props.id,
+            reasonPhrase: this.props.reasonPhrase,
             rolePhrase: this.props.rolePhrase,
-            reasonPhrase: this.props.reasonPhrase
+            storyPhrase: this.props.storyPhrase,
+            type: this.props.type
         };
         const rolePhraseInput = (
             <StandardInput
@@ -160,38 +152,47 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 labelText="ID"
                 readOnly={isReadOnly}
                 inputValue={this.props.friendlyId}
-                disabled={this.props.friendlyIdDisabled}
+                disabled={!isReadOnly}
                 onChange={(value) => {
                     this.handleDataUpdate({ ...prevData, friendlyId: value });
                 }}
             />
         );
+        const acceptanceCriteriaInput = (
+            <StandardTextArea
+                inputId="acceptanceCriteriaId"
+                labelText="Acceptance Criteria"
+                readOnly={isReadOnly}
+                renderMarkdown={isReadOnly}
+                inputValue={this.props.acceptanceCriteria}
+                rows={3}
+                onChange={(value) => {
+                    this.handleDataUpdate({ ...prevData, acceptanceCriteria: value });
+                }}
+            />
+        );
         const actionButtonContainerClassName = buildClassName(css.centerCell, css.actionButtonContainer);
-        const doneButtonElts = this.props.editable ? (
-            <div className={actionButtonContainerClassName}>
-                <DoneButton
-                    className={css.actionButton}
-                    onClick={() => {
-                        this.handleDoneClick();
-                    }}
-                />
-            </div>
-        ) : null;
-        const cancelButtonElts = this.props.editable ? (
-            <div className={actionButtonContainerClassName}>
-                <CancelButton
-                    className={css.actionButton}
-                    onClick={() => {
-                        this.handleCancelClick();
-                    }}
-                />
-            </div>
-        ) : null;
-        const actionButtonPanel = (
-            <div className={css.actionButtonPanel}>
-                <div />
-                {doneButtonElts}
-                {cancelButtonElts}
+        const actionButtonPanelElts = !this.props.editable ? null : (
+            <div className={css.formRow}>
+                <div className={css.actionButtonPanel}>
+                    <div />
+                    <div className={actionButtonContainerClassName}>
+                        <SaveButton
+                            className={css.actionButton}
+                            onClick={() => {
+                                this.handleSaveClick();
+                            }}
+                        />
+                    </div>
+                    <div className={actionButtonContainerClassName}>
+                        <ResetButton
+                            className={css.actionButton}
+                            onClick={() => {
+                                this.handleResetClick();
+                            }}
+                        />
+                    </div>
+                </div>
             </div>
         );
         const formContent = (
@@ -204,7 +205,8 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 <div className={css.formRow}>{rolePhraseInput}</div>
                 <div className={css.formRow}>{storyPhraseInput}</div>
                 <div className={css.formRow}>{reasonPhraseInput}</div>
-                <div className={css.formRow}>{actionButtonPanel}</div>
+                <div className={css.formRow}>{acceptanceCriteriaInput}</div>
+                {actionButtonPanelElts}
             </>
         );
         const formClassName = buildClassName(

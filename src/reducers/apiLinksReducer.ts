@@ -11,6 +11,7 @@ import { ApiGetBacklogItemsSuccessAction } from "../actions/apiBacklogItems";
 import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
 import { ApiBacklogItem } from "../apiModelTypes";
 import { ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
+import { ApiGetBffViewsBacklogItemSuccessAction } from "../actions/apiBffViewsBacklogItem";
 
 export const ResourceTypes = {
     BACKLOG_ITEM: "backlogItems"
@@ -123,6 +124,12 @@ export const apiLinksReducer = (state: ApiLinkState = apiLinksReducerInitialStat
             }
             case ActionTypes.API_GET_BFF_VIEWS_PLAN_SUCCESS: {
                 const actionTyped = action as ApiGetBffViewsPlanSuccessAction;
+                const { payload } = actionTyped;
+                processBacklogItems(payload.response.data.backlogItems, draft, actionTyped.meta);
+                return;
+            }
+            case ActionTypes.API_GET_BFF_VIEWS_BACKLOG_ITEM_SUCCESS: {
+                const actionTyped = action as ApiGetBffViewsBacklogItemSuccessAction;
                 const { payload } = actionTyped;
                 processBacklogItems(payload.response.data.backlogItems, draft, actionTyped.meta);
                 return;

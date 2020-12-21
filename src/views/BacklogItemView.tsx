@@ -1,16 +1,23 @@
 // externals
 import * as React from "react";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 // components
 import { TopMenuPanelContainer } from "../containers/TopMenuPanelContainer";
 import { BacklogItemFullDetailForm } from "../components/organisms/forms/BacklogItemFullDetailForm";
 
 // consts/enums
-import { EditMode } from "../components/molecules/buttons/EditButton";
+import { EditMode } from "../components/common/componentEnums";
 import { BacklogItemType } from "../types/backlogItemTypes";
-import { useEffect } from "react";
+import {
+    resetCurrentBacklogItem,
+    saveCurrentBacklogItem,
+    updateCurrentBacklogItemFields
+} from "../actions/currentBacklogItemActions";
 
 export interface BacklogItemViewStateProps {
+    acceptanceCriteria: string;
     backlogItemDisplayId: string;
     editMode: EditMode;
     electronClient: boolean;
@@ -34,6 +41,7 @@ export interface BacklogItemViewDispatchProps {
 export type BacklogItemViewProps = BacklogItemViewStateProps & BacklogItemViewDispatchProps;
 
 export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
+    const dispatch = useDispatch();
     useEffect(() => {
         props.onLoaded(props.projectDisplayId, props.backlogItemDisplayId);
     }, []);
@@ -48,38 +56,28 @@ export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
             <TopMenuPanelContainer
                 activeTabId="backlogitem"
                 treatAsElectronTitleBar={props.electronClient && !props.showWindowTitleBar}
-                hideEditViewButton
             />
             <BacklogItemFullDetailForm
                 className={classNameToUse}
                 id={props.id}
                 friendlyId={props.friendlyId}
-                friendlyIdDisabled={!props.saved}
                 externalId={props.externalId}
-                editable={false}
-                editing={false}
-                saved={true}
+                editable={props.editMode === EditMode.Edit}
+                saved={props.saved}
                 estimate={props.estimate}
                 rolePhrase={props.rolePhrase}
                 storyPhrase={props.storyPhrase}
                 reasonPhrase={props.reasonPhrase}
+                acceptanceCriteria={props.acceptanceCriteria}
                 type={props.type}
                 onDataUpdate={(fields) => {
-                    //                    dispatch(updateBacklogItemFields(fields));
+                    dispatch(updateCurrentBacklogItemFields(fields));
                 }}
-                onDoneClick={(id, instanceId) => {
-                    // if (id) {
-                    //     dispatch(updateBacklogItem(id));
-                    // } else {
-                    //     dispatch(saveNewBacklogItem(instanceId));
-                    // }
+                onSaveClick={() => {
+                    dispatch(saveCurrentBacklogItem());
                 }}
-                onCancelClick={(id, instanceId) => {
-                    // if (id) {
-                    //     dispatch(cancelEditBacklogItem(id));
-                    // } else {
-                    //     dispatch(cancelUnsavedBacklogItem(instanceId));
-                    // }
+                onCancelClick={() => {
+                    dispatch(resetCurrentBacklogItem());
                 }}
             />
         </>

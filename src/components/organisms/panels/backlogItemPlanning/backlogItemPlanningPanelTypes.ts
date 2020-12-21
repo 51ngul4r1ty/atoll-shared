@@ -7,7 +7,7 @@ import { StoryPhrases } from "../../../../types";
 
 // consts/enums
 import { BacklogItemType } from "../../../../types/backlogItemTypes";
-import { EditMode } from "../../../molecules/buttons/EditButton";
+import { EditMode } from "../../../common/componentEnums";
 
 export interface PlanningPanelBacklogItem extends StoryPhrases {
     estimate: number | null;

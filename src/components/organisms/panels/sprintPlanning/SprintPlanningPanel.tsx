@@ -19,7 +19,7 @@ import { addBottomActionButtons, addTopActionButtons } from "./sprintPlanningPan
 import { sprintMenuBuilder } from "../../../common/itemMenuBuilders";
 
 // consts/enums
-import { EditMode } from "../../../molecules/buttons/EditButton";
+import { EditMode } from "../../../common/componentEnums";
 
 // selectors
 import { OpenedDetailMenuInfo } from "../../../../selectors/sprintBacklogSelectors";

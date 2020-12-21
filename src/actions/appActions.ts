@@ -3,7 +3,7 @@ import { Locale } from "../reducers/appReducer";
 
 // consts/enums
 import * as ActionTypes from "./actionTypes";
-import { EditMode } from "../components/molecules/buttons/EditButton";
+import { EditMode } from "../components/common/componentEnums";
 
 export interface SetLocaleAction {
     type: typeof ActionTypes.SET_LOCALE;

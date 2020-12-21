@@ -34,6 +34,7 @@ import { PushState } from "../types";
 // utils
 import {
     getBacklogItemById,
+    updateBacklogItemFieldsInItemsAndAddedItems,
     idsMatch,
     rebuildAllItems,
     targetIsInMenuButton,
@@ -45,6 +46,8 @@ import {
 import { mapApiItemsToBacklogItems, mapApiItemToBacklogItem, mapApiStatusToBacklogItem } from "../../mappers/backlogItemMappers";
 import { calcDropDownMenuState } from "../../utils/dropdownMenuUtils";
 import { ApiGetBffViewsBacklogItemSuccessAction } from "../../actions/apiBffViewsBacklogItem";
+import { UpdateCurrentBacklogItemFieldsAction } from "../../actions/currentBacklogItemActions";
+import { BacklogItemInstanceEditableFields } from "../../components/organisms/forms/backlogItemFormTypes";
 
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
@@ -53,7 +56,8 @@ export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>(
     openedDetailMenuBacklogItemId: null,
     pushedItems: [],
     selectedItemIds: [],
-    currentItem: null
+    currentItem: null,
+    savedCurrentItem: null
 });
 
 export const removeBacklogItem = (draft: Draft<BacklogItemsState>, backlogItemId: string) => {
@@ -177,19 +181,16 @@ export const backlogItemsReducer = (
                 rebuildAllItems(draft);
                 return;
             }
+            case ActionTypes.UPDATE_CURRENT_BACKLOG_ITEM_FIELDS:
             case ActionTypes.UPDATE_BACKLOG_ITEM_FIELDS: {
+                const updateCurrentItem = action.type === ActionTypes.UPDATE_CURRENT_BACKLOG_ITEM_FIELDS;
+                if (updateCurrentItem) {
+                    const actionTyped = action as UpdateCurrentBacklogItemFieldsAction;
+                    updateBacklogItemFields(draft.currentItem, actionTyped.payload);
+                }
                 const actionTyped = action as UpdateBacklogItemFieldsAction;
-                draft.addedItems.forEach((addedItem) => {
-                    if (idsMatch(addedItem, actionTyped.payload)) {
-                        updateBacklogItemFields(addedItem, actionTyped.payload);
-                    }
-                });
-                draft.items.forEach((addedItem) => {
-                    if (idsMatch(addedItem, actionTyped.payload)) {
-                        updateBacklogItemFields(addedItem, actionTyped.payload);
-                    }
-                });
-                updateItemFieldsInAllItems(draft, actionTyped.payload);
+                const payload = actionTyped.payload;
+                updateBacklogItemFieldsInItemsAndAddedItems(draft, payload);
                 return;
             }
             case ActionTypes.RECEIVE_PUSHED_BACKLOG_ITEM: {
@@ -323,23 +324,43 @@ export const backlogItemsReducer = (
                 if (backlogItems.length === 1) {
                     const backlogItem = backlogItems[0];
                     draft.currentItem = {
-                        saved: true,
-                        editing: false,
-                        instanceId: undefined,
-                        estimate: backlogItem.estimate,
-                        id: backlogItem.id,
-                        friendlyId: backlogItem.friendlyId,
-                        externalId: backlogItem.externalId,
-                        rolePhrase: backlogItem.rolePhrase,
-                        storyPhrase: backlogItem.storyPhrase,
-                        reasonPhrase: backlogItem.reasonPhrase,
-                        type: backlogItem.type,
-                        status: mapApiStatusToBacklogItem(backlogItem.status),
-                        projectId: backlogItem.projectId,
+                        acceptanceCriteria: backlogItem.acceptanceCriteria,
                         createdAt: backlogItem.createdAt,
+                        editing: false,
+                        estimate: backlogItem.estimate,
+                        externalId: backlogItem.externalId,
+                        friendlyId: backlogItem.friendlyId,
+                        id: backlogItem.id,
+                        instanceId: undefined,
+                        projectId: backlogItem.projectId,
+                        reasonPhrase: backlogItem.reasonPhrase,
+                        rolePhrase: backlogItem.rolePhrase,
+                        saved: true,
+                        status: mapApiStatusToBacklogItem(backlogItem.status),
+                        storyPhrase: backlogItem.storyPhrase,
+                        type: backlogItem.type,
                         updatedAt: backlogItem.updatedAt
                     };
+                    draft.savedCurrentItem = { ...draft.currentItem };
                 }
+                return;
+            }
+            case ActionTypes.RESET_CURRENT_BACKLOG_ITEM: {
+                const resetItem = { ...draft.savedCurrentItem };
+                draft.currentItem = resetItem;
+                const item: BacklogItemInstanceEditableFields = {
+                    acceptanceCriteria: resetItem.acceptanceCriteria,
+                    estimate: resetItem.estimate,
+                    externalId: resetItem.externalId,
+                    friendlyId: resetItem.friendlyId,
+                    id: resetItem.id,
+                    instanceId: undefined,
+                    reasonPhrase: resetItem.reasonPhrase,
+                    rolePhrase: resetItem.rolePhrase,
+                    storyPhrase: resetItem.storyPhrase,
+                    type: resetItem.type
+                };
+                updateBacklogItemFieldsInItemsAndAddedItems(draft, item);
                 return;
             }
             case ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_FAILURE: {

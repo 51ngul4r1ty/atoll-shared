@@ -23,6 +23,7 @@ describe("Backlog Items Reducer", () => {
     describe("rebuildAllItems", () => {
         it("should update correctly", () => {
             const addedItem: SaveableBacklogItem = {
+                acceptanceCriteria: undefined,
                 createdAt: undefined,
                 estimate: undefined,
                 externalId: undefined,
@@ -43,6 +44,7 @@ describe("Backlog Items Reducer", () => {
                 source: Source.Added
             };
             const item: BacklogItemWithSource = {
+                acceptanceCriteria: "",
                 createdAt: new Date("2020-05-16T17:49:30.265Z"),
                 estimate: null,
                 externalId: "t-1",
@@ -60,6 +62,7 @@ describe("Backlog Items Reducer", () => {
             };
             const pushedItem1: WebsocketPushNotificationData<PushBacklogItemModel> = {
                 item: {
+                    acceptanceCriteria: "",
                     createdAt: new Date("2020-06-02T01:15:54.715Z"),
                     estimate: null,
                     externalId: "t-2",
@@ -79,6 +82,7 @@ describe("Backlog Items Reducer", () => {
                 operation: PushOperationType.Added
             };
             const pushedItem1InAllItems: BacklogItemWithSource = {
+                acceptanceCriteria: "",
                 createdAt: new Date("2020-06-02T01:15:54.715Z"),
                 estimate: null,
                 externalId: "t-2",

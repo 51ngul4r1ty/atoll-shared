@@ -11,6 +11,7 @@ import createRootReducer from "../reducers/rootReducer";
 import { apiBatchMiddleware } from "../middleware/apiBatchMiddleware";
 import { apiMiddleware } from "../middleware/apiMiddleware";
 import { apiOrchestrationMiddleware } from "../middleware/apiOrchestrationMiddleware";
+import { actionSequencerMiddleware } from "../middleware/actionSequencerMiddleware";
 import { localStorageMiddleware } from "../middleware/localStorageMiddleware";
 import { routingMiddleware } from "../middleware/routingMiddleware";
 import { sprintBacklogItemMiddleware } from "../middleware/sprintBacklogItemMiddleware";
@@ -43,6 +44,7 @@ export const configureStore = ({ initialState, middleware = [], history, windowR
         apiBatchMiddleware,
         apiMiddleware,
         apiOrchestrationMiddleware,
+        actionSequencerMiddleware,
         routingMiddleware,
         sprintBacklogItemMiddleware,
         wsMiddleware

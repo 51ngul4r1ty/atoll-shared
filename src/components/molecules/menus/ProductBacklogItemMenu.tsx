@@ -8,7 +8,7 @@ import { CaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
 import { RemoveButton } from "../buttons/RemoveButton";
 
 // consts/enums
-import { EditMode } from "../buttons/EditButton";
+import { EditMode } from "../../common/componentEnums";
 
 export interface BacklogItemMenuStateProps {
     renderMobile?: boolean;

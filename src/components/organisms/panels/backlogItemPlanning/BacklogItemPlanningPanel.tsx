@@ -18,7 +18,7 @@ import {
 import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 
 // consts/enums
-import { EditMode } from "../../../molecules/buttons/EditButton";
+import { EditMode } from "../../../common/componentEnums";
 import { buildClassName } from "../../../../utils/classNameBuilder";
 import { useDispatch } from "react-redux";
 import { SaveableBacklogItem } from "../../../../reducers/backlogItems/backlogItemsReducerTypes";

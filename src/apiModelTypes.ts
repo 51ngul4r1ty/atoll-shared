@@ -36,12 +36,13 @@ export interface StandardItem extends BaseItem, ItemWithId, ApiItemWithLinks {}
 export interface StandardNamedItem extends StandardItem, ItemWithName {}
 
 export interface ApiBacklogItem extends StandardItem, StoryPhrases {
-    friendlyId: string | null;
-    externalId: string | null;
+    acceptanceCriteria: string | null;
     estimate: number | null;
-    type: BacklogItemType;
+    externalId: string | null;
+    friendlyId: string | null;
     projectId: string | null;
     status: string | null;
+    type: BacklogItemType;
 }
 
 export interface ApiBacklogItemInSprint extends ApiBacklogItem {

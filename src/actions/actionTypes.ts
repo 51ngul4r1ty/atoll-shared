@@ -135,7 +135,11 @@ export const UPDATE_BACKLOG_ITEM = "app/update:backlog-item";
 export const CANCEL_UNSAVED_BACKLOG_ITEM = "app/cancel-unsaved:backlog-item";
 export const CANCEL_EDIT_BACKLOG_ITEM = "app/cancel-edit:backlog-item";
 
-export const UPDATE_BACKLOG_ITEM_FIELDS = "app/update:user-story-fields";
+export const UPDATE_BACKLOG_ITEM_FIELDS = "app/update:backlog-item-fields";
+
+export const UPDATE_CURRENT_BACKLOG_ITEM_FIELDS = "app/update:current-backlog-item-fields";
+export const RESET_CURRENT_BACKLOG_ITEM = "app/reset:current-backlog-item";
+export const SAVE_CURRENT_BACKLOG_ITEM = "app/save:current-backlog-item";
 
 export const RECEIVE_WEBSOCKET_MESSAGE = "app/ws:receive-message";
 

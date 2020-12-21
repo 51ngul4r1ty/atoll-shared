@@ -7,7 +7,7 @@ import { render } from "@testing-library/react";
 
 // code under test
 import { BacklogItemPlanningPanel } from "../backlogItemPlanning/BacklogItemPlanningPanel";
-import { EditMode } from "../../../molecules/buttons/EditButton";
+import { EditMode } from "../../../common/componentEnums";
 import { Source } from "../../../../reducers/types";
 import { BacklogItemWithSource } from "../../../../reducers/backlogItems/backlogItemsReducerTypes";
 import { BacklogItemStatus } from "../../../../types/backlogItemTypes";
@@ -91,6 +91,7 @@ const buildCommonItem = (
     estimate: number,
     saved: boolean = true
 ): BacklogItemWithSource => ({
+    acceptanceCriteria: "",
     createdAt: new Date(),
     estimate,
     externalId: buildExternalId(source, itemNumber),

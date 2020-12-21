@@ -14,7 +14,7 @@ import { StateTree } from "../reducers/rootReducer";
 import { TopMenuPanel } from "../components/organisms/panels/TopMenuPanel";
 
 // consts/enums
-import { EditMode } from "../components/molecules/buttons/EditButton";
+import { EditMode } from "../components/common/componentEnums";
 
 // interfaces/types
 import { TopMenuPanelStateProps, TopMenuPanelDispatchProps } from "../components/organisms/panels/TopMenuPanel";

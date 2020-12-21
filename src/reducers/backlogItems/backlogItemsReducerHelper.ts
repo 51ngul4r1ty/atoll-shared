@@ -5,12 +5,14 @@ import { Draft } from "immer";
 import { PushBacklogItemModel } from "../../middleware/wsMiddleware";
 import { BacklogItemsState, BacklogItemWithSource, EditableBacklogItem, SaveableBacklogItem } from "./backlogItemsReducerTypes";
 import { BacklogItem, BacklogItemModel } from "../../types/backlogItemTypes";
-import { PushOperationType } from "../../types";
+import { AnyFSA, PushOperationType } from "../../types";
 import {
-    BacklogItemDetailFormEditableFields,
-    BacklogItemDetailFormEditableFieldsWithInstanceId
-} from "../../components/organisms/forms/BacklogItemDetailForm";
+    BacklogItemEditableFields,
+    BacklogItemInstanceEditableFields
+} from "../../components/organisms/forms/backlogItemFormTypes";
 import { Source, PushState } from "../types";
+import { UpdateCurrentBacklogItemFieldsAction } from "../../actions/currentBacklogItemActions";
+import { UpdateBacklogItemFieldsAction } from "../../actions/backlogItemActions";
 
 // utils
 import { LinkedList } from "../../utils/linkedList";
@@ -40,20 +42,21 @@ export const addSourceToPushedItem = (item: Partial<PushBacklogItemModel>, sourc
 });
 
 export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>): BacklogItemWithSource => ({
+    acceptanceCriteria: pushedItem.acceptanceCriteria,
+    createdAt: pushedItem.createdAt,
+    estimate: pushedItem.estimate,
+    externalId: pushedItem.externalId,
+    friendlyId: pushedItem.friendlyId,
     id: pushedItem.id,
     instanceId: undefined,
-    source: Source.Pushed,
-    createdAt: pushedItem.createdAt,
-    updatedAt: pushedItem.updatedAt,
-    estimate: pushedItem.estimate,
-    friendlyId: pushedItem.friendlyId,
-    externalId: pushedItem.externalId,
+    projectId: pushedItem.projectId,
     reasonPhrase: pushedItem.reasonPhrase,
     rolePhrase: pushedItem.rolePhrase,
+    source: Source.Pushed,
+    status: pushedItem.status,
     storyPhrase: pushedItem.storyPhrase,
     type: pushedItem.type,
-    projectId: pushedItem.projectId,
-    status: pushedItem.status
+    updatedAt: pushedItem.updatedAt
 });
 
 export const addPushedAddedItemsToAllItems = (draft: Draft<BacklogItemsState>, allItems: LinkedList<BacklogItemWithSource>) => {
@@ -126,29 +129,28 @@ export const rebuildAllItems = (draft: Draft<BacklogItemsState>) => {
     draft.allItems = allItemsArray;
 };
 
-export const idsMatch = (item1: BacklogItem, item2: BacklogItemDetailFormEditableFieldsWithInstanceId): boolean => {
-    const instanceIdMatch = !!item1.instanceId && item1.instanceId === item2.instanceId;
-    const idMatch = !!item1.id && item1.id === item2.id;
+export const idsMatch = (item1: BacklogItem, item2: BacklogItemEditableFields): boolean => {
+    const item2withInstanceId = item2 as BacklogItemInstanceEditableFields;
+    const instanceIdMatch = !!item1.instanceId && item1.instanceId === item2withInstanceId.instanceId;
+    const idMatch = !!item1.id && item1.id === item2withInstanceId.id;
     return instanceIdMatch || idMatch;
 };
 
-export const updateItemFieldsInAllItems = (
-    draft: Draft<BacklogItemsState>,
-    payload: BacklogItemDetailFormEditableFieldsWithInstanceId
-) => {
-    const item = draft.allItems.filter((item) => idsMatch(item, payload));
+export const updateItemFieldsInAllItems = (draft: Draft<BacklogItemsState>, backlogItem: BacklogItemEditableFields) => {
+    const item = draft.allItems.filter((item) => idsMatch(item, backlogItem));
     if (item.length === 1) {
-        updateBacklogItemFields(item[0], payload);
+        updateBacklogItemFields(item[0], backlogItem);
     }
 };
 
-export const updateBacklogItemFields = (backlogItem: BacklogItem, payload: BacklogItemDetailFormEditableFields) => {
+export const updateBacklogItemFields = (backlogItem: BacklogItem, payload: BacklogItemEditableFields) => {
+    backlogItem.acceptanceCriteria = payload.acceptanceCriteria;
     backlogItem.estimate = payload.estimate;
-    backlogItem.friendlyId = payload.friendlyId;
     backlogItem.externalId = payload.externalId;
-    backlogItem.storyPhrase = payload.storyPhrase;
+    backlogItem.friendlyId = payload.friendlyId;
     backlogItem.reasonPhrase = payload.reasonPhrase;
     backlogItem.rolePhrase = payload.rolePhrase;
+    backlogItem.storyPhrase = payload.storyPhrase;
 };
 
 export const getBacklogItemById = (backlogItems: BacklogItemsState, itemId: string): BacklogItemWithSource | null => {
@@ -178,4 +180,21 @@ export const targetIsInMenuPanel = (target: EventTarget) => {
 
 export const targetIsInMenuButton = (target: EventTarget) => {
     return !!getParentWithDataClass(target as HTMLElement, "item-menu-button");
+};
+
+export const updateBacklogItemFieldsInItemsAndAddedItems = (
+    draft: Draft<BacklogItemsState>,
+    payload: BacklogItemInstanceEditableFields
+) => {
+    draft.addedItems.forEach((addedItem) => {
+        if (idsMatch(addedItem, payload)) {
+            updateBacklogItemFields(addedItem, payload);
+        }
+    });
+    draft.items.forEach((addedItem) => {
+        if (idsMatch(addedItem, payload)) {
+            updateBacklogItemFields(addedItem, payload);
+        }
+    });
+    updateItemFieldsInAllItems(draft, payload);
 };

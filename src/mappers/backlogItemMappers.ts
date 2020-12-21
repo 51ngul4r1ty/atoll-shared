@@ -51,18 +51,19 @@ export const mapBacklogItemStatusToApi = (status: BacklogItemStatus): string | n
 };
 
 export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem => ({
-    id: apiItem.id,
-    friendlyId: apiItem.friendlyId,
-    externalId: apiItem.externalId,
-    rolePhrase: apiItem.rolePhrase,
-    storyPhrase: apiItem.storyPhrase,
-    reasonPhrase: apiItem.reasonPhrase,
-    estimate: apiItem.estimate,
-    type: apiItem.type,
+    acceptanceCriteria: apiItem.acceptanceCriteria,
     createdAt: apiItem.createdAt,
-    updatedAt: apiItem.updatedAt,
+    estimate: apiItem.estimate,
+    externalId: apiItem.externalId,
+    friendlyId: apiItem.friendlyId,
+    id: apiItem.id,
     projectId: apiItem.projectId,
-    status: mapApiStatusToBacklogItem(apiItem.status)
+    reasonPhrase: apiItem.reasonPhrase,
+    rolePhrase: apiItem.rolePhrase,
+    status: mapApiStatusToBacklogItem(apiItem.status),
+    storyPhrase: apiItem.storyPhrase,
+    type: apiItem.type,
+    updatedAt: apiItem.updatedAt
 });
 
 export const mapBacklogItemToApiItem = (item: BacklogItem): ApiBacklogItem => ({
@@ -75,7 +76,8 @@ export const mapBacklogItemToApiItem = (item: BacklogItem): ApiBacklogItem => ({
     estimate: item.estimate,
     type: item.type,
     projectId: item.projectId,
-    status: mapBacklogItemStatusToApi(item.status)
+    status: mapBacklogItemStatusToApi(item.status),
+    acceptanceCriteria: item.acceptanceCriteria
 });
 
 export const mapApiItemsToBacklogItems = (apiItems: ApiBacklogItem[]): BacklogItem[] => {

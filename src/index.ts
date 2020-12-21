@@ -4,9 +4,13 @@ export { FEATURE_TOGGLE_LIST } from "./constants/defaultFeatureToggles";
 export { PushState } from "./reducers/types";
 export { rootReducerInitialState } from "./reducers/rootReducer";
 
+// components - common
+export * from "./components/common/index";
+
 // components - inputs - atoms
 export { Checkbox } from "./components/atoms/inputs/Checkbox";
 export { StandardInput } from "./components/atoms/inputs/StandardInput";
+export { StandardTextArea } from "./components/atoms/inputs/StandardTextArea";
 
 // components - buttons - atoms
 export { SimpleButton } from "./components/atoms/buttons/SimpleButton";

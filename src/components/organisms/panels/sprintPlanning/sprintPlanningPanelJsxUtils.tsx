@@ -12,7 +12,7 @@ import { Checkbox } from "../../../atoms/inputs/Checkbox";
 import { OnAddNewSprint, OnArchivedFilterChange } from "./sprintPlanningPanelTypes";
 
 // consts/enums
-import { EditMode } from "../../../molecules/buttons/EditButton";
+import { EditMode } from "../../../common/componentEnums";
 
 // utils
 import { buildClassName } from "../../../../utils/classNameBuilder";
