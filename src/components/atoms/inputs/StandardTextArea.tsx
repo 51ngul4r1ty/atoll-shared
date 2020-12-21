@@ -1,5 +1,6 @@
 // externals
 import React, { forwardRef, ChangeEvent, RefObject, Ref, useState, KeyboardEvent, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 
 // style
 import css from "./StandardTextArea.module.css";
@@ -23,6 +24,7 @@ export interface StandardTextAreaStateProps {
     labelText: string;
     placeHolder?: string;
     readOnly?: boolean;
+    renderMarkdown?: boolean;
     required?: boolean;
     rows?: number;
     type?: string;
@@ -101,21 +103,30 @@ export const InnerStandardTextArea: React.FC<StandardTextAreaProps & StandardTex
         props.readOnly ? css.readOnly : null,
         !props.allowVerticalResize ? css.noVertResize : null
     );
+    const innerComponent = props.renderMarkdown ? (
+        <div id={props.inputId} className={css.markdownContainer}>
+            <ReactMarkdown className={css.markdown} linkTarget="_blank">
+                {inputText}
+            </ReactMarkdown>
+        </div>
+    ) : (
+        <textarea
+            id={props.inputId}
+            ref={props.innerRef}
+            disabled={props.disabled || props.readOnly}
+            name={nameToUse}
+            placeholder={props.placeHolder}
+            rows={props.rows}
+            value={inputText}
+            onChange={(e) => {
+                handleChange(e);
+            }}
+            required={props.required}
+        />
+    );
     return (
         <div className={classToUse}>
-            <textarea
-                id={props.inputId}
-                ref={props.innerRef}
-                disabled={props.disabled || props.readOnly}
-                name={nameToUse}
-                placeholder={props.placeHolder}
-                rows={props.rows}
-                value={inputText}
-                onChange={(e) => {
-                    handleChange(e);
-                }}
-                required={props.required}
-            />
+            {innerComponent}
             <label htmlFor={nameToUse}>{props.labelText}</label>
         </div>
     );

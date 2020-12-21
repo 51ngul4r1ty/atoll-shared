@@ -16,11 +16,29 @@
     resize: vertical;
 }
 
+.input > .markdownContainer {
+    position: relative;
+    width: 100%;
+    padding: 0.55rem 0.4rem 0.4rem 0.4rem;
+    box-sizing: border-box;
+    color: var(--normal-pen-color, black);
+    background-color: var(--normal-input-page-color, white);
+}
+
+.input > .markdownContainer > .markdown {
+    position: relative;
+    width: 100%;
+}
+
 .input > textarea.noVertResize {
     resize: none;
 }
 
 .input.readOnly > textarea {
+    background-color: var(--normal-form-page-readonly-color, #e8e8e8);
+}
+
+.input.readOnly > .markdownContainer {
     background-color: var(--normal-form-page-readonly-color, #e8e8e8);
 }
 
@@ -41,6 +59,10 @@
     background-color: var(--normal-input-page-disabled-color, #e0e0e0);
 }
 
+.input.disabled > .markdownContainer {
+    background-color: var(--normal-input-page-disabled-color, #e0e0e0);
+}
+
 .input.disabled > label {
     color: var(--normal-pen-disabled-color, #999);
 }
@@ -53,6 +75,27 @@
     color: var(--normal-error-pen-color, #fff);
 }
 
+.invalid .markdownContainer {
+    background-color: var(--normal-error-page-color, #900);
+    color: var(--normal-error-pen-color, #fff);
+}
+
 .input.invalid > label {
     color: var(--normal-error-pen-color, #fff);
+}
+
+.markdown :first-child {
+    margin-top: 0.4rem;
+}
+
+.markdown :last-child {
+    margin-bottom: 0;
+}
+
+.markdown code {
+    opacity: 0.4;
+}
+
+.markdown ul {
+    padding-left: 1.2rem;
 }

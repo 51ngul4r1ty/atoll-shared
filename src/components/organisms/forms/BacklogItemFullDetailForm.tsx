@@ -163,6 +163,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 inputId="acceptanceCriteriaId"
                 labelText="Acceptance Criteria"
                 readOnly={isReadOnly}
+                renderMarkdown={isReadOnly}
                 inputValue={this.props.acceptanceCriteria}
                 rows={3}
                 onChange={(value) => {
@@ -171,31 +172,27 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
             />
         );
         const actionButtonContainerClassName = buildClassName(css.centerCell, css.actionButtonContainer);
-        const doneButtonElts = this.props.editable ? (
-            <div className={actionButtonContainerClassName}>
-                <SaveButton
-                    className={css.actionButton}
-                    onClick={() => {
-                        this.handleSaveClick();
-                    }}
-                />
-            </div>
-        ) : null;
-        const resetButtonElts = this.props.editable ? (
-            <div className={actionButtonContainerClassName}>
-                <ResetButton
-                    className={css.actionButton}
-                    onClick={() => {
-                        this.handleResetClick();
-                    }}
-                />
-            </div>
-        ) : null;
-        const actionButtonPanel = (
-            <div className={css.actionButtonPanel}>
-                <div />
-                {doneButtonElts}
-                {resetButtonElts}
+        const actionButtonPanelElts = !this.props.editable ? null : (
+            <div className={css.formRow}>
+                <div className={css.actionButtonPanel}>
+                    <div />
+                    <div className={actionButtonContainerClassName}>
+                        <SaveButton
+                            className={css.actionButton}
+                            onClick={() => {
+                                this.handleSaveClick();
+                            }}
+                        />
+                    </div>
+                    <div className={actionButtonContainerClassName}>
+                        <ResetButton
+                            className={css.actionButton}
+                            onClick={() => {
+                                this.handleResetClick();
+                            }}
+                        />
+                    </div>
+                </div>
             </div>
         );
         const formContent = (
@@ -209,7 +206,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 <div className={css.formRow}>{storyPhraseInput}</div>
                 <div className={css.formRow}>{reasonPhraseInput}</div>
                 <div className={css.formRow}>{acceptanceCriteriaInput}</div>
-                <div className={css.formRow}>{actionButtonPanel}</div>
+                {actionButtonPanelElts}
             </>
         );
         const formClassName = buildClassName(
