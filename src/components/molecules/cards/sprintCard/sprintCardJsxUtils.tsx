@@ -8,7 +8,7 @@ import { SprintBacklogItem } from "../../../../reducers/sprintBacklogReducer";
 import { BacklogItemCard, BacklogItemTypeEnum, buildBacklogItemKey, ItemMenuEventHandlers } from "../BacklogItemCard";
 
 // consts/enums
-import { EditMode } from "../../buttons/EditButton";
+import { EditMode } from "../../../common/componentEnums";
 
 // utils
 import { sprintBacklogItemMenuBuilder } from "../../../common/itemMenuBuilders";

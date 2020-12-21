@@ -11,10 +11,8 @@ import { EditCancelIcon } from "../../atoms/icons/EditCancelIcon";
 // style
 import { PropsWithClassName } from "../../common/types";
 
-export enum EditMode {
-    View,
-    Edit
-}
+// consts/enums
+import { EditMode } from "../../common/componentEnums";
 
 export interface EditButtonStateProps extends PropsWithClassName {
     mode: EditMode;

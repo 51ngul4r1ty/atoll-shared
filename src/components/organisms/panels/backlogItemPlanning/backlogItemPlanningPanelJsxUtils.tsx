@@ -8,7 +8,7 @@ import { AddButton } from "../../../molecules/buttons/AddButton";
 import { OnAddedNewBacklogItemForm } from "./backlogItemPlanningPanelTypes";
 
 // consts/enums
-import { EditMode } from "../../../molecules/buttons/EditButton";
+import { EditMode } from "../../../common/componentEnums";
 
 // utils
 import { buildClassName } from "../../../../utils/classNameBuilder";

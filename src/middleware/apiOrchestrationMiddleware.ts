@@ -10,7 +10,7 @@ import { push } from "connected-react-router";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
-import { EditMode } from "../components/molecules/buttons/EditButton";
+import { EditMode } from "../components/common/componentEnums";
 
 // selectors
 import {

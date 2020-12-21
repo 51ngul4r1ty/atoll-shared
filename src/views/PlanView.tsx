@@ -13,7 +13,7 @@ import { AppContext } from "../contexts/appContextUtil";
 import css from "./PlanView.module.css";
 
 // interfaces/types
-import { EditMode } from "../components/molecules/buttons/EditButton";
+import { EditMode } from "../components/common/componentEnums";
 import { BacklogItemWithSource } from "../reducers/backlogItems/backlogItemsReducerTypes";
 import { BacklogItemType } from "../types/backlogItemTypes";
 import { SprintCardSprint } from "../components/molecules/cards/sprintCard/sprintCardTypes";

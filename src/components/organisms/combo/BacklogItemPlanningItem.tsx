@@ -4,10 +4,12 @@ import { useDispatch } from "react-redux";
 
 // interfaces/types
 import { BacklogItemWithSource } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
-import { EditMode } from "../../molecules/buttons/EditButton";
 import { SimpleDivider } from "../../atoms/dividers/SimpleDivider";
 import { BacklogItemDetailForm } from "../forms/BacklogItemDetailForm";
 import { BacklogItemCard, BacklogItemTypeEnum, ItemMenuEventHandlers } from "../../molecules/cards/BacklogItemCard";
+
+// consts/enums
+import { EditMode } from "../../common/componentEnums";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";

@@ -8,7 +8,7 @@ import { TopMenuPanelContainer } from "../containers/TopMenuPanelContainer";
 import { BacklogItemFullDetailForm } from "../components/organisms/forms/BacklogItemFullDetailForm";
 
 // consts/enums
-import { EditMode } from "../components/molecules/buttons/EditButton";
+import { EditMode } from "../components/common/componentEnums";
 import { BacklogItemType } from "../types/backlogItemTypes";
 import {
     resetCurrentBacklogItem,

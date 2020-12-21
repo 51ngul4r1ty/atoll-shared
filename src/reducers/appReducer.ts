@@ -4,10 +4,10 @@ import { produce, Draft } from "immer";
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
 import { API_ACTION_STAGE_FAILURE, API_ACTION_STAGE_REQUEST, API_ACTION_STAGE_SUCCESS } from "../actions/apiActionStages";
+import { EditMode } from "../components/common/componentEnums";
 
 // interfaces/types
 import { AnyFSA } from "../types";
-import { EditMode } from "../components/molecules/buttons/EditButton";
 import {
     SetUsernameAction,
     SetPasswordAction,

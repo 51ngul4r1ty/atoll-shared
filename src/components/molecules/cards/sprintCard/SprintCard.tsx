@@ -15,7 +15,7 @@ import { ItemMenuBuilder } from "../BacklogItemCard";
 import { SprintCardSprint } from "./sprintCardTypes";
 
 // consts/enums
-import { EditMode } from "../../buttons/EditButton";
+import { EditMode } from "../../../common/componentEnums";
 
 // components
 import { ArchiveIcon } from "../../../atoms/icons/ArchiveIcon";

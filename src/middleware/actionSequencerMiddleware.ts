@@ -14,7 +14,9 @@ import * as ActionTypes from "../actions/actionTypes";
 
 // state
 import { StateTree } from "../reducers/rootReducer";
-import { EditMode } from "../components/molecules/buttons";
+
+// consts/enums
+import { EditMode } from "../components/common/componentEnums";
 
 export const actionSequencerMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
