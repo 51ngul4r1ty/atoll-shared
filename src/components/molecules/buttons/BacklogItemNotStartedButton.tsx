@@ -22,7 +22,7 @@ export type BacklogItemNotStartedButtonProps = BacklogItemNotStartedButtonStateP
 
 export const BacklogItemNotStartedButton: React.FC<BacklogItemNotStartedButtonProps> = (props) => {
     return (
-        <SimpleButton {...cleanPassthroughProps(props)} iconOnLeft icon={<StatusNotStartedIcon />} onClick={props.onClick}>
+        <SimpleButton {...cleanPassthroughProps(props)} iconOnLeft icon={<StatusNotStartedIcon />} onClick={props.onClick} noWrap>
             Progress: Todo
         </SimpleButton>
     );
