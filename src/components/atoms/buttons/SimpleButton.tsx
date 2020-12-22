@@ -21,6 +21,7 @@ export interface SimpleButtonStateProps extends PropsWithClassName {
     draggable?: boolean;
     icon?: any; // TODO: Define type
     iconOnLeft?: boolean;
+    noWrap?: boolean;
     suppressSpacing?: boolean;
 }
 
@@ -48,6 +49,7 @@ export const cleanPassthroughProps = (passthroughProps: any): SimpleButtonProps 
 const InnerSimpleButton: FC<SimpleButtonProps & SimpleButtonInnerStateProps> = (props) => {
     const icon = props.icon && <div className={css.buttonIcon}>{props.icon}</div>;
     const hasChildren = !!props.children;
+    const captionClassName = buildClassName(css.buttonCaption, props.noWrap ? css.noWrap : null);
     const caption = !hasChildren ? null : <div className={css.buttonCaption}>{props.children}</div>;
     let classNameToAdd: string;
     if (hasChildren) {

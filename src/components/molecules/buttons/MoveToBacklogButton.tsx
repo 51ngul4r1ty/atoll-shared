@@ -21,7 +21,7 @@ export type MoveToBacklogButtonProps = MoveToBacklogButtonStateProps & SimpleBut
 
 export const MoveToBacklogButton: React.FC<MoveToBacklogButtonProps> = (props) => {
     return (
-        <SimpleButton {...cleanPassthroughProps(props)} iconOnLeft icon={<TrashIcon />} onClick={props.onClick}>
+        <SimpleButton {...cleanPassthroughProps(props)} iconOnLeft icon={<TrashIcon />} onClick={props.onClick} noWrap>
             Move to Backlog
         </SimpleButton>
     );

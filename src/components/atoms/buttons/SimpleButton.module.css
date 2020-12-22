@@ -41,6 +41,10 @@
     text-transform: uppercase;
 }
 
+.buttonCaption.noWrap {
+    white-space: nowrap;
+}
+
 .buttonCaption + .buttonIcon {
     padding-left: 0.3rem;
 }

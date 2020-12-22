@@ -22,7 +22,7 @@ export type BacklogItemReleasedButtonProps = BacklogItemReleasedButtonStateProps
 
 export const BacklogItemReleasedButton: React.FC<BacklogItemReleasedButtonProps> = (props) => {
     return (
-        <SimpleButton {...cleanPassthroughProps(props)} iconOnLeft icon={<StatusReleasedIcon />} onClick={props.onClick}>
+        <SimpleButton {...cleanPassthroughProps(props)} iconOnLeft icon={<StatusReleasedIcon />} onClick={props.onClick} noWrap>
             Progress: Released
         </SimpleButton>
     );
