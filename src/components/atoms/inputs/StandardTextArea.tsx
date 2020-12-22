@@ -103,13 +103,7 @@ export const InnerStandardTextArea: React.FC<StandardTextAreaProps & StandardTex
         props.readOnly ? css.readOnly : null,
         !props.allowVerticalResize ? css.noVertResize : null
     );
-    const innerComponent = props.renderMarkdown ? (
-        <div id={props.inputId} className={css.markdownContainer}>
-            <ReactMarkdown className={css.markdown} linkTarget="_blank">
-                {inputText}
-            </ReactMarkdown>
-        </div>
-    ) : (
+    const buildTextArea = (value: string = inputText) => (
         <textarea
             id={props.inputId}
             ref={props.innerRef}
@@ -117,13 +111,27 @@ export const InnerStandardTextArea: React.FC<StandardTextAreaProps & StandardTex
             name={nameToUse}
             placeholder={props.placeHolder}
             rows={props.rows}
-            value={inputText}
+            value={value}
             onChange={(e) => {
                 handleChange(e);
             }}
             required={props.required}
         />
     );
+    const buildMarkdown = () => {
+        return inputText === "-" ? (
+            <div id={props.inputId} className={css.acceptanceCriteriaEmpty}>
+                -
+            </div>
+        ) : (
+            <div id={props.inputId} className={css.markdownContainer}>
+                <ReactMarkdown className={css.markdown} linkTarget="_blank">
+                    {inputText}
+                </ReactMarkdown>
+            </div>
+        );
+    };
+    const innerComponent = props.renderMarkdown ? buildMarkdown() : buildTextArea();
     return (
         <div className={classToUse}>
             {innerComponent}
