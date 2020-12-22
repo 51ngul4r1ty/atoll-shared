@@ -50,7 +50,7 @@ const InnerSimpleButton: FC<SimpleButtonProps & SimpleButtonInnerStateProps> = (
     const icon = props.icon && <div className={css.buttonIcon}>{props.icon}</div>;
     const hasChildren = !!props.children;
     const captionClassName = buildClassName(css.buttonCaption, props.noWrap ? css.noWrap : null);
-    const caption = !hasChildren ? null : <div className={css.buttonCaption}>{props.children}</div>;
+    const caption = !hasChildren ? null : <div className={captionClassName}>{props.children}</div>;
     let classNameToAdd: string;
     if (hasChildren) {
         classNameToAdd = props.iconOnLeft ? css.iconOnLeft : css.iconOnRight;
