@@ -1,5 +1,6 @@
 // externals
 import * as React from "react";
+import Helmet from "react-helmet";
 
 // components
 import { AppContext, AppProvider } from "./contexts/appContextUtil";
@@ -227,10 +228,10 @@ export class App extends React.Component<AppProps, AppState> {
                 >
                     <div className={classNameToUse}>
                         {/* <Helmet
-                    defaultTitle="Atoll"
-                    titleTemplate="Atoll – %s"
-                    link={[{ rel: "icon", type: "image/png", href: favicon }]}
-                /> */}
+                            defaultTitle="Atoll"
+                            titleTemplate="Atoll – %s"
+                            link={[{ rel: "icon", type: "image/png", href: favicon }]}
+                        /> */}
                         {this.props.children}
                     </div>
                     {windowFrameCustomElts}

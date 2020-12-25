@@ -77,6 +77,7 @@ export const combineBaseAndRelativeUrl = (protocolHostAndPort: string, path: str
 };
 
 export const remapAssetPath = (url: string) => {
+    console.log(`remapAssetPath: URL = "${url}"`);
     if (!url) {
         return url;
     }
@@ -86,6 +87,7 @@ export const remapAssetPath = (url: string) => {
     const protocolPrefix = parsedAssetUrl.protocol ? `${protocolToScheme(parsedAssetUrl.protocol)}:` : "";
     const baseUrl = `${protocolPrefix}//${getApiHostName()}${portSuffix}/`;
     const result = combineBaseAndRelativeUrl(baseUrl, parsedAssetUrl.pathname);
+    console.log(`remapAssetPath: Result = "${result}"`);
     return result;
 };
 
