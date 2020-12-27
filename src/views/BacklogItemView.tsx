@@ -2,6 +2,7 @@
 import * as React from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import Helmet from "react-helmet";
 
 // components
 import { TopMenuPanelContainer } from "../containers/TopMenuPanelContainer";
@@ -48,11 +49,10 @@ export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
     const classNameToUse = "";
     return (
         <>
-            {/* <Helmet
-                    defaultTitle="Atoll"
-                    titleTemplate="Atoll – %s"
-                    link={[{ rel: "icon", type: "image/png", href: favicon }]}
-                /> */}
+            <Helmet>
+                <title>Backlog Item View</title>
+                <meta name="description" content="Shows backlog item detailed fields." />
+            </Helmet>
             <TopMenuPanelContainer
                 activeTabId="backlogitem"
                 treatAsElectronTitleBar={props.electronClient && !props.showWindowTitleBar}

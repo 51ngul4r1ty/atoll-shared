@@ -1,5 +1,6 @@
 // externals
 import * as React from "react";
+import Helmet from "react-helmet";
 
 // components
 import { TopMenuPanelContainer } from "../containers/TopMenuPanelContainer";
@@ -20,11 +21,13 @@ export type ReviewViewProps = ReviewViewStateProps & ReviewViewDispatchProps;
 export const ReviewView: React.FC<ReviewViewProps> = (props) => {
     return (
         <>
-            {/* <Helmet
-                    defaultTitle="Atoll"
-                    titleTemplate="Atoll – %s"
-                    link={[{ rel: "icon", type: "image/png", href: favicon }]}
-                /> */}
+            <Helmet>
+                <title>Sprint Review View</title>
+                <meta
+                    name="description"
+                    content="Allows a ScrumMaster to easily access all information required for a sprint review."
+                />
+            </Helmet>
             <TopMenuPanelContainer
                 activeTabId="review"
                 treatAsElectronTitleBar={props.electronClient && !props.showWindowTitleBar}

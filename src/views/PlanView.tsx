@@ -1,6 +1,6 @@
 // externals
 import * as React from "react";
-// import Helmet from "react-helmet";
+import Helmet from "react-helmet";
 
 // components
 import { BacklogItemPlanningPanel } from "../components/organisms/panels/backlogItemPlanning/BacklogItemPlanningPanel";
@@ -77,6 +77,10 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
     render() {
         return (
             <>
+                <Helmet>
+                    <title>Planning View</title>
+                    <meta name="description" content="Allows a PO to perform sprint backlog and backlog item management." />
+                </Helmet>
                 <TopMenuPanelContainer
                     activeTabId="plan"
                     treatAsElectronTitleBar={this.props.electronClient && !this.props.showWindowTitleBar}

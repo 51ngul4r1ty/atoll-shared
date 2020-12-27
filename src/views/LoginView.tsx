@@ -1,5 +1,6 @@
 // externals
 import * as React from "react";
+import Helmet from "react-helmet";
 
 // components
 import { LoginForm } from "../components/organisms/forms/LoginForm";
@@ -30,31 +31,37 @@ export class LoginView extends React.Component<LoginViewProps, {}> {
     }
     render() {
         return (
-            <div className={css.page}>
-                <div className={css.form}>
-                    <div />
-                    <div className={css.spacedRow}>
+            <>
+                <Helmet>
+                    <title>Login Page</title>
+                    <meta name="description" content="Allows a user to sign into the Atoll application." />
+                </Helmet>
+                <div className={css.page}>
+                    <div className={css.form}>
                         <div />
-                        <div>
-                            <LoginForm
-                                username={this.props.username}
-                                password={this.props.password}
-                                onUsernameChange={(username: string) => {
-                                    this.props.onChangeUsername(username);
-                                }}
-                                onPasswordChange={(password: string) => {
-                                    this.props.onChangePassword(password);
-                                }}
-                                onLoginClick={() => {
-                                    this.props.onLoginClick();
-                                }}
-                            />
+                        <div className={css.spacedRow}>
+                            <div />
+                            <div>
+                                <LoginForm
+                                    username={this.props.username}
+                                    password={this.props.password}
+                                    onUsernameChange={(username: string) => {
+                                        this.props.onChangeUsername(username);
+                                    }}
+                                    onPasswordChange={(password: string) => {
+                                        this.props.onChangePassword(password);
+                                    }}
+                                    onLoginClick={() => {
+                                        this.props.onLoginClick();
+                                    }}
+                                />
+                            </div>
+                            <div />
                         </div>
                         <div />
                     </div>
-                    <div />
                 </div>
-            </div>
+            </>
         );
     }
 }
