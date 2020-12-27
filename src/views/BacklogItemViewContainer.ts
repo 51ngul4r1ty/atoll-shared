@@ -12,13 +12,17 @@ import { isPlatformWindows } from "../utils/osUtils";
 // selectors
 import {
     getCurrentBacklogItemAcceptanceCriteria,
+    getCurrentBacklogItemAcceptedAt,
     getCurrentBacklogItemEstimate,
     getCurrentBacklogItemExternalId,
+    getCurrentBacklogItemFinishedAt,
     getCurrentBacklogItemFriendlyId,
     getCurrentBacklogItemId,
     getCurrentBacklogItemReasonPhrase,
+    getCurrentBacklogItemReleasedAt,
     getCurrentBacklogItemRolePhrase,
     getCurrentBacklogItemSaved,
+    getCurrentBacklogItemStartedAt,
     getCurrentBacklogItemStoryPhrase,
     getCurrentBacklogItemType
 } from "../selectors/backlogItemSelectors";
@@ -49,6 +53,10 @@ const mapStateToProps = (state: StateTree, ownProps: BacklogItemViewContainerOwn
         rolePhrase: getCurrentBacklogItemRolePhrase(state),
         storyPhrase: getCurrentBacklogItemStoryPhrase(state),
         reasonPhrase: getCurrentBacklogItemReasonPhrase(state),
+        startedAt: getCurrentBacklogItemStartedAt(state),
+        finishedAt: getCurrentBacklogItemFinishedAt(state),
+        acceptedAt: getCurrentBacklogItemAcceptedAt(state),
+        releasedAt: getCurrentBacklogItemReleasedAt(state),
         type: getCurrentBacklogItemType(state),
         projectDisplayId: ownProps.match.params.projectDisplayId,
         backlogItemDisplayId: ownProps.match.params.backlogItemDisplayId

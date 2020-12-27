@@ -79,7 +79,11 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
             reasonPhrase: this.props.reasonPhrase,
             rolePhrase: this.props.rolePhrase,
             storyPhrase: this.props.storyPhrase,
-            type: this.props.type
+            type: this.props.type,
+            startedAt: this.props.startedAt,
+            finishedAt: this.props.finishedAt,
+            acceptedAt: this.props.acceptedAt,
+            releasedAt: this.props.releasedAt
         };
         const rolePhraseInput = (
             <StandardInput
@@ -171,6 +175,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 }}
             />
         );
+        // TODO: Add read-only inputs here for new date fields
         const actionButtonContainerClassName = buildClassName(css.centerCell, css.actionButtonContainer);
         const actionButtonPanelElts = !this.props.editable ? null : (
             <div className={css.formRow}>

@@ -33,6 +33,10 @@ export interface BacklogItemViewStateProps {
     showWindowTitleBar: boolean;
     storyPhrase: string;
     type: BacklogItemType;
+    startedAt: Date | null;
+    finishedAt: Date | null;
+    acceptedAt: Date | null;
+    releasedAt: Date | null;
 }
 
 export interface BacklogItemViewDispatchProps {
@@ -69,6 +73,10 @@ export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
                 storyPhrase={props.storyPhrase}
                 reasonPhrase={props.reasonPhrase}
                 acceptanceCriteria={props.acceptanceCriteria}
+                startedAt={props.startedAt}
+                finishedAt={props.finishedAt}
+                acceptedAt={props.acceptedAt}
+                releasedAt={props.releasedAt}
                 type={props.type}
                 onDataUpdate={(fields) => {
                     dispatch(updateCurrentBacklogItemFields(fields));

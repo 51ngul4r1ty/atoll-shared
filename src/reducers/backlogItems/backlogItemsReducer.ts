@@ -48,6 +48,7 @@ import { calcDropDownMenuState } from "../../utils/dropdownMenuUtils";
 import { ApiGetBffViewsBacklogItemSuccessAction } from "../../actions/apiBffViewsBacklogItem";
 import { UpdateCurrentBacklogItemFieldsAction } from "../../actions/currentBacklogItemActions";
 import { BacklogItemInstanceEditableFields } from "../../components/organisms/forms/backlogItemFormTypes";
+import { isoDateStringToDate } from "../../utils/apiPayloadConverters";
 
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
@@ -325,7 +326,7 @@ export const backlogItemsReducer = (
                     const backlogItem = backlogItems[0];
                     draft.currentItem = {
                         acceptanceCriteria: backlogItem.acceptanceCriteria,
-                        createdAt: backlogItem.createdAt,
+                        createdAt: isoDateStringToDate(backlogItem.createdAt),
                         editing: false,
                         estimate: backlogItem.estimate,
                         externalId: backlogItem.externalId,
@@ -339,7 +340,11 @@ export const backlogItemsReducer = (
                         status: mapApiStatusToBacklogItem(backlogItem.status),
                         storyPhrase: backlogItem.storyPhrase,
                         type: backlogItem.type,
-                        updatedAt: backlogItem.updatedAt
+                        updatedAt: isoDateStringToDate(backlogItem.updatedAt),
+                        startedAt: isoDateStringToDate(backlogItem.startedAt),
+                        finishedAt: isoDateStringToDate(backlogItem.finishedAt),
+                        acceptedAt: isoDateStringToDate(backlogItem.acceptedAt),
+                        releasedAt: isoDateStringToDate(backlogItem.releasedAt)
                     };
                     draft.savedCurrentItem = { ...draft.currentItem };
                 }
@@ -358,7 +363,11 @@ export const backlogItemsReducer = (
                     reasonPhrase: resetItem.reasonPhrase,
                     rolePhrase: resetItem.rolePhrase,
                     storyPhrase: resetItem.storyPhrase,
-                    type: resetItem.type
+                    type: resetItem.type,
+                    startedAt: resetItem.startedAt,
+                    finishedAt: resetItem.finishedAt,
+                    acceptedAt: resetItem.acceptedAt,
+                    releasedAt: resetItem.releasedAt
                 };
                 updateBacklogItemFieldsInItemsAndAddedItems(draft, item);
                 return;

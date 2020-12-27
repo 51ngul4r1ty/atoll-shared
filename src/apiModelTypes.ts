@@ -6,8 +6,8 @@ export type uuid = string;
 export type BacklogItemType = "story" | "issue";
 
 export interface BaseItem {
-    createdAt?: Date; // sequelize standard field
-    updatedAt?: Date; // sequelize standard field
+    createdAt?: string; // sequelize standard field
+    updatedAt?: string; // sequelize standard field
     version?: number; // sequelize standard field
 }
 
@@ -37,10 +37,14 @@ export interface StandardNamedItem extends StandardItem, ItemWithName {}
 
 export interface ApiBacklogItem extends StandardItem, StoryPhrases {
     acceptanceCriteria: string | null;
+    acceptedAt: ISODateString | null;
     estimate: number | null;
     externalId: string | null;
+    finishedAt: ISODateString | null;
     friendlyId: string | null;
     projectId: string | null;
+    releasedAt: ISODateString | null;
+    startedAt: ISODateString | null;
     status: string | null;
     type: BacklogItemType;
 }

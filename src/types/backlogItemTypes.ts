@@ -1,5 +1,5 @@
 // interfaces/types
-import { BaseModelItem } from "../types";
+import { BaseModelItem, ISODateString } from "../types";
 
 export type BacklogItemType = "story" | "issue";
 
@@ -26,6 +26,10 @@ export interface BacklogItemModel extends BaseModelItem {
     type: BacklogItemType;
     updatedAt: Date;
     version?: number;
+    startedAt: Date | null;
+    finishedAt: Date | null;
+    acceptedAt: Date | null;
+    releasedAt: Date | null;
 }
 
 // TODO: Maybe move this to "SaveableBacklogItem", is it really needed
