@@ -42,7 +42,7 @@ export interface StandardNamedItem extends StandardItem, ItemWithName {}
  * A: Accepted
  * R: Released
  */
-export type BacklogItemStatus = "N" | "P" | "D" | "A" | "R";
+export type ApiBacklogItemStatus = "N" | "P" | "D" | "A" | "R";
 export interface ApiBacklogItem extends StandardItem, StoryPhrases {
     acceptanceCriteria: string | null;
     acceptedAt: ISODateString | null;
@@ -53,7 +53,7 @@ export interface ApiBacklogItem extends StandardItem, StoryPhrases {
     projectId: string | null;
     releasedAt: ISODateString | null;
     startedAt: ISODateString | null;
-    status: BacklogItemStatus | null;
+    status: ApiBacklogItemStatus | null;
     type: BacklogItemType;
 }
 

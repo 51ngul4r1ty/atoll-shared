@@ -1,5 +1,5 @@
 // interfaces/types
-import { ApiBacklogItem } from "../apiModelTypes";
+import { ApiBacklogItem, ApiBacklogItemStatus } from "../apiModelTypes";
 import { BacklogItem, BacklogItemStatus } from "../types/backlogItemTypes";
 import { dateToIsoDateString, isoDateStringToDate } from "../utils/apiPayloadConverters";
 
@@ -28,7 +28,7 @@ export const mapApiStatusToBacklogItem = (status: string | null): BacklogItemSta
     }
 };
 
-export const mapBacklogItemStatusToApi = (status: BacklogItemStatus): string | null => {
+export const mapBacklogItemStatusToApi = (status: BacklogItemStatus): ApiBacklogItemStatus | null => {
     switch (status) {
         case BacklogItemStatus.NotStarted: {
             return "N";
