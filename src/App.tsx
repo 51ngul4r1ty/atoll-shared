@@ -227,11 +227,9 @@ export class App extends React.Component<AppProps, AppState> {
                     }}
                 >
                     <div className={classNameToUse}>
-                        {/* <Helmet
-                            defaultTitle="Atoll"
-                            titleTemplate="Atoll – %s"
-                            link={[{ rel: "icon", type: "image/png", href: favicon }]}
-                        /> */}
+                        <Helmet defaultTitle="Atoll" titleTemplate="Atoll – %s">
+                            <meta name="description" content="Agile software project management" />
+                        </Helmet>
                         {this.props.children}
                     </div>
                     {windowFrameCustomElts}

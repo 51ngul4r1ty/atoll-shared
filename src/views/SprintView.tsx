@@ -1,5 +1,6 @@
 // externals
 import * as React from "react";
+import Helmet from "react-helmet";
 
 // components
 import { TopMenuPanelContainer } from "../containers/TopMenuPanelContainer";
@@ -23,11 +24,10 @@ export type SprintViewProps = SprintViewStateProps & SprintViewDispatchProps;
 export const SprintView: React.FC<SprintViewProps> = (props) => {
     return (
         <>
-            {/* <Helmet
-                    defaultTitle="Atoll"
-                    titleTemplate="Atoll - %s"
-                    link={[{ rel: "icon", type: "image/png", href: favicon }]}
-                /> */}
+            <Helmet>
+                <title>Sprint View</title>
+                <meta name="description" content="Allows the team to easily work the items in a sprint." />
+            </Helmet>
             <AppConsumer>
                 {(appConsumerProps) => {
                     return (
