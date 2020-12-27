@@ -79,3 +79,9 @@
     grid-template-columns: 1fr 1fr 1fr;
     grid-column-gap: 0.7rem;
 }
+
+.dateFieldsRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-column-gap: 0.7rem;
+}

@@ -9,6 +9,7 @@ export * from "./components/common/index";
 
 // components - inputs - atoms
 export { Checkbox } from "./components/atoms/inputs/Checkbox";
+export { DateInput } from "./components/atoms/inputs/DateInput";
 export { StandardInput } from "./components/atoms/inputs/StandardInput";
 export { StandardTextArea } from "./components/atoms/inputs/StandardTextArea";
 
