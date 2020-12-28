@@ -25,16 +25,17 @@ export const convertToBacklogItemModel = (backlogItem: BacklogItem): BacklogItem
 });
 
 export const convertToSprintModel = (sprint: Sprint): SprintModel => ({
+    acceptedPoints: sprint.acceptedPoints,
     createdAt: sprint.createdAt,
-    updatedAt: sprint.updatedAt,
-    projectId: sprint.projectId,
+    finishdate: sprint.finishDate,
     id: sprint.id,
     name: sprint.name,
-    startdate: sprint.startDate,
-    finishdate: sprint.finishDate,
     plannedPoints: sprint.plannedPoints,
-    acceptedPoints: sprint.acceptedPoints,
-    velocityPoints: sprint.velocityPoints,
+    projectId: sprint.projectId,
+    remainingSplitPoints: sprint.remainingSplitPoints,
+    startdate: sprint.startDate,
+    totalPoints: sprint.totalPoints,
+    updatedAt: sprint.updatedAt,
     usedSplitPoints: sprint.usedSplitPoints,
-    remainingSplitPoints: sprint.remainingSplitPoints
+    velocityPoints: sprint.velocityPoints
 });

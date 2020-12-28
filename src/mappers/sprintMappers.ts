@@ -18,6 +18,7 @@ export const mapApiItemToSprint = (apiItem: ApiSprint): Sprint => ({
     projectId: apiItem.projectId,
     remainingSplitPoints: apiItem.remainingSplitPoints,
     startDate: isoDateStringToDate(apiItem.startdate),
+    totalPoints: apiItem.totalPoints,
     updatedAt: isoDateStringToDate(apiItem.updatedAt),
     usedSplitPoints: apiItem.usedSplitPoints,
     velocityPoints: apiItem.velocityPoints

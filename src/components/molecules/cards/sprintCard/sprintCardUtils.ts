@@ -106,15 +106,25 @@ export const formatForDevice = (parts: string[], renderMobile: boolean) => {
     }
 };
 
+export const hasSignificantValue = (value: number): boolean => value && (value >= 0.01 || value <= 0.01);
+
 export const buildCompletedSprintPointInfoText = (sprint: SprintCardSprint, renderMobile: boolean): string => {
     const parts: string[] = [];
     if (sprint.plannedPoints) {
         parts.push(`${sprint.plannedPoints} planned`);
     }
-    if (sprint.acceptedPoints) {
+    if (hasSignificantValue(sprint.totalPoints)) {
+        const unplannedPoints = sprint.totalPoints - (sprint.plannedPoints || 0);
+        if (hasSignificantValue(unplannedPoints)) {
+            const wordToUse = unplannedPoints < 0 ? `removed` : `unplanned`;
+            const valueToUse = unplannedPoints < 0 ? -unplannedPoints : unplannedPoints;
+            parts.push(`${valueToUse} ${wordToUse}`);
+        }
+    }
+    if (hasSignificantValue(sprint.acceptedPoints)) {
         parts.push(`${sprint.acceptedPoints} accepted`);
     }
-    if (sprint.usedSplitPoints) {
+    if (hasSignificantValue(sprint.usedSplitPoints)) {
         parts.push(`${sprint.usedSplitPoints} for split`);
     }
     if (!parts.length) {
@@ -128,10 +138,16 @@ export const buildInProgressSprintPointInfoText = (sprint: SprintCardSprint, ren
     return buildCompletedSprintPointInfoText(sprint, renderMobile);
 };
 
+/**
+ * When a sprint has not been started yet it is in planning mode.  The metrics displayed are intended to help with
+ * that process so it shows the team's velocity here as well.
+ * @param sprint
+ * @param renderMobile
+ */
 export const buildNotStartedSprintPointInfoText = (sprint: SprintCardSprint, renderMobile: boolean): string => {
     const parts: string[] = [];
-    if (sprint.plannedPoints) {
-        const ofText = sprint.velocityPoints ? " of ${sprint.velocityPoints}" : "";
+    if (hasSignificantValue(sprint.plannedPoints) || hasSignificantValue(sprint.velocityPoints)) {
+        const ofText = sprint.velocityPoints ? ` of ${sprint.velocityPoints}` : "";
         parts.push(`${sprint.plannedPoints}${ofText} planned`);
         if (sprint.remainingSplitPoints) {
             parts.push(`(${sprint.remainingSplitPoints} from split)`);

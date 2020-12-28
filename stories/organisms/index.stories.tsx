@@ -190,6 +190,7 @@ storiesOf("Molecules/Cards/SprintCard", module).add("SprintCard", () => (
             velocityPoints={0}
             usedSplitPoints={0}
             remainingSplitPoints={0}
+            totalPoints={25}
             backlogItemsLoaded={false}
             backlogItems={null}
             expanded={false}
@@ -218,21 +219,22 @@ storiesOf("Organisms/Panels/SprintPlanningPanel", module).add("SprintPlanningPan
                 sprints={[
                     {
                         id: "sprint-1",
+                        acceptedPoints: 5,
+                        backlogItems: null,
+                        backlogItemsLoaded: false,
+                        editing: false,
+                        expanded: false,
+                        finishDate: new Date(2020, 9, 28),
                         instanceId: 1,
                         name: "sprint name",
-                        startDate: new Date(2020, 9, 14),
-                        finishDate: new Date(2020, 9, 28),
-                        status: SprintStatus.InProgress,
                         plannedPoints: 23,
-                        acceptedPoints: 5,
-                        velocityPoints: 20,
-                        usedSplitPoints: 0,
                         remainingSplitPoints: 0,
-                        backlogItemsLoaded: false,
-                        backlogItems: null,
-                        expanded: false,
                         saved: true,
-                        editing: false
+                        startDate: new Date(2020, 9, 14),
+                        status: SprintStatus.InProgress,
+                        totalPoints: 25,
+                        usedSplitPoints: 0,
+                        velocityPoints: 20
                     }
                 ]}
                 onExpandCollapse={undefined}
