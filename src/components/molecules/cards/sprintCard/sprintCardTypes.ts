@@ -24,6 +24,7 @@ export interface SprintCardSprint {
     saved: boolean;
     startDate: Date;
     status: SprintStatus;
+    totalPoints: number | null;
     usedSplitPoints: number | null;
     velocityPoints: number | null;
 }

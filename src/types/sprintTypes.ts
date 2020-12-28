@@ -2,18 +2,19 @@
 import { BaseModelItem } from "../types";
 
 export interface SprintModel extends BaseModelItem {
+    acceptedPoints: number | null;
     createdAt: Date;
-    updatedAt: Date;
-    projectId: string;
+    finishdate: Date;
     id: string;
     name: string;
-    startdate: Date;
-    finishdate: Date;
     plannedPoints: number | null;
-    acceptedPoints: number | null;
-    velocityPoints: number | null;
-    usedSplitPoints: number | null;
+    projectId: string;
     remainingSplitPoints: number | null;
+    startdate: Date;
+    totalPoints: number | null;
+    updatedAt: Date;
+    usedSplitPoints: number | null;
+    velocityPoints: number | null;
 }
 
 // TODO: Maybe move this to "SaveableSprint", is it really needed

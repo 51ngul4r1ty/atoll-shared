@@ -15,23 +15,24 @@ export const getPlanViewSprints = (state: StateTree, includeArchived: boolean): 
         .filter((item) => (includeArchived && item.archived) || !item.archived)
         .map((sprint) => {
             const panelSprint: SprintCardSprint = {
-                id: sprint.id,
-                archived: sprint.archived,
-                name: sprint.name,
-                startDate: sprint.startDate,
-                finishDate: sprint.finishDate,
-                status: determineSprintStatus(sprint.startDate, sprint.finishDate),
-                plannedPoints: sprint.plannedPoints,
                 acceptedPoints: sprint.acceptedPoints,
-                velocityPoints: sprint.velocityPoints,
-                usedSplitPoints: sprint.usedSplitPoints,
-                remainingSplitPoints: sprint.remainingSplitPoints,
-                expanded: sprint.expanded,
+                archived: sprint.archived,
                 backlogItems: getBacklogItemsForSprint(state, sprint.id),
                 backlogItemsLoaded: sprint.backlogItemsLoaded,
                 editing: sprint.editing,
+                expanded: sprint.expanded,
+                finishDate: sprint.finishDate,
+                id: sprint.id,
+                instanceId: sprint.instanceId,
+                name: sprint.name,
+                plannedPoints: sprint.plannedPoints,
+                remainingSplitPoints: sprint.remainingSplitPoints,
                 saved: sprint.saved,
-                instanceId: sprint.instanceId
+                startDate: sprint.startDate,
+                status: determineSprintStatus(sprint.startDate, sprint.finishDate),
+                totalPoints: sprint.totalPoints,
+                usedSplitPoints: sprint.usedSplitPoints,
+                velocityPoints: sprint.velocityPoints
             };
             return panelSprint;
         });

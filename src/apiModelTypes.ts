@@ -78,6 +78,7 @@ export interface ApiCounter extends StandardItem {
 export interface ApiSprintStats {
     acceptedPoints: number | null;
     plannedPoints: number | null;
+    totalPoints: number | null;
 }
 
 export interface ApiSprint extends StandardNamedItem, ApiSprintStats {

@@ -51,6 +51,7 @@ export interface Sprint extends StandardModelItem {
     projectId: string;
     remainingSplitPoints: number | null;
     startDate: Date;
+    totalPoints: number | null;
     usedSplitPoints: number | null;
     velocityPoints: number | null;
 }
@@ -308,6 +309,10 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                         }
                         if (item.acceptedPoints !== newSprintStats.acceptedPoints) {
                             item.acceptedPoints = newSprintStats.acceptedPoints;
+                            changed = true;
+                        }
+                        if (item.totalPoints !== newSprintStats.totalPoints) {
+                            item.totalPoints = newSprintStats.totalPoints;
                             changed = true;
                         }
                     }
