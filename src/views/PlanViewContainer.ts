@@ -73,7 +73,7 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
         onLoaded: () => {
             dispatch(apiBffViewsPlan());
         },
-        onAddNewBacklogItemForm: (type: BacklogItemType) => dispatch(addNewBacklogItemForm(type)),
+        onAddNewBacklogItemForm: (type: BacklogItemType, projectId: string) => dispatch(addNewBacklogItemForm(type, projectId)),
         onAddBacklogItemToSprint: (sprintId: string) => dispatch(moveSelectedBacklogItemsToSprintUsingApi(sprintId)),
         onAddNewSprintForm: (position: NewSprintPosition) => dispatch(addNewSprintForm(position)),
         onArchivedFilterChange: (checked: boolean) => {

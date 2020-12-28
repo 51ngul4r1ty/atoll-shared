@@ -148,6 +148,7 @@ export const backlogItemsReducer = (
                     {
                         type: actionTyped.payload.type,
                         instanceId: actionTyped.payload.instanceId,
+                        projectId: actionTyped.payload.projectId,
                         saved: false
                     } as SaveableBacklogItem
                 ];

@@ -45,7 +45,7 @@ export interface PlanViewStateProps {
 
 export interface PlanViewDispatchProps {
     onAddBacklogItemToSprint: { (sprintId: string): void };
-    onAddNewBacklogItemForm: { (type: BacklogItemType): void };
+    onAddNewBacklogItemForm: { (type: BacklogItemType, projectId: string): void };
     onAddNewSprintForm: { (position: NewSprintPosition): void };
     onArchivedFilterChange: { (checked: boolean): void };
     onExpandCollapse: { (sprintId: string, expand: boolean): void };
@@ -93,7 +93,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                         openedDetailMenuBacklogItemId={this.props.openedDetailMenuBacklogItemId}
                         renderMobile={this.context.state?.isMobile}
                         onAddNewBacklogItemForm={(type: BacklogItemType) => {
-                            this.props.onAddNewBacklogItemForm(type);
+                            this.props.onAddNewBacklogItemForm(type, this.props.projectId);
                         }}
                         onReorderBacklogItems={(sourceItemId: string, targetItemId: string) => {
                             this.props.onReorderBacklogItems(sourceItemId, targetItemId);
