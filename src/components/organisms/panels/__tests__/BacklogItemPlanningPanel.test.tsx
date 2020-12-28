@@ -106,7 +106,11 @@ const buildCommonItem = (
     storyPhrase: buildStoryPhrase(source, itemNumber),
     type: "story",
     updatedAt: new Date(),
-    status: BacklogItemStatus.NotStarted
+    status: BacklogItemStatus.NotStarted,
+    startedAt: new Date(2020, 11, 27, 19, 7, 32),
+    finishedAt: new Date(2020, 11, 27, 19, 7, 32),
+    acceptedAt: new Date(2020, 11, 27, 19, 7, 32),
+    releasedAt: new Date(2020, 11, 27, 19, 7, 32)
 });
 
 const buildAddedItem = (itemNumber: number, instanceId: number | null, estimate: number, saved: boolean): BacklogItemWithSource =>

@@ -32,3 +32,7 @@ export const roundDateToDayBoundary = (dateTime: Date): Date => {
     const newDay = dateWithOffset.getDate();
     return new Date(newYear, newMonth, newDay);
 };
+
+export const now = (): Date => {
+    return new Date();
+};

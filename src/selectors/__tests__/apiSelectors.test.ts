@@ -3,7 +3,6 @@ import "jest";
 
 // code under test
 import { buildApiPayloadBaseForResource } from "../apiSelectors";
-import { appReducerInitialState } from "../../reducers/appReducer";
 
 // interfaces/types
 import { StateTree } from "../../reducers/rootReducer";

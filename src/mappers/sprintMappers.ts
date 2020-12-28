@@ -9,7 +9,7 @@ export const mapApiItemToSprint = (apiItem: ApiSprint): Sprint => ({
     acceptedPoints: apiItem.acceptedPoints,
     archived: apiItem.archived,
     backlogItemsLoaded: false,
-    createdAt: apiItem.createdAt,
+    createdAt: isoDateStringToDate(apiItem.createdAt),
     expanded: false, // TODO: Add smart logic for this
     finishDate: isoDateStringToDate(apiItem.finishdate),
     id: apiItem.id,
@@ -18,7 +18,7 @@ export const mapApiItemToSprint = (apiItem: ApiSprint): Sprint => ({
     projectId: apiItem.projectId,
     remainingSplitPoints: apiItem.remainingSplitPoints,
     startDate: isoDateStringToDate(apiItem.startdate),
-    updatedAt: apiItem.updatedAt,
+    updatedAt: isoDateStringToDate(apiItem.updatedAt),
     usedSplitPoints: apiItem.usedSplitPoints,
     velocityPoints: apiItem.velocityPoints
 });

@@ -1,6 +1,7 @@
 // interfaces/types
-import { ApiBacklogItem } from "../apiModelTypes";
+import { ApiBacklogItem, ApiBacklogItemStatus } from "../apiModelTypes";
 import { BacklogItem, BacklogItemStatus } from "../types/backlogItemTypes";
+import { dateToIsoDateString, isoDateStringToDate } from "../utils/apiPayloadConverters";
 
 export const mapApiStatusToBacklogItem = (status: string | null): BacklogItemStatus => {
     switch (status) {
@@ -27,7 +28,7 @@ export const mapApiStatusToBacklogItem = (status: string | null): BacklogItemSta
     }
 };
 
-export const mapBacklogItemStatusToApi = (status: BacklogItemStatus): string | null => {
+export const mapBacklogItemStatusToApi = (status: BacklogItemStatus): ApiBacklogItemStatus | null => {
     switch (status) {
         case BacklogItemStatus.NotStarted: {
             return "N";
@@ -52,7 +53,7 @@ export const mapBacklogItemStatusToApi = (status: BacklogItemStatus): string | n
 
 export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem => ({
     acceptanceCriteria: apiItem.acceptanceCriteria,
-    createdAt: apiItem.createdAt,
+    createdAt: isoDateStringToDate(apiItem.createdAt),
     estimate: apiItem.estimate,
     externalId: apiItem.externalId,
     friendlyId: apiItem.friendlyId,
@@ -63,7 +64,11 @@ export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem =>
     status: mapApiStatusToBacklogItem(apiItem.status),
     storyPhrase: apiItem.storyPhrase,
     type: apiItem.type,
-    updatedAt: apiItem.updatedAt
+    updatedAt: isoDateStringToDate(apiItem.updatedAt),
+    startedAt: isoDateStringToDate(apiItem.startedAt),
+    finishedAt: isoDateStringToDate(apiItem.finishedAt),
+    acceptedAt: isoDateStringToDate(apiItem.acceptedAt),
+    releasedAt: isoDateStringToDate(apiItem.releasedAt)
 });
 
 export const mapBacklogItemToApiItem = (item: BacklogItem): ApiBacklogItem => ({
@@ -77,7 +82,11 @@ export const mapBacklogItemToApiItem = (item: BacklogItem): ApiBacklogItem => ({
     type: item.type,
     projectId: item.projectId,
     status: mapBacklogItemStatusToApi(item.status),
-    acceptanceCriteria: item.acceptanceCriteria
+    acceptanceCriteria: item.acceptanceCriteria,
+    startedAt: dateToIsoDateString(item.startedAt),
+    finishedAt: dateToIsoDateString(item.finishedAt),
+    acceptedAt: dateToIsoDateString(item.acceptedAt),
+    releasedAt: dateToIsoDateString(item.releasedAt)
 });
 
 export const mapApiItemsToBacklogItems = (apiItems: ApiBacklogItem[]): BacklogItem[] => {

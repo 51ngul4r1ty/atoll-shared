@@ -23,7 +23,7 @@ import { moveBacklogItemToSprint } from "../actions/sprintBacklogActions";
 import { AddNewSprintFormAction, addSprint, NewSprintPosition, updateSprintStats } from "../actions/sprintActions";
 
 // utils
-import { addDays } from "../utils/dateHelper";
+import { addDays, now } from "../utils/dateHelper";
 
 export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action) => {
     next(action);
@@ -98,8 +98,8 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
                 remainingSplitPoints: 0,
                 backlogItemsLoaded: true,
                 expanded: true,
-                createdAt: new Date(),
-                updatedAt: new Date(),
+                createdAt: now(),
+                updatedAt: now(),
                 saved: false
             };
             storeTyped.dispatch(addSprint(newItem, position));

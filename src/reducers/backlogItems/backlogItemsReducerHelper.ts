@@ -56,7 +56,11 @@ export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>
     status: pushedItem.status,
     storyPhrase: pushedItem.storyPhrase,
     type: pushedItem.type,
-    updatedAt: pushedItem.updatedAt
+    updatedAt: pushedItem.updatedAt,
+    startedAt: pushedItem.startedAt,
+    finishedAt: pushedItem.finishedAt,
+    acceptedAt: pushedItem.acceptedAt,
+    releasedAt: pushedItem.releasedAt
 });
 
 export const addPushedAddedItemsToAllItems = (draft: Draft<BacklogItemsState>, allItems: LinkedList<BacklogItemWithSource>) => {
@@ -151,6 +155,10 @@ export const updateBacklogItemFields = (backlogItem: BacklogItem, payload: Backl
     backlogItem.reasonPhrase = payload.reasonPhrase;
     backlogItem.rolePhrase = payload.rolePhrase;
     backlogItem.storyPhrase = payload.storyPhrase;
+    backlogItem.startedAt = payload.startedAt;
+    backlogItem.finishedAt = payload.finishedAt;
+    backlogItem.acceptedAt = payload.acceptedAt;
+    backlogItem.releasedAt = payload.releasedAt;
 };
 
 export const getBacklogItemById = (backlogItems: BacklogItemsState, itemId: string): BacklogItemWithSource | null => {

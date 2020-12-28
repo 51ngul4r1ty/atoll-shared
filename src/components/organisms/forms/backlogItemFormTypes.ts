@@ -12,6 +12,10 @@ export interface BacklogItemEditableFields extends StoryPhrases {
     friendlyId: string;
     id: string;
     type: BacklogItemType;
+    startedAt: Date | null;
+    finishedAt: Date | null;
+    acceptedAt: Date | null;
+    releasedAt: Date | null;
 }
 
 /**

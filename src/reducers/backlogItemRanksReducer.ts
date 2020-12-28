@@ -8,6 +8,7 @@ import * as ActionTypes from "../actions/actionTypes";
 import { AnyFSA, BaseModelItem } from "../types";
 import { ApiBacklogItemRank } from "../apiModelTypes";
 import { ApiGetBacklogItemRanksSuccessAction } from "../actions/apiBacklogItemRanks";
+import { isoDateStringToDate } from "../utils/apiPayloadConverters";
 
 export interface BacklogItemRank extends BaseModelItem {
     id: string;
@@ -32,8 +33,8 @@ export const mapApiItemToBacklogItemRank = (apiItem: ApiBacklogItemRank): Backlo
     projectId: apiItem.projectId,
     backlogItemId: apiItem.backlogitemId,
     nextBacklogItemId: apiItem.nextbacklogitemId,
-    createdAt: apiItem.createdAt,
-    updatedAt: apiItem.updatedAt,
+    createdAt: isoDateStringToDate(apiItem.createdAt),
+    updatedAt: isoDateStringToDate(apiItem.updatedAt),
     version: apiItem.version
 });
 

@@ -18,6 +18,7 @@ import { getStoryPhrases, isStoryPaste } from "./pasteFormatUtils";
 
 // interfaces/types
 import { BacklogItemEditableFields } from "./backlogItemFormTypes";
+import { DateInput } from "../../atoms/inputs/DateInput";
 
 export interface BacklogItemFullDetailFormStateProps extends BacklogItemEditableFields {
     saved: boolean;
@@ -79,7 +80,11 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
             reasonPhrase: this.props.reasonPhrase,
             rolePhrase: this.props.rolePhrase,
             storyPhrase: this.props.storyPhrase,
-            type: this.props.type
+            type: this.props.type,
+            startedAt: this.props.startedAt,
+            finishedAt: this.props.finishedAt,
+            acceptedAt: this.props.acceptedAt,
+            releasedAt: this.props.releasedAt
         };
         const rolePhraseInput = (
             <StandardInput
@@ -171,6 +176,54 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 }}
             />
         );
+        const dateStartedInput = (
+            <DateInput
+                inputId="startedAtId"
+                labelText="Date Started"
+                readOnly
+                showTime
+                inputValue={this.props.startedAt}
+                onChange={(value) => {
+                    // this.handleDataUpdate({ ...prevData, startedAt: value });
+                }}
+            />
+        );
+        const dateFinishedInput = (
+            <DateInput
+                inputId="finishedAtId"
+                labelText="Date Finished"
+                readOnly
+                showTime
+                inputValue={this.props.finishedAt}
+                onChange={(value) => {
+                    // this.handleDataUpdate({ ...prevData, finishedAt: value });
+                }}
+            />
+        );
+        const dateAcceptedInput = (
+            <DateInput
+                inputId="acceptedAtId"
+                labelText="Date Accepted"
+                readOnly
+                showTime
+                inputValue={this.props.acceptedAt}
+                onChange={(value) => {
+                    // this.handleDataUpdate({ ...prevData, acceptedAt: value });
+                }}
+            />
+        );
+        const dateReleasedInput = (
+            <DateInput
+                inputId="releasedAtId"
+                labelText="Date Released"
+                readOnly
+                showTime
+                inputValue={this.props.releasedAt}
+                onChange={(value) => {
+                    // this.handleDataUpdate({ ...prevData, releasedAt: value });
+                }}
+            />
+        );
         const actionButtonContainerClassName = buildClassName(css.centerCell, css.actionButtonContainer);
         const actionButtonPanelElts = !this.props.editable ? null : (
             <div className={css.formRow}>
@@ -205,6 +258,12 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 <div className={css.formRow}>{rolePhraseInput}</div>
                 <div className={css.formRow}>{storyPhraseInput}</div>
                 <div className={css.formRow}>{reasonPhraseInput}</div>
+                <div className={buildClassName(css.formRow, css.dateFieldsRow)}>
+                    {dateStartedInput}
+                    {dateFinishedInput}
+                    {dateAcceptedInput}
+                    {dateReleasedInput}
+                </div>
                 <div className={css.formRow}>{acceptanceCriteriaInput}</div>
                 {actionButtonPanelElts}
             </>
