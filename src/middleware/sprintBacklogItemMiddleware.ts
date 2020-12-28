@@ -96,6 +96,7 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
                 velocityPoints: 0,
                 usedSplitPoints: 0,
                 remainingSplitPoints: 0,
+                totalPoints: 0,
                 backlogItemsLoaded: true,
                 expanded: true,
                 createdAt: now(),
