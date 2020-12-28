@@ -37,7 +37,11 @@ describe("Backlog Items Reducer", () => {
                 storyPhrase: undefined,
                 type: "issue",
                 updatedAt: undefined,
-                status: undefined
+                status: undefined,
+                startedAt: undefined,
+                finishedAt: undefined,
+                acceptedAt: undefined,
+                releasedAt: undefined
             };
             const addedItem1InAllItems: BacklogItemWithSource = {
                 ...addedItem,
@@ -58,7 +62,11 @@ describe("Backlog Items Reducer", () => {
                 storyPhrase: "test",
                 type: "story",
                 updatedAt: new Date("2020-05-16T17:49:30.265Z"),
-                status: BacklogItemStatus.NotStarted
+                status: BacklogItemStatus.NotStarted,
+                startedAt: undefined,
+                finishedAt: undefined,
+                acceptedAt: undefined,
+                releasedAt: undefined
             };
             const pushedItem1: WebsocketPushNotificationData<PushBacklogItemModel> = {
                 item: {
@@ -77,7 +85,11 @@ describe("Backlog Items Reducer", () => {
                     type: "story",
                     updatedAt: new Date("2020-06-02T01:15:54.715Z"),
                     version: 0,
-                    status: BacklogItemStatus.NotStarted
+                    status: BacklogItemStatus.NotStarted,
+                    startedAt: undefined,
+                    finishedAt: undefined,
+                    acceptedAt: undefined,
+                    releasedAt: undefined
                 },
                 operation: PushOperationType.Added
             };
@@ -96,7 +108,11 @@ describe("Backlog Items Reducer", () => {
                 storyPhrase: "test 2",
                 type: "story",
                 updatedAt: new Date("2020-06-02T01:15:54.715Z"),
-                status: BacklogItemStatus.NotStarted
+                status: BacklogItemStatus.NotStarted,
+                startedAt: undefined,
+                finishedAt: undefined,
+                acceptedAt: undefined,
+                releasedAt: undefined
             };
             produce(
                 { ...backlogItemsReducerInitialState, addedItems: [addedItem], items: [item], pushedItems: [pushedItem1] },

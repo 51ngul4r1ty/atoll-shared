@@ -23,6 +23,7 @@ export interface DateInputStateProps {
     placeHolder?: string;
     readOnly?: boolean;
     required?: boolean;
+    showTime?: boolean;
     size?: number;
     type?: string;
     validator?: { (value: string): boolean };
@@ -41,18 +42,21 @@ interface DateInputInnerStateProps {
     innerRef: RefObject<DateInputRefType>;
 }
 
-export const formatDateAsText = (date: Date | null): string => {
+export const formatDateAsText = (date: Date | null, showTime?: boolean): string => {
     if (!date) {
         return "";
     }
-    return date.toLocaleDateString();
+    const datePart = date.toLocaleDateString();
+    const timePart = date.toLocaleTimeString();
+    const dateTimeString = `${datePart} ${timePart}`;
+    return showTime ? dateTimeString : datePart;
 };
 
 export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps> = (props) => {
     const inputTextStartingEmptyValue = props.readOnly ? "-" : "";
-    const propsInputValueToUse = formatDateAsText(props.inputValue) || inputTextStartingEmptyValue;
+    const propsInputValueToUse = formatDateAsText(props.inputValue, props.showTime) || inputTextStartingEmptyValue;
     const [inputText, setInputText] = useState(propsInputValueToUse);
-    const [validInputText, setValidInputText] = useState(formatDateAsText(props.inputValue) || "");
+    const [validInputText, setValidInputText] = useState(formatDateAsText(props.inputValue, props.showTime) || "");
     const [isValid, setIsValid] = useState(true); // start off "valid", even if starting value is invalid
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         let lastValidInputText = validInputText;

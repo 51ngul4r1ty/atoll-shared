@@ -181,6 +181,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 inputId="startedAtId"
                 labelText="Date Started"
                 readOnly
+                showTime
                 inputValue={this.props.startedAt}
                 onChange={(value) => {
                     // this.handleDataUpdate({ ...prevData, startedAt: value });
@@ -192,6 +193,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 inputId="finishedAtId"
                 labelText="Date Finished"
                 readOnly
+                showTime
                 inputValue={this.props.finishedAt}
                 onChange={(value) => {
                     // this.handleDataUpdate({ ...prevData, finishedAt: value });
@@ -203,6 +205,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 inputId="acceptedAtId"
                 labelText="Date Accepted"
                 readOnly
+                showTime
                 inputValue={this.props.acceptedAt}
                 onChange={(value) => {
                     // this.handleDataUpdate({ ...prevData, acceptedAt: value });
@@ -214,6 +217,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 inputId="releasedAtId"
                 labelText="Date Released"
                 readOnly
+                showTime
                 inputValue={this.props.releasedAt}
                 onChange={(value) => {
                     // this.handleDataUpdate({ ...prevData, releasedAt: value });
