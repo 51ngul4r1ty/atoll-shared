@@ -17,16 +17,18 @@ let lastInstanceId = 0;
 export interface AddNewBacklogItemFormActionPayload {
     type: BacklogItemType;
     instanceId: number;
+    projectId: string;
 }
 export interface AddNewBacklogItemFormAction {
     type: typeof ActionTypes.ADD_BACKLOG_ITEM_FORM;
     payload: AddNewBacklogItemFormActionPayload;
 }
-export const addNewBacklogItemForm = (type: BacklogItemType): AddNewBacklogItemFormAction => ({
+export const addNewBacklogItemForm = (type: BacklogItemType, projectId: string): AddNewBacklogItemFormAction => ({
     type: ActionTypes.ADD_BACKLOG_ITEM_FORM,
     payload: {
         type,
-        instanceId: ++lastInstanceId
+        instanceId: ++lastInstanceId,
+        projectId
     }
 });
 
