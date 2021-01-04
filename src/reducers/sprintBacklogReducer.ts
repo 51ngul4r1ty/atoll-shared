@@ -17,11 +17,14 @@ import {
 } from "../actions/sprintBacklogActions";
 import { PushState } from "./types";
 import { AppClickAction } from "../actions/appActions";
+import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
+import { ApiBacklogItem } from "../apiModelTypes";
 
 // utils
 import { mapApiItemsToBacklogItems, mapApiStatusToBacklogItem } from "../mappers/backlogItemMappers";
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
 import { targetIsInMenuButton, targetIsInMenuPanel } from "./backlogItems/backlogItemsReducerHelper";
+import { mapApiItemsToSprints } from "../mappers";
 
 export type SprintBacklogItem = BacklogItem;
 
@@ -70,6 +73,15 @@ export const getSprintBacklogItemById = (
     }
 };
 
+export const addSprintBacklogItems = (draft: Draft<SprintBacklogState>, sprintId: string, backlogItems: ApiBacklogItem[]) => {
+    let sprint = getOrAddSprintById(draft, sprintId);
+    sprint.items = [];
+    const items = mapApiItemsToBacklogItems(backlogItems);
+    items.forEach((item) => {
+        sprint.items.push(item);
+    });
+};
+
 export const sprintBacklogReducer = (
     state: SprintBacklogState = sprintBacklogReducerInitialState,
     action: AnyFSA
@@ -80,12 +92,7 @@ export const sprintBacklogReducer = (
             case ActionTypes.API_GET_SPRINT_BACKLOG_ITEMS_SUCCESS: {
                 const actionTyped = action as ApiGetSprintBacklogItemsSuccessAction;
                 const sprintId = actionTyped.meta.actionParams.sprintId;
-                let sprint = getOrAddSprintById(draft, sprintId);
-                sprint.items = [];
-                const items = mapApiItemsToBacklogItems(actionTyped.payload.response.data.items);
-                items.forEach((item) => {
-                    sprint.items.push(item);
-                });
+                addSprintBacklogItems(draft, sprintId, actionTyped.payload.response.data.items);
                 return;
             }
             case ActionTypes.MOVE_BACKLOG_ITEM_TO_SPRINT: {
@@ -161,6 +168,17 @@ export const sprintBacklogReducer = (
                 const actionTyped = action as ChangeSprintPlanningArchivedFilterAction;
                 if (draft.includeArchivedSprints !== actionTyped.payload.includeArchived) {
                     draft.includeArchivedSprints = actionTyped.payload.includeArchived;
+                }
+                return;
+            }
+            case ActionTypes.API_GET_BFF_VIEWS_PLAN_SUCCESS: {
+                const actionTyped = action as ApiGetBffViewsPlanSuccessAction;
+                const { payload } = actionTyped;
+                const expandedSprints = mapApiItemsToSprints(payload.response.data.sprints).filter((item) => item.expanded);
+                if (expandedSprints.length) {
+                    const expandedSprint = expandedSprints[0];
+                    const sprintId = expandedSprint.id;
+                    addSprintBacklogItems(draft, sprintId, payload.response.data.sprintBacklogItems);
                 }
                 return;
             }

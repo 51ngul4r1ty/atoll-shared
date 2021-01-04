@@ -144,6 +144,13 @@ export const removeSprint = (draft: Draft<SprintsState>, sprintId: string) => {
     return result;
 };
 
+export const markBacklogItemsLoaded = (draft: Draft<SprintsState>, sprintId: string) => {
+    const sprintItem = draft.items.filter((item) => item.id === sprintId);
+    sprintItem.forEach((item) => {
+        item.backlogItemsLoaded = true;
+    });
+};
+
 export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState, action: AnyFSA): SprintsState =>
     produce(state, (draft) => {
         const { type } = action;
@@ -173,7 +180,14 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             case ActionTypes.API_GET_BFF_VIEWS_PLAN_SUCCESS: {
                 const actionTyped = action as ApiGetBffViewsPlanSuccessAction;
                 const { payload } = actionTyped;
-                draft.items = mapApiItemsToSprints(payload.response.data.sprints);
+                const sprints = mapApiItemsToSprints(payload.response.data.sprints);
+                draft.items = sprints;
+                const expandedSprints = sprints.filter((item) => item.expanded);
+                if (expandedSprints.length) {
+                    const expandedSprint = expandedSprints[0];
+                    const sprintId = expandedSprint.id;
+                    markBacklogItemsLoaded(draft, sprintId);
+                }
                 rebuildAllItems(draft);
                 return;
             }
@@ -190,10 +204,7 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 if (!draft.items) {
                     return;
                 }
-                const sprintItem = draft.items.filter((item) => item.id === sprintId);
-                sprintItem.forEach((item) => {
-                    item.backlogItemsLoaded = true;
-                });
+                markBacklogItemsLoaded(draft, sprintId);
                 rebuildAllItems(draft);
                 return;
             }
