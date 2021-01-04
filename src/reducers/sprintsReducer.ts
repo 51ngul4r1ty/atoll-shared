@@ -173,7 +173,7 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             case ActionTypes.API_GET_BFF_VIEWS_PLAN_SUCCESS: {
                 const actionTyped = action as ApiGetBffViewsPlanSuccessAction;
                 const { payload } = actionTyped;
-                draft.items = mapApiItemsToSprints(payload.response.data.sprints);
+                draft.items = mapApiItemsToSprints(payload.response.data.sprints); // TODO: BUSY HERE
                 rebuildAllItems(draft);
                 return;
             }

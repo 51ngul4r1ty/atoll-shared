@@ -4,6 +4,11 @@ import { SprintStatus } from "../components/molecules/cards/sprintCard/sprintCar
 // utils
 import { now, roundDateToDayBoundary } from "./dateHelper";
 
+export const determineSprintExpanded = (startDate: Date, finishDate: Date): boolean => {
+    const status = determineSprintStatus(startDate, finishDate);
+    return status === SprintStatus.InProgress;
+};
+
 export const determineSprintStatus = (startDate: Date, finishDate: Date): SprintStatus => {
     const currentTime = now().getTime();
     const afterSprintStart = currentTime >= roundDateToDayBoundary(startDate).getTime();
