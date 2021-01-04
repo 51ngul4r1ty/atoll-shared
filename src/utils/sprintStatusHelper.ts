@@ -6,7 +6,7 @@ import { now, roundDateToDayBoundary } from "./dateHelper";
 
 export const determineSprintExpanded = (startDate: Date, finishDate: Date): boolean => {
     const status = determineSprintStatus(startDate, finishDate);
-    return status === SprintStatus.InProgress;
+    return status === SprintStatus.NotStarted;
 };
 
 export const determineSprintStatus = (startDate: Date, finishDate: Date): SprintStatus => {
