@@ -17,13 +17,13 @@ import {
 } from "../actions/sprintBacklogActions";
 import { PushState } from "./types";
 import { AppClickAction } from "../actions/appActions";
+import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
 
 // utils
 import { mapApiItemsToBacklogItems, mapApiStatusToBacklogItem } from "../mappers/backlogItemMappers";
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
 import { targetIsInMenuButton, targetIsInMenuPanel } from "./backlogItems/backlogItemsReducerHelper";
-import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
-import { mapApiItemsToSprints, mapApiItemToSprint } from "../mappers";
+import { mapApiItemsToSprints } from "../mappers";
 import { ApiBacklogItem } from "../apiModelTypes";
 
 export type SprintBacklogItem = BacklogItem;
