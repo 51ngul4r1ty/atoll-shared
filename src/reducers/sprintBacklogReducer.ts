@@ -23,7 +23,7 @@ import { ApiBacklogItem } from "../apiModelTypes";
 // utils
 import { mapApiItemsToBacklogItems, mapApiStatusToBacklogItem } from "../mappers/backlogItemMappers";
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
-import { targetIsInMenuButton, targetIsInMenuPanel } from "./backlogItems/backlogItemsReducerHelper";
+import { targetIsInMenuButton, targetIsInMenuPanel } from "../components/utils/itemDetailMenuUtils";
 import { mapApiItemsToSprints } from "../mappers";
 
 export type SprintBacklogItem = BacklogItem;

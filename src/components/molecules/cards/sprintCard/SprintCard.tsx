@@ -170,6 +170,8 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
                             {props.renderMobile ? null : sprintDateRangeElts}
                             {sprintStatusElts}
                             <ItemDetailButton
+                                itemId={props.id}
+                                itemType="sprint"
                                 hasDetails={props.editMode === EditMode.Edit}
                                 className={css.detailButton}
                                 onDetailClick={() => props.onSprintDetailClick()}

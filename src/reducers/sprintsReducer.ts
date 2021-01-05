@@ -27,8 +27,8 @@ import * as ActionTypes from "../actions/actionTypes";
 
 // utils
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
-import { targetIsInMenuButton, targetIsInMenuPanel } from "./backlogItems/backlogItemsReducerHelper";
 import { mapApiItemsToSprints } from "../mappers/sprintMappers";
+import { targetIsInMenuButton, targetIsInMenuPanel } from "../components/utils/itemDetailMenuUtils";
 
 // components
 import {
