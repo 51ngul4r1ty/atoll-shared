@@ -163,6 +163,8 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
     );
     const editDetailButton = (
         <ItemDetailButton
+            itemId={props.internalId}
+            itemType="backlog-item"
             hasDetails={props.hasDetails}
             className={css.backlogItemDetailButton}
             onDetailClick={() => props.onDetailClick()}

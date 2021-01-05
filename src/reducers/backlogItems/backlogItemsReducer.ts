@@ -35,13 +35,9 @@ import { PushState } from "../types";
 import {
     getBacklogItemById,
     updateBacklogItemFieldsInItemsAndAddedItems,
-    idsMatch,
     rebuildAllItems,
-    targetIsInMenuButton,
-    targetIsInMenuPanel,
     updateBacklogItemFields,
-    updateItemById,
-    updateItemFieldsInAllItems
+    updateItemById
 } from "./backlogItemsReducerHelper";
 import { mapApiItemsToBacklogItems, mapApiItemToBacklogItem, mapApiStatusToBacklogItem } from "../../mappers/backlogItemMappers";
 import { calcDropDownMenuState } from "../../utils/dropdownMenuUtils";
@@ -49,6 +45,7 @@ import { ApiGetBffViewsBacklogItemSuccessAction } from "../../actions/apiBffView
 import { UpdateCurrentBacklogItemFieldsAction } from "../../actions/currentBacklogItemActions";
 import { BacklogItemInstanceEditableFields } from "../../components/organisms/forms/backlogItemFormTypes";
 import { isoDateStringToDate } from "../../utils/apiPayloadConverters";
+import { shouldHideDetailMenu } from "../../components/utils/itemDetailMenuUtils";
 
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
@@ -209,12 +206,11 @@ export const backlogItemsReducer = (
                 return;
             }
             case ActionTypes.APP_CLICK: {
-                if (draft.openedDetailMenuBacklogItemId) {
-                    const actionTyped = action as AppClickAction;
-                    const targetElt = actionTyped.payload.target;
-                    if (!targetIsInMenuPanel(targetElt) && !targetIsInMenuButton(targetElt)) {
-                        draft.openedDetailMenuBacklogItemId = null;
-                    }
+                const actionTyped = action as AppClickAction;
+                const targetElt = actionTyped.payload.target;
+                const hideMenu = shouldHideDetailMenu(targetElt, draft.openedDetailMenuBacklogItemId);
+                if (hideMenu) {
+                    draft.openedDetailMenuBacklogItemId = null;
                 }
                 return;
             }

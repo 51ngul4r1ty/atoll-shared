@@ -27,8 +27,8 @@ import * as ActionTypes from "../actions/actionTypes";
 
 // utils
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
-import { targetIsInMenuButton, targetIsInMenuPanel } from "./backlogItems/backlogItemsReducerHelper";
 import { mapApiItemsToSprints } from "../mappers/sprintMappers";
+import { shouldHideDetailMenu, targetIsInMenuButton, targetIsInMenuPanel } from "../components/utils/itemDetailMenuUtils";
 
 // components
 import {
@@ -279,12 +279,11 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 return;
             }
             case ActionTypes.APP_CLICK: {
-                if (draft.openedDetailMenuSprintId) {
-                    const actionTyped = action as AppClickAction;
-                    const targetElt = actionTyped.payload.target;
-                    if (!targetIsInMenuPanel(targetElt) && !targetIsInMenuButton(targetElt)) {
-                        draft.openedDetailMenuSprintId = null;
-                    }
+                const actionTyped = action as AppClickAction;
+                const targetElt = actionTyped.payload.target;
+                const hideMenu = shouldHideDetailMenu(targetElt, draft.openedDetailMenuSprintId);
+                if (hideMenu) {
+                    draft.openedDetailMenuSprintId = null;
                 }
                 return;
             }

@@ -7,3 +7,11 @@ export const getParentWithDataClass = (elt: HTMLElement, dataClass: string) => {
     }
     return null;
 };
+
+export const getEltDataAttribute = (elt: HTMLElement, attributeName: string): string | null => {
+    if (!elt) {
+        return null;
+    }
+    const attrVal = elt.getAttribute(`data-${attributeName}`);
+    return attrVal;
+};

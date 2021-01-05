@@ -23,7 +23,7 @@ import { ApiBacklogItem } from "../apiModelTypes";
 // utils
 import { mapApiItemsToBacklogItems, mapApiStatusToBacklogItem } from "../mappers/backlogItemMappers";
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
-import { targetIsInMenuButton, targetIsInMenuPanel } from "./backlogItems/backlogItemsReducerHelper";
+import { shouldHideDetailMenu, targetIsInMenuButton, targetIsInMenuPanel } from "../components/utils/itemDetailMenuUtils";
 import { mapApiItemsToSprints } from "../mappers";
 
 export type SprintBacklogItem = BacklogItem;
@@ -183,13 +183,13 @@ export const sprintBacklogReducer = (
                 return;
             }
             case ActionTypes.APP_CLICK: {
-                if (draft.openedDetailMenuBacklogItemId) {
-                    const actionTyped = action as AppClickAction;
-                    const targetElt = actionTyped.payload.target;
-                    if (!targetIsInMenuPanel(targetElt) && !targetIsInMenuButton(targetElt)) {
-                        draft.openedDetailMenuBacklogItemId = null;
-                    }
+                const actionTyped = action as AppClickAction;
+                const targetElt = actionTyped.payload.target;
+                const hideMenu = shouldHideDetailMenu(targetElt, draft.openedDetailMenuBacklogItemId);
+                if (hideMenu) {
+                    draft.openedDetailMenuBacklogItemId = null;
                 }
+
                 return;
             }
             default:

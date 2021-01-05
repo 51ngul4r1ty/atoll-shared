@@ -5,18 +5,15 @@ import { Draft } from "immer";
 import { PushBacklogItemModel } from "../../middleware/wsMiddleware";
 import { BacklogItemsState, BacklogItemWithSource, EditableBacklogItem, SaveableBacklogItem } from "./backlogItemsReducerTypes";
 import { BacklogItem, BacklogItemModel } from "../../types/backlogItemTypes";
-import { AnyFSA, PushOperationType } from "../../types";
+import { PushOperationType } from "../../types";
 import {
     BacklogItemEditableFields,
     BacklogItemInstanceEditableFields
 } from "../../components/organisms/forms/backlogItemFormTypes";
 import { Source, PushState } from "../types";
-import { UpdateCurrentBacklogItemFieldsAction } from "../../actions/currentBacklogItemActions";
-import { UpdateBacklogItemFieldsAction } from "../../actions/backlogItemActions";
 
 // utils
 import { LinkedList } from "../../utils/linkedList";
-import { getParentWithDataClass } from "../../components/common/domUtils";
 
 export const convertSaved = (saved: boolean | undefined): boolean => {
     if (saved === true) {
@@ -180,14 +177,6 @@ export const updateItemById = (draft: Draft<BacklogItemsState>, itemId: string, 
     if (idx2 >= 0) {
         updateItem(draft.items[idx2]);
     }
-};
-
-export const targetIsInMenuPanel = (target: EventTarget) => {
-    return !!getParentWithDataClass(target as HTMLElement, "item-menu-panel");
-};
-
-export const targetIsInMenuButton = (target: EventTarget) => {
-    return !!getParentWithDataClass(target as HTMLElement, "item-menu-button");
 };
 
 export const updateBacklogItemFieldsInItemsAndAddedItems = (
