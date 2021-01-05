@@ -206,7 +206,6 @@ export const backlogItemsReducer = (
                 return;
             }
             case ActionTypes.APP_CLICK: {
-                console.log(`backlogItemsReducer - APP_CLICK`);
                 const actionTyped = action as AppClickAction;
                 const targetElt = actionTyped.payload.target;
                 const hideMenu = shouldHideDetailMenu(targetElt, draft.openedDetailMenuBacklogItemId);
