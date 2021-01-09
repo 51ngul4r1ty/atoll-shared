@@ -19,6 +19,7 @@ import { buildSpinnerHoverText } from "./spinnerTextUtils";
 export interface SmartSpinnerStateProps extends PropsWithClassName {
     metricKey: string; // FUTURE USE
     metricEntityKey: string; // FUTURE USE
+    hideActionInMessage?: boolean;
     action: SpinnerAction;
     entityNameTemplate: string;
     quantity: number | null;
@@ -44,7 +45,7 @@ export type SmartSpinnerProps = SmartSpinnerStateProps & SmartSpinnerDispatchPro
  *   size can be either Small or Large;
  */
 export const SmartSpinner: React.FC<SmartSpinnerProps> = (props) => {
-    const hoverText = buildSpinnerHoverText(props.entityNameTemplate, props.action, props.quantity);
+    const hoverText = buildSpinnerHoverText(props.entityNameTemplate, props.action, props.quantity, props.hideActionInMessage);
     const spinnerIcon = <SpinnerShapePentagon className={css.spinnerShape} />;
     const sizeClass = props.size === SpinnerSize.Large ? css.large : null;
     const text = props.size === SpinnerSize.Large ? hoverText : null;

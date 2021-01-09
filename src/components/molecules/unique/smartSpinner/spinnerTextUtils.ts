@@ -4,15 +4,20 @@ import { SpinnerAction } from "./smartSpinnerTypes";
 // utils
 import { formatFunctionArg, parseTemplateParts, TemplatePartType } from "./spinnerTemplateUtils";
 
-export const buildSpinnerHoverText = (template: string, action: SpinnerAction, itemCount: number): string => {
+export const buildSpinnerHoverText = (
+    template: string,
+    action: SpinnerAction,
+    itemCount: number,
+    hideActionInMessage: boolean
+): string => {
     const templateParts = parseTemplateParts(template);
     let actionText: string;
     if (action === SpinnerAction.Loading) {
-        actionText = "loading ";
+        actionText = "loading";
     } else if (action === SpinnerAction.Calculating) {
-        actionText = "calculating ";
+        actionText = "calculating";
     } else {
-        actionText = "";
+        actionText = "busy";
     }
     let formattedTemplate = "";
     templateParts.forEach((templatePart) => {
@@ -27,5 +32,9 @@ export const buildSpinnerHoverText = (template: string, action: SpinnerAction, i
             }
         }
     });
-    return `${actionText}${formattedTemplate}`;
+    if (hideActionInMessage) {
+        return formattedTemplate;
+    } else {
+        return `${actionText} ${formattedTemplate}`;
+    }
 };

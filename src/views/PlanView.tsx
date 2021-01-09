@@ -189,6 +189,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     metricKey="plan-view-bff-init"
                     metricEntityKey={null}
                     action={SpinnerAction.Loading}
+                    hideActionInMessage={false}
                     entityNameTemplate="plan view"
                     size={SpinnerSize.Large}
                     quantity={QUANTITY_UNKNOWN}
