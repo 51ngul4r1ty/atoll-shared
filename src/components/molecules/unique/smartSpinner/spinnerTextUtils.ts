@@ -1,16 +1,18 @@
+// components
+import { SpinnerAction } from "./smartSpinnerTypes";
+
 // utils
-import { SpinnerAction } from "./SmartSpinner";
 import { formatFunctionArg, parseTemplateParts, TemplatePartType } from "./spinnerTemplateUtils";
 
 export const buildSpinnerHoverText = (template: string, action: SpinnerAction, itemCount: number): string => {
     const templateParts = parseTemplateParts(template);
     let actionText: string;
     if (action === SpinnerAction.Loading) {
-        actionText = "loading";
+        actionText = "loading ";
     } else if (action === SpinnerAction.Calculating) {
-        actionText = "calculating";
+        actionText = "calculating ";
     } else {
-        actionText = "busy";
+        actionText = "";
     }
     let formattedTemplate = "";
     templateParts.forEach((templatePart) => {
@@ -25,5 +27,5 @@ export const buildSpinnerHoverText = (template: string, action: SpinnerAction, i
             }
         }
     });
-    return `${actionText} ${formattedTemplate}`;
+    return `${actionText}${formattedTemplate}`;
 };

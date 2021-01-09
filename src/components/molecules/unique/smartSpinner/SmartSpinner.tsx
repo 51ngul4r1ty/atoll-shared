@@ -9,24 +9,12 @@ import { Spinner } from "../../../atoms/unique/Spinner";
 // interfaces/types
 import { PropsWithClassName } from "../../../common/types";
 
+// consts/enums
+import { SpinnerAction, SpinnerSize } from "./smartSpinnerTypes";
+
 // style
 import css from "./SmartSpinner.module.css";
 import { buildSpinnerHoverText } from "./spinnerTextUtils";
-
-/* exported interfaces/types */
-
-export enum SpinnerAction {
-    Loading = 1,
-    Calculating = 2
-}
-
-export enum SpinnerSize {
-    Small = 1,
-    Large = 2
-}
-
-export const QUANTITY_UNKNOWN = null;
-export const TIME_UNKNOWN = null;
 
 export interface SmartSpinnerStateProps extends PropsWithClassName {
     metricKey: string; // FUTURE USE
@@ -44,9 +32,35 @@ export type SmartSpinnerProps = SmartSpinnerStateProps & SmartSpinnerDispatchPro
 
 /* exported components */
 
+/**
+ * An advanced spinner component.
+ * @param props
+ *   metricKey is the high level categorization of the api request (e.g. "sprint");
+ *   metricEntityKey is the exactly entity being retrieved (e.g. "sprint 123");
+ *   action is either Loading or Calculating but can also be null to indicate a general busy state;
+ *   entityNameTemplate is a template used to format text for the user, it can include the "plural" function;
+ *   quantity is the number of items being retrieved, QUANTITY_UNKNOWN can be used;
+ *   expectedTime is the time this is expected to take (so a progress bar can be displayed);
+ *   size can be either Small or Large;
+ */
 export const SmartSpinner: React.FC<SmartSpinnerProps> = (props) => {
     const hoverText = buildSpinnerHoverText(props.entityNameTemplate, props.action, props.quantity);
     const spinnerIcon = <SpinnerShapePentagon className={css.spinnerShape} />;
     const sizeClass = props.size === SpinnerSize.Large ? css.large : null;
-    return <Spinner className={buildClassName(props.className, css.container, sizeClass)} icon={spinnerIcon} title={hoverText} />;
+    const text = props.size === SpinnerSize.Large ? hoverText : null;
+    const textContainerElts = text ? <div className={css.textContainer}>{text}</div> : null;
+    return (
+        <div className={css.outerContainer}>
+            <div className={css.innerContainer}>
+                <div className={css.spinnerContainer}>
+                    <Spinner
+                        className={buildClassName(props.className, css.container, sizeClass)}
+                        icon={spinnerIcon}
+                        title={hoverText}
+                    />
+                </div>
+            </div>
+            {textContainerElts}
+        </div>
+    );
 };

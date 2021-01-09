@@ -16,16 +16,16 @@ import { SprintCardSprint } from "./sprintCardTypes";
 
 // consts/enums
 import { EditMode } from "../../../common/componentEnums";
-import { TIME_UNKNOWN, QUANTITY_UNKNOWN, SpinnerAction } from "../../unique/smartSpinner/SmartSpinner";
+import { SpinnerAction, QUANTITY_UNKNOWN, TIME_UNKNOWN } from "../../unique/smartSpinner/smartSpinnerTypes";
 import { SPINNER_METRIC_KEY_SPRINT_BACKLOG_ITEMS } from "../../unique/smartSpinner/spinnerMetrics";
 
 // components
-import { ArchiveIcon } from "../../../atoms/icons/ArchiveIcon";
-import { VerticalCollapseIcon } from "../../../atoms/icons/VerticalCollapseIcon";
-import { VerticalExpandIcon } from "../../../atoms/icons/VerticalExpandIcon";
 import { AddButton } from "../../buttons/AddButton";
+import { ArchiveIcon } from "../../../atoms/icons/ArchiveIcon";
 import { ItemDetailButton } from "../../buttons/ItemDetailButton";
 import { SmartSpinner } from "../../unique/smartSpinner/SmartSpinner";
+import { VerticalCollapseIcon } from "../../../atoms/icons/VerticalCollapseIcon";
+import { VerticalExpandIcon } from "../../../atoms/icons/VerticalExpandIcon";
 
 export interface SprintCardStateProps extends SprintCardSprint {
     archived: boolean;

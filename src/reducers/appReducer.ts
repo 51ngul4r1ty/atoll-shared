@@ -26,23 +26,25 @@ export type AppState = Readonly<{
     editMode: EditMode;
     electronClient: boolean;
     executingOnClient: boolean;
+    isPlanViewLoading: boolean;
     locale: Locale;
+    message: string;
     password: string;
     refreshToken: string;
     username: string;
-    message: string;
 }>;
 
 export const appReducerInitialState = Object.freeze<AppState>({
-    locale: "en_US",
+    authToken: null,
     editMode: EditMode.View,
     electronClient: false,
     executingOnClient: false,
-    username: "",
+    isPlanViewLoading: false,
+    locale: "en_US",
+    message: "",
     password: "",
-    authToken: null,
     refreshToken: null,
-    message: ""
+    username: ""
 });
 
 const updateDraftWithTokenPayload = (draft: Draft<AppState>, payload: ApiActionSuccessPayload<ActionPostTokenResponseBase>) => {
@@ -105,6 +107,18 @@ export const appReducer = (state: AppState = appReducerInitialState, action: Any
             }
             case ActionTypes.ERROR_PANEL_CLICK: {
                 draft.message = "";
+                return;
+            }
+            case ActionTypes.API_GET_BFF_VIEWS_PLAN_REQUEST: {
+                draft.isPlanViewLoading = true;
+                return;
+            }
+            case ActionTypes.API_GET_BFF_VIEWS_PLAN_SUCCESS: {
+                draft.isPlanViewLoading = false;
+                return;
+            }
+            case ActionTypes.API_GET_BFF_VIEWS_PLAN_FAILURE: {
+                draft.isPlanViewLoading = false;
                 return;
             }
         }
