@@ -25,7 +25,12 @@ import { SprintPlanningPanel } from "../components/organisms/panels/sprintPlanni
 import { SmartSpinner } from "../components/molecules/unique/smartSpinner/SmartSpinner";
 
 // consts/enums
-import { SpinnerSize, QUANTITY_UNKNOWN, TIME_UNKNOWN } from "../components/molecules/unique/smartSpinner/smartSpinnerTypes";
+import {
+    SpinnerSize,
+    QUANTITY_UNKNOWN,
+    TIME_UNKNOWN,
+    SpinnerAction
+} from "../components/molecules/unique/smartSpinner/smartSpinnerTypes";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
@@ -183,8 +188,8 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                 <SmartSpinner
                     metricKey="plan-view-bff-init"
                     metricEntityKey={null}
-                    action={null}
-                    entityNameTemplate="Loading Atoll..."
+                    action={SpinnerAction.Loading}
+                    entityNameTemplate="plan view"
                     size={SpinnerSize.Large}
                     quantity={QUANTITY_UNKNOWN}
                     expectedTime={TIME_UNKNOWN}
