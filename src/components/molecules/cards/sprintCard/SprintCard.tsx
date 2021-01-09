@@ -138,6 +138,7 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
         )
     ) : (
         <SmartSpinner
+            className={css.spinner}
             metricKey={SPINNER_METRIC_KEY_SPRINT_BACKLOG_ITEMS}
             metricEntityKey={props.id}
             action={SpinnerAction.Loading}

@@ -10,7 +10,7 @@ export const buildSpinnerHoverText = (template: string, action: SpinnerAction, i
     } else if (action === SpinnerAction.Calculating) {
         actionText = "calculating";
     } else {
-        return;
+        actionText = "busy";
     }
     let formattedTemplate = "";
     templateParts.forEach((templatePart) => {

@@ -1,5 +1,6 @@
 // externals
 import * as React from "react";
+import { buildClassName } from "../../../../utils/classNameBuilder";
 
 // components
 import { SpinnerShapePentagon } from "../../../atoms/icons/SpinnerShapePentagon";
@@ -40,5 +41,5 @@ export type SmartSpinnerProps = SmartSpinnerStateProps & SmartSpinnerDispatchPro
 export const SmartSpinner: React.FC<SmartSpinnerProps> = (props) => {
     const hoverText = buildSpinnerHoverText(props.entityNameTemplate, props.action, props.quantity);
     const spinnerIcon = <SpinnerShapePentagon className={css.spinnerShape} />;
-    return <Spinner className={props.className} icon={spinnerIcon} title={hoverText} />;
+    return <Spinner className={buildClassName(props.className, css.container)} icon={spinnerIcon} title={hoverText} />;
 };

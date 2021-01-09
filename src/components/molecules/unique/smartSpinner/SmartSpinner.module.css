@@ -2,3 +2,7 @@
     width: 0.8rem;
     height: 0.8rem;
 }
+
+.container {
+    display: inline-flex;
+}
