@@ -162,29 +162,31 @@ export const apiMiddleware = (store) => (next) => (action: Action) => {
     if (!isRetry) {
         dispatchRequest(dispatch, getRequestType(types), data, requestBody, apiAction.meta);
     }
-    axios
-        .request(requestBody)
-        .then(({ data }) => {
-            const successType = getSuccessType(types);
-            try {
-                dispatchSuccess(dispatch, successType, data, requestBody, apiAction.meta);
-            } catch (err) {
-                console.error(`Error occurred while dispatching success: ${err}`);
-            }
-        })
-        .catch((error) => {
-            if (error.response && authFailed(error.response.status) && !isRetry) {
-                if (!apiAction.meta) {
-                    apiAction.meta = {
-                        tryCount: 0,
-                        passthrough: null
-                    };
+    setTimeout(() => {
+        axios
+            .request(requestBody)
+            .then(({ data }) => {
+                const successType = getSuccessType(types);
+                try {
+                    dispatchSuccess(dispatch, successType, data, requestBody, apiAction.meta);
+                } catch (err) {
+                    console.error(`Error occurred while dispatching success: ${err}`);
                 }
-                apiAction.meta.tryCount++;
-                const state = getState();
-                dispatch(refreshTokenAndRetry(state.app.refreshToken, apiAction));
-            } else {
-                dispatchFailure(dispatch, getFailureType(types), error.response.data, requestBody, apiAction.meta, error);
-            }
-        });
+            })
+            .catch((error) => {
+                if (error.response && authFailed(error.response.status) && !isRetry) {
+                    if (!apiAction.meta) {
+                        apiAction.meta = {
+                            tryCount: 0,
+                            passthrough: null
+                        };
+                    }
+                    apiAction.meta.tryCount++;
+                    const state = getState();
+                    dispatch(refreshTokenAndRetry(state.app.refreshToken, apiAction));
+                } else {
+                    dispatchFailure(dispatch, getFailureType(types), error.response.data, requestBody, apiAction.meta, error);
+                }
+            });
+    }, 5000);
 };

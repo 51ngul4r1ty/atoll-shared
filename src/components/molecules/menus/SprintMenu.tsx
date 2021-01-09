@@ -8,19 +8,19 @@ import { ArchiveButton } from "../buttons/ArchiveButton";
 import { ArchiveCancelButton } from "../buttons/ArchiveCancelButton";
 import { RemoveButton } from "../buttons/RemoveButton";
 
-export interface BacklogItemMenuStateProps {
+export interface SprintMenuStateProps {
     renderMobile?: boolean;
     showDetailMenuToLeft?: boolean;
 }
 
-export interface BacklogItemMenuDispatchProps {
+export interface SprintMenuDispatchProps {
     onArchiveItemClick?: { (): void };
     onUnarchiveItemClick?: { (): void };
     onEditItemClick?: { (): void };
     onRemoveItemClick?: { (): void };
 }
 
-export type SprintMenuProps = BacklogItemMenuStateProps & BacklogItemMenuDispatchProps;
+export type SprintMenuProps = SprintMenuStateProps & SprintMenuDispatchProps;
 
 export type InnerSprintMenuProps = SprintMenuProps & WithTranslation;
 

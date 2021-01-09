@@ -21,6 +21,8 @@ import {
     RefreshButton,
     RemoveButton,
     SimpleText,
+    Spinner,
+    SpinnerShapePentagon,
     StandardInput,
     TabStrip
 } from "../dist/index.es";
@@ -288,5 +290,13 @@ storiesOf("Molecules/Buttons/RemoveButton", module).add("RemoveButton", () => (
                 alert("remove clicked");
             }}
         />
+    </div>
+));
+
+const spinnerIcon = <SpinnerShapePentagon className="spinner-shape" />;
+
+storiesOf("Atoms/Unique/Spinner", module).add("Spinner", () => (
+    <div>
+        <Spinner icon={spinnerIcon} />
     </div>
 ));

@@ -7,20 +7,11 @@ export { rootReducerInitialState } from "./reducers/rootReducer";
 // components - common
 export * from "./components/common/index";
 
-// components - inputs - atoms
-export { Checkbox } from "./components/atoms/inputs/Checkbox";
-export { DateInput } from "./components/atoms/inputs/DateInput";
-export { StandardInput } from "./components/atoms/inputs/StandardInput";
-export { StandardTextArea } from "./components/atoms/inputs/StandardTextArea";
+// components - atoms (all)
+export * from "./components/atoms";
 
-// components - buttons - atoms
-export { SimpleButton } from "./components/atoms/buttons/SimpleButton";
-
-// components - buttons - molecules
-export * from "./components/molecules/buttons";
-
-// components - cards
-export { BacklogItemCard, BacklogItemTypeEnum } from "./components/molecules/cards/BacklogItemCard";
+// components - molecules (all)
+export * from "./components/molecules";
 
 // components - forms
 export { BacklogItemDetailForm } from "./components/organisms/forms/BacklogItemDetailForm";
@@ -29,18 +20,11 @@ export { SprintDetailForm } from "./components/organisms/forms/SprintDetailForm"
 export { LoginForm } from "./components/organisms/forms/LoginForm";
 
 // components - panels
-export { CaretPosition, ItemMenuPanel } from "./components/atoms/panels/ItemMenuPanel";
 export { BacklogItemPlanningPanel } from "./components/organisms/panels/backlogItemPlanning/BacklogItemPlanningPanel";
 export { SprintPlanningPanel } from "./components/organisms/panels/sprintPlanning/SprintPlanningPanel";
-export { SprintCard } from "./components/molecules/cards/sprintCard/SprintCard";
 
 // components - misc
 export { App } from "./App";
-export { SimpleText } from "./components/atoms/text/SimpleText";
-export { TabStrip } from "./components/atoms/tabs/TabStrip";
-
-// components - icons
-export * from "./components/atoms/icons";
 
 // containers - app
 export { default as IntlProvider } from "./i18n/IntlProvider";
@@ -67,7 +51,6 @@ export { UserState } from "./reducers/userReducer";
 export { BacklogItemWithSource, BacklogItemsState } from "./reducers/backlogItems/backlogItemsReducerTypes";
 export { Source } from "./reducers/types";
 export { BacklogItem, BacklogItemStatus, BacklogItemType } from "./types/backlogItemTypes";
-export { SprintStatus, SprintCardSprint } from "./components/molecules/cards/sprintCard/sprintCardTypes";
 
 // contexts
 export { AppContext, AppProvider, AppConsumer } from "./contexts/appContextUtil";
