@@ -17,7 +17,10 @@ import {
     EditMode,
     HomeButton,
     RefreshButton,
-    RemoveButton
+    RemoveButton,
+    SmartSpinner,
+    SpinnerAction,
+    SpinnerSize
 } from "../../dist/index.es";
 
 addDecorator(withRootAttribute);
@@ -220,6 +223,34 @@ storiesOf("Molecules/Buttons/RemoveButton", module).add("RemoveButton", () => (
                 // eslint-disable-next-line no-alert
                 alert("remove clicked");
             }}
+        />
+    </div>
+));
+
+storiesOf("Molecules/Unique/SmartSpinner", module).add("SmartSpinner", () => (
+    <div>
+        <SmartSpinner
+            metricKey="sprint-loader"
+            metricEntityKey="sprint-1"
+            action={select(
+                "action",
+                {
+                    None: undefined,
+                    Loading: SpinnerAction.Loading,
+                    Calculating: SpinnerAction.Calculating
+                },
+                SpinnerAction.Loading
+            )}
+            entityNameTemplate={text("entityNameTemplate", "sprint backlog `${plural('item','items')}")}
+            size={select(
+                "size",
+                {
+                    None: undefined,
+                    Small: SpinnerSize.Small,
+                    Large: SpinnerSize.Large
+                },
+                undefined
+            )}
         />
     </div>
 ));

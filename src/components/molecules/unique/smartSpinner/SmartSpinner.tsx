@@ -20,16 +20,22 @@ export enum SpinnerAction {
     Calculating = 2
 }
 
+export enum SpinnerSize {
+    Small = 1,
+    Large = 2
+}
+
 export const QUANTITY_UNKNOWN = null;
 export const TIME_UNKNOWN = null;
 
 export interface SmartSpinnerStateProps extends PropsWithClassName {
     metricKey: string; // FUTURE USE
     metricEntityKey: string; // FUTURE USE
-    action: SpinnerAction; // FUTURE USE
-    entityNameTemplate: string; // FUTURE USE
-    quantity: number | null; // FUTURE USE
+    action: SpinnerAction;
+    entityNameTemplate: string;
+    quantity: number | null;
     expectedTime: number | null; // FUTURE USE
+    size?: SpinnerSize | null;
 }
 
 export interface SmartSpinnerDispatchProps {}
@@ -41,5 +47,6 @@ export type SmartSpinnerProps = SmartSpinnerStateProps & SmartSpinnerDispatchPro
 export const SmartSpinner: React.FC<SmartSpinnerProps> = (props) => {
     const hoverText = buildSpinnerHoverText(props.entityNameTemplate, props.action, props.quantity);
     const spinnerIcon = <SpinnerShapePentagon className={css.spinnerShape} />;
-    return <Spinner className={buildClassName(props.className, css.container)} icon={spinnerIcon} title={hoverText} />;
+    const sizeClass = props.size === SpinnerSize.Large ? css.large : null;
+    return <Spinner className={buildClassName(props.className, css.container, sizeClass)} icon={spinnerIcon} title={hoverText} />;
 };

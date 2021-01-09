@@ -1,8 +1,13 @@
+.container {
+    display: inline-flex;
+}
+
+.container.large .spinnerShape {
+    width: 3rem;
+    height: 3rem;
+}
+
 .spinnerShape {
     width: 0.8rem;
     height: 0.8rem;
-}
-
-.container {
-    display: inline-flex;
 }
