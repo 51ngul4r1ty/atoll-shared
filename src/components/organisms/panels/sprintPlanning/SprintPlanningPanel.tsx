@@ -33,6 +33,7 @@ import { SprintCard } from "../../../molecules/cards/sprintCard/SprintCard";
 import {
     cancelEditSprint,
     cancelUnsavedSprint,
+    editSprint,
     saveNewSprint,
     updateSprint,
     updateSprintFields
@@ -150,8 +151,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
             const itemEventHandlers: ItemMenuEventHandlers = {
                 handleEvent: (eventName: string, itemId: string) => {
                     if (eventName === "onEditItemClick") {
-                        // TODO: Implement this
-                        // dispatch(editBacklogItem(props.id));
+                        dispatch(editSprint(itemId));
                     } else if (eventName === "onRemoveItemClick") {
                         dispatch(apiDeleteSprint(itemId));
                     } else if (eventName === "onArchiveItemClick") {
