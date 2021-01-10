@@ -162,7 +162,6 @@ export const apiMiddleware = (store) => (next) => (action: Action) => {
     if (!isRetry) {
         dispatchRequest(dispatch, getRequestType(types), data, requestBody, apiAction.meta);
     }
-    // setTimeout(() => {
     axios
         .request(requestBody)
         .then(({ data }) => {
@@ -188,5 +187,4 @@ export const apiMiddleware = (store) => (next) => (action: Action) => {
                 dispatchFailure(dispatch, getFailureType(types), error.response.data, requestBody, apiAction.meta, error);
             }
         });
-    // }, 5000);
 };
