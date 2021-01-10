@@ -16,13 +16,16 @@ import { SprintCardSprint } from "./sprintCardTypes";
 
 // consts/enums
 import { EditMode } from "../../../common/componentEnums";
+import { SpinnerAction, QUANTITY_UNKNOWN, TIME_UNKNOWN } from "../../unique/smartSpinner/smartSpinnerTypes";
+import { SPINNER_METRIC_KEY_SPRINT_BACKLOG_ITEMS } from "../../unique/smartSpinner/spinnerMetrics";
 
 // components
+import { AddButton } from "../../buttons/AddButton";
 import { ArchiveIcon } from "../../../atoms/icons/ArchiveIcon";
+import { ItemDetailButton } from "../../buttons/ItemDetailButton";
+import { SmartSpinner } from "../../unique/smartSpinner/SmartSpinner";
 import { VerticalCollapseIcon } from "../../../atoms/icons/VerticalCollapseIcon";
 import { VerticalExpandIcon } from "../../../atoms/icons/VerticalExpandIcon";
-import { AddButton } from "../../buttons/AddButton";
-import { ItemDetailButton } from "../../buttons/ItemDetailButton";
 
 export interface SprintCardStateProps extends SprintCardSprint {
     archived: boolean;
@@ -117,23 +120,34 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
             props.onBacklogItemIdClick(id);
         }
     };
-    const sprintBacklogContents = props.backlogItemsLoaded
-        ? getBacklogItemElts(
-              props.editMode,
-              props.openedDetailMenuBacklogItemId,
-              props.renderMobile || false,
-              props.showDetailMenuToLeft,
-              props.backlogItems,
-              handleDetailClick,
-              handleBacklogItemIdClick,
-              props.onMoveItemToBacklogClick,
-              props.onBacklogItemAcceptedClick,
-              props.onBacklogItemDoneClick,
-              props.onBacklogItemInProgressClick,
-              props.onBacklogItemNotStartedClick,
-              props.onBacklogItemReleasedClick
-          )
-        : "[ loading... ]";
+    const sprintBacklogContents = props.backlogItemsLoaded ? (
+        getBacklogItemElts(
+            props.editMode,
+            props.openedDetailMenuBacklogItemId,
+            props.renderMobile || false,
+            props.showDetailMenuToLeft,
+            props.backlogItems,
+            handleDetailClick,
+            handleBacklogItemIdClick,
+            props.onMoveItemToBacklogClick,
+            props.onBacklogItemAcceptedClick,
+            props.onBacklogItemDoneClick,
+            props.onBacklogItemInProgressClick,
+            props.onBacklogItemNotStartedClick,
+            props.onBacklogItemReleasedClick
+        )
+    ) : (
+        <SmartSpinner
+            action={SpinnerAction.Loading}
+            className={css.spinner}
+            entityNameTemplate="sprint backlog `${plural('item','items')}`"
+            expectedTime={TIME_UNKNOWN}
+            metricEntityKey={props.id}
+            metricKey={SPINNER_METRIC_KEY_SPRINT_BACKLOG_ITEMS}
+            quantity={QUANTITY_UNKNOWN}
+            showSpinnerImmediately
+        />
+    );
     const actionButtonElts =
         props.expanded && props.editMode === EditMode.Edit ? (
             <div className={css.sprintActionButtonPanel}>

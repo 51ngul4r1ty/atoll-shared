@@ -18,3 +18,5 @@ export const getAppEditMode = createSelector([app], (app: AppState): EditMode =>
 export const getElectronClient = createSelector([app], (app: AppState): boolean => app.electronClient);
 
 export const getAppMessage = createSelector([app], (app: AppState): string => app.message);
+
+export const isPlanViewLoading = createSelector([app], (app: AppState): boolean => app.isPlanViewLoading);

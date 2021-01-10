@@ -15,12 +15,12 @@ import { MoveToBacklogButton } from "../buttons/MoveToBacklogButton";
 // style
 import css from "./SprintBacklogItemMenu.module.css";
 
-export interface BacklogItemMenuStateProps {
+export interface SprintBacklogItemMenuStateProps {
     renderMobile?: boolean;
     showDetailMenuToLeft?: boolean;
 }
 
-export interface BacklogItemMenuDispatchProps {
+export interface SprintBacklogItemMenuDispatchProps {
     onMoveItemToBacklogClick?: { (): void };
     onBacklogItemAcceptedClick?: { (): void };
     onBacklogItemDoneClick?: { (): void };
@@ -29,7 +29,7 @@ export interface BacklogItemMenuDispatchProps {
     onBacklogItemReleasedClick?: { (): void };
 }
 
-export type SprintBacklogItemMenuProps = BacklogItemMenuStateProps & BacklogItemMenuDispatchProps;
+export type SprintBacklogItemMenuProps = SprintBacklogItemMenuStateProps & SprintBacklogItemMenuDispatchProps;
 
 export type InnerSprintBacklogItemMenuProps = SprintBacklogItemMenuProps & WithTranslation;
 

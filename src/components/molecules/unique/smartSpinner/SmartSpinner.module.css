@@ -1,0 +1,85 @@
+.container {
+    display: inline-flex;
+}
+
+.container.medium .spinnerShape {
+    width: 2rem;
+    height: 2rem;
+}
+
+.container.large .spinnerShape {
+    width: 3rem;
+    height: 3rem;
+}
+
+.spinnerShape {
+    width: 0.8rem;
+    height: 0.8rem;
+}
+
+.outerContainer {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+}
+
+.innerContainer {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
+.spinnerContainer {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.textContainer {
+    position: absolute;
+    top: 0;
+    color: black;
+    font-weight: 700;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+    text-shadow: 0 0 3px #fff, 0 0 1px #fff, 0 0 1px #fff, 0 0 1px #fff;
+    font-size: 1.5rem;
+}
+
+.textBelowSpinner {
+    margin-top: 2rem;
+}
+
+.animateShow {
+    animation: suddenShowAnimation 0.5s forwards;
+}
+
+.animateFastShow {
+    animation: gradualShowAnimation 0.25s forwards;
+}
+
+@keyframes gradualShowAnimation {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes suddenShowAnimation {
+    0% {
+        opacity: 0;
+    }
+    90% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

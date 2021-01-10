@@ -45,7 +45,7 @@ import {
     getOpenedDetailMenuBacklogItemId,
     getSelectedBacklogItemCount
 } from "../selectors/backlogItemSelectors";
-import { getAppEditMode, getElectronClient } from "../selectors/appSelectors";
+import { getAppEditMode, getElectronClient, isPlanViewLoading } from "../selectors/appSelectors";
 import { getIncludeArchivedSprints, getOpenedDetailMenuInfo } from "../selectors/sprintBacklogSelectors";
 
 const mapStateToProps = (state: StateTree): PlanViewStateProps => {
@@ -57,6 +57,7 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
         editMode: getAppEditMode(state),
         electronClient: getElectronClient(state),
         includeArchivedSprints,
+        loading: isPlanViewLoading(state),
         openedDetailMenuBacklogItemId: getOpenedDetailMenuBacklogItemId(state),
         openedDetailMenuSprintBacklogInfo: getOpenedDetailMenuInfo(state),
         openedDetailMenuSprintId: getOpenedDetailMenuSprintId(state),

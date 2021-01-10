@@ -21,6 +21,8 @@ import {
     RefreshButton,
     RemoveButton,
     SimpleText,
+    Spinner,
+    SpinnerShapePentagon,
     StandardInput,
     TabStrip
 } from "../dist/index.es";
@@ -67,12 +69,6 @@ storiesOf("Atoms/Font Sizes", module).add("Font Sizes", () => (
     </div>
 ));
 
-storiesOf("Molecules/Buttons/HomeButton", module)
-    .add("HomeButton (default)", () => <HomeButton onClick={action("clicked")} />)
-    .add("HomeButton (hover)", () => <HomeButton forceStateHover onClick={action("clicked")} />)
-    .add("HomeButton (active)", () => <HomeButton forceStateActive onClick={action("clicked")} />)
-    .add("HomeButton (focus)", () => <HomeButton forceStateFocus onClick={action("clicked")} />);
-
 storiesOf("Atoms/Inputs/Checkbox", module).add("Checkbox", () => (
     <Checkbox
         checked
@@ -114,179 +110,10 @@ storiesOf("Atoms/Tabs/TabStrip", module).add("TabStrip", () => (
     </div>
 ));
 
-storiesOf("Molecules/Cards/BacklogItemCard", module)
-    .add("BacklogItemCard (story)", () => (
-        <div>
-            <BacklogItemCard
-                itemId={text("itemId", "123")}
-                itemType={select(
-                    "itemType",
-                    { Story: BacklogItemTypeEnum.Story, Bug: BacklogItemTypeEnum.Bug },
-                    BacklogItemTypeEnum.Story
-                )}
-                status={BacklogItemStatus.Done}
-                titleText={text("titleText", "Example story")}
-                estimate={number("estimate", 5)}
-            />
-        </div>
-    ))
-    .add("BacklogItemCard (fractions)", () => (
-        <div>
-            <BacklogItemCard
-                itemId={text("itemId", "123")}
-                itemType={select(
-                    "itemType",
-                    { Story: BacklogItemTypeEnum.Story, Bug: BacklogItemTypeEnum.Bug },
-                    BacklogItemTypeEnum.Story
-                )}
-                titleText={text("titleText", "A really, really small story")}
-                estimate={number("estimate", 0.5)}
-            />
-        </div>
-    ))
-    .add("BacklogItemCard (bug)", () => (
-        <div>
-            <BacklogItemCard
-                itemId={text("itemId", "456")}
-                itemType={select(
-                    "itemType",
-                    { Story: BacklogItemTypeEnum.Story, Bug: BacklogItemTypeEnum.Bug },
-                    BacklogItemTypeEnum.Bug
-                )}
-                titleText={text("titleText", "Example bug")}
-                estimate={number("estimate", null)}
-            />
-        </div>
-    ))
-    .add("BacklogItemCard (draggable)", () => (
-        <div>
-            <BacklogItemCard
-                itemId={text("itemId", "456")}
-                itemType={select(
-                    "itemType",
-                    { Story: BacklogItemTypeEnum.Story, Bug: BacklogItemTypeEnum.Bug },
-                    BacklogItemTypeEnum.Bug
-                )}
-                titleText={text("titleText", "Example bug")}
-                estimate={number("estimate", null)}
-                isDraggable
-                hasDetails
-            />
-        </div>
-    ))
-    .add("BacklogItemCard Mobile (draggable)", () => (
-        <div>
-            <BacklogItemCard
-                itemId={text("itemId", "456")}
-                itemType={select(
-                    "itemType",
-                    { Story: BacklogItemTypeEnum.Story, Bug: BacklogItemTypeEnum.Bug },
-                    BacklogItemTypeEnum.Bug
-                )}
-                titleText={text("titleText", "Example bug")}
-                estimate={number("estimate", null)}
-                isDraggable
-                hasDetails
-                renderMobile
-            />
-        </div>
-    ))
-    .add("BacklogItemCard Mobile (all elts)", () => (
-        <div>
-            <BacklogItemCard
-                itemId={text("itemId", "456")}
-                itemType={select(
-                    "itemType",
-                    { Story: BacklogItemTypeEnum.Story, Bug: BacklogItemTypeEnum.Bug },
-                    BacklogItemTypeEnum.Bug
-                )}
-                titleText={text("titleText", "Example bug")}
-                estimate={number("estimate", null)}
-                status={BacklogItemStatus.Done}
-                isDraggable
-                hasDetails
-                renderMobile
-            />
-        </div>
-    ));
+const spinnerIcon = <SpinnerShapePentagon className="spinner-shape" />;
 
-storiesOf("Molecules/Buttons/EditButton", module)
-    .add("EditButton (view mode)", () => (
-        <div>
-            <EditButton
-                mode={select(
-                    "mode",
-                    {
-                        View: EditMode.View,
-                        Edit: EditMode.Edit
-                    },
-                    EditMode.View
-                )}
-                onClick={() => {
-                    alert("clicked");
-                }}
-            />
-        </div>
-    ))
-    .add("EditButton (edit mode)", () => (
-        <div>
-            <EditButton
-                mode={select(
-                    "mode",
-                    {
-                        View: EditMode.View,
-                        Edit: EditMode.Edit
-                    },
-                    EditMode.Edit
-                )}
-                onClick={() => {
-                    alert("clicked");
-                }}
-            />
-        </div>
-    ));
-
-storiesOf("Molecules/Buttons/RefreshButton", module).add("RefreshButton", () => (
+storiesOf("Atoms/Unique/Spinner", module).add("Spinner", () => (
     <div>
-        <RefreshButton
-            onClick={() => {
-                alert("clicked");
-            }}
-        />
-    </div>
-));
-
-storiesOf("Molecules/Buttons/AddButton", module)
-    .add("AddButton (story)", () => (
-        <div>
-            <AddButton
-                itemName="Story"
-                onClick={() => {
-                    // eslint-disable-next-line no-alert
-                    alert("add story clicked");
-                }}
-            />
-        </div>
-    ))
-    .add("AddButton (bug)", () => (
-        <div>
-            <AddButton
-                itemName="Bug"
-                onClick={() => {
-                    // eslint-disable-next-line no-alert
-                    alert("add bug clicked");
-                }}
-            />
-        </div>
-    ));
-
-storiesOf("Molecules/Buttons/RemoveButton", module).add("RemoveButton", () => (
-    <div>
-        <RemoveButton
-            onClick={() => {
-                // eslint-disable-next-line no-alert
-                alert("remove clicked");
-            }}
-        />
+        <Spinner icon={spinnerIcon} />
     </div>
 ));

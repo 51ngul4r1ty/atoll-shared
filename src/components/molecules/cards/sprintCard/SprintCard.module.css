@@ -175,3 +175,7 @@
 :global(.mobile) .sprintNameArchiveIcon {
     display: none;
 }
+
+.spinner {
+    margin-left: 0.5rem;
+}

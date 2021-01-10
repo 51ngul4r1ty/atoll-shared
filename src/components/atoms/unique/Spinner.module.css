@@ -1,0 +1,17 @@
+@keyframes animateIcon {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+.iconContainer {
+    display: inline-block;
+    position: relative;
+}
+
+.animate {
+    animation: animateIcon 1s infinite linear;
+}
