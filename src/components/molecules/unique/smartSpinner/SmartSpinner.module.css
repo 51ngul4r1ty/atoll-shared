@@ -56,14 +56,23 @@
 }
 
 .animateShow {
-    animation: showAnimation 0.5s forwards;
+    animation: suddenShowAnimation 0.5s forwards;
 }
 
 .animateFastShow {
-    animation: showAnimation 0.25s forwards;
+    animation: gradualShowAnimation 0.25s forwards;
 }
 
-@keyframes showAnimation {
+@keyframes gradualShowAnimation {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes suddenShowAnimation {
     0% {
         opacity: 0;
     }
