@@ -20,7 +20,8 @@ import {
     RemoveButton,
     SmartSpinner,
     SpinnerAction,
-    SpinnerSize
+    SpinnerSize,
+    SpinnerTextPosition
 } from "../../dist/index.es";
 
 addDecorator(withRootAttribute);
@@ -247,7 +248,17 @@ storiesOf("Molecules/Unique/SmartSpinner", module).add("SmartSpinner", () => (
                 {
                     None: undefined,
                     Small: SpinnerSize.Small,
+                    Medium: SpinnerSize.Medium,
                     Large: SpinnerSize.Large
+                },
+                undefined
+            )}
+            textPosition={select(
+                "textPosition",
+                {
+                    None: undefined,
+                    OverSpinner: SpinnerTextPosition.OverSpinner,
+                    BelowSpinner: SpinnerTextPosition.BelowSpinner
                 },
                 undefined
             )}

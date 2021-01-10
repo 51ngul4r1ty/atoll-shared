@@ -5,7 +5,13 @@ export enum SpinnerAction {
 
 export enum SpinnerSize {
     Small = 1,
-    Large = 2
+    Medium = 2,
+    Large = 3
+}
+
+export enum SpinnerTextPosition {
+    OverSpinner = 1,
+    BelowSpinner = 2
 }
 
 export const QUANTITY_UNKNOWN = null;

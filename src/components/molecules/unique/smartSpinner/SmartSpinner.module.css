@@ -2,6 +2,11 @@
     display: inline-flex;
 }
 
+.container.medium .spinnerShape {
+    width: 2rem;
+    height: 2rem;
+}
+
 .container.large .spinnerShape {
     width: 3rem;
     height: 3rem;
@@ -46,8 +51,16 @@
     font-size: 1.5rem;
 }
 
+.textBelowSpinner {
+    margin-top: 2rem;
+}
+
 .animateShow {
     animation: showAnimation 0.5s forwards;
+}
+
+.animateFastShow {
+    animation: showAnimation 0.25s forwards;
 }
 
 @keyframes showAnimation {

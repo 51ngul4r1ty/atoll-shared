@@ -10,7 +10,7 @@ import { Spinner } from "../../../atoms/unique/Spinner";
 import { PropsWithClassName } from "../../../common/types";
 
 // consts/enums
-import { SpinnerAction, SpinnerSize } from "./smartSpinnerTypes";
+import { SpinnerAction, SpinnerSize, SpinnerTextPosition } from "./smartSpinnerTypes";
 
 // style
 import css from "./SmartSpinner.module.css";
@@ -26,6 +26,7 @@ export interface SmartSpinnerStateProps extends PropsWithClassName {
     quantity: number | null;
     showSpinnerImmediately?: boolean;
     size?: SpinnerSize | null;
+    textPosition?: SpinnerTextPosition | null;
 }
 
 export interface SmartSpinnerDispatchProps {}
@@ -49,11 +50,40 @@ export type SmartSpinnerProps = SmartSpinnerStateProps & SmartSpinnerDispatchPro
 export const SmartSpinner: React.FC<SmartSpinnerProps> = (props) => {
     const hoverText = buildSpinnerHoverText(props.entityNameTemplate, props.action, props.quantity, props.hideActionInMessage);
     const spinnerIcon = <SpinnerShapePentagon className={css.spinnerShape} />;
-    const sizeClass = props.size === SpinnerSize.Large ? css.large : null;
-    const text = props.size === SpinnerSize.Large ? hoverText : null;
-    const textContainerElts = text ? <div className={css.textContainer}>{text}</div> : null;
+    let sizeClass: string;
+    switch (props.size) {
+        case SpinnerSize.Small: {
+            sizeClass = null;
+            break;
+        }
+        case SpinnerSize.Medium: {
+            sizeClass = css.medium;
+            break;
+        }
+        case SpinnerSize.Large: {
+            sizeClass = css.large;
+            break;
+        }
+        default: {
+            if (props.size) {
+                throw new Error(`spinnerSize is an invalid value: ${props.size}`);
+            }
+            break;
+        }
+    }
+    const text = props.size === SpinnerSize.Large || props.size === SpinnerSize.Medium ? hoverText : null;
+    const textContainerElts = text ? (
+        <div
+            className={buildClassName(
+                css.textContainer,
+                props.textPosition === SpinnerTextPosition.BelowSpinner ? css.textBelowSpinner : null
+            )}
+        >
+            {text}
+        </div>
+    ) : null;
     return (
-        <div className={buildClassName(css.outerContainer, props.showSpinnerImmediately ? null : css.animateShow)}>
+        <div className={buildClassName(css.outerContainer, props.showSpinnerImmediately ? css.animateFastShow : css.animateShow)}>
             <div className={css.innerContainer}>
                 <div className={css.spinnerContainer}>
                     <Spinner

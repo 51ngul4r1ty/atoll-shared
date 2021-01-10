@@ -20,16 +20,17 @@ import { SprintCardSprint } from "../components/molecules/cards/sprintCard/sprin
 import { OpenedDetailMenuInfo } from "../selectors/sprintBacklogSelectors";
 
 // components
-import { NewSprintPosition } from "../actions/sprintActions";
 import { SprintPlanningPanel } from "../components/organisms/panels/sprintPlanning/SprintPlanningPanel";
 import { SmartSpinner } from "../components/molecules/unique/smartSpinner/SmartSpinner";
 
 // consts/enums
+import { NewSprintPosition } from "../actions/sprintActions";
 import {
+    SpinnerAction,
     SpinnerSize,
+    SpinnerTextPosition,
     QUANTITY_UNKNOWN,
-    TIME_UNKNOWN,
-    SpinnerAction
+    TIME_UNKNOWN
 } from "../components/molecules/unique/smartSpinner/smartSpinnerTypes";
 
 // images
@@ -193,7 +194,8 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     metricEntityKey={null}
                     metricKey="plan-view-bff-init"
                     quantity={QUANTITY_UNKNOWN}
-                    size={SpinnerSize.Large}
+                    size={SpinnerSize.Medium}
+                    textPosition={SpinnerTextPosition.BelowSpinner}
                 />
             </div>
         );
