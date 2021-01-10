@@ -186,14 +186,14 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
         const spinnerElts = (
             <div className={css.fullPage}>
                 <SmartSpinner
-                    metricKey="plan-view-bff-init"
-                    metricEntityKey={null}
                     action={SpinnerAction.Loading}
-                    hideActionInMessage={false}
                     entityNameTemplate="plan view"
-                    size={SpinnerSize.Large}
-                    quantity={QUANTITY_UNKNOWN}
                     expectedTime={TIME_UNKNOWN}
+                    hideActionInMessage={false}
+                    metricEntityKey={null}
+                    metricKey="plan-view-bff-init"
+                    quantity={QUANTITY_UNKNOWN}
+                    size={SpinnerSize.Large}
                 />
             </div>
         );

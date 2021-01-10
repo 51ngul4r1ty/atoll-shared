@@ -45,3 +45,19 @@
     text-shadow: 0 0 3px #fff, 0 0 1px #fff, 0 0 1px #fff, 0 0 1px #fff;
     font-size: 1.5rem;
 }
+
+.animateShow {
+    animation: showAnimation 0.5s forwards;
+}
+
+@keyframes showAnimation {
+    0% {
+        opacity: 0;
+    }
+    90% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

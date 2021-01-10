@@ -138,13 +138,14 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
         )
     ) : (
         <SmartSpinner
-            className={css.spinner}
-            metricKey={SPINNER_METRIC_KEY_SPRINT_BACKLOG_ITEMS}
-            metricEntityKey={props.id}
             action={SpinnerAction.Loading}
+            className={css.spinner}
             entityNameTemplate="sprint backlog `${plural('item','items')}`"
-            quantity={QUANTITY_UNKNOWN}
             expectedTime={TIME_UNKNOWN}
+            metricEntityKey={props.id}
+            metricKey={SPINNER_METRIC_KEY_SPRINT_BACKLOG_ITEMS}
+            quantity={QUANTITY_UNKNOWN}
+            showSpinnerImmediately
         />
     );
     const actionButtonElts =

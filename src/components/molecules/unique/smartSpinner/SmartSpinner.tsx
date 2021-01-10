@@ -17,13 +17,14 @@ import css from "./SmartSpinner.module.css";
 import { buildSpinnerHoverText } from "./spinnerTextUtils";
 
 export interface SmartSpinnerStateProps extends PropsWithClassName {
-    metricKey: string; // FUTURE USE
-    metricEntityKey: string; // FUTURE USE
-    hideActionInMessage?: boolean;
     action: SpinnerAction;
     entityNameTemplate: string;
-    quantity: number | null;
     expectedTime: number | null; // FUTURE USE
+    hideActionInMessage?: boolean;
+    metricEntityKey: string; // FUTURE USE
+    metricKey: string; // FUTURE USE
+    quantity: number | null;
+    showSpinnerImmediately?: boolean;
     size?: SpinnerSize | null;
 }
 
@@ -36,12 +37,13 @@ export type SmartSpinnerProps = SmartSpinnerStateProps & SmartSpinnerDispatchPro
 /**
  * An advanced spinner component.
  * @param props
- *   metricKey is the high level categorization of the api request (e.g. "sprint");
- *   metricEntityKey is the exactly entity being retrieved (e.g. "sprint 123");
  *   action is either Loading or Calculating but can also be null to indicate a general busy state;
  *   entityNameTemplate is a template used to format text for the user, it can include the "plural" function;
- *   quantity is the number of items being retrieved, QUANTITY_UNKNOWN can be used;
  *   expectedTime is the time this is expected to take (so a progress bar can be displayed);
+ *   metricEntityKey is the exactly entity being retrieved (e.g. "sprint 123");
+ *   metricKey is the high level categorization of the api request (e.g. "sprint");
+ *   quantity is the number of items being retrieved, QUANTITY_UNKNOWN can be used;
+ *   showSpinnerImmediately will prevent the usual half second delay that prevents flicker for very brief delays
  *   size can be either Small or Large;
  */
 export const SmartSpinner: React.FC<SmartSpinnerProps> = (props) => {
@@ -51,7 +53,7 @@ export const SmartSpinner: React.FC<SmartSpinnerProps> = (props) => {
     const text = props.size === SpinnerSize.Large ? hoverText : null;
     const textContainerElts = text ? <div className={css.textContainer}>{text}</div> : null;
     return (
-        <div className={css.outerContainer}>
+        <div className={buildClassName(css.outerContainer, props.showSpinnerImmediately ? null : css.animateShow)}>
             <div className={css.innerContainer}>
                 <div className={css.spinnerContainer}>
                     <Spinner
