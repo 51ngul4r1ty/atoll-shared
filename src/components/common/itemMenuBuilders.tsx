@@ -41,6 +41,7 @@ export const sprintMenuBuilder = (eventHandlers: ItemMenuEventHandlers): ItemMen
 ) => (
     <SprintMenu
         showDetailMenuToLeft={showMenuToLeft}
+        onEditItemClick={() => eventHandlers.handleEvent("onEditItemClick", itemId)}
         onRemoveItemClick={() => eventHandlers.handleEvent("onRemoveItemClick", itemId)}
         onArchiveItemClick={() => eventHandlers.handleEvent("onArchiveItemClick", itemId)}
         onUnarchiveItemClick={() => eventHandlers.handleEvent("onUnarchiveItemClick", itemId)}

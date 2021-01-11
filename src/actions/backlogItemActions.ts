@@ -159,10 +159,12 @@ export const backlogItemIdClick = (backlogItemId: string): BacklogItemIdClickAct
 export interface EditBacklogItemPayload {
     itemId: string;
 }
+
 export interface EditBacklogItemAction {
     type: typeof ActionTypes.EDIT_BACKLOG_ITEM;
     payload: EditBacklogItemPayload;
 }
+
 export const editBacklogItem = (itemId: string): EditBacklogItemAction => ({
     type: ActionTypes.EDIT_BACKLOG_ITEM,
     payload: {

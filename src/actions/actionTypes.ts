@@ -87,6 +87,10 @@ export const API_DELETE_SPRINT_FAILURE = buildFailureActionName(Names.DELETE_SPR
 export const API_SET_SPRINT_ARCHIVE_FLAG_REQUEST = buildRequestActionName(Names.SET_SPRINT_ARCHIVE_FLAG);
 export const API_SET_SPRINT_ARCHIVE_FLAG_SUCCESS = buildSuccessActionName(Names.SET_SPRINT_ARCHIVE_FLAG);
 export const API_SET_SPRINT_ARCHIVE_FLAG_FAILURE = buildFailureActionName(Names.SET_SPRINT_ARCHIVE_FLAG);
+
+export const API_PUT_SPRINT_REQUEST = buildRequestActionName(Names.PUT_SPRINT);
+export const API_PUT_SPRINT_SUCCESS = buildSuccessActionName(Names.PUT_SPRINT);
+export const API_PUT_SPRINT_FAILURE = buildFailureActionName(Names.PUT_SPRINT);
 // #endregion
 
 // #region Sprint Backlog Resource
@@ -172,6 +176,7 @@ export const CANCEL_EDIT_SPRINT = "app/cancel-edit:sprint";
 export const UPDATE_SPRINT_FIELDS = "app/update:sprint-fields";
 
 export const ADD_SPRINT = "app/add:sprint";
+export const EDIT_SPRINT = "app/edit:sprint";
 export const UPDATE_SPRINT_STATS = "app/update:sprint-stats";
 
 export const MOVE_SELECTED_BACKLOG_ITEMS_TO_SPRINT = "app/add:selected-sprint-backlog-items";

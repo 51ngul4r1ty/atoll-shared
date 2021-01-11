@@ -8,8 +8,10 @@ import { PushState, Source } from "./types";
 import { ApiGetSprintBacklogItemsSuccessAction } from "../actions/apiSprintBacklog";
 import {
     AddSprintAction,
+    CancelEditSprintAction,
     CancelUnsavedSprintAction,
     CollapseSprintPanelAction,
+    EditSprintAction,
     ExpandSprintPanelAction,
     ToggleSprintDetailAction,
     UpdateSprintFieldsAction
@@ -19,7 +21,8 @@ import {
     ApiSetSprintArchiveFlagSuccessAction,
     ApiDeleteSprintSuccessAction,
     ApiGetSprintsSuccessAction,
-    ApiPostSprintSuccessAction
+    ApiPostSprintSuccessAction,
+    ApiPutSprintSuccessAction
 } from "../actions/apiSprints";
 
 // consts/enums
@@ -28,7 +31,7 @@ import * as ActionTypes from "../actions/actionTypes";
 // utils
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
 import { mapApiItemsToSprints } from "../mappers/sprintMappers";
-import { shouldHideDetailMenu, targetIsInMenuButton, targetIsInMenuPanel } from "../components/utils/itemDetailMenuUtils";
+import { shouldHideDetailMenu } from "../components/utils/itemDetailMenuUtils";
 
 // components
 import {
@@ -73,7 +76,7 @@ export interface SprintWithSource extends SaveableSprint {
 export type SprintsState = Readonly<{
     addedItems: SaveableSprint[];
     allItems: SprintWithSource[];
-    items: Sprint[];
+    items: EditableSprint[];
     openedDetailMenuSprintId: string | null;
 }>;
 
@@ -90,7 +93,7 @@ export const rebuildAllItems = (draft: Draft<SprintsState>) => {
         return result;
     });
     const itemsWithSource = draft.items.map((item) => {
-        const result: SprintWithSource = { ...item, source: Source.Loaded, saved: true, editing: false };
+        const result: SprintWithSource = { ...item, source: Source.Loaded, saved: true };
         return result;
     });
     const allItemsUnsorted = [...addedItemsWithSource, ...itemsWithSource];
@@ -149,6 +152,17 @@ export const markBacklogItemsLoaded = (draft: Draft<SprintsState>, sprintId: str
     sprintItem.forEach((item) => {
         item.backlogItemsLoaded = true;
     });
+};
+
+export const updateSprintById = (draft: Draft<SprintsState>, sprintId: string, updateItem: { (item: SaveableSprint) }) => {
+    const addedItemIdx = draft.addedItems.findIndex((item) => item.id === sprintId);
+    if (addedItemIdx >= 0) {
+        updateItem(draft.items[addedItemIdx]);
+    }
+    const idx = draft.items.findIndex((item) => item.id === sprintId);
+    if (idx >= 0) {
+        updateItem(draft.items[idx]);
+    }
 };
 
 export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState, action: AnyFSA): SprintsState =>
@@ -222,6 +236,16 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 rebuildAllItems(draft);
                 return;
             }
+            case ActionTypes.EDIT_SPRINT: {
+                const actionTyped = action as EditSprintAction;
+                const position = actionTyped.payload.sprintId;
+
+                updateSprintById(draft, actionTyped.payload.sprintId, (item) => {
+                    item.editing = true;
+                });
+                rebuildAllItems(draft);
+                return;
+            }
             case ActionTypes.CANCEL_UNSAVED_SPRINT: {
                 const actionTyped = action as CancelUnsavedSprintAction;
                 const newItems = [];
@@ -235,12 +259,11 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 return;
             }
             case ActionTypes.CANCEL_EDIT_SPRINT: {
-                // TODO: Implement
-                // const actionTyped = action as CancelEditSprintAction;
-                // updateItemById(draft, actionTyped.payload.itemId, (item) => {
-                //     item.editing = false;
-                // });
-                // rebuildAllItems(draft);
+                const actionTyped = action as CancelEditSprintAction;
+                updateSprintById(draft, actionTyped.payload.itemId, (item) => {
+                    item.editing = false;
+                });
+                rebuildAllItems(draft);
                 return;
             }
             case ActionTypes.UPDATE_SPRINT_FIELDS: {
@@ -330,6 +353,17 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 if (changed) {
                     rebuildAllItems(draft);
                 }
+                return;
+            }
+            case ActionTypes.API_PUT_SPRINT_SUCCESS: {
+                console.log("------ DEBUG HERE ------");
+                const actionTyped = action as ApiPutSprintSuccessAction;
+                const sprintId = actionTyped.payload.response.data.item.id;
+                updateSprintById(draft, sprintId, (item) => {
+                    item.editing = false;
+                    item.saved = true;
+                });
+                rebuildAllItems(draft);
                 return;
             }
         }

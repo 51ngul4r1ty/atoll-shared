@@ -9,12 +9,14 @@ import * as ActionTypes from "../actions/actionTypes";
 import { AnyFSA } from "../types";
 import { ApiGetBacklogItemsSuccessAction } from "../actions/apiBacklogItems";
 import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
-import { ApiBacklogItem } from "../apiModelTypes";
+import { ApiBacklogItem, ApiItemWithLinks, ApiSprint, ItemWithId } from "../apiModelTypes";
 import { ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
 import { ApiGetBffViewsBacklogItemSuccessAction } from "../actions/apiBffViewsBacklogItem";
+import { ApiGetSprintsSuccessAction } from "../actions/apiSprints";
 
 export const ResourceTypes = {
-    BACKLOG_ITEM: "backlogItems"
+    BACKLOG_ITEM: "backlogItems",
+    SPRINT: "sprints"
 };
 
 export interface ApiLinkDefn {
@@ -36,7 +38,8 @@ export interface ApiLinkState {
 
 export const apiLinksReducerInitialState = Object.freeze<ApiLinkState>({
     linksByType: {
-        backlogItems: {}
+        backlogItems: {},
+        sprints: {}
     }
 });
 
@@ -90,23 +93,28 @@ export const buildUri = (requestUrl: string, linkUri: string): string => {
     return `${parsed.protocol}//${hostAndPort}${linkUri}`;
 };
 
-export const processBacklogItems = (
-    backlogItems: ApiBacklogItem[],
+export const processItems = <T extends ApiItemWithLinks & ItemWithId>(
+    itemTypeLinkName: string,
+    items: T[],
     draft: Draft<ApiLinkState>,
     meta: ApiActionMetaDataRequestMeta
 ) => {
-    backlogItems.forEach((item) => {
+    items.forEach((item) => {
         if (item.links?.length) {
             item.links.forEach((link) => {
                 if (link.rel === "self") {
-                    const resourceLinks = draft.linksByType[ResourceTypes.BACKLOG_ITEM];
-                    if (!resourceLinks[item.id]) {
-                        resourceLinks[item.id] = { item: null };
+                    const resourceLinks = draft.linksByType[itemTypeLinkName];
+                    if (!resourceLinks) {
+                        throw new Error(`Unable to find linksByType base entry for ${itemTypeLinkName}`);
+                    } else {
+                        if (!resourceLinks[item.id]) {
+                            resourceLinks[item.id] = { item: null };
+                        }
+                        resourceLinks[item.id].item = {
+                            type: link.type,
+                            uri: buildUri(meta.requestBody.url, link.uri)
+                        };
                     }
-                    resourceLinks[item.id].item = {
-                        type: link.type,
-                        uri: buildUri(meta.requestBody.url, link.uri)
-                    };
                 }
             });
         }
@@ -119,19 +127,26 @@ export const apiLinksReducer = (state: ApiLinkState = apiLinksReducerInitialStat
             case ActionTypes.API_GET_BACKLOG_ITEMS_SUCCESS: {
                 const actionTyped = action as ApiGetBacklogItemsSuccessAction;
                 const { payload } = actionTyped;
-                processBacklogItems(payload.response.data.items, draft, actionTyped.meta);
+                processItems(ResourceTypes.BACKLOG_ITEM, payload.response.data.items, draft, actionTyped.meta);
+                return;
+            }
+            case ActionTypes.API_GET_SPRINTS_SUCCESS: {
+                const actionTyped = action as ApiGetSprintsSuccessAction;
+                const { payload } = actionTyped;
+                processItems(ResourceTypes.SPRINT, payload.response.data.items, draft, actionTyped.meta);
                 return;
             }
             case ActionTypes.API_GET_BFF_VIEWS_PLAN_SUCCESS: {
                 const actionTyped = action as ApiGetBffViewsPlanSuccessAction;
                 const { payload } = actionTyped;
-                processBacklogItems(payload.response.data.backlogItems, draft, actionTyped.meta);
+                processItems(ResourceTypes.BACKLOG_ITEM, payload.response.data.backlogItems, draft, actionTyped.meta);
+                processItems(ResourceTypes.SPRINT, payload.response.data.sprints, draft, actionTyped.meta);
                 return;
             }
             case ActionTypes.API_GET_BFF_VIEWS_BACKLOG_ITEM_SUCCESS: {
                 const actionTyped = action as ApiGetBffViewsBacklogItemSuccessAction;
                 const { payload } = actionTyped;
-                processBacklogItems(payload.response.data.backlogItems, draft, actionTyped.meta);
+                processItems(ResourceTypes.BACKLOG_ITEM, payload.response.data.backlogItems, draft, actionTyped.meta);
                 return;
             }
         }

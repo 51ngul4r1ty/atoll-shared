@@ -166,3 +166,35 @@ export const apiArchiveSprint = (sprintId: string): ApiSetSprintArchiveFlagActio
 export const apiUnarchiveSprint = (sprintId: string): ApiSetSprintArchiveFlagAction => {
     return setSprintArchiveFlag(sprintId, false);
 };
+
+export interface ApiPutSprintSuccessResponse {
+    status: number;
+    data: {
+        item: Sprint;
+    };
+}
+
+export type ApiPutSprintSuccessActionPayload = ApiActionSuccessPayload<ApiPutSprintSuccessResponse>;
+export interface ApiPutSprintSuccessActionMeta {
+    instanceId: number;
+    requestBody: ApiActionMetaDataRequestBodyWithOriginal<ApiSprint>;
+}
+export interface ApiPutSprintSuccessAction {
+    type: typeof ActionTypes.API_PUT_SPRINT_SUCCESS;
+    payload: ApiPutSprintSuccessActionPayload;
+    meta: ApiPutSprintSuccessActionMeta;
+}
+export interface ApiPutSprintPayload {}
+export const apiPutSprint = (sprint: SprintModel, meta: any): ApiAction<ApiPutSprintPayload> => {
+    return {
+        type: API,
+        payload: {
+            endpoint: `${getApiBaseUrl()}api/v1/sprints/${sprint.id}`,
+            method: "PUT",
+            headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+            data: sprint,
+            types: buildActionTypes(ApiActionNames.PUT_SPRINT)
+        },
+        meta
+    };
+};

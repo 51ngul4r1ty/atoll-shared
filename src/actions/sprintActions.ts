@@ -174,3 +174,19 @@ export const updateSprintStats = (sprintId: string, sprintStats: ApiSprintStats)
         sprintStats
     }
 });
+
+export interface EditSprintPayload {
+    sprintId: string;
+}
+
+export interface EditSprintAction {
+    type: typeof ActionTypes.EDIT_SPRINT;
+    payload: EditSprintPayload;
+}
+
+export const editSprint = (sprintId: string): EditSprintAction => ({
+    type: ActionTypes.EDIT_SPRINT,
+    payload: {
+        sprintId
+    }
+});

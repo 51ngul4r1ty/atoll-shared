@@ -5,11 +5,12 @@
 
 // externals
 import { Action, Store } from "redux";
-import * as HttpStatus from "http-status-codes";
 import { push } from "connected-react-router";
+import * as HttpStatus from "http-status-codes";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
+import { BacklogItemStatus } from "../types/backlogItemTypes";
 import { EditMode } from "../components/common/componentEnums";
 
 // selectors
@@ -31,13 +32,13 @@ import {
     ApiPutBacklogItemSuccessAction
 } from "../actions/apiBacklogItems";
 import {
-    refreshBacklogItems,
-    UpdateBacklogItemAction,
-    SaveNewBacklogItemAction,
-    ReorderBacklogItemAction,
-    CancelEditBacklogItemAction,
     addProductBacklogItem,
-    BacklogItemIdClickAction
+    refreshBacklogItems,
+    BacklogItemIdClickAction,
+    CancelEditBacklogItemAction,
+    ReorderBacklogItemAction,
+    SaveNewBacklogItemAction,
+    UpdateBacklogItemAction
 } from "../actions/backlogItemActions";
 import { postLogin, ActionPostLoginSuccessAction, ActionPostRefreshTokenSuccessAction } from "../actions/authActions";
 import { routePlanView } from "../actions/routeActions";
@@ -46,13 +47,13 @@ import {
     apiBatchAddBacklogItemsToSprint,
     apiGetSprintBacklogItems,
     apiMoveSprintItemToProductBacklog,
-    ApiMoveSprintItemToProductBacklogSuccessAction,
-    apiSprintBacklogItemSetStatus
+    apiSprintBacklogItemSetStatus,
+    ApiMoveSprintItemToProductBacklogSuccessAction
 } from "../actions/apiSprintBacklog";
 import {
+    removeSprintBacklogItem,
     ChangeSprintPlanningArchivedFilterAction,
     MoveSelectedBacklogItemsToSprintUsingApiAction,
-    removeSprintBacklogItem,
     SprintBacklogItemAcceptedClickAction,
     SprintBacklogItemDoneClickAction,
     SprintBacklogItemIdClickAction,
@@ -61,7 +62,7 @@ import {
     SprintBacklogItemReleasedClickAction,
     SprintMoveItemToBacklogClickAction
 } from "../actions/sprintBacklogActions";
-import { apiGetSprints, apiPostSprint } from "../actions/apiSprints";
+import { apiGetSprints, apiPostSprint, apiPutSprint } from "../actions/apiSprints";
 import { setEditMode } from "../actions/appActions";
 
 // state
@@ -84,9 +85,8 @@ import { buildBacklogDisplayId } from "../utils/backlogItemHelper";
 import { encodeForUrl } from "../utils/urlUtils";
 
 // interfaces/types
+import { ExpandSprintPanelAction, SaveNewSprintAction, UpdateSprintAction, updateSprintStats } from "../actions/sprintActions";
 import { ResourceTypes } from "../reducers/apiLinksReducer";
-import { ExpandSprintPanelAction, SaveNewSprintAction, updateSprintStats } from "../actions/sprintActions";
-import { BacklogItemStatus } from "../types/backlogItemTypes";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
@@ -335,18 +335,17 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             break;
         }
         case ActionTypes.UPDATE_SPRINT: {
-            // TODO: Implement editing sprint item
-            // const actionTyped = action as UpdateSprintAction;
-            // const state = storeTyped.getState();
-            // const itemId = actionTyped.payload.id;
+            const actionTyped = action as UpdateSprintAction;
+            const state = storeTyped.getState();
+            const itemId = actionTyped.payload.id;
 
-            // const sprint = getSprintById(state, itemId);
-            // if (sprint) {
-            //     const model = convertToSprintModel(sprint);
-            //     storeTyped.dispatch(
-            //         apiPutSprint(model, buildApiPayloadBaseForResource(state, ResourceTypes.SPRINT, "item", itemId))
-            //     );
-            // }
+            const sprint = getSprintById(state, itemId);
+            if (sprint) {
+                const model = convertToSprintModel(sprint);
+                storeTyped.dispatch(
+                    apiPutSprint(model, buildApiPayloadBaseForResource(state, ResourceTypes.SPRINT, "item", itemId))
+                );
+            }
             break;
         }
     }
