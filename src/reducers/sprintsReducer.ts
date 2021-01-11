@@ -21,7 +21,8 @@ import {
     ApiSetSprintArchiveFlagSuccessAction,
     ApiDeleteSprintSuccessAction,
     ApiGetSprintsSuccessAction,
-    ApiPostSprintSuccessAction
+    ApiPostSprintSuccessAction,
+    ApiPutSprintSuccessAction
 } from "../actions/apiSprints";
 
 // consts/enums
@@ -30,7 +31,7 @@ import * as ActionTypes from "../actions/actionTypes";
 // utils
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
 import { mapApiItemsToSprints } from "../mappers/sprintMappers";
-import { shouldHideDetailMenu, targetIsInMenuButton, targetIsInMenuPanel } from "../components/utils/itemDetailMenuUtils";
+import { shouldHideDetailMenu } from "../components/utils/itemDetailMenuUtils";
 
 // components
 import {
@@ -153,7 +154,7 @@ export const markBacklogItemsLoaded = (draft: Draft<SprintsState>, sprintId: str
     });
 };
 
-export const updateSprintById = (draft: Draft<SprintsState>, sprintId: string, updateItem: { (item: EditableSprint) }) => {
+export const updateSprintById = (draft: Draft<SprintsState>, sprintId: string, updateItem: { (item: SaveableSprint) }) => {
     const addedItemIdx = draft.addedItems.findIndex((item) => item.id === sprintId);
     if (addedItemIdx >= 0) {
         updateItem(draft.items[addedItemIdx]);
@@ -352,6 +353,17 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 if (changed) {
                     rebuildAllItems(draft);
                 }
+                return;
+            }
+            case ActionTypes.API_PUT_SPRINT_SUCCESS: {
+                console.log("------ DEBUG HERE ------");
+                const actionTyped = action as ApiPutSprintSuccessAction;
+                const sprintId = actionTyped.payload.response.data.item.id;
+                updateSprintById(draft, sprintId, (item) => {
+                    item.editing = false;
+                    item.saved = true;
+                });
+                rebuildAllItems(draft);
                 return;
             }
         }

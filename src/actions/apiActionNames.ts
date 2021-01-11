@@ -3,6 +3,7 @@ export const GET_PROJECT = "get-project";
 export const GET_SPRINTS = "get-sprints";
 export const GET_SPRINT = "get-sprint";
 export const POST_SPRINT = "add-sprint";
+export const PUT_SPRINT = "update-sprint";
 export const DELETE_SPRINT = "delete-sprint";
 export const SET_SPRINT_ARCHIVE_FLAG = "set-sprint-archive";
 
