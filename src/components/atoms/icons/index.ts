@@ -1,5 +1,3 @@
-
-
 export * from "./AddIcon";
 export * from "./AppIcon";
 export * from "./ArchiveCancelIcon";
@@ -27,4 +25,5 @@ export * from "./VerticalCollapseIcon";
 export * from "./VerticalExpandIcon";
 export * from "./WindowsFrameCloseIcon";
 export * from "./WindowsFrameMaximizeIcon";
-export * from "./WindowsFrameMinimizeIcon";export * from "./DatePickerButtonIcon";
+export * from "./WindowsFrameMinimizeIcon";
+export * from "./DatePickerButtonIcon";
