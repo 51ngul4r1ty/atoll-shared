@@ -8,10 +8,10 @@ export { rootReducerInitialState } from "./reducers/rootReducer";
 export * from "./components/common/index";
 
 // components - atoms (all)
-export * from "./components/atoms";
+export * from "./components/atoms/index";
 
 // components - molecules (all)
-export * from "./components/molecules";
+export * from "./components/molecules/index";
 
 // components - forms
 export { BacklogItemDetailForm } from "./components/organisms/forms/BacklogItemDetailForm";
