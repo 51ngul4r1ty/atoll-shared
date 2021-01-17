@@ -1,12 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 // externals
-import React from "react";
+import * as React from "react";
 
 // storybook
 import { storiesOf } from "@storybook/react";
 
 // components
-import { CaretPosition, ItemMenuPanel, RemoveButton } from "../../../dist/index.es";
+import { CalendarPanel, CaretPosition, ItemMenuPanel, RemoveButton } from "../../../dist/index.es";
 
 // common
 import "../../storybook";
@@ -41,4 +41,5 @@ storiesOf("Atoms/Panels", module)
                 }}
             />
         </ItemMenuPanel>
-    ));
+    ))
+    .add("CalendarPanel", () => <CalendarPanel className="calendar-panel"></CalendarPanel>);
