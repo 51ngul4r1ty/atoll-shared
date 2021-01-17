@@ -23,7 +23,7 @@ import { moveBacklogItemToSprint } from "../actions/sprintBacklogActions";
 import { AddNewSprintFormAction, addSprint, NewSprintPosition, updateSprintStats } from "../actions/sprintActions";
 
 // utils
-import { addDays, now } from "../utils/dateHelper";
+import { addDays, dateNow, timeNow } from "../utils/dateHelper";
 
 export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action) => {
     next(action);
@@ -77,8 +77,9 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
                 finishDate = firstSprint.startDate;
             } else if (position === NewSprintPosition.After) {
                 const lastSprint = getLastSprint(state);
-                startDate = lastSprint.finishDate;
-                finishDate = addDays(lastSprint.finishDate, SPRINT_DAY_LENGTH);
+                const lastFinishDate = lastSprint?.finishDate || addDays(dateNow(), 1);
+                startDate = lastFinishDate;
+                finishDate = addDays(lastFinishDate, SPRINT_DAY_LENGTH);
             } else {
                 throw Error(`Unexpected ${position}`);
             }
@@ -99,8 +100,8 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
                 totalPoints: 0,
                 backlogItemsLoaded: true,
                 expanded: true,
-                createdAt: now(),
-                updatedAt: now(),
+                createdAt: timeNow(),
+                updatedAt: timeNow(),
                 saved: false
             };
             storeTyped.dispatch(addSprint(newItem, position));

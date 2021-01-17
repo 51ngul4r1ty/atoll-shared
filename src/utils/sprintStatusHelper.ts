@@ -2,7 +2,7 @@
 import { SprintStatus } from "../components/molecules/cards/sprintCard/sprintCardTypes";
 
 // utils
-import { now, roundDateToDayBoundary } from "./dateHelper";
+import { timeNow, roundDateToDayBoundary } from "./dateHelper";
 
 export const determineSprintExpanded = (startDate: Date, finishDate: Date): boolean => {
     const status = determineSprintStatus(startDate, finishDate);
@@ -10,7 +10,7 @@ export const determineSprintExpanded = (startDate: Date, finishDate: Date): bool
 };
 
 export const determineSprintStatus = (startDate: Date, finishDate: Date): SprintStatus => {
-    const currentTime = now().getTime();
+    const currentTime = timeNow().getTime();
     const afterSprintStart = currentTime >= roundDateToDayBoundary(startDate).getTime();
     const beforeSprintFinish = currentTime < roundDateToDayBoundary(finishDate).getTime();
     if (afterSprintStart && beforeSprintFinish) {
