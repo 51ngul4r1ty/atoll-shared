@@ -1,15 +1,21 @@
 // externals
 import React from "react";
-import { buildClassName } from "../../../utils/classNameBuilder";
-
-// utils
-import { addDays } from "../../../utils/dateHelper";
 
 // style
 import css from "./CalendarPanel.module.css";
 
+// utils
+import { addDays, sameDay } from "../../../../utils/dateHelper";
+import { buildClassName } from "../../../../utils/classNameBuilder";
+import { getSprint, getStartingSprintIdx, inSprintRange, isFirstDay, isLastDay, sortSprints } from "./calendarPanelUtils";
+
+// interfaces/types
+import { CalendarSprintRange } from "./calendarSprintTypes";
+
 export interface CalendarPanelStateProps {
     className?: string;
+    dateSelected?: Date | null;
+    sprints?: CalendarSprintRange[];
 }
 
 export interface CalendarPanelDispatchProps {}
@@ -25,10 +31,15 @@ export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInne
     const calendarCells = [];
     const calendarHeaderRow = [];
     const calendarGrid = [];
+    const sprintsSorted = sortSprints(props.sprints);
     calendarGrid.push(calendarHeaderRow);
     let currentMonth = 0;
     let day = new Date(2020, 11, 29, 12, 0, 0, 0);
+    let sprintIdx = getStartingSprintIdx(sprintsSorted, day);
+    let inCurrentSprintRange = sprintIdx >= 0;
+    let wasInSprintRange = sprintIdx >= 0;
     for (let row = 0; row < 5; row++) {
+        let sprint = sprintIdx === -1 ? null : sprintsSorted[sprintIdx];
         const calendarGridRow = [];
         calendarGrid.push(calendarGridRow);
         for (let col = 0; col < 7; col++) {
@@ -40,8 +51,26 @@ export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInne
                 );
             }
             const isCurrentMonth = day.getMonth() === currentMonth;
+            const isSelectedDate = sameDay(day, props.dateSelected);
             const currentMonthClass = isCurrentMonth ? css.currentMonth : null;
-            const classToUse = buildClassName(css.day, currentMonthClass);
+            const selectedDateClass = isSelectedDate ? css.selected : null;
+            inCurrentSprintRange = inSprintRange(sprint, day);
+            if (wasInSprintRange && !inCurrentSprintRange) {
+                sprintIdx++;
+                sprint = getSprint(sprintsSorted, sprintIdx);
+                inCurrentSprintRange = inSprintRange(sprint, day);
+            }
+            wasInSprintRange = inCurrentSprintRange;
+
+            const classToUse = buildClassName(
+                css.day,
+                currentMonthClass,
+                selectedDateClass,
+                inCurrentSprintRange ? css.sprint : null,
+                inCurrentSprintRange && sprint?.editing ? css.editing : null,
+                inCurrentSprintRange && isFirstDay(sprint, day) ? css.start : null,
+                inCurrentSprintRange && isLastDay(sprint, day) ? css.finish : null
+            );
             calendarGridRow.push(
                 <div className={classToUse} key={`${row},${col}`}>
                     <div className={css.text}>{day.getDate()}</div>
@@ -58,11 +87,11 @@ export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInne
     }
     return (
         <div className={props.className}>
-            <div>
-                <div>2021</div>
-                <div>January</div>
-                <div>&lt;</div>
-                <div>&gt;</div>
+            <div className={css.header}>
+                <div className={css.cell}>2021</div>
+                <div className={css.cell}>January</div>
+                <div className={css.cell}>&lt;</div>
+                <div className={css.cell}>&gt;</div>
             </div>
             <div className={css.calendar}>{calendarCells}</div>
         </div>

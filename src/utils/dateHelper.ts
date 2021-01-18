@@ -36,3 +36,13 @@ export const roundDateToDayBoundary = (dateTime: Date): Date => {
 export const now = (): Date => {
     return new Date();
 };
+
+export const sameDateAndTime = (date1: Date, date2: Date) => {
+    return date1.getTime() === date2.getTime();
+};
+
+export const sameDay = (date1: Date, date2: Date) => {
+    const roundedDate1 = roundDateToDayBoundary(date1);
+    const roundedDate2 = roundDateToDayBoundary(date2);
+    return sameDateAndTime(roundedDate1, roundedDate2);
+};

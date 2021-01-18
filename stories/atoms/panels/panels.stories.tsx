@@ -42,4 +42,21 @@ storiesOf("Atoms/Panels", module)
             />
         </ItemMenuPanel>
     ))
-    .add("CalendarPanel", () => <CalendarPanel className="calendar-panel"></CalendarPanel>);
+    .add("CalendarPanel", () => (
+        <CalendarPanel
+            className="calendar-panel"
+            dateSelected={new Date(2021, 0, 5)}
+            sprints={[
+                {
+                    start: new Date(2020, 11, 22),
+                    finish: new Date(2021, 0, 4),
+                    editing: false
+                },
+                {
+                    start: new Date(2021, 0, 5),
+                    finish: new Date(2021, 0, 18),
+                    editing: true
+                }
+            ]}
+        ></CalendarPanel>
+    ));

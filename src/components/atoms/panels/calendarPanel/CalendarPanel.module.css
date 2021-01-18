@@ -1,0 +1,88 @@
+.calendar {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    color: var(--normal-component-pen-color, black);
+    background-color: var(--normal-component-page-color, #ccc);
+    grid-row-gap: 0.15rem;
+}
+
+.day,
+.dayHeader {
+    position: relative;
+    background-color: var(--normal-component-page-color, #ccc);
+    /* text-align: center; */
+    height: 1.8rem;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.day.selected {
+    background-color: var(--normal-component-primary-region-selected-page-color, black);
+    color: var(--normal-component-primary-region-selected-pen-color, white);
+}
+
+.day .text,
+.dayHeader .text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--primary-bold-font-weight, 700);
+    font-size: var(--small-font-size, 0.75rem);
+}
+
+.day:not(.currentMonth) .text {
+    font-weight: 100;
+    opacity: 0.5;
+}
+
+.header {
+    display: grid;
+    grid-template-columns: 3rem 1fr 2rem 2rem;
+    grid-gap: 0.4rem;
+    font-size: var(--small-font-size, 0.75rem);
+    font-weight: var(--primary-bold-font-weight, 700);
+    text-align: center;
+    padding-bottom: 0.4rem;
+}
+
+.header .cell {
+    background-color: var(--normal-form-header-page-color, #888);
+    color: var(--inverted-pen-color, white);
+    padding: 0.4rem;
+    text-transform: uppercase;
+}
+
+.sprint:not(.selected) {
+    background-color: var(--normal-component-secondary-region-page-color, #ddd);
+    border-top: 0.15rem solid var(--normal-component-secondary-region-border-color, #888);
+    border-bottom: 0.15rem solid var(--normal-component-secondary-region-border-color, #888);
+    color: var(--normal-component-secondary-region-pen-color, #666);
+}
+
+.sprint:not(.selected).editing {
+    background-color: var(--normal-component-primary-region-page-color, white);
+    border-top: 0.15rem solid var(--normal-component-primary-region-border-color, black);
+    border-bottom: 0.15rem solid var(--normal-component-primary-region-border-color, black);
+}
+
+.sprint.start {
+    border-left: 0.15rem solid var(--normal-component-secondary-region-border-color, #888);
+}
+
+.sprint.finish {
+    border-right: 0.15rem solid var(--normal-component-secondary-region-border-color, #888);
+}
+
+.sprint.start.editing {
+    border-left: 0.15rem solid var(--normal-component-primary-region-border-color, black);
+}
+
+.sprint.finish.editing {
+    border-right: 0.15rem solid var(--normal-component-primary-region-border-color, black);
+}
