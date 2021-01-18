@@ -41,7 +41,12 @@ export const sameDateAndTime = (date1: Date, date2: Date) => {
     return date1.getTime() === date2.getTime();
 };
 
-export const sameDay = (date1: Date, date2: Date) => {
+export const sameDay = (date1: Date | null | undefined, date2: Date | null | undefined) => {
+    if (!date1) {
+        return !date2;
+    } else if (!date2) {
+        return false;
+    }
     const roundedDate1 = roundDateToDayBoundary(date1);
     const roundedDate2 = roundDateToDayBoundary(date2);
     return sameDateAndTime(roundedDate1, roundedDate2);
