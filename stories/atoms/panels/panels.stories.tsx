@@ -45,7 +45,7 @@ storiesOf("Atoms/Panels", module)
     .add("CalendarPanel", () => (
         <CalendarPanel
             className="calendar-panel"
-            dateSelected={new Date(2021, 0, 15)}
+            dateSelected={new Date(2021, 0, 5)}
             sprints={[
                 {
                     start: new Date(2020, 11, 22),
