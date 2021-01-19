@@ -58,5 +58,8 @@ storiesOf("Atoms/Panels", module)
                     editing: true
                 }
             ]}
+            onDateClick={(date: Date) => {
+                alert(`${date} chosen`);
+            }}
         ></CalendarPanel>
     ));

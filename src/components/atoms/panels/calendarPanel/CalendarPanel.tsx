@@ -18,7 +18,9 @@ export interface CalendarPanelStateProps {
     sprints?: CalendarSprintRange[];
 }
 
-export interface CalendarPanelDispatchProps {}
+export interface CalendarPanelDispatchProps {
+    onDateClick?: { (date: Date): void };
+}
 
 export type CalendarPanelProps = CalendarPanelStateProps & CalendarPanelDispatchProps;
 
@@ -72,7 +74,7 @@ export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInne
                 inCurrentSprintRange && isLastDay(sprint, day) ? css.finish : null
             );
             calendarGridRow.push(
-                <div className={classToUse} key={`${row},${col}`}>
+                <div data-value={day} className={classToUse} key={`${row},${col}`}>
                     <div className={css.text}>{day.getDate()}</div>
                 </div>
             );
@@ -85,6 +87,16 @@ export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInne
             calendarCells.push(calendarGrid[row][col]);
         }
     }
+    const handleDayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        const target = e.target as HTMLDivElement;
+        const parentElt = target.parentElement;
+        if (parentElt) {
+            const dataValue = parentElt.getAttribute("data-value");
+            if (props.onDateClick && dataValue) {
+                props.onDateClick(new Date(Date.parse(dataValue)));
+            }
+        }
+    };
     return (
         <div className={props.className}>
             <div className={css.header}>
@@ -93,7 +105,9 @@ export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInne
                 <div className={css.cell}>&lt;</div>
                 <div className={css.cell}>&gt;</div>
             </div>
-            <div className={css.calendar}>{calendarCells}</div>
+            <div className={css.calendar} onClick={(e) => handleDayClick(e)}>
+                {calendarCells}
+            </div>
         </div>
     );
 };
