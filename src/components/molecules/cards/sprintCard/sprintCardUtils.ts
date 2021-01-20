@@ -1,34 +1,8 @@
 // utils
-import { addDays } from "../../../../utils/dateHelper";
+import { addDays, monthToString } from "../../../../utils/dateHelper";
 
 // interfaces/types
 import { SprintCardSprint, SprintStatus } from "./sprintCardTypes";
-
-const MONTH_NAMES = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-];
-
-export const abbreviateMonth = (val: string) => {
-    if (!val) {
-        return val;
-    }
-    return val.substr(0, Math.min(val.length, 3));
-};
-
-export const monthToString = (month: number) => {
-    return abbreviateMonth(MONTH_NAMES[month]);
-};
 
 export const formatSameMonthRange = (startDate: Date, finishDate: Date): string => {
     const startYear = startDate.getFullYear();

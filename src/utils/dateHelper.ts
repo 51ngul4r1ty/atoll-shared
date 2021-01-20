@@ -51,3 +51,32 @@ export const sameDay = (date1: Date | null | undefined, date2: Date | null | und
     const roundedDate2 = roundDateToDayBoundary(date2);
     return sameDateAndTime(roundedDate1, roundedDate2);
 };
+
+export const MONTH_NAMES = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+];
+
+export const monthToString = (month: number | null | undefined) => {
+    if (!month && month !== 0) {
+        return "";
+    }
+    return abbreviateMonth(MONTH_NAMES[month]);
+};
+
+export const abbreviateMonth = (val: string) => {
+    if (!val) {
+        return val;
+    }
+    return val.substr(0, Math.min(val.length, 3));
+};

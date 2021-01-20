@@ -21,7 +21,9 @@ import {
     SmartSpinner,
     SpinnerAction,
     SpinnerSize,
-    SpinnerTextPosition
+    SpinnerTextPosition,
+    SprintDatePicker,
+    SprintDatePickerMode
 } from "../../dist/index.es";
 
 addDecorator(withRootAttribute);
@@ -262,6 +264,17 @@ storiesOf("Molecules/Unique/SmartSpinner", module).add("SmartSpinner", () => (
                 },
                 undefined
             )}
+        />
+    </div>
+));
+
+storiesOf("Molecules/Pickers/SprintDatePicker", module).add("SprintDatePicker", () => (
+    <div>
+        <SprintDatePicker
+            className="calendar-panel"
+            startDate={new Date(2021, 0, 5)}
+            finishDate={new Date(2021, 0, 18)}
+            pickerMode={SprintDatePickerMode.StartDate}
         />
     </div>
 ));

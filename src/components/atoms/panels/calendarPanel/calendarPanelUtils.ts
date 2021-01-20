@@ -62,3 +62,19 @@ export const getSprint = (sprintsSorted: CalendarSprintRange[], sprintIdx: numbe
     }
     return sprintsSorted[sprintIdx];
 };
+
+export const calcMonthToShow = (dates: Date[]): number | null => {
+    if (!dates.length) {
+        return null;
+    }
+    const date = dates[0];
+    return date.getMonth();
+};
+
+export const calcYearToShow = (dates: Date[]) => {
+    if (!dates.length) {
+        return null;
+    }
+    const date = dates[0];
+    return date.getFullYear();
+};

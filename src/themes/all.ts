@@ -154,7 +154,7 @@ export const darkTheme: Theme = {
     "--normal-component-page-color": "#333",
     "--normal-component-pen-color": "#bbb",
     "--normal-component-primary-region-page-color": "black",
-    "--normal-component-primary-region-selected-page-color": "#bbb",
+    "--normal-component-primary-region-selected-page-color": "white",
     "--normal-component-primary-region-selected-pen-color": "black",
     "--normal-component-primary-region-border-color": "white",
     "--normal-component-secondary-region-page-color": "#555",

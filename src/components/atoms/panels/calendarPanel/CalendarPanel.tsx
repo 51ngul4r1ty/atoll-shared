@@ -5,15 +5,24 @@ import React from "react";
 import css from "./CalendarPanel.module.css";
 
 // utils
-import { addDays, sameDay } from "../../../../utils/dateHelper";
+import { addDays, monthToString, sameDay } from "../../../../utils/dateHelper";
 import { buildClassName } from "../../../../utils/classNameBuilder";
-import { getSprint, getStartingSprintIdx, inSprintRange, isFirstDay, isLastDay, sortSprints } from "./calendarPanelUtils";
+import {
+    calcMonthToShow,
+    calcYearToShow,
+    getSprint,
+    getStartingSprintIdx,
+    inSprintRange,
+    isFirstDay,
+    isLastDay,
+    sortSprints
+} from "./calendarPanelUtils";
 
 // interfaces/types
 import { CalendarSprintRange } from "./calendarSprintTypes";
+import { PropsWithClassName } from "../../../common/types";
 
-export interface CalendarPanelStateProps {
-    className?: string;
+export interface CalendarPanelStateProps extends PropsWithClassName {
     dateSelected?: Date | null;
     sprints?: CalendarSprintRange[];
 }
@@ -38,10 +47,10 @@ export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInne
     let currentMonth = 0;
     let day = new Date(2020, 11, 29, 12, 0, 0, 0);
     let sprintIdx = getStartingSprintIdx(sprintsSorted, day);
-    let inCurrentSprintRange = sprintIdx >= 0;
-    let wasInSprintRange = sprintIdx >= 0;
+    let sprint = sprintIdx === -1 ? null : sprintsSorted[sprintIdx];
+    let inCurrentSprintRange = inSprintRange(sprint, day);
+    let wasInSprintRange = inCurrentSprintRange;
     for (let row = 0; row < 5; row++) {
-        let sprint = sprintIdx === -1 ? null : sprintsSorted[sprintIdx];
         const calendarGridRow = [];
         calendarGrid.push(calendarGridRow);
         for (let col = 0; col < 7; col++) {
@@ -97,11 +106,14 @@ export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInne
             }
         }
     };
+    const dates = props.dateSelected ? [props.dateSelected] : [new Date()];
+    const year = calcYearToShow(dates);
+    const month = monthToString(calcMonthToShow(dates));
     return (
         <div className={props.className}>
             <div className={css.header}>
-                <div className={css.cell}>2021</div>
-                <div className={css.cell}>January</div>
+                <div className={css.cell}>{year}</div>
+                <div className={css.cell}>{month}</div>
                 <div className={css.cell}>&lt;</div>
                 <div className={css.cell}>&gt;</div>
             </div>
