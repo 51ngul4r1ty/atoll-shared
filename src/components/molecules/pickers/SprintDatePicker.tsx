@@ -17,7 +17,7 @@ import { addDays, buildClassName, daySequenceIs, sameDay } from "../../../utils"
 export enum SprintDatePickerMode {
     StartDate = 1,
     FinishDate = 2,
-    StartAndFinish = 3
+    DateRange = 3
 }
 
 export interface SprintDatePickerStateProps extends PropsWithClassName {
@@ -49,7 +49,7 @@ export const InnerSprintDatePicker: React.FC<SprintDatePickerProps & SprintDateP
         props.pickerMode === SprintDatePickerMode.StartDate ? props.startDate : props.finishDate
     );
     const [pickerMode, setPickerMode] = useState<SprintDatePickerMode>(
-        props.pickerMode === SprintDatePickerMode.StartAndFinish ? SprintDatePickerMode.StartDate : props.pickerMode
+        props.pickerMode === SprintDatePickerMode.DateRange ? SprintDatePickerMode.StartDate : props.pickerMode
     );
     const [startDate, setStartDate] = useState(props.startDate);
     const [finishDate, setFinishDate] = useState(props.finishDate);
@@ -70,7 +70,7 @@ export const InnerSprintDatePicker: React.FC<SprintDatePickerProps & SprintDateP
     }, [props.pickerMode]);
 
     const handleDateChange = (date: Date) => {
-        if (props.pickerMode === SprintDatePickerMode.StartAndFinish) {
+        if (props.pickerMode === SprintDatePickerMode.DateRange) {
             // Rules:
             //   1. If nothing selected, it will set start to first click
             //      and finish to 13 days later (2 week sprint).
