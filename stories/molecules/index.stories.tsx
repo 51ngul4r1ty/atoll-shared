@@ -278,7 +278,8 @@ storiesOf("Molecules/Pickers/SprintDatePicker", module).add("SprintDatePicker", 
                 "pickerMode",
                 {
                     StartDate: SprintDatePickerMode.StartDate,
-                    FinishDate: SprintDatePickerMode.FinishDate
+                    FinishDate: SprintDatePickerMode.FinishDate,
+                    StartAndFinish: SprintDatePickerMode.StartAndFinish
                 },
                 SprintDatePickerMode.StartDate
             )}

@@ -52,6 +52,18 @@ export const sameDay = (date1: Date | null | undefined, date2: Date | null | und
     return sameDateAndTime(roundedDate1, roundedDate2);
 };
 
+export const daySequenceIs = (date1: Date | null | undefined, date2: Date | null | undefined): boolean | null => {
+    if (!date1 || !date2) {
+        return null;
+    }
+    if (sameDay(date1, date2)) {
+        return null;
+    }
+    const roundedDate1 = roundDateToDayBoundary(date1);
+    const roundedDate2 = roundDateToDayBoundary(date2);
+    return roundedDate2.getTime() > roundedDate1.getTime();
+};
+
 export const MONTH_NAMES = [
     "January",
     "February",
