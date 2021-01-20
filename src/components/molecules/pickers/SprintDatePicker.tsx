@@ -1,5 +1,5 @@
 // externals
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // style
 import css from "./SprintDatePicker.module.css";
@@ -32,19 +32,51 @@ interface SprintDatePickerInnerStateProps {}
 
 const DAY = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
+const buildSprints = (startDate: Date, finishDate: Date) => {
+    const editingSprint: CalendarSprintRange = {
+        start: startDate,
+        finish: finishDate,
+        editing: true
+    };
+    return [editingSprint];
+};
+
 export const InnerSprintDatePicker: React.FC<SprintDatePickerProps & SprintDatePickerInnerStateProps> = (props) => {
-    const classNameToUse = buildClassName(props.className, css.outerPanel);
-    const sprints: CalendarSprintRange[] = [
-        {
-            start: props.startDate,
-            finish: props.finishDate,
-            editing: true
+    const [dateSelected, setDateSelected] = useState(
+        props.pickerMode === SprintDatePickerMode.StartDate ? props.startDate : props.finishDate
+    );
+    const [startDate, setStartDate] = useState(props.startDate);
+    const [finishDate, setFinishDate] = useState(props.finishDate);
+    const [sprints, setSprints] = useState(buildSprints(props.startDate, props.finishDate));
+    useEffect(() => {
+        if (props.pickerMode === SprintDatePickerMode.StartDate) {
+            setDateSelected(startDate);
+        } else {
+            setDateSelected(finishDate);
         }
-    ];
-    const dateSelected = props.pickerMode === SprintDatePickerMode.StartDate ? props.startDate : props.finishDate;
+    }, [props.pickerMode]);
+
+    const handleDateChange = (date: Date) => {
+        setDateSelected(date);
+        if (props.pickerMode === SprintDatePickerMode.StartDate) {
+            setStartDate(date);
+            setSprints(buildSprints(date, finishDate));
+        } else {
+            setFinishDate(date);
+            setSprints(buildSprints(startDate, date));
+        }
+    };
+
+    const classNameToUse = buildClassName(props.className, css.outerPanel);
     return (
         <div className={classNameToUse}>
-            <CalendarPanel sprints={sprints} dateSelected={dateSelected} />
+            <CalendarPanel
+                sprints={sprints}
+                dateSelected={dateSelected}
+                onDateClick={(date) => {
+                    handleDateChange(date);
+                }}
+            />
         </div>
     );
 };

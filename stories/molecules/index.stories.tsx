@@ -274,7 +274,14 @@ storiesOf("Molecules/Pickers/SprintDatePicker", module).add("SprintDatePicker", 
             className="calendar-panel"
             startDate={new Date(2021, 0, 5)}
             finishDate={new Date(2021, 0, 18)}
-            pickerMode={SprintDatePickerMode.StartDate}
+            pickerMode={select(
+                "pickerMode",
+                {
+                    StartDate: SprintDatePickerMode.StartDate,
+                    FinishDate: SprintDatePickerMode.FinishDate
+                },
+                SprintDatePickerMode.StartDate
+            )}
         />
     </div>
 ));
