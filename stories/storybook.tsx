@@ -6,7 +6,7 @@ import { withKnobs } from "@storybook/addon-knobs";
 import { withRootAttribute } from "storybook-addon-root-attribute";
 
 addDecorator(withRootAttribute);
-addDecorator(withKnobs);
+addDecorator(withKnobs({ escapeHTML: false }));
 addParameters({
     rootAttribute: {
         root: "html",

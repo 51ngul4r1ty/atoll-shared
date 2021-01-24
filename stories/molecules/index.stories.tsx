@@ -13,6 +13,8 @@ import {
     BacklogItemCard,
     BacklogItemStatus,
     BacklogItemTypeEnum,
+    DateInput,
+    DateInputPickerMode,
     EditButton,
     EditMode,
     HomeButton,
@@ -27,7 +29,7 @@ import {
 } from "../../dist/index.es";
 
 addDecorator(withRootAttribute);
-addDecorator(withKnobs);
+addDecorator(withKnobs({ escapeHTML: false }));
 addParameters({
     rootAttribute: {
         root: "html",
@@ -284,5 +286,23 @@ storiesOf("Molecules/Pickers/SprintDatePicker", module).add("SprintDatePicker", 
                 SprintDatePickerMode.StartDate
             )}
         />
+    </div>
+));
+
+storiesOf("Molecules/Inputs/DateInput", module).add("DateInput", () => (
+    <div className="storybook-form-background">
+        <div className="storybook-flex-flow">
+            <DateInput
+                inputValue={new Date(2021, 0, 5)}
+                pickerMode={DateInputPickerMode.RangeAltIsFinishDate}
+                rangeAltValue={new Date(2021, 0, 18)}
+            />
+            to
+            <DateInput
+                inputValue={new Date(2021, 0, 18)}
+                pickerMode={DateInputPickerMode.RangeAltIsStartDate}
+                rangeAltValue={new Date(2021, 0, 5)}
+            />
+        </div>
     </div>
 ));

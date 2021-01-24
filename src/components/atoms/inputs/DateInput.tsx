@@ -1,5 +1,5 @@
 // externals
-import React, { forwardRef, ChangeEvent, RefObject, Ref, useState, KeyboardEvent, useEffect } from "react";
+import React, { forwardRef, ChangeEvent, FocusEvent, RefObject, Ref, useState, useEffect } from "react";
 
 // style
 import css from "./DateInput.module.css";
@@ -8,23 +8,36 @@ import css from "./DateInput.module.css";
 import { buildClassName } from "../../../utils/classNameBuilder";
 import { ComponentWithForwardedRef } from "../../../types";
 import { usePrevious } from "../../common/usePreviousHook";
+import { ItemMenuPanel, ItemMenuPanelCaretPosition, ItemMenuPanelColor } from "../panels/ItemMenuPanel";
+import { SprintDatePicker, SprintDatePickerMode } from "../../molecules/pickers/SprintDatePicker";
+import { getEltDataAttribute, getParentWithDataClass, hasParentWithDataClass } from "../../common/domUtils";
 
 export type DateInputRefType = HTMLInputElement;
 
 export type DateInputType = ComponentWithForwardedRef<DateInputProps>;
 
+export enum DateInputPickerMode {
+    SingleDateRangeAltUnused = 1,
+    RangeAltIsFinishDate = 2,
+    RangeAltIsStartDate = 3
+}
+
 export interface DateInputStateProps {
+    caretPosition?: ItemMenuPanelCaretPosition;
     className?: string;
     disabled?: boolean;
+    rangeAltValue?: Date | null;
     inputId: string;
     inputName?: string;
-    inputValue?: Date;
     labelText: string;
+    pickerMode?: DateInputPickerMode;
     placeHolder?: string;
     readOnly?: boolean;
     required?: boolean;
+    showPicker?: boolean;
     showTime?: boolean;
     size?: number;
+    inputValue: Date | null;
     type?: string;
     validator?: { (value: string): boolean };
 }
@@ -54,10 +67,11 @@ export const formatDateAsText = (date: Date | null, showTime?: boolean): string 
 
 export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps> = (props) => {
     const inputTextStartingEmptyValue = props.readOnly ? "-" : "";
-    const propsInputValueToUse = formatDateAsText(props.inputValue, props.showTime) || inputTextStartingEmptyValue;
+    const propsInputValueToUse = formatDateAsText(props.inputValue) || inputTextStartingEmptyValue;
     const [inputText, setInputText] = useState(propsInputValueToUse);
     const [validInputText, setValidInputText] = useState(formatDateAsText(props.inputValue, props.showTime) || "");
     const [isValid, setIsValid] = useState(true); // start off "valid", even if starting value is invalid
+    const [showingPicker, setShowingPicker] = useState(props.showPicker);
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         let lastValidInputText = validInputText;
         if (props.validator && !props.validator(e.target.value)) {
@@ -70,6 +84,27 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
         setInputText(e.target.value);
         if (props.onChange) {
             props.onChange(lastValidInputText);
+        }
+    };
+    const handleInputFocus = (e: FocusEvent<HTMLDivElement>) => {
+        setShowingPicker(true);
+    };
+    const handleInputFocusLost = (e: FocusEvent<HTMLDivElement>) => {
+        const eltReceivingFocus = e.relatedTarget as HTMLElement;
+        if (!hasParentWithDataClass(eltReceivingFocus, "date-picker")) {
+            setShowingPicker(false);
+        }
+    };
+    const handleDatePickerFocusLost = (e: FocusEvent<HTMLDivElement>) => {
+        const eltReceivingFocus = e.relatedTarget as HTMLElement;
+        const parentDateInput = getParentWithDataClass(eltReceivingFocus, "date-input");
+        if (parentDateInput) {
+            const id = getEltDataAttribute(parentDateInput, "id");
+            if (props.inputId !== id) {
+                setShowingPicker(false);
+            }
+        } else {
+            setShowingPicker(false);
         }
     };
     const handleKeyUp = (event) => {
@@ -111,10 +146,36 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
         props.readOnly ? css.readOnly : null
     );
     const typeToUse = props.type || "text";
+    const showPicker = props.pickerMode && props.pickerMode !== DateInputPickerMode.SingleDateRangeAltUnused;
+    const pickerMode =
+        props.pickerMode === DateInputPickerMode.RangeAltIsFinishDate
+            ? SprintDatePickerMode.StartDate
+            : SprintDatePickerMode.FinishDate;
+    const startDateToUse = props.pickerMode === DateInputPickerMode.RangeAltIsStartDate ? props.rangeAltValue : props.inputValue;
+    const finishDateToUse = props.pickerMode === DateInputPickerMode.RangeAltIsFinishDate ? props.rangeAltValue : props.inputValue;
+    const datePickerElts = !showPicker ? null : (
+        <div
+            data-class="date-picker"
+            className={buildClassName(css.picker, showingPicker ? css.show : css.hide)}
+            tabIndex={1}
+            onBlur={(e) => {
+                handleDatePickerFocusLost(e);
+            }}
+        >
+            <ItemMenuPanel
+                caretPosition={props.caretPosition || ItemMenuPanelCaretPosition.TopLeft}
+                panelColor={ItemMenuPanelColor.Dark}
+            >
+                <SprintDatePicker startDate={startDateToUse} finishDate={finishDateToUse} pickerMode={pickerMode} suppressPadding />
+            </ItemMenuPanel>
+        </div>
+    );
     return (
         <div className={classToUse}>
             <input
                 id={props.inputId}
+                data-class="date-input"
+                data-id={props.inputId}
                 ref={props.innerRef}
                 disabled={props.disabled || props.readOnly}
                 name={nameToUse}
@@ -125,13 +186,23 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
                 onChange={(e) => {
                     handleChange(e);
                 }}
+                onFocus={(e) => {
+                    handleInputFocus(e);
+                }}
+                onBlur={(e) => {
+                    handleInputFocusLost(e);
+                }}
                 required={props.required}
+                tabIndex={0}
             />
             <label htmlFor={nameToUse}>{props.labelText}</label>
+            {datePickerElts}
         </div>
     );
 };
 
-export const DateInput: DateInputType = forwardRef((props: DateInputProps, ref: Ref<DateInputRefType>) => (
-    <InnerDateInput innerRef={ref as RefObject<DateInputRefType>} {...props} />
-));
+export const DateInput: DateInputType = forwardRef<DateInputRefType, DateInputProps>(
+    (props: DateInputProps, ref: Ref<DateInputRefType>) => (
+        <InnerDateInput innerRef={ref as RefObject<DateInputRefType>} {...props} />
+    )
+);

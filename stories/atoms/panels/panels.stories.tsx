@@ -6,7 +6,7 @@ import * as React from "react";
 import { storiesOf } from "@storybook/react";
 
 // components
-import { CalendarPanel, CaretPosition, ItemMenuPanel, RemoveButton } from "../../../dist/index.es";
+import { CalendarPanel, ItemMenuPanelCaretPosition, ItemMenuPanel, RemoveButton } from "../../../dist/index.es";
 
 // common
 import "../../storybook";
@@ -15,7 +15,7 @@ storiesOf("Atoms/Panels", module)
     .add("ItemMenuPanel (caret top-center)", () => (
         <ItemMenuPanel
             className="item-menu-panel caret-top-center"
-            caretPosition={CaretPosition.TopCenter}
+            caretPosition={ItemMenuPanelCaretPosition.TopCenter}
             onClose={() => {
                 alert("close triggered");
             }}
@@ -30,7 +30,7 @@ storiesOf("Atoms/Panels", module)
     .add("ItemMenuPanel (caret right-top)", () => (
         <ItemMenuPanel
             className="item-menu-panel caret-right-top"
-            caretPosition={CaretPosition.RightTop}
+            caretPosition={ItemMenuPanelCaretPosition.RightTop}
             onClose={() => {
                 alert("close triggered");
             }}

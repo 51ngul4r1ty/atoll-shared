@@ -4,7 +4,7 @@ import { WithTranslation, withTranslation } from "react-i18next";
 
 // components
 import { EditButton } from "../buttons/EditButton";
-import { CaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
+import { ItemMenuPanelCaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
 import { RemoveButton } from "../buttons/RemoveButton";
 
 // consts/enums
@@ -26,7 +26,11 @@ export type InnerProductBacklogItemMenuProps = ProductBacklogItemMenuProps & Wit
 
 export const InnerProductBacklogItemMenu: React.FC<InnerProductBacklogItemMenuProps> = (props) => (
     <ItemMenuPanel
-        caretPosition={props.showDetailMenuToLeft || props.renderMobile ? CaretPosition.RightTop : CaretPosition.TopCenter}
+        caretPosition={
+            props.showDetailMenuToLeft || props.renderMobile
+                ? ItemMenuPanelCaretPosition.RightTop
+                : ItemMenuPanelCaretPosition.TopCenter
+        }
     >
         <RemoveButton
             suppressSpacing

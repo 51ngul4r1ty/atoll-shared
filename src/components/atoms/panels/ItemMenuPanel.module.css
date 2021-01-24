@@ -19,24 +19,43 @@
     height: 0;
 }
 
+.component.topLeftCaret .triangle {
+    position: absolute;
+    left: 1rem;
+    top: 0;
+}
+
 .component.rightTopCaret .triangle {
     margin-top: 1.2rem;
     align-self: start;
 }
 
 .panel {
-    background-color: var(--normal-form-page-color, #d0d0d0);
+    background-color: var(--normal-form-page-color, #ddd);
     box-sizing: border-box;
     padding: 0.5rem;
     display: grid;
     grid-gap: 0.4rem;
 }
 
+.component.topLeftCaret .panel {
+    position: relative;
+    top: 0.5rem;
+}
+
+.dark .panel {
+    background-color: var(--normal-component-page-color, #ccc);
+}
+
 .component:not(.rightTopCaret) .triangle {
     order: 1;
     border-left: 0.5rem solid transparent;
     border-right: 0.5rem solid transparent;
-    border-bottom: 0.5rem solid var(--normal-form-page-color, #d0d0d0);
+    border-bottom: 0.5rem solid var(--normal-form-page-color, #ddd);
+}
+
+.component.dark:not(.rightTopCaret) .triangle {
+    border-bottom: 0.5rem solid var(--normal-component-page-color, #ccc);
 }
 
 .component:not(.rightTopCaret) .panel {
@@ -52,5 +71,13 @@
     order: 2;
     border-top: 0.5rem solid transparent;
     border-bottom: 0.5rem solid transparent;
-    border-left: 0.5rem solid var(--normal-form-page-color, #d0d0d0);
+    border-left: 0.5rem solid var(--normal-form-page-color, #ddd);
+}
+
+.component.dark.rightTopCaret .triangle {
+    border-bottom: 0.5rem solid var(--normal-component-page-color, #ccc);
+}
+
+.light {
+    /* not used because the default is "light", but may use in future */
 }

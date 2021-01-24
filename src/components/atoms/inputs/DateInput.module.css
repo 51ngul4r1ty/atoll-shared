@@ -1,5 +1,6 @@
 .input {
     position: relative;
+    overflow: visible;
 }
 
 .input > input {
@@ -48,4 +49,18 @@
 
 .input.invalid > label {
     color: var(--normal-error-pen-color, #fff);
+}
+
+.picker.hide {
+    display: none;
+}
+
+.picker {
+    position: absolute;
+    top: 1.9rem;
+    width: 18rem;
+}
+
+.picker:focus {
+    outline: none;
 }

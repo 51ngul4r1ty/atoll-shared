@@ -24,6 +24,7 @@ export interface SprintDatePickerStateProps extends PropsWithClassName {
     startDate?: Date | null;
     finishDate?: Date | null;
     pickerMode: SprintDatePickerMode;
+    suppressPadding?: boolean;
 }
 
 export interface SprintDatePickerDispatchProps {}
@@ -146,7 +147,7 @@ export const InnerSprintDatePicker: React.FC<SprintDatePickerProps & SprintDateP
         }
     };
 
-    const classNameToUse = buildClassName(props.className, css.outerPanel);
+    const classNameToUse = buildClassName(props.className, css.outerPanel, props.suppressPadding ? css.suppressPadding : null);
     return (
         <div className={classNameToUse}>
             <CalendarPanel
