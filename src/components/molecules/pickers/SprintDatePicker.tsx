@@ -153,6 +153,12 @@ export const InnerSprintDatePicker: React.FC<SprintDatePickerProps & SprintDateP
     const [finishDate, setFinishDate] = useState(props.finishDate);
     const [sprints, setSprints] = useState(buildSprints(props.startDate, props.finishDate));
     useEffect(() => {
+        setStartDate(props.startDate);
+    }, [props.startDate]);
+    useEffect(() => {
+        setStartDate(props.finishDate);
+    }, [props.finishDate]);
+    useEffect(() => {
         switch (props.pickerMode) {
             case SprintDatePickerMode.StartDate: {
                 setDateSelected(startDate);

@@ -99,3 +99,15 @@ export const abbreviateMonth = (val: string) => {
     }
     return val.substr(0, Math.min(val.length, 3));
 };
+
+export const isValidDate = (text: string): boolean => {
+    return stringToDate(text) !== null;
+};
+
+export const stringToDate = (text: string): Date | null => {
+    const result = new Date(Date.parse(text));
+    if (isNaN(result.getTime())) {
+        return null;
+    }
+    return result;
+};
