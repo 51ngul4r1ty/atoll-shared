@@ -2,7 +2,7 @@
 import { CalendarSprintRange } from "./calendarSprintTypes";
 
 // utils
-import { roundDateToDayBoundary, sameDay } from "../../../../utils";
+import { addDays, roundDateToDayBoundary, sameDay } from "../../../../utils";
 
 export const sortSprints = (sprints: CalendarSprintRange[]): CalendarSprintRange[] =>
     !sprints ? [] : sprints.sort((sprint) => (sprint.start > sprint.finish ? 1 : 0));
@@ -77,4 +77,19 @@ export const calcYearToShow = (dates: Date[]) => {
     }
     const date = dates[0];
     return date.getFullYear();
+};
+
+export const calcFirstDayToShow = (dates: Date[], startDayOfWeek?: number): Date | null => {
+    if (!dates.length) {
+        return null;
+    }
+    const date = dates[0];
+    const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+    const dayOfWeek = firstDayOfMonth.getDay();
+    const leftmostDay = startDayOfWeek === undefined ? 1 : startDayOfWeek; // Monday - TODO: pick one based on sprint starts
+    let diff = leftmostDay - dayOfWeek;
+    if (diff > 0) {
+        diff -= 7;
+    }
+    return addDays(firstDayOfMonth, diff);
 };

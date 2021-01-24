@@ -79,11 +79,18 @@ export const MONTH_NAMES = [
     "December"
 ];
 
-export const monthToString = (month: number | null | undefined) => {
+export const monthToAbbrString = (month: number | null | undefined) => {
     if (!month && month !== 0) {
         return "";
     }
     return abbreviateMonth(MONTH_NAMES[month]);
+};
+
+export const monthToString = (month: number | null | undefined) => {
+    if (!month && month !== 0) {
+        return "";
+    }
+    return MONTH_NAMES[month];
 };
 
 export const abbreviateMonth = (val: string) => {

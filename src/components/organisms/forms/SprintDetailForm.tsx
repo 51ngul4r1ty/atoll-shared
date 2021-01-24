@@ -12,6 +12,7 @@ import css from "./SprintDetailForm.module.css";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
+import { DateInput, DateInputPickerMode } from "../../atoms/inputs/DateInput";
 
 export interface SprintDetailFormEditableFields {
     sprintName: string;
@@ -94,20 +95,33 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
         instanceId: props.instanceId,
         finishDate: props.finishDate
     };
-    const sprintNameInput = (
-        <StandardInput
-            inputId="sprintName"
-            labelText="Sprint Name"
-            placeHolder="New Sprint"
-            inputValue={props.sprintName}
-            onChange={(value) => {
-                handleDataUpdate({ ...prevData, sprintName: value });
-            }}
-        />
-    );
     const formContent = (
         <>
-            <div className={buildClassName(css.sprintName, css.formRow)}>{sprintNameInput}</div>
+            <div className={buildClassName(css.sprintName, css.formRow)}>
+                <StandardInput
+                    inputId="sprintName"
+                    labelText="Sprint Name"
+                    placeHolder="New Sprint"
+                    inputValue={props.sprintName}
+                    onChange={(value) => {
+                        handleDataUpdate({ ...prevData, sprintName: value });
+                    }}
+                />
+                <DateInput
+                    inputId="startDateInput"
+                    labelText="Start"
+                    inputValue={props.startDate}
+                    pickerMode={DateInputPickerMode.RangeAltIsFinishDate}
+                    rangeAltValue={props.finishDate}
+                />
+                <DateInput
+                    inputId="finishDateInput"
+                    labelText="Finish"
+                    inputValue={props.finishDate}
+                    pickerMode={DateInputPickerMode.RangeAltIsStartDate}
+                    rangeAltValue={props.startDate}
+                />
+            </div>
             {actionButtonPanel}
         </>
     );

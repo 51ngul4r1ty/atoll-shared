@@ -5,9 +5,10 @@ import React from "react";
 import css from "./CalendarPanel.module.css";
 
 // utils
-import { addDays, monthToString, sameDay } from "../../../../utils/dateHelper";
+import { addDays, monthToAbbrString, monthToString, sameDay } from "../../../../utils/dateHelper";
 import { buildClassName } from "../../../../utils/classNameBuilder";
 import {
+    calcFirstDayToShow,
     calcMonthToShow,
     calcYearToShow,
     getSprint,
@@ -39,13 +40,16 @@ interface CalendarPanelInnerStateProps {}
 const DAY = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
 export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInnerStateProps> = (props) => {
+    const dates = props.dateSelected ? [props.dateSelected] : [new Date()];
+    const year = calcYearToShow(dates);
+    const month = monthToString(calcMonthToShow(dates));
+    let day = calcFirstDayToShow(dates);
     const calendarCells = [];
     const calendarHeaderRow = [];
     const calendarGrid = [];
     const sprintsSorted = sortSprints(props.sprints);
     calendarGrid.push(calendarHeaderRow);
     let currentMonth = 0;
-    let day = new Date(2020, 11, 29, 12, 0, 0, 0);
     let sprintIdx = getStartingSprintIdx(sprintsSorted, day);
     let sprint = sprintIdx === -1 ? null : sprintsSorted[sprintIdx];
     let inCurrentSprintRange = inSprintRange(sprint, day);
@@ -106,9 +110,6 @@ export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInne
             }
         }
     };
-    const dates = props.dateSelected ? [props.dateSelected] : [new Date()];
-    const year = calcYearToShow(dates);
-    const month = monthToString(calcMonthToShow(dates));
     return (
         <div className={props.className}>
             <div className={css.header}>
