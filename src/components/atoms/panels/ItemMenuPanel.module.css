@@ -25,6 +25,12 @@
     top: 0;
 }
 
+.component.topRightCaret .triangle {
+    position: absolute;
+    right: 1rem;
+    top: 0;
+}
+
 .component.rightTopCaret .triangle {
     margin-top: 1.2rem;
     align-self: start;
@@ -39,6 +45,11 @@
 }
 
 .component.topLeftCaret .panel {
+    position: relative;
+    top: 0.5rem;
+}
+
+.component.topRightCaret .panel {
     position: relative;
     top: 0.5rem;
 }

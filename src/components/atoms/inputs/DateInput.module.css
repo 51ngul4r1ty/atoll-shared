@@ -65,3 +65,7 @@
 .picker:focus {
     outline: none;
 }
+
+.caretTopRight {
+    right: 0;
+}

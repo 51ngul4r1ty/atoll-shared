@@ -163,7 +163,11 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
     const datePickerElts = !showPicker ? null : (
         <div
             data-class="date-picker"
-            className={buildClassName(css.picker, showingPicker ? css.show : css.hide)}
+            className={buildClassName(
+                css.picker,
+                showingPicker ? css.show : css.hide,
+                props.caretPosition === ItemMenuPanelCaretPosition.TopRight ? css.caretTopRight : null
+            )}
             tabIndex={1}
             onBlur={(e) => {
                 handleDatePickerFocusLost(e);

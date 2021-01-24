@@ -6,6 +6,9 @@ import { StandardInput } from "../../atoms/inputs/StandardInput";
 import { CancelButton } from "../../molecules/buttons/CancelButton";
 import { DoneButton } from "../../molecules/buttons/DoneButton";
 
+// const/enums
+import { ItemMenuPanelCaretPosition } from "../../atoms/panels/ItemMenuPanel";
+
 // style
 import commonCss from "./common/common.module.css";
 import css from "./SprintDetailForm.module.css";
@@ -98,9 +101,10 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
     };
     const formContent = (
         <>
-            <div className={buildClassName(css.sprintName, css.formRow)}>
+            <div className={buildClassName(css.sprintForm, css.formRow)}>
                 <StandardInput
                     inputId="sprintName"
+                    className={css.sprintNameInput}
                     labelText="Sprint Name"
                     placeHolder="New Sprint"
                     inputValue={props.sprintName}
@@ -110,6 +114,7 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
                 />
                 <DateInput
                     inputId="startDateInput"
+                    className={css.startDateInput}
                     labelText="Start"
                     inputValue={props.startDate}
                     pickerMode={DateInputPickerMode.RangeAltIsFinishDate}
@@ -123,6 +128,8 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
                 />
                 <DateInput
                     inputId="finishDateInput"
+                    className={css.finishDateInput}
+                    caretPosition={ItemMenuPanelCaretPosition.TopRight}
                     labelText="Finish"
                     inputValue={props.finishDate}
                     pickerMode={DateInputPickerMode.RangeAltIsStartDate}

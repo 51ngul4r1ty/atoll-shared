@@ -10,6 +10,7 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 export enum ItemMenuPanelCaretPosition {
     TopLeft,
     TopCenter,
+    TopRight,
     RightTop
 }
 
@@ -51,6 +52,7 @@ export class ItemMenuPanel extends Component<ItemMenuPanelProps> {
             this.props.className,
             this.props.caretPosition === ItemMenuPanelCaretPosition.RightTop ? css.rightTopCaret : null,
             this.props.caretPosition === ItemMenuPanelCaretPosition.TopLeft ? css.topLeftCaret : null,
+            this.props.caretPosition === ItemMenuPanelCaretPosition.TopRight ? css.topRightCaret : null,
             this.props.panelColor === ItemMenuPanelColor.Dark ? css.dark : css.light
         );
         return (
