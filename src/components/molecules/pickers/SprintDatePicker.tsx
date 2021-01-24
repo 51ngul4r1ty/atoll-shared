@@ -27,7 +27,10 @@ export interface SprintDatePickerStateProps extends PropsWithClassName {
     suppressPadding?: boolean;
 }
 
-export interface SprintDatePickerDispatchProps {}
+export interface SprintDatePickerDispatchProps {
+    onStartDateChange?: { (newStartDate: Date) };
+    onFinishDateChange?: { (newFinishDate: Date) };
+}
 
 export type SprintDatePickerProps = SprintDatePickerStateProps & SprintDatePickerDispatchProps;
 
@@ -43,6 +46,100 @@ const buildSprints = (startDate: Date, finishDate: Date) => {
         editing: true
     };
     return [editingSprint];
+};
+
+const handleDateChangeInSingleDateModes = (
+    date: Date,
+    pickerMode: SprintDatePickerMode,
+    finishDate: Date,
+    startDate: Date,
+    setDateSelected: React.Dispatch<React.SetStateAction<Date>>,
+    setStartDate: React.Dispatch<React.SetStateAction<Date>>,
+    setSprints: React.Dispatch<React.SetStateAction<CalendarSprintRange[]>>,
+    setFinishDate: React.Dispatch<React.SetStateAction<Date>>,
+    onStartDateChanged: { (date: Date) },
+    onFinishDateChanged: { (date: Date) }
+) => {
+    setDateSelected(date);
+    switch (pickerMode) {
+        case SprintDatePickerMode.StartDate: {
+            setStartDate(date);
+            setSprints(buildSprints(date, finishDate));
+            if (onStartDateChanged) {
+                onStartDateChanged(date);
+            }
+            break;
+        }
+        case SprintDatePickerMode.FinishDate: {
+            setFinishDate(date);
+            setSprints(buildSprints(startDate, date));
+            if (onFinishDateChanged) {
+                onFinishDateChanged(date);
+            }
+            break;
+        }
+    }
+};
+
+const handleDateChangeInDateRangeMode = (
+    startDate: Date,
+    finishDate: Date,
+    date: Date,
+    pickerMode: SprintDatePickerMode,
+    setStartDate: React.Dispatch<React.SetStateAction<Date>>,
+    setFinishDate: React.Dispatch<React.SetStateAction<Date>>,
+    setPickerMode: React.Dispatch<React.SetStateAction<SprintDatePickerMode>>,
+    setDateSelected: React.Dispatch<React.SetStateAction<Date>>,
+    setSprints: React.Dispatch<React.SetStateAction<CalendarSprintRange[]>>,
+    onStartDateChanged: { (date: Date) },
+    onFinishDateChanged: { (date: Date) }
+) => {
+    if (!startDate && !finishDate) {
+        const newFinishDate = addDays(date, 13);
+        setStartDate(date);
+        setFinishDate(newFinishDate);
+        setPickerMode(SprintDatePickerMode.FinishDate);
+        setDateSelected(date);
+        setSprints(buildSprints(date, newFinishDate));
+        onFinishDateChanged(newFinishDate);
+    } else if (sameDay(date, startDate)) {
+        if (sameDay(date, finishDate)) {
+            setDateSelected(date);
+            setPickerMode(SprintDatePickerMode.FinishDate);
+        } else {
+            setDateSelected(date);
+            setPickerMode(SprintDatePickerMode.StartDate);
+        }
+    } else if (sameDay(date, finishDate)) {
+        setDateSelected(date);
+        setPickerMode(SprintDatePickerMode.FinishDate);
+    } else if (pickerMode === SprintDatePickerMode.StartDate) {
+        if (daySequenceIs(finishDate, date)) {
+            setFinishDate(date);
+            setDateSelected(date);
+            setSprints(buildSprints(startDate, date));
+            setPickerMode(SprintDatePickerMode.FinishDate);
+            onFinishDateChanged(date);
+        } else {
+            setStartDate(date);
+            setDateSelected(date);
+            setSprints(buildSprints(date, finishDate));
+            onStartDateChanged(date);
+        }
+    } else if (pickerMode === SprintDatePickerMode.FinishDate) {
+        if (daySequenceIs(date, startDate)) {
+            setStartDate(date);
+            setDateSelected(date);
+            setSprints(buildSprints(date, finishDate));
+            setPickerMode(SprintDatePickerMode.StartDate);
+            onStartDateChanged(date);
+        } else {
+            setFinishDate(date);
+            setDateSelected(date);
+            setSprints(buildSprints(startDate, date));
+            onFinishDateChanged(date);
+        }
+    }
 };
 
 export const InnerSprintDatePicker: React.FC<SprintDatePickerProps & SprintDatePickerInnerStateProps> = (props) => {
@@ -72,78 +169,32 @@ export const InnerSprintDatePicker: React.FC<SprintDatePickerProps & SprintDateP
 
     const handleDateChange = (date: Date) => {
         if (props.pickerMode === SprintDatePickerMode.DateRange) {
-            // Rules:
-            //   1. If nothing selected, it will set start to first click
-            //      and finish to 13 days later (2 week sprint).
-            //   2. If range available, mode has been set to "select start"
-            //      and first click will change the start.
-            //   3. Mode will stay as "select start" until the end date is
-            //      clicked and then it will switch to "select finish" mode.
-            //   4. Mode will stay as "select finish" until the start date is
-            //      clicked.
-            //   5. If start and finish date is the same it is in "select finish"
-            //      mode.
-            //   6. If in "select start" mode and date after finish is selected
-            //      then it should assume user intended to pick finish date and
-            //      set that and switch over to "select finish" mode.
-            //   7. If in "select finish" mode and date before start is selected
-            //      then it should assume user intended to pick start date and
-            //      set that and switch over to "select start" mode.
-            if (!startDate && !finishDate) {
-                const newFinishDate = addDays(date, 13);
-                setStartDate(date);
-                setFinishDate(newFinishDate);
-                setPickerMode(SprintDatePickerMode.FinishDate);
-                setDateSelected(date);
-                setSprints(buildSprints(date, newFinishDate));
-            } else if (sameDay(date, startDate)) {
-                if (sameDay(date, finishDate)) {
-                    setDateSelected(date);
-                    setPickerMode(SprintDatePickerMode.FinishDate);
-                } else {
-                    setDateSelected(date);
-                    setPickerMode(SprintDatePickerMode.StartDate);
-                }
-            } else if (sameDay(date, finishDate)) {
-                setDateSelected(date);
-                setPickerMode(SprintDatePickerMode.FinishDate);
-            } else if (pickerMode === SprintDatePickerMode.StartDate) {
-                if (daySequenceIs(finishDate, date)) {
-                    setFinishDate(date);
-                    setDateSelected(date);
-                    setSprints(buildSprints(startDate, date));
-                    setPickerMode(SprintDatePickerMode.FinishDate);
-                } else {
-                    setStartDate(date);
-                    setDateSelected(date);
-                    setSprints(buildSprints(date, finishDate));
-                }
-            } else if (pickerMode === SprintDatePickerMode.FinishDate) {
-                if (daySequenceIs(date, startDate)) {
-                    setStartDate(date);
-                    setDateSelected(date);
-                    setSprints(buildSprints(date, finishDate));
-                    setPickerMode(SprintDatePickerMode.StartDate);
-                } else {
-                    setFinishDate(date);
-                    setDateSelected(date);
-                    setSprints(buildSprints(startDate, date));
-                }
-            }
+            handleDateChangeInDateRangeMode(
+                startDate,
+                finishDate,
+                date,
+                pickerMode,
+                setStartDate,
+                setFinishDate,
+                setPickerMode,
+                setDateSelected,
+                setSprints,
+                props.onStartDateChange,
+                props.onFinishDateChange
+            );
         } else {
-            setDateSelected(date);
-            switch (pickerMode) {
-                case SprintDatePickerMode.StartDate: {
-                    setStartDate(date);
-                    setSprints(buildSprints(date, finishDate));
-                    break;
-                }
-                case SprintDatePickerMode.FinishDate: {
-                    setFinishDate(date);
-                    setSprints(buildSprints(startDate, date));
-                    break;
-                }
-            }
+            handleDateChangeInSingleDateModes(
+                date,
+                pickerMode,
+                finishDate,
+                startDate,
+                setDateSelected,
+                setStartDate,
+                setSprints,
+                setFinishDate,
+                props.onStartDateChange,
+                props.onFinishDateChange
+            );
         }
     };
 

@@ -72,6 +72,16 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
     const [validInputText, setValidInputText] = useState(formatDateAsText(props.inputValue, props.showTime) || "");
     const [isValid, setIsValid] = useState(true); // start off "valid", even if starting value is invalid
     const [showingPicker, setShowingPicker] = useState(props.showPicker);
+    const propagateTextChange = (inputText: string, lastValidInputText?: string) => {
+        setInputText(inputText);
+        if (props.onChange) {
+            if (lastValidInputText === undefined) {
+                props.onChange(inputText);
+            } else {
+                props.onChange(lastValidInputText);
+            }
+        }
+    };
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         let lastValidInputText = validInputText;
         if (props.validator && !props.validator(e.target.value)) {
@@ -81,10 +91,7 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
             lastValidInputText = e.target.value;
             setIsValid(true);
         }
-        setInputText(e.target.value);
-        if (props.onChange) {
-            props.onChange(lastValidInputText);
-        }
+        propagateTextChange(e.target.value, lastValidInputText);
     };
     const handleInputFocus = (e: FocusEvent<HTMLDivElement>) => {
         setShowingPicker(true);
@@ -166,7 +173,18 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
                 caretPosition={props.caretPosition || ItemMenuPanelCaretPosition.TopLeft}
                 panelColor={ItemMenuPanelColor.Dark}
             >
-                <SprintDatePicker startDate={startDateToUse} finishDate={finishDateToUse} pickerMode={pickerMode} suppressPadding />
+                <SprintDatePicker
+                    startDate={startDateToUse}
+                    finishDate={finishDateToUse}
+                    pickerMode={pickerMode}
+                    suppressPadding
+                    onStartDateChange={(date: Date) => {
+                        propagateTextChange(formatDateAsText(date));
+                    }}
+                    onFinishDateChange={(date: Date) => {
+                        propagateTextChange(formatDateAsText(date));
+                    }}
+                />
             </ItemMenuPanel>
         </div>
     );
