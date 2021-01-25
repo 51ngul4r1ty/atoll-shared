@@ -7,7 +7,7 @@ import { ApiBatchAddBacklogItemsToSprintAction } from "../actions/apiSprintBackl
 import { BatchApiCall } from "../middleware/apiBatchTypes";
 
 // interfaces/types
-import { AnyFSA } from "../types";
+import { AnyFSA } from "../types/reactHelperTypes";
 
 export interface ApiBatchState {
     remainingApiCalls: BatchApiCall<any, any>[];

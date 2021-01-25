@@ -2,7 +2,7 @@
 import { produce } from "immer";
 
 // interfaces/types
-import { AnyFSA } from "../types";
+import { AnyFSA } from "../types/reactHelperTypes";
 
 export interface FeatureToggle {
     enabled: boolean;

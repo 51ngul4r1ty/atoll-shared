@@ -3,39 +3,33 @@ import { CalendarSprintRange } from "./calendarSprintTypes";
 
 // utils
 import { addDays, roundDateToDayBoundary, sameDay } from "../../../../utils";
+import { DateOnly } from "../../../../types/dateTypes";
 
 export const sortSprints = (sprints: CalendarSprintRange[]): CalendarSprintRange[] =>
     !sprints ? [] : sprints.sort((sprint) => (sprint.start > sprint.finish ? 1 : 0));
 
-export const inSprintRange = (sprint: CalendarSprintRange, day: Date): boolean => {
+export const inSprintRange = (sprint: CalendarSprintRange, day: DateOnly): boolean => {
     if (!sprint) {
         return false;
     }
-    const dayRounded = roundDateToDayBoundary(day);
-    return dayRounded >= roundDateToDayBoundary(sprint.start) && dayRounded <= roundDateToDayBoundary(sprint.finish);
+    return day.gte(sprint.start) && day.lte(sprint.finish);
 };
 
-export const isFirstDay = (sprint: CalendarSprintRange, day: Date): boolean => {
+export const isFirstDay = (sprint: CalendarSprintRange, day: DateOnly): boolean => {
     if (!sprint) {
         return false;
     }
-    const dayRounded = roundDateToDayBoundary(day);
-    const sprintStartDay = roundDateToDayBoundary(sprint.start);
-    // const result = dayRounded.getTime() == sprintStartDay.getTime();
-    // console.log(`IS FIRST DAY: ${result} - ${dayRounded} vs ${sprintStartDay}`);
-    return sameDay(dayRounded, sprintStartDay);
+    return day.eq(sprint.start);
 };
 
-export const isLastDay = (sprint: CalendarSprintRange, day: Date): boolean => {
+export const isLastDay = (sprint: CalendarSprintRange, day: DateOnly): boolean => {
     if (!sprint) {
         return false;
     }
-    const dayRounded = roundDateToDayBoundary(day);
-    const sprintFinishDay = roundDateToDayBoundary(sprint.finish);
-    return sameDay(dayRounded, sprintFinishDay);
+    return day.eq(sprint.finish);
 };
 
-export const getStartingSprintIdx = (sprintsSorted: CalendarSprintRange[], day: Date) => {
+export const getStartingSprintIdx = (sprintsSorted: CalendarSprintRange[], day: DateOnly) => {
     if (sprintsSorted.length === 0) {
         return -1;
     }
@@ -63,7 +57,7 @@ export const getSprint = (sprintsSorted: CalendarSprintRange[], sprintIdx: numbe
     return sprintsSorted[sprintIdx];
 };
 
-export const calcMonthToShow = (dates: Date[]): number | null => {
+export const calcMonthToShow = (dates: DateOnly[]): number | null => {
     if (!dates.length) {
         return null;
     }
@@ -71,25 +65,25 @@ export const calcMonthToShow = (dates: Date[]): number | null => {
     return date.getMonth();
 };
 
-export const calcYearToShow = (dates: Date[]) => {
+export const calcYearToShow = (dates: DateOnly[]) => {
     if (!dates.length) {
         return null;
     }
     const date = dates[0];
-    return date.getFullYear();
+    return date.getYear();
 };
 
-export const calcFirstDayToShow = (dates: Date[], startDayOfWeek?: number): Date | null => {
+export const calcFirstDayToShow = (dates: DateOnly[], startDayOfWeek?: number): DateOnly | null => {
     if (!dates.length) {
         return null;
     }
     const date = dates[0];
-    const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+    const firstDayOfMonth = new DateOnly(date.getYear(), date.getMonth(), 1);
     const dayOfWeek = firstDayOfMonth.getDay();
     const leftmostDay = startDayOfWeek === undefined ? 1 : startDayOfWeek; // Monday - TODO: pick one based on sprint starts
     let diff = leftmostDay - dayOfWeek;
     if (diff > 0) {
         diff -= 7;
     }
-    return addDays(firstDayOfMonth, diff);
+    return firstDayOfMonth.addDays(diff);
 };

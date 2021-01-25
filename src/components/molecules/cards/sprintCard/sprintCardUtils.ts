@@ -1,49 +1,50 @@
 // utils
+import { DateOnly } from "../../../../types/dateTypes";
 import { addDays, monthToAbbrString } from "../../../../utils/dateHelper";
 
 // interfaces/types
 import { SprintCardSprint, SprintStatus } from "./sprintCardTypes";
 
-export const formatSameMonthRange = (startDate: Date, finishDate: Date): string => {
-    const startYear = startDate.getFullYear();
-    const startMonth = startDate.getMonth();
-    const startDay = startDate.getDate();
-    const finishDay = finishDate.getDate();
+export const formatSameMonthRange = (startDate: DateOnly, finishDate: DateOnly): string => {
+    const startYear = startDate.getYear();
+    const startMonth = startDate.getMonthIndex();
+    const startDay = startDate.getDay();
+    const finishDay = finishDate.getDay();
     const monthName = monthToAbbrString(startMonth);
     return `${monthName} ${startDay} to ${finishDay}, ${startYear}`;
 };
 
-export const formatSameYearRange = (startDate: Date, finishDate: Date): string => {
-    const startYear = startDate.getFullYear();
+export const formatSameYearRange = (startDate: DateOnly, finishDate: DateOnly): string => {
+    const startYear = startDate.getYear();
     const startMonth = startDate.getMonth();
     const finishMonth = finishDate.getMonth();
     if (startMonth === finishMonth) {
         return formatSameMonthRange(startDate, finishDate);
     } else {
-        const startDay = startDate.getDate();
-        const finishDay = finishDate.getDate();
+        const startDay = startDate.getDay();
+        const finishDay = finishDate.getDay();
         // e.g. "May 30 to June 12, 2019";
         return `${monthToAbbrString(startMonth)} ${startDay} to ${monthToAbbrString(finishMonth)} ${finishDay}, ${startYear}`;
     }
 };
 
-export const formatDiffYearRange = (startDate: Date, finishDate: Date): string => {
-    const startYear = startDate.getFullYear();
-    const finishYear = finishDate.getFullYear();
-    const startMonth = startDate.getMonth();
-    const finishMonth = finishDate.getMonth();
-    const startDay = startDate.getDate();
-    const finishDay = finishDate.getDate();
+export const formatDiffYearRange = (startDate: DateOnly, finishDate: DateOnly): string => {
+    const startYear = startDate.getYear();
+    const finishYear = finishDate.getYear();
+    const startMonth = startDate.getMonthIndex();
+    const finishMonth = finishDate.getMonthIndex();
+    const startDay = startDate.getDay();
+    const finishDay = finishDate.getDay();
     // e.g. "May 30, 2019 to June 12, 2020";
     return `${monthToAbbrString(startMonth)} ${startDay}, ${startYear} to ${monthToAbbrString(
         finishMonth
     )} ${finishDay}, ${finishYear}`;
 };
 
-export const formatDateRange = (startDate: Date, finishDate: Date): string => {
-    const finishDateToUse = addDays(finishDate, -1);
-    const startYear = startDate.getFullYear();
-    const finishYear = finishDateToUse.getFullYear();
+export const formatDateRange = (startDate: DateOnly, finishDate: DateOnly): string => {
+    const finishDateToUse = finishDate.addDays(-1);
+    const startYear = startDate.getYear();
+    const finishYear = finishDateToUse.getYear();
     if (startYear === finishYear) {
         return formatSameYearRange(startDate, finishDateToUse);
     } else {

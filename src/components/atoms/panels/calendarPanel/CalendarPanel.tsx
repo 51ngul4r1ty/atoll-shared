@@ -22,14 +22,15 @@ import {
 // interfaces/types
 import { CalendarSprintRange } from "./calendarSprintTypes";
 import { PropsWithClassName } from "../../../common/types";
+import { DateOnly } from "../../../../types/dateTypes";
 
 export interface CalendarPanelStateProps extends PropsWithClassName {
-    dateSelected?: Date | null;
+    dateSelected?: DateOnly | null;
     sprints?: CalendarSprintRange[];
 }
 
 export interface CalendarPanelDispatchProps {
-    onDateClick?: { (date: Date): void };
+    onDateClick?: { (date: DateOnly): void };
 }
 
 export type CalendarPanelProps = CalendarPanelStateProps & CalendarPanelDispatchProps;
@@ -40,7 +41,7 @@ interface CalendarPanelInnerStateProps {}
 const DAY = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
 export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInnerStateProps> = (props) => {
-    const dates = props.dateSelected ? [props.dateSelected] : [new Date()];
+    const dates = props.dateSelected ? [props.dateSelected] : [new DateOnly()];
     const year = calcYearToShow(dates);
     const month = monthToString(calcMonthToShow(dates));
     let day = calcFirstDayToShow(dates);
@@ -66,7 +67,7 @@ export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInne
                 );
             }
             const isCurrentMonth = day.getMonth() === currentMonth;
-            const isSelectedDate = sameDay(day, props.dateSelected);
+            const isSelectedDate = day.eq(props.dateSelected);
             const currentMonthClass = isCurrentMonth ? css.currentMonth : null;
             const selectedDateClass = isSelectedDate ? css.selected : null;
             inCurrentSprintRange = inSprintRange(sprint, day);
@@ -88,10 +89,10 @@ export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInne
             );
             calendarGridRow.push(
                 <div data-value={day} className={classToUse} key={`${row},${col}`}>
-                    <div className={css.text}>{day.getDate()}</div>
+                    <div className={css.text}>{day.getDay()}</div>
                 </div>
             );
-            day = addDays(day, 1);
+            day = day.addDays(1);
         }
     }
 
@@ -106,7 +107,7 @@ export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInne
         if (parentElt) {
             const dataValue = parentElt.getAttribute("data-value");
             if (props.onDateClick && dataValue) {
-                props.onDateClick(new Date(Date.parse(dataValue)));
+                props.onDateClick(DateOnly.fromString(dataValue));
             }
         }
     };

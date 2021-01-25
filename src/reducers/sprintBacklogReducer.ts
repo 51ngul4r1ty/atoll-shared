@@ -5,7 +5,7 @@ import { Draft, produce } from "immer";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { AnyFSA } from "../types";
+import { AnyFSA } from "../types/reactHelperTypes";
 import { ApiGetSprintBacklogItemsSuccessAction, ApiSprintBacklogItemSetStatusSuccessAction } from "../actions/apiSprintBacklog";
 import { BacklogItem } from "../types/backlogItemTypes";
 import { BacklogItemWithSource } from "./backlogItems/backlogItemsReducerTypes";

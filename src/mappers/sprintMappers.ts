@@ -1,14 +1,15 @@
 // interfaces/types
 import { ApiSprint } from "../apiModelTypes";
 import { Sprint } from "../reducers/sprintsReducer";
+import { DateOnly } from "../types/dateTypes";
 
 // utils
 import { isoDateStringToDate } from "../utils/apiPayloadConverters";
 import { determineSprintExpanded } from "../utils/sprintStatusHelper";
 
 export const mapApiItemToSprint = (apiItem: ApiSprint): Sprint => {
-    const startDate = isoDateStringToDate(apiItem.startdate);
-    const finishDate = isoDateStringToDate(apiItem.finishdate);
+    const startDate = DateOnly.fromISODate(apiItem.startdate);
+    const finishDate = DateOnly.fromISODate(apiItem.finishdate);
     return {
         acceptedPoints: apiItem.acceptedPoints,
         archived: apiItem.archived,

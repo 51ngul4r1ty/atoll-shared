@@ -6,10 +6,10 @@ import urlParse from "url-parse";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { AnyFSA } from "../types";
+import { AnyFSA } from "../types/reactHelperTypes";
 import { ApiGetBacklogItemsSuccessAction } from "../actions/apiBacklogItems";
 import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
-import { ApiBacklogItem, ApiItemWithLinks, ApiSprint, ItemWithId } from "../apiModelTypes";
+import { ApiItemWithLinks, ItemWithId } from "../apiModelTypes";
 import { ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
 import { ApiGetBffViewsBacklogItemSuccessAction } from "../actions/apiBffViewsBacklogItem";
 import { ApiGetSprintsSuccessAction } from "../actions/apiSprints";

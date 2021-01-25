@@ -5,7 +5,8 @@ import { Draft, produce } from "immer";
 import * as ActionTypes from "../../actions/actionTypes";
 
 // interfaces/types
-import { AnyFSA, PushOperationType } from "../../types";
+import { AnyFSA } from "../../types/reactHelperTypes";
+import { PushOperationType } from "../../types";
 import {
     ApiPostBacklogItemSuccessAction,
     ApiGetBacklogItemsSuccessAction,

@@ -10,7 +10,7 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 
 // interfaces/types
 import { PropsWithClassName } from "../../common/types";
-import { ComponentWithForwardedRef } from "../../../types";
+import { ComponentWithForwardedRef } from "../../../types/reactHelperTypes";
 
 export type SimpleButtonRefType = HTMLInputElement;
 

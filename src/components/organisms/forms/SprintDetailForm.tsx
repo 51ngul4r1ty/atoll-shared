@@ -16,12 +16,14 @@ import css from "./SprintDetailForm.module.css";
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
 import { DateInput, DateInputPickerMode } from "../../atoms/inputs/DateInput";
-import { stringToDate } from "../../../utils/dateHelper";
+
+// interfaces/types
+import { DateOnly } from "../../../types/dateTypes";
 
 export interface SprintDetailFormEditableFields {
     sprintName: string;
-    startDate: Date;
-    finishDate: Date;
+    startDate: DateOnly;
+    finishDate: DateOnly;
     id: string;
 }
 
@@ -120,7 +122,7 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
                     pickerMode={DateInputPickerMode.RangeAltIsFinishDate}
                     rangeAltValue={props.finishDate}
                     onChange={(value) => {
-                        const startDate = stringToDate(value);
+                        const startDate = DateOnly.fromString(value);
                         if (startDate !== null) {
                             handleDataUpdate({ ...prevData, startDate });
                         }
@@ -135,7 +137,7 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
                     pickerMode={DateInputPickerMode.RangeAltIsStartDate}
                     rangeAltValue={props.startDate}
                     onChange={(value) => {
-                        const finishDate = stringToDate(value);
+                        const finishDate = DateOnly.fromString(value);
                         if (finishDate !== null) {
                             handleDataUpdate({ ...prevData, finishDate });
                         }

@@ -4,6 +4,9 @@ export { FEATURE_TOGGLE_LIST } from "./constants/defaultFeatureToggles";
 export { PushState } from "./reducers/types";
 export { rootReducerInitialState } from "./reducers/rootReducer";
 
+// types
+export * from "./types/index";
+
 // components - common
 export * from "./components/common/index";
 

@@ -1,52 +1,76 @@
 // externals
-import React, { forwardRef, ChangeEvent, RefObject, Ref, useState, KeyboardEvent, useEffect } from "react";
+import React, { forwardRef, ChangeEvent, FocusEvent, RefObject, Ref, useState, useEffect } from "react";
 
 // style
-import css from "./StandardInput.module.css";
+import css from "./DateTimeInput.module.css";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
-import { ComponentWithForwardedRef } from "../../../types/reactHelperTypes";
 import { usePrevious } from "../../common/usePreviousHook";
 
-export type StandardInputRefType = HTMLInputElement;
+// interfaces/types
+import { ComponentWithForwardedRef } from "../../../types/reactHelperTypes";
 
-export type StandardInputType = ComponentWithForwardedRef<StandardInputProps>;
+export type DateTimeInputRefType = HTMLInputElement;
 
-export interface StandardInputStateProps {
+export type DateTimeInputType = ComponentWithForwardedRef<DateTimeInputProps>;
+
+export interface DateTimeInputStateProps {
     className?: string;
     disabled?: boolean;
     inputId: string;
     inputName?: string;
-    inputValue?: string;
     labelText: string;
     placeHolder?: string;
     readOnly?: boolean;
     required?: boolean;
+    showPicker?: boolean;
+    showTime?: boolean;
     size?: number;
+    inputValue: Date | null;
     type?: string;
     validator?: { (value: string): boolean };
 }
 
-export interface StandardInputDispatchProps {
+export interface DateTimeInputDispatchProps {
     onChange?: { (value: string): void };
     onEnterKeyPress?: { () };
     onKeyPress?: { (keyCode: number) };
 }
 
-export type StandardInputProps = StandardInputStateProps & StandardInputDispatchProps;
+export type DateTimeInputProps = DateTimeInputStateProps & DateTimeInputDispatchProps;
 
 // NOTE: Keep this private so that it isn't referenced outside this component
-interface StandardInputInnerStateProps {
-    innerRef: RefObject<StandardInputRefType>;
+interface DateTimeInputInnerStateProps {
+    innerRef: RefObject<DateTimeInputRefType>;
 }
 
-export const InnerStandardInput: React.FC<StandardInputProps & StandardInputInnerStateProps> = (props) => {
+export const formatDateAsText = (date: Date | null, showTime?: boolean): string => {
+    if (!date) {
+        return "";
+    }
+    const datePart = date.toLocaleDateString();
+    const timePart = date.toLocaleTimeString();
+    const dateTimeString = `${datePart} ${timePart}`;
+    return showTime ? dateTimeString : datePart;
+};
+
+export const InnerDateTimeInput: React.FC<DateTimeInputProps & DateTimeInputInnerStateProps> = (props) => {
     const inputTextStartingEmptyValue = props.readOnly ? "-" : "";
-    const propsInputValueToUse = props.inputValue || inputTextStartingEmptyValue;
+    const propsInputValueToUse = formatDateAsText(props.inputValue) || inputTextStartingEmptyValue;
     const [inputText, setInputText] = useState(propsInputValueToUse);
-    const [validInputText, setValidInputText] = useState(props.inputValue || "");
+    const [validInputText, setValidInputText] = useState(formatDateAsText(props.inputValue, props.showTime) || "");
     const [isValid, setIsValid] = useState(true); // start off "valid", even if starting value is invalid
+    const propagateTextChange = (inputText: string, lastValidInputText?: string) => {
+        setInputText(inputText);
+        if (props.onChange) {
+            if (lastValidInputText === undefined) {
+                props.onChange(inputText);
+            } else {
+                props.onChange(lastValidInputText);
+            }
+        }
+    };
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         let lastValidInputText = validInputText;
         if (props.validator && !props.validator(e.target.value)) {
@@ -56,10 +80,7 @@ export const InnerStandardInput: React.FC<StandardInputProps & StandardInputInne
             lastValidInputText = e.target.value;
             setIsValid(true);
         }
-        setInputText(e.target.value);
-        if (props.onChange) {
-            props.onChange(lastValidInputText);
-        }
+        propagateTextChange(e.target.value, lastValidInputText);
     };
     const handleKeyUp = (event) => {
         if (event.keyCode === 13) {
@@ -104,6 +125,8 @@ export const InnerStandardInput: React.FC<StandardInputProps & StandardInputInne
         <div className={classToUse}>
             <input
                 id={props.inputId}
+                data-class="date-input"
+                data-id={props.inputId}
                 ref={props.innerRef}
                 disabled={props.disabled || props.readOnly}
                 name={nameToUse}
@@ -115,12 +138,15 @@ export const InnerStandardInput: React.FC<StandardInputProps & StandardInputInne
                     handleChange(e);
                 }}
                 required={props.required}
+                tabIndex={0}
             />
             <label htmlFor={nameToUse}>{props.labelText}</label>
         </div>
     );
 };
 
-export const StandardInput: StandardInputType = forwardRef((props: StandardInputProps, ref: Ref<StandardInputRefType>) => (
-    <InnerStandardInput innerRef={ref as RefObject<StandardInputRefType>} {...props} />
-));
+export const DateTimeInput: DateTimeInputType = forwardRef<DateTimeInputRefType, DateTimeInputProps>(
+    (props: DateTimeInputProps, ref: Ref<DateTimeInputRefType>) => (
+        <InnerDateTimeInput innerRef={ref as RefObject<DateTimeInputRefType>} {...props} />
+    )
+);

@@ -13,7 +13,7 @@ import { getApiBaseUrl } from "../config";
 import { buildActionTypes } from "./utils/apiActionUtils";
 
 // interfaces/types
-import { SimpleFSA, FSA } from "../types";
+import { SimpleFSA, FSA } from "../types/reactHelperTypes";
 
 export type LoginUserAction = SimpleFSA<typeof ActionTypes.LOGIN_USER>;
 export const loginUser = (): LoginUserAction => ({

@@ -7,7 +7,7 @@ import css from "./StandardTextArea.module.css";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
-import { ComponentWithForwardedRef } from "../../../types";
+import { ComponentWithForwardedRef } from "../../../types/reactHelperTypes";
 import { usePrevious } from "../../common/usePreviousHook";
 
 export type StandardTextAreaRefType = HTMLTextAreaElement;

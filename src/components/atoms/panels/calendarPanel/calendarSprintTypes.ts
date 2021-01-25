@@ -1,5 +1,8 @@
+// interfaces/types
+import { DateOnly } from "../../../../types/dateTypes";
+
 export interface CalendarSprintRange {
-    start: Date;
-    finish: Date;
+    start: DateOnly;
+    finish: DateOnly;
     editing: boolean;
 }

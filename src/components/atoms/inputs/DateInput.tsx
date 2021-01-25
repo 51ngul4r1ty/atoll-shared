@@ -6,11 +6,16 @@ import css from "./DateInput.module.css";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
-import { ComponentWithForwardedRef } from "../../../types";
 import { usePrevious } from "../../common/usePreviousHook";
 import { ItemMenuPanel, ItemMenuPanelCaretPosition, ItemMenuPanelColor } from "../panels/ItemMenuPanel";
-import { SprintDatePicker, SprintDatePickerMode } from "../../molecules/pickers/SprintDatePicker";
 import { getEltDataAttribute, getParentWithDataClass, hasParentWithDataClass } from "../../common/domUtils";
+
+// components
+import { SprintDatePicker, SprintDatePickerMode } from "../../molecules/pickers/SprintDatePicker";
+
+// interfaces/types
+import { ComponentWithForwardedRef } from "../../../types/reactHelperTypes";
+import { DateOnly } from "../../../types/dateTypes";
 
 export type DateInputRefType = HTMLInputElement;
 
@@ -26,7 +31,7 @@ export interface DateInputStateProps {
     caretPosition?: ItemMenuPanelCaretPosition;
     className?: string;
     disabled?: boolean;
-    rangeAltValue?: Date | null;
+    rangeAltValue?: DateOnly | null;
     inputId: string;
     inputName?: string;
     labelText: string;
@@ -35,9 +40,8 @@ export interface DateInputStateProps {
     readOnly?: boolean;
     required?: boolean;
     showPicker?: boolean;
-    showTime?: boolean;
     size?: number;
-    inputValue: Date | null;
+    inputValue: DateOnly | null;
     type?: string;
     validator?: { (value: string): boolean };
 }
@@ -67,9 +71,9 @@ export const formatDateAsText = (date: Date | null, showTime?: boolean): string 
 
 export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps> = (props) => {
     const inputTextStartingEmptyValue = props.readOnly ? "-" : "";
-    const propsInputValueToUse = formatDateAsText(props.inputValue) || inputTextStartingEmptyValue;
+    const propsInputValueToUse = props.inputValue ? props.inputValue.formatAsText() : inputTextStartingEmptyValue;
     const [inputText, setInputText] = useState(propsInputValueToUse);
-    const [validInputText, setValidInputText] = useState(formatDateAsText(props.inputValue, props.showTime) || "");
+    const [validInputText, setValidInputText] = useState(props.inputValue ? props.inputValue.formatAsText() : "");
     const [isValid, setIsValid] = useState(true); // start off "valid", even if starting value is invalid
     const [showingPicker, setShowingPicker] = useState(props.showPicker);
     const propagateTextChange = (inputText: string, lastValidInputText?: string) => {
@@ -182,11 +186,11 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
                     finishDate={finishDateToUse}
                     pickerMode={pickerMode}
                     suppressPadding
-                    onStartDateChange={(date: Date) => {
-                        propagateTextChange(formatDateAsText(date));
+                    onStartDateChange={(date: DateOnly) => {
+                        propagateTextChange(date.formatAsText());
                     }}
-                    onFinishDateChange={(date: Date) => {
-                        propagateTextChange(formatDateAsText(date));
+                    onFinishDateChange={(date: DateOnly) => {
+                        propagateTextChange(date.formatAsText());
                     }}
                 />
             </ItemMenuPanel>

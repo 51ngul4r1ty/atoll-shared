@@ -24,6 +24,7 @@ import { AddNewSprintFormAction, addSprint, NewSprintPosition, updateSprintStats
 
 // utils
 import { addDays, now } from "../utils/dateHelper";
+import { DateOnly } from "../types/dateTypes";
 
 export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action) => {
     next(action);
@@ -67,18 +68,18 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
             const state = storeTyped.getState();
             const actionTyped = action as AddNewSprintFormAction;
             const position = actionTyped.payload.position;
-            let startDate: Date;
-            let finishDate: Date;
+            let startDate: DateOnly;
+            let finishDate: DateOnly;
             // TODO: Make this configurable (create a story for this)
             const SPRINT_DAY_LENGTH = 14;
             if (position === NewSprintPosition.Before) {
                 const firstSprint = getFirstSprint(state);
-                startDate = addDays(firstSprint.startDate, -SPRINT_DAY_LENGTH);
+                startDate = firstSprint.startDate.addDays(-SPRINT_DAY_LENGTH);
                 finishDate = firstSprint.startDate;
             } else if (position === NewSprintPosition.After) {
                 const lastSprint = getLastSprint(state);
                 startDate = lastSprint.finishDate;
-                finishDate = addDays(lastSprint.finishDate, SPRINT_DAY_LENGTH);
+                finishDate = lastSprint.finishDate.addDays(SPRINT_DAY_LENGTH);
             } else {
                 throw Error(`Unexpected ${position}`);
             }

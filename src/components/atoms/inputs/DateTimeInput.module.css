@@ -1,0 +1,52 @@
+.input {
+    position: relative;
+    overflow: visible;
+}
+
+.input > input {
+    background-color: var(--normal-input-page-color, white);
+    border-width: 0;
+    height: 2.4rem;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+    width: 100%;
+    box-sizing: border-box;
+    color: var(--normal-pen-color, black);
+}
+
+.input.readOnly > input {
+    background-color: var(--normal-form-page-readonly-color, #e8e8e8);
+}
+
+.input > label {
+    position: absolute;
+    top: 0.08rem;
+    left: 0.08rem;
+    font-size: 0.5833rem; /* 7pt */
+    opacity: 0.6;
+    text-transform: uppercase;
+}
+
+.input > input::placeholder {
+    color: var(--normal-placeholder-color, #777);
+}
+
+.input.disabled > input {
+    background-color: var(--normal-input-page-disabled-color, #e0e0e0);
+}
+
+.input.disabled > label {
+    color: var(--normal-pen-disabled-color, #999);
+}
+
+.valid {
+}
+
+.invalid input {
+    background-color: var(--normal-error-page-color, #900);
+    color: var(--normal-error-pen-color, #fff);
+}
+
+.input.invalid > label {
+    color: var(--normal-error-pen-color, #fff);
+}

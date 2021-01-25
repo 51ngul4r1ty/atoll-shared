@@ -26,14 +26,15 @@ export const convertToBacklogItemModel = (backlogItem: BacklogItem): BacklogItem
 
 export const convertToSprintModel = (sprint: Sprint): SprintModel => ({
     acceptedPoints: sprint.acceptedPoints,
+    archived: sprint.archived,
     createdAt: sprint.createdAt,
-    finishdate: sprint.finishDate,
+    finishdate: sprint.finishDate.toISOString(),
     id: sprint.id,
     name: sprint.name,
     plannedPoints: sprint.plannedPoints,
     projectId: sprint.projectId,
     remainingSplitPoints: sprint.remainingSplitPoints,
-    startdate: sprint.startDate,
+    startdate: sprint.startDate.toISOString(),
     totalPoints: sprint.totalPoints,
     updatedAt: sprint.updatedAt,
     usedSplitPoints: sprint.usedSplitPoints,

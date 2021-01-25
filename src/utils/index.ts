@@ -14,3 +14,4 @@ export * from "./sprintStatusHelper";
 export * from "./themeHelper";
 export * from "./urlUtils";
 export * from "./wsClient";
+export * from "./formatter";

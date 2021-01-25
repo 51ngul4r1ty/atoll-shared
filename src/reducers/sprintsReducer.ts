@@ -2,7 +2,8 @@
 import { Draft, produce } from "immer";
 
 // interfaces/types
-import { AnyFSA, StandardModelItem } from "../types";
+import { AnyFSA } from "../types/reactHelperTypes";
+import { StandardModelItem } from "../types";
 import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
 import { PushState, Source } from "./types";
 import { ApiGetSprintBacklogItemsSuccessAction } from "../actions/apiSprintBacklog";
@@ -24,6 +25,7 @@ import {
     ApiPostSprintSuccessAction,
     ApiPutSprintSuccessAction
 } from "../actions/apiSprints";
+import { DateOnly } from "../types/dateTypes";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
@@ -48,12 +50,12 @@ export interface Sprint extends StandardModelItem {
     archived: boolean;
     backlogItemsLoaded: boolean;
     expanded: boolean;
-    finishDate: Date;
+    finishDate: DateOnly;
     name: string;
     plannedPoints: number | null;
     projectId: string;
     remainingSplitPoints: number | null;
-    startDate: Date;
+    startDate: DateOnly;
     totalPoints: number | null;
     usedSplitPoints: number | null;
     velocityPoints: number | null;
@@ -88,11 +90,13 @@ export const sprintsReducerInitialState = Object.freeze<SprintsState>({
 });
 
 export const rebuildAllItems = (draft: Draft<SprintsState>) => {
-    const addedItemsWithSource = draft.addedItems.map((item) => {
+    const addedItemsWithSource = draft.addedItems.map((draftItem) => {
+        const item = draftItem as SaveableSprint;
         const result: SprintWithSource = { ...item, source: Source.Added };
         return result;
     });
-    const itemsWithSource = draft.items.map((item) => {
+    const itemsWithSource = draft.items.map((draftItem) => {
+        const item = draftItem as EditableSprint;
         const result: SprintWithSource = { ...item, source: Source.Loaded, saved: true };
         return result;
     });
@@ -114,9 +118,9 @@ export const updateSprintFields = (sprint: Sprint, payload: SprintDetailFormEdit
 };
 
 export const updateItemFieldsInAllItems = (draft: Draft<SprintsState>, payload: SprintDetailFormEditableFieldsWithInstanceId) => {
-    const item = draft.allItems.filter((item) => idsMatch(item, payload));
+    const item = draft.allItems.filter((item) => idsMatch(item as SprintWithSource, payload));
     if (item.length === 1) {
-        updateSprintFields(item[0], payload);
+        updateSprintFields(item[0] as SprintWithSource, payload);
     }
 };
 
@@ -157,11 +161,11 @@ export const markBacklogItemsLoaded = (draft: Draft<SprintsState>, sprintId: str
 export const updateSprintById = (draft: Draft<SprintsState>, sprintId: string, updateItem: { (item: SaveableSprint) }) => {
     const addedItemIdx = draft.addedItems.findIndex((item) => item.id === sprintId);
     if (addedItemIdx >= 0) {
-        updateItem(draft.items[addedItemIdx]);
+        updateItem(draft.items[addedItemIdx] as SaveableSprint);
     }
     const idx = draft.items.findIndex((item) => item.id === sprintId);
     if (idx >= 0) {
-        updateItem(draft.items[idx]);
+        updateItem(draft.items[idx] as SaveableSprint);
     }
 };
 
@@ -269,13 +273,13 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             case ActionTypes.UPDATE_SPRINT_FIELDS: {
                 const actionTyped = action as UpdateSprintFieldsAction;
                 draft.addedItems.forEach((addedItem) => {
-                    if (idsMatch(addedItem, actionTyped.payload)) {
-                        updateSprintFields(addedItem, actionTyped.payload);
+                    if (idsMatch(addedItem as SaveableSprint, actionTyped.payload)) {
+                        updateSprintFields(addedItem as SaveableSprint, actionTyped.payload);
                     }
                 });
                 draft.items.forEach((item) => {
-                    if (idsMatch(item, actionTyped.payload)) {
-                        updateSprintFields(item, actionTyped.payload);
+                    if (idsMatch(item as EditableSprint, actionTyped.payload)) {
+                        updateSprintFields(item as EditableSprint, actionTyped.payload);
                     }
                 });
                 updateItemFieldsInAllItems(draft, actionTyped.payload);
