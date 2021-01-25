@@ -1,7 +1,5 @@
 // externals
 import { immerable } from "immer";
-import { formatDateAsText } from "../components/atoms/inputs/DateTimeInput";
-import { isoDateStringToDate } from "../utils/apiPayloadConverters";
 
 // utils
 import { addDays, stringToDate } from "../utils/dateHelper";
@@ -21,6 +19,8 @@ export class DateOnly {
         this[immerable] = true;
         if (args.length > 3) {
             throw new Error(`Too many arguments (${args.length}) when constructing DateOnly instance`);
+        } else if (args.length > 0 && args.length < 3) {
+            throw new Error(`Too few arguments (${args.length}) when constructing DateOnly instance (expected 0 or 3)`);
         } else if (args.length === 0) {
             const date = new Date();
             this.year = date.getFullYear();

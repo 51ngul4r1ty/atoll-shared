@@ -360,7 +360,6 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 return;
             }
             case ActionTypes.API_PUT_SPRINT_SUCCESS: {
-                console.log("------ DEBUG HERE ------");
                 const actionTyped = action as ApiPutSprintSuccessAction;
                 const sprintId = actionTyped.payload.response.data.item.id;
                 updateSprintById(draft, sprintId, (item) => {
