@@ -5,9 +5,10 @@ import React from "react";
 import css from "./CalendarPanel.module.css";
 
 // utils
-import { addDays, monthToAbbrString, monthToString, sameDay } from "../../../../utils/dateHelper";
+import { monthToString } from "../../../../utils/dateHelper";
 import { buildClassName } from "../../../../utils/classNameBuilder";
 import {
+    calcCurrentMonth,
     calcFirstDayToShow,
     calcMonthToShow,
     calcYearToShow,
@@ -50,7 +51,7 @@ export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInne
     const calendarGrid = [];
     const sprintsSorted = sortSprints(props.sprints);
     calendarGrid.push(calendarHeaderRow);
-    let currentMonth = 0;
+    let currentMonth = calcCurrentMonth(dates);
     let sprintIdx = getStartingSprintIdx(sprintsSorted, day);
     let sprint = sprintIdx === -1 ? null : sprintsSorted[sprintIdx];
     let inCurrentSprintRange = inSprintRange(sprint, day);

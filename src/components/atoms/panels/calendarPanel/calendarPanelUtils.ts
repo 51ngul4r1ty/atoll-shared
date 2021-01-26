@@ -73,6 +73,14 @@ export const calcYearToShow = (dates: DateOnly[]) => {
     return date.getYear();
 };
 
+export const calcCurrentMonth = (dates: DateOnly[]) => {
+    if (!dates.length) {
+        return null;
+    }
+    const date = dates[0];
+    return date.getMonth();
+};
+
 export const calcFirstDayToShow = (dates: DateOnly[], startDayOfWeek?: number): DateOnly | null => {
     if (!dates.length) {
         return null;
