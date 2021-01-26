@@ -75,10 +75,15 @@ export interface SprintWithSource extends SaveableSprint {
     source: Source;
 }
 
+export interface OriginalSprintData {
+    [id: string]: Sprint;
+}
+
 export type SprintsState = Readonly<{
     addedItems: SaveableSprint[];
     allItems: SprintWithSource[];
     items: EditableSprint[];
+    originalData: OriginalSprintData;
     openedDetailMenuSprintId: string | null;
 }>;
 
@@ -86,7 +91,8 @@ export const sprintsReducerInitialState = Object.freeze<SprintsState>({
     addedItems: [],
     allItems: [],
     items: [],
-    openedDetailMenuSprintId: null
+    openedDetailMenuSprintId: null,
+    originalData: {}
 });
 
 export const rebuildAllItems = (draft: Draft<SprintsState>) => {
@@ -242,9 +248,12 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             }
             case ActionTypes.EDIT_SPRINT: {
                 const actionTyped = action as EditSprintAction;
-                const position = actionTyped.payload.sprintId;
+                const sprintId = actionTyped.payload.sprintId;
 
-                updateSprintById(draft, actionTyped.payload.sprintId, (item) => {
+                const sprint = getSprintById(draft as SprintsState, sprintId);
+                draft.originalData[sprintId] = sprint;
+
+                updateSprintById(draft, sprintId, (item) => {
                     item.editing = true;
                 });
                 rebuildAllItems(draft);
@@ -264,9 +273,16 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             }
             case ActionTypes.CANCEL_EDIT_SPRINT: {
                 const actionTyped = action as CancelEditSprintAction;
+                const sprintId = actionTyped.payload.itemId;
+
+                const originalSprintData = draft.originalData[sprintId];
                 updateSprintById(draft, actionTyped.payload.itemId, (item) => {
                     item.editing = false;
+                    item.name = originalSprintData.name;
+                    item.startDate = originalSprintData.startDate.clone();
+                    item.finishDate = originalSprintData.finishDate.clone();
                 });
+                delete draft.originalData[sprintId];
                 rebuildAllItems(draft);
                 return;
             }
