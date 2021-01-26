@@ -42,13 +42,12 @@ export const formatDiffYearRange = (startDate: DateOnly, finishDate: DateOnly): 
 };
 
 export const formatDateRange = (startDate: DateOnly, finishDate: DateOnly): string => {
-    const finishDateToUse = finishDate.addDays(-1);
     const startYear = startDate.getYear();
-    const finishYear = finishDateToUse.getYear();
+    const finishYear = finishDate.getYear();
     if (startYear === finishYear) {
-        return formatSameYearRange(startDate, finishDateToUse);
+        return formatSameYearRange(startDate, finishDate);
     } else {
-        return formatDiffYearRange(startDate, finishDateToUse);
+        return formatDiffYearRange(startDate, finishDate);
     }
 };
 

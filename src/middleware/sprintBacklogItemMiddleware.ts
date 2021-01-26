@@ -23,7 +23,7 @@ import { moveBacklogItemToSprint } from "../actions/sprintBacklogActions";
 import { AddNewSprintFormAction, addSprint, NewSprintPosition, updateSprintStats } from "../actions/sprintActions";
 
 // utils
-import { addDays, now } from "../utils/dateHelper";
+import { now } from "../utils/dateHelper";
 import { DateOnly } from "../types/dateTypes";
 
 export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action) => {
@@ -74,12 +74,12 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
             const SPRINT_DAY_LENGTH = 14;
             if (position === NewSprintPosition.Before) {
                 const firstSprint = getFirstSprint(state);
-                startDate = firstSprint.startDate.addDays(-SPRINT_DAY_LENGTH);
+                startDate = firstSprint.startDate.addDays(-(SPRINT_DAY_LENGTH - 1));
                 finishDate = firstSprint.startDate;
             } else if (position === NewSprintPosition.After) {
                 const lastSprint = getLastSprint(state);
                 startDate = lastSprint.finishDate;
-                finishDate = lastSprint.finishDate.addDays(SPRINT_DAY_LENGTH);
+                finishDate = lastSprint.finishDate.addDays(SPRINT_DAY_LENGTH - 1);
             } else {
                 throw Error(`Unexpected ${position}`);
             }

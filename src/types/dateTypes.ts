@@ -130,4 +130,8 @@ export class DateOnly {
     getDay(): number {
         return this.day;
     }
+    getDayOfWeek(): number {
+        const date = new Date(this.year, this.month - 1, this.day);
+        return date.getDay();
+    }
 }

@@ -12,7 +12,7 @@ import { PropsWithClassName } from "../../common/types";
 import { CalendarSprintRange } from "../../atoms/panels/calendarPanel/calendarSprintTypes";
 
 // utils
-import { addDays, buildClassName, daySequenceIs, sameDay } from "../../../utils";
+import { addDays, buildClassName } from "../../../utils";
 import { DateOnly } from "../../../types/dateTypes";
 
 export enum SprintDatePickerMode {
@@ -96,6 +96,7 @@ const handleDateChangeInDateRangeMode = (
     onFinishDateChanged: { (date: DateOnly) }
 ) => {
     if (!startDate && !finishDate) {
+        // TODO: Make this configurable (create a story for this)
         const newFinishDate = date.addDays(13);
         setStartDate(date);
         setFinishDate(newFinishDate);

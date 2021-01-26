@@ -62,7 +62,7 @@ export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInne
             if (row === 0) {
                 calendarHeaderRow.push(
                     <div className={css.dayHeader} key={col}>
-                        <div className={css.text}>{DAY[day.getDay()]}</div>
+                        <div className={css.text}>{DAY[day.getDayOfWeek()]}</div>
                     </div>
                 );
             }
