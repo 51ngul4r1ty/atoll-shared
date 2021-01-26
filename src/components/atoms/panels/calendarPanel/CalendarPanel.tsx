@@ -89,7 +89,7 @@ export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInne
                 inCurrentSprintRange && isLastDay(sprint, day) ? css.finish : null
             );
             calendarGridRow.push(
-                <div data-value={day} className={classToUse} key={`${row},${col}`}>
+                <div data-value={day.toISODate()} className={classToUse} key={`${row},${col}`}>
                     <div className={css.text}>{day.getDay()}</div>
                 </div>
             );
@@ -106,9 +106,10 @@ export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInne
         const target = e.target as HTMLDivElement;
         const parentElt = target.parentElement;
         if (parentElt) {
-            const dataValue = parentElt.getAttribute("data-value");
+            const rawDataValue = parentElt.getAttribute("data-value");
+            const dataValue = DateOnly.fromISODate(rawDataValue);
             if (props.onDateClick && dataValue) {
-                props.onDateClick(DateOnly.fromString(dataValue));
+                props.onDateClick(dataValue);
             }
         }
     };

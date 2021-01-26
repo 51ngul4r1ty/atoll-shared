@@ -85,8 +85,11 @@ export class DateOnly {
         result.day = newDate.getDate();
         return result;
     }
-    toISOString(): string {
-        const datePart = `${formatNumber(this.year, 4)}-${formatNumber(this.month, 2)}-${formatNumber(this.day, 2)}`;
+    toISODate(): string {
+        return `${formatNumber(this.year, 4)}-${formatNumber(this.month, 2)}-${formatNumber(this.day, 2)}`;
+    }
+    toISODateTime(): string {
+        const datePart = this.toISODate();
         const timePart = "00:00:00.000";
         return `${datePart}T${timePart}Z`;
     }
