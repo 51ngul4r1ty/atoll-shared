@@ -14,6 +14,8 @@ import {
     CollapseSprintPanelAction,
     EditSprintAction,
     ExpandSprintPanelAction,
+    showSprintRangeDatePicker,
+    ShowSprintRangeDatePickerAction,
     ToggleSprintDetailAction,
     UpdateSprintFieldsAction
 } from "../actions/sprintActions";
@@ -38,7 +40,8 @@ import { shouldHideDetailMenu } from "../components/utils/itemDetailMenuUtils";
 // components
 import {
     SprintDetailFormEditableFields,
-    SprintDetailFormEditableFieldsWithInstanceId
+    SprintDetailFormEditableFieldsWithInstanceId,
+    SprintDetailShowingPicker
 } from "../components/organisms/forms/SprintDetailForm";
 
 // actions
@@ -79,12 +82,18 @@ export interface OriginalSprintData {
     [id: string]: Sprint;
 }
 
+export interface SprintOpenedDatePickerInfo {
+    sprintId: string | null;
+    showPicker: SprintDetailShowingPicker;
+}
+
 export type SprintsState = Readonly<{
     addedItems: SaveableSprint[];
     allItems: SprintWithSource[];
     items: EditableSprint[];
     originalData: OriginalSprintData;
     openedDetailMenuSprintId: string | null;
+    openedDatePickerInfo: SprintOpenedDatePickerInfo;
 }>;
 
 export const sprintsReducerInitialState = Object.freeze<SprintsState>({
@@ -92,7 +101,11 @@ export const sprintsReducerInitialState = Object.freeze<SprintsState>({
     allItems: [],
     items: [],
     openedDetailMenuSprintId: null,
-    originalData: {}
+    originalData: {},
+    openedDatePickerInfo: {
+        sprintId: null,
+        showPicker: SprintDetailShowingPicker.None
+    }
 });
 
 export const rebuildAllItems = (draft: Draft<SprintsState>) => {
@@ -323,8 +336,13 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             }
             case ActionTypes.APP_CLICK: {
                 const actionTyped = action as AppClickAction;
-                const targetElt = actionTyped.payload.target;
-                const hideMenu = shouldHideDetailMenu(targetElt, draft.openedDetailMenuSprintId);
+                const parent = actionTyped.payload.parent;
+                const hideMenu = shouldHideDetailMenu(
+                    parent?.dataClass,
+                    parent?.itemId,
+                    parent?.itemType,
+                    draft.openedDetailMenuSprintId
+                );
                 if (hideMenu) {
                     draft.openedDetailMenuSprintId = null;
                 }
@@ -383,6 +401,21 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                     item.saved = true;
                 });
                 rebuildAllItems(draft);
+                return;
+            }
+            case ActionTypes.SHOW_SPRINT_RANGE_DATE_PICKER: {
+                const actionTyped = action as ShowSprintRangeDatePickerAction;
+                draft.openedDatePickerInfo = {
+                    sprintId: actionTyped.payload.sprintId,
+                    showPicker: actionTyped.payload.showPicker
+                };
+                return;
+            }
+            case ActionTypes.HIDE_SPRINT_RANGE_DATE_PICKER: {
+                draft.openedDatePickerInfo = {
+                    sprintId: null,
+                    showPicker: SprintDetailShowingPicker.None
+                };
                 return;
             }
         }

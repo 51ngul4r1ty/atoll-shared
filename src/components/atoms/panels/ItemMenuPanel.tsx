@@ -21,8 +21,10 @@ export enum ItemMenuPanelColor {
 
 export interface ItemMenuPanelStateProps {
     caretPosition: ItemMenuPanelCaretPosition;
-    panelColor?: ItemMenuPanelColor;
     className?: string;
+    itemId?: string;
+    itemType?: string;
+    panelColor?: ItemMenuPanelColor;
 }
 
 export interface ItemMenuPanelDispatchProps {
@@ -56,7 +58,12 @@ export class ItemMenuPanel extends Component<ItemMenuPanelProps> {
             this.props.panelColor === ItemMenuPanelColor.Dark ? css.dark : css.light
         );
         return (
-            <div data-class="item-menu-panel" className={classToUse}>
+            <div
+                data-class="item-menu-panel"
+                data-item-id={this.props.itemId}
+                data-item-type={this.props.itemType}
+                className={classToUse}
+            >
                 <div className={css.triangle}></div>
                 <div className={css.panel}>{this.props.children}</div>
             </div>

@@ -25,7 +25,7 @@ import { EditMode } from "../../../common/componentEnums";
 import { OpenedDetailMenuInfo } from "../../../../selectors/sprintBacklogSelectors";
 
 // components
-import { SprintDetailForm } from "../../forms/SprintDetailForm";
+import { SprintDetailForm, SprintDetailShowingPicker } from "../../forms/SprintDetailForm";
 import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 import { SprintCard } from "../../../molecules/cards/sprintCard/SprintCard";
 
@@ -35,10 +35,12 @@ import {
     cancelUnsavedSprint,
     editSprint,
     saveNewSprint,
+    showSprintRangeDatePicker,
     updateSprint,
     updateSprintFields
 } from "../../../../actions/sprintActions";
 import { apiArchiveSprint, apiDeleteSprint, apiUnarchiveSprint } from "../../../../actions/apiSprints";
+import { SprintOpenedDatePickerInfo } from "../../../../reducers/sprintsReducer";
 
 export interface SprintPlanningPanelStateProps {
     className?: string;
@@ -46,6 +48,7 @@ export interface SprintPlanningPanelStateProps {
     includeArchived: boolean;
     openedDetailMenuInfo: OpenedDetailMenuInfo;
     openedDetailMenuSprintId: string | null;
+    openedDatePickerInfo: SprintOpenedDatePickerInfo;
     renderMobile?: boolean;
     selectedProductBacklogItemCount: number;
     showDetailMenuToLeft?: boolean;
@@ -146,6 +149,10 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
     props.sprints.forEach((sprint) => {
         const openedDetailMenuBacklogItemId =
             sprint.id && sprint.id === props.openedDetailMenuInfo?.sprintId ? props.openedDetailMenuInfo.backlogItemId : null;
+        const showPicker: SprintDetailShowingPicker =
+            sprint?.id === props.openedDatePickerInfo?.sprintId
+                ? props.openedDatePickerInfo?.showPicker
+                : SprintDetailShowingPicker.None;
         let sprintItemElt;
         if (sprint.saved && !sprint.editing) {
             const itemEventHandlers: ItemMenuEventHandlers = {
@@ -224,6 +231,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         finishDate={sprint.finishDate}
                         editing={sprint.editing}
                         renderMobile={props.renderMobile}
+                        showPicker={showPicker}
                         onDataUpdate={(fields) => {
                             dispatch(updateSprintFields(fields));
                         }}
@@ -240,6 +248,9 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                             } else {
                                 dispatch(saveNewSprint(instanceId));
                             }
+                        }}
+                        onShowPicker={(showPicker: SprintDetailShowingPicker) => {
+                            dispatch(showSprintRangeDatePicker(sprint.id, showPicker));
                         }}
                     />
                 </div>

@@ -179,6 +179,9 @@ export const ADD_SPRINT = "app/add:sprint";
 export const EDIT_SPRINT = "app/edit:sprint";
 export const UPDATE_SPRINT_STATS = "app/update:sprint-stats";
 
+export const SHOW_SPRINT_RANGE_DATE_PICKER = "app/show:sprint-range-date-picker";
+export const HIDE_SPRINT_RANGE_DATE_PICKER = "app/hide:sprint-range-date-picker";
+
 export const MOVE_SELECTED_BACKLOG_ITEMS_TO_SPRINT = "app/add:selected-sprint-backlog-items";
 export const MOVE_BACKLOG_ITEM_TO_SPRINT = "app/add:sprint-backlog-item";
 

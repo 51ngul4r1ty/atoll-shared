@@ -39,7 +39,7 @@ import { isPlatformWindows } from "../utils";
 
 // selectors
 import { getCurrentProjectId } from "../selectors/userSelectors";
-import { getOpenedDetailMenuSprintId, getPlanViewSprints } from "../selectors/sprintSelectors";
+import { getOpenedDatePickerInfo, getOpenedDetailMenuSprintId, getPlanViewSprints } from "../selectors/sprintSelectors";
 import {
     getAllBacklogItems,
     getOpenedDetailMenuBacklogItemId,
@@ -61,6 +61,7 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
         openedDetailMenuBacklogItemId: getOpenedDetailMenuBacklogItemId(state),
         openedDetailMenuSprintBacklogInfo: getOpenedDetailMenuInfo(state),
         openedDetailMenuSprintId: getOpenedDetailMenuSprintId(state),
+        openedDatePickerInfo: getOpenedDatePickerInfo(state),
         projectId: getCurrentProjectId(state),
         selectedProductBacklogItemCount: getSelectedBacklogItemCount(state),
         showWindowTitleBar: !isPlatformWindows(),

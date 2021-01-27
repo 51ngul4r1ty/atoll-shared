@@ -31,21 +31,34 @@ export interface SprintDetailFormEditableFieldsWithInstanceId extends SprintDeta
     instanceId: number;
 }
 
+export enum SprintDetailShowingPicker {
+    None = 0,
+    StartDate = 1,
+    FinishDate = 2
+}
+
 export interface SprintDetailFormStateProps extends SprintDetailFormEditableFieldsWithInstanceId {
     className?: string;
     editing: boolean;
     renderMobile?: boolean;
+    showPicker?: SprintDetailShowingPicker;
 }
 
 export interface SprintDetailFormDispatchProps {
-    onDoneClick?: { (id: string, instanceId: number) };
-    onCancelClick?: { (id: string, instanceId: number) };
-    onDataUpdate?: { (props: SprintDetailFormEditableFieldsWithInstanceId) };
+    onDoneClick?: { (id: string, instanceId: number): void };
+    onCancelClick?: { (id: string, instanceId: number): void };
+    onDataUpdate?: { (props: SprintDetailFormEditableFieldsWithInstanceId): void };
+    onShowPicker?: { (showingPicker: SprintDetailShowingPicker): void };
 }
 
 export type SprintDetailFormProps = SprintDetailFormStateProps & SprintDetailFormDispatchProps;
 
 export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
+    const showDatePicker = (showingPicker: SprintDetailShowingPicker) => {
+        if (props.onShowPicker) {
+            props.onShowPicker(showingPicker);
+        }
+    };
     const handleDataUpdate = (fields: SprintDetailFormEditableFieldsWithInstanceId) => {
         if (props.onDataUpdate) {
             props.onDataUpdate(fields);
@@ -115,11 +128,13 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
                     }}
                 />
                 <DateInput
-                    inputId="startDateInput"
+                    inputId={`sprint${props.id}StartDateInput`}
+                    itemType="startDate"
                     className={css.startDateInput}
                     labelText="Start"
                     inputValue={props.startDate}
                     pickerMode={DateInputPickerMode.RangeAltIsFinishDate}
+                    showPicker={props.showPicker === SprintDetailShowingPicker.StartDate}
                     rangeAltValue={props.finishDate}
                     onChange={(value) => {
                         const startDate = DateOnly.fromString(value);
@@ -127,20 +142,28 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
                             handleDataUpdate({ ...prevData, startDate });
                         }
                     }}
+                    onInputFocus={() => {
+                        showDatePicker(SprintDetailShowingPicker.StartDate);
+                    }}
                 />
                 <DateInput
-                    inputId="finishDateInput"
+                    inputId={`sprint${props.id}FinishDateInput`}
+                    itemType="finishDate"
                     className={css.finishDateInput}
                     caretPosition={ItemMenuPanelCaretPosition.TopRight}
                     labelText="Finish"
                     inputValue={props.finishDate}
                     pickerMode={DateInputPickerMode.RangeAltIsStartDate}
+                    showPicker={props.showPicker === SprintDetailShowingPicker.FinishDate}
                     rangeAltValue={props.startDate}
                     onChange={(value) => {
                         const finishDate = DateOnly.fromString(value);
                         if (finishDate !== null) {
                             handleDataUpdate({ ...prevData, finishDate });
                         }
+                    }}
+                    onInputFocus={() => {
+                        showDatePicker(SprintDetailShowingPicker.FinishDate);
                     }}
                 />
             </div>
