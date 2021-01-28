@@ -14,7 +14,6 @@ import {
     CollapseSprintPanelAction,
     EditSprintAction,
     ExpandSprintPanelAction,
-    showSprintRangeDatePicker,
     ShowSprintRangeDatePickerAction,
     ToggleSprintDetailAction,
     UpdateSprintFieldsAction
@@ -186,6 +185,13 @@ export const updateSprintById = (draft: Draft<SprintsState>, sprintId: string, u
     if (idx >= 0) {
         updateItem(draft.items[idx] as SaveableSprint);
     }
+};
+
+const updateStateToHideDatePicker = (draft: Draft<SprintsState>) => {
+    draft.openedDatePickerInfo = {
+        sprintId: null,
+        showPicker: SprintDetailShowingPicker.None
+    };
 };
 
 export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState, action: AnyFSA): SprintsState =>
@@ -412,10 +418,11 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 return;
             }
             case ActionTypes.HIDE_SPRINT_RANGE_DATE_PICKER: {
-                draft.openedDatePickerInfo = {
-                    sprintId: null,
-                    showPicker: SprintDetailShowingPicker.None
-                };
+                updateStateToHideDatePicker(draft);
+                return;
+            }
+            case ActionTypes.API_PUT_SPRINT_FAILURE: {
+                updateStateToHideDatePicker(draft);
                 return;
             }
         }

@@ -34,6 +34,7 @@ import {
     cancelEditSprint,
     cancelUnsavedSprint,
     editSprint,
+    hideSprintRangeDatePicker,
     saveNewSprint,
     showSprintRangeDatePicker,
     updateSprint,
@@ -251,6 +252,9 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         }}
                         onShowPicker={(showPicker: SprintDetailShowingPicker) => {
                             dispatch(showSprintRangeDatePicker(sprint.id, showPicker));
+                        }}
+                        onHidePicker={() => {
+                            dispatch(hideSprintRangeDatePicker());
                         }}
                     />
                 </div>

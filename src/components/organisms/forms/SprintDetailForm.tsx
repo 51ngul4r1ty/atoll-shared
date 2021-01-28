@@ -49,6 +49,7 @@ export interface SprintDetailFormDispatchProps {
     onCancelClick?: { (id: string, instanceId: number): void };
     onDataUpdate?: { (props: SprintDetailFormEditableFieldsWithInstanceId): void };
     onShowPicker?: { (showingPicker: SprintDetailShowingPicker): void };
+    onHidePicker?: { (): void };
 }
 
 export type SprintDetailFormProps = SprintDetailFormStateProps & SprintDetailFormDispatchProps;
@@ -57,6 +58,11 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
     const showDatePicker = (showingPicker: SprintDetailShowingPicker) => {
         if (props.onShowPicker) {
             props.onShowPicker(showingPicker);
+        }
+    };
+    const hideDatePicker = () => {
+        if (props.onHidePicker) {
+            props.onHidePicker();
         }
     };
     const handleDataUpdate = (fields: SprintDetailFormEditableFieldsWithInstanceId) => {
@@ -145,6 +151,11 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
                     onInputFocus={() => {
                         showDatePicker(SprintDetailShowingPicker.StartDate);
                     }}
+                    onInputFocusLost={(e, notLostToDatePicker) => {
+                        if (notLostToDatePicker) {
+                            hideDatePicker();
+                        }
+                    }}
                 />
                 <DateInput
                     inputId={`sprint${props.id}FinishDateInput`}
@@ -164,6 +175,11 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
                     }}
                     onInputFocus={() => {
                         showDatePicker(SprintDetailShowingPicker.FinishDate);
+                    }}
+                    onInputFocusLost={(e, notLostToDatePicker) => {
+                        if (notLostToDatePicker) {
+                            hideDatePicker();
+                        }
                     }}
                 />
             </div>

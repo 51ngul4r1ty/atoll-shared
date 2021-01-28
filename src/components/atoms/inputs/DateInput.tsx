@@ -51,6 +51,7 @@ export interface DateInputStateProps {
 export interface DateInputDispatchProps {
     onChange?: { (value: string): void };
     onInputFocus?: { (e: FocusEvent<HTMLDivElement>): void };
+    onInputFocusLost?: { (e: FocusEvent<HTMLDivElement>, notLostToDatePicker: boolean): void };
     onEnterKeyPress?: { () };
     onKeyPress?: { (keyCode: number) };
 }
@@ -150,29 +151,15 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
         if (props.onInputFocus) {
             props.onInputFocus(e);
         }
-        // setShowingPicker(true);
     };
-    // const handleInputFocusLost = (e: FocusEvent<HTMLDivElement>) => {
-    //     const eltReceivingFocus = e.relatedTarget as HTMLElement;
-    //     const temp = e.currentTarget as HTMLElement;
-    //     if (!hasParentWithDataClass(eltReceivingFocus, "date-picker")) {
-    //         setShowingPicker(false);
-    //     }
-    // };
-    // const handleDatePickerFocusLost = (e: FocusEvent<HTMLDivElement>) => {
-    //     const eltReceivingFocus = e.relatedTarget as HTMLElement;
-    //     if (eltReceivingFocus !== null) {
-    //         const parentDateInput = getParentWithDataClass(eltReceivingFocus, "date-input");
-    //         if (parentDateInput) {
-    //             const id = getEltDataAttribute(parentDateInput, "id");
-    //             if (props.inputId !== id) {
-    //                 setShowingPicker(false);
-    //             }
-    //         } else {
-    //             setShowingPicker(false);
-    //         }
-    //     }
-    // };
+    const handleInputFocusLost = (e: FocusEvent<HTMLDivElement>) => {
+        const eltReceivingFocus = e.relatedTarget as HTMLElement;
+        const temp = e.currentTarget as HTMLElement;
+        const notLostToDatePicker = !hasParentWithDataClass(eltReceivingFocus, "date-picker");
+        if (props.onInputFocusLost) {
+            props.onInputFocusLost(e, notLostToDatePicker);
+        }
+    };
     const handleKeyUp = (event) => {
         if (event.keyCode === 13) {
             event.preventDefault();
@@ -280,7 +267,7 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
                     handleInputFocus(e);
                 }}
                 onBlur={(e) => {
-                    //                    handleInputFocusLost(e);
+                    handleInputFocusLost(e);
                 }}
                 required={props.required}
                 tabIndex={0}
