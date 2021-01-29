@@ -118,8 +118,8 @@ export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInne
             <div className={css.header}>
                 <div className={css.cell}>{year}</div>
                 <div className={css.cell}>{month}</div>
-                <div className={css.cell}>&lt;</div>
-                <div className={css.cell}>&gt;</div>
+                <div className={buildClassName(css.cell, css.clickable)}>&lt;</div>
+                <div className={buildClassName(css.cell, css.clickable)}>&gt;</div>
             </div>
             <div className={css.calendar} onClick={(e) => handleDayClick(e)}>
                 {calendarCells}

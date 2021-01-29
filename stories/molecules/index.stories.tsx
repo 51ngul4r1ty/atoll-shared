@@ -15,6 +15,7 @@ import {
     BacklogItemTypeEnum,
     DateInput,
     DateInputPickerMode,
+    DateOnly,
     EditButton,
     EditMode,
     HomeButton,
@@ -274,8 +275,8 @@ storiesOf("Molecules/Pickers/SprintDatePicker", module).add("SprintDatePicker", 
     <div>
         <SprintDatePicker
             className="calendar-panel"
-            startDate={new Date(2021, 0, 5)}
-            finishDate={new Date(2021, 0, 18)}
+            startDate={new DateOnly(2021, 1, 5)}
+            finishDate={new DateOnly(2021, 1, 18)}
             pickerMode={select(
                 "pickerMode",
                 {
@@ -293,15 +294,15 @@ storiesOf("Molecules/Inputs/DateInput", module).add("DateInput", () => (
     <div className="storybook-form-background">
         <div className="storybook-flex-flow">
             <DateInput
-                inputValue={new Date(2021, 0, 5)}
+                inputValue={new DateOnly(2021, 1, 5)}
                 pickerMode={DateInputPickerMode.RangeAltIsFinishDate}
-                rangeAltValue={new Date(2021, 0, 18)}
+                rangeAltValue={new DateOnly(2021, 1, 18)}
             />
             to
             <DateInput
-                inputValue={new Date(2021, 0, 18)}
+                inputValue={new DateOnly(2021, 1, 18)}
                 pickerMode={DateInputPickerMode.RangeAltIsStartDate}
-                rangeAltValue={new Date(2021, 0, 5)}
+                rangeAltValue={new DateOnly(2021, 1, 5)}
             />
         </div>
     </div>

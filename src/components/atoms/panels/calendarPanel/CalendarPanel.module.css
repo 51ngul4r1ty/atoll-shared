@@ -58,6 +58,10 @@
     text-transform: uppercase;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 .sprint:not(.selected) {
     background-color: var(--normal-component-secondary-region-page-color, #ddd);
     border-top: 0.15rem solid var(--normal-component-secondary-region-border-color, #888);
