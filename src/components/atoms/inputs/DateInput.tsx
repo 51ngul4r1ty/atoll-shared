@@ -1,5 +1,6 @@
 // externals
 import React, { forwardRef, ChangeEvent, FocusEvent, RefObject, Ref, useState, useEffect } from "react";
+import ReactDOM from "react-dom";
 
 // style
 import css from "./DateInput.module.css";
@@ -8,7 +9,7 @@ import css from "./DateInput.module.css";
 import { buildClassName } from "../../../utils/classNameBuilder";
 import { usePrevious } from "../../common/usePreviousHook";
 import { ItemMenuPanel, ItemMenuPanelCaretPosition, ItemMenuPanelColor } from "../panels/ItemMenuPanel";
-import { getEltDataAttribute, getParentWithDataClass, hasParentWithDataClass } from "../../common/domUtils";
+import { hasParentWithDataClass } from "../../common/domUtils";
 
 // components
 import { SprintDatePicker, SprintDatePickerMode } from "../../molecules/pickers/SprintDatePicker";
@@ -16,7 +17,6 @@ import { SprintDatePicker, SprintDatePickerMode } from "../../molecules/pickers/
 // interfaces/types
 import { ComponentWithForwardedRef } from "../../../types/reactHelperTypes";
 import { DateOnly } from "../../../types/dateTypes";
-import ReactDOM from "react-dom";
 
 export type DateInputRefType = HTMLInputElement;
 
@@ -101,9 +101,7 @@ export const registerModalComponent = (relatedComponentId: string, modalComponen
     parentEltAsDiv.style.left = `${boundingRect.left}px`;
     parentEltAsDiv.style.width = `${boundingRect.width}px`;
     parentEltAsDiv.style.height = "0";
-    // parentEltAsDiv.style.height = `${boundingRect.height}px`;
     parentEltAsDiv.style.overflow = "visible";
-    // parentEltAsDiv.style.pointerEvents = "none";
     ReactDOM.render(modalComponentElt, parentElt);
 };
 
