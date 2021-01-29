@@ -6,7 +6,11 @@ import css from "./Checkbox.module.css";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
+
+// interfaces/types
 import { ComponentWithForwardedRef } from "../../../types/reactHelperTypes";
+
+// components
 import { CheckboxCheckedIcon, CheckboxUncheckedIcon } from "../icons";
 
 export type CheckboxRefType = HTMLInputElement;

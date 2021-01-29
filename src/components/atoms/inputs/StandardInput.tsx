@@ -6,8 +6,10 @@ import css from "./StandardInput.module.css";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
-import { ComponentWithForwardedRef } from "../../../types/reactHelperTypes";
 import { usePrevious } from "../../common/usePreviousHook";
+
+// interfaces/types
+import { ComponentWithForwardedRef } from "../../../types/reactHelperTypes";
 
 export type StandardInputRefType = HTMLInputElement;
 
