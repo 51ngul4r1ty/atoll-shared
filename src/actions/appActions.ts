@@ -4,6 +4,8 @@ import { Locale } from "../reducers/appReducer";
 // consts/enums
 import * as ActionTypes from "./actionTypes";
 import { EditMode } from "../components/common/componentEnums";
+
+// utils
 import { getEltDataAttribute, getEltDataClass, getFirstParentWithAnyDataClass } from "../components/common/domUtils";
 
 export interface SetLocaleAction {
