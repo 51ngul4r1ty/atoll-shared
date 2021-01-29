@@ -80,19 +80,16 @@ export const buildModalComponentDivClassName = (relatedComponentId: string) => `
 export const registerModalComponent = (relatedComponentId: string, modalComponentElt: JSX.Element) => {
     const relatedComponent = document.getElementById(relatedComponentId);
     const boundingRect = relatedComponent.getBoundingClientRect();
-    console.log(`REGISTERING MODAL COMPONENT: ${relatedComponentId}`);
     const modalElt = getModalPanelElt();
     const tagNameKey = buildModalComponentDivClassName(relatedComponentId);
     const elts = modalElt.getElementsByClassName(tagNameKey);
     let parentElt: Element;
     if (!elts.length) {
-        console.log(`  (added new component holder)`);
         const divNode = document.createElement("div");
         divNode.className = tagNameKey;
         modalElt.appendChild(divNode);
         parentElt = divNode;
     } else {
-        console.log(`  (using existing component holder)`);
         parentElt = elts[0];
     }
     const parentEltAsDiv = parentElt as HTMLDivElement;
@@ -106,14 +103,11 @@ export const registerModalComponent = (relatedComponentId: string, modalComponen
 };
 
 export const unregisterModalComponent = (relatedComponentId: string) => {
-    console.log(`UNREGISTERING MODAL COMPONENT: ${relatedComponentId}`);
     const modalElt = getModalPanelElt();
     const tagNameKey = buildModalComponentDivClassName(relatedComponentId);
     const elts = modalElt.getElementsByClassName(tagNameKey);
     if (elts.length) {
-        console.log(`  (found component holder)`);
         modalElt.removeChild(elts[0]);
-        console.log(`  (removed component holder)`);
     }
 };
 
@@ -123,7 +117,6 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
     const [inputText, setInputText] = useState(propsInputValueToUse);
     const [validInputText, setValidInputText] = useState(props.inputValue ? props.inputValue.formatAsText() : "");
     const [isValid, setIsValid] = useState(true); // start off "valid", even if starting value is invalid
-    // const [showingPicker, setShowingPicker] = useState(props.showPicker);
     const propagateTextChange = (inputText: string, lastValidInputText?: string) => {
         setInputText(inputText);
         if (props.onChange) {
