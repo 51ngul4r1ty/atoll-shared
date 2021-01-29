@@ -33,7 +33,7 @@ export const roundDateToDayBoundary = (dateTime: Date): Date => {
     return new Date(newYear, newMonth, newDay);
 };
 
-export const now = (): Date => {
+export const timeNow = (): Date => {
     return new Date();
 };
 
@@ -110,4 +110,14 @@ export const stringToDate = (text: string): Date | null => {
         return null;
     }
     return result;
+};
+
+export const dateNow = (): Date => {
+    const n = timeNow();
+    return new Date(n.getFullYear(), n.getMonth(), n.getDate());
+};
+
+export const dateNowUtc = (): Date => {
+    const n = timeNow();
+    return new Date(Date.UTC(n.getFullYear(), n.getMonth(), n.getDate()));
 };

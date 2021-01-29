@@ -3,7 +3,7 @@ import { SprintStatus } from "../components/molecules/cards/sprintCard/sprintCar
 import { DateOnly } from "../types/dateTypes";
 
 // utils
-import { now, roundDateToDayBoundary } from "./dateHelper";
+import { timeNow, roundDateToDayBoundary } from "./dateHelper";
 
 export const determineSprintExpanded = (startDate: DateOnly, finishDate: DateOnly): boolean => {
     const status = determineSprintStatus(startDate, finishDate);
