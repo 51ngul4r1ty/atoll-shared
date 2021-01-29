@@ -5,7 +5,10 @@ import { SaveableSprint } from "../reducers/sprintsReducer";
 import * as ActionTypes from "./actionTypes";
 
 // interfaces/types
-import { SprintDetailFormEditableFieldsWithInstanceId } from "../components/organisms/forms/SprintDetailForm";
+import {
+    SprintDetailFormEditableFieldsWithInstanceId,
+    SprintDetailShowingPicker
+} from "../components/organisms/forms/SprintDetailForm";
 import { ApiSprintStats } from "../apiModelTypes";
 
 export interface CollapseSprintPanelAction {
@@ -189,4 +192,24 @@ export const editSprint = (sprintId: string): EditSprintAction => ({
     payload: {
         sprintId
     }
+});
+
+export interface ShowSprintRangeDatePickerAction {
+    type: typeof ActionTypes.SHOW_SPRINT_RANGE_DATE_PICKER;
+    payload: {
+        showPicker: SprintDetailShowingPicker;
+        sprintId: string | null;
+    };
+}
+
+export const showSprintRangeDatePicker = (sprintId: string, showPicker: SprintDetailShowingPicker) => ({
+    type: ActionTypes.SHOW_SPRINT_RANGE_DATE_PICKER,
+    payload: {
+        showPicker,
+        sprintId
+    }
+});
+
+export const hideSprintRangeDatePicker = () => ({
+    type: ActionTypes.HIDE_SPRINT_RANGE_DATE_PICKER
 });

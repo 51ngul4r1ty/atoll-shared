@@ -5,7 +5,7 @@ import { produce } from "immer";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { AnyFSA } from "../types";
+import { AnyFSA } from "../types/reactHelperTypes";
 import { ActionGetUserPrefsSuccessAction } from "../actions/userActions";
 import { UserSettings } from "../apiModelTypes";
 

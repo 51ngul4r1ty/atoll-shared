@@ -4,7 +4,7 @@ import React from "react";
 import { WithTranslation, withTranslation } from "react-i18next";
 
 // components
-import { CaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
+import { ItemMenuPanelCaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
 import { BacklogItemAcceptedButton } from "../buttons/BacklogItemAcceptedButton";
 import { BacklogItemDoneButton } from "../buttons/BacklogItemDoneButton";
 import { BacklogItemInProgressButton } from "../buttons/BacklogItemInProgressButton";
@@ -36,7 +36,11 @@ export type InnerSprintBacklogItemMenuProps = SprintBacklogItemMenuProps & WithT
 export const InnerSprintBacklogItemMenu: React.FC<InnerSprintBacklogItemMenuProps> = (props) => (
     <ItemMenuPanel
         className={css.sprintBacklogItemMenu}
-        caretPosition={props.showDetailMenuToLeft || props.renderMobile ? CaretPosition.RightTop : CaretPosition.TopCenter}
+        caretPosition={
+            props.showDetailMenuToLeft || props.renderMobile
+                ? ItemMenuPanelCaretPosition.RightTop
+                : ItemMenuPanelCaretPosition.TopCenter
+        }
     >
         <BacklogItemNotStartedButton
             suppressSpacing

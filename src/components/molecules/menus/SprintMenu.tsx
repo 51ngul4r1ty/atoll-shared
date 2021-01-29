@@ -6,7 +6,7 @@ import { WithTranslation, withTranslation } from "react-i18next";
 import { EditMode } from "../../common/componentEnums";
 
 // components
-import { CaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
+import { ItemMenuPanelCaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
 import { ArchiveButton } from "../buttons/ArchiveButton";
 import { ArchiveCancelButton } from "../buttons/ArchiveCancelButton";
 import { EditButton } from "../buttons/EditButton";
@@ -30,7 +30,11 @@ export type InnerSprintMenuProps = SprintMenuProps & WithTranslation;
 
 export const InnerSprintMenu: React.FC<InnerSprintMenuProps> = (props) => (
     <ItemMenuPanel
-        caretPosition={props.showDetailMenuToLeft || props.renderMobile ? CaretPosition.RightTop : CaretPosition.TopCenter}
+        caretPosition={
+            props.showDetailMenuToLeft || props.renderMobile
+                ? ItemMenuPanelCaretPosition.RightTop
+                : ItemMenuPanelCaretPosition.TopCenter
+        }
     >
         <EditButton
             mode={EditMode.View}

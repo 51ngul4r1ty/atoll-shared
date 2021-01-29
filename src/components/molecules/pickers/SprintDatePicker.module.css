@@ -1,0 +1,8 @@
+.outerPanel {
+    background-color: var(--normal-component-page-color, #ccc);
+    padding: 0.4rem;
+}
+
+.outerPanel.suppressPadding {
+    padding: 0;
+}

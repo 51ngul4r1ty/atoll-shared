@@ -5,7 +5,8 @@ import { produce } from "immer";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { AnyFSA, BaseModelItem } from "../types";
+import { AnyFSA } from "../types/reactHelperTypes";
+import { BaseModelItem } from "../types";
 import { ApiBacklogItemRank } from "../apiModelTypes";
 import { ApiGetBacklogItemRanksSuccessAction } from "../actions/apiBacklogItemRanks";
 import { isoDateStringToDate } from "../utils/apiPayloadConverters";

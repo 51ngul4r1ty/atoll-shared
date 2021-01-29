@@ -5,7 +5,8 @@ import { Draft, produce } from "immer";
 import * as ActionTypes from "../../actions/actionTypes";
 
 // interfaces/types
-import { AnyFSA, PushOperationType } from "../../types";
+import { AnyFSA } from "../../types/reactHelperTypes";
+import { PushOperationType } from "../../types";
 import {
     ApiPostBacklogItemSuccessAction,
     ApiGetBacklogItemsSuccessAction,
@@ -207,8 +208,13 @@ export const backlogItemsReducer = (
             }
             case ActionTypes.APP_CLICK: {
                 const actionTyped = action as AppClickAction;
-                const targetElt = actionTyped.payload.target;
-                const hideMenu = shouldHideDetailMenu(targetElt, draft.openedDetailMenuBacklogItemId);
+                const parent = actionTyped.payload.parent;
+                const hideMenu = shouldHideDetailMenu(
+                    parent?.dataClass,
+                    parent?.itemId,
+                    parent?.itemType,
+                    draft.openedDetailMenuBacklogItemId
+                );
                 if (hideMenu) {
                     draft.openedDetailMenuBacklogItemId = null;
                 }

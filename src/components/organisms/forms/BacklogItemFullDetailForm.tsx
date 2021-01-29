@@ -19,6 +19,7 @@ import { getStoryPhrases, isStoryPaste } from "./pasteFormatUtils";
 // interfaces/types
 import { BacklogItemEditableFields } from "./backlogItemFormTypes";
 import { DateInput } from "../../atoms/inputs/DateInput";
+import { DateTimeInput } from "../../atoms/inputs/DateTimeInput";
 
 export interface BacklogItemFullDetailFormStateProps extends BacklogItemEditableFields {
     saved: boolean;
@@ -177,7 +178,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
             />
         );
         const dateStartedInput = (
-            <DateInput
+            <DateTimeInput
                 inputId="startedAtId"
                 labelText="Date Started"
                 readOnly
@@ -189,7 +190,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
             />
         );
         const dateFinishedInput = (
-            <DateInput
+            <DateTimeInput
                 inputId="finishedAtId"
                 labelText="Date Finished"
                 readOnly
@@ -201,7 +202,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
             />
         );
         const dateAcceptedInput = (
-            <DateInput
+            <DateTimeInput
                 inputId="acceptedAtId"
                 labelText="Date Accepted"
                 readOnly
@@ -213,7 +214,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
             />
         );
         const dateReleasedInput = (
-            <DateInput
+            <DateTimeInput
                 inputId="releasedAtId"
                 labelText="Date Released"
                 readOnly

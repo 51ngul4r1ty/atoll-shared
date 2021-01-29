@@ -1,12 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 // externals
-import React from "react";
+import * as React from "react";
 
 // storybook
 import { storiesOf } from "@storybook/react";
 
 // components
-import { CaretPosition, ItemMenuPanel, RemoveButton } from "../../../dist/index.es";
+import { CalendarPanel, ItemMenuPanelCaretPosition, ItemMenuPanel, RemoveButton, DateOnly } from "../../../dist/index.es";
 
 // common
 import "../../storybook";
@@ -15,7 +15,7 @@ storiesOf("Atoms/Panels", module)
     .add("ItemMenuPanel (caret top-center)", () => (
         <ItemMenuPanel
             className="item-menu-panel caret-top-center"
-            caretPosition={CaretPosition.TopCenter}
+            caretPosition={ItemMenuPanelCaretPosition.TopCenter}
             onClose={() => {
                 alert("close triggered");
             }}
@@ -30,7 +30,7 @@ storiesOf("Atoms/Panels", module)
     .add("ItemMenuPanel (caret right-top)", () => (
         <ItemMenuPanel
             className="item-menu-panel caret-right-top"
-            caretPosition={CaretPosition.RightTop}
+            caretPosition={ItemMenuPanelCaretPosition.RightTop}
             onClose={() => {
                 alert("close triggered");
             }}
@@ -41,4 +41,25 @@ storiesOf("Atoms/Panels", module)
                 }}
             />
         </ItemMenuPanel>
+    ))
+    .add("CalendarPanel", () => (
+        <CalendarPanel
+            className="calendar-panel"
+            dateSelected={new DateOnly(2021, 0, 5)}
+            sprints={[
+                {
+                    start: new DateOnly(2020, 11, 22),
+                    finish: new DateOnly(2021, 0, 4),
+                    editing: false
+                },
+                {
+                    start: new DateOnly(2021, 0, 5),
+                    finish: new DateOnly(2021, 0, 18),
+                    editing: true
+                }
+            ]}
+            onDateClick={(date: any) => {
+                alert(`${date} chosen`);
+            }}
+        ></CalendarPanel>
     ));

@@ -7,7 +7,7 @@ import { API_ACTION_STAGE_FAILURE, API_ACTION_STAGE_REQUEST, API_ACTION_STAGE_SU
 import { EditMode } from "../components/common/componentEnums";
 
 // interfaces/types
-import { AnyFSA } from "../types";
+import { AnyFSA } from "../types/reactHelperTypes";
 import {
     SetUsernameAction,
     SetPasswordAction,

@@ -5,23 +5,14 @@ import Helmet from "react-helmet";
 // components
 import { BacklogItemPlanningPanel } from "../components/organisms/panels/backlogItemPlanning/BacklogItemPlanningPanel";
 import { TopMenuPanelContainer } from "../containers/TopMenuPanelContainer";
+import { SprintPlanningPanel } from "../components/organisms/panels/sprintPlanning/SprintPlanningPanel";
+import { SmartSpinner } from "../components/molecules/unique/smartSpinner/SmartSpinner";
 
 // contexts
 import { AppContext } from "../contexts/appContextUtil";
 
 // style
 import css from "./PlanView.module.css";
-
-// interfaces/types
-import { EditMode } from "../components/common/componentEnums";
-import { BacklogItemWithSource } from "../reducers/backlogItems/backlogItemsReducerTypes";
-import { BacklogItemType } from "../types/backlogItemTypes";
-import { SprintCardSprint } from "../components/molecules/cards/sprintCard/sprintCardTypes";
-import { OpenedDetailMenuInfo } from "../selectors/sprintBacklogSelectors";
-
-// components
-import { SprintPlanningPanel } from "../components/organisms/panels/sprintPlanning/SprintPlanningPanel";
-import { SmartSpinner } from "../components/molecules/unique/smartSpinner/SmartSpinner";
 
 // consts/enums
 import { NewSprintPosition } from "../actions/sprintActions";
@@ -32,6 +23,14 @@ import {
     QUANTITY_UNKNOWN,
     TIME_UNKNOWN
 } from "../components/molecules/unique/smartSpinner/smartSpinnerTypes";
+
+// interfaces/types
+import { EditMode } from "../components/common/componentEnums";
+import { BacklogItemWithSource } from "../reducers/backlogItems/backlogItemsReducerTypes";
+import { BacklogItemType } from "../types/backlogItemTypes";
+import { SprintCardSprint } from "../components/molecules/cards/sprintCard/sprintCardTypes";
+import { OpenedDetailMenuInfo } from "../selectors/sprintBacklogSelectors";
+import { SprintOpenedDatePickerInfo } from "../reducers/sprintsReducer";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
@@ -48,6 +47,7 @@ export interface PlanViewStateProps {
     openedDetailMenuBacklogItemId: string | null;
     openedDetailMenuSprintBacklogInfo: OpenedDetailMenuInfo;
     openedDetailMenuSprintId: string | null;
+    openedDatePickerInfo: SprintOpenedDatePickerInfo;
     projectId: string;
     selectedProductBacklogItemCount: number;
     showWindowTitleBar: boolean;
@@ -111,6 +111,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     selectedProductBacklogItemCount={this.props.selectedProductBacklogItemCount}
                     openedDetailMenuSprintId={this.props.openedDetailMenuSprintId}
                     openedDetailMenuInfo={this.props.openedDetailMenuSprintBacklogInfo}
+                    openedDatePickerInfo={this.props.openedDatePickerInfo}
                     onAddBacklogItem={(sprintId: string) => {
                         if (this.props.onAddBacklogItemToSprint) {
                             this.props.onAddBacklogItemToSprint(sprintId);

@@ -5,6 +5,9 @@ import { Locale } from "../reducers/appReducer";
 import * as ActionTypes from "./actionTypes";
 import { EditMode } from "../components/common/componentEnums";
 
+// utils
+import { getEltDataAttribute, getEltDataClass, getFirstParentWithAnyDataClass } from "../components/common/domUtils";
+
 export interface SetLocaleAction {
     type: typeof ActionTypes.SET_LOCALE;
     payload: Locale;
@@ -33,15 +36,41 @@ export const initApp = (): InitAppAction => ({
     type: ActionTypes.INIT_APP
 });
 
-export interface AppClickAction {
-    type: typeof ActionTypes.APP_CLICK;
-    payload: MouseEvent;
+export interface AppClickActionPayload {
+    mouseEvent: MouseEvent;
+    parent?: {
+        dataClass: string;
+        dataId: string | null;
+        itemId: string | null;
+        itemType: string | null;
+    };
 }
 
-export const appClick = (e: MouseEvent): AppClickAction => ({
-    type: ActionTypes.APP_CLICK,
-    payload: e
-});
+export interface AppClickAction {
+    type: typeof ActionTypes.APP_CLICK;
+    payload: AppClickActionPayload;
+}
+
+export const appClick = (mouseEvent: MouseEvent): AppClickAction => {
+    const payload: AppClickActionPayload = {
+        mouseEvent
+    };
+    if (mouseEvent.button === 0) {
+        const parentElt = getFirstParentWithAnyDataClass(mouseEvent.target as HTMLElement);
+        if (parentElt) {
+            payload.parent = {
+                dataClass: getEltDataClass(parentElt),
+                dataId: getEltDataAttribute(parentElt, "id") || null,
+                itemId: getEltDataAttribute(parentElt, "item-id") || null,
+                itemType: getEltDataAttribute(parentElt, "item-type") || null
+            };
+        }
+    }
+    return {
+        type: ActionTypes.APP_CLICK,
+        payload
+    };
+};
 
 export interface AppKeyUpAction {
     type: typeof ActionTypes.APP_KEYUP;

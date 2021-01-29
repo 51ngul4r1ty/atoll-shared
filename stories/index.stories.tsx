@@ -4,31 +4,14 @@ import { addDecorator, addParameters, storiesOf, forceReRender } from "@storyboo
 
 // storybook
 import { action } from "@storybook/addon-actions";
-import { withKnobs, text, select, number } from "@storybook/addon-knobs";
-// import { linkTo } from "@storybook/addon-links";
+import { withKnobs, text } from "@storybook/addon-knobs";
 import { withRootAttribute } from "storybook-addon-root-attribute";
 
 // components
-import {
-    AddButton,
-    BacklogItemCard,
-    BacklogItemStatus,
-    BacklogItemTypeEnum,
-    Checkbox,
-    EditButton,
-    EditMode,
-    HomeButton,
-    RefreshButton,
-    RemoveButton,
-    SimpleText,
-    Spinner,
-    SpinnerShapePentagon,
-    StandardInput,
-    TabStrip
-} from "../dist/index.es";
+import { Checkbox, SimpleText, Spinner, SpinnerShapePentagon, StandardInput, TabStrip } from "../dist/index.es";
 
 addDecorator(withRootAttribute);
-addDecorator(withKnobs);
+addDecorator(withKnobs({ escapeHTML: false }));
 addParameters({
     rootAttribute: {
         root: "html",
@@ -70,14 +53,16 @@ storiesOf("Atoms/Font Sizes", module).add("Font Sizes", () => (
 ));
 
 storiesOf("Atoms/Inputs/Checkbox", module).add("Checkbox", () => (
-    <Checkbox
-        checked
-        checkedValue="on"
-        inputName="checkbox1"
-        inputId="checkbox1"
-        labelText="Remember me"
-        onClick={action("clicked menu")}
-    />
+    <div className="storybook-form-background">
+        <Checkbox
+            checked
+            checkedValue="on"
+            inputName="checkbox1"
+            inputId="checkbox1"
+            labelText="Remember me"
+            onClick={action("clicked menu")}
+        />
+    </div>
 ));
 
 storiesOf("Atoms/Inputs/Standard", module).add("Standard", () => (

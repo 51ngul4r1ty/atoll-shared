@@ -6,17 +6,24 @@ import { StandardInput } from "../../atoms/inputs/StandardInput";
 import { CancelButton } from "../../molecules/buttons/CancelButton";
 import { DoneButton } from "../../molecules/buttons/DoneButton";
 
+// const/enums
+import { ItemMenuPanelCaretPosition } from "../../atoms/panels/ItemMenuPanel";
+
 // style
 import commonCss from "./common/common.module.css";
 import css from "./SprintDetailForm.module.css";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
+import { DateInput, DateInputPickerMode } from "../../atoms/inputs/DateInput";
+
+// interfaces/types
+import { DateOnly } from "../../../types/dateTypes";
 
 export interface SprintDetailFormEditableFields {
     sprintName: string;
-    startDate: Date;
-    finishDate: Date;
+    startDate: DateOnly;
+    finishDate: DateOnly;
     id: string;
 }
 
@@ -24,21 +31,40 @@ export interface SprintDetailFormEditableFieldsWithInstanceId extends SprintDeta
     instanceId: number;
 }
 
+export enum SprintDetailShowingPicker {
+    None = 0,
+    StartDate = 1,
+    FinishDate = 2
+}
+
 export interface SprintDetailFormStateProps extends SprintDetailFormEditableFieldsWithInstanceId {
     className?: string;
     editing: boolean;
     renderMobile?: boolean;
+    showPicker?: SprintDetailShowingPicker;
 }
 
 export interface SprintDetailFormDispatchProps {
-    onDoneClick?: { (id: string, instanceId: number) };
-    onCancelClick?: { (id: string, instanceId: number) };
-    onDataUpdate?: { (props: SprintDetailFormEditableFieldsWithInstanceId) };
+    onDoneClick?: { (id: string, instanceId: number): void };
+    onCancelClick?: { (id: string, instanceId: number): void };
+    onDataUpdate?: { (props: SprintDetailFormEditableFieldsWithInstanceId): void };
+    onShowPicker?: { (showingPicker: SprintDetailShowingPicker): void };
+    onHidePicker?: { (): void };
 }
 
 export type SprintDetailFormProps = SprintDetailFormStateProps & SprintDetailFormDispatchProps;
 
 export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
+    const showDatePicker = (showingPicker: SprintDetailShowingPicker) => {
+        if (props.onShowPicker) {
+            props.onShowPicker(showingPicker);
+        }
+    };
+    const hideDatePicker = () => {
+        if (props.onHidePicker) {
+            props.onHidePicker();
+        }
+    };
     const handleDataUpdate = (fields: SprintDetailFormEditableFieldsWithInstanceId) => {
         if (props.onDataUpdate) {
             props.onDataUpdate(fields);
@@ -94,20 +120,69 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
         instanceId: props.instanceId,
         finishDate: props.finishDate
     };
-    const sprintNameInput = (
-        <StandardInput
-            inputId="sprintName"
-            labelText="Sprint Name"
-            placeHolder="New Sprint"
-            inputValue={props.sprintName}
-            onChange={(value) => {
-                handleDataUpdate({ ...prevData, sprintName: value });
-            }}
-        />
-    );
     const formContent = (
         <>
-            <div className={buildClassName(css.sprintName, css.formRow)}>{sprintNameInput}</div>
+            <div className={buildClassName(css.sprintForm, css.formRow)}>
+                <StandardInput
+                    inputId="sprintName"
+                    className={css.sprintNameInput}
+                    labelText="Sprint Name"
+                    placeHolder="New Sprint"
+                    inputValue={props.sprintName}
+                    onChange={(value) => {
+                        handleDataUpdate({ ...prevData, sprintName: value });
+                    }}
+                />
+                <DateInput
+                    inputId={`sprint${props.id}StartDateInput`}
+                    itemType="startDate"
+                    className={css.startDateInput}
+                    labelText="Start"
+                    inputValue={props.startDate}
+                    pickerMode={DateInputPickerMode.RangeAltIsFinishDate}
+                    showPicker={props.showPicker === SprintDetailShowingPicker.StartDate}
+                    rangeAltValue={props.finishDate}
+                    onChange={(value) => {
+                        const startDate = DateOnly.fromString(value);
+                        if (startDate !== null) {
+                            handleDataUpdate({ ...prevData, startDate });
+                        }
+                    }}
+                    onInputFocus={() => {
+                        showDatePicker(SprintDetailShowingPicker.StartDate);
+                    }}
+                    onInputFocusLost={(e, notLostToDatePicker) => {
+                        if (notLostToDatePicker) {
+                            hideDatePicker();
+                        }
+                    }}
+                />
+                <DateInput
+                    inputId={`sprint${props.id}FinishDateInput`}
+                    itemType="finishDate"
+                    className={css.finishDateInput}
+                    caretPosition={ItemMenuPanelCaretPosition.TopRight}
+                    labelText="Finish"
+                    inputValue={props.finishDate}
+                    pickerMode={DateInputPickerMode.RangeAltIsStartDate}
+                    showPicker={props.showPicker === SprintDetailShowingPicker.FinishDate}
+                    rangeAltValue={props.startDate}
+                    onChange={(value) => {
+                        const finishDate = DateOnly.fromString(value);
+                        if (finishDate !== null) {
+                            handleDataUpdate({ ...prevData, finishDate });
+                        }
+                    }}
+                    onInputFocus={() => {
+                        showDatePicker(SprintDetailShowingPicker.FinishDate);
+                    }}
+                    onInputFocusLost={(e, notLostToDatePicker) => {
+                        if (notLostToDatePicker) {
+                            hideDatePicker();
+                        }
+                    }}
+                />
+            </div>
             {actionButtonPanel}
         </>
     );

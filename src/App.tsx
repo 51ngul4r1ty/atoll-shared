@@ -232,6 +232,7 @@ export class App extends React.Component<AppProps, AppState> {
                         </Helmet>
                         {this.props.children}
                     </div>
+                    <div id="atollModalPanel" />
                     {windowFrameCustomElts}
                 </AppProvider>
             );

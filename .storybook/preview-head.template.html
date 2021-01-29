@@ -1,4 +1,4 @@
-<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
+<link href="//fonts.googleapis.com/css?family=Open+Sans" type="text/css" rel="stylesheet" />
 <link href="./shared-bundle.css" rel="stylesheet" />
 <style>
     html {
@@ -68,12 +68,23 @@
 
     .storybook-form-background {
         padding: 0.5rem;
-        background-color: var(--normal-form-page-color, #d0d0d0);
+        background-color: var(--normal-form-page-color, #ddd);
+        display: inline-block;
+    }
+
+    .storybook-flex-flow {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
     .spinner-shape {
         width: 0.8rem;
         height: 0.8rem;
+    }
+
+    .calendar-panel {
+        width: 18rem;
     }
 
     @keyframes rotation {

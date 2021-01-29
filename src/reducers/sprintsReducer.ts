@@ -2,7 +2,8 @@
 import { Draft, produce } from "immer";
 
 // interfaces/types
-import { AnyFSA, StandardModelItem } from "../types";
+import { AnyFSA } from "../types/reactHelperTypes";
+import { StandardModelItem } from "../types";
 import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
 import { PushState, Source } from "./types";
 import { ApiGetSprintBacklogItemsSuccessAction } from "../actions/apiSprintBacklog";
@@ -13,6 +14,7 @@ import {
     CollapseSprintPanelAction,
     EditSprintAction,
     ExpandSprintPanelAction,
+    ShowSprintRangeDatePickerAction,
     ToggleSprintDetailAction,
     UpdateSprintFieldsAction
 } from "../actions/sprintActions";
@@ -24,6 +26,7 @@ import {
     ApiPostSprintSuccessAction,
     ApiPutSprintSuccessAction
 } from "../actions/apiSprints";
+import { DateOnly } from "../types/dateTypes";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
@@ -36,7 +39,8 @@ import { shouldHideDetailMenu } from "../components/utils/itemDetailMenuUtils";
 // components
 import {
     SprintDetailFormEditableFields,
-    SprintDetailFormEditableFieldsWithInstanceId
+    SprintDetailFormEditableFieldsWithInstanceId,
+    SprintDetailShowingPicker
 } from "../components/organisms/forms/SprintDetailForm";
 
 // actions
@@ -48,12 +52,12 @@ export interface Sprint extends StandardModelItem {
     archived: boolean;
     backlogItemsLoaded: boolean;
     expanded: boolean;
-    finishDate: Date;
+    finishDate: DateOnly;
     name: string;
     plannedPoints: number | null;
     projectId: string;
     remainingSplitPoints: number | null;
-    startDate: Date;
+    startDate: DateOnly;
     totalPoints: number | null;
     usedSplitPoints: number | null;
     velocityPoints: number | null;
@@ -73,26 +77,44 @@ export interface SprintWithSource extends SaveableSprint {
     source: Source;
 }
 
+export interface OriginalSprintData {
+    [id: string]: Sprint;
+}
+
+export interface SprintOpenedDatePickerInfo {
+    sprintId: string | null;
+    showPicker: SprintDetailShowingPicker;
+}
+
 export type SprintsState = Readonly<{
     addedItems: SaveableSprint[];
     allItems: SprintWithSource[];
     items: EditableSprint[];
+    originalData: OriginalSprintData;
     openedDetailMenuSprintId: string | null;
+    openedDatePickerInfo: SprintOpenedDatePickerInfo;
 }>;
 
 export const sprintsReducerInitialState = Object.freeze<SprintsState>({
     addedItems: [],
     allItems: [],
     items: [],
-    openedDetailMenuSprintId: null
+    openedDetailMenuSprintId: null,
+    originalData: {},
+    openedDatePickerInfo: {
+        sprintId: null,
+        showPicker: SprintDetailShowingPicker.None
+    }
 });
 
 export const rebuildAllItems = (draft: Draft<SprintsState>) => {
-    const addedItemsWithSource = draft.addedItems.map((item) => {
+    const addedItemsWithSource = draft.addedItems.map((draftItem) => {
+        const item = draftItem as SaveableSprint;
         const result: SprintWithSource = { ...item, source: Source.Added };
         return result;
     });
-    const itemsWithSource = draft.items.map((item) => {
+    const itemsWithSource = draft.items.map((draftItem) => {
+        const item = draftItem as EditableSprint;
         const result: SprintWithSource = { ...item, source: Source.Loaded, saved: true };
         return result;
     });
@@ -114,9 +136,9 @@ export const updateSprintFields = (sprint: Sprint, payload: SprintDetailFormEdit
 };
 
 export const updateItemFieldsInAllItems = (draft: Draft<SprintsState>, payload: SprintDetailFormEditableFieldsWithInstanceId) => {
-    const item = draft.allItems.filter((item) => idsMatch(item, payload));
+    const item = draft.allItems.filter((item) => idsMatch(item as SprintWithSource, payload));
     if (item.length === 1) {
-        updateSprintFields(item[0], payload);
+        updateSprintFields(item[0] as SprintWithSource, payload);
     }
 };
 
@@ -157,12 +179,19 @@ export const markBacklogItemsLoaded = (draft: Draft<SprintsState>, sprintId: str
 export const updateSprintById = (draft: Draft<SprintsState>, sprintId: string, updateItem: { (item: SaveableSprint) }) => {
     const addedItemIdx = draft.addedItems.findIndex((item) => item.id === sprintId);
     if (addedItemIdx >= 0) {
-        updateItem(draft.items[addedItemIdx]);
+        updateItem(draft.items[addedItemIdx] as SaveableSprint);
     }
     const idx = draft.items.findIndex((item) => item.id === sprintId);
     if (idx >= 0) {
-        updateItem(draft.items[idx]);
+        updateItem(draft.items[idx] as SaveableSprint);
     }
+};
+
+const updateStateToHideDatePicker = (draft: Draft<SprintsState>) => {
+    draft.openedDatePickerInfo = {
+        sprintId: null,
+        showPicker: SprintDetailShowingPicker.None
+    };
 };
 
 export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState, action: AnyFSA): SprintsState =>
@@ -238,9 +267,12 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             }
             case ActionTypes.EDIT_SPRINT: {
                 const actionTyped = action as EditSprintAction;
-                const position = actionTyped.payload.sprintId;
+                const sprintId = actionTyped.payload.sprintId;
 
-                updateSprintById(draft, actionTyped.payload.sprintId, (item) => {
+                const sprint = getSprintById(draft as SprintsState, sprintId);
+                draft.originalData[sprintId] = sprint;
+
+                updateSprintById(draft, sprintId, (item) => {
                     item.editing = true;
                 });
                 rebuildAllItems(draft);
@@ -260,22 +292,29 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             }
             case ActionTypes.CANCEL_EDIT_SPRINT: {
                 const actionTyped = action as CancelEditSprintAction;
+                const sprintId = actionTyped.payload.itemId;
+
+                const originalSprintData = draft.originalData[sprintId];
                 updateSprintById(draft, actionTyped.payload.itemId, (item) => {
                     item.editing = false;
+                    item.name = originalSprintData.name;
+                    item.startDate = originalSprintData.startDate.clone();
+                    item.finishDate = originalSprintData.finishDate.clone();
                 });
+                delete draft.originalData[sprintId];
                 rebuildAllItems(draft);
                 return;
             }
             case ActionTypes.UPDATE_SPRINT_FIELDS: {
                 const actionTyped = action as UpdateSprintFieldsAction;
                 draft.addedItems.forEach((addedItem) => {
-                    if (idsMatch(addedItem, actionTyped.payload)) {
-                        updateSprintFields(addedItem, actionTyped.payload);
+                    if (idsMatch(addedItem as SaveableSprint, actionTyped.payload)) {
+                        updateSprintFields(addedItem as SaveableSprint, actionTyped.payload);
                     }
                 });
                 draft.items.forEach((item) => {
-                    if (idsMatch(item, actionTyped.payload)) {
-                        updateSprintFields(item, actionTyped.payload);
+                    if (idsMatch(item as EditableSprint, actionTyped.payload)) {
+                        updateSprintFields(item as EditableSprint, actionTyped.payload);
                     }
                 });
                 updateItemFieldsInAllItems(draft, actionTyped.payload);
@@ -303,8 +342,13 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             }
             case ActionTypes.APP_CLICK: {
                 const actionTyped = action as AppClickAction;
-                const targetElt = actionTyped.payload.target;
-                const hideMenu = shouldHideDetailMenu(targetElt, draft.openedDetailMenuSprintId);
+                const parent = actionTyped.payload.parent;
+                const hideMenu = shouldHideDetailMenu(
+                    parent?.dataClass,
+                    parent?.itemId,
+                    parent?.itemType,
+                    draft.openedDetailMenuSprintId
+                );
                 if (hideMenu) {
                     draft.openedDetailMenuSprintId = null;
                 }
@@ -356,7 +400,6 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 return;
             }
             case ActionTypes.API_PUT_SPRINT_SUCCESS: {
-                console.log("------ DEBUG HERE ------");
                 const actionTyped = action as ApiPutSprintSuccessAction;
                 const sprintId = actionTyped.payload.response.data.item.id;
                 updateSprintById(draft, sprintId, (item) => {
@@ -364,6 +407,22 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                     item.saved = true;
                 });
                 rebuildAllItems(draft);
+                return;
+            }
+            case ActionTypes.SHOW_SPRINT_RANGE_DATE_PICKER: {
+                const actionTyped = action as ShowSprintRangeDatePickerAction;
+                draft.openedDatePickerInfo = {
+                    sprintId: actionTyped.payload.sprintId,
+                    showPicker: actionTyped.payload.showPicker
+                };
+                return;
+            }
+            case ActionTypes.HIDE_SPRINT_RANGE_DATE_PICKER: {
+                updateStateToHideDatePicker(draft);
+                return;
+            }
+            case ActionTypes.API_PUT_SPRINT_FAILURE: {
+                updateStateToHideDatePicker(draft);
                 return;
             }
         }

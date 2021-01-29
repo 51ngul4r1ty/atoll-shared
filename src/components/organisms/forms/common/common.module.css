@@ -1,6 +1,6 @@
 .form {
     padding: 0.7rem;
-    background-color: var(--normal-form-page-color, #d0d0d0);
+    background-color: var(--normal-form-page-color, #ddd);
     animation-duration: 0.2s;
     animation-name: rotateIn;
     transform-style: preserve-3d;

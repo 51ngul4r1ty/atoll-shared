@@ -1,6 +1,4 @@
-// externals
-import { ForwardRefExoticComponent, PropsWithoutRef, PropsWithChildren, RefAttributes } from "react";
-import { Action } from "redux";
+// TODO: Move these types into files under the ./types folder
 
 /* Data model related */
 
@@ -51,24 +49,6 @@ export interface WebsocketPushNotification<T> extends BasePushNotification {
 export interface WebsocketPushNotificationV0<T> extends BasePushNotification {
     data: T;
 }
-
-/* Flux Standard Action related */
-
-export interface AnyFSA extends FSAWithMeta<any, any, any> {}
-
-export interface SimpleFSA<T> extends Action<T> {}
-
-export interface FSA<T, P> extends SimpleFSA<T> {
-    payload?: P;
-}
-
-export interface FSAWithMeta<T, P, M> extends FSA<T, P> {
-    meta?: M;
-}
-
-/* Forwarded Ref Related */
-
-export type ComponentWithForwardedRef<P> = ForwardRefExoticComponent<PropsWithoutRef<PropsWithChildren<P>> & RefAttributes<any>>;
 
 /* Story Related */
 

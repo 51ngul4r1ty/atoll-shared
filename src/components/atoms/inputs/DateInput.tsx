@@ -1,36 +1,57 @@
 // externals
-import React, { forwardRef, ChangeEvent, RefObject, Ref, useState, KeyboardEvent, useEffect } from "react";
+import React, { forwardRef, ChangeEvent, FocusEvent, RefObject, Ref, useState, useEffect } from "react";
+import ReactDOM from "react-dom";
 
 // style
 import css from "./DateInput.module.css";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
-import { ComponentWithForwardedRef } from "../../../types";
 import { usePrevious } from "../../common/usePreviousHook";
+import { ItemMenuPanel, ItemMenuPanelCaretPosition, ItemMenuPanelColor } from "../panels/ItemMenuPanel";
+import { hasParentWithDataClass } from "../../common/domUtils";
+
+// components
+import { SprintDatePicker, SprintDatePickerMode } from "../../molecules/pickers/SprintDatePicker";
+
+// interfaces/types
+import { ComponentWithForwardedRef } from "../../../types/reactHelperTypes";
+import { DateOnly } from "../../../types/dateTypes";
 
 export type DateInputRefType = HTMLInputElement;
 
 export type DateInputType = ComponentWithForwardedRef<DateInputProps>;
 
+export enum DateInputPickerMode {
+    SingleDateRangeAltUnused = 1,
+    RangeAltIsFinishDate = 2,
+    RangeAltIsStartDate = 3
+}
+
 export interface DateInputStateProps {
+    caretPosition?: ItemMenuPanelCaretPosition;
     className?: string;
     disabled?: boolean;
+    rangeAltValue?: DateOnly | null;
     inputId: string;
     inputName?: string;
-    inputValue?: Date;
+    itemType?: string;
     labelText: string;
+    pickerMode?: DateInputPickerMode;
     placeHolder?: string;
     readOnly?: boolean;
     required?: boolean;
-    showTime?: boolean;
+    showPicker?: boolean;
     size?: number;
+    inputValue: DateOnly | null;
     type?: string;
     validator?: { (value: string): boolean };
 }
 
 export interface DateInputDispatchProps {
     onChange?: { (value: string): void };
+    onInputFocus?: { (e: FocusEvent<HTMLDivElement>): void };
+    onInputFocusLost?: { (e: FocusEvent<HTMLDivElement>, notLostToDatePicker: boolean): void };
     onEnterKeyPress?: { () };
     onKeyPress?: { (keyCode: number) };
 }
@@ -52,12 +73,60 @@ export const formatDateAsText = (date: Date | null, showTime?: boolean): string 
     return showTime ? dateTimeString : datePart;
 };
 
+export const getModalPanelElt = () => document.getElementById("atollModalPanel");
+
+export const buildModalComponentDivClassName = (relatedComponentId: string) => `ATOLL-TAG-MODAL-${relatedComponentId}`;
+
+export const registerModalComponent = (relatedComponentId: string, modalComponentElt: JSX.Element) => {
+    const relatedComponent = document.getElementById(relatedComponentId);
+    const boundingRect = relatedComponent.getBoundingClientRect();
+    const modalElt = getModalPanelElt();
+    const tagNameKey = buildModalComponentDivClassName(relatedComponentId);
+    const elts = modalElt.getElementsByClassName(tagNameKey);
+    let parentElt: Element;
+    if (!elts.length) {
+        const divNode = document.createElement("div");
+        divNode.className = tagNameKey;
+        modalElt.appendChild(divNode);
+        parentElt = divNode;
+    } else {
+        parentElt = elts[0];
+    }
+    const parentEltAsDiv = parentElt as HTMLDivElement;
+    parentEltAsDiv.style.position = "absolute";
+    parentEltAsDiv.style.top = `${boundingRect.top}px`;
+    parentEltAsDiv.style.left = `${boundingRect.left}px`;
+    parentEltAsDiv.style.width = `${boundingRect.width}px`;
+    parentEltAsDiv.style.height = "0";
+    parentEltAsDiv.style.overflow = "visible";
+    ReactDOM.render(modalComponentElt, parentElt);
+};
+
+export const unregisterModalComponent = (relatedComponentId: string) => {
+    const modalElt = getModalPanelElt();
+    const tagNameKey = buildModalComponentDivClassName(relatedComponentId);
+    const elts = modalElt.getElementsByClassName(tagNameKey);
+    if (elts.length) {
+        modalElt.removeChild(elts[0]);
+    }
+};
+
 export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps> = (props) => {
     const inputTextStartingEmptyValue = props.readOnly ? "-" : "";
-    const propsInputValueToUse = formatDateAsText(props.inputValue, props.showTime) || inputTextStartingEmptyValue;
+    const propsInputValueToUse = props.inputValue ? props.inputValue.formatAsText() : inputTextStartingEmptyValue;
     const [inputText, setInputText] = useState(propsInputValueToUse);
-    const [validInputText, setValidInputText] = useState(formatDateAsText(props.inputValue, props.showTime) || "");
+    const [validInputText, setValidInputText] = useState(props.inputValue ? props.inputValue.formatAsText() : "");
     const [isValid, setIsValid] = useState(true); // start off "valid", even if starting value is invalid
+    const propagateTextChange = (inputText: string, lastValidInputText?: string) => {
+        setInputText(inputText);
+        if (props.onChange) {
+            if (lastValidInputText === undefined) {
+                props.onChange(inputText);
+            } else {
+                props.onChange(lastValidInputText);
+            }
+        }
+    };
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         let lastValidInputText = validInputText;
         if (props.validator && !props.validator(e.target.value)) {
@@ -67,9 +136,19 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
             lastValidInputText = e.target.value;
             setIsValid(true);
         }
-        setInputText(e.target.value);
-        if (props.onChange) {
-            props.onChange(lastValidInputText);
+        propagateTextChange(e.target.value, lastValidInputText);
+    };
+    const handleInputFocus = (e: FocusEvent<HTMLDivElement>) => {
+        if (props.onInputFocus) {
+            props.onInputFocus(e);
+        }
+    };
+    const handleInputFocusLost = (e: FocusEvent<HTMLDivElement>) => {
+        const eltReceivingFocus = e.relatedTarget as HTMLElement;
+        const temp = e.currentTarget as HTMLElement;
+        const notLostToDatePicker = !hasParentWithDataClass(eltReceivingFocus, "date-picker");
+        if (props.onInputFocusLost) {
+            props.onInputFocusLost(e, notLostToDatePicker);
         }
     };
     const handleKeyUp = (event) => {
@@ -111,10 +190,60 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
         props.readOnly ? css.readOnly : null
     );
     const typeToUse = props.type || "text";
+    const showPicker = props.pickerMode && props.pickerMode !== DateInputPickerMode.SingleDateRangeAltUnused;
+    const pickerMode =
+        props.pickerMode === DateInputPickerMode.RangeAltIsFinishDate
+            ? SprintDatePickerMode.StartDate
+            : SprintDatePickerMode.FinishDate;
+    const startDateToUse = props.pickerMode === DateInputPickerMode.RangeAltIsStartDate ? props.rangeAltValue : props.inputValue;
+    const finishDateToUse = props.pickerMode === DateInputPickerMode.RangeAltIsFinishDate ? props.rangeAltValue : props.inputValue;
+    useEffect(() => {
+        const relatedComponentId = props.inputId;
+        registerModalComponent(
+            relatedComponentId,
+            <div
+                data-class="date-picker"
+                className={buildClassName(
+                    css.picker,
+                    props.showPicker ? css.show : css.hide,
+                    props.caretPosition === ItemMenuPanelCaretPosition.TopRight ? css.caretTopRight : null
+                )}
+                tabIndex={1}
+                onBlur={(e) => {
+                    // handleDatePickerFocusLost(e);
+                }}
+            >
+                <ItemMenuPanel
+                    itemId={props.inputId}
+                    itemType={props.itemType}
+                    caretPosition={props.caretPosition || ItemMenuPanelCaretPosition.TopLeft}
+                    panelColor={ItemMenuPanelColor.Dark}
+                >
+                    <SprintDatePicker
+                        startDate={startDateToUse}
+                        finishDate={finishDateToUse}
+                        pickerMode={pickerMode}
+                        suppressPadding
+                        onStartDateChange={(date: DateOnly) => {
+                            propagateTextChange(date.formatAsText());
+                        }}
+                        onFinishDateChange={(date: DateOnly) => {
+                            propagateTextChange(date.formatAsText());
+                        }}
+                    />
+                </ItemMenuPanel>
+            </div>
+        );
+        return function cleanup() {
+            unregisterModalComponent(relatedComponentId);
+        };
+    }, [showPicker, props.showPicker, startDateToUse, finishDateToUse, pickerMode]);
     return (
         <div className={classToUse}>
             <input
                 id={props.inputId}
+                data-class="date-input"
+                data-id={props.inputId}
                 ref={props.innerRef}
                 disabled={props.disabled || props.readOnly}
                 name={nameToUse}
@@ -125,13 +254,22 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
                 onChange={(e) => {
                     handleChange(e);
                 }}
+                onFocus={(e) => {
+                    handleInputFocus(e);
+                }}
+                onBlur={(e) => {
+                    handleInputFocusLost(e);
+                }}
                 required={props.required}
+                tabIndex={0}
             />
             <label htmlFor={nameToUse}>{props.labelText}</label>
         </div>
     );
 };
 
-export const DateInput: DateInputType = forwardRef((props: DateInputProps, ref: Ref<DateInputRefType>) => (
-    <InnerDateInput innerRef={ref as RefObject<DateInputRefType>} {...props} />
-));
+export const DateInput: DateInputType = forwardRef<DateInputRefType, DateInputProps>(
+    (props: DateInputProps, ref: Ref<DateInputRefType>) => (
+        <InnerDateInput innerRef={ref as RefObject<DateInputRefType>} {...props} />
+    )
+);

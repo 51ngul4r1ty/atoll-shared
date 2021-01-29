@@ -2,7 +2,7 @@
 import "jest";
 
 // code under test
-import { addHours, addMinutes, addSeconds, roundDateToDayBoundary } from "../dateHelper";
+import { addHours, addMinutes, addSeconds, isValidDate, roundDateToDayBoundary, stringToDate } from "../dateHelper";
 
 describe("Date Helper", () => {
     describe("addHours", () => {
@@ -50,6 +50,28 @@ describe("Date Helper", () => {
             expect(actual.getFullYear()).toEqual(2020);
             expect(actual.getMonth()).toEqual(11);
             expect(actual.getDate()).toEqual(7); // must "round" to current day
+        });
+    });
+    describe("stringToDate", () => {
+        it("should parse valid date correctly", () => {
+            const actual = stringToDate("5/3/2020");
+            expect(actual.getFullYear()).toEqual(2020);
+            expect(actual.getMonth()).toEqual(4);
+            expect(actual.getDate()).toEqual(3);
+        });
+        it("should return null for invalid date", () => {
+            const actual = stringToDate("1/5/3/2020");
+            expect(actual).toBeNull();
+        });
+    });
+    describe("isValidDate", () => {
+        it("should return true for a valid date", () => {
+            const actual = isValidDate("5/3/2020");
+            expect(actual).toBeTruthy();
+        });
+        it("should return null for invalid date", () => {
+            const actual = isValidDate("1/5/3/2020");
+            expect(actual).toBeFalsy();
         });
     });
 });

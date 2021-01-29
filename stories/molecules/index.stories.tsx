@@ -13,6 +13,9 @@ import {
     BacklogItemCard,
     BacklogItemStatus,
     BacklogItemTypeEnum,
+    DateInput,
+    DateInputPickerMode,
+    DateOnly,
     EditButton,
     EditMode,
     HomeButton,
@@ -21,11 +24,13 @@ import {
     SmartSpinner,
     SpinnerAction,
     SpinnerSize,
-    SpinnerTextPosition
+    SpinnerTextPosition,
+    SprintDatePicker,
+    SprintDatePickerMode
 } from "../../dist/index.es";
 
 addDecorator(withRootAttribute);
-addDecorator(withKnobs);
+addDecorator(withKnobs({ escapeHTML: false }));
 addParameters({
     rootAttribute: {
         root: "html",
@@ -263,5 +268,42 @@ storiesOf("Molecules/Unique/SmartSpinner", module).add("SmartSpinner", () => (
                 undefined
             )}
         />
+    </div>
+));
+
+storiesOf("Molecules/Pickers/SprintDatePicker", module).add("SprintDatePicker", () => (
+    <div>
+        <SprintDatePicker
+            className="calendar-panel"
+            startDate={new DateOnly(2021, 1, 5)}
+            finishDate={new DateOnly(2021, 1, 18)}
+            pickerMode={select(
+                "pickerMode",
+                {
+                    StartDate: SprintDatePickerMode.StartDate,
+                    FinishDate: SprintDatePickerMode.FinishDate,
+                    DateRange: SprintDatePickerMode.DateRange
+                },
+                SprintDatePickerMode.StartDate
+            )}
+        />
+    </div>
+));
+
+storiesOf("Molecules/Inputs/DateInput", module).add("DateInput", () => (
+    <div className="storybook-form-background">
+        <div className="storybook-flex-flow">
+            <DateInput
+                inputValue={new DateOnly(2021, 1, 5)}
+                pickerMode={DateInputPickerMode.RangeAltIsFinishDate}
+                rangeAltValue={new DateOnly(2021, 1, 18)}
+            />
+            to
+            <DateInput
+                inputValue={new DateOnly(2021, 1, 18)}
+                pickerMode={DateInputPickerMode.RangeAltIsStartDate}
+                rangeAltValue={new DateOnly(2021, 1, 5)}
+            />
+        </div>
     </div>
 ));

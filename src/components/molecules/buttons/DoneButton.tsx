@@ -9,7 +9,7 @@ import { DoneIcon } from "../../atoms/icons/DoneIcon";
 
 // interfaces/types
 import { PropsWithClassName } from "../../common/types";
-import { ComponentWithForwardedRef } from "../../../types";
+import { ComponentWithForwardedRef } from "../../../types/reactHelperTypes";
 
 export type DoneButtonRefType = SimpleButtonRefType;
 

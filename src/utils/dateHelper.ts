@@ -33,10 +33,92 @@ export const roundDateToDayBoundary = (dateTime: Date): Date => {
     return new Date(newYear, newMonth, newDay);
 };
 
+/**
+ * Returns the current time and day as a Date object.  Use "dateNow" if you wish to exclude the time component.
+ */
 export const timeNow = (): Date => {
     return new Date();
 };
 
+export const sameDateAndTime = (date1: Date, date2: Date) => {
+    return date1.getTime() === date2.getTime();
+};
+
+export const sameDay = (date1: Date | null | undefined, date2: Date | null | undefined) => {
+    if (!date1) {
+        return !date2;
+    } else if (!date2) {
+        return false;
+    }
+    const roundedDate1 = roundDateToDayBoundary(date1);
+    const roundedDate2 = roundDateToDayBoundary(date2);
+    return sameDateAndTime(roundedDate1, roundedDate2);
+};
+
+export const daySequenceIs = (date1: Date | null | undefined, date2: Date | null | undefined): boolean | null => {
+    if (!date1 || !date2) {
+        return null;
+    }
+    if (sameDay(date1, date2)) {
+        return null;
+    }
+    const roundedDate1 = roundDateToDayBoundary(date1);
+    const roundedDate2 = roundDateToDayBoundary(date2);
+    return roundedDate2.getTime() > roundedDate1.getTime();
+};
+
+export const MONTH_NAMES = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+];
+
+export const monthToAbbrString = (month: number | null | undefined) => {
+    if (!month && month !== 0) {
+        return "";
+    }
+    return abbreviateMonth(MONTH_NAMES[month]);
+};
+
+export const monthToString = (month: number | null | undefined, startingIndex: number = 0) => {
+    if (!month && month !== 0) {
+        return "";
+    }
+    return MONTH_NAMES[month - startingIndex];
+};
+
+export const abbreviateMonth = (val: string) => {
+    if (!val) {
+        return val;
+    }
+    return val.substr(0, Math.min(val.length, 3));
+};
+
+export const isValidDate = (text: string): boolean => {
+    return stringToDate(text) !== null;
+};
+
+export const stringToDate = (text: string): Date | null => {
+    const result = new Date(Date.parse(text));
+    if (isNaN(result.getTime())) {
+        return null;
+    }
+    return result;
+};
+
+/**
+ * Returns the current day as a Date object without any time component.  "timeNow" can be used if you wish to include the time as
+ * well.
+ */
 export const dateNow = (): Date => {
     const n = timeNow();
     return new Date(n.getFullYear(), n.getMonth(), n.getDate());

@@ -1,5 +1,6 @@
 // interfaces/types
 import { SprintBacklogItem } from "../../../../reducers/sprintBacklogReducer";
+import { DateOnly } from "../../../../types/dateTypes";
 
 export enum SprintStatus {
     None = 0,
@@ -15,14 +16,14 @@ export interface SprintCardSprint {
     backlogItemsLoaded: boolean;
     editing: boolean;
     expanded: boolean;
-    finishDate: Date;
+    finishDate: DateOnly | null;
     id: string;
     instanceId: number | null;
     name: string;
     plannedPoints: number | null;
     remainingSplitPoints: number | null;
     saved: boolean;
-    startDate: Date;
+    startDate: DateOnly | null;
     status: SprintStatus;
     totalPoints: number | null;
     usedSplitPoints: number | null;

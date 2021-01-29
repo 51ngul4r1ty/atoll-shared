@@ -70,3 +70,15 @@
 :global(.mobile) .doneButton {
     margin-bottom: 0.3rem;
 }
+
+.sprintForm {
+    display: grid;
+    gap: 0.7rem;
+    grid-template-areas:
+        "header header"
+        "start end";
+}
+
+.sprintNameInput {
+    grid-area: header;
+}
