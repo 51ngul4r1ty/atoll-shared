@@ -33,6 +33,9 @@ export const roundDateToDayBoundary = (dateTime: Date): Date => {
     return new Date(newYear, newMonth, newDay);
 };
 
+/**
+ * Returns the current time and day as a Date object.  Use "dateNow" if you wish to exclude the time component.
+ */
 export const timeNow = (): Date => {
     return new Date();
 };
@@ -112,6 +115,10 @@ export const stringToDate = (text: string): Date | null => {
     return result;
 };
 
+/**
+ * Returns the current day as a Date object without any time component.  "timeNow" can be used if you wish to include the time as
+ * well.
+ */
 export const dateNow = (): Date => {
     const n = timeNow();
     return new Date(n.getFullYear(), n.getMonth(), n.getDate());
