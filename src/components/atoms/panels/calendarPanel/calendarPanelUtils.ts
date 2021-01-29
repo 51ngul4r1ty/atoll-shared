@@ -1,8 +1,5 @@
 // interfaces / types
 import { CalendarSprintRange } from "./calendarSprintTypes";
-
-// utils
-import { addDays, roundDateToDayBoundary, sameDay } from "../../../../utils";
 import { DateOnly } from "../../../../types/dateTypes";
 
 export const sortSprints = (sprints: CalendarSprintRange[]): CalendarSprintRange[] =>

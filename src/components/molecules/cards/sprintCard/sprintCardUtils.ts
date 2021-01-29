@@ -1,8 +1,8 @@
 // utils
-import { DateOnly } from "../../../../types/dateTypes";
-import { addDays, monthToAbbrString } from "../../../../utils/dateHelper";
+import { monthToAbbrString } from "../../../../utils/dateHelper";
 
 // interfaces/types
+import { DateOnly } from "../../../../types/dateTypes";
 import { SprintCardSprint, SprintStatus } from "./sprintCardTypes";
 
 export const formatSameMonthRange = (startDate: DateOnly, finishDate: DateOnly): string => {
