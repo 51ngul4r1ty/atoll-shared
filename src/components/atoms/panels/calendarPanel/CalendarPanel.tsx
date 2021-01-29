@@ -1,5 +1,5 @@
 // externals
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // style
 import css from "./CalendarPanel.module.css";
@@ -39,13 +39,17 @@ export type CalendarPanelProps = CalendarPanelStateProps & CalendarPanelDispatch
 // NOTE: Keep this private so that it isn't referenced outside this component
 interface CalendarPanelInnerStateProps {}
 
+const CALENDAR_CELL_COUNT = 5 * 7;
+
 const DAY = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
 export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInnerStateProps> = (props) => {
     const dates = props.dateSelected ? [props.dateSelected] : [new DateOnly()];
-    const year = calcYearToShow(dates);
-    const month = monthToString(calcMonthToShow(dates));
-    let day = calcFirstDayToShow(dates);
+    const [year, setYear] = useState(calcYearToShow(dates));
+    const [month, setMonth] = useState(calcMonthToShow(dates));
+    const [firstDay, setFirstDay] = useState(calcFirstDayToShow(dates));
+    let day = firstDay;
+    const monthName = monthToString(month, 1);
     const calendarCells = [];
     const calendarHeaderRow = [];
     const calendarGrid = [];
@@ -113,13 +117,46 @@ export const InnerCalendarPanel: React.FC<CalendarPanelProps & CalendarPanelInne
             }
         }
     };
+    const handlePrevClick = () => {
+        if (month > 1) {
+            setMonth(month - 1);
+        } else {
+            setYear(year - 1);
+            setMonth(12);
+        }
+        setFirstDay(firstDay.addDays(-CALENDAR_CELL_COUNT));
+    };
+    const handleNextClick = () => {
+        if (month < 12) {
+            setMonth(month + 1);
+        } else {
+            setYear(year + 1);
+            setMonth(1);
+        }
+        setFirstDay(firstDay.addDays(CALENDAR_CELL_COUNT));
+    };
+
     return (
         <div className={props.className}>
             <div className={css.header}>
                 <div className={css.cell}>{year}</div>
-                <div className={css.cell}>{month}</div>
-                <div className={buildClassName(css.cell, css.clickable)}>&lt;</div>
-                <div className={buildClassName(css.cell, css.clickable)}>&gt;</div>
+                <div className={css.cell}>{monthName}</div>
+                <div
+                    className={buildClassName(css.cell, css.clickable)}
+                    onClick={() => {
+                        handlePrevClick();
+                    }}
+                >
+                    &lt;
+                </div>
+                <div
+                    className={buildClassName(css.cell, css.clickable)}
+                    onClick={() => {
+                        handleNextClick();
+                    }}
+                >
+                    &gt;
+                </div>
             </div>
             <div className={css.calendar} onClick={(e) => handleDayClick(e)}>
                 {calendarCells}

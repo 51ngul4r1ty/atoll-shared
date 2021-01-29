@@ -86,11 +86,11 @@ export const monthToAbbrString = (month: number | null | undefined) => {
     return abbreviateMonth(MONTH_NAMES[month]);
 };
 
-export const monthToString = (month: number | null | undefined) => {
+export const monthToString = (month: number | null | undefined, startingIndex: number = 0) => {
     if (!month && month !== 0) {
         return "";
     }
-    return MONTH_NAMES[month];
+    return MONTH_NAMES[month - startingIndex];
 };
 
 export const abbreviateMonth = (val: string) => {
