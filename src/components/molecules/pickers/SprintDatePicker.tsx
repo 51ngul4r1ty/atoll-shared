@@ -5,14 +5,14 @@ import React, { useEffect, useState } from "react";
 import css from "./SprintDatePicker.module.css";
 
 // components
-import { CalendarPanel } from "../../atoms";
+import { CalendarPanel } from "../../atoms/panels/calendarPanel/CalendarPanel";
 
 // interfaces/types
 import { PropsWithClassName } from "../../common/types";
 import { CalendarSprintRange } from "../../atoms/panels/calendarPanel/calendarSprintTypes";
 
 // utils
-import { addDays, buildClassName } from "../../../utils";
+import { buildClassName } from "../../../utils";
 import { DateOnly } from "../../../types/dateTypes";
 
 export enum SprintDatePickerMode {
