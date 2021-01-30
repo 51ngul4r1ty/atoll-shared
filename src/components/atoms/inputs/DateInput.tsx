@@ -78,6 +78,8 @@ export const getModalPanelElt = () => document.getElementById("atollModalPanel")
 export const buildModalComponentDivClassName = (relatedComponentId: string) => `ATOLL-TAG-MODAL-${relatedComponentId}`;
 
 export const registerModalComponent = (relatedComponentId: string, modalComponentElt: JSX.Element) => {
+    const scrollOffsetY = window.scrollY;
+    const scrollOffsetX = window.scrollX;
     const relatedComponent = document.getElementById(relatedComponentId);
     const boundingRect = relatedComponent.getBoundingClientRect();
     const modalElt = getModalPanelElt();
@@ -94,8 +96,8 @@ export const registerModalComponent = (relatedComponentId: string, modalComponen
     }
     const parentEltAsDiv = parentElt as HTMLDivElement;
     parentEltAsDiv.style.position = "absolute";
-    parentEltAsDiv.style.top = `${boundingRect.top}px`;
-    parentEltAsDiv.style.left = `${boundingRect.left}px`;
+    parentEltAsDiv.style.top = `${boundingRect.top + scrollOffsetY}px`;
+    parentEltAsDiv.style.left = `${boundingRect.left + scrollOffsetX}px`;
     parentEltAsDiv.style.width = `${boundingRect.width}px`;
     parentEltAsDiv.style.height = "0";
     parentEltAsDiv.style.overflow = "visible";
