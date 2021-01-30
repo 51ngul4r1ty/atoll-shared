@@ -7,7 +7,7 @@ import { SprintCardSprint, SprintStatus } from "./sprintCardTypes";
 
 export const formatSameMonthRange = (startDate: DateOnly, finishDate: DateOnly): string => {
     const startYear = startDate.getYear();
-    const startMonth = startDate.getMonthIndex();
+    const startMonth = startDate.getMonth();
     const startDay = startDate.getDay();
     const finishDay = finishDate.getDay();
     const monthName = monthToAbbrString(startMonth, 1);
@@ -31,8 +31,8 @@ export const formatSameYearRange = (startDate: DateOnly, finishDate: DateOnly): 
 export const formatDiffYearRange = (startDate: DateOnly, finishDate: DateOnly): string => {
     const startYear = startDate.getYear();
     const finishYear = finishDate.getYear();
-    const startMonth = startDate.getMonthIndex();
-    const finishMonth = finishDate.getMonthIndex();
+    const startMonth = startDate.getMonth();
+    const finishMonth = finishDate.getMonth();
     const startDay = startDate.getDay();
     const finishDay = finishDate.getDay();
     // e.g. "May 30, 2019 to June 12, 2020";
