@@ -79,6 +79,13 @@
         "start end";
 }
 
+:global(.mobile) .sprintForm {
+    grid-template-areas:
+        "header"
+        "start"
+        "end";
+}
+
 .sprintNameInput {
     grid-area: header;
 }

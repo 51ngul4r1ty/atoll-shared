@@ -137,6 +137,7 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
                     inputId={`sprint${props.id}StartDateInput`}
                     itemType="startDate"
                     className={css.startDateInput}
+                    caretPosition={props.renderMobile ? ItemMenuPanelCaretPosition.TopRight : ItemMenuPanelCaretPosition.TopLeft}
                     labelText="Start"
                     inputValue={props.startDate}
                     pickerMode={DateInputPickerMode.RangeAltIsFinishDate}
