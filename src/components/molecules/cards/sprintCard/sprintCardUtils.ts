@@ -10,7 +10,7 @@ export const formatSameMonthRange = (startDate: DateOnly, finishDate: DateOnly):
     const startMonth = startDate.getMonthIndex();
     const startDay = startDate.getDay();
     const finishDay = finishDate.getDay();
-    const monthName = monthToAbbrString(startMonth);
+    const monthName = monthToAbbrString(startMonth, 1);
     return `${monthName} ${startDay} to ${finishDay}, ${startYear}`;
 };
 
@@ -24,7 +24,7 @@ export const formatSameYearRange = (startDate: DateOnly, finishDate: DateOnly): 
         const startDay = startDate.getDay();
         const finishDay = finishDate.getDay();
         // e.g. "May 30 to June 12, 2019";
-        return `${monthToAbbrString(startMonth)} ${startDay} to ${monthToAbbrString(finishMonth)} ${finishDay}, ${startYear}`;
+        return `${monthToAbbrString(startMonth, 1)} ${startDay} to ${monthToAbbrString(finishMonth, 1)} ${finishDay}, ${startYear}`;
     }
 };
 
@@ -36,9 +36,9 @@ export const formatDiffYearRange = (startDate: DateOnly, finishDate: DateOnly): 
     const startDay = startDate.getDay();
     const finishDay = finishDate.getDay();
     // e.g. "May 30, 2019 to June 12, 2020";
-    return `${monthToAbbrString(startMonth)} ${startDay}, ${startYear} to ${monthToAbbrString(
-        finishMonth
-    )} ${finishDay}, ${finishYear}`;
+    const startDateString = `${monthToAbbrString(startMonth, 1)} ${startDay}, ${startYear}`;
+    const finishDateString = `${monthToAbbrString(finishMonth, 1)} ${finishDay}, ${finishYear}`;
+    return `${startDateString} to ${finishDateString}`;
 };
 
 export const formatDateRange = (startDate: DateOnly, finishDate: DateOnly): string => {
