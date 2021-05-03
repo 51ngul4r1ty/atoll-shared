@@ -194,6 +194,22 @@ const updateStateToHideDatePicker = (draft: Draft<SprintsState>) => {
     };
 };
 
+const updateStateToShowDatePicker = (draft: Draft<SprintsState>, sprintId: string, showPicker: SprintDetailShowingPicker) => {
+    draft.openedDatePickerInfo = {
+        sprintId,
+        showPicker
+    };
+};
+
+const updateStateToToggleDatePicker = (draft: Draft<SprintsState>, sprintId: string, showPicker: SprintDetailShowingPicker) => {
+    const valueToUse = draft?.openedDatePickerInfo?.showPicker || SprintDetailShowingPicker.None;
+    if (valueToUse === SprintDetailShowingPicker.None) {
+        updateStateToShowDatePicker(draft, sprintId, showPicker);
+    } else {
+        updateStateToHideDatePicker(draft);
+    }
+};
+
 export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState, action: AnyFSA): SprintsState =>
     produce(state, (draft) => {
         const { type } = action;
@@ -411,14 +427,16 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             }
             case ActionTypes.SHOW_SPRINT_RANGE_DATE_PICKER: {
                 const actionTyped = action as ShowSprintRangeDatePickerAction;
-                draft.openedDatePickerInfo = {
-                    sprintId: actionTyped.payload.sprintId,
-                    showPicker: actionTyped.payload.showPicker
-                };
+                updateStateToShowDatePicker(draft, actionTyped.payload.sprintId, actionTyped.payload.showPicker);
                 return;
             }
             case ActionTypes.HIDE_SPRINT_RANGE_DATE_PICKER: {
                 updateStateToHideDatePicker(draft);
+                return;
+            }
+            case ActionTypes.TOGGLE_SPRINT_RANGE_DATE_PICKER: {
+                const actionTyped = action as ShowSprintRangeDatePickerAction;
+                updateStateToToggleDatePicker(draft, actionTyped.payload.sprintId, actionTyped.payload.showPicker);
                 return;
             }
             case ActionTypes.API_PUT_SPRINT_FAILURE: {

@@ -50,8 +50,8 @@ export interface DateInputStateProps {
 
 export interface DateInputDispatchProps {
     onChange?: { (value: string): void };
-    onInputFocus?: { (e: FocusEvent<HTMLDivElement>): void };
-    onInputFocusLost?: { (e: FocusEvent<HTMLDivElement>, notLostToDatePicker: boolean): void };
+    onInputFocus?: { (e: FocusEvent<HTMLDivElement>, nothingHadFocusBefore?: boolean): void };
+    onInputFocusLost?: { (e: FocusEvent<HTMLDivElement>, notLostToDatePicker?: boolean): void };
     onEnterKeyPress?: { () };
     onKeyPress?: { (keyCode: number) };
 }
@@ -140,9 +140,15 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
         }
         propagateTextChange(e.target.value, lastValidInputText);
     };
+    // const handleClick = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+    //     console.log(":::::::::::::::::::::::::: registered click :::::::::::::::::::::::::::::");
+    // };
     const handleInputFocus = (e: FocusEvent<HTMLDivElement>) => {
+        const eltLosingFocus = e.relatedTarget as HTMLElement;
+        const nothingHadFocusBefore = !eltLosingFocus; // date-picker "focus" results in this state being true
+        console.log(`nothingHadFocusBefore = ${nothingHadFocusBefore}`);
         if (props.onInputFocus) {
-            props.onInputFocus(e);
+            props.onInputFocus(e, nothingHadFocusBefore);
         }
     };
     const handleInputFocusLost = (e: FocusEvent<HTMLDivElement>) => {
@@ -256,6 +262,9 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
                 onChange={(e) => {
                     handleChange(e);
                 }}
+                // onClick={(e) => {
+                //     handleClick(e);
+                // }}
                 onFocus={(e) => {
                     handleInputFocus(e);
                 }}

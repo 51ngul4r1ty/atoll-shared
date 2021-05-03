@@ -50,6 +50,7 @@ export interface SprintDetailFormDispatchProps {
     onDataUpdate?: { (props: SprintDetailFormEditableFieldsWithInstanceId): void };
     onShowPicker?: { (showingPicker: SprintDetailShowingPicker): void };
     onHidePicker?: { (): void };
+    onTogglePicker?: { (showingPicker: SprintDetailShowingPicker): void };
 }
 
 export type SprintDetailFormProps = SprintDetailFormStateProps & SprintDetailFormDispatchProps;
@@ -58,6 +59,11 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
     const showDatePicker = (showingPicker: SprintDetailShowingPicker) => {
         if (props.onShowPicker) {
             props.onShowPicker(showingPicker);
+        }
+    };
+    const toggleDatePicker = (showingPicker: SprintDetailShowingPicker) => {
+        if (props.onTogglePicker) {
+            props.onTogglePicker(showingPicker);
         }
     };
     const hideDatePicker = () => {
@@ -149,8 +155,12 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
                             handleDataUpdate({ ...prevData, startDate });
                         }
                     }}
-                    onInputFocus={() => {
-                        showDatePicker(SprintDetailShowingPicker.StartDate);
+                    onInputFocus={(e, nothingHadFocusBefore) => {
+                        if (nothingHadFocusBefore) {
+                            toggleDatePicker(SprintDetailShowingPicker.StartDate);
+                        } else {
+                            showDatePicker(SprintDetailShowingPicker.StartDate);
+                        }
                     }}
                     onInputFocusLost={(e, notLostToDatePicker) => {
                         if (notLostToDatePicker) {
@@ -174,8 +184,12 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
                             handleDataUpdate({ ...prevData, finishDate });
                         }
                     }}
-                    onInputFocus={() => {
-                        showDatePicker(SprintDetailShowingPicker.FinishDate);
+                    onInputFocus={(e, nothingHadFocusBefore) => {
+                        if (nothingHadFocusBefore) {
+                            toggleDatePicker(SprintDetailShowingPicker.FinishDate);
+                        } else {
+                            showDatePicker(SprintDetailShowingPicker.FinishDate);
+                        }
                     }}
                     onInputFocusLost={(e, notLostToDatePicker) => {
                         if (notLostToDatePicker) {

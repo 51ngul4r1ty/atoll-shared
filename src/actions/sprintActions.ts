@@ -213,3 +213,11 @@ export const showSprintRangeDatePicker = (sprintId: string, showPicker: SprintDe
 export const hideSprintRangeDatePicker = () => ({
     type: ActionTypes.HIDE_SPRINT_RANGE_DATE_PICKER
 });
+
+export const toggleSprintRangeDatePicker = (sprintId: string, showPicker: SprintDetailShowingPicker) => ({
+    type: ActionTypes.TOGGLE_SPRINT_RANGE_DATE_PICKER,
+    payload: {
+        showPicker,
+        sprintId
+    }
+});
