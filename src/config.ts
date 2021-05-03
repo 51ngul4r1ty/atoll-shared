@@ -95,6 +95,7 @@ export interface DbConfig {
     password: string;
     host: string;
     port: string;
+    useSsl?: boolean;
 }
 
 export const parsePostgresUrl = (url: string): DbConfig => {
@@ -132,7 +133,12 @@ export const parsePostgresUrl = (url: string): DbConfig => {
 };
 
 export const getDbConfig = (): DbConfig => {
-    return parsePostgresUrl(process.env.ATOLL_DATABASE_URL || process.env.DATABASE_URL);
+    const dbConfigFromUrl = parsePostgresUrl(process.env.ATOLL_DATABASE_URL || process.env.DATABASE_URL);
+    const useSsl = process.env.ATOLL_DATABASE_USE_SSL ? process.env.ATOLL_DATABASE_USE_SSL === "true" : true;
+    return {
+        ...dbConfigFromUrl,
+        useSsl
+    };
 };
 
 export const getAuthKey = (): string | null => {
