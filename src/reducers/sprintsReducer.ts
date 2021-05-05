@@ -119,7 +119,9 @@ export const rebuildAllItems = (draft: Draft<SprintsState>) => {
         return result;
     });
     const allItemsUnsorted = [...addedItemsWithSource, ...itemsWithSource];
-    const allItemsSorted = allItemsUnsorted.sort((a, b) => (a.startDate < b.startDate ? -1 : 1));
+    const allItemsSorted = allItemsUnsorted.sort((a, b) =>
+        DateOnly.dateToSimpleValue(a.startDate) < DateOnly.dateToSimpleValue(b.startDate) ? -1 : 1
+    );
     draft.allItems = allItemsSorted;
 };
 

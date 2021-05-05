@@ -78,8 +78,8 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
                 finishDate = firstSprint.startDate;
             } else if (position === NewSprintPosition.After) {
                 const lastSprint = getLastSprint(state);
-                startDate = lastSprint.finishDate;
-                finishDate = lastSprint.finishDate.addDays(SPRINT_DAY_LENGTH - 1);
+                startDate = lastSprint.finishDate.addDays(1);
+                finishDate = lastSprint.finishDate.addDays(SPRINT_DAY_LENGTH);
             } else {
                 throw Error(`Unexpected ${position}`);
             }
