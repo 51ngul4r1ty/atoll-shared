@@ -96,6 +96,12 @@ export class DateOnly {
     toSimpleValue(): number {
         return this.year * 100000 + this.month * 100 + this.day;
     }
+    static dateToSimpleValue(date: DateOnly, defaultForFalsy: number = 0): number {
+        if (!date) {
+            return defaultForFalsy;
+        }
+        return date.toSimpleValue();
+    }
     eq(date: DateOnly): boolean {
         const simpleVal1 = this.toSimpleValue();
         const simpleVal2 = date.toSimpleValue();
