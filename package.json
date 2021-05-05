@@ -50,7 +50,7 @@
   "dependencies": {
     "@csstools/normalize.css": "10.1.0",
     "@flopflip/react-broadcast": "10.1.11",
-    "axios": "0.19.2",
+    "axios": "0.21.1",
     "connected-react-router": "6.8.0",
     "crypto": "1.0.1",
     "history": "4.10.1",
