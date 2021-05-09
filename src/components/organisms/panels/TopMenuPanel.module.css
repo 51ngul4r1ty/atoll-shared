@@ -30,4 +30,5 @@
     position: fixed;
     width: 100%;
     z-index: 10000;
+    cursor: pointer;
 }
