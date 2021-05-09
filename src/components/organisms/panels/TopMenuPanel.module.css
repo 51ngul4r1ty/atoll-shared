@@ -21,10 +21,12 @@
     padding-right: 0.3rem;
 }
 
-.topMessagaPanel {
+.topMessagePanel {
     background-color: var(--normal-error-page-color, #900);
     color: var(--normal-error-pen-color, #fff);
     font-weight: 500;
     padding: 0.2rem 0.3rem;
     font-size: 0.9rem;
+    position: fixed;
+    width: 100%;
 }
