@@ -47,9 +47,13 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
             if (!sprintId) {
                 throw Error("Invalid response from server - sprintId should be returned when adding sprint backlog item");
             }
-            const backlogItemId = actionTyped.payload.response?.data?.item?.backlogitemId;
+            const backlogItemPartId = actionTyped.payload.response?.data?.item?.backlogitempartId;
+            if (!backlogItemPartId) {
+                throw Error("Invalid response from server - backlogItemPartId should be returned when adding sprint backlog item");
+            }
+            const backlogItemId = actionTyped.meta.actionParams.backlogItemId;
             if (!backlogItemId) {
-                throw Error("Invalid response from server - backlogItemId should be returned when adding sprint backlog item");
+                throw Error("Invalid action data - actionParams should contain backlogItemId");
             }
             const backlogItem = getBacklogItemById(state, backlogItemId);
             if (!backlogItem) {

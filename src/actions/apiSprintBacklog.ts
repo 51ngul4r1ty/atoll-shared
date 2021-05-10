@@ -23,10 +23,11 @@ import { ApiBatchAction } from "../middleware/apiBatchTypes";
 // utils
 import { buildActionTypes } from "./utils/apiActionUtils";
 import { BacklogItemStatus } from "../types/backlogItemTypes";
-import { mapApiStatusToBacklogItem, mapBacklogItemStatusToApi } from "../mappers/backlogItemMappers";
+import { mapBacklogItemStatusToApi } from "../mappers/backlogItemMappers";
 
 export interface MetaActionParams {
     sprintId: string;
+    backlogItemId: string;
 }
 
 export interface ApiGetSprintBacklogItemsSuccessAction {
