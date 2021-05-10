@@ -111,7 +111,7 @@ export interface ApiSprint extends StandardNamedItem, ApiSprintStats {
 
 export interface ApiSprintBacklogItem extends BaseItem {
     sprintId: string;
-    backlogitemId: string;
+    backlogitempartId: string;
     displayindex: number | null;
 }
 
