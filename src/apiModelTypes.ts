@@ -57,6 +57,18 @@ export interface ApiBacklogItem extends StandardItem, StoryPhrases {
     type: BacklogItemType;
 }
 
+export interface ApiBacklogItemPart extends StandardItem {
+    externalId: string | null;
+    backlogitemId: string | null;
+    partindex: number;
+    percentage: number;
+    points: number | null;
+    startedAt: ISODateString | null;
+    finishedAt: ISODateString | null;
+    status: ApiBacklogItemStatus | null;
+    projectId: string | null;
+}
+
 export interface ApiBacklogItemInSprint extends ApiBacklogItem {
     displayindex: number | null;
     partPercentage: number | null;
