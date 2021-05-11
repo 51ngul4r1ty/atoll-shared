@@ -1,7 +1,7 @@
 // consts/enums
 import * as loggingTags from "../constants/loggingTags";
 
-export type LevelType = "info" | "warn";
+export type LevelType = "info" | "warn" | "error";
 
 export const hasTag = (tags: string[], tag: string): boolean => tags.indexOf(tag) >= 0;
 
@@ -59,6 +59,13 @@ export const info = (msg: string, tags: string[], logContext: LoggingContext = {
 
 export const warn = (msg: string, tags: string[], logContext: LoggingContext = { nestLevel: 1 }): LoggingContext => {
     if (shouldLogThis(tags, "warn")) {
+        console.warn(formatMessage(msg, logContext.nestLevel) + formatTags(tags));
+    }
+    return { nestLevel: getNextLoggingNestLevel(logContext.nestLevel) };
+};
+
+export const error = (msg: string, tags: string[], logContext: LoggingContext = { nestLevel: 1 }): LoggingContext => {
+    if (shouldLogThis(tags, "error")) {
         console.warn(formatMessage(msg, logContext.nestLevel) + formatTags(tags));
     }
     return { nestLevel: getNextLoggingNestLevel(logContext.nestLevel) };
