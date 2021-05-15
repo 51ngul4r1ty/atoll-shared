@@ -211,7 +211,7 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
             break;
         }
     }
-    const statusIconElts = (props.status === statusIcon) !== null ? <div className={css.status}>{statusIcon}</div> : null;
+    const statusIconElts = statusIcon !== null ? <div className={css.status}>{statusIcon}</div> : null;
     return (
         <div className={css.backlogItemCardOuter} data-class="backlogitem" data-id={props.internalId} style={styleToUse}>
             <div className={classNameToUse} style={{ width: props.width }} tabIndex={0}>
