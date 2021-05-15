@@ -125,7 +125,8 @@
     "storybook-dark-mode": "1.0.3",
     "ts-jest": "25.4.0",
     "ts-node": "9.0.0",
-    "typescript": "4.0.2",
+    "tslib": "2.2.0",
+    "typescript": "4.2.4",
     "yalc": "1.0.0-pre.35"
   }
 }
