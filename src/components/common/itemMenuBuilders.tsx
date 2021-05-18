@@ -27,6 +27,7 @@ export const sprintBacklogItemMenuBuilder = (eventHandlers: ItemMenuEventHandler
     <SprintBacklogItemMenu
         showDetailMenuToLeft={showMenuToLeft}
         onMoveItemToBacklogClick={() => eventHandlers.handleEvent("onMoveItemToBacklogClick", itemId)}
+        onSplitBacklogItemClick={() => eventHandlers.handleEvent("onSplitBacklogItemClick", itemId)}
         onBacklogItemAcceptedClick={() => eventHandlers.handleEvent("onBacklogItemAcceptedClick", itemId)}
         onBacklogItemDoneClick={() => eventHandlers.handleEvent("onBacklogItemDoneClick", itemId)}
         onBacklogItemInProgressClick={() => eventHandlers.handleEvent("onBacklogItemInProgressClick", itemId)}

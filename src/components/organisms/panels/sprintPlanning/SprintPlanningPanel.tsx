@@ -66,6 +66,7 @@ export interface SprintPlanningPanelDispatchProps {
     onBacklogItemIdClick: { (sprintId: string, backlogItemId: string): void };
     onSprintDetailClick: { (sprintId: string): void };
     onMoveItemToBacklogClick: { (sprintId: string, backlogItemId: string): void };
+    onSplitBacklogItemClick: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemAcceptedClick: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemDoneClick: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemInProgressClick: { (sprintId: string, backlogItemId: string): void };
@@ -109,6 +110,11 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
     const onMoveItemToBacklogClick = (sprintId: string, backlogItemId: string) => {
         if (props.onMoveItemToBacklogClick) {
             props.onMoveItemToBacklogClick(sprintId, backlogItemId);
+        }
+    };
+    const onSplitBacklogItemClick = (sprintId: string, backlogItemId: string) => {
+        if (props.onSplitBacklogItemClick) {
+            props.onSplitBacklogItemClick(sprintId, backlogItemId);
         }
     };
     const onBacklogItemAcceptedClick = (sprintId: string, backlogItemId: string) => {
@@ -200,6 +206,9 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         }}
                         onMoveItemToBacklogClick={(backlogItemId: string) => {
                             onMoveItemToBacklogClick(sprint.id, backlogItemId);
+                        }}
+                        onSplitBacklogItemClick={(backlogItemId: string) => {
+                            onSplitBacklogItemClick(sprint.id, backlogItemId);
                         }}
                         onBacklogItemAcceptedClick={(backlogItemId: string) => {
                             onBacklogItemAcceptedClick(sprint.id, backlogItemId);

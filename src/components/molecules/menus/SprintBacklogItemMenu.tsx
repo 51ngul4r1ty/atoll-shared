@@ -11,6 +11,7 @@ import { BacklogItemInProgressButton } from "../buttons/BacklogItemInProgressBut
 import { BacklogItemNotStartedButton } from "../buttons/BacklogItemNotStartedButton";
 import { BacklogItemReleasedButton } from "../buttons/BacklogItemReleasedButton";
 import { MoveToBacklogButton } from "../buttons/MoveToBacklogButton";
+import { SplitToNextSprintButton } from "../buttons/SplitToNextSprintButton";
 
 // style
 import css from "./SprintBacklogItemMenu.module.css";
@@ -22,6 +23,7 @@ export interface SprintBacklogItemMenuStateProps {
 
 export interface SprintBacklogItemMenuDispatchProps {
     onMoveItemToBacklogClick?: { (): void };
+    onSplitBacklogItemClick?: { (): void };
     onBacklogItemAcceptedClick?: { (): void };
     onBacklogItemDoneClick?: { (): void };
     onBacklogItemInProgressClick?: { (): void };
@@ -79,6 +81,14 @@ export const InnerSprintBacklogItemMenu: React.FC<InnerSprintBacklogItemMenuProp
             onClick={() => {
                 if (props.onBacklogItemReleasedClick) {
                     props.onBacklogItemReleasedClick();
+                }
+            }}
+        />
+        <SplitToNextSprintButton
+            suppressSpacing
+            onClick={() => {
+                if (props.onSplitBacklogItemClick) {
+                    props.onSplitBacklogItemClick();
                 }
             }}
         />

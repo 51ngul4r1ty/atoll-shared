@@ -189,6 +189,7 @@ export const TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL = "app/toggle:sprint-backlog-item
 export const TOGGLE_SPRINT_ITEM_DETAIL = "app/toggle:sprint";
 
 export const MOVE_SPRINT_ITEM_TO_PRODUCT_BACKLOG_CLICK = "app/move-to-backlog:sprint-backlog-item";
+export const SPLIT_SPRINT_BACKLOG_ITEM_CLICK = "app/split:sprint-backlog-item";
 
 export const SPRINT_BACKLOG_ITEM_ID_CLICK = "app/click:sprint-backlog-item-id";
 

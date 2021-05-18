@@ -46,6 +46,7 @@ export interface SprintCardDispatchProps {
     onBacklogItemIdClick: { (id: string): void };
     onExpandCollapse: { (id: string, expand: boolean): void };
     onMoveItemToBacklogClick: { (id: string): void };
+    onSplitBacklogItemClick: { (id: string): void };
     onBacklogItemAcceptedClick: { (id: string): void };
     onBacklogItemDoneClick: { (id: string): void };
     onBacklogItemInProgressClick: { (id: string): void };
@@ -130,6 +131,7 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
             handleDetailClick,
             handleBacklogItemIdClick,
             props.onMoveItemToBacklogClick,
+            props.onSplitBacklogItemClick,
             props.onBacklogItemAcceptedClick,
             props.onBacklogItemDoneClick,
             props.onBacklogItemInProgressClick,

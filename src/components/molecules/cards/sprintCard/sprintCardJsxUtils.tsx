@@ -24,6 +24,7 @@ export const getBacklogItemElts = (
     onDetailClick: { (backlogItemId: string) },
     onBacklogItemIdClick: { (backlogItemId: string) },
     onMoveItemToBacklogClick: { (itemId: string) },
+    onSplitBacklogItemClick: { (id: string): void },
     onBacklogItemAcceptedClick: { (itemId: string) },
     onBacklogItemDoneClick: { (itemId: string) },
     onBacklogItemInProgressClick: { (itemId: string) },
@@ -34,6 +35,8 @@ export const getBacklogItemElts = (
         handleEvent: (eventName: string, itemId: string) => {
             if (eventName === "onMoveItemToBacklogClick") {
                 onMoveItemToBacklogClick(itemId);
+            } else if (eventName === "onSplitBacklogItemClick") {
+                onSplitBacklogItemClick(itemId);
             } else if (eventName === "onBacklogItemAcceptedClick") {
                 onBacklogItemAcceptedClick(itemId);
             } else if (eventName === "onBacklogItemDoneClick") {

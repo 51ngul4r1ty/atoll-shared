@@ -74,6 +74,24 @@ export const sprintMoveItemToBacklogClick = (sprintId: string, backlogItemId: st
     }
 });
 
+export interface SprintSplitBacklogItemClickPayload {
+    sprintId: string;
+    backlogItemId: string;
+}
+
+export interface SprintSplitBacklogItemClickAction {
+    type: typeof ActionTypes.SPLIT_SPRINT_BACKLOG_ITEM_CLICK;
+    payload: SprintSplitBacklogItemClickPayload;
+}
+
+export const sprintSplitBacklogItemClick = (sprintId: string, backlogItemId: string): SprintSplitBacklogItemClickAction => ({
+    type: ActionTypes.SPLIT_SPRINT_BACKLOG_ITEM_CLICK,
+    payload: {
+        sprintId,
+        backlogItemId
+    }
+});
+
 export interface SprintBacklogItemStatusClickPayload {
     sprintId: string;
     backlogItemId: string;

@@ -28,7 +28,8 @@ import {
     sprintBacklogItemInProgressClick,
     sprintBacklogItemNotStartedClick,
     sprintBacklogItemReleasedClick,
-    sprintMoveItemToBacklogClick
+    sprintMoveItemToBacklogClick,
+    sprintSplitBacklogItemClick
 } from "../actions/sprintBacklogActions";
 
 // interfaces/types
@@ -97,6 +98,8 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
             dispatch(sprintBacklogItemIdClick(sprintId, backlogItemId)),
         onMoveItemToBacklogClick: (sprintId: string, backlogItemId: string) =>
             dispatch(sprintMoveItemToBacklogClick(sprintId, backlogItemId)),
+        onSplitBacklogItemClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintSplitBacklogItemClick(sprintId, backlogItemId)),
         onBacklogItemAcceptedClick: (sprintId: string, backlogItemId: string) =>
             dispatch(sprintBacklogItemAcceptedClick(sprintId, backlogItemId)),
         onBacklogItemDoneClick: (sprintId: string, backlogItemId: string) =>
