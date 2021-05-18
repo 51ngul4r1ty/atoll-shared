@@ -172,6 +172,25 @@ export const apiMoveSprintItemToProductBacklog = (sprintId: string, backlogItemI
     };
 };
 
+export const apiSplitSprintBacklogItem = (sprintId: string, backlogItemId: string) => {
+    const actionParams: ApiMoveSprintItemToProductBacklogActionParams = {
+        sprintId,
+        backlogItemId
+    };
+    return {
+        type: API,
+        payload: {
+            endpoint: `${getApiBaseUrl()}api/v1/sprints/${sprintId}/backlog-items/${backlogItemId}/parts`,
+            method: "POST",
+            headers: { Accept: APPLICATION_JSON },
+            types: buildActionTypes(ApiActionNames.ADD_SPRINT_BACKLOG_ITEM_PART)
+        },
+        meta: {
+            actionParams
+        }
+    };
+};
+
 export interface ApiSprintBacklogItemSetStatusActionParams {
     sprintId: string;
     backlogItemId: string;

@@ -48,7 +48,8 @@ import {
     apiGetSprintBacklogItems,
     apiMoveSprintItemToProductBacklog,
     apiSprintBacklogItemSetStatus,
-    ApiMoveSprintItemToProductBacklogSuccessAction
+    ApiMoveSprintItemToProductBacklogSuccessAction,
+    apiSplitSprintBacklogItem
 } from "../actions/apiSprintBacklog";
 import {
     removeSprintBacklogItem,
@@ -60,7 +61,8 @@ import {
     SprintBacklogItemInProgressClickAction,
     SprintBacklogItemNotStartedClickAction,
     SprintBacklogItemReleasedClickAction,
-    SprintMoveItemToBacklogClickAction
+    SprintMoveItemToBacklogClickAction,
+    SprintSplitBacklogItemClickAction
 } from "../actions/sprintBacklogActions";
 import { apiGetSprints, apiPostSprint, apiPutSprint } from "../actions/apiSprints";
 import { setEditMode } from "../actions/appActions";
@@ -219,6 +221,13 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const sprintId = actionTyped.payload.sprintId;
             const backlogItemId = actionTyped.payload.backlogItemId;
             storeTyped.dispatch(apiMoveSprintItemToProductBacklog(sprintId, backlogItemId));
+            break;
+        }
+        case ActionTypes.SPLIT_SPRINT_BACKLOG_ITEM_CLICK: {
+            const actionTyped = action as SprintSplitBacklogItemClickAction;
+            const sprintId = actionTyped.payload.sprintId;
+            const backlogItemId = actionTyped.payload.backlogItemId;
+            storeTyped.dispatch(apiSplitSprintBacklogItem(sprintId, backlogItemId));
             break;
         }
         case ActionTypes.SPRINT_BACKLOG_ITEM_ACCEPTED_CLICK: {
