@@ -66,7 +66,6 @@ export interface ApiBacklogItemPart extends StandardItem {
     startedAt: ISODateString | null;
     finishedAt: ISODateString | null;
     status: ApiBacklogItemStatus | null;
-    projectId: string | null;
 }
 
 export interface ApiBacklogItemInSprint extends ApiBacklogItem {
