@@ -331,3 +331,27 @@
     position: relative;
     left: -0.25rem;
 }
+
+.splitStoryPoints {
+    position: relative;
+    top: -0.25rem;
+    left: -0.25rem;
+}
+
+.splitBottomWedge {
+    position: absolute;
+    width: 0;
+    height: 0;
+    bottom: 0;
+    right: 0;
+    border-bottom: 1.75rem solid white; /* theme this color */
+    border-left: 1.7rem solid transparent;
+    opacity: 0.4;
+}
+
+.splitTotalPoints {
+    position: absolute;
+    right: 0.25rem;
+    bottom: -0.25rem;
+    font-size: 0.75rem;
+}

@@ -135,6 +135,7 @@ export interface BacklogItemCardStateProps {
     status?: BacklogItemStatus;
     titleText: string;
     totalParts?: number;
+    storyEstimate?: number | null;
     width?: any;
 }
 
@@ -220,6 +221,16 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
             Split {props.partIndex} of {props.totalParts}
         </div>
     );
+    const storyPointsElts = getEstimateElts(props.estimate);
+    const estimateElts = showSplitText ? (
+        <>
+            <div className={css.splitStoryPoints}>{formatNumberForDisplay(props.estimate)}</div>
+            <div className={css.splitBottomWedge} />
+            <div className={css.splitTotalPoints}>{formatNumberForDisplay(props.storyEstimate)}</div>
+        </>
+    ) : (
+        storyPointsElts
+    );
     return (
         <div className={css.backlogItemCardOuter} data-class="backlogitem" data-id={props.internalId} style={styleToUse}>
             <div className={classNameToUse} style={{ width: props.width }} tabIndex={0}>
@@ -257,7 +268,7 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
                     </div>
                     {showSplitText ? splitTextElts : null}
                 </div>
-                <div className={css.backlogItemEstimate}>{getEstimateElts(props.estimate)}</div>
+                <div className={css.backlogItemEstimate}>{estimateElts}</div>
                 {!props.renderMobile ? statusIconElts : null}
                 {!props.renderMobile ? editDetailButton : null}
                 {props.isDraggable && !props.renderMobile ? (

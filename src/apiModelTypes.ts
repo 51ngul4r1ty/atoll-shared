@@ -55,6 +55,7 @@ export interface ApiBacklogItem extends StandardItem, StoryPhrases {
     releasedAt: ISODateString | null;
     startedAt: ISODateString | null;
     status: ApiBacklogItemStatus | null;
+    storyEstimate: number | null;
     totalParts: number | null;
     type: BacklogItemType;
 }

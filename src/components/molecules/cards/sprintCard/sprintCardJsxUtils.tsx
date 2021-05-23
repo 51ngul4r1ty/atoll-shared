@@ -75,6 +75,7 @@ export const getBacklogItemElts = (
                 showDetailMenu={backlogItem.id === openedDetailMenuBacklogItemId}
                 showDetailMenuToLeft={showDetailMenuToLeft}
                 status={backlogItem.status}
+                storyEstimate={backlogItem.storyEstimate}
                 titleText={backlogItem.storyPhrase}
                 totalParts={backlogItem.totalParts}
                 onDetailClick={() => {

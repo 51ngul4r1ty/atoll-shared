@@ -28,6 +28,7 @@ export interface BacklogItemModel extends BaseModelItem {
     startedAt: Date | null;
     status: BacklogItemStatus;
     storyPhrase: string;
+    storyEstimate: number | null;
     totalParts: number | null;
     type: BacklogItemType;
     updatedAt: Date;

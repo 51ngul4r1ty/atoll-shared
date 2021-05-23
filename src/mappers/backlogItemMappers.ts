@@ -68,29 +68,31 @@ export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem =>
     startedAt: isoDateStringToDate(apiItem.startedAt),
     status: mapApiStatusToBacklogItem(apiItem.status),
     storyPhrase: apiItem.storyPhrase,
+    storyEstimate: apiItem.storyEstimate,
     totalParts: apiItem.totalParts,
     type: apiItem.type,
     updatedAt: isoDateStringToDate(apiItem.updatedAt)
 });
 
 export const mapBacklogItemToApiItem = (item: BacklogItem): ApiBacklogItem => ({
-    id: item.id,
-    friendlyId: item.friendlyId,
-    externalId: item.externalId,
-    rolePhrase: item.rolePhrase,
-    storyPhrase: item.storyPhrase,
-    reasonPhrase: item.reasonPhrase,
-    estimate: item.estimate,
-    type: item.type,
-    projectId: item.projectId,
-    status: mapBacklogItemStatusToApi(item.status),
     acceptanceCriteria: item.acceptanceCriteria,
-    startedAt: dateToIsoDateString(item.startedAt),
-    finishedAt: dateToIsoDateString(item.finishedAt),
     acceptedAt: dateToIsoDateString(item.acceptedAt),
-    releasedAt: dateToIsoDateString(item.releasedAt),
+    estimate: item.estimate,
+    externalId: item.externalId,
+    finishedAt: dateToIsoDateString(item.finishedAt),
+    friendlyId: item.friendlyId,
+    id: item.id,
     partIndex: item.partIndex,
-    totalParts: item.totalParts
+    projectId: item.projectId,
+    reasonPhrase: item.reasonPhrase,
+    releasedAt: dateToIsoDateString(item.releasedAt),
+    rolePhrase: item.rolePhrase,
+    startedAt: dateToIsoDateString(item.startedAt),
+    status: mapBacklogItemStatusToApi(item.status),
+    storyEstimate: item.storyEstimate,
+    storyPhrase: item.storyPhrase,
+    totalParts: item.totalParts,
+    type: item.type
 });
 
 export const mapApiItemsToBacklogItems = (apiItems: ApiBacklogItem[]): BacklogItem[] => {
