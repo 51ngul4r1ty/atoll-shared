@@ -134,7 +134,8 @@
     margin: 0;
     text-transform: uppercase;
     font-weight: 900;
-    opacity: 0.6;
+    opacity: 0.75;
+    user-select: none;
 }
 
 .backlogItemTextTitleText {
@@ -350,7 +351,6 @@
     right: 0;
     border-bottom: 1.75rem solid var(--inverted-page-alt1-color, #666); /* theme this color */
     border-left: 1.7rem solid transparent;
-    /* opacity: 0.4; */
 }
 
 .splitTotalPoints {

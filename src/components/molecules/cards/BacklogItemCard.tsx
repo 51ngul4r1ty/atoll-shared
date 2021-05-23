@@ -216,9 +216,10 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
     }
     const statusIconElts = statusIcon !== null ? <div className={css.status}>{statusIcon}</div> : null;
     const isSplitBacklogItem = props.totalParts > 1;
+    const splitTextContent = `Split ${props.partIndex} of ${props.totalParts}`;
     const splitTextElts = (
-        <div className={css.backlogItemSplitText}>
-            Split {props.partIndex} of {props.totalParts}
+        <div className={css.backlogItemSplitText} title={splitTextContent}>
+            {splitTextContent}
         </div>
     );
     const storyPointsElts = getEstimateElts(props.estimate);
