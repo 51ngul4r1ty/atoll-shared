@@ -71,7 +71,10 @@ export interface ApiBacklogItemPart extends StandardItem {
 export interface ApiBacklogItemInSprint extends ApiBacklogItem {
     displayindex: number | null;
     partPercentage: number | null;
+    partIndex: number | null;
+    totalParts: number | null;
     storyEstimate: number | null;
+    storyStatus: ApiBacklogItemStatus | null;
     storyStartedAt: ISODateString | null;
     storyFinishedAt: ISODateString | null;
     storyUpdatedAt: ISODateString | null;
