@@ -215,21 +215,27 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
         }
     }
     const statusIconElts = statusIcon !== null ? <div className={css.status}>{statusIcon}</div> : null;
-    const showSplitText = props.totalParts > 1;
+    const isSplitBacklogItem = props.totalParts > 1;
     const splitTextElts = (
         <div className={css.backlogItemSplitText}>
             Split {props.partIndex} of {props.totalParts}
         </div>
     );
     const storyPointsElts = getEstimateElts(props.estimate);
-    const estimateElts = showSplitText ? (
-        <>
-            <div className={css.splitStoryPoints}>{formatNumberForDisplay(props.estimate)}</div>
-            <div className={css.splitBottomWedge} />
-            <div className={css.splitTotalPoints}>{formatNumberForDisplay(props.storyEstimate)}</div>
-        </>
-    ) : (
-        storyPointsElts
+    const splitBoxElts =
+        props.partIndex > 1 ? (
+            <>
+                <div className={css.splitStoryPoints}>{formatNumberForDisplay(props.estimate)}</div>
+                <div className={css.splitBottomWedge} />
+                <div className={css.splitTotalPoints}>{formatNumberForDisplay(props.storyEstimate)}</div>
+            </>
+        ) : (
+            storyPointsElts
+        );
+    const estimateElts = isSplitBacklogItem ? splitBoxElts : storyPointsElts;
+    const estimateEltsContainerClass = buildClassName(
+        css.backlogItemEstimate,
+        isSplitBacklogItem && props.partIndex === 1 ? css.splitPartOne : null
     );
     return (
         <div className={css.backlogItemCardOuter} data-class="backlogitem" data-id={props.internalId} style={styleToUse}>
@@ -266,9 +272,9 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
                         {props.renderMobile ? statusIconElts : null}
                         {props.renderMobile ? editDetailButton : null}
                     </div>
-                    {showSplitText ? splitTextElts : null}
+                    {isSplitBacklogItem ? splitTextElts : null}
                 </div>
-                <div className={css.backlogItemEstimate}>{estimateElts}</div>
+                <div className={estimateEltsContainerClass}>{estimateElts}</div>
                 {!props.renderMobile ? statusIconElts : null}
                 {!props.renderMobile ? editDetailButton : null}
                 {props.isDraggable && !props.renderMobile ? (

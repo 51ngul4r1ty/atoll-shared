@@ -164,6 +164,10 @@
     user-select: none;
 }
 
+.backlogItemEstimate.splitPartOne {
+    background-color: var(--inverted-page-alt1-color, #666);
+}
+
 :global(.mobile) .backlogItemCardOuter .backlogItemEstimate {
     flex-grow: 0;
     padding-right: 0;
@@ -344,9 +348,9 @@
     height: 0;
     bottom: 0;
     right: 0;
-    border-bottom: 1.75rem solid white; /* theme this color */
+    border-bottom: 1.75rem solid var(--inverted-page-alt1-color, #666); /* theme this color */
     border-left: 1.7rem solid transparent;
-    opacity: 0.4;
+    /* opacity: 0.4; */
 }
 
 .splitTotalPoints {
