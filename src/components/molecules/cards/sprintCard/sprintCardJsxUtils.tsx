@@ -62,19 +62,21 @@ export const getBacklogItemElts = (
                 key={buildBacklogItemKey(backlogItem)}
                 buildItemMenu={sprintBacklogItemMenuBuilder(eventHandlers)}
                 estimate={backlogItem.estimate}
+                hasDetails={editMode === EditMode.Edit}
                 internalId={`${backlogItem.id}`}
+                isDraggable={false}
                 itemId={buildBacklogDisplayId(backlogItem.externalId, backlogItem.friendlyId)}
                 itemType={backlogItem.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
-                roleText={backlogItem.rolePhrase}
-                titleText={backlogItem.storyPhrase}
-                reasonText={backlogItem.reasonPhrase}
-                isDraggable={false}
-                hasDetails={editMode === EditMode.Edit}
-                renderMobile={renderMobile}
                 marginBelowItem
+                partIndex={backlogItem.partIndex}
+                reasonText={backlogItem.reasonPhrase}
+                renderMobile={renderMobile}
+                roleText={backlogItem.rolePhrase}
                 showDetailMenu={backlogItem.id === openedDetailMenuBacklogItemId}
                 showDetailMenuToLeft={showDetailMenuToLeft}
                 status={backlogItem.status}
+                titleText={backlogItem.storyPhrase}
+                totalParts={backlogItem.totalParts}
                 onDetailClick={() => {
                     onDetailClick(backlogItem.id);
                 }}

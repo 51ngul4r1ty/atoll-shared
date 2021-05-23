@@ -14,22 +14,24 @@ export enum BacklogItemStatus {
 
 export interface BacklogItemModel extends BaseModelItem {
     acceptanceCriteria: string | null;
+    acceptedAt: Date | null;
     createdAt: Date;
     estimate: number | null;
     externalId: string | null;
+    finishedAt: Date | null;
     friendlyId: string;
+    partIndex: number | null;
     projectId: string; // TODO: Finish up code related to this
     reasonPhrase: string | null;
+    releasedAt: Date | null;
     rolePhrase: string | null;
+    startedAt: Date | null;
     status: BacklogItemStatus;
     storyPhrase: string;
+    totalParts: number | null;
     type: BacklogItemType;
     updatedAt: Date;
     version?: number;
-    startedAt: Date | null;
-    finishedAt: Date | null;
-    acceptedAt: Date | null;
-    releasedAt: Date | null;
 }
 
 // TODO: Maybe move this to "SaveableBacklogItem", is it really needed

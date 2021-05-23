@@ -114,26 +114,28 @@ export interface ItemMenuBuilder {
 }
 
 export interface BacklogItemCardStateProps {
+    buildItemMenu?: ItemMenuBuilder;
     estimate: number | null;
     hasDetails?: boolean;
-    isSelectable?: boolean;
     hidden?: boolean;
-    isDraggable?: boolean;
     internalId: string;
+    isDraggable?: boolean;
+    isSelectable?: boolean;
     itemId: string;
     itemType: BacklogItemTypeEnum;
     marginBelowItem?: boolean;
+    offsetTop?: number;
+    partIndex?: number;
+    pushState?: PushState;
+    reasonText: string;
     renderMobile?: boolean;
     roleText: string;
-    titleText: string;
-    reasonText: string;
-    offsetTop?: number;
-    width?: any;
     showDetailMenu: boolean;
     showDetailMenuToLeft?: boolean;
     status?: BacklogItemStatus;
-    pushState?: PushState;
-    buildItemMenu?: ItemMenuBuilder;
+    titleText: string;
+    totalParts?: number;
+    width?: any;
 }
 
 export interface BacklogItemCardDispatchProps {
@@ -212,6 +214,12 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
         }
     }
     const statusIconElts = statusIcon !== null ? <div className={css.status}>{statusIcon}</div> : null;
+    const showSplitText = props.totalParts > 1;
+    const splitTextElts = (
+        <div className={css.backlogItemSplitText}>
+            Split {props.partIndex} of {props.totalParts}
+        </div>
+    );
     return (
         <div className={css.backlogItemCardOuter} data-class="backlogitem" data-id={props.internalId} style={styleToUse}>
             <div className={classNameToUse} style={{ width: props.width }} tabIndex={0}>
@@ -247,6 +255,7 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
                         {props.renderMobile ? statusIconElts : null}
                         {props.renderMobile ? editDetailButton : null}
                     </div>
+                    {showSplitText ? splitTextElts : null}
                 </div>
                 <div className={css.backlogItemEstimate}>{getEstimateElts(props.estimate)}</div>
                 {!props.renderMobile ? statusIconElts : null}
