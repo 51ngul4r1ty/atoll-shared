@@ -31,6 +31,7 @@ export interface BacklogItemModel extends BaseModelItem {
     storyEstimate: number | null;
     totalParts: number | null;
     type: BacklogItemType;
+    unallocatedParts: number | null;
     updatedAt: Date;
     version?: number;
 }
