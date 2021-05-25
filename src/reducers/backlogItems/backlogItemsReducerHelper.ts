@@ -57,7 +57,10 @@ export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>
     startedAt: pushedItem.startedAt,
     finishedAt: pushedItem.finishedAt,
     acceptedAt: pushedItem.acceptedAt,
-    releasedAt: pushedItem.releasedAt
+    releasedAt: pushedItem.releasedAt,
+    partIndex: pushedItem.partIndex,
+    storyEstimate: pushedItem.storyEstimate,
+    totalParts: pushedItem.totalParts
 });
 
 export const addPushedAddedItemsToAllItems = (draft: Draft<BacklogItemsState>, allItems: LinkedList<BacklogItemWithSource>) => {

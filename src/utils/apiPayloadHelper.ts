@@ -21,7 +21,10 @@ export const convertToBacklogItemModel = (backlogItem: BacklogItem): BacklogItem
     startedAt: backlogItem.startedAt,
     finishedAt: backlogItem.finishedAt,
     acceptedAt: backlogItem.acceptedAt,
-    releasedAt: backlogItem.releasedAt
+    releasedAt: backlogItem.releasedAt,
+    partIndex: backlogItem.partIndex,
+    storyEstimate: backlogItem.storyEstimate,
+    totalParts: backlogItem.totalParts
 });
 
 export const convertToSprintModel = (sprint: Sprint): SprintModel => ({
