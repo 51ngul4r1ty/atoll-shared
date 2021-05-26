@@ -24,7 +24,8 @@ import { AddNewSprintFormAction, addSprint, NewSprintPosition, updateSprintStats
 
 // utils
 import { DateOnly } from "../types/dateTypes";
-import { addDays, dateNow, timeNow } from "../utils/dateHelper";
+import { timeNow } from "../utils/dateHelper";
+import { BacklogItem } from "../types/backlogItemTypes";
 
 export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action) => {
     next(action);
@@ -60,9 +61,14 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
             if (!backlogItem) {
                 throw new Error(`Unable to find backlog item with ID ${backlogItemId}`);
             }
-            storeTyped.dispatch(
-                moveBacklogItemToSprint(sprintId, { ...backlogItem, partIndex: payloadData?.extra?.backlogItemPart?.partIndex })
-            );
+            const payloadBacklogItem: BacklogItem = {
+                ...backlogItem,
+                estimate: payloadData?.extra?.backlogItemPart?.points,
+                partIndex: payloadData?.extra?.backlogItemPart?.partIndex,
+                totalParts: payloadData?.extra?.backlogItem?.totalParts,
+                storyEstimate: payloadData?.extra?.backlogItem?.estimate
+            };
+            storeTyped.dispatch(moveBacklogItemToSprint(sprintId, payloadBacklogItem));
             const response = actionTyped.payload.response;
             const sprintStats = response.data.extra?.sprintStats;
             if (sprintStats) {
