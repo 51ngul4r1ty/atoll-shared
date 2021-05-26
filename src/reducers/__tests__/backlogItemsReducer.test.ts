@@ -41,7 +41,11 @@ describe("Backlog Items Reducer", () => {
                 startedAt: undefined,
                 finishedAt: undefined,
                 acceptedAt: undefined,
-                releasedAt: undefined
+                releasedAt: undefined,
+                partIndex: undefined,
+                storyEstimate: undefined,
+                totalParts: undefined,
+                unallocatedParts: undefined
             };
             const addedItem1InAllItems: BacklogItemWithSource = {
                 ...addedItem,
@@ -66,7 +70,11 @@ describe("Backlog Items Reducer", () => {
                 startedAt: undefined,
                 finishedAt: undefined,
                 acceptedAt: undefined,
-                releasedAt: undefined
+                releasedAt: undefined,
+                partIndex: undefined,
+                storyEstimate: undefined,
+                totalParts: undefined,
+                unallocatedParts: undefined
             };
             const pushedItem1: WebsocketPushNotificationData<PushBacklogItemModel> = {
                 item: {
@@ -89,7 +97,11 @@ describe("Backlog Items Reducer", () => {
                     startedAt: undefined,
                     finishedAt: undefined,
                     acceptedAt: undefined,
-                    releasedAt: undefined
+                    releasedAt: undefined,
+                    partIndex: undefined,
+                    storyEstimate: undefined,
+                    totalParts: undefined,
+                    unallocatedParts: undefined
                 },
                 operation: PushOperationType.Added
             };
@@ -112,7 +124,11 @@ describe("Backlog Items Reducer", () => {
                 startedAt: undefined,
                 finishedAt: undefined,
                 acceptedAt: undefined,
-                releasedAt: undefined
+                releasedAt: undefined,
+                partIndex: undefined,
+                storyEstimate: undefined,
+                totalParts: undefined,
+                unallocatedParts: undefined
             };
             produce(
                 { ...backlogItemsReducerInitialState, addedItems: [addedItem], items: [item], pushedItems: [pushedItem1] },

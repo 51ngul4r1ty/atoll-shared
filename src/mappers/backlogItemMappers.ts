@@ -71,7 +71,8 @@ export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem =>
     storyEstimate: apiItem.storyEstimate,
     totalParts: apiItem.totalParts,
     type: apiItem.type,
-    updatedAt: isoDateStringToDate(apiItem.updatedAt)
+    updatedAt: isoDateStringToDate(apiItem.updatedAt),
+    unallocatedParts: apiItem.unallocatedParts
 });
 
 export const mapBacklogItemToApiItem = (item: BacklogItem): ApiBacklogItem => ({
@@ -92,7 +93,8 @@ export const mapBacklogItemToApiItem = (item: BacklogItem): ApiBacklogItem => ({
     storyEstimate: item.storyEstimate,
     storyPhrase: item.storyPhrase,
     totalParts: item.totalParts,
-    type: item.type
+    type: item.type,
+    unallocatedParts: item.unallocatedParts
 });
 
 export const mapApiItemsToBacklogItems = (apiItems: ApiBacklogItem[]): BacklogItem[] => {

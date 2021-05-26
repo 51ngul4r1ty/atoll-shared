@@ -21,7 +21,7 @@ import { PushState } from "../../../reducers/types";
 import { StatusAcceptedIcon, StatusDoneIcon, StatusInProgressIcon, StatusReleasedIcon } from "../../atoms/icons";
 import { BacklogItemStatus } from "../../../types/backlogItemTypes";
 
-/* exported functions */
+//#region exported functions
 
 export const buildUniqueItemKey = (props: SaveableBacklogItem, componentPrefix: string): string => {
     return props.id ? `${componentPrefix}-id-${props.id}` : `${componentPrefix}-i-${props.instanceId}`;
@@ -92,7 +92,9 @@ export const fullStoryText = (rolePhrase: string, storyPhrase: string, reasonPhr
     }
 };
 
-/* exported interfaces */
+//#endregion
+
+//#region exported interfaces/types
 
 // TODO: See if this is defined elsewhere:
 export enum BacklogItemTypeEnum {
@@ -115,6 +117,7 @@ export interface ItemMenuBuilder {
 
 export interface BacklogItemCardStateProps {
     buildItemMenu?: ItemMenuBuilder;
+    cardType?: BacklogItemCardType;
     estimate: number | null;
     hasDetails?: boolean;
     hidden?: boolean;
@@ -133,9 +136,10 @@ export interface BacklogItemCardStateProps {
     showDetailMenu: boolean;
     showDetailMenuToLeft?: boolean;
     status?: BacklogItemStatus;
+    storyEstimate?: number | null;
     titleText: string;
     totalParts?: number;
-    storyEstimate?: number | null;
+    unallocatedParts?: number;
     width?: any;
 }
 
@@ -150,6 +154,13 @@ export interface BacklogItemCardDispatchProps {
 export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDispatchProps;
 
 export type InnerBacklogItemCardProps = BacklogItemCardProps & WithTranslation;
+
+export enum BacklogItemCardType {
+    ProductBacklogCard,
+    SprintBacklogCard
+}
+
+//#endregion
 
 /* exported components */
 
@@ -216,7 +227,10 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
     }
     const statusIconElts = statusIcon !== null ? <div className={css.status}>{statusIcon}</div> : null;
     const isSplitBacklogItem = props.totalParts > 1;
-    const splitTextContent = `Split ${props.partIndex} of ${props.totalParts}`;
+    const splitTextContent =
+        props.cardType === BacklogItemCardType.ProductBacklogCard
+            ? `${props.unallocatedParts} of ${props.totalParts} unallocated splits`
+            : `Split ${props.partIndex} of ${props.totalParts}`;
     const splitTextElts = (
         <div className={css.backlogItemSplitText} title={splitTextContent}>
             {splitTextContent}

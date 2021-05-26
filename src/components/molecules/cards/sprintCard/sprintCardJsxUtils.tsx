@@ -5,7 +5,13 @@ import * as React from "react";
 import { SprintBacklogItem } from "../../../../reducers/sprintBacklogReducer";
 
 // components
-import { BacklogItemCard, BacklogItemTypeEnum, buildBacklogItemKey, ItemMenuEventHandlers } from "../BacklogItemCard";
+import {
+    BacklogItemCard,
+    BacklogItemCardType,
+    BacklogItemTypeEnum,
+    buildBacklogItemKey,
+    ItemMenuEventHandlers
+} from "../BacklogItemCard";
 
 // consts/enums
 import { EditMode } from "../../../common/componentEnums";
@@ -77,6 +83,7 @@ export const getBacklogItemElts = (
                 status={backlogItem.status}
                 storyEstimate={backlogItem.storyEstimate}
                 titleText={backlogItem.storyPhrase}
+                cardType={BacklogItemCardType.SprintBacklogCard}
                 totalParts={backlogItem.totalParts}
                 onDetailClick={() => {
                     onDetailClick(backlogItem.id);

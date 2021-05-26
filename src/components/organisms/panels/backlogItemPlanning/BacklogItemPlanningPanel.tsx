@@ -9,6 +9,7 @@ import css from "./BacklogItemPlanningPanel.module.css";
 // components
 import {
     BacklogItemCard,
+    BacklogItemCardType,
     BacklogItemTypeEnum,
     buildBacklogItemKey,
     buildBacklogItemPlanningItemKey,
@@ -78,6 +79,7 @@ export const buildDragBacklogItemElt = (
     return (
         <BacklogItemCard
             buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
+            cardType={BacklogItemCardType.ProductBacklogCard}
             estimate={item.estimate}
             hasDetails={editMode === EditMode.Edit}
             internalId={`${item.id}`}
@@ -94,6 +96,8 @@ export const buildDragBacklogItemElt = (
             showDetailMenu={false}
             status={item.status}
             titleText={item.storyPhrase}
+            totalParts={item.totalParts}
+            unallocatedParts={item.unallocatedParts}
             width={width}
         />
     );
@@ -459,6 +463,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                     <BacklogItemCard
                         key={cardKey}
                         buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
+                        cardType={BacklogItemCardType.ProductBacklogCard}
                         estimate={null}
                         hasDetails={props.editMode === EditMode.Edit}
                         internalId={buildSpacerInternalId(item.id)}
@@ -472,6 +477,8 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         roleText={null}
                         status={item.status}
                         titleText={null}
+                        totalParts={item.totalParts}
+                        unallocatedParts={item.unallocatedParts}
                         onDetailClick={() => {
                             dispatch(backlogItemDetailClick(item.id));
                         }}

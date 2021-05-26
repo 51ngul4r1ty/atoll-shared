@@ -21,5 +21,6 @@ export const cloneApiBacklogItem = (apiItem: ApiBacklogItem): ApiBacklogItem => 
     releasedAt: apiItem.releasedAt,
     partIndex: apiItem.partIndex,
     storyEstimate: apiItem.storyEstimate,
-    totalParts: apiItem.totalParts
+    totalParts: apiItem.totalParts,
+    unallocatedParts: apiItem.unallocatedParts
 });

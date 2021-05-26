@@ -24,7 +24,8 @@ export const convertToBacklogItemModel = (backlogItem: BacklogItem): BacklogItem
     releasedAt: backlogItem.releasedAt,
     partIndex: backlogItem.partIndex,
     storyEstimate: backlogItem.storyEstimate,
-    totalParts: backlogItem.totalParts
+    totalParts: backlogItem.totalParts,
+    unallocatedParts: backlogItem.unallocatedParts
 });
 
 export const convertToSprintModel = (sprint: Sprint): SprintModel => ({

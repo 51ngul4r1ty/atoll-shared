@@ -6,7 +6,12 @@ import { useDispatch } from "react-redux";
 import { BacklogItemWithSource } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
 import { SimpleDivider } from "../../atoms/dividers/SimpleDivider";
 import { BacklogItemDetailForm } from "../forms/BacklogItemDetailForm";
-import { BacklogItemCard, BacklogItemTypeEnum, ItemMenuEventHandlers } from "../../molecules/cards/BacklogItemCard";
+import {
+    BacklogItemCard,
+    BacklogItemCardType,
+    BacklogItemTypeEnum,
+    ItemMenuEventHandlers
+} from "../../molecules/cards/BacklogItemCard";
 
 // consts/enums
 import { EditMode } from "../../common/componentEnums";
@@ -59,23 +64,23 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                 <SimpleDivider key={`divider-unsaved-form-${props.instanceId}`} />
                 <BacklogItemDetailForm
                     key={`unsaved-form-${props.instanceId}`}
+                    acceptanceCriteria={props.acceptanceCriteria}
+                    acceptedAt={props.acceptedAt}
                     className={classNameToUse}
-                    id={props.id}
-                    instanceId={props.instanceId}
-                    friendlyId={props.friendlyId}
-                    externalId={props.externalId}
                     editing
                     estimate={props.estimate}
-                    rolePhrase={props.rolePhrase}
-                    storyPhrase={props.storyPhrase}
-                    reasonPhrase={props.reasonPhrase}
-                    acceptanceCriteria={props.acceptanceCriteria}
-                    startedAt={props.startedAt}
+                    externalId={props.externalId}
                     finishedAt={props.finishedAt}
-                    acceptedAt={props.acceptedAt}
+                    friendlyId={props.friendlyId}
+                    id={props.id}
+                    instanceId={props.instanceId}
+                    reasonPhrase={props.reasonPhrase}
                     releasedAt={props.releasedAt}
-                    type={props.type}
                     renderMobile={props.renderMobile}
+                    rolePhrase={props.rolePhrase}
+                    startedAt={props.startedAt}
+                    storyPhrase={props.storyPhrase}
+                    type={props.type}
                     onDataUpdate={(fields) => {
                         dispatch(updateBacklogItemFields(fields));
                     }}
@@ -113,6 +118,7 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                 <SimpleDivider key={`divider-saved-${props.id}`} hidden={props.hidden} highlighted={props.highlightAbove} />
                 <BacklogItemCard
                     buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
+                    cardType={BacklogItemCardType.ProductBacklogCard}
                     estimate={props.estimate}
                     hasDetails={props.editMode === EditMode.Edit}
                     hidden={props.hidden}
@@ -130,6 +136,8 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     showDetailMenu={props.showDetailMenu}
                     status={props.status}
                     titleText={props.storyPhrase}
+                    totalParts={props.totalParts}
+                    unallocatedParts={props.unallocatedParts}
                     onDetailClick={() => {
                         dispatch(backlogItemDetailClick(props.id));
                     }}

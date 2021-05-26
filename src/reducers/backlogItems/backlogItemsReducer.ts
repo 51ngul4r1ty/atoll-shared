@@ -350,7 +350,8 @@ export const backlogItemsReducer = (
                         releasedAt: isoDateStringToDate(backlogItem.releasedAt),
                         partIndex: backlogItem.partIndex,
                         storyEstimate: backlogItem.storyEstimate,
-                        totalParts: backlogItem.totalParts
+                        totalParts: backlogItem.totalParts,
+                        unallocatedParts: backlogItem.unallocatedParts
                     };
                     draft.savedCurrentItem = { ...draft.currentItem };
                 }
