@@ -17,7 +17,7 @@ import {
     ApiActionSuccessPayloadForItem,
     ApiActionFailurePayload
 } from "../middleware/apiTypes";
-import { ApiBacklogItem, ApiSprintBacklogItem, ApiSprintStats } from "../apiModelTypes";
+import { ApiBacklogItem, ApiBacklogItemPart, ApiSprintBacklogItem, ApiSprintStats } from "../apiModelTypes";
 import { ApiBatchAction } from "../middleware/apiBatchTypes";
 
 // utils
@@ -74,7 +74,10 @@ export type ApiBatchAddBacklogItemsToSprintAction = ApiBatchAction<
     ApiBatchAddBacklogItemsToSprintBatchActionParams
 >;
 
-export type ApiPostSprintBacklogItemSuccessActionPayload = ApiActionSuccessPayloadForItem<ApiSprintBacklogItem, SprintStats>;
+export type ApiPostSprintBacklogItemSuccessActionPayload = ApiActionSuccessPayloadForItem<
+    ApiSprintBacklogItem,
+    SprintStatsAndBacklogItemPart
+>;
 export interface ApiPostSprintBacklogItemSuccessAction {
     type: typeof ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_SUCCESS;
     payload: ApiPostSprintBacklogItemSuccessActionPayload;
@@ -144,6 +147,11 @@ export interface ApiMoveSprintItemToProductBacklogActionParams {
 
 export interface SprintStats {
     sprintStats: ApiSprintStats;
+}
+
+export interface SprintStatsAndBacklogItemPart {
+    sprintStats: ApiSprintStats;
+    backlogItemPart: ApiBacklogItemPart;
 }
 
 export type ApiMoveSprintItemToProductBacklogSuccessActionPayload = ApiActionSuccessPayloadForItem<ApiBacklogItem, SprintStats>;

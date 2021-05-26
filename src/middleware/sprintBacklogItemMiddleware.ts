@@ -43,7 +43,8 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
         case ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_SUCCESS: {
             const state = storeTyped.getState();
             const actionTyped = action as ApiPostSprintBacklogItemSuccessAction;
-            const sprintId = actionTyped.payload.response?.data?.item?.sprintId;
+            const payloadData = actionTyped.payload.response?.data;
+            const sprintId = payloadData?.item?.sprintId;
             if (!sprintId) {
                 throw Error("Invalid response from server - sprintId should be returned when adding sprint backlog item");
             }
@@ -59,7 +60,9 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
             if (!backlogItem) {
                 throw new Error(`Unable to find backlog item with ID ${backlogItemId}`);
             }
-            storeTyped.dispatch(moveBacklogItemToSprint(sprintId, backlogItem));
+            storeTyped.dispatch(
+                moveBacklogItemToSprint(sprintId, { ...backlogItem, partIndex: payloadData?.extra?.backlogItemPart?.partIndex })
+            );
             const response = actionTyped.payload.response;
             const sprintStats = response.data.extra?.sprintStats;
             if (sprintStats) {
