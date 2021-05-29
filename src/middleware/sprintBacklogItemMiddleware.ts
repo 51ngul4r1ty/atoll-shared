@@ -5,27 +5,32 @@ import { Action, Store } from "redux";
 
 // selectors
 import { getBacklogItemById } from "../selectors/backlogItemSelectors";
-import { getFirstSprint, getLastSprint } from "../selectors/sprintSelectors";
+import { getFirstSprint, getLastSprint, getNextSprint } from "../selectors/sprintSelectors";
 import { getCurrentProjectId } from "../selectors/userSelectors";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { ApiPostSprintBacklogItemSuccessAction, ApiSprintBacklogItemSetStatusSuccessAction } from "../actions/apiSprintBacklog";
+import {
+    ApiPostSprintBacklogItemSuccessAction,
+    ApiSplitSprintItemSuccessAction,
+    ApiSprintBacklogItemSetStatusSuccessAction
+} from "../actions/apiSprintBacklog";
 import { SaveableSprint } from "../reducers/sprintsReducer";
 
 // state
 import { StateTree } from "../reducers/rootReducer";
 
 // actions
-import { moveBacklogItemToSprint } from "../actions/sprintBacklogActions";
+import { addBacklogItemToSprint, moveBacklogItemToSprint } from "../actions/sprintBacklogActions";
 import { AddNewSprintFormAction, addSprint, NewSprintPosition, updateSprintStats } from "../actions/sprintActions";
 
 // utils
 import { DateOnly } from "../types/dateTypes";
 import { timeNow } from "../utils/dateHelper";
 import { BacklogItem } from "../types/backlogItemTypes";
+import { mapApiItemToBacklogItem, mapApiStatusToBacklogItem } from "../mappers/backlogItemMappers";
 
 export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action) => {
     next(action);
@@ -68,6 +73,7 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
                 totalParts: payloadData?.extra?.backlogItem?.totalParts,
                 storyEstimate: payloadData?.extra?.backlogItem?.estimate
             };
+            // BUSY HERE: Look at how moveBacklogItemToSprint is done and do something similar for addBacklogItemToSprint
             storeTyped.dispatch(moveBacklogItemToSprint(sprintId, payloadBacklogItem));
             const response = actionTyped.payload.response;
             const sprintStats = response.data.extra?.sprintStats;
@@ -75,6 +81,27 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
                 storeTyped.dispatch(updateSprintStats(sprintId, sprintStats));
             }
 
+            return;
+        }
+        case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {
+            const state = storeTyped.getState();
+            // TODO: Use this same action to hide the menu with "Split To Next Sprint" in it
+            // TODO: Use this same action to stop the spinner on the Split to Next Sprint button (need to build this still - create story??)
+            const actionTyped = action as ApiSplitSprintItemSuccessAction;
+            const nextSprint = getNextSprint(state, actionTyped.meta.actionParams.sprintId);
+            if (nextSprint) {
+                const backlogItem = mapApiItemToBacklogItem(actionTyped.payload.response.data.extra.backlogItem);
+                const backlogItemPart = actionTyped.payload.response.data.item;
+                const backlogItemWithPartInfo = {
+                    ...backlogItem,
+                    estimate: backlogItemPart.points,
+                    storyEstimate: backlogItem.estimate,
+                    totalParts: backlogItem.totalParts + 1,
+                    partIndex: backlogItemPart.partIndex,
+                    status: mapApiStatusToBacklogItem(backlogItemPart.status)
+                };
+                storeTyped.dispatch(addBacklogItemToSprint(nextSprint.id, backlogItemWithPartInfo));
+            }
             return;
         }
         case ActionTypes.ADD_SPRINT_FORM: {

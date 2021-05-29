@@ -20,18 +20,31 @@ export const moveSelectedBacklogItemsToSprintUsingApi = (sprintId: string): Move
     }
 });
 
-export interface MoveBacklogItemToSprintActionPayload {
+export interface AddOrMoveBacklogItemToSprintActionPayload {
     sprintId: string;
     backlogItem: BacklogItem;
 }
 
 export interface MoveBacklogItemToSprintAction {
     type: typeof ActionTypes.MOVE_BACKLOG_ITEM_TO_SPRINT;
-    payload: MoveBacklogItemToSprintActionPayload;
+    payload: AddOrMoveBacklogItemToSprintActionPayload;
 }
 
-export const moveBacklogItemToSprint = (sprintId: string, backlogItem: BacklogItem) => ({
+export const moveBacklogItemToSprint = (sprintId: string, backlogItem: BacklogItem): MoveBacklogItemToSprintAction => ({
     type: ActionTypes.MOVE_BACKLOG_ITEM_TO_SPRINT,
+    payload: {
+        sprintId,
+        backlogItem
+    }
+});
+
+export interface AddBacklogItemToSprintAction {
+    type: typeof ActionTypes.ADD_BACKLOG_ITEM_TO_SPRINT;
+    payload: AddOrMoveBacklogItemToSprintActionPayload;
+}
+
+export const addBacklogItemToSprint = (sprintId: string, backlogItem: BacklogItem): AddBacklogItemToSprintAction => ({
+    type: ActionTypes.ADD_BACKLOG_ITEM_TO_SPRINT,
     payload: {
         sprintId,
         backlogItem

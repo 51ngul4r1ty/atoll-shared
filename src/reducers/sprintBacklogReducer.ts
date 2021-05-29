@@ -10,6 +10,7 @@ import { ApiGetSprintBacklogItemsSuccessAction, ApiSprintBacklogItemSetStatusSuc
 import { BacklogItem } from "../types/backlogItemTypes";
 import { BacklogItemWithSource } from "./backlogItems/backlogItemsReducerTypes";
 import {
+    AddBacklogItemToSprintAction,
     ChangeSprintPlanningArchivedFilterAction,
     MoveBacklogItemToSprintAction,
     RemoveSprintBacklogItemAction,
@@ -97,6 +98,13 @@ export const sprintBacklogReducer = (
             }
             case ActionTypes.MOVE_BACKLOG_ITEM_TO_SPRINT: {
                 const actionTyped = action as MoveBacklogItemToSprintAction;
+                const sprintId = actionTyped.payload.sprintId;
+                let sprint = getOrAddSprintById(draft, sprintId);
+                sprint.items.push(actionTyped.payload.backlogItem);
+                return;
+            }
+            case ActionTypes.ADD_BACKLOG_ITEM_TO_SPRINT: {
+                const actionTyped = action as AddBacklogItemToSprintAction;
                 const sprintId = actionTyped.payload.sprintId;
                 let sprint = getOrAddSprintById(draft, sprintId);
                 sprint.items.push(actionTyped.payload.backlogItem);

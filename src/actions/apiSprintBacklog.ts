@@ -149,13 +149,21 @@ export interface SprintStats {
     sprintStats: ApiSprintStats;
 }
 
-export interface SprintBacklogItemSuccessPayloadExtra {
+export interface SprintBacklogItemSuccessPayloadExtra extends SprintStats {
     sprintStats: ApiSprintStats;
     backlogItem: ApiBacklogItem;
     backlogItemPart: ApiBacklogItemPart;
 }
 
-export type ApiMoveSprintItemToProductBacklogSuccessActionPayload = ApiActionSuccessPayloadForItem<ApiBacklogItem, SprintStats>;
+export interface MoveBacklogItemToBacklogSuccessPayloadExtra extends SprintStats {
+    sprintStats: ApiSprintStats;
+    backlogItem: ApiBacklogItem;
+}
+
+export type ApiMoveSprintItemToProductBacklogSuccessActionPayload = ApiActionSuccessPayloadForItem<
+    ApiBacklogItem,
+    MoveBacklogItemToBacklogSuccessPayloadExtra
+>;
 export interface ApiMoveSprintItemToProductBacklogSuccessAction {
     type: typeof ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS;
     payload: ApiMoveSprintItemToProductBacklogSuccessActionPayload;
@@ -180,6 +188,26 @@ export const apiMoveSprintItemToProductBacklog = (sprintId: string, backlogItemI
         }
     };
 };
+
+export interface ApiSplitSprintItemSuccessActionPayloadExtra {
+    backlogItem: ApiBacklogItem;
+    sprintBacklogItem: ApiSprintBacklogItem;
+}
+
+export interface ApiSplitSprintItemActionParams {
+    sprintId: string;
+    backlogItemId: string;
+}
+
+export type ApiSplitSprintItemSuccessActionPayload = ApiActionSuccessPayloadForItem<
+    ApiBacklogItemPart,
+    ApiSplitSprintItemSuccessActionPayloadExtra
+>;
+export interface ApiSplitSprintItemSuccessAction {
+    type: typeof ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS;
+    payload: ApiSplitSprintItemSuccessActionPayload;
+    meta: ApiActionMetaDataRequestMeta<{}, ApiSplitSprintItemActionParams>;
+}
 
 export const apiSplitSprintBacklogItem = (sprintId: string, backlogItemId: string) => {
     const actionParams: ApiMoveSprintItemToProductBacklogActionParams = {
