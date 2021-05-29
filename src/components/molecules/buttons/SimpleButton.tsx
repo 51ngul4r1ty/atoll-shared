@@ -11,8 +11,8 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 // interfaces/types
 import { PropsWithClassName } from "../../common/types";
 import { ComponentWithForwardedRef } from "../../../types/reactHelperTypes";
-import { Spinner } from "../unique/Spinner";
-import { SpinnerShapePentagon } from "../icons/SpinnerShapePentagon";
+import { Spinner } from "../../atoms/unique/Spinner";
+import { SpinnerShapePentagon } from "../../atoms/icons/SpinnerShapePentagon";
 
 export type SimpleButtonRefType = HTMLInputElement;
 
@@ -106,7 +106,11 @@ const InnerSimpleButton: FC<SimpleButtonProps & SimpleButtonInnerStateProps> = (
             ref={props.innerRef}
             className={className}
             tabIndex={0}
-            onClick={props.onClick}
+            onClick={() => {
+                if (!props.busy && !props.disabled) {
+                    props.onClick();
+                }
+            }}
         >
             {contents}
         </div>
