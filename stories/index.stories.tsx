@@ -4,11 +4,20 @@ import { addDecorator, addParameters, storiesOf, forceReRender } from "@storyboo
 
 // storybook
 import { action } from "@storybook/addon-actions";
-import { withKnobs, text } from "@storybook/addon-knobs";
+import { withKnobs, text, boolean } from "@storybook/addon-knobs";
 import { withRootAttribute } from "storybook-addon-root-attribute";
 
 // components
-import { Checkbox, SimpleText, Spinner, SpinnerShapePentagon, StandardInput, TabStrip } from "../dist/index.es";
+import {
+    Checkbox,
+    SimpleButton,
+    SplitButtonIcon,
+    SimpleText,
+    Spinner,
+    SpinnerShapePentagon,
+    StandardInput,
+    TabStrip
+} from "../dist/index.es";
 
 addDecorator(withRootAttribute);
 addDecorator(withKnobs({ escapeHTML: false }));
@@ -100,5 +109,23 @@ const spinnerIcon = <SpinnerShapePentagon className="spinner-shape" />;
 storiesOf("Atoms/Unique/Spinner", module).add("Spinner", () => (
     <div>
         <Spinner icon={spinnerIcon} />
+    </div>
+));
+
+const splitIcon = <SplitButtonIcon />;
+
+storiesOf("Atoms/Buttons", module).add("Simple", () => (
+    <div>
+        <SimpleButton
+            disabled={boolean("disabled", false)}
+            draggable={boolean("draggable", false)}
+            icon={splitIcon}
+            iconOnLeft={boolean("iconOnLeft", true)}
+            noWrap={boolean("noWrap", false)}
+            suppressSpacing={boolean("suppressSpacing", false)}
+            busy={boolean("busy", false)}
+        >
+            {text("children", "Button Caption")}
+        </SimpleButton>
     </div>
 ));

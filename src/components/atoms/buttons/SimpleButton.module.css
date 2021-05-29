@@ -66,6 +66,14 @@
     font-size: 1px;
 }
 
+.spinner {
+    padding: 0.15rem 0.25rem 0.15rem 0.75rem;
+}
+
+.button.iconOnLeft .spinner {
+    padding: 0.15rem 0.75rem 0.15rem 0.25rem;
+}
+
 .button.disabled {
     opacity: 0.5;
     cursor: not-allowed;

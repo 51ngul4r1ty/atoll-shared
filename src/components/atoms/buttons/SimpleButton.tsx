@@ -11,6 +11,8 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 // interfaces/types
 import { PropsWithClassName } from "../../common/types";
 import { ComponentWithForwardedRef } from "../../../types/reactHelperTypes";
+import { Spinner } from "../unique/Spinner";
+import { SpinnerShapePentagon } from "../icons/SpinnerShapePentagon";
 
 export type SimpleButtonRefType = HTMLInputElement;
 
@@ -23,6 +25,7 @@ export interface SimpleButtonStateProps extends PropsWithClassName {
     iconOnLeft?: boolean;
     noWrap?: boolean;
     suppressSpacing?: boolean;
+    busy?: boolean;
 }
 
 interface SimpleButtonInnerStateProps {
@@ -47,7 +50,17 @@ export const cleanPassthroughProps = (passthroughProps: any): SimpleButtonProps 
 };
 
 const InnerSimpleButton: FC<SimpleButtonProps & SimpleButtonInnerStateProps> = (props) => {
-    const icon = props.icon && <div className={css.buttonIcon}>{props.icon}</div>;
+    let icon: any;
+    if (props.busy) {
+        const spinnerIcon = <SpinnerShapePentagon className="spinner-shape" />;
+        icon = (
+            <div className={css.spinner}>
+                <Spinner icon={spinnerIcon} />
+            </div>
+        );
+    } else {
+        icon = props.icon && <div className={css.buttonIcon}>{props.icon}</div>;
+    }
     const hasChildren = !!props.children;
     const captionClassName = buildClassName(css.buttonCaption, props.noWrap ? css.noWrap : null);
     const caption = !hasChildren ? null : <div className={captionClassName}>{props.children}</div>;
