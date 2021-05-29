@@ -3,6 +3,7 @@ import * as ActionTypes from "./actionTypes";
 
 // interfaces/types
 import { BacklogItem } from "../types/backlogItemTypes";
+import { ApiBacklogItem } from "../apiModelTypes";
 
 export interface MoveSelectedBacklogItemsToSprintUsingApiActionPayload {
     sprintId: string;
@@ -48,6 +49,30 @@ export const addBacklogItemToSprint = (sprintId: string, backlogItem: BacklogIte
     payload: {
         sprintId,
         backlogItem
+    }
+});
+
+export interface PatchBacklogItemInSprintActionPayload {
+    sprintId: string;
+    backlogItemId: string;
+    patchObj: Partial<BacklogItem>;
+}
+
+export interface PatchBacklogItemInSprintAction {
+    type: typeof ActionTypes.PATCH_BACKLOG_ITEM_IN_SPRINT;
+    payload: PatchBacklogItemInSprintActionPayload;
+}
+
+export const patchBacklogItemInSprint = (
+    sprintId: string,
+    backlogItemId: string,
+    patchObj: Partial<BacklogItem>
+): PatchBacklogItemInSprintAction => ({
+    type: ActionTypes.PATCH_BACKLOG_ITEM_IN_SPRINT,
+    payload: {
+        sprintId,
+        backlogItemId,
+        patchObj
     }
 });
 

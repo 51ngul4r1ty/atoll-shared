@@ -23,7 +23,7 @@ import { SaveableSprint } from "../reducers/sprintsReducer";
 import { StateTree } from "../reducers/rootReducer";
 
 // actions
-import { addBacklogItemToSprint, moveBacklogItemToSprint } from "../actions/sprintBacklogActions";
+import { addBacklogItemToSprint, moveBacklogItemToSprint, patchBacklogItemInSprint } from "../actions/sprintBacklogActions";
 import { AddNewSprintFormAction, addSprint, NewSprintPosition, updateSprintStats } from "../actions/sprintActions";
 
 // utils
@@ -88,19 +88,24 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
             // TODO: Use this same action to hide the menu with "Split To Next Sprint" in it
             // TODO: Use this same action to stop the spinner on the Split to Next Sprint button (need to build this still - create story??)
             const actionTyped = action as ApiSplitSprintItemSuccessAction;
-            const nextSprint = getNextSprint(state, actionTyped.meta.actionParams.sprintId);
+            const currentSprintId = actionTyped.meta.actionParams.sprintId;
+            const currentBacklogItemId = actionTyped.meta.actionParams.backlogItemId;
+            const nextSprint = getNextSprint(state, currentSprintId);
             if (nextSprint) {
                 const backlogItem = mapApiItemToBacklogItem(actionTyped.payload.response.data.extra.backlogItem);
                 const backlogItemPart = actionTyped.payload.response.data.item;
+                const storyEstimate = backlogItem.estimate;
+                const totalParts = backlogItem.totalParts + 1;
                 const backlogItemWithPartInfo = {
                     ...backlogItem,
                     estimate: backlogItemPart.points,
-                    storyEstimate: backlogItem.estimate,
-                    totalParts: backlogItem.totalParts + 1,
+                    storyEstimate,
+                    totalParts,
                     partIndex: backlogItemPart.partIndex,
                     status: mapApiStatusToBacklogItem(backlogItemPart.status)
                 };
                 storeTyped.dispatch(addBacklogItemToSprint(nextSprint.id, backlogItemWithPartInfo));
+                storeTyped.dispatch(patchBacklogItemInSprint(currentSprintId, currentBacklogItemId, { storyEstimate, totalParts }));
             }
             return;
         }

@@ -13,6 +13,7 @@ import {
     AddBacklogItemToSprintAction,
     ChangeSprintPlanningArchivedFilterAction,
     MoveBacklogItemToSprintAction,
+    PatchBacklogItemInSprintAction,
     RemoveSprintBacklogItemAction,
     ToggleSprintBacklogItemDetailAction
 } from "../actions/sprintBacklogActions";
@@ -163,6 +164,31 @@ export const sprintBacklogReducer = (
                         sprint.items.splice(foundIdx, 1);
                     } else {
                         throw Error(`Unexpected scenario: backlog item ${backlogItemId} does not exist`);
+                    }
+                }
+
+                return;
+            }
+            case ActionTypes.PATCH_BACKLOG_ITEM_IN_SPRINT: {
+                const actionTyped = action as PatchBacklogItemInSprintAction;
+                const sprintId = actionTyped.payload.sprintId;
+                const backlogItemId = actionTyped.payload.backlogItemId;
+                const sprint = draft.sprints[sprintId];
+                if (!sprint) {
+                    throw Error(`Unexpected scenario: sprint ${sprintId} does not exist`);
+                } else {
+                    const matchingItems = sprint.items.filter((item) => item.id === backlogItemId);
+                    if (matchingItems.length === 1) {
+                        const backlogItem = matchingItems[0];
+                        const patchObj = actionTyped.payload.patchObj;
+                        Object.keys(patchObj).forEach((key) => {
+                            backlogItem[key] = patchObj[key];
+                        });
+                    } else {
+                        throw Error(
+                            `Unexpected scenario: should be a single backlog item matching ${backlogItemId}, ` +
+                                `there were ${matchingItems.length}`
+                        );
                     }
                 }
 
