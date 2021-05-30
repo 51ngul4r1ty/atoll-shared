@@ -41,6 +41,7 @@ import css from "./BacklogItemPlanningItem.module.css";
 
 export interface BacklogItemPlanningItemStateProps extends BacklogItemWithSource {
     editMode: EditMode;
+    busySplittingStory: boolean;
     highlightAbove: boolean;
     renderMobile: boolean;
     showDetailMenu: boolean;
@@ -118,6 +119,7 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                 <SimpleDivider key={`divider-saved-${props.id}`} hidden={props.hidden} highlighted={props.highlightAbove} />
                 <BacklogItemCard
                     buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
+                    busySplittingStory={props.busySplittingStory}
                     cardType={BacklogItemCardType.ProductBacklogCard}
                     estimate={props.estimate}
                     hasDetails={props.editMode === EditMode.Edit}

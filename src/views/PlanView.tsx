@@ -40,14 +40,15 @@ import { SprintOpenedDatePickerInfo } from "../reducers/sprintsReducer";
 
 export interface PlanViewStateProps {
     allItems: BacklogItemWithSource[];
+    busySplittingStory: boolean;
     editMode: EditMode;
     electronClient: boolean;
     includeArchivedSprints: boolean;
     loading: boolean;
+    openedDatePickerInfo: SprintOpenedDatePickerInfo;
     openedDetailMenuBacklogItemId: string | null;
     openedDetailMenuSprintBacklogInfo: OpenedDetailMenuInfo;
     openedDetailMenuSprintId: string | null;
-    openedDatePickerInfo: SprintOpenedDatePickerInfo;
     projectId: string;
     selectedProductBacklogItemCount: number;
     showWindowTitleBar: boolean;
@@ -59,19 +60,19 @@ export interface PlanViewDispatchProps {
     onAddNewBacklogItemForm: { (type: BacklogItemType, projectId: string): void };
     onAddNewSprintForm: { (position: NewSprintPosition): void };
     onArchivedFilterChange: { (checked: boolean): void };
-    onExpandCollapse: { (sprintId: string, expand: boolean): void };
-    onItemDetailClick: { (sprintId: string, backlogItemId: string): void };
-    onBacklogItemIdClick: { (sprintId: string, backlogItemId: string): void };
-    onSprintDetailClick: { (sprintId: string): void };
-    onMoveItemToBacklogClick: { (sprintId: string, backlogItemId: string): void };
-    onSplitBacklogItemClick: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemAcceptedClick: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemDoneClick: { (sprintId: string, backlogItemId: string): void };
+    onBacklogItemIdClick: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemInProgressClick: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemNotStartedClick: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemReleasedClick: { (sprintId: string, backlogItemId: string): void };
+    onExpandCollapse: { (sprintId: string, expand: boolean): void };
+    onItemDetailClick: { (sprintId: string, backlogItemId: string): void };
     onLoaded: { (): void };
+    onMoveItemToBacklogClick: { (sprintId: string, backlogItemId: string): void };
     onReorderBacklogItems: { (sourceItemId: string, targetItemId: string): void };
+    onSplitBacklogItemClick: { (sprintId: string, backlogItemId: string): void };
+    onSprintDetailClick: { (sprintId: string): void };
 }
 
 export type PlanViewProps = PlanViewStateProps & PlanViewDispatchProps;
@@ -93,6 +94,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     className={css.backlog}
                     allItems={this.props.allItems}
                     editMode={this.props.editMode}
+                    busySplittingStory={this.props.busySplittingStory}
                     openedDetailMenuBacklogItemId={this.props.openedDetailMenuBacklogItemId}
                     renderMobile={this.context.state?.isMobile}
                     onAddNewBacklogItemForm={(type: BacklogItemType) => {
@@ -105,6 +107,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                 <SprintPlanningPanel
                     className={css.sprints}
                     editMode={this.props.editMode}
+                    busySplittingStory={this.props.busySplittingStory}
                     includeArchived={this.props.includeArchivedSprints}
                     sprints={this.props.sprints}
                     showDetailMenuToLeft

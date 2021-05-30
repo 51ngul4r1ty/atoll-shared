@@ -47,7 +47,7 @@ import {
     getSelectedBacklogItemCount
 } from "../selectors/backlogItemSelectors";
 import { getAppEditMode, getElectronClient, isPlanViewLoading } from "../selectors/appSelectors";
-import { getIncludeArchivedSprints, getOpenedDetailMenuInfo } from "../selectors/sprintBacklogSelectors";
+import { getIncludeArchivedSprints, getOpenedDetailMenuInfo, isSplitInProgress } from "../selectors/sprintBacklogSelectors";
 
 const mapStateToProps = (state: StateTree): PlanViewStateProps => {
     const allItems = getAllBacklogItems(state);
@@ -55,6 +55,7 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
     const sprints = getPlanViewSprints(state, includeArchivedSprints);
     let result: PlanViewStateProps = {
         allItems,
+        busySplittingStory: isSplitInProgress(state),
         editMode: getAppEditMode(state),
         electronClient: getElectronClient(state),
         includeArchivedSprints,

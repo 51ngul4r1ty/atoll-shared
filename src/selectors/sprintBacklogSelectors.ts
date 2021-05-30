@@ -39,3 +39,8 @@ export const getIncludeArchivedSprints = createSelector(
     [sprintBacklog],
     (sprintBacklog: SprintBacklogState): boolean => sprintBacklog.includeArchivedSprints
 );
+
+export const isSplitInProgress = createSelector(
+    [sprintBacklog],
+    (sprintBacklog: SprintBacklogState): boolean => sprintBacklog.splitInProgress
+);

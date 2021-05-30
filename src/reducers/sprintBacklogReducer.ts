@@ -38,14 +38,16 @@ export type SprintBacklogState = Readonly<{
     includeArchivedSprints: boolean;
     openedDetailMenuBacklogItemId: string | null;
     openedDetailMenuSprintId: string | null;
+    splitInProgress: boolean;
     sprints: { [sprintId: string]: SprintBacklogSprint };
 }>;
 
 export const sprintBacklogReducerInitialState = Object.freeze<SprintBacklogState>({
     includeArchivedSprints: false,
-    sprints: {},
     openedDetailMenuBacklogItemId: null,
-    openedDetailMenuSprintId: null
+    openedDetailMenuSprintId: null,
+    splitInProgress: false,
+    sprints: {}
 });
 
 export const getOrAddSprintById = (draft: Draft<SprintBacklogState>, sprintId: string) => {
@@ -214,6 +216,20 @@ export const sprintBacklogReducer = (
                     const sprintId = expandedSprint.id;
                     addSprintBacklogItems(draft, sprintId, payload.response.data.sprintBacklogItems);
                 }
+                return;
+            }
+            case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_REQUEST: {
+                draft.splitInProgress = true;
+                return;
+            }
+            case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {
+                draft.splitInProgress = false;
+                draft.openedDetailMenuBacklogItemId = null;
+                return;
+            }
+            case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_FAILURE: {
+                draft.splitInProgress = false;
+                draft.openedDetailMenuBacklogItemId = null;
                 return;
             }
             case ActionTypes.APP_CLICK: {

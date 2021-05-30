@@ -27,6 +27,7 @@ export const getBacklogItemElts = (
     renderMobile: boolean,
     showDetailMenuToLeft: boolean,
     backlogItems: SprintBacklogItem[],
+    busySplittingStory: boolean,
     onDetailClick: { (backlogItemId: string) },
     onBacklogItemIdClick: { (backlogItemId: string) },
     onMoveItemToBacklogClick: { (itemId: string) },
@@ -66,6 +67,7 @@ export const getBacklogItemElts = (
             <SimpleDivider />
             <BacklogItemCard
                 key={buildBacklogItemKey(backlogItem)}
+                busySplittingStory={busySplittingStory}
                 buildItemMenu={sprintBacklogItemMenuBuilder(eventHandlers)}
                 estimate={backlogItem.estimate}
                 hasDetails={editMode === EditMode.Edit}

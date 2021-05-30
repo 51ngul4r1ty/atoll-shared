@@ -10,7 +10,9 @@ import { SplitButtonIcon } from "../../atoms/icons/SplitButtonIcon";
 // style
 import { PropsWithClassName } from "../../common/types";
 
-export interface SplitToNextSprintButtonStateProps extends PropsWithClassName {}
+export interface SplitToNextSprintButtonStateProps extends PropsWithClassName {
+    busy: boolean;
+}
 
 export interface SplitToNextSprintButtonDispatchProps {
     onClick: { () };

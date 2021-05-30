@@ -52,7 +52,7 @@ export const cleanPassthroughProps = (passthroughProps: any): SimpleButtonProps 
 const InnerSimpleButton: FC<SimpleButtonProps & SimpleButtonInnerStateProps> = (props) => {
     let icon: any;
     if (props.busy) {
-        const spinnerIcon = <SpinnerShapePentagon className="spinner-shape" />;
+        const spinnerIcon = <SpinnerShapePentagon className={css.spinnerShape} />;
         icon = (
             <div className={css.spinner}>
                 <Spinner icon={spinnerIcon} />

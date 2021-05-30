@@ -11,7 +11,9 @@ import { SprintMenu } from "../molecules/menus/SprintMenu";
 
 export const productBacklogItemMenuBuilder = (eventHandlers: ItemMenuEventHandlers): ItemMenuBuilder => (
     itemId: string,
-    showMenuToLeft: boolean
+    showMenuToLeft: boolean,
+    menuDisabled: boolean,
+    busyButtonName: string
 ) => (
     <ProductBacklogItemMenu
         showDetailMenuToLeft={showMenuToLeft}
@@ -22,10 +24,14 @@ export const productBacklogItemMenuBuilder = (eventHandlers: ItemMenuEventHandle
 
 export const sprintBacklogItemMenuBuilder = (eventHandlers: ItemMenuEventHandlers): ItemMenuBuilder => (
     itemId: string,
-    showMenuToLeft: boolean
+    showMenuToLeft: boolean,
+    menuDisabled: boolean,
+    busyButtonName: string
 ) => (
     <SprintBacklogItemMenu
+        menuDisabled={menuDisabled}
         showDetailMenuToLeft={showMenuToLeft}
+        busySplittingStory={busyButtonName === "splitStory"}
         onMoveItemToBacklogClick={() => eventHandlers.handleEvent("onMoveItemToBacklogClick", itemId)}
         onSplitBacklogItemClick={() => eventHandlers.handleEvent("onSplitBacklogItemClick", itemId)}
         onBacklogItemAcceptedClick={() => eventHandlers.handleEvent("onBacklogItemAcceptedClick", itemId)}
@@ -38,7 +44,9 @@ export const sprintBacklogItemMenuBuilder = (eventHandlers: ItemMenuEventHandler
 
 export const sprintMenuBuilder = (eventHandlers: ItemMenuEventHandlers): ItemMenuBuilder => (
     itemId: string,
-    showMenuToLeft: boolean
+    showMenuToLeft: boolean,
+    menuDisabled: boolean,
+    busyButtonName: string
 ) => (
     <SprintMenu
         showDetailMenuToLeft={showMenuToLeft}

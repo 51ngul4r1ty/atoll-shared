@@ -112,11 +112,12 @@ export interface ItemMenuEventHandlers {
 }
 
 export interface ItemMenuBuilder {
-    (itemId: string, showMenuToLeft: boolean): React.ReactElement<any, any>;
+    (itemId: string, showMenuToLeft: boolean, menuDisabled: boolean, busyButtonName: string): React.ReactElement<any, any>;
 }
 
 export interface BacklogItemCardStateProps {
     buildItemMenu?: ItemMenuBuilder;
+    busySplittingStory?: boolean;
     cardType?: BacklogItemCardType;
     estimate: number | null;
     hasDetails?: boolean;
@@ -165,7 +166,10 @@ export enum BacklogItemCardType {
 /* exported components */
 
 export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props) => {
-    const detailMenu = props.showDetailMenu ? props.buildItemMenu(props.internalId, props.showDetailMenuToLeft) : null;
+    const busyButtonName = props.busySplittingStory ? "splitStory" : "";
+    const detailMenu = props.showDetailMenu
+        ? props.buildItemMenu(props.internalId, props.showDetailMenuToLeft, !!busyButtonName, busyButtonName)
+        : null;
     const classNameToUse = buildClassName(
         css.backlogItemCard,
         props.marginBelowItem ? css.marginBelowItem : null,

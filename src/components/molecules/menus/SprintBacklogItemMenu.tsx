@@ -17,6 +17,8 @@ import { SplitToNextSprintButton } from "../buttons/SplitToNextSprintButton";
 import css from "./SprintBacklogItemMenu.module.css";
 
 export interface SprintBacklogItemMenuStateProps {
+    busySplittingStory?: boolean;
+    menuDisabled?: boolean;
     renderMobile?: boolean;
     showDetailMenuToLeft?: boolean;
 }
@@ -45,6 +47,7 @@ export const InnerSprintBacklogItemMenu: React.FC<InnerSprintBacklogItemMenuProp
         }
     >
         <BacklogItemNotStartedButton
+            disabled={props.menuDisabled}
             suppressSpacing
             onClick={() => {
                 if (props.onBacklogItemNotStartedClick) {
@@ -53,6 +56,7 @@ export const InnerSprintBacklogItemMenu: React.FC<InnerSprintBacklogItemMenuProp
             }}
         />
         <BacklogItemInProgressButton
+            disabled={props.menuDisabled}
             suppressSpacing
             onClick={() => {
                 if (props.onBacklogItemInProgressClick) {
@@ -61,6 +65,7 @@ export const InnerSprintBacklogItemMenu: React.FC<InnerSprintBacklogItemMenuProp
             }}
         />
         <BacklogItemDoneButton
+            disabled={props.menuDisabled}
             suppressSpacing
             onClick={() => {
                 if (props.onBacklogItemDoneClick) {
@@ -69,6 +74,7 @@ export const InnerSprintBacklogItemMenu: React.FC<InnerSprintBacklogItemMenuProp
             }}
         />
         <BacklogItemAcceptedButton
+            disabled={props.menuDisabled}
             suppressSpacing
             onClick={() => {
                 if (props.onBacklogItemAcceptedClick) {
@@ -77,6 +83,7 @@ export const InnerSprintBacklogItemMenu: React.FC<InnerSprintBacklogItemMenuProp
             }}
         />
         <BacklogItemReleasedButton
+            disabled={props.menuDisabled}
             suppressSpacing
             onClick={() => {
                 if (props.onBacklogItemReleasedClick) {
@@ -85,6 +92,8 @@ export const InnerSprintBacklogItemMenu: React.FC<InnerSprintBacklogItemMenuProp
             }}
         />
         <SplitToNextSprintButton
+            disabled={props.menuDisabled}
+            busy={props.busySplittingStory}
             suppressSpacing
             onClick={() => {
                 if (props.onSplitBacklogItemClick) {
@@ -93,6 +102,7 @@ export const InnerSprintBacklogItemMenu: React.FC<InnerSprintBacklogItemMenuProp
             }}
         />
         <MoveToBacklogButton
+            disabled={props.menuDisabled}
             suppressSpacing
             onClick={() => {
                 if (props.onMoveItemToBacklogClick) {
