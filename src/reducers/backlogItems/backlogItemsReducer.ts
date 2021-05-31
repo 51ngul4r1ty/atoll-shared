@@ -349,7 +349,6 @@ export const backlogItemsReducer = (
                         acceptedAt: isoDateStringToDate(backlogItem.acceptedAt),
                         releasedAt: isoDateStringToDate(backlogItem.releasedAt),
                         partIndex: backlogItem.partIndex,
-                        storyEstimate: backlogItem.storyEstimate,
                         totalParts: backlogItem.totalParts,
                         unallocatedParts: backlogItem.unallocatedParts
                     };

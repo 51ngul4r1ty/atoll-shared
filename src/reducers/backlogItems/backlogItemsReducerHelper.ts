@@ -59,7 +59,6 @@ export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>
     acceptedAt: pushedItem.acceptedAt,
     releasedAt: pushedItem.releasedAt,
     partIndex: pushedItem.partIndex,
-    storyEstimate: pushedItem.storyEstimate,
     totalParts: pushedItem.totalParts,
     unallocatedParts: pushedItem.unallocatedParts
 });

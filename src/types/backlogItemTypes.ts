@@ -28,7 +28,6 @@ export interface BacklogItemModel extends BaseModelItem {
     startedAt: Date | null;
     status: BacklogItemStatus;
     storyPhrase: string;
-    storyEstimate: number | null;
     totalParts: number | null;
     type: BacklogItemType;
     unallocatedParts: number | null;
@@ -40,4 +39,28 @@ export interface BacklogItemModel extends BaseModelItem {
 //       for the "base" BacklogItem?
 export interface BacklogItem extends BacklogItemModel {
     instanceId?: number | null;
+}
+
+export interface BacklogItemInSprint extends BacklogItem {
+    storyEstimate: number | null;
+    backlogItemPartId: string;
+    displayindex: number;
+    partPercentage: number;
+    storyStatus: BacklogItemStatus;
+    storyStartedAt: Date | null;
+    storyFinishedAt: Date | null;
+    storyUpdatedAt: Date | null;
+    storyVersion?: number;
+}
+
+export interface BacklogItemPart {
+    id: string | null;
+    externalId: string | null;
+    backlogitemId: string | null;
+    partIndex: number;
+    percentage: number;
+    points: number | null;
+    startedAt: Date | null;
+    finishedAt: Date | null;
+    status: BacklogItemStatus | null;
 }

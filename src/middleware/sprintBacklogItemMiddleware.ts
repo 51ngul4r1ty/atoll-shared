@@ -29,8 +29,8 @@ import { AddNewSprintFormAction, addSprint, NewSprintPosition, updateSprintStats
 // utils
 import { DateOnly } from "../types/dateTypes";
 import { timeNow } from "../utils/dateHelper";
-import { BacklogItem } from "../types/backlogItemTypes";
-import { mapApiItemToBacklogItem, mapApiStatusToBacklogItem } from "../mappers/backlogItemMappers";
+import { BacklogItem, BacklogItemInSprint } from "../types/backlogItemTypes";
+import { mapApiItemToBacklogItem, mapApiItemToBacklogItemPart, mapApiStatusToBacklogItem } from "../mappers/backlogItemMappers";
 
 export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action) => {
     next(action);
@@ -66,14 +66,23 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
             if (!backlogItem) {
                 throw new Error(`Unable to find backlog item with ID ${backlogItemId}`);
             }
-            const payloadBacklogItem: BacklogItem = {
+            const responseBacklogItemPart = mapApiItemToBacklogItemPart(payloadData?.extra?.backlogItemPart);
+            const responseBacklogItem = mapApiItemToBacklogItem(payloadData?.extra?.backlogItem);
+            const payloadBacklogItem: BacklogItemInSprint = {
                 ...backlogItem,
-                estimate: payloadData?.extra?.backlogItemPart?.points,
-                partIndex: payloadData?.extra?.backlogItemPart?.partIndex,
-                totalParts: payloadData?.extra?.backlogItem?.totalParts,
-                storyEstimate: payloadData?.extra?.backlogItem?.estimate
+                estimate: responseBacklogItemPart?.points,
+                partIndex: responseBacklogItemPart?.partIndex,
+                totalParts: responseBacklogItem?.totalParts,
+                storyEstimate: responseBacklogItem?.estimate,
+                backlogItemPartId: responseBacklogItemPart?.id, // TODO: Check this
+                displayindex: payloadData?.item.displayindex, // TODO: Check this
+                partPercentage: responseBacklogItemPart?.percentage,
+                storyStatus: responseBacklogItem?.status,
+                storyStartedAt: responseBacklogItem?.startedAt,
+                storyUpdatedAt: responseBacklogItem?.updatedAt,
+                storyFinishedAt: responseBacklogItem?.finishedAt,
+                storyVersion: responseBacklogItem?.version
             };
-            // BUSY HERE: Look at how moveBacklogItemToSprint is done and do something similar for addBacklogItemToSprint
             storeTyped.dispatch(moveBacklogItemToSprint(sprintId, payloadBacklogItem));
             const response = actionTyped.payload.response;
             const sprintStats = response.data.extra?.sprintStats;
@@ -92,17 +101,26 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
             const currentBacklogItemId = actionTyped.meta.actionParams.backlogItemId;
             const nextSprint = getNextSprint(state, currentSprintId);
             if (nextSprint) {
-                const backlogItem = mapApiItemToBacklogItem(actionTyped.payload.response.data.extra.backlogItem);
-                const backlogItemPart = actionTyped.payload.response.data.item;
-                const storyEstimate = backlogItem.estimate;
-                const totalParts = backlogItem.totalParts + 1;
-                const backlogItemWithPartInfo = {
-                    ...backlogItem,
-                    estimate: backlogItemPart.points,
+                const responseBacklogItem = mapApiItemToBacklogItem(actionTyped.payload.response.data.extra.backlogItem);
+                const responseBacklogItemPart = mapApiItemToBacklogItemPart(actionTyped.payload.response.data.item);
+                const storyEstimate = responseBacklogItem.estimate;
+                const totalParts = responseBacklogItem.totalParts + 1;
+                const backlogItemWithPartInfo: BacklogItemInSprint = {
+                    ...responseBacklogItem,
+                    estimate: responseBacklogItemPart.points,
+                    startedAt: responseBacklogItemPart.startedAt,
                     storyEstimate,
                     totalParts,
-                    partIndex: backlogItemPart.partIndex,
-                    status: mapApiStatusToBacklogItem(backlogItemPart.status)
+                    partIndex: responseBacklogItemPart.partIndex,
+                    status: responseBacklogItemPart.status,
+                    backlogItemPartId: responseBacklogItemPart.id,
+                    displayindex: null, // TODO: Find out if I need to assign this??
+                    partPercentage: responseBacklogItemPart.percentage,
+                    storyStatus: responseBacklogItem.status,
+                    storyStartedAt: responseBacklogItem.startedAt,
+                    storyUpdatedAt: responseBacklogItem.updatedAt,
+                    storyFinishedAt: responseBacklogItem.finishedAt,
+                    storyVersion: responseBacklogItem.version
                 };
                 storeTyped.dispatch(addBacklogItemToSprint(nextSprint.id, backlogItemWithPartInfo));
                 storeTyped.dispatch(patchBacklogItemInSprint(currentSprintId, currentBacklogItemId, { storyEstimate, totalParts }));

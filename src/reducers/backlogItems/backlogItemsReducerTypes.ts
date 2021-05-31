@@ -1,6 +1,6 @@
 // interfaces/types
 import { WebsocketPushNotificationData } from "../../types";
-import { BacklogItem } from "../../types/backlogItemTypes";
+import { BacklogItem, BacklogItemInSprint } from "../../types/backlogItemTypes";
 import { PushState, Source } from "../types";
 
 export type SelectedBacklogItems = string[];
@@ -24,7 +24,21 @@ export interface SaveableBacklogItem extends EditableBacklogItem {
     saved?: boolean;
 }
 
-export interface BacklogItemWithSource extends SaveableBacklogItem {
+export interface SaveableBacklogItemInSprint extends BacklogItemInSprint, SaveableBacklogItem {}
+
+export interface ItemWithSource {
+    source: Source;
+    pushState?: PushState;
+}
+
+export interface BacklogItemWithSource extends SaveableBacklogItem, ItemWithSource {
+    /* from ItemWithSource */
+    source: Source;
+    pushState?: PushState;
+}
+
+export interface BacklogItemInSprintWithSource extends SaveableBacklogItemInSprint, ItemWithSource {
+    /* from ItemWithSource */
     source: Source;
     pushState?: PushState;
 }

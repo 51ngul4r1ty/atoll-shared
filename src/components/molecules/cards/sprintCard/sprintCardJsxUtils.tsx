@@ -1,9 +1,6 @@
 // externals
 import * as React from "react";
 
-// interfaces/types
-import { SprintBacklogItem } from "../../../../reducers/sprintBacklogReducer";
-
 // components
 import {
     BacklogItemCard,
@@ -12,21 +9,24 @@ import {
     buildBacklogItemKey,
     ItemMenuEventHandlers
 } from "../BacklogItemCard";
+import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 
 // consts/enums
 import { EditMode } from "../../../common/componentEnums";
 
 // utils
 import { sprintBacklogItemMenuBuilder } from "../../../common/itemMenuBuilders";
-import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 import { buildBacklogDisplayId } from "../../../../utils/backlogItemHelper";
+
+// interfaces/types
+import { BacklogItemInSprint } from "../../../../types/backlogItemTypes";
 
 export const getBacklogItemElts = (
     editMode: EditMode,
     openedDetailMenuBacklogItemId: string,
     renderMobile: boolean,
     showDetailMenuToLeft: boolean,
-    backlogItems: SprintBacklogItem[],
+    backlogItems: BacklogItemInSprint[],
     busySplittingStory: boolean,
     onDetailClick: { (backlogItemId: string) },
     onBacklogItemIdClick: { (backlogItemId: string) },

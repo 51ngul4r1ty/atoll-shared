@@ -1,6 +1,6 @@
 // interfaces/types
-import { ApiBacklogItem, ApiBacklogItemStatus } from "../apiModelTypes";
-import { BacklogItem, BacklogItemStatus } from "../types/backlogItemTypes";
+import { ApiBacklogItem, ApiBacklogItemInSprint, ApiBacklogItemPart, ApiBacklogItemStatus } from "../apiModelTypes";
+import { BacklogItem, BacklogItemPart, BacklogItemInSprint, BacklogItemStatus } from "../types/backlogItemTypes";
 import { dateToIsoDateString, isoDateStringToDate } from "../utils/apiPayloadConverters";
 
 export const mapApiStatusToBacklogItem = (status: string | null): BacklogItemStatus => {
@@ -68,12 +68,40 @@ export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem =>
     startedAt: isoDateStringToDate(apiItem.startedAt),
     status: mapApiStatusToBacklogItem(apiItem.status),
     storyPhrase: apiItem.storyPhrase,
-    storyEstimate: apiItem.storyEstimate,
     totalParts: apiItem.totalParts,
     type: apiItem.type,
     updatedAt: isoDateStringToDate(apiItem.updatedAt),
-    unallocatedParts: apiItem.unallocatedParts
+    unallocatedParts: apiItem.unallocatedParts,
+    version: apiItem.version
 });
+
+export const mapApiItemToBacklogItemPart = (apiItem: ApiBacklogItemPart): BacklogItemPart => ({
+    id: apiItem.id,
+    externalId: apiItem.externalId,
+    backlogitemId: apiItem.backlogitemId,
+    partIndex: apiItem.partIndex,
+    percentage: apiItem.percentage,
+    points: apiItem.points,
+    startedAt: isoDateStringToDate(apiItem.startedAt),
+    finishedAt: isoDateStringToDate(apiItem.finishedAt),
+    status: mapApiStatusToBacklogItem(apiItem.status)
+});
+
+export const mapApiItemToBacklogItemInSprint = (apiItem: ApiBacklogItemInSprint): BacklogItemInSprint => {
+    const result: BacklogItemInSprint = {
+        ...mapApiItemToBacklogItem(apiItem),
+        backlogItemPartId: apiItem.backlogItemPartId,
+        storyEstimate: apiItem.storyEstimate,
+        displayindex: apiItem.displayindex,
+        partPercentage: apiItem.partPercentage,
+        storyStatus: mapApiStatusToBacklogItem(apiItem.storyStatus),
+        storyStartedAt: isoDateStringToDate(apiItem.storyStartedAt),
+        storyFinishedAt: isoDateStringToDate(apiItem.storyFinishedAt),
+        storyUpdatedAt: isoDateStringToDate(apiItem.storyUpdatedAt),
+        storyVersion: apiItem.storyVersion
+    };
+    return result;
+};
 
 export const mapBacklogItemToApiItem = (item: BacklogItem): ApiBacklogItem => ({
     acceptanceCriteria: item.acceptanceCriteria,
@@ -90,13 +118,32 @@ export const mapBacklogItemToApiItem = (item: BacklogItem): ApiBacklogItem => ({
     rolePhrase: item.rolePhrase,
     startedAt: dateToIsoDateString(item.startedAt),
     status: mapBacklogItemStatusToApi(item.status),
-    storyEstimate: item.storyEstimate,
     storyPhrase: item.storyPhrase,
     totalParts: item.totalParts,
     type: item.type,
     unallocatedParts: item.unallocatedParts
 });
 
+export const mapSprintBacklogItemToApiItem = (item: BacklogItemInSprint): ApiBacklogItemInSprint => {
+    const result: ApiBacklogItemInSprint = {
+        ...mapBacklogItemToApiItem(item),
+        backlogItemPartId: item.backlogItemPartId,
+        storyEstimate: item.storyEstimate,
+        displayindex: item.displayindex,
+        partPercentage: item.partPercentage,
+        storyStatus: mapBacklogItemStatusToApi(item.storyStatus),
+        storyStartedAt: dateToIsoDateString(item.storyStartedAt),
+        storyFinishedAt: dateToIsoDateString(item.storyFinishedAt),
+        storyUpdatedAt: dateToIsoDateString(item.storyUpdatedAt),
+        storyVersion: item.storyVersion
+    };
+    return result;
+};
+
 export const mapApiItemsToBacklogItems = (apiItems: ApiBacklogItem[]): BacklogItem[] => {
     return apiItems.map((item) => mapApiItemToBacklogItem(item));
+};
+
+export const mapApiItemsToSprintBacklogItems = (apiItems: ApiBacklogItemInSprint[]): BacklogItemInSprint[] => {
+    return apiItems.map((item) => mapApiItemToBacklogItemInSprint(item));
 };

@@ -17,7 +17,7 @@ import {
     ApiActionSuccessPayloadForItem,
     ApiActionFailurePayload
 } from "../middleware/apiTypes";
-import { ApiBacklogItem, ApiBacklogItemPart, ApiSprintBacklogItem, ApiSprintStats } from "../apiModelTypes";
+import { ApiBacklogItem, ApiBacklogItemInSprint, ApiBacklogItemPart, ApiSprintBacklogItem, ApiSprintStats } from "../apiModelTypes";
 import { ApiBatchAction } from "../middleware/apiBatchTypes";
 
 // utils
@@ -32,7 +32,7 @@ export interface MetaActionParams {
 
 export interface ApiGetSprintBacklogItemsSuccessAction {
     type: typeof ActionTypes.API_GET_SPRINT_BACKLOG_ITEMS_SUCCESS;
-    payload: ApiActionSuccessPayloadForCollection<ApiBacklogItem>;
+    payload: ApiActionSuccessPayloadForCollection<ApiBacklogItemInSprint>;
     meta: ApiActionMetaDataRequestMeta<{}, MetaActionParams>;
 }
 
@@ -230,7 +230,7 @@ export const apiSplitSprintBacklogItem = (sprintId: string, backlogItemId: strin
 
 export interface ApiSprintBacklogItemSetStatusActionParams {
     sprintId: string;
-    backlogItemId: string;
+    backlogItemPartId: string;
     status: BacklogItemStatus;
 }
 
@@ -246,17 +246,17 @@ export interface ApiSprintBacklogItemSetStatusSuccessAction {
     meta: ApiActionMetaDataRequestMeta<ApiSprintBacklogItemSetStatusData, ApiSprintBacklogItemSetStatusActionParams>;
 }
 
-export const apiSprintBacklogItemSetStatus = (sprintId: string, backlogItemId: string, status: BacklogItemStatus) => {
+export const apiSprintBacklogItemSetStatus = (sprintId: string, backlogItemPartId: string, status: BacklogItemStatus) => {
     const actionParams: ApiSprintBacklogItemSetStatusActionParams = {
         sprintId,
-        backlogItemId,
+        backlogItemPartId,
         status
     };
     return {
         type: API,
         payload: {
             // TODO: Change this to use HATEOAS (and the sprint backlog item URL)
-            endpoint: `${getApiBaseUrl()}api/v1/backlog-items/${backlogItemId}`,
+            endpoint: `${getApiBaseUrl()}api/v1/backlog-item-parts/${backlogItemPartId}`,
             method: "PATCH",
             headers: { Accept: APPLICATION_JSON },
             types: buildActionTypes(ApiActionNames.PATCH_BACKLOG_ITEM),

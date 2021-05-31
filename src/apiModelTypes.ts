@@ -44,6 +44,20 @@ export interface StandardNamedItem extends StandardItem, ItemWithName {}
  */
 export type ApiBacklogItemStatus = "N" | "P" | "D" | "A" | "R";
 export interface ApiBacklogItem extends StandardItem, StoryPhrases {
+    /* from BaseItem */
+    id: uuid | null;
+
+    /* from StandardItem */
+    createdAt?: string; // sequelize standard field
+    updatedAt?: string; // sequelize standard field
+    version?: number; // sequelize standard field
+
+    /* from StoryPhrases */
+    rolePhrase: string | null;
+    storyPhrase: string;
+    reasonPhrase: string | null;
+
+    /* new fields */
     acceptanceCriteria: string | null;
     acceptedAt: ISODateString | null;
     estimate: number | null;
@@ -55,10 +69,10 @@ export interface ApiBacklogItem extends StandardItem, StoryPhrases {
     releasedAt: ISODateString | null;
     startedAt: ISODateString | null;
     status: ApiBacklogItemStatus | null;
-    storyEstimate: number | null;
+    // storyEstimate: number | null; // TODO: Remove this
     totalParts: number | null;
-    unallocatedParts: number | null;
     type: BacklogItemType;
+    unallocatedParts: number | null;
 }
 
 export interface ApiBacklogItemPart extends StandardItem {
@@ -73,10 +87,39 @@ export interface ApiBacklogItemPart extends StandardItem {
 }
 
 export interface ApiBacklogItemInSprint extends ApiBacklogItem {
+    /* from BaseItem */
+    id: uuid | null;
+
+    /* from StandardItem */
+    createdAt?: string; // sequelize standard field
+    updatedAt?: string; // sequelize standard field
+    version?: number; // sequelize standard field
+
+    /* from StoryPhrases */
+    rolePhrase: string | null;
+    storyPhrase: string;
+    reasonPhrase: string | null;
+
+    /* from ApiBacklogItem */
+    acceptanceCriteria: string | null;
+    acceptedAt: ISODateString | null;
+    estimate: number | null;
+    externalId: string | null;
+    finishedAt: ISODateString | null;
+    friendlyId: string | null;
+    partIndex: number | null;
+    projectId: string | null;
+    releasedAt: ISODateString | null;
+    startedAt: ISODateString | null;
+    status: ApiBacklogItemStatus | null;
+    totalParts: number | null;
+    type: BacklogItemType;
+    unallocatedParts: number | null;
+
+    /* new fields */
+    backlogItemPartId: string;
     displayindex: number | null;
     partPercentage: number | null;
-    partIndex: number | null;
-    totalParts: number | null;
     storyEstimate: number | null;
     storyStatus: ApiBacklogItemStatus | null;
     storyStartedAt: ISODateString | null;
@@ -116,6 +159,7 @@ export interface ApiSprint extends StandardNamedItem, ApiSprintStats {
 }
 
 export interface ApiSprintBacklogItem extends BaseItem, ItemWithId {
+    storyEstimate: number | null;
     sprintId: string;
     backlogitempartId: string;
     displayindex: number | null;

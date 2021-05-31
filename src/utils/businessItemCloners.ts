@@ -20,7 +20,6 @@ export const cloneApiBacklogItem = (apiItem: ApiBacklogItem): ApiBacklogItem => 
     acceptedAt: apiItem.acceptedAt,
     releasedAt: apiItem.releasedAt,
     partIndex: apiItem.partIndex,
-    storyEstimate: apiItem.storyEstimate,
     totalParts: apiItem.totalParts,
     unallocatedParts: apiItem.unallocatedParts
 });

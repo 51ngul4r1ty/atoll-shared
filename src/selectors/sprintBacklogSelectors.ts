@@ -3,17 +3,17 @@ import { createSelector } from "reselect";
 
 // interfaces/types
 import { StateTree } from "../reducers/rootReducer";
+import { BacklogItemInSprint } from "../types/backlogItemTypes";
 
 // reducers
 import {
     getSprintBacklogItemById as getSprintBacklogItemByIdFromReducer,
-    SprintBacklogItem,
     SprintBacklogState
 } from "../reducers/sprintBacklogReducer";
 
 export const sprintBacklog = (state: { sprintBacklog: SprintBacklogState }): SprintBacklogState => state.sprintBacklog;
 
-export const getBacklogItemsForSprint = (state: StateTree, sprintId: string): SprintBacklogItem[] | null => {
+export const getBacklogItemsForSprint = (state: StateTree, sprintId: string): BacklogItemInSprint[] | null => {
     const sprintData = state.sprintBacklog.sprints[sprintId];
     if (!sprintData) {
         return null;
