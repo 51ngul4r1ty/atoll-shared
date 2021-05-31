@@ -191,7 +191,7 @@ export const HIDE_SPRINT_RANGE_DATE_PICKER = "app/hide:sprint-range-date-picker"
 export const MOVE_SELECTED_BACKLOG_ITEMS_TO_SPRINT = "app/add:selected-sprint-backlog-items";
 export const MOVE_BACKLOG_ITEM_TO_SPRINT = "app/move:sprint-backlog-item";
 export const ADD_BACKLOG_ITEM_TO_SPRINT = "app/add:sprint-backlog-item";
-export const PATCH_BACKLOG_ITEM_IN_SPRINT = "app/patch:sprint-bakclog-item";
+export const PATCH_BACKLOG_ITEM_IN_SPRINT = "app/patch:sprint-backlog-item";
 
 export const TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL = "app/toggle:sprint-backlog-item";
 export const TOGGLE_SPRINT_ITEM_DETAIL = "app/toggle:sprint";
