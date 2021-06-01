@@ -6,7 +6,7 @@ import { AnyFSA } from "../types/reactHelperTypes";
 import { StandardModelItem } from "../types";
 import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
 import { PushState, Source } from "./types";
-import { ApiGetSprintBacklogItemsSuccessAction } from "../actions/apiSprintBacklog";
+import { ApiGetSprintBacklogItemsSuccessAction, ApiSplitSprintItemSuccessAction } from "../actions/apiSprintBacklog";
 import {
     AddSprintAction,
     CancelEditSprintAction,
@@ -425,6 +425,19 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             }
             case ActionTypes.API_PUT_SPRINT_FAILURE: {
                 updateStateToHideDatePicker(draft);
+                return;
+            }
+            case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {
+                const actionTyped = action as ApiSplitSprintItemSuccessAction;
+                const extra = actionTyped.payload.response.data.extra;
+                const sprintStats = extra.sprintStats;
+                const sprintId = extra.sprintBacklogItem.sprintId;
+                updateSprintById(draft, sprintId, (item) => {
+                    item.totalPoints = sprintStats.totalPoints;
+                    item.acceptedPoints = sprintStats.acceptedPoints;
+                    item.plannedPoints = sprintStats.plannedPoints;
+                });
+                rebuildAllItems(draft);
                 return;
             }
         }

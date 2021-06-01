@@ -192,6 +192,7 @@ export const apiMoveSprintItemToProductBacklog = (sprintId: string, backlogItemI
 export interface ApiSplitSprintItemSuccessActionPayloadExtra {
     backlogItem: ApiBacklogItem;
     sprintBacklogItem: ApiSprintBacklogItem;
+    sprintStats: ApiSprintStats;
 }
 
 export interface ApiSplitSprintItemActionParams {
