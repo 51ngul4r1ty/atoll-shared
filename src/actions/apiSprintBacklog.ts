@@ -17,7 +17,14 @@ import {
     ApiActionSuccessPayloadForItem,
     ApiActionFailurePayload
 } from "../middleware/apiTypes";
-import { ApiBacklogItem, ApiBacklogItemInSprint, ApiBacklogItemPart, ApiSprintBacklogItem, ApiSprintStats } from "../apiModelTypes";
+import {
+    ApiBacklogItem,
+    ApiBacklogItemInSprint,
+    ApiBacklogItemPart,
+    ApiBacklogItemWithParts,
+    ApiSprintBacklogItem,
+    ApiSprintStats
+} from "../apiModelTypes";
 import { ApiBatchAction } from "../middleware/apiBatchTypes";
 
 // utils
@@ -151,7 +158,7 @@ export interface SprintStats {
 
 export interface SprintBacklogItemSuccessPayloadExtra extends SprintStats {
     sprintStats: ApiSprintStats;
-    backlogItem: ApiBacklogItem;
+    backlogItem: ApiBacklogItemWithParts;
     backlogItemPart: ApiBacklogItemPart;
 }
 

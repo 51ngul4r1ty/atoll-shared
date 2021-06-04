@@ -211,3 +211,17 @@ export const addProductBacklogItem = (backlogItem: BacklogItemWithSource) => ({
         backlogItem
     }
 });
+
+export interface RemoveProductBacklogItemPayload {
+    backlogItemId: string;
+}
+export interface RemoveProductBacklogItemAction {
+    type: typeof ActionTypes.REMOVE_PRODUCT_BACKLOG_ITEM;
+    payload: RemoveProductBacklogItemPayload;
+}
+export const removeProductBacklogItem = (backlogItemId: string): RemoveProductBacklogItemAction => ({
+    type: ActionTypes.REMOVE_PRODUCT_BACKLOG_ITEM,
+    payload: {
+        backlogItemId
+    }
+});

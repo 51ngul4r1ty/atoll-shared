@@ -21,6 +21,7 @@ import {
     CancelUnsavedBacklogItemAction,
     EditBacklogItemAction,
     ReceivePushedBacklogItemAction,
+    RemoveProductBacklogItemAction,
     ReorderBacklogItemAction,
     SelectProductBacklogItemAction,
     ToggleBacklogItemDetailAction,
@@ -310,6 +311,15 @@ export const backlogItemsReducer = (
                 const backlogItemId = actionTyped.payload.backlogItem.id;
                 removeBacklogItem(draft, backlogItemId);
                 unselectProductBacklogItemId(draft, backlogItemId);
+                rebuildAllItems(draft); // TODO: This wasn't here before- check whether it is really needed
+                return;
+            }
+            case ActionTypes.REMOVE_PRODUCT_BACKLOG_ITEM: {
+                const actionTyped = action as RemoveProductBacklogItemAction;
+                const backlogItemId = actionTyped.payload.backlogItemId;
+                removeBacklogItem(draft, backlogItemId);
+                unselectProductBacklogItemId(draft, backlogItemId);
+                rebuildAllItems(draft);
                 return;
             }
             case ActionTypes.ADD_PRODUCT_BACKLOG_ITEM: {

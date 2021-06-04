@@ -31,6 +31,7 @@ import { DateOnly } from "../types/dateTypes";
 import { timeNow } from "../utils/dateHelper";
 import { BacklogItem, BacklogItemInSprint } from "../types/backlogItemTypes";
 import { mapApiItemToBacklogItem, mapApiItemToBacklogItemPart, mapApiStatusToBacklogItem } from "../mappers/backlogItemMappers";
+import { removeProductBacklogItem } from "../actions/backlogItemActions";
 
 export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action) => {
     next(action);
@@ -50,46 +51,67 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
             const state = storeTyped.getState();
             const actionTyped = action as ApiPostSprintBacklogItemSuccessAction;
             const payloadData = actionTyped.payload.response?.data;
-            const sprintId = payloadData?.item?.sprintId;
+            const actionParams = actionTyped.meta.actionParams;
+            const response = actionTyped.payload.response;
+
+            const sprintId = actionParams.sprintId;
             if (!sprintId) {
-                throw Error("Invalid response from server - sprintId should be returned when adding sprint backlog item");
+                throw Error(
+                    "Invalid response from server - sprintId should be available in meta.actionParams adding sprint backlog item"
+                );
             }
-            const backlogItemPartId = actionTyped.payload.response?.data?.item?.backlogitempartId;
-            if (!backlogItemPartId) {
-                throw Error("Invalid response from server - backlogItemPartId should be returned when adding sprint backlog item");
-            }
-            const backlogItemId = actionTyped.meta.actionParams.backlogItemId;
+
+            const backlogItemId = actionParams.backlogItemId;
             if (!backlogItemId) {
                 throw Error("Invalid action data - actionParams should contain backlogItemId");
             }
+
             const backlogItem = getBacklogItemById(state, backlogItemId);
             if (!backlogItem) {
                 throw new Error(`Unable to find backlog item with ID ${backlogItemId}`);
             }
-            const responseBacklogItemPart = mapApiItemToBacklogItemPart(payloadData?.extra?.backlogItemPart);
-            const responseBacklogItem = mapApiItemToBacklogItem(payloadData?.extra?.backlogItem);
-            const payloadBacklogItem: BacklogItemInSprint = {
-                ...backlogItem,
-                estimate: responseBacklogItemPart?.points,
-                partIndex: responseBacklogItemPart?.partIndex,
-                totalParts: responseBacklogItem?.totalParts,
-                storyEstimate: responseBacklogItem?.estimate,
-                backlogItemPartId: responseBacklogItemPart?.id, // TODO: Check this
-                displayindex: payloadData?.item.displayindex, // TODO: Check this
-                partPercentage: responseBacklogItemPart?.percentage,
-                storyStatus: responseBacklogItem?.status,
-                storyStartedAt: responseBacklogItem?.startedAt,
-                storyUpdatedAt: responseBacklogItem?.updatedAt,
-                storyFinishedAt: responseBacklogItem?.finishedAt,
-                storyVersion: responseBacklogItem?.version
-            };
-            storeTyped.dispatch(moveBacklogItemToSprint(sprintId, payloadBacklogItem));
-            const response = actionTyped.payload.response;
-            const sprintStats = response.data.extra?.sprintStats;
-            if (sprintStats) {
-                storeTyped.dispatch(updateSprintStats(sprintId, sprintStats));
-            }
 
+            const item = response?.data?.item;
+            const dataExtraBacklogItemPart = mapApiItemToBacklogItemPart(payloadData?.extra?.backlogItemPart);
+            const dataExtraBacklogItem = mapApiItemToBacklogItem(payloadData?.extra?.backlogItem);
+
+            if (!item) {
+                // this will occur when a split item is added back into a sprint at it gets "absorbed" into the
+                // other part that is already present
+                storeTyped.dispatch(
+                    patchBacklogItemInSprint(sprintId, backlogItemId, {
+                        totalParts: dataExtraBacklogItem.totalParts
+                    })
+                );
+                storeTyped.dispatch(removeProductBacklogItem(backlogItemId));
+            } else {
+                const backlogItemPartId = item?.backlogitempartId;
+                if (!backlogItemPartId) {
+                    throw Error(
+                        "Invalid response from server - backlogItemPartId should be returned when adding sprint backlog item"
+                    );
+                }
+                const payloadBacklogItem: BacklogItemInSprint = {
+                    ...backlogItem,
+                    estimate: dataExtraBacklogItemPart?.points,
+                    partIndex: dataExtraBacklogItemPart?.partIndex,
+                    totalParts: dataExtraBacklogItem?.totalParts,
+                    storyEstimate: dataExtraBacklogItem?.estimate,
+                    backlogItemPartId: dataExtraBacklogItemPart?.id, // TODO: Check this
+                    displayindex: payloadData?.item.displayindex, // TODO: Check this
+                    partPercentage: dataExtraBacklogItemPart?.percentage,
+                    storyStatus: dataExtraBacklogItem?.status,
+                    storyStartedAt: dataExtraBacklogItem?.startedAt,
+                    storyUpdatedAt: dataExtraBacklogItem?.updatedAt,
+                    storyFinishedAt: dataExtraBacklogItem?.finishedAt,
+                    storyVersion: dataExtraBacklogItem?.version
+                };
+                storeTyped.dispatch(moveBacklogItemToSprint(sprintId, payloadBacklogItem));
+                const sprintStats = response.data.extra?.sprintStats;
+                if (sprintStats) {
+                    storeTyped.dispatch(updateSprintStats(sprintId, sprintStats));
+                }
+            }
             return;
         }
         case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {

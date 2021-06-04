@@ -69,10 +69,43 @@ export interface ApiBacklogItem extends StandardItem, StoryPhrases {
     releasedAt: ISODateString | null;
     startedAt: ISODateString | null;
     status: ApiBacklogItemStatus | null;
-    // storyEstimate: number | null; // TODO: Remove this
     totalParts: number | null;
     type: BacklogItemType;
     unallocatedParts: number | null;
+}
+
+export interface ApiBacklogItemWithParts extends ApiBacklogItem {
+    /* from BaseItem */
+    id: uuid | null;
+
+    /* from StandardItem */
+    createdAt?: string; // sequelize standard field
+    updatedAt?: string; // sequelize standard field
+    version?: number; // sequelize standard field
+
+    /* from StoryPhrases */
+    rolePhrase: string | null;
+    storyPhrase: string;
+    reasonPhrase: string | null;
+
+    /* from ApiBacklogItem */
+    acceptanceCriteria: string | null;
+    acceptedAt: ISODateString | null;
+    estimate: number | null;
+    externalId: string | null;
+    finishedAt: ISODateString | null;
+    friendlyId: string | null;
+    partIndex: number | null;
+    projectId: string | null;
+    releasedAt: ISODateString | null;
+    startedAt: ISODateString | null;
+    status: ApiBacklogItemStatus | null;
+    totalParts: number | null;
+    type: BacklogItemType;
+    unallocatedParts: number | null;
+
+    /* new fields */
+    backlogItemParts: ApiBacklogItemPart[];
 }
 
 export interface ApiBacklogItemPart extends StandardItem {
