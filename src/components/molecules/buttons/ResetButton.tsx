@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // atoms
-import { SimpleButton } from "../../atoms/buttons/SimpleButton";
+import { SimpleButton } from "./SimpleButton";
 
 // icons
 import { CancelIcon } from "../../atoms/icons/CancelIcon";

@@ -44,12 +44,13 @@ import { apiArchiveSprint, apiDeleteSprint, apiUnarchiveSprint } from "../../../
 import { SprintOpenedDatePickerInfo } from "../../../../reducers/sprintsReducer";
 
 export interface SprintPlanningPanelStateProps {
+    busySplittingStory?: boolean;
     className?: string;
     editMode: EditMode;
     includeArchived: boolean;
+    openedDatePickerInfo: SprintOpenedDatePickerInfo;
     openedDetailMenuInfo: OpenedDetailMenuInfo;
     openedDetailMenuSprintId: string | null;
-    openedDatePickerInfo: SprintOpenedDatePickerInfo;
     renderMobile?: boolean;
     selectedProductBacklogItemCount: number;
     showDetailMenuToLeft?: boolean;
@@ -57,20 +58,21 @@ export interface SprintPlanningPanelStateProps {
 }
 
 export interface SprintPlanningPanelDispatchProps {
-    onExpandCollapse: { (id: string, expand: boolean): void };
+    onAddBacklogItem: { (sprintId: string): void };
+    onAddNewSprintAfter: OnAddNewSprint;
     onAddNewSprintBefore: OnAddNewSprint;
     onArchivedFilterChange: OnArchivedFilterChange;
-    onAddNewSprintAfter: OnAddNewSprint;
-    onAddBacklogItem: { (sprintId: string): void };
-    onDetailClick: { (sprintId: string, backlogItemId: string): void };
-    onBacklogItemIdClick: { (sprintId: string, backlogItemId: string): void };
-    onSprintDetailClick: { (sprintId: string): void };
-    onMoveItemToBacklogClick: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemAcceptedClick: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemDoneClick: { (sprintId: string, backlogItemId: string): void };
+    onBacklogItemIdClick: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemInProgressClick: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemNotStartedClick: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemReleasedClick: { (sprintId: string, backlogItemId: string): void };
+    onDetailClick: { (sprintId: string, backlogItemId: string): void };
+    onExpandCollapse: { (id: string, expand: boolean): void };
+    onMoveItemToBacklogClick: { (sprintId: string, backlogItemId: string): void };
+    onSplitBacklogItemClick: { (sprintId: string, backlogItemId: string): void };
+    onSprintDetailClick: { (sprintId: string): void };
 }
 
 export type SprintPlanningPanelProps = SprintPlanningPanelStateProps & SprintPlanningPanelDispatchProps & WithTranslation;
@@ -109,6 +111,11 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
     const onMoveItemToBacklogClick = (sprintId: string, backlogItemId: string) => {
         if (props.onMoveItemToBacklogClick) {
             props.onMoveItemToBacklogClick(sprintId, backlogItemId);
+        }
+    };
+    const onSplitBacklogItemClick = (sprintId: string, backlogItemId: string) => {
+        if (props.onSplitBacklogItemClick) {
+            props.onSplitBacklogItemClick(sprintId, backlogItemId);
         }
     };
     const onBacklogItemAcceptedClick = (sprintId: string, backlogItemId: string) => {
@@ -177,6 +184,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                     <SprintCard
                         {...sprint}
                         editMode={props.editMode}
+                        busySplittingStory={props.busySplittingStory}
                         showDetailMenuToLeft={props.showDetailMenuToLeft}
                         showDetailMenu={props.openedDetailMenuSprintId === sprint.id}
                         buildItemMenu={sprintMenuBuilder(itemEventHandlers)}
@@ -200,6 +208,9 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         }}
                         onMoveItemToBacklogClick={(backlogItemId: string) => {
                             onMoveItemToBacklogClick(sprint.id, backlogItemId);
+                        }}
+                        onSplitBacklogItemClick={(backlogItemId: string) => {
+                            onSplitBacklogItemClick(sprint.id, backlogItemId);
                         }}
                         onBacklogItemAcceptedClick={(backlogItemId: string) => {
                             onBacklogItemAcceptedClick(sprint.id, backlogItemId);

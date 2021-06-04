@@ -44,21 +44,121 @@ export interface StandardNamedItem extends StandardItem, ItemWithName {}
  */
 export type ApiBacklogItemStatus = "N" | "P" | "D" | "A" | "R";
 export interface ApiBacklogItem extends StandardItem, StoryPhrases {
+    /* from BaseItem */
+    id: uuid | null;
+
+    /* from StandardItem */
+    createdAt?: string; // sequelize standard field
+    updatedAt?: string; // sequelize standard field
+    version?: number; // sequelize standard field
+
+    /* from StoryPhrases */
+    rolePhrase: string | null;
+    storyPhrase: string;
+    reasonPhrase: string | null;
+
+    /* new fields */
     acceptanceCriteria: string | null;
     acceptedAt: ISODateString | null;
     estimate: number | null;
     externalId: string | null;
     finishedAt: ISODateString | null;
     friendlyId: string | null;
+    partIndex: number | null;
     projectId: string | null;
     releasedAt: ISODateString | null;
     startedAt: ISODateString | null;
     status: ApiBacklogItemStatus | null;
+    totalParts: number | null;
     type: BacklogItemType;
+    unallocatedParts: number | null;
+}
+
+export interface ApiBacklogItemWithParts extends ApiBacklogItem {
+    /* from BaseItem */
+    id: uuid | null;
+
+    /* from StandardItem */
+    createdAt?: string; // sequelize standard field
+    updatedAt?: string; // sequelize standard field
+    version?: number; // sequelize standard field
+
+    /* from StoryPhrases */
+    rolePhrase: string | null;
+    storyPhrase: string;
+    reasonPhrase: string | null;
+
+    /* from ApiBacklogItem */
+    acceptanceCriteria: string | null;
+    acceptedAt: ISODateString | null;
+    estimate: number | null;
+    externalId: string | null;
+    finishedAt: ISODateString | null;
+    friendlyId: string | null;
+    partIndex: number | null;
+    projectId: string | null;
+    releasedAt: ISODateString | null;
+    startedAt: ISODateString | null;
+    status: ApiBacklogItemStatus | null;
+    totalParts: number | null;
+    type: BacklogItemType;
+    unallocatedParts: number | null;
+
+    /* new fields */
+    backlogItemParts: ApiBacklogItemPart[];
+}
+
+export interface ApiBacklogItemPart extends StandardItem {
+    externalId: string | null;
+    backlogitemId: string | null;
+    partIndex: number;
+    percentage: number;
+    points: number | null;
+    startedAt: ISODateString | null;
+    finishedAt: ISODateString | null;
+    status: ApiBacklogItemStatus | null;
 }
 
 export interface ApiBacklogItemInSprint extends ApiBacklogItem {
+    /* from BaseItem */
+    id: uuid | null;
+
+    /* from StandardItem */
+    createdAt?: string; // sequelize standard field
+    updatedAt?: string; // sequelize standard field
+    version?: number; // sequelize standard field
+
+    /* from StoryPhrases */
+    rolePhrase: string | null;
+    storyPhrase: string;
+    reasonPhrase: string | null;
+
+    /* from ApiBacklogItem */
+    acceptanceCriteria: string | null;
+    acceptedAt: ISODateString | null;
+    estimate: number | null;
+    externalId: string | null;
+    finishedAt: ISODateString | null;
+    friendlyId: string | null;
+    partIndex: number | null;
+    projectId: string | null;
+    releasedAt: ISODateString | null;
+    startedAt: ISODateString | null;
+    status: ApiBacklogItemStatus | null;
+    totalParts: number | null;
+    type: BacklogItemType;
+    unallocatedParts: number | null;
+
+    /* new fields */
+    backlogItemPartId: string;
     displayindex: number | null;
+    partPercentage: number | null;
+    storyEstimate: number | null;
+    storyStatus: ApiBacklogItemStatus | null;
+    storyStartedAt: ISODateString | null;
+    storyFinishedAt: ISODateString | null;
+    storyUpdatedAt: ISODateString | null;
+    storyVersion: number;
 }
 
 export interface ApiBacklogItemRank extends StandardItem {
@@ -91,9 +191,10 @@ export interface ApiSprint extends StandardNamedItem, ApiSprintStats {
     velocityPoints: number | null;
 }
 
-export interface ApiSprintBacklogItem extends BaseItem {
+export interface ApiSprintBacklogItem extends BaseItem, ItemWithId {
+    storyEstimate: number | null;
     sprintId: string;
-    backlogitemId: string;
+    backlogitempartId: string;
     displayindex: number | null;
 }
 

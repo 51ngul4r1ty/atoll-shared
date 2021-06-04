@@ -23,6 +23,7 @@ export interface BacklogItemPlanningPanelStateProps {
     className?: string;
     allItems: BacklogItemWithSource[];
     editMode: EditMode;
+    busySplittingStory: boolean;
     renderMobile?: boolean;
     openedDetailMenuBacklogItemId: string | null;
 }

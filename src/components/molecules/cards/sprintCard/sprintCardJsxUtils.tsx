@@ -1,29 +1,37 @@
 // externals
 import * as React from "react";
 
-// interfaces/types
-import { SprintBacklogItem } from "../../../../reducers/sprintBacklogReducer";
-
 // components
-import { BacklogItemCard, BacklogItemTypeEnum, buildBacklogItemKey, ItemMenuEventHandlers } from "../BacklogItemCard";
+import {
+    BacklogItemCard,
+    BacklogItemCardType,
+    BacklogItemTypeEnum,
+    buildBacklogItemKey,
+    ItemMenuEventHandlers
+} from "../BacklogItemCard";
+import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 
 // consts/enums
 import { EditMode } from "../../../common/componentEnums";
 
 // utils
 import { sprintBacklogItemMenuBuilder } from "../../../common/itemMenuBuilders";
-import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 import { buildBacklogDisplayId } from "../../../../utils/backlogItemHelper";
+
+// interfaces/types
+import { BacklogItemInSprint } from "../../../../types/backlogItemTypes";
 
 export const getBacklogItemElts = (
     editMode: EditMode,
     openedDetailMenuBacklogItemId: string,
     renderMobile: boolean,
     showDetailMenuToLeft: boolean,
-    backlogItems: SprintBacklogItem[],
+    backlogItems: BacklogItemInSprint[],
+    busySplittingStory: boolean,
     onDetailClick: { (backlogItemId: string) },
     onBacklogItemIdClick: { (backlogItemId: string) },
     onMoveItemToBacklogClick: { (itemId: string) },
+    onSplitBacklogItemClick: { (id: string): void },
     onBacklogItemAcceptedClick: { (itemId: string) },
     onBacklogItemDoneClick: { (itemId: string) },
     onBacklogItemInProgressClick: { (itemId: string) },
@@ -34,6 +42,8 @@ export const getBacklogItemElts = (
         handleEvent: (eventName: string, itemId: string) => {
             if (eventName === "onMoveItemToBacklogClick") {
                 onMoveItemToBacklogClick(itemId);
+            } else if (eventName === "onSplitBacklogItemClick") {
+                onSplitBacklogItemClick(itemId);
             } else if (eventName === "onBacklogItemAcceptedClick") {
                 onBacklogItemAcceptedClick(itemId);
             } else if (eventName === "onBacklogItemDoneClick") {
@@ -57,21 +67,26 @@ export const getBacklogItemElts = (
             <SimpleDivider />
             <BacklogItemCard
                 key={buildBacklogItemKey(backlogItem)}
+                busySplittingStory={busySplittingStory}
                 buildItemMenu={sprintBacklogItemMenuBuilder(eventHandlers)}
                 estimate={backlogItem.estimate}
+                hasDetails={editMode === EditMode.Edit}
                 internalId={`${backlogItem.id}`}
+                isDraggable={false}
                 itemId={buildBacklogDisplayId(backlogItem.externalId, backlogItem.friendlyId)}
                 itemType={backlogItem.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
-                roleText={backlogItem.rolePhrase}
-                titleText={backlogItem.storyPhrase}
-                reasonText={backlogItem.reasonPhrase}
-                isDraggable={false}
-                hasDetails={editMode === EditMode.Edit}
-                renderMobile={renderMobile}
                 marginBelowItem
+                partIndex={backlogItem.partIndex}
+                reasonText={backlogItem.reasonPhrase}
+                renderMobile={renderMobile}
+                roleText={backlogItem.rolePhrase}
                 showDetailMenu={backlogItem.id === openedDetailMenuBacklogItemId}
                 showDetailMenuToLeft={showDetailMenuToLeft}
                 status={backlogItem.status}
+                storyEstimate={backlogItem.storyEstimate}
+                titleText={backlogItem.storyPhrase}
+                cardType={BacklogItemCardType.SprintBacklogCard}
+                totalParts={backlogItem.totalParts}
                 onDetailClick={() => {
                     onDetailClick(backlogItem.id);
                 }}

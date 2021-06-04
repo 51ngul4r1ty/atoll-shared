@@ -18,5 +18,8 @@ export const cloneApiBacklogItem = (apiItem: ApiBacklogItem): ApiBacklogItem => 
     startedAt: apiItem.startedAt,
     finishedAt: apiItem.finishedAt,
     acceptedAt: apiItem.acceptedAt,
-    releasedAt: apiItem.releasedAt
+    releasedAt: apiItem.releasedAt,
+    partIndex: apiItem.partIndex,
+    totalParts: apiItem.totalParts,
+    unallocatedParts: apiItem.unallocatedParts
 });

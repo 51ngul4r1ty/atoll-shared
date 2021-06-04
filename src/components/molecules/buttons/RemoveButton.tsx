@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // atoms
-import { SimpleButton, SimpleButtonProps, cleanPassthroughProps } from "../../atoms/buttons/SimpleButton";
+import { SimpleButton, SimpleButtonProps, cleanPassthroughProps } from "./SimpleButton";
 
 // icons
 import { TrashIcon } from "../../atoms/icons/TrashIcon";

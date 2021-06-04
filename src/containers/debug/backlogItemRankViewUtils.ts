@@ -63,7 +63,8 @@ const handleFirstItemFromAvailableList = (availableItems: AvailableRankItem[]): 
     // there should not be multiple lists, but there are, so we need to find the start of these lists and iterate
     // through them just like we did in handleNewList for the first list
     const listStartItems = availableItems.filter((item) => item.backlogItemId === null);
-    if (listStartItems.length) {
+    const hadStartItem = !!listStartItems.length;
+    if (hadStartItem) {
         // this is a "normal" start of a list
         firstItem = listStartItems[0];
         removeAvailableItem(availableItems, firstItem);
@@ -72,10 +73,18 @@ const handleFirstItemFromAvailableList = (availableItems: AvailableRankItem[]): 
         // this is just some arbitrary item, we know it isn't the beginning of a list, but it might be orphaned so
         // we need to follow the chain of items that leads to it
         firstItem = null;
+        let visitedIds = new Set<string>();
         while (!firstItem) {
             let itemsFound = availableItems.filter((item) => item.nextBacklogItemId === currentItem.backlogItemId);
             if (itemsFound.length) {
                 currentItem = itemsFound[0];
+                if (visitedIds.has(currentItem.id)) {
+                    // can't find a true "first item", we're looping through the same list, so just return top of list item
+                    // TODO: Probably should "tag" this entry in some way?
+                    firstItem = currentItem;
+                    removeAvailableItem(availableItems, firstItem);
+                }
+                visitedIds.add(currentItem.id);
             } else {
                 firstItem = currentItem;
                 removeAvailableItem(availableItems, firstItem);
@@ -113,15 +122,96 @@ const handleNewGroup = (
     }
 };
 
+export interface RankInfo {
+    rank: BacklogItemRank;
+    processed: boolean;
+}
+
+export const buildKeyFromId = (id: string | null | undefined) => {
+    return !id ? "<<null>>" : `${id}`;
+};
+
+export const findCircularRefs = (ranks: BacklogItemRank[]) => {
+    let hasIssues = false;
+    let message = "";
+    let repeatedBacklogItemIds: string[] = [];
+
+    if (ranks.length) {
+        const rankInfoByKey: { [id: string]: RankInfo } = {};
+        ranks.forEach((rank) => {
+            const key = buildKeyFromId(rank.backlogItemId);
+            if (!rankInfoByKey[key]) {
+                rankInfoByKey[key] = { rank, processed: false };
+            } else {
+                hasIssues = true;
+                repeatedBacklogItemIds.push(`${rank.id} => ${rank.backlogItemId}`);
+            }
+        });
+        let currentRankInfo = rankInfoByKey[buildKeyFromId(null)];
+        if (!currentRankInfo) {
+            const firstKey = buildKeyFromId(ranks[0].backlogItemId);
+            currentRankInfo = rankInfoByKey[firstKey];
+        }
+        let busy = true;
+        while (busy) {
+            if (currentRankInfo.processed) {
+                message = `circular ref found: ${currentRankInfo.rank.backlogItemId}`;
+                busy = false;
+                hasIssues = true;
+                continue;
+            }
+            currentRankInfo.processed = true;
+            const nextId = currentRankInfo.rank.nextBacklogItemId;
+            if (!nextId) {
+                currentRankInfo = null;
+            } else {
+                const key = buildKeyFromId(nextId);
+                currentRankInfo = rankInfoByKey[key];
+            }
+            if (!currentRankInfo) {
+                const keys = Object.keys(rankInfoByKey);
+                let idx = 0;
+                let searchingForUnprocessedRank = idx < keys.length;
+                while (searchingForUnprocessedRank) {
+                    const key = keys[idx++];
+                    const rankInfo = rankInfoByKey[key];
+                    if (!rankInfo.processed) {
+                        currentRankInfo = rankInfo;
+                        searchingForUnprocessedRank = false;
+                    } else if (idx >= keys.length) {
+                        searchingForUnprocessedRank = false;
+                    }
+                }
+                if (!currentRankInfo) {
+                    busy = false;
+                }
+            }
+        }
+    }
+
+    if (repeatedBacklogItemIds.length) {
+        if (message) {
+            message += "; ";
+        }
+        message += `repeated backlog item rank IDs: ${repeatedBacklogItemIds.join(", ")}`;
+    }
+    return {
+        hasIssues,
+        message
+    };
+};
+
 export const buildGroups = (state: StateTree) => {
-    // TODO: Add logic to handle a circular reference (it should check to see if it encounters the same ID more than once)
-    //       - could probably use the "filter" results and check if more than one item is returned each time
     const buildNewGroups = () => {
         const groups: BacklogItemRankGroup[] = [];
         return groups;
     };
     const groups = buildNewGroups();
     const ranks = getBacklogItemRanks(state);
+    const circularRefResult = findCircularRefs(ranks);
+    if (circularRefResult.hasIssues) {
+        throw new Error(circularRefResult.message);
+    }
     const listStartItems = ranks.filter((item) => item.backlogItemId === null);
     const linkCountObj: LinkCountObj = {};
     ranks.forEach((rank) => {

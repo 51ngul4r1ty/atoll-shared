@@ -1,5 +1,5 @@
 // interfaces/types
-import { SprintBacklogItem } from "../../../../reducers/sprintBacklogReducer";
+import { BacklogItemInSprint } from "../../../../types/backlogItemTypes";
 import { DateOnly } from "../../../../types/dateTypes";
 
 export enum SprintStatus {
@@ -12,7 +12,7 @@ export enum SprintStatus {
 export interface SprintCardSprint {
     acceptedPoints: number | null;
     archived: boolean;
-    backlogItems: SprintBacklogItem[] | null;
+    backlogItems: BacklogItemInSprint[] | null;
     backlogItemsLoaded: boolean;
     editing: boolean;
     expanded: boolean;

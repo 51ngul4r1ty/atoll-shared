@@ -94,7 +94,7 @@ export const InnerTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
             onClick={() => {
                 handleErrorPanelClick();
             }}
-            className={css.topMessagaPanel}
+            className={css.topMessagePanel}
         >
             {props.message}
         </div>

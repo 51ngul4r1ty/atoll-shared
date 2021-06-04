@@ -1,5 +1,4 @@
 // interfaces/types
-import { mapBacklogItemStatusToApi } from "../mappers/backlogItemMappers";
 import { Sprint } from "../reducers/sprintsReducer";
 import { BacklogItemModel, BacklogItem } from "../types/backlogItemTypes";
 import { SprintModel } from "../types/sprintTypes";
@@ -21,7 +20,10 @@ export const convertToBacklogItemModel = (backlogItem: BacklogItem): BacklogItem
     startedAt: backlogItem.startedAt,
     finishedAt: backlogItem.finishedAt,
     acceptedAt: backlogItem.acceptedAt,
-    releasedAt: backlogItem.releasedAt
+    releasedAt: backlogItem.releasedAt,
+    partIndex: backlogItem.partIndex,
+    totalParts: backlogItem.totalParts,
+    unallocatedParts: backlogItem.unallocatedParts
 });
 
 export const convertToSprintModel = (sprint: Sprint): SprintModel => ({

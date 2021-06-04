@@ -9,3 +9,4 @@ export { RefreshButton } from "./RefreshButton";
 export { RemoveButton } from "./RemoveButton";
 export { ResetButton } from "./ResetButton";
 export { SaveButton } from "./SaveButton";
+export * from "./SimpleButton";

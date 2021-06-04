@@ -27,6 +27,7 @@ export interface BacklogItemRankGroup {
 
 export interface BacklogItemRankViewStateProps {
     groups: BacklogItemRankGroup[];
+    error: any;
 }
 
 export interface BacklogItemRankViewDispatchProps {
@@ -52,10 +53,12 @@ export const BacklogItemRankView: React.FC<BacklogItemRankViewProps> = (props) =
         ));
     };
     const itemElts = props.groups.map((group) => <div key={groupIndex++}>{buildGroupItemElts(group.items)}</div>);
+    const errorMessage = props.error ? <span>ERRORS ENCOUNTERED: {`${props.error}`}</span> : null;
     return (
         <>
             <h1>BACKLOG ITEM RANK DEBUG VIEWER</h1>
             {itemElts}
+            {errorMessage}
         </>
     );
 };

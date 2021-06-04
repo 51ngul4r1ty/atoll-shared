@@ -1,4 +1,3 @@
-export * from "./buttons";
 export * from "./dividers";
 export * from "./icons";
 export * from "./inputs";

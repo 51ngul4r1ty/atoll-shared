@@ -17,3 +17,4 @@ yarn-error.log
 tmp
 bundle-stats.json
 /dependency-graph.svg
+.DS_Store

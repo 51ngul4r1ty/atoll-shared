@@ -110,7 +110,11 @@ const buildCommonItem = (
     startedAt: new Date(2020, 11, 27, 19, 7, 32),
     finishedAt: new Date(2020, 11, 27, 19, 7, 32),
     acceptedAt: new Date(2020, 11, 27, 19, 7, 32),
-    releasedAt: new Date(2020, 11, 27, 19, 7, 32)
+    releasedAt: new Date(2020, 11, 27, 19, 7, 32),
+    partIndex: 1,
+    storyEstimate: estimate,
+    totalParts: 1,
+    unallocatedParts: 0
 });
 
 const buildAddedItem = (itemNumber: number, instanceId: number | null, estimate: number, saved: boolean): BacklogItemWithSource =>

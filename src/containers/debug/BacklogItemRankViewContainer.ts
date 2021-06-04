@@ -13,8 +13,16 @@ import { apiGetBacklogItemRanks } from "../../actions/apiBacklogItemRanks";
 import { buildGroups } from "./backlogItemRankViewUtils";
 
 const mapStateToProps = (state: StateTree): BacklogItemRankViewStateProps => {
+    let groups = [];
+    let error = undefined;
+    try {
+        groups = buildGroups(state);
+    } catch (err) {
+        error = err;
+    }
     const result: BacklogItemRankViewStateProps = {
-        groups: buildGroups(state)
+        groups,
+        error
     };
     return result;
 };
