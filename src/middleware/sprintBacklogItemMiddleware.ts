@@ -116,8 +116,6 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
         }
         case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {
             const state = storeTyped.getState();
-            // TODO: Use this same action to hide the menu with "Split To Next Sprint" in it
-            // TODO: Use this same action to stop the spinner on the Split to Next Sprint button (need to build this still - create story??)
             const actionTyped = action as ApiSplitSprintItemSuccessAction;
             const currentSprintId = actionTyped.meta.actionParams.sprintId;
             const currentBacklogItemId = actionTyped.meta.actionParams.backlogItemId;
