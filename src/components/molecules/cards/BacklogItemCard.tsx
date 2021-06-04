@@ -21,7 +21,7 @@ import { PushState } from "../../../reducers/types";
 import { StatusAcceptedIcon, StatusDoneIcon, StatusInProgressIcon, StatusReleasedIcon } from "../../atoms/icons";
 import { BacklogItemStatus } from "../../../types/backlogItemTypes";
 
-/* exported functions */
+//#region exported functions
 
 export const buildUniqueItemKey = (props: SaveableBacklogItem, componentPrefix: string): string => {
     return props.id ? `${componentPrefix}-id-${props.id}` : `${componentPrefix}-i-${props.instanceId}`;
@@ -92,7 +92,9 @@ export const fullStoryText = (rolePhrase: string, storyPhrase: string, reasonPhr
     }
 };
 
-/* exported interfaces */
+//#endregion
+
+//#region exported interfaces/types
 
 // TODO: See if this is defined elsewhere:
 export enum BacklogItemTypeEnum {
@@ -110,30 +112,36 @@ export interface ItemMenuEventHandlers {
 }
 
 export interface ItemMenuBuilder {
-    (itemId: string, showMenuToLeft: boolean): React.ReactElement<any, any>;
+    (itemId: string, showMenuToLeft: boolean, menuDisabled: boolean, busyButtonName: string): React.ReactElement<any, any>;
 }
 
 export interface BacklogItemCardStateProps {
+    buildItemMenu?: ItemMenuBuilder;
+    busySplittingStory?: boolean;
+    cardType?: BacklogItemCardType;
     estimate: number | null;
     hasDetails?: boolean;
-    isSelectable?: boolean;
     hidden?: boolean;
-    isDraggable?: boolean;
     internalId: string;
+    isDraggable?: boolean;
+    isSelectable?: boolean;
     itemId: string;
     itemType: BacklogItemTypeEnum;
     marginBelowItem?: boolean;
+    offsetTop?: number;
+    partIndex?: number;
+    pushState?: PushState;
+    reasonText: string;
     renderMobile?: boolean;
     roleText: string;
-    titleText: string;
-    reasonText: string;
-    offsetTop?: number;
-    width?: any;
     showDetailMenu: boolean;
     showDetailMenuToLeft?: boolean;
     status?: BacklogItemStatus;
-    pushState?: PushState;
-    buildItemMenu?: ItemMenuBuilder;
+    storyEstimate?: number | null;
+    titleText: string;
+    totalParts?: number;
+    unallocatedParts?: number;
+    width?: any;
 }
 
 export interface BacklogItemCardDispatchProps {
@@ -148,10 +156,20 @@ export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDi
 
 export type InnerBacklogItemCardProps = BacklogItemCardProps & WithTranslation;
 
+export enum BacklogItemCardType {
+    ProductBacklogCard,
+    SprintBacklogCard
+}
+
+//#endregion
+
 /* exported components */
 
 export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props) => {
-    const detailMenu = props.showDetailMenu ? props.buildItemMenu(props.internalId, props.showDetailMenuToLeft) : null;
+    const busyButtonName = props.busySplittingStory ? "splitStory" : "";
+    const detailMenu = props.showDetailMenu
+        ? props.buildItemMenu(props.internalId, props.showDetailMenuToLeft, !!busyButtonName, busyButtonName)
+        : null;
     const classNameToUse = buildClassName(
         css.backlogItemCard,
         props.marginBelowItem ? css.marginBelowItem : null,
@@ -212,6 +230,32 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
         }
     }
     const statusIconElts = statusIcon !== null ? <div className={css.status}>{statusIcon}</div> : null;
+    const isSplitBacklogItem = props.totalParts > 1;
+    const splitTextContent =
+        props.cardType === BacklogItemCardType.ProductBacklogCard
+            ? `${props.unallocatedParts} of ${props.totalParts} unallocated splits`
+            : `Split ${props.partIndex} of ${props.totalParts}`;
+    const splitTextElts = (
+        <div className={css.backlogItemSplitText} title={splitTextContent}>
+            {splitTextContent}
+        </div>
+    );
+    const storyPointsElts = getEstimateElts(props.estimate);
+    const splitBoxElts =
+        props.partIndex > 1 ? (
+            <>
+                <div className={css.splitStoryPoints}>{formatNumberForDisplay(props.estimate)}</div>
+                <div className={css.splitBottomWedge} />
+                <div className={css.splitTotalPoints}>{formatNumberForDisplay(props.storyEstimate)}</div>
+            </>
+        ) : (
+            storyPointsElts
+        );
+    const estimateElts = isSplitBacklogItem ? splitBoxElts : storyPointsElts;
+    const estimateEltsContainerClass = buildClassName(
+        css.backlogItemEstimate,
+        isSplitBacklogItem && props.partIndex === 1 ? css.splitPartOne : null
+    );
     return (
         <div className={css.backlogItemCardOuter} data-class="backlogitem" data-id={props.internalId} style={styleToUse}>
             <div className={classNameToUse} style={{ width: props.width }} tabIndex={0}>
@@ -247,8 +291,9 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
                         {props.renderMobile ? statusIconElts : null}
                         {props.renderMobile ? editDetailButton : null}
                     </div>
+                    {isSplitBacklogItem ? splitTextElts : null}
                 </div>
-                <div className={css.backlogItemEstimate}>{getEstimateElts(props.estimate)}</div>
+                <div className={estimateEltsContainerClass}>{estimateElts}</div>
                 {!props.renderMobile ? statusIconElts : null}
                 {!props.renderMobile ? editDetailButton : null}
                 {props.isDraggable && !props.renderMobile ? (

@@ -17,7 +17,7 @@ import { API, NoDataApiAction, ApiActionMetaDataRequestMeta } from "../middlewar
 import { buildActionTypes } from "./utils/apiActionUtils";
 
 // interfaces/types
-import { ApiBacklogItem, ApiSprint, ApiUserSettings } from "../apiModelTypes";
+import { ApiBacklogItem, ApiBacklogItemInSprint, ApiSprint, ApiUserSettings } from "../apiModelTypes";
 
 export interface ApiGetBffViewsPlanResponsePayload {
     response: {
@@ -25,7 +25,7 @@ export interface ApiGetBffViewsPlanResponsePayload {
         data: {
             backlogItems: ApiBacklogItem[];
             sprints: ApiSprint[];
-            sprintBacklogItems: ApiBacklogItem[] | undefined;
+            sprintBacklogItems: ApiBacklogItemInSprint[] | undefined;
             userPreferences: ApiUserSettings;
         };
     };

@@ -9,6 +9,7 @@ import css from "./BacklogItemPlanningPanel.module.css";
 // components
 import {
     BacklogItemCard,
+    BacklogItemCardType,
     BacklogItemTypeEnum,
     buildBacklogItemKey,
     buildBacklogItemPlanningItemKey,
@@ -78,6 +79,8 @@ export const buildDragBacklogItemElt = (
     return (
         <BacklogItemCard
             buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
+            busySplittingStory={false}
+            cardType={BacklogItemCardType.ProductBacklogCard}
             estimate={item.estimate}
             hasDetails={editMode === EditMode.Edit}
             internalId={`${item.id}`}
@@ -94,6 +97,8 @@ export const buildDragBacklogItemElt = (
             showDetailMenu={false}
             status={item.status}
             titleText={item.storyPhrase}
+            totalParts={item.totalParts}
+            unallocatedParts={item.unallocatedParts}
             width={width}
         />
     );
@@ -458,7 +463,9 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 const dragOverItemBacklogItemCard = (
                     <BacklogItemCard
                         key={cardKey}
+                        busySplittingStory={false}
                         buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
+                        cardType={BacklogItemCardType.ProductBacklogCard}
                         estimate={null}
                         hasDetails={props.editMode === EditMode.Edit}
                         internalId={buildSpacerInternalId(item.id)}
@@ -472,6 +479,8 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         roleText={null}
                         status={item.status}
                         titleText={null}
+                        totalParts={item.totalParts}
+                        unallocatedParts={item.unallocatedParts}
                         onDetailClick={() => {
                             dispatch(backlogItemDetailClick(item.id));
                         }}
@@ -494,6 +503,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                     key={buildBacklogItemPlanningItemKey(item)}
                     {...item}
                     editMode={props.editMode}
+                    busySplittingStory={props.busySplittingStory}
                     renderMobile={props.renderMobile}
                     highlightAbove={highlightAbove}
                     suppressTopPadding={suppressTopPadding || lastItemWasUnsaved}

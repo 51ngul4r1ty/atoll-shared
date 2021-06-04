@@ -17,7 +17,14 @@ import {
     ApiActionSuccessPayloadForItem,
     ApiActionFailurePayload
 } from "../middleware/apiTypes";
-import { ApiBacklogItem, ApiSprintBacklogItem, ApiSprintStats } from "../apiModelTypes";
+import {
+    ApiBacklogItem,
+    ApiBacklogItemInSprint,
+    ApiBacklogItemPart,
+    ApiBacklogItemWithParts,
+    ApiSprintBacklogItem,
+    ApiSprintStats
+} from "../apiModelTypes";
 import { ApiBatchAction } from "../middleware/apiBatchTypes";
 
 // utils
@@ -32,7 +39,7 @@ export interface MetaActionParams {
 
 export interface ApiGetSprintBacklogItemsSuccessAction {
     type: typeof ActionTypes.API_GET_SPRINT_BACKLOG_ITEMS_SUCCESS;
-    payload: ApiActionSuccessPayloadForCollection<ApiBacklogItem>;
+    payload: ApiActionSuccessPayloadForCollection<ApiBacklogItemInSprint>;
     meta: ApiActionMetaDataRequestMeta<{}, MetaActionParams>;
 }
 
@@ -74,7 +81,10 @@ export type ApiBatchAddBacklogItemsToSprintAction = ApiBatchAction<
     ApiBatchAddBacklogItemsToSprintBatchActionParams
 >;
 
-export type ApiPostSprintBacklogItemSuccessActionPayload = ApiActionSuccessPayloadForItem<ApiSprintBacklogItem, SprintStats>;
+export type ApiPostSprintBacklogItemSuccessActionPayload = ApiActionSuccessPayloadForItem<
+    ApiSprintBacklogItem,
+    SprintBacklogItemSuccessPayloadExtra
+>;
 export interface ApiPostSprintBacklogItemSuccessAction {
     type: typeof ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_SUCCESS;
     payload: ApiPostSprintBacklogItemSuccessActionPayload;
@@ -146,7 +156,21 @@ export interface SprintStats {
     sprintStats: ApiSprintStats;
 }
 
-export type ApiMoveSprintItemToProductBacklogSuccessActionPayload = ApiActionSuccessPayloadForItem<ApiBacklogItem, SprintStats>;
+export interface SprintBacklogItemSuccessPayloadExtra extends SprintStats {
+    sprintStats: ApiSprintStats;
+    backlogItem: ApiBacklogItemWithParts;
+    backlogItemPart: ApiBacklogItemPart;
+}
+
+export interface MoveBacklogItemToBacklogSuccessPayloadExtra extends SprintStats {
+    sprintStats: ApiSprintStats;
+    backlogItem: ApiBacklogItem;
+}
+
+export type ApiMoveSprintItemToProductBacklogSuccessActionPayload = ApiActionSuccessPayloadForItem<
+    ApiBacklogItem,
+    MoveBacklogItemToBacklogSuccessPayloadExtra
+>;
 export interface ApiMoveSprintItemToProductBacklogSuccessAction {
     type: typeof ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS;
     payload: ApiMoveSprintItemToProductBacklogSuccessActionPayload;
@@ -172,9 +196,49 @@ export const apiMoveSprintItemToProductBacklog = (sprintId: string, backlogItemI
     };
 };
 
-export interface ApiSprintBacklogItemSetStatusActionParams {
+export interface ApiSplitSprintItemSuccessActionPayloadExtra {
+    backlogItem: ApiBacklogItem;
+    sprintBacklogItem: ApiSprintBacklogItem;
+    sprintStats: ApiSprintStats;
+}
+
+export interface ApiSplitSprintItemActionParams {
     sprintId: string;
     backlogItemId: string;
+}
+
+export type ApiSplitSprintItemSuccessActionPayload = ApiActionSuccessPayloadForItem<
+    ApiBacklogItemPart,
+    ApiSplitSprintItemSuccessActionPayloadExtra
+>;
+export interface ApiSplitSprintItemSuccessAction {
+    type: typeof ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS;
+    payload: ApiSplitSprintItemSuccessActionPayload;
+    meta: ApiActionMetaDataRequestMeta<{}, ApiSplitSprintItemActionParams>;
+}
+
+export const apiSplitSprintBacklogItem = (sprintId: string, backlogItemId: string) => {
+    const actionParams: ApiMoveSprintItemToProductBacklogActionParams = {
+        sprintId,
+        backlogItemId
+    };
+    return {
+        type: API,
+        payload: {
+            endpoint: `${getApiBaseUrl()}api/v1/sprints/${sprintId}/backlog-items/${backlogItemId}/parts`,
+            method: "POST",
+            headers: { Accept: APPLICATION_JSON },
+            types: buildActionTypes(ApiActionNames.ADD_SPRINT_BACKLOG_ITEM_PART)
+        },
+        meta: {
+            actionParams
+        }
+    };
+};
+
+export interface ApiSprintBacklogItemSetStatusActionParams {
+    sprintId: string;
+    backlogItemPartId: string;
     status: BacklogItemStatus;
 }
 
@@ -190,17 +254,17 @@ export interface ApiSprintBacklogItemSetStatusSuccessAction {
     meta: ApiActionMetaDataRequestMeta<ApiSprintBacklogItemSetStatusData, ApiSprintBacklogItemSetStatusActionParams>;
 }
 
-export const apiSprintBacklogItemSetStatus = (sprintId: string, backlogItemId: string, status: BacklogItemStatus) => {
+export const apiSprintBacklogItemSetStatus = (sprintId: string, backlogItemPartId: string, status: BacklogItemStatus) => {
     const actionParams: ApiSprintBacklogItemSetStatusActionParams = {
         sprintId,
-        backlogItemId,
+        backlogItemPartId,
         status
     };
     return {
         type: API,
         payload: {
             // TODO: Change this to use HATEOAS (and the sprint backlog item URL)
-            endpoint: `${getApiBaseUrl()}api/v1/backlog-items/${backlogItemId}`,
+            endpoint: `${getApiBaseUrl()}api/v1/backlog-item-parts/${backlogItemPartId}`,
             method: "PATCH",
             headers: { Accept: APPLICATION_JSON },
             types: buildActionTypes(ApiActionNames.PATCH_BACKLOG_ITEM),

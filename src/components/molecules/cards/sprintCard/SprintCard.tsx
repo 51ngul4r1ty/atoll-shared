@@ -30,6 +30,7 @@ import { VerticalExpandIcon } from "../../../atoms/icons/VerticalExpandIcon";
 export interface SprintCardStateProps extends SprintCardSprint {
     archived: boolean;
     buildItemMenu?: ItemMenuBuilder;
+    busySplittingStory?: boolean;
     className?: string;
     editMode: EditMode;
     openedDetailMenuBacklogItemId: string;
@@ -41,16 +42,17 @@ export interface SprintCardStateProps extends SprintCardSprint {
 
 export interface SprintCardDispatchProps {
     onAddBacklogItem: { (): void };
-    onSprintDetailClick: { (): void };
-    onBacklogItemDetailClick: { (id: string): void };
-    onBacklogItemIdClick: { (id: string): void };
-    onExpandCollapse: { (id: string, expand: boolean): void };
-    onMoveItemToBacklogClick: { (id: string): void };
     onBacklogItemAcceptedClick: { (id: string): void };
+    onBacklogItemDetailClick: { (id: string): void };
     onBacklogItemDoneClick: { (id: string): void };
+    onBacklogItemIdClick: { (id: string): void };
     onBacklogItemInProgressClick: { (id: string): void };
     onBacklogItemNotStartedClick: { (id: string): void };
     onBacklogItemReleasedClick: { (id: string): void };
+    onExpandCollapse: { (id: string, expand: boolean): void };
+    onMoveItemToBacklogClick: { (id: string): void };
+    onSplitBacklogItemClick: { (id: string): void };
+    onSprintDetailClick: { (): void };
 }
 
 export type SprintCardProps = SprintCardStateProps & SprintCardDispatchProps;
@@ -60,8 +62,11 @@ export type InnerSprintCardProps = SprintCardProps & WithTranslation;
 /* exported components */
 
 export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
+    const busyButtonName = props.busySplittingStory ? "splitStory" : "";
     const detailMenu =
-        props.showDetailMenu && props.buildItemMenu ? props.buildItemMenu(props.id, props.showDetailMenuToLeft) : null;
+        props.showDetailMenu && props.buildItemMenu
+            ? props.buildItemMenu(props.id, props.showDetailMenuToLeft, !!busyButtonName, busyButtonName)
+            : null;
     const sprintStatusElts = <div className={css.sprintStatus}>{sprintStatusToString(props.status)}</div>;
     const dateRangeArchiveStatusElts = props.archived ? <ArchiveIcon className={css.dateRangeArchiveIcon} /> : null;
     const sprintDateRangeElts = (
@@ -127,9 +132,11 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
             props.renderMobile || false,
             props.showDetailMenuToLeft,
             props.backlogItems,
+            props.busySplittingStory,
             handleDetailClick,
             handleBacklogItemIdClick,
             props.onMoveItemToBacklogClick,
+            props.onSplitBacklogItemClick,
             props.onBacklogItemAcceptedClick,
             props.onBacklogItemDoneClick,
             props.onBacklogItemInProgressClick,
