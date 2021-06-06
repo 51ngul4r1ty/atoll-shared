@@ -44,3 +44,8 @@ export const isSplitInProgress = createSelector(
     [sprintBacklog],
     (sprintBacklog: SprintBacklogState): boolean => sprintBacklog.splitInProgress
 );
+
+export const lookupPartIdForBacklogItemInSprint = (state: StateTree, sprintId: string, backlogItemId: string): string | null => {
+    const sprintBacklogItem = getSprintBacklogItemById(state, sprintId, backlogItemId);
+    return sprintBacklogItem.backlogItemPartId || null;
+};

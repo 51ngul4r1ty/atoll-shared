@@ -43,7 +43,16 @@ export interface StandardNamedItem extends StandardItem, ItemWithName {}
  * R: Released
  */
 export type ApiBacklogItemStatus = "N" | "P" | "D" | "A" | "R";
-export interface ApiBacklogItem extends StandardItem, StoryPhrases {
+
+export interface ItemWithStatusAndDates {
+    acceptedAt: ISODateString | null;
+    finishedAt: ISODateString | null;
+    releasedAt: ISODateString | null;
+    startedAt: ISODateString | null;
+    status: ApiBacklogItemStatus | null;
+}
+
+export interface ApiBacklogItem extends StandardItem, StoryPhrases, ItemWithStatusAndDates {
     /* from BaseItem */
     id: uuid | null;
 
@@ -59,16 +68,11 @@ export interface ApiBacklogItem extends StandardItem, StoryPhrases {
 
     /* new fields */
     acceptanceCriteria: string | null;
-    acceptedAt: ISODateString | null;
     estimate: number | null;
     externalId: string | null;
-    finishedAt: ISODateString | null;
     friendlyId: string | null;
     partIndex: number | null;
     projectId: string | null;
-    releasedAt: ISODateString | null;
-    startedAt: ISODateString | null;
-    status: ApiBacklogItemStatus | null;
     totalParts: number | null;
     type: BacklogItemType;
     unallocatedParts: number | null;
@@ -88,18 +92,20 @@ export interface ApiBacklogItemWithParts extends ApiBacklogItem {
     storyPhrase: string;
     reasonPhrase: string | null;
 
-    /* from ApiBacklogItem */
-    acceptanceCriteria: string | null;
+    /* from ItemWithStatusAndDates */
     acceptedAt: ISODateString | null;
-    estimate: number | null;
-    externalId: string | null;
     finishedAt: ISODateString | null;
-    friendlyId: string | null;
-    partIndex: number | null;
-    projectId: string | null;
     releasedAt: ISODateString | null;
     startedAt: ISODateString | null;
     status: ApiBacklogItemStatus | null;
+
+    /* from ApiBacklogItem */
+    acceptanceCriteria: string | null;
+    estimate: number | null;
+    externalId: string | null;
+    friendlyId: string | null;
+    partIndex: number | null;
+    projectId: string | null;
     totalParts: number | null;
     type: BacklogItemType;
     unallocatedParts: number | null;
@@ -109,6 +115,7 @@ export interface ApiBacklogItemWithParts extends ApiBacklogItem {
 }
 
 export interface ApiBacklogItemPart extends StandardItem {
+    // TODO: move the status and dates related out of this interface (see ApiBacklogItem)
     externalId: string | null;
     backlogitemId: string | null;
     partIndex: number;
@@ -133,18 +140,20 @@ export interface ApiBacklogItemInSprint extends ApiBacklogItem {
     storyPhrase: string;
     reasonPhrase: string | null;
 
-    /* from ApiBacklogItem */
-    acceptanceCriteria: string | null;
+    /* from ItemWithStatusAndDates */
     acceptedAt: ISODateString | null;
-    estimate: number | null;
-    externalId: string | null;
     finishedAt: ISODateString | null;
-    friendlyId: string | null;
-    partIndex: number | null;
-    projectId: string | null;
     releasedAt: ISODateString | null;
     startedAt: ISODateString | null;
     status: ApiBacklogItemStatus | null;
+
+    /* from ApiBacklogItem */
+    acceptanceCriteria: string | null;
+    estimate: number | null;
+    externalId: string | null;
+    friendlyId: string | null;
+    partIndex: number | null;
+    projectId: string | null;
     totalParts: number | null;
     type: BacklogItemType;
     unallocatedParts: number | null;

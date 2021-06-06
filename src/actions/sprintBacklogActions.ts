@@ -132,7 +132,7 @@ export const sprintSplitBacklogItemClick = (sprintId: string, backlogItemId: str
 
 export interface SprintBacklogItemStatusClickPayload {
     sprintId: string;
-    backlogItemPartId: string;
+    backlogItemId: string;
 }
 
 export interface SprintBacklogItemAcceptedClickAction {
@@ -140,14 +140,11 @@ export interface SprintBacklogItemAcceptedClickAction {
     payload: SprintBacklogItemStatusClickPayload;
 }
 
-export const sprintBacklogItemAcceptedClick = (
-    sprintId: string,
-    backlogItemPartId: string
-): SprintBacklogItemAcceptedClickAction => ({
+export const sprintBacklogItemAcceptedClick = (sprintId: string, backlogItemId: string): SprintBacklogItemAcceptedClickAction => ({
     type: ActionTypes.SPRINT_BACKLOG_ITEM_ACCEPTED_CLICK,
     payload: {
         sprintId,
-        backlogItemPartId
+        backlogItemId
     }
 });
 
@@ -156,11 +153,11 @@ export interface SprintBacklogItemDoneClickAction {
     payload: SprintBacklogItemStatusClickPayload;
 }
 
-export const sprintBacklogItemDoneClick = (sprintId: string, backlogItemPartId: string): SprintBacklogItemDoneClickAction => ({
+export const sprintBacklogItemDoneClick = (sprintId: string, backlogItemId: string): SprintBacklogItemDoneClickAction => ({
     type: ActionTypes.SPRINT_BACKLOG_ITEM_DONE_CLICK,
     payload: {
         sprintId,
-        backlogItemPartId
+        backlogItemId
     }
 });
 
@@ -171,12 +168,12 @@ export interface SprintBacklogItemInProgressClickAction {
 
 export const sprintBacklogItemInProgressClick = (
     sprintId: string,
-    backlogItemPartId: string
+    backlogItemId: string
 ): SprintBacklogItemInProgressClickAction => ({
     type: ActionTypes.SPRINT_BACKLOG_ITEM_IN_PROGRESS_CLICK,
     payload: {
         sprintId,
-        backlogItemPartId
+        backlogItemId
     }
 });
 
@@ -187,12 +184,12 @@ export interface SprintBacklogItemNotStartedClickAction {
 
 export const sprintBacklogItemNotStartedClick = (
     sprintId: string,
-    backlogItemPartId: string
+    backlogItemId: string
 ): SprintBacklogItemNotStartedClickAction => ({
     type: ActionTypes.SPRINT_BACKLOG_ITEM_NOT_STARTED_CLICK,
     payload: {
         sprintId,
-        backlogItemPartId
+        backlogItemId
     }
 });
 
@@ -201,14 +198,11 @@ export interface SprintBacklogItemReleasedClickAction {
     payload: SprintBacklogItemStatusClickPayload;
 }
 
-export const sprintBacklogItemReleasedClick = (
-    sprintId: string,
-    backlogItemPartId: string
-): SprintBacklogItemReleasedClickAction => ({
+export const sprintBacklogItemReleasedClick = (sprintId: string, backlogItemId: string): SprintBacklogItemReleasedClickAction => ({
     type: ActionTypes.SPRINT_BACKLOG_ITEM_RELEASED_CLICK,
     payload: {
         sprintId,
-        backlogItemPartId
+        backlogItemId
     }
 });
 

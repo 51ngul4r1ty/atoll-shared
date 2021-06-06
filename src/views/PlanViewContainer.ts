@@ -101,16 +101,16 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
             dispatch(sprintMoveItemToBacklogClick(sprintId, backlogItemId)),
         onSplitBacklogItemClick: (sprintId: string, backlogItemId: string) =>
             dispatch(sprintSplitBacklogItemClick(sprintId, backlogItemId)),
-        onBacklogItemAcceptedClick: (sprintId: string, backlogItemPartId: string) =>
-            dispatch(sprintBacklogItemAcceptedClick(sprintId, backlogItemPartId)),
-        onBacklogItemDoneClick: (sprintId: string, backlogItemPartId: string) =>
-            dispatch(sprintBacklogItemDoneClick(sprintId, backlogItemPartId)),
-        onBacklogItemInProgressClick: (sprintId: string, backlogItemPartId: string) =>
-            dispatch(sprintBacklogItemInProgressClick(sprintId, backlogItemPartId)),
-        onBacklogItemNotStartedClick: (sprintId: string, backlogItemPartId: string) =>
-            dispatch(sprintBacklogItemNotStartedClick(sprintId, backlogItemPartId)),
-        onBacklogItemReleasedClick: (sprintId: string, backlogItemPartId: string) =>
-            dispatch(sprintBacklogItemReleasedClick(sprintId, backlogItemPartId))
+        onBacklogItemAcceptedClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemAcceptedClick(sprintId, backlogItemId)),
+        onBacklogItemDoneClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemDoneClick(sprintId, backlogItemId)),
+        onBacklogItemInProgressClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemInProgressClick(sprintId, backlogItemId)),
+        onBacklogItemNotStartedClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemNotStartedClick(sprintId, backlogItemId)),
+        onBacklogItemReleasedClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintBacklogItemReleasedClick(sprintId, backlogItemId))
     };
 };
 

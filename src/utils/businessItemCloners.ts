@@ -1,5 +1,5 @@
 // interfaces/types
-import { ApiBacklogItem } from "../apiModelTypes";
+import { ApiBacklogItem, ApiBacklogItemPart } from "../apiModelTypes";
 
 export const cloneApiBacklogItem = (apiItem: ApiBacklogItem): ApiBacklogItem => ({
     acceptanceCriteria: apiItem.acceptanceCriteria,
@@ -22,4 +22,18 @@ export const cloneApiBacklogItem = (apiItem: ApiBacklogItem): ApiBacklogItem => 
     partIndex: apiItem.partIndex,
     totalParts: apiItem.totalParts,
     unallocatedParts: apiItem.unallocatedParts
+});
+
+export const cloneApiBacklogItemPart = (apiItemPart: ApiBacklogItemPart): ApiBacklogItemPart => ({
+    backlogitemId: apiItemPart.backlogitemId,
+    createdAt: apiItemPart.createdAt,
+    externalId: apiItemPart.externalId,
+    finishedAt: apiItemPart.finishedAt,
+    id: apiItemPart.id,
+    partIndex: apiItemPart.partIndex,
+    percentage: apiItemPart.percentage,
+    points: apiItemPart.points,
+    startedAt: apiItemPart.startedAt,
+    status: apiItemPart.status,
+    updatedAt: apiItemPart.updatedAt
 });

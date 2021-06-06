@@ -63,7 +63,7 @@ export type InnerSprintCardProps = SprintCardProps & WithTranslation;
 
 export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
     const busyButtonName = props.busySplittingStory ? "splitStory" : "";
-    const detailMenu =
+    const sprintDetailMenu =
         props.showDetailMenu && props.buildItemMenu
             ? props.buildItemMenu(props.id, props.showDetailMenuToLeft, !!busyButtonName, busyButtonName)
             : null;
@@ -172,9 +172,11 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
             </div>
         ) : null;
     const classNameToUse = buildClassName(props.className, css.sprintCard);
-    const itemDetailMenuElts =
+    const sprintItemDetailMenuElts =
         props.editMode === EditMode.View ? null : (
-            <div className={buildClassName(css.detailMenu, props.showDetailMenuToLeft ? css.menuToLeft : null)}>{detailMenu}</div>
+            <div className={buildClassName(css.detailMenu, props.showDetailMenuToLeft ? css.menuToLeft : null)}>
+                {sprintDetailMenu}
+            </div>
         );
     const sprintArchivedStatusElts = props.archived ? <ArchiveIcon className={css.sprintNameArchiveIcon} /> : null;
 
@@ -214,7 +216,7 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
             >
                 {expandCollapseIcon}
             </div>
-            {itemDetailMenuElts}
+            {sprintItemDetailMenuElts}
         </div>
     );
 };

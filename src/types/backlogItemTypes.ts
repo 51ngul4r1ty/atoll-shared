@@ -1,5 +1,5 @@
 // interfaces/types
-import { BaseModelItem, ISODateString } from "../types";
+import { BaseModelItem } from "../types";
 
 export type BacklogItemType = "story" | "issue";
 
