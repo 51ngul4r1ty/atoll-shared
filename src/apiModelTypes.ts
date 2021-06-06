@@ -149,7 +149,7 @@ export interface ApiBacklogItemInSprint extends ApiBacklogItem {
 
     /* from ApiBacklogItem */
     acceptanceCriteria: string | null;
-    estimate: number | null;
+    estimate: number | null; // part.points in database (don't confuse with story estimate!)
     externalId: string | null;
     friendlyId: string | null;
     partIndex: number | null;
@@ -162,7 +162,7 @@ export interface ApiBacklogItemInSprint extends ApiBacklogItem {
     backlogItemPartId: string;
     displayindex: number | null;
     partPercentage: number | null;
-    storyEstimate: number | null;
+    storyEstimate: number | null; // here's where the actual story estimate is
     storyStatus: ApiBacklogItemStatus | null;
     storyStartedAt: ISODateString | null;
     storyFinishedAt: ISODateString | null;
