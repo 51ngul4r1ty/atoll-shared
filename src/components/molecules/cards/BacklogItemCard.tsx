@@ -241,16 +241,16 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
         </div>
     );
     const storyPointsElts = getEstimateElts(props.estimate);
-    const splitBoxElts =
-        props.partIndex > 1 ? (
-            <>
-                <div className={css.splitStoryPoints}>{formatNumberForDisplay(props.estimate)}</div>
-                <div className={css.splitBottomWedge} />
-                <div className={css.splitTotalPoints}>{formatNumberForDisplay(props.storyEstimate)}</div>
-            </>
-        ) : (
-            storyPointsElts
-        );
+    const showSplitEstimate = props.partIndex > 1 || props.cardType === BacklogItemCardType.ProductBacklogCard;
+    const splitBoxElts = showSplitEstimate ? (
+        <>
+            <div className={css.splitStoryPoints}>{formatNumberForDisplay(props.estimate)}</div>
+            <div className={css.splitBottomWedge} />
+            <div className={css.splitTotalPoints}>{formatNumberForDisplay(props.storyEstimate)}</div>
+        </>
+    ) : (
+        storyPointsElts
+    );
     const estimateElts = isSplitBacklogItem ? splitBoxElts : storyPointsElts;
     const estimateEltsContainerClass = buildClassName(
         css.backlogItemEstimate,

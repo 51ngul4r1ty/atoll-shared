@@ -27,6 +27,7 @@ export interface BacklogItemModel extends BaseModelItem {
     rolePhrase: string | null;
     startedAt: Date | null;
     status: BacklogItemStatus;
+    storyEstimate?: number | null;
     storyPhrase: string;
     totalParts: number | null;
     type: BacklogItemType;
@@ -35,14 +36,12 @@ export interface BacklogItemModel extends BaseModelItem {
     version?: number;
 }
 
-// TODO: Maybe move this to "SaveableBacklogItem", is it really needed
-//       for the "base" BacklogItem?
 export interface BacklogItem extends BacklogItemModel {
+    // TODO: Maybe move this to "SaveableBacklogItem", is it really needed for the "base" BacklogItem?
     instanceId?: number | null;
 }
 
 export interface BacklogItemInSprint extends BacklogItem {
-    storyEstimate: number | null;
     backlogItemPartId: string;
     displayindex: number;
     partPercentage: number;

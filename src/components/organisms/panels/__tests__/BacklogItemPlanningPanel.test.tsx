@@ -132,12 +132,13 @@ describe("BacklogItemPlanningPanel", () => {
         const editMode = EditMode.Edit;
         const wrapper = render(
             <BacklogItemPlanningPanel
-                openedDetailMenuBacklogItemId={null}
                 allItems={allItems}
+                busySplittingStory={false}
                 editMode={editMode}
-                renderMobile
                 onAddNewBacklogItemForm={() => {}}
                 onReorderBacklogItems={() => {}}
+                openedDetailMenuBacklogItemId={null}
+                renderMobile
             />
         );
         expect(wrapper.container).toMatchSnapshot();
@@ -150,12 +151,13 @@ describe("BacklogItemPlanningPanel", () => {
         const editMode = EditMode.Edit;
         const wrapper = render(
             <BacklogItemPlanningPanel
-                openedDetailMenuBacklogItemId={null}
                 allItems={allItems}
+                busySplittingStory={false}
                 editMode={editMode}
-                renderMobile
                 onAddNewBacklogItemForm={() => {}}
                 onReorderBacklogItems={() => {}}
+                openedDetailMenuBacklogItemId={null}
+                renderMobile
             />
         );
         expect(wrapper.container).toMatchSnapshot();
@@ -167,12 +169,13 @@ describe("BacklogItemPlanningPanel", () => {
         const editMode = EditMode.Edit;
         const wrapper = render(
             <BacklogItemPlanningPanel
-                openedDetailMenuBacklogItemId={null}
                 allItems={allItems}
+                busySplittingStory={false}
                 editMode={editMode}
-                renderMobile
                 onAddNewBacklogItemForm={() => {}}
                 onReorderBacklogItems={() => {}}
+                openedDetailMenuBacklogItemId={null}
+                renderMobile
             />
         );
         expect(wrapper.container).toMatchSnapshot();
@@ -184,12 +187,13 @@ describe("BacklogItemPlanningPanel", () => {
         const editMode = EditMode.View;
         const wrapper = render(
             <BacklogItemPlanningPanel
-                openedDetailMenuBacklogItemId={null}
                 allItems={allItems}
+                busySplittingStory={false}
                 editMode={editMode}
-                renderMobile
                 onAddNewBacklogItemForm={() => {}}
                 onReorderBacklogItems={() => {}}
+                openedDetailMenuBacklogItemId={null}
+                renderMobile
             />
         );
         expect(wrapper.container).toMatchSnapshot();
@@ -203,12 +207,13 @@ describe("BacklogItemPlanningPanel", () => {
         const editMode = EditMode.Edit;
         const wrapper = render(
             <BacklogItemPlanningPanel
-                openedDetailMenuBacklogItemId={null}
                 allItems={allItems}
+                busySplittingStory={false}
                 editMode={editMode}
-                renderMobile
                 onAddNewBacklogItemForm={() => {}}
                 onReorderBacklogItems={() => {}}
+                openedDetailMenuBacklogItemId={null}
+                renderMobile
             />
         );
         expect(wrapper.container).toMatchSnapshot();

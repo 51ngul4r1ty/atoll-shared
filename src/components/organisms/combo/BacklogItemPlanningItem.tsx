@@ -137,6 +137,7 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     roleText={props.rolePhrase}
                     showDetailMenu={props.showDetailMenu}
                     status={props.status}
+                    storyEstimate={props.storyEstimate}
                     titleText={props.storyPhrase}
                     totalParts={props.totalParts}
                     unallocatedParts={props.unallocatedParts}

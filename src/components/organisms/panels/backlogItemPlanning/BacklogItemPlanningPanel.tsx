@@ -96,6 +96,7 @@ export const buildDragBacklogItemElt = (
             roleText={item.rolePhrase}
             showDetailMenu={false}
             status={item.status}
+            storyEstimate={item.storyEstimate}
             titleText={item.storyPhrase}
             totalParts={item.totalParts}
             unallocatedParts={item.unallocatedParts}
@@ -478,6 +479,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         renderMobile={props.renderMobile}
                         roleText={null}
                         status={item.status}
+                        storyEstimate={item.storyEstimate}
                         titleText={null}
                         totalParts={item.totalParts}
                         unallocatedParts={item.unallocatedParts}
