@@ -209,6 +209,15 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             break;
         }
         case ActionTypes.MOVE_SELECTED_BACKLOG_ITEMS_TO_SPRINT: {
+            // TODO: figure out to make this action only move a single part of the split story into a sprint
+            // There are 2 backlog items:
+            //   1) the full 5 points out of 5 allocated to this item.
+            //   2) only 1 point of 5 allocated to this item.
+            // API call handled by sprintBacklogItemPostHandler needs to update the backlog item's remaining points to 1 after the
+            // first backlog item is moved into the sprint.
+            // Consider renaming remainingPoints to unallocatedPoints that makes it clear this represents the
+            // number in the product backlog.  At present it just seems like it is the remainingPoints on the story regardless of
+            // where the backlog items are located- you could have both parts in progress and that would mean 6 points "remaining".
             const actionTyped = action as MoveSelectedBacklogItemsToSprintUsingApiAction;
             const state = storeTyped.getState();
             const sprintId = actionTyped.payload.sprintId;
@@ -279,6 +288,8 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const actionTyped = action as ApiMoveSprintItemToProductBacklogSuccessAction;
             // default to 1 unallocated part because we're moving this into the backlog - so it can only be 1+
             const unallocatedParts = actionTyped.payload.response.data.extra?.backlogItem?.unallocatedParts || 1;
+            // TODO: Use this
+            // const unallocatedPoints = actionTyped.payload.response.data.extra?.backlogItem?.unallocatedPoints || 1;
             const sprintId = actionTyped.meta.actionParams.sprintId;
             const backlogItemId = actionTyped.meta.actionParams.backlogItemId;
             const state = storeTyped.getState();

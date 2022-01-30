@@ -69,6 +69,7 @@ export interface ApiBacklogItem extends StandardItem, StoryPhrases, ItemWithStat
     /* new fields */
     acceptanceCriteria: string | null;
     estimate: number | null;
+    storyEstimate: number | null;
     externalId: string | null;
     friendlyId: string | null;
     partIndex: number | null;
@@ -76,6 +77,7 @@ export interface ApiBacklogItem extends StandardItem, StoryPhrases, ItemWithStat
     totalParts: number | null;
     type: BacklogItemType;
     unallocatedParts: number | null;
+    unallocatedPoints: number | null;
 }
 
 export interface ApiBacklogItemWithParts extends ApiBacklogItem {

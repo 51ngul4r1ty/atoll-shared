@@ -177,3 +177,10 @@ export const getDragItemIdUnderTarget = (
     const documentTop = clientY + window.scrollY + adjustY;
     return getDragItemIdUnderCommon(documentTop, cardPositions);
 };
+
+/**
+ * Applies business rule that "unallocated points" takes precedence over "estimate" for product backlog items.
+ */
+export const computeProductBacklogItemEstimate = (estimate: number, unallocatedPoints: number | undefined) => {
+    return unallocatedPoints ? unallocatedPoints : estimate;
+};

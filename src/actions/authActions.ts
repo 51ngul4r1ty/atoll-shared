@@ -43,7 +43,7 @@ export interface ActionPostLoginSuccessActionMeta extends ApiActionMetaDataReque
 }
 
 export interface ActionPostLoginSuccessAction {
-    type: typeof ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS;
+    type: typeof ActionTypes.API_POST_ACTION_LOGIN_SUCCESS;
     payload: ActionPostLoginSuccessActionPayload;
     meta: ActionPostLoginSuccessActionMeta;
 }

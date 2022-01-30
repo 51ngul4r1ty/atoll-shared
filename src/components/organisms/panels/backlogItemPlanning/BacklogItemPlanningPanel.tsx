@@ -47,6 +47,7 @@ import {
     atBottomOfPage,
     atTopOfPage,
     buildSpacerInternalId,
+    computeProductBacklogItemEstimate,
     getDragItemDocumentTop,
     getDragItemId,
     getDragItemIdUnderTarget,
@@ -81,7 +82,7 @@ export const buildDragBacklogItemElt = (
             buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
             busySplittingStory={false}
             cardType={BacklogItemCardType.ProductBacklogCard}
-            estimate={item.estimate}
+            estimate={computeProductBacklogItemEstimate(item.estimate, item.unallocatedPoints)}
             hasDetails={editMode === EditMode.Edit}
             internalId={`${item.id}`}
             isDraggable={editMode === EditMode.Edit}

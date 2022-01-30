@@ -32,6 +32,7 @@ export interface BacklogItemModel extends BaseModelItem {
     totalParts: number | null;
     type: BacklogItemType;
     unallocatedParts: number | null;
+    unallocatedPoints: number | null;
     updatedAt: Date;
     version?: number;
 }

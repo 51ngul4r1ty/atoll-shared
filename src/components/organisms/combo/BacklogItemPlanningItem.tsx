@@ -38,6 +38,7 @@ import {
 
 // style
 import css from "./BacklogItemPlanningItem.module.css";
+import { computeProductBacklogItemEstimate } from "../panels/backlogItemPlanning/backlogItemPlanningPanelUtils";
 
 export interface BacklogItemPlanningItemStateProps extends BacklogItemWithSource {
     editMode: EditMode;
@@ -121,7 +122,7 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
                     busySplittingStory={props.busySplittingStory}
                     cardType={BacklogItemCardType.ProductBacklogCard}
-                    estimate={props.estimate}
+                    estimate={computeProductBacklogItemEstimate(props.estimate, props.unallocatedPoints)}
                     hasDetails={props.editMode === EditMode.Edit}
                     hidden={props.hidden}
                     internalId={`${props.id}`}
