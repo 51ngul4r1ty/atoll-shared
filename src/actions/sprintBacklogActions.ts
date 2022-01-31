@@ -21,27 +21,38 @@ export const moveSelectedBacklogItemsToSprintUsingApi = (sprintId: string): Move
     }
 });
 
-export interface AddOrMoveBacklogItemToSprintActionPayload {
+export interface AddBacklogItemToSprintActionPayload {
     sprintId: string;
     backlogItem: BacklogItemInSprint;
 }
 
-export interface MoveBacklogItemToSprintAction {
-    type: typeof ActionTypes.MOVE_BACKLOG_ITEM_TO_SPRINT;
-    payload: AddOrMoveBacklogItemToSprintActionPayload;
+export interface MoveBacklogItemToSprintActionPayload {
+    sprintId: string;
+    sprintBacklogItem: BacklogItemInSprint;
+    productBacklogItem: BacklogItem;
 }
 
-export const moveBacklogItemToSprint = (sprintId: string, backlogItem: BacklogItemInSprint): MoveBacklogItemToSprintAction => ({
+export interface MoveBacklogItemToSprintAction {
+    type: typeof ActionTypes.MOVE_BACKLOG_ITEM_TO_SPRINT;
+    payload: MoveBacklogItemToSprintActionPayload;
+}
+
+export const moveBacklogItemToSprint = (
+    sprintId: string,
+    sprintBacklogItem: BacklogItemInSprint,
+    productBacklogItem: BacklogItem
+): MoveBacklogItemToSprintAction => ({
     type: ActionTypes.MOVE_BACKLOG_ITEM_TO_SPRINT,
     payload: {
         sprintId,
-        backlogItem
+        sprintBacklogItem,
+        productBacklogItem
     }
 });
 
 export interface AddBacklogItemToSprintAction {
     type: typeof ActionTypes.ADD_BACKLOG_ITEM_TO_SPRINT;
-    payload: AddOrMoveBacklogItemToSprintActionPayload;
+    payload: AddBacklogItemToSprintActionPayload;
 }
 
 export const addBacklogItemToSprint = (sprintId: string, backlogItem: BacklogItemInSprint): AddBacklogItemToSprintAction => ({

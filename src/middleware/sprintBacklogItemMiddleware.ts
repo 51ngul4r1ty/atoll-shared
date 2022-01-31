@@ -106,7 +106,7 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: Action)
                     storyFinishedAt: dataExtraBacklogItem?.finishedAt,
                     storyVersion: dataExtraBacklogItem?.version
                 };
-                storeTyped.dispatch(moveBacklogItemToSprint(sprintId, payloadBacklogItem));
+                storeTyped.dispatch(moveBacklogItemToSprint(sprintId, payloadBacklogItem, dataExtraBacklogItem));
                 const sprintStats = response.data.extra?.sprintStats;
                 if (sprintStats) {
                     storeTyped.dispatch(updateSprintStats(sprintId, sprintStats));

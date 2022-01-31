@@ -107,7 +107,7 @@ export const sprintBacklogReducer = (
                 const actionTyped = action as MoveBacklogItemToSprintAction;
                 const sprintId = actionTyped.payload.sprintId;
                 let sprint = getOrAddSprintById(draft, sprintId);
-                sprint.items.push(actionTyped.payload.backlogItem);
+                sprint.items.push(actionTyped.payload.sprintBacklogItem);
                 return;
             }
             case ActionTypes.ADD_BACKLOG_ITEM_TO_SPRINT: {
