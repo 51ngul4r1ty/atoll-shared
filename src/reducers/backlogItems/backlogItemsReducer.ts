@@ -64,29 +64,43 @@ export const hasMultipleUnallocatedParts = (backlogItem: SaveableBacklogItem) =>
     return backlogItem.unallocatedParts > 1;
 };
 
-export const removeBacklogItem = (draft: Draft<BacklogItemsState>, backlogItemId: string, unallocatedPoints?: number) => {
-    let result = false;
+export type RemoveBacklogItemResult = {
+    itemWasRemoved: boolean;
+    wasUpdated: boolean;
+};
+
+export const removeBacklogItem = (
+    draft: Draft<BacklogItemsState>,
+    backlogItemId: string,
+    unallocatedPoints?: number
+): RemoveBacklogItemResult => {
+    let result: RemoveBacklogItemResult = {
+        itemWasRemoved: false,
+        wasUpdated: false
+    };
     const idx = draft.addedItems.findIndex((item) => item.id === backlogItemId);
     if (idx >= 0) {
         const backlogItem = draft.addedItems[idx];
         if (!hasMultipleUnallocatedParts(backlogItem)) {
             draft.addedItems.splice(idx, 1);
+            result.itemWasRemoved = true;
         } else {
             draft.addedItems[idx].unallocatedParts--;
             draft.addedItems[idx].unallocatedPoints = unallocatedPoints;
         }
-        result = true;
+        result.wasUpdated = true;
     }
     const idx2 = draft.items.findIndex((item) => item.id === backlogItemId);
     if (idx2 >= 0) {
         const backlogItem = draft.items[idx2];
         if (!hasMultipleUnallocatedParts(backlogItem)) {
             draft.items.splice(idx2, 1);
+            result.itemWasRemoved = true;
         } else {
             draft.items[idx2].unallocatedParts--;
             draft.items[idx2].unallocatedPoints = unallocatedPoints;
         }
-        result = true;
+        result.wasUpdated = true;
     }
     rebuildAllItems(draft);
     return result;
@@ -327,8 +341,10 @@ export const backlogItemsReducer = (
                 const backlogItemId = actionTyped.payload.sprintBacklogItem.id;
                 const productBacklogItem = actionTyped.payload.productBacklogItem;
                 const unallocatedPoints = productBacklogItem.unallocatedPoints;
-                removeBacklogItem(draft, backlogItemId, unallocatedPoints);
-                unselectProductBacklogItemId(draft, backlogItemId);
+                const { itemWasRemoved } = removeBacklogItem(draft, backlogItemId, unallocatedPoints);
+                if (itemWasRemoved) {
+                    unselectProductBacklogItemId(draft, backlogItemId);
+                }
                 rebuildAllItems(draft);
                 return;
             }
@@ -342,11 +358,20 @@ export const backlogItemsReducer = (
             }
             case ActionTypes.ADD_PRODUCT_BACKLOG_ITEM: {
                 const actionTyped = action as AddProductBacklogItemAction;
+                const backlogItem = actionTyped.payload.backlogItem;
                 const newItem: SaveableBacklogItem = {
                     ...actionTyped.payload.backlogItem,
                     saved: true
                 };
-                draft.items = [newItem, ...draft.items];
+                const idxInAddedList = draft.addedItems.findIndex((item) => item.id === backlogItem.id);
+                const idxInItemList = draft.items.findIndex((item) => item.id === backlogItem.id);
+                if (idxInAddedList >= 0) {
+                    draft.addedItems[idxInAddedList] = newItem;
+                } else if (idxInItemList >= 0) {
+                    draft.items[idxInItemList] = newItem;
+                } else {
+                    draft.items = [newItem, ...draft.items];
+                }
                 rebuildAllItems(draft);
                 return;
             }

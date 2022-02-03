@@ -279,13 +279,12 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const actionTyped = action as ApiMoveSprintItemToProductBacklogSuccessAction;
             // default to 1 unallocated part because we're moving this into the backlog - so it can only be 1+
             const unallocatedParts = actionTyped.payload.response.data.extra?.backlogItem?.unallocatedParts || 1;
-            // TODO: Use this
-            // const unallocatedPoints = actionTyped.payload.response.data.extra?.backlogItem?.unallocatedPoints || 1;
+            const unallocatedPoints = actionTyped.payload.response.data.extra?.backlogItem?.unallocatedPoints || 1;
             const sprintId = actionTyped.meta.actionParams.sprintId;
             const backlogItemId = actionTyped.meta.actionParams.backlogItemId;
             const state = storeTyped.getState();
             const backlogItem = getSprintBacklogItemById(state, sprintId, backlogItemId);
-            storeTyped.dispatch(addProductBacklogItem({ ...backlogItem, unallocatedParts }));
+            storeTyped.dispatch(addProductBacklogItem({ ...backlogItem, unallocatedParts, unallocatedPoints }));
             const response = actionTyped.payload.response;
             storeTyped.dispatch(removeSprintBacklogItem(sprintId, backlogItemId));
             const sprintStats = response.data.extra?.sprintStats;
