@@ -22,7 +22,7 @@ import { sprintMenuBuilder } from "../../../common/itemMenuBuilders";
 import { EditMode } from "../../../common/componentEnums";
 
 // selectors
-import { OpenedDetailMenuInfo } from "../../../../selectors/sprintBacklogSelectors";
+import { OpenedOrOpeningDetailMenuInfo } from "../../../../selectors/sprintBacklogSelectors";
 
 // components
 import { SprintDetailForm, SprintDetailShowingPicker } from "../../forms/SprintDetailForm";
@@ -49,7 +49,8 @@ export interface SprintPlanningPanelStateProps {
     editMode: EditMode;
     includeArchived: boolean;
     openedDatePickerInfo: SprintOpenedDatePickerInfo;
-    openedDetailMenuInfo: OpenedDetailMenuInfo;
+    openedDetailMenuInfo: OpenedOrOpeningDetailMenuInfo;
+    openingDetailMenuInfo: OpenedOrOpeningDetailMenuInfo;
     openedDetailMenuSprintId: string | null;
     renderMobile?: boolean;
     selectedProductBacklogItemCount: number;
@@ -157,6 +158,8 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
     props.sprints.forEach((sprint) => {
         const openedDetailMenuBacklogItemId =
             sprint.id && sprint.id === props.openedDetailMenuInfo?.sprintId ? props.openedDetailMenuInfo.backlogItemId : null;
+        const openingDetailMenuBacklogItemId =
+            sprint.id && sprint.id === props.openingDetailMenuInfo?.sprintId ? props.openingDetailMenuInfo.backlogItemId : null;
         const showPicker: SprintDetailShowingPicker =
             sprint?.id === props.openedDatePickerInfo?.sprintId
                 ? props.openedDatePickerInfo?.showPicker
@@ -189,6 +192,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         showDetailMenu={props.openedDetailMenuSprintId === sprint.id}
                         buildItemMenu={sprintMenuBuilder(itemEventHandlers)}
                         openedDetailMenuBacklogItemId={openedDetailMenuBacklogItemId}
+                        openingDetailMenuBacklogItemId={openingDetailMenuBacklogItemId}
                         renderMobile={props.renderMobile}
                         selectedProductBacklogItemCount={props.selectedProductBacklogItemCount}
                         onExpandCollapse={(id, expand) => {

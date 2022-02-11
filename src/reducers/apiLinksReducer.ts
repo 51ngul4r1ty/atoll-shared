@@ -1,6 +1,5 @@
 // externals
 import { Draft, produce } from "immer";
-import urlParse from "url-parse";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
@@ -12,7 +11,10 @@ import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
 import { ApiItemWithLinks, ItemWithId } from "../apiModelTypes";
 import { ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
 import { ApiGetBffViewsBacklogItemSuccessAction } from "../actions/apiBffViewsBacklogItem";
-import { ApiGetSprintsSuccessAction } from "../actions/apiSprints";
+import { ApiGetSprintsSuccessAction, ApiGetSprintSuccessAction } from "../actions/apiSprints";
+
+// utils
+import { buildFullUri } from "../utils/apiLinkHelper";
 
 export const ResourceTypes = {
     BACKLOG_ITEM: "backlogItems",
@@ -83,14 +85,30 @@ export const getLinkForItem = (state: ApiLinkState, itemType: string, rel: strin
     };
 };
 
-export const buildUri = (requestUrl: string, linkUri: string): string => {
-    if (!linkUri.startsWith("/")) {
-        throw new Error(`Unable to handle link URI "${linkUri}" returned by "${requestUrl}"`);
+export const processItem = <T extends ApiItemWithLinks & ItemWithId>(
+    itemTypeLinkName: string,
+    item: T,
+    draft: Draft<ApiLinkState>,
+    meta: ApiActionMetaDataRequestMeta<any, any, any, any>
+) => {
+    if (item.links?.length) {
+        item.links.forEach((link) => {
+            if (link.rel === "self") {
+                const resourceLinks = draft.linksByType[itemTypeLinkName];
+                if (!resourceLinks) {
+                    throw new Error(`Unable to find linksByType base entry for ${itemTypeLinkName}`);
+                } else {
+                    if (!resourceLinks[item.id]) {
+                        resourceLinks[item.id] = { item: null };
+                    }
+                    resourceLinks[item.id].item = {
+                        type: link.type,
+                        uri: buildFullUri(meta.requestBody, link.uri)
+                    };
+                }
+            }
+        });
     }
-    const parsed = urlParse(requestUrl);
-    const usePort = !!parsed.port && `${parsed.port}` !== "80" && `${parsed.port}` !== "443";
-    const hostAndPort = usePort ? `${parsed.hostname}:${parsed.port}` : parsed.hostname;
-    return `${parsed.protocol}//${hostAndPort}${linkUri}`;
 };
 
 export const processItems = <T extends ApiItemWithLinks & ItemWithId>(
@@ -100,24 +118,7 @@ export const processItems = <T extends ApiItemWithLinks & ItemWithId>(
     meta: ApiActionMetaDataRequestMeta
 ) => {
     items.forEach((item) => {
-        if (item.links?.length) {
-            item.links.forEach((link) => {
-                if (link.rel === "self") {
-                    const resourceLinks = draft.linksByType[itemTypeLinkName];
-                    if (!resourceLinks) {
-                        throw new Error(`Unable to find linksByType base entry for ${itemTypeLinkName}`);
-                    } else {
-                        if (!resourceLinks[item.id]) {
-                            resourceLinks[item.id] = { item: null };
-                        }
-                        resourceLinks[item.id].item = {
-                            type: link.type,
-                            uri: buildUri(meta.requestBody.url, link.uri)
-                        };
-                    }
-                }
-            });
-        }
+        processItem(itemTypeLinkName, item, draft, meta);
     });
 };
 
@@ -134,6 +135,12 @@ export const apiLinksReducer = (state: ApiLinkState = apiLinksReducerInitialStat
                 const actionTyped = action as ApiGetSprintsSuccessAction;
                 const { payload } = actionTyped;
                 processItems(ResourceTypes.SPRINT, payload.response.data.items, draft, actionTyped.meta);
+                return;
+            }
+            case ActionTypes.API_GET_SPRINT_SUCCESS: {
+                const actionTyped = action as ApiGetSprintSuccessAction;
+                const { payload } = actionTyped;
+                processItem(ResourceTypes.SPRINT, payload.response.data.item, draft, actionTyped.meta);
                 return;
             }
             case ActionTypes.API_GET_BFF_VIEWS_PLAN_SUCCESS: {

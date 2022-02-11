@@ -1,3 +1,6 @@
+// externals
+import { Action } from "redux";
+
 // actions
 import * as ActionTypes from "./actionTypes";
 import * as ApiActionNames from "./apiActionNames";
@@ -16,7 +19,8 @@ import {
     ApiActionMetaDataRequestMeta,
     ApiAction,
     ApiActionSuccessPayload,
-    ApiActionMetaDataRequestBodyWithOriginal
+    ApiActionMetaDataRequestBodyWithOriginal,
+    ApiActionSuccessPayloadForItem
 } from "../middleware/apiTypes";
 import { ApiSprint } from "../apiModelTypes";
 
@@ -45,6 +49,62 @@ export const apiGetSprints = (projectId: string, includeArchived: boolean): NoDa
         types: buildActionTypes(ApiActionNames.GET_SPRINTS)
     }
 });
+
+// #endregion
+
+// #region Item
+export const ITEM_DETAIL_CLICK_STEP_1_NAME = "1-GetSprintDetails";
+export const ITEM_DETAIL_CLICK_STEP_2_NAME = "2-GetNextSprintDetails";
+export const ITEM_DETAIL_CLICK_STEP_3_NAME = "3-GetNextSprintBacklogItems";
+export type ApiGetSprintSuccessActionMetaPassthrough = {
+    triggerAction: string;
+    stepName: string;
+    sprintId: string;
+    backlogItemId: string;
+};
+export type ApiGetSprintSuccessActionPayload = ApiActionSuccessPayloadForItem<ApiSprint>;
+export type ApiGetSprintSuccessActionMeta = ApiActionMetaDataRequestMeta<
+    {},
+    undefined,
+    undefined,
+    ApiGetSprintSuccessActionMetaPassthrough
+>;
+export type ApiGetSprintSuccessAction = Action<typeof ActionTypes.API_GET_SPRINT_SUCCESS> & {
+    payload: ApiGetSprintSuccessActionPayload;
+    meta: ApiGetSprintSuccessActionMeta;
+};
+// TODO: Document this pattern- if the endpoint needs to be overridden it should be done through an "options.endpointOverride" arg.
+export type ApiGetSprintOptions = {
+    passthroughData?: ApiGetSprintSuccessActionMetaPassthrough;
+    endpointOverride?: string;
+};
+export type ApiGetSprintResult = NoDataApiAction<any, ApiGetSprintSuccessActionMetaPassthrough>;
+export const apiGetSprint = (sprintId: string | null, options: ApiGetSprintOptions): ApiGetSprintResult => {
+    if (!sprintId && !options?.endpointOverride) {
+        throw new Error("apiGetSprint expects either a sprintId or an endpointOverride to be provided!");
+    }
+    const result: ApiGetSprintResult = {
+        type: API,
+        payload: {
+            endpoint: `${getApiBaseUrl()}api/v1/sprints/${sprintId}`,
+            method: "GET",
+            headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+            types: buildActionTypes(ApiActionNames.GET_SPRINT)
+        }
+    };
+    // TODO: Provide a standard way to add passthrough data as an override with util functions?
+    const passthrough = options?.passthroughData;
+    if (passthrough) {
+        result.meta = {
+            ...result.meta,
+            passthrough
+        };
+    }
+    if (options?.endpointOverride) {
+        result.payload.endpoint = options.endpointOverride;
+    }
+    return result;
+};
 
 // #endregion
 

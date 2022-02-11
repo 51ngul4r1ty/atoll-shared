@@ -87,6 +87,24 @@ export const patchBacklogItemInSprint = (
     }
 });
 
+export interface SprintBacklogItemDetailClickPayload {
+    sprintId: string;
+    backlogItemId: string;
+}
+
+export interface SprintBacklogItemDetailClickAction {
+    type: typeof ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK;
+    payload: SprintBacklogItemDetailClickPayload;
+}
+
+export const sprintBacklogItemDetailClick = (sprintId, backlogItemId: string): SprintBacklogItemDetailClickAction => ({
+    type: ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK,
+    payload: {
+        sprintId,
+        backlogItemId
+    }
+});
+
 export interface ToggleSprintBacklogItemDetailPayload {
     sprintId: string;
     backlogItemId: string;
@@ -97,7 +115,7 @@ export interface ToggleSprintBacklogItemDetailAction {
     payload: ToggleSprintBacklogItemDetailPayload;
 }
 
-export const sprintBacklogItemDetailClick = (sprintId, backlogItemId: string): ToggleSprintBacklogItemDetailAction => ({
+export const toggleSprintBacklogItemDetail = (sprintId, backlogItemId: string): ToggleSprintBacklogItemDetailAction => ({
     type: ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL,
     payload: {
         sprintId,

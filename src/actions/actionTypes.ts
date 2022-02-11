@@ -80,6 +80,10 @@ export const API_POST_SPRINT_FAILURE = buildFailureActionName(Names.POST_SPRINT)
 // #endregion
 
 // #region Sprint Resource Item
+export const API_GET_SPRINT_REQUEST = buildRequestActionName(Names.GET_SPRINT);
+export const API_GET_SPRINT_SUCCESS = buildSuccessActionName(Names.GET_SPRINT);
+export const API_GET_SPRINT_FAILURE = buildFailureActionName(Names.GET_SPRINT);
+
 export const API_DELETE_SPRINT_REQUEST = buildRequestActionName(Names.DELETE_SPRINT);
 export const API_DELETE_SPRINT_SUCCESS = buildSuccessActionName(Names.DELETE_SPRINT);
 export const API_DELETE_SPRINT_FAILURE = buildFailureActionName(Names.DELETE_SPRINT);
@@ -200,6 +204,8 @@ export const MOVE_SPRINT_ITEM_TO_PRODUCT_BACKLOG_CLICK = "app/move-to-backlog:sp
 export const SPLIT_SPRINT_BACKLOG_ITEM_CLICK = "app/split:sprint-backlog-item";
 
 export const SPRINT_BACKLOG_ITEM_ID_CLICK = "app/click:sprint-backlog-item-id";
+
+export const SPRINT_BACKLOG_ITEM_DETAIL_CLICK = "app/click:sprint-backlog-item-detail";
 
 export const SPRINT_BACKLOG_ITEM_ACCEPTED_CLICK = "app/status-accepted:sprint-backlog-item";
 export const SPRINT_BACKLOG_ITEM_DONE_CLICK = "app/status-done:sprint-backlog-item";

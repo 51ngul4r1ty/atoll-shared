@@ -39,33 +39,30 @@ import { BacklogItemType } from "../types/backlogItemTypes";
 import { isPlatformWindows } from "../utils";
 
 // selectors
-import { getCurrentProjectId } from "../selectors/userSelectors";
-import { getOpenedDatePickerInfo, getOpenedDetailMenuSprintId, getPlanViewSprints } from "../selectors/sprintSelectors";
-import {
-    getAllBacklogItems,
-    getOpenedDetailMenuBacklogItemId,
-    getSelectedBacklogItemCount
-} from "../selectors/backlogItemSelectors";
-import { getAppEditMode, getElectronClient, isPlanViewLoading } from "../selectors/appSelectors";
-import { getIncludeArchivedSprints, getOpenedDetailMenuInfo, isSplitInProgress } from "../selectors/sprintBacklogSelectors";
+import * as userSelectors from "../selectors/userSelectors";
+import * as sprintSelectors from "../selectors/sprintSelectors";
+import * as backlogItemSelectors from "../selectors/backlogItemSelectors";
+import * as appSelectors from "../selectors/appSelectors";
+import * as sprintBacklogSelectors from "../selectors/sprintBacklogSelectors";
 
 const mapStateToProps = (state: StateTree): PlanViewStateProps => {
-    const allItems = getAllBacklogItems(state);
-    const includeArchivedSprints = getIncludeArchivedSprints(state);
-    const sprints = getPlanViewSprints(state, includeArchivedSprints);
+    const allItems = backlogItemSelectors.getAllBacklogItems(state);
+    const includeArchivedSprints = sprintBacklogSelectors.getIncludeArchivedSprints(state);
+    const sprints = sprintSelectors.getPlanViewSprints(state, includeArchivedSprints);
     let result: PlanViewStateProps = {
         allItems,
-        busySplittingStory: isSplitInProgress(state),
-        editMode: getAppEditMode(state),
-        electronClient: getElectronClient(state),
+        busySplittingStory: sprintBacklogSelectors.isSplitInProgress(state),
+        editMode: appSelectors.getAppEditMode(state),
+        electronClient: appSelectors.getElectronClient(state),
         includeArchivedSprints,
-        loading: isPlanViewLoading(state),
-        openedDetailMenuBacklogItemId: getOpenedDetailMenuBacklogItemId(state),
-        openedDetailMenuSprintBacklogInfo: getOpenedDetailMenuInfo(state),
-        openedDetailMenuSprintId: getOpenedDetailMenuSprintId(state),
-        openedDatePickerInfo: getOpenedDatePickerInfo(state),
-        projectId: getCurrentProjectId(state),
-        selectedProductBacklogItemCount: getSelectedBacklogItemCount(state),
+        loading: appSelectors.isPlanViewLoading(state),
+        openedDetailMenuBacklogItemId: backlogItemSelectors.getOpenedDetailMenuBacklogItemId(state),
+        openedDetailMenuSprintBacklogInfo: sprintBacklogSelectors.getOpenedDetailMenuInfo(state),
+        openingDetailMenuSprintBacklogInfo: sprintBacklogSelectors.getOpeningDetailMenuInfo(state),
+        openedDetailMenuSprintId: sprintSelectors.getOpenedDetailMenuSprintId(state),
+        openedDatePickerInfo: sprintSelectors.getOpenedDatePickerInfo(state),
+        projectId: userSelectors.getCurrentProjectId(state),
+        selectedProductBacklogItemCount: backlogItemSelectors.getSelectedBacklogItemCount(state),
         showWindowTitleBar: !isPlatformWindows(),
         sprints
     };

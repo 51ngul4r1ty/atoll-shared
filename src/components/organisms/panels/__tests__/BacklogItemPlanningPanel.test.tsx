@@ -114,7 +114,8 @@ const buildCommonItem = (
     partIndex: 1,
     storyEstimate: estimate,
     totalParts: 1,
-    unallocatedParts: 0
+    unallocatedParts: 0,
+    unallocatedPoints: 0
 });
 
 const buildAddedItem = (itemNumber: number, instanceId: number | null, estimate: number, saved: boolean): BacklogItemWithSource =>

@@ -15,6 +15,7 @@ import {
     MoveBacklogItemToSprintAction,
     PatchBacklogItemInSprintAction,
     RemoveSprintBacklogItemAction,
+    SprintBacklogItemDetailClickAction,
     ToggleSprintBacklogItemDetailAction
 } from "../actions/sprintBacklogActions";
 import { PushState } from "./types";
@@ -37,7 +38,9 @@ export interface SprintBacklogSprint {
 export type SprintBacklogState = Readonly<{
     includeArchivedSprints: boolean;
     openedDetailMenuBacklogItemId: string | null;
+    openingDetailMenuBacklogItemId: string | null;
     openedDetailMenuSprintId: string | null;
+    openingDetailMenuSprintId: string | null;
     splitInProgress: boolean;
     sprints: { [sprintId: string]: SprintBacklogSprint };
 }>;
@@ -45,7 +48,9 @@ export type SprintBacklogState = Readonly<{
 export const sprintBacklogReducerInitialState = Object.freeze<SprintBacklogState>({
     includeArchivedSprints: false,
     openedDetailMenuBacklogItemId: null,
+    openingDetailMenuBacklogItemId: null,
     openedDetailMenuSprintId: null,
+    openingDetailMenuSprintId: null,
     splitInProgress: false,
     sprints: {}
 });
@@ -117,6 +122,18 @@ export const sprintBacklogReducer = (
                 sprint.items.push(actionTyped.payload.backlogItem);
                 return;
             }
+            case ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK: {
+                const actionTyped = action as SprintBacklogItemDetailClickAction;
+                const sprintId = actionTyped.payload.sprintId;
+                draft.openingDetailMenuBacklogItemId = calcDropDownMenuState(
+                    draft.openingDetailMenuBacklogItemId,
+                    actionTyped.payload.backlogItemId,
+                    (itemId: string) => getSprintBacklogItemById(state, sprintId, itemId),
+                    (item) => item.pushState !== PushState.Removed
+                );
+                draft.openingDetailMenuSprintId = draft.openingDetailMenuBacklogItemId ? sprintId : null;
+                return;
+            }
             case ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL: {
                 const actionTyped = action as ToggleSprintBacklogItemDetailAction;
                 const sprintId = actionTyped.payload.sprintId;
@@ -127,6 +144,10 @@ export const sprintBacklogReducer = (
                     (item) => item.pushState !== PushState.Removed
                 );
                 draft.openedDetailMenuSprintId = draft.openedDetailMenuBacklogItemId ? sprintId : null;
+                const hasItemDetailMenuOpened = !!draft.openedDetailMenuBacklogItemId;
+                if (hasItemDetailMenuOpened) {
+                    draft.openingDetailMenuBacklogItemId = null;
+                }
                 return;
             }
             case ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS: {
@@ -226,6 +247,7 @@ export const sprintBacklogReducer = (
                 draft.splitInProgress = true;
                 return;
             }
+            // TODO: Add something similar for openingDetailMenuBacklogItemId when API calls fail
             case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {
                 draft.splitInProgress = false;
                 draft.openedDetailMenuBacklogItemId = null;
@@ -236,6 +258,8 @@ export const sprintBacklogReducer = (
                 draft.openedDetailMenuBacklogItemId = null;
                 return;
             }
+            // TODO: Add something similar for openingDetailMenuBacklogItemId??? Although I think this will be handled when API call
+            //   returns either successfully or with a failed state.
             case ActionTypes.APP_CLICK: {
                 const actionTyped = action as AppClickAction;
                 const parent = actionTyped.payload.parent;

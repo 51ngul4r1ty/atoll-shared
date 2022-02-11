@@ -41,7 +41,7 @@ export interface ApiStageAction<T = {}, U = {}> extends ApiAction {
     meta?: ApiStageActionMeta<any> & U;
 }
 
-export interface NoDataApiAction<U = any> extends ApiAction<undefined, U> {}
+export interface NoDataApiAction<U = any, P = any> extends ApiAction<undefined, U, P> {}
 
 export interface ApiActionMetaDataRequestBody<T> {
     url: string;
@@ -55,6 +55,7 @@ export interface ApiActionMetaDataRequestBodyWithOriginal<T> extends ApiActionMe
 }
 
 export interface ApiActionMetaDataRequestMeta<T = any, U = undefined, OA = undefined, P = undefined> {
+    // TODO: Document what originalActionArgs is used for
     originalActionArgs?: OA;
     requestBody: ApiActionMetaDataRequestBody<T>;
     actionParams?: U;

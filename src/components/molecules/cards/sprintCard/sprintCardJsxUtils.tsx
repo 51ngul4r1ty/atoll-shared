@@ -21,12 +21,17 @@ import { buildBacklogDisplayId } from "../../../../utils/backlogItemHelper";
 // interfaces/types
 import { BacklogItemInSprint } from "../../../../types/backlogItemTypes";
 
+export type ItemMenuBuilderBacklogItem = BacklogItemInSprint & {
+    hasPartsInNextSprint: boolean;
+};
+
 export const getBacklogItemElts = (
     editMode: EditMode,
     openedDetailMenuBacklogItemId: string,
+    openingDetailMenuBacklogItemId: string,
     renderMobile: boolean,
     showDetailMenuToLeft: boolean,
-    backlogItems: BacklogItemInSprint[],
+    backlogItems: ItemMenuBuilderBacklogItem[],
     busySplittingStory: boolean,
     onDetailClick: { (itemId: string) },
     onBacklogItemIdClick: { (itemId: string) },
@@ -62,38 +67,46 @@ export const getBacklogItemElts = (
     if (!backlogItems) {
         return null;
     }
-    return backlogItems.map((backlogItem) => (
-        <div key={backlogItem.id}>
-            <SimpleDivider />
-            <BacklogItemCard
-                key={buildBacklogItemKey(backlogItem)}
-                busySplittingStory={busySplittingStory}
-                buildItemMenu={sprintBacklogItemMenuBuilder(eventHandlers)}
-                estimate={backlogItem.estimate}
-                hasDetails={editMode === EditMode.Edit}
-                internalId={`${backlogItem.id}`}
-                isDraggable={false}
-                itemId={buildBacklogDisplayId(backlogItem.externalId, backlogItem.friendlyId)}
-                itemType={backlogItem.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
-                marginBelowItem
-                partIndex={backlogItem.partIndex}
-                reasonText={backlogItem.reasonPhrase}
-                renderMobile={renderMobile}
-                roleText={backlogItem.rolePhrase}
-                showDetailMenu={backlogItem.id === openedDetailMenuBacklogItemId}
-                showDetailMenuToLeft={showDetailMenuToLeft}
-                status={backlogItem.status}
-                storyEstimate={backlogItem.storyEstimate}
-                titleText={backlogItem.storyPhrase}
-                cardType={BacklogItemCardType.SprintBacklogCard}
-                totalParts={backlogItem.totalParts}
-                onDetailClick={() => {
-                    onDetailClick(backlogItem.id);
-                }}
-                onBacklogItemIdClick={(itemId) => {
-                    onBacklogItemIdClick(itemId);
-                }}
-            />
-        </div>
-    ));
+    const splitToNextSprintAvailable = false;
+    const itemMenuBuilder = sprintBacklogItemMenuBuilder(eventHandlers, splitToNextSprintAvailable);
+    const hasDetails = editMode === EditMode.Edit;
+    return backlogItems.map((backlogItem) => {
+        const isLoadingDetails = backlogItem.id === openingDetailMenuBacklogItemId;
+        const showDetailMenu = backlogItem.id === openedDetailMenuBacklogItemId;
+        return (
+            <div key={backlogItem.id}>
+                <SimpleDivider />
+                <BacklogItemCard
+                    key={buildBacklogItemKey(backlogItem)}
+                    busySplittingStory={busySplittingStory}
+                    buildItemMenu={itemMenuBuilder}
+                    estimate={backlogItem.estimate}
+                    hasDetails={hasDetails}
+                    isLoadingDetails={isLoadingDetails}
+                    internalId={`${backlogItem.id}`}
+                    isDraggable={false}
+                    itemId={buildBacklogDisplayId(backlogItem.externalId, backlogItem.friendlyId)}
+                    itemType={backlogItem.type === "story" ? BacklogItemTypeEnum.Story : BacklogItemTypeEnum.Bug}
+                    marginBelowItem
+                    partIndex={backlogItem.partIndex}
+                    reasonText={backlogItem.reasonPhrase}
+                    renderMobile={renderMobile}
+                    roleText={backlogItem.rolePhrase}
+                    showDetailMenu={showDetailMenu}
+                    showDetailMenuToLeft={showDetailMenuToLeft}
+                    status={backlogItem.status}
+                    storyEstimate={backlogItem.storyEstimate}
+                    titleText={backlogItem.storyPhrase}
+                    cardType={BacklogItemCardType.SprintBacklogCard}
+                    totalParts={backlogItem.totalParts}
+                    onDetailClick={() => {
+                        onDetailClick(backlogItem.id);
+                    }}
+                    onBacklogItemIdClick={(itemId) => {
+                        onBacklogItemIdClick(itemId);
+                    }}
+                />
+            </div>
+        );
+    });
 };

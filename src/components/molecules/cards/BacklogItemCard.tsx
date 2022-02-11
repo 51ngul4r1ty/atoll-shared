@@ -124,6 +124,7 @@ export interface BacklogItemCardStateProps {
     hidden?: boolean;
     internalId: string;
     isDraggable?: boolean;
+    isLoadingDetails?: boolean;
     isSelectable?: boolean;
     itemId: string;
     itemType: BacklogItemTypeEnum;
@@ -184,6 +185,7 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
             itemId={props.internalId}
             itemType="backlog-item"
             hasDetails={props.hasDetails}
+            isLoading={props.isLoadingDetails}
             className={css.backlogItemDetailButton}
             onDetailClick={() => props.onDetailClick()}
         />

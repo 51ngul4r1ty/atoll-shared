@@ -40,27 +40,29 @@ export const addSourceToPushedItem = (item: Partial<PushBacklogItemModel>, sourc
 
 export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>): BacklogItemWithSource => ({
     acceptanceCriteria: pushedItem.acceptanceCriteria,
+    acceptedAt: pushedItem.acceptedAt,
     createdAt: pushedItem.createdAt,
     estimate: pushedItem.estimate,
     externalId: pushedItem.externalId,
+    finishedAt: pushedItem.finishedAt,
     friendlyId: pushedItem.friendlyId,
     id: pushedItem.id,
     instanceId: undefined,
+    partIndex: pushedItem.partIndex,
     projectId: pushedItem.projectId,
     reasonPhrase: pushedItem.reasonPhrase,
+    releasedAt: pushedItem.releasedAt,
     rolePhrase: pushedItem.rolePhrase,
     source: Source.Pushed,
-    status: pushedItem.status,
-    storyPhrase: pushedItem.storyPhrase,
-    type: pushedItem.type,
-    updatedAt: pushedItem.updatedAt,
     startedAt: pushedItem.startedAt,
-    finishedAt: pushedItem.finishedAt,
-    acceptedAt: pushedItem.acceptedAt,
-    releasedAt: pushedItem.releasedAt,
-    partIndex: pushedItem.partIndex,
+    status: pushedItem.status,
+    storyEstimate: pushedItem.storyEstimate,
+    storyPhrase: pushedItem.storyPhrase,
     totalParts: pushedItem.totalParts,
-    unallocatedParts: pushedItem.unallocatedParts
+    type: pushedItem.type,
+    unallocatedParts: pushedItem.unallocatedParts,
+    unallocatedPoints: pushedItem.unallocatedPoints,
+    updatedAt: pushedItem.updatedAt
 });
 
 export const addPushedAddedItemsToAllItems = (draft: Draft<BacklogItemsState>, allItems: LinkedList<BacklogItemWithSource>) => {

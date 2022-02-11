@@ -89,6 +89,8 @@ storiesOf("Molecules/Cards/BacklogItemCard", module)
                 status={BacklogItemStatus.Done}
                 titleText={text("titleText", "Example story")}
                 estimate={number("estimate", 5)}
+                hasDetails={select("hasDetails", { true: true, false: false }, false)}
+                isLoadingDetails={select("isLoadingDetails", { true: true, false: false }, false)}
             />
         </div>
     ))
