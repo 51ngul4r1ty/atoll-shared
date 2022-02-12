@@ -54,6 +54,17 @@ export interface ApiActionMetaDataRequestBodyWithOriginal<T> extends ApiActionMe
     original?: T;
 }
 
+/**
+ * Standard API actions should have the action's parameters and any passthrough data at a bare minimum.
+ */
+export interface ApiActionMetaData<U = undefined, P = undefined> {
+    actionParams?: U;
+    passthrough?: P;
+}
+
+/**
+ * "Success" and "Failure" API actions should have all of this metadata.
+ */
 export interface ApiActionMetaDataRequestMeta<T = any, U = undefined, OA = undefined, P = undefined> {
     // TODO: Document what originalActionArgs is used for
     originalActionArgs?: OA;
@@ -68,7 +79,11 @@ export interface ApiActionSuccessPayload<T> {
 
 export type ApiActionSuccessPayloadForCollection<T, X = undefined> = ApiActionSuccessPayload<{ data: { items: T[]; extra: X } }>;
 
+export type ApiActionFailurePayloadForCollection = ApiActionFailurePayload;
+
 export type ApiActionSuccessPayloadForItem<T, X = undefined> = ApiActionSuccessPayload<{ data: { item: T; extra: X } }>;
+
+export type ApiActionFailurePayloadForItem = ApiActionFailurePayload;
 
 export interface ApiActionFailurePayloadConfig {
     url: string;

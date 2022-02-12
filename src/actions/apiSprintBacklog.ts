@@ -18,7 +18,8 @@ import {
     ApiActionSuccessPayloadForCollection,
     ApiActionMetaDataRequestMeta,
     ApiActionSuccessPayloadForItem,
-    ApiActionFailurePayload
+    ApiActionFailurePayload,
+    ApiActionFailurePayloadForCollection
 } from "../middleware/apiTypes";
 import {
     ApiBacklogItem,
@@ -31,7 +32,7 @@ import {
 import { ApiBatchAction } from "../middleware/apiBatchTypes";
 
 // utils
-import { buildActionTypes } from "./utils/apiActionUtils";
+import { buildActionTypes, buildStandardMeta } from "./utils/apiActionUtils";
 import { BacklogItemStatus } from "../types/backlogItemTypes";
 import { mapBacklogItemStatusToApi } from "../mappers/backlogItemMappers";
 
@@ -47,16 +48,24 @@ export type ApiGetSprintBacklogItemsSuccessActionMetaPassthrough = {
     sprintId: string;
     backlogItemId: string;
 };
-export type ApiGetSprintBacklogItemsSuccessActionMeta = ApiActionMetaDataRequestMeta<
+export type ApiGetSprintBacklogItemsSuccessOrFailureActionMeta = ApiActionMetaDataRequestMeta<
     {},
     ApiGetSprintBacklogItemsSuccessActionParams,
     undefined,
     ApiGetSprintBacklogItemsSuccessActionMetaPassthrough
 >;
+export type ApiGetSprintBacklogItemsSuccessActionMeta = ApiGetSprintBacklogItemsSuccessOrFailureActionMeta;
+export type ApiGetSprintBacklogItemsFailureActionMeta = ApiGetSprintBacklogItemsSuccessOrFailureActionMeta;
 
+export type ApiGetSprintBacklogItemsSuccessActionPayload = ApiActionSuccessPayloadForCollection<ApiBacklogItemInSprint>;
+export type ApiGetSprintBacklogItemsFailureActionPayload = ApiActionFailurePayloadForCollection;
 export type ApiGetSprintBacklogItemsSuccessAction = Action<typeof ActionTypes.API_GET_SPRINT_BACKLOG_ITEMS_SUCCESS> & {
-    payload: ApiActionSuccessPayloadForCollection<ApiBacklogItemInSprint>;
+    payload: ApiGetSprintBacklogItemsSuccessActionPayload;
     meta: ApiGetSprintBacklogItemsSuccessActionMeta;
+};
+export type ApiGetSprintBacklogItemsFailureAction = Action<typeof ActionTypes.API_GET_SPRINT_BACKLOG_ITEMS_FAILURE> & {
+    payload: ApiGetSprintBacklogItemsFailureActionPayload;
+    meta: ApiGetSprintBacklogItemsFailureActionMeta;
 };
 export type ApiGetSprintBacklogItemsOptions = {
     passthroughData?: ApiGetSprintBacklogItemsSuccessActionMetaPassthrough;
@@ -71,21 +80,8 @@ export const apiGetSprintBacklogItems = (sprintId: string, options?: ApiGetSprin
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
             types: buildActionTypes(ApiActionNames.GET_SPRINT_BACKLOG_ITEMS)
         },
-        // TODO: Provide a way to do this automatically with any dispatch API call
-        meta: {
-            actionParams: {
-                sprintId
-            }
-        }
+        meta: buildStandardMeta({ sprintId }, options?.passthroughData)
     };
-    // TODO: Provide a standard way to add passthrough data as an override with util functions?
-    const passthrough = options?.passthroughData;
-    if (passthrough) {
-        result.meta = {
-            ...result.meta,
-            passthrough
-        };
-    }
     return result;
 };
 

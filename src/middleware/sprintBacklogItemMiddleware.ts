@@ -46,6 +46,7 @@ import { removeProductBacklogItem } from "../actions/backlogItemActions";
 import { AnyFSA } from "../types/reactHelperTypes";
 import {
     apiGetSprint,
+    ApiGetSprintFailureAction,
     ApiGetSprintSuccessAction,
     ApiGetSprintSuccessActionMeta,
     ApiGetSprintSuccessActionPayload,

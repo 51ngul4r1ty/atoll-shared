@@ -107,22 +107,24 @@ const dispatchFailure = (
     requestType: ApiActionType,
     data: any,
     requestBody: any,
-    meta: ApiActionMeta<any>,
+    origMeta: ApiActionMeta<any>,
     error: any
 ) => {
+    const payload = {
+        response: data,
+        error
+    };
+    const meta = {
+        ...{
+            requestBody,
+            apiActionStage: API_ACTION_STAGE_FAILURE
+        },
+        ...origMeta
+    };
     dispatch({
         type: requestType,
-        payload: {
-            response: data,
-            error
-        },
-        meta: {
-            ...{
-                requestBody,
-                apiActionStage: API_ACTION_STAGE_FAILURE
-            },
-            ...meta
-        }
+        payload,
+        meta
     });
 };
 

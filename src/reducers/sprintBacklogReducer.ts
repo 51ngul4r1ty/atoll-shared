@@ -6,7 +6,11 @@ import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
 import { AnyFSA } from "../types/reactHelperTypes";
-import { ApiGetSprintBacklogItemsSuccessAction, ApiSprintBacklogItemSetStatusSuccessAction } from "../actions/apiSprintBacklog";
+import {
+    ApiGetSprintBacklogItemsFailureAction,
+    ApiGetSprintBacklogItemsSuccessAction,
+    ApiSprintBacklogItemSetStatusSuccessAction
+} from "../actions/apiSprintBacklog";
 import { BacklogItemInSprint } from "../types/backlogItemTypes";
 import { BacklogItemInSprintWithSource } from "./backlogItems/backlogItemsReducerTypes";
 import {
@@ -28,6 +32,12 @@ import { mapApiItemsToSprintBacklogItems, mapApiStatusToBacklogItem } from "../m
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
 import { shouldHideDetailMenu } from "../components/utils/itemDetailMenuUtils";
 import { mapApiItemsToSprints } from "../mappers";
+import {
+    ApiGetSprintFailureAction,
+    ITEM_DETAIL_CLICK_STEP_1_NAME,
+    ITEM_DETAIL_CLICK_STEP_2_NAME,
+    ITEM_DETAIL_CLICK_STEP_3_NAME
+} from "../actions/apiSprints";
 
 // export type SprintBacklogItem = BacklogItemInSprint;
 
@@ -132,6 +142,40 @@ export const sprintBacklogReducer = (
                     (item) => item.pushState !== PushState.Removed
                 );
                 draft.openingDetailMenuSprintId = draft.openingDetailMenuBacklogItemId ? sprintId : null;
+                return;
+            }
+            case ActionTypes.API_GET_SPRINT_FAILURE: {
+                const actionTyped = action as ApiGetSprintFailureAction;
+                const meta = actionTyped.meta;
+                const triggerAction = meta?.passthrough?.triggerAction || null;
+                const stepName = meta?.passthrough?.stepName || null;
+                if (triggerAction !== ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK) {
+                    return;
+                } else if (stepName === ITEM_DETAIL_CLICK_STEP_1_NAME || stepName === ITEM_DETAIL_CLICK_STEP_2_NAME) {
+                    if (draft.openingDetailMenuSprintId === actionTyped.meta.actionParams.sprintId) {
+                        draft.openingDetailMenuSprintId = null;
+                    }
+                } else {
+                    throw new Error(`Unable to handle API_GET_SPRINT_FAILURE for "${triggerAction}" step "${stepName}"`);
+                }
+                return;
+            }
+            case ActionTypes.API_GET_SPRINT_BACKLOG_ITEMS_FAILURE: {
+                const actionTyped = action as ApiGetSprintBacklogItemsFailureAction;
+                const meta = actionTyped.meta;
+                const triggerAction = meta?.passthrough?.triggerAction;
+                const stepName = meta?.passthrough?.stepName || null;
+                if (triggerAction === ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK) {
+                    if (stepName === ITEM_DETAIL_CLICK_STEP_3_NAME) {
+                        if (draft.openingDetailMenuSprintId === actionTyped.meta.passthrough.sprintId) {
+                            draft.openingDetailMenuSprintId = null;
+                        }
+                    } else {
+                        throw new Error(
+                            `Unable to handle API_GET_SPRINT_BACKLOG_ITEMS_SUCCESS for "${triggerAction}" step "${stepName}"`
+                        );
+                    }
+                }
                 return;
             }
             case ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL: {
