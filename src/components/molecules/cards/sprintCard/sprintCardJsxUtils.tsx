@@ -33,6 +33,7 @@ export const getBacklogItemElts = (
     showDetailMenuToLeft: boolean,
     backlogItems: ItemMenuBuilderBacklogItem[],
     busySplittingStory: boolean,
+    splitToNextSprintAvailable: boolean,
     onDetailClick: { (itemId: string) },
     onBacklogItemIdClick: { (itemId: string) },
     onMoveItemToBacklogClick: { (itemId: string) },
@@ -67,7 +68,6 @@ export const getBacklogItemElts = (
     if (!backlogItems) {
         return null;
     }
-    const splitToNextSprintAvailable = false;
     const itemMenuBuilder = sprintBacklogItemMenuBuilder(eventHandlers, splitToNextSprintAvailable);
     const hasDetails = editMode === EditMode.Edit;
     return backlogItems.map((backlogItem) => {

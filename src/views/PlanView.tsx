@@ -50,6 +50,7 @@ export interface PlanViewStateProps {
     openedDetailMenuSprintBacklogInfo: OpenedOrOpeningDetailMenuInfo;
     openingDetailMenuSprintBacklogInfo: OpenedOrOpeningDetailMenuInfo;
     openedDetailMenuSprintId: string | null;
+    splitToNextSprintAvailable?: boolean;
     projectId: string;
     selectedProductBacklogItemCount: number;
     showWindowTitleBar: boolean;
@@ -118,6 +119,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     openedDetailMenuInfo={this.props.openedDetailMenuSprintBacklogInfo}
                     openingDetailMenuInfo={this.props.openingDetailMenuSprintBacklogInfo}
                     openedDatePickerInfo={this.props.openedDatePickerInfo}
+                    splitToNextSprintAvailable={this.props.splitToNextSprintAvailable}
                     onAddBacklogItem={(sprintId: string) => {
                         if (this.props.onAddBacklogItemToSprint) {
                             this.props.onAddBacklogItemToSprint(sprintId);

@@ -265,8 +265,9 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
                 if (stepName === ITEM_DETAIL_CLICK_STEP_3_NAME) {
                     const matchingItems = actionTyped.payload.response.data.items.filter((item) => item.id === backlogItemId);
                     const hasBacklogItem = matchingItems.length > 0;
+                    const splitToNextSprintAvailable = !hasBacklogItem;
                     const sprintId = meta.passthrough.sprintId;
-                    storeTyped.dispatch(toggleSprintBacklogItemDetail(sprintId, backlogItemId));
+                    storeTyped.dispatch(toggleSprintBacklogItemDetail(sprintId, backlogItemId, splitToNextSprintAvailable));
                     // TODO: 7. handle error conditions if either of the API calls fail
                 }
             }

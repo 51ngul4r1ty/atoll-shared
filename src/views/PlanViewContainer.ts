@@ -61,6 +61,7 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
         openingDetailMenuSprintBacklogInfo: sprintBacklogSelectors.getOpeningDetailMenuInfo(state),
         openedDetailMenuSprintId: sprintSelectors.getOpenedDetailMenuSprintId(state),
         openedDatePickerInfo: sprintSelectors.getOpenedDatePickerInfo(state),
+        splitToNextSprintAvailable: sprintSelectors.getSplitToNextSprintAvailable(state),
         projectId: userSelectors.getCurrentProjectId(state),
         selectedProductBacklogItemCount: backlogItemSelectors.getSelectedBacklogItemCount(state),
         showWindowTitleBar: !isPlatformWindows(),

@@ -52,6 +52,7 @@ export interface SprintPlanningPanelStateProps {
     openedDetailMenuInfo: OpenedOrOpeningDetailMenuInfo;
     openingDetailMenuInfo: OpenedOrOpeningDetailMenuInfo;
     openedDetailMenuSprintId: string | null;
+    splitToNextSprintAvailable?: boolean;
     renderMobile?: boolean;
     selectedProductBacklogItemCount: number;
     showDetailMenuToLeft?: boolean;
@@ -160,6 +161,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
             sprint.id && sprint.id === props.openedDetailMenuInfo?.sprintId ? props.openedDetailMenuInfo.backlogItemId : null;
         const openingDetailMenuBacklogItemId =
             sprint.id && sprint.id === props.openingDetailMenuInfo?.sprintId ? props.openingDetailMenuInfo.backlogItemId : null;
+        const splitToNextSprintAvailable = props.splitToNextSprintAvailable || false;
         const showPicker: SprintDetailShowingPicker =
             sprint?.id === props.openedDatePickerInfo?.sprintId
                 ? props.openedDatePickerInfo?.showPicker
@@ -193,6 +195,7 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         buildItemMenu={sprintMenuBuilder(itemEventHandlers)}
                         openedDetailMenuBacklogItemId={openedDetailMenuBacklogItemId}
                         openingDetailMenuBacklogItemId={openingDetailMenuBacklogItemId}
+                        splitToNextSprintAvailable={splitToNextSprintAvailable}
                         renderMobile={props.renderMobile}
                         selectedProductBacklogItemCount={props.selectedProductBacklogItemCount}
                         onExpandCollapse={(id, expand) => {

@@ -39,6 +39,7 @@ export interface SprintCardStateProps extends SprintCardSprint {
     selectedProductBacklogItemCount: number;
     showDetailMenu?: boolean;
     showDetailMenuToLeft?: boolean;
+    splitToNextSprintAvailable: boolean;
 }
 
 export interface SprintCardDispatchProps {
@@ -141,6 +142,7 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
             props.showDetailMenuToLeft,
             itemMenuBuilderBacklogItems,
             props.busySplittingStory,
+            props.splitToNextSprintAvailable,
             handleDetailClick,
             handleBacklogItemIdClick,
             props.onMoveItemToBacklogClick,

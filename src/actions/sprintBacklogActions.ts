@@ -108,6 +108,7 @@ export const sprintBacklogItemDetailClick = (sprintId, backlogItemId: string): S
 export interface ToggleSprintBacklogItemDetailPayload {
     sprintId: string;
     backlogItemId: string;
+    splitToNextSprintAvailable: boolean;
 }
 
 export interface ToggleSprintBacklogItemDetailAction {
@@ -115,11 +116,16 @@ export interface ToggleSprintBacklogItemDetailAction {
     payload: ToggleSprintBacklogItemDetailPayload;
 }
 
-export const toggleSprintBacklogItemDetail = (sprintId, backlogItemId: string): ToggleSprintBacklogItemDetailAction => ({
+export const toggleSprintBacklogItemDetail = (
+    sprintId,
+    backlogItemId: string,
+    splitToNextSprintAvailable: boolean
+): ToggleSprintBacklogItemDetailAction => ({
     type: ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL,
     payload: {
         sprintId,
-        backlogItemId
+        backlogItemId,
+        splitToNextSprintAvailable
     }
 });
 
