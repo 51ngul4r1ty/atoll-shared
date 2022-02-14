@@ -49,6 +49,7 @@ import { BacklogItemInstanceEditableFields } from "../../components/organisms/fo
 import { isoDateStringToDate } from "../../utils/apiPayloadConverters";
 import { shouldHideDetailMenu } from "../../components/utils/itemDetailMenuUtils";
 
+// TODO: consider renaming this to use standard constant naming (all uppercase)
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
     allItems: [],
