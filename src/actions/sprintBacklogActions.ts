@@ -3,7 +3,6 @@ import * as ActionTypes from "./actionTypes";
 
 // interfaces/types
 import { BacklogItem, BacklogItemInSprint } from "../types/backlogItemTypes";
-import { ApiBacklogItem } from "../apiModelTypes";
 
 export interface MoveSelectedBacklogItemsToSprintUsingApiActionPayload {
     sprintId: string;
@@ -87,9 +86,28 @@ export const patchBacklogItemInSprint = (
     }
 });
 
+export interface SprintBacklogItemDetailClickPayload {
+    sprintId: string;
+    backlogItemId: string;
+}
+
+export interface SprintBacklogItemDetailClickAction {
+    type: typeof ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK;
+    payload: SprintBacklogItemDetailClickPayload;
+}
+
+export const sprintBacklogItemDetailClick = (sprintId, backlogItemId: string): SprintBacklogItemDetailClickAction => ({
+    type: ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK,
+    payload: {
+        sprintId,
+        backlogItemId
+    }
+});
+
 export interface ToggleSprintBacklogItemDetailPayload {
     sprintId: string;
     backlogItemId: string;
+    splitToNextSprintAvailable: boolean;
 }
 
 export interface ToggleSprintBacklogItemDetailAction {
@@ -97,11 +115,16 @@ export interface ToggleSprintBacklogItemDetailAction {
     payload: ToggleSprintBacklogItemDetailPayload;
 }
 
-export const sprintBacklogItemDetailClick = (sprintId, backlogItemId: string): ToggleSprintBacklogItemDetailAction => ({
+export const toggleSprintBacklogItemDetail = (
+    sprintId,
+    backlogItemId: string,
+    splitToNextSprintAvailable: boolean
+): ToggleSprintBacklogItemDetailAction => ({
     type: ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL,
     payload: {
         sprintId,
-        backlogItemId
+        backlogItemId,
+        splitToNextSprintAvailable
     }
 });
 

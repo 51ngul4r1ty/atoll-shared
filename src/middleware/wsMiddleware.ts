@@ -3,6 +3,7 @@ import { Action, Dispatch } from "redux";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
+import { PushNotificationType, PushOperationType } from "../enums";
 
 // utils
 import * as wsClient from "../utils/wsClient";
@@ -15,13 +16,7 @@ import {
     ApiPutBacklogItemSuccessAction
 } from "../actions/apiBacklogItems";
 import { receivePushedBacklogItem } from "../actions/backlogItemActions";
-import {
-    WebsocketPushNotification,
-    PushNotificationType,
-    PushOperationType,
-    WebsocketPushNotificationV0,
-    WebsocketPushNotificationData
-} from "../types";
+import { WebsocketPushNotification, WebsocketPushNotificationV0, WebsocketPushNotificationData } from "../types";
 import { ReceiveWebsocketMessageAction } from "../actions/wsActions";
 import { BacklogItemModel } from "../types/backlogItemTypes";
 

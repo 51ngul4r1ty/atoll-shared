@@ -29,7 +29,7 @@ import { EditMode } from "../components/common/componentEnums";
 import { BacklogItemWithSource } from "../reducers/backlogItems/backlogItemsReducerTypes";
 import { BacklogItemType } from "../types/backlogItemTypes";
 import { SprintCardSprint } from "../components/molecules/cards/sprintCard/sprintCardTypes";
-import { OpenedDetailMenuInfo } from "../selectors/sprintBacklogSelectors";
+import { OpenedOrOpeningDetailMenuInfo } from "../selectors/sprintBacklogSelectors";
 import { SprintOpenedDatePickerInfo } from "../reducers/sprintsReducer";
 
 // images
@@ -47,8 +47,10 @@ export interface PlanViewStateProps {
     loading: boolean;
     openedDatePickerInfo: SprintOpenedDatePickerInfo;
     openedDetailMenuBacklogItemId: string | null;
-    openedDetailMenuSprintBacklogInfo: OpenedDetailMenuInfo;
+    openedDetailMenuSprintBacklogInfo: OpenedOrOpeningDetailMenuInfo;
+    openingDetailMenuSprintBacklogInfo: OpenedOrOpeningDetailMenuInfo;
     openedDetailMenuSprintId: string | null;
+    splitToNextSprintAvailable?: boolean;
     projectId: string;
     selectedProductBacklogItemCount: number;
     showWindowTitleBar: boolean;
@@ -115,7 +117,9 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     selectedProductBacklogItemCount={this.props.selectedProductBacklogItemCount}
                     openedDetailMenuSprintId={this.props.openedDetailMenuSprintId}
                     openedDetailMenuInfo={this.props.openedDetailMenuSprintBacklogInfo}
+                    openingDetailMenuInfo={this.props.openingDetailMenuSprintBacklogInfo}
                     openedDatePickerInfo={this.props.openedDatePickerInfo}
+                    splitToNextSprintAvailable={this.props.splitToNextSprintAvailable}
                     onAddBacklogItem={(sprintId: string) => {
                         if (this.props.onAddBacklogItemToSprint) {
                             this.props.onAddBacklogItemToSprint(sprintId);

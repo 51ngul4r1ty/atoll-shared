@@ -17,9 +17,9 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 
 // consts/enums
 import { SaveableBacklogItem } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
-import { PushState } from "../../../reducers/types";
+import { PushState } from "../../../reducers/enums";
 import { StatusAcceptedIcon, StatusDoneIcon, StatusInProgressIcon, StatusReleasedIcon } from "../../atoms/icons";
-import { BacklogItemStatus } from "../../../types/backlogItemTypes";
+import { BacklogItemStatus } from "../../../types/backlogItemEnums";
 
 //#region exported functions
 
@@ -124,6 +124,7 @@ export interface BacklogItemCardStateProps {
     hidden?: boolean;
     internalId: string;
     isDraggable?: boolean;
+    isLoadingDetails?: boolean;
     isSelectable?: boolean;
     itemId: string;
     itemType: BacklogItemTypeEnum;
@@ -184,6 +185,7 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
             itemId={props.internalId}
             itemType="backlog-item"
             hasDetails={props.hasDetails}
+            isLoading={props.isLoadingDetails}
             className={css.backlogItemDetailButton}
             onDetailClick={() => props.onDetailClick()}
         />
@@ -210,26 +212,41 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
     const styleToUse: React.CSSProperties = props.offsetTop
         ? { top: props.offsetTop, position: "absolute", zIndex: 10 }
         : undefined;
-    let statusIcon: any = null;
+    let statusIcon: React.ReactElement;
+    let hoverText: string;
+    let ariaLabel: string;
     switch (props.status) {
         case BacklogItemStatus.InProgress: {
             statusIcon = <StatusInProgressIcon />;
+            hoverText = "in progress";
+            ariaLabel = "work item is in progress";
             break;
         }
         case BacklogItemStatus.Done: {
             statusIcon = <StatusDoneIcon />;
+            hoverText = "done";
+            ariaLabel = "work item meets definition of done";
             break;
         }
         case BacklogItemStatus.Accepted: {
             statusIcon = <StatusAcceptedIcon />;
+            hoverText = "accepted";
+            ariaLabel = "work item has been accepted";
             break;
         }
         case BacklogItemStatus.Released: {
+            hoverText = "released";
+            ariaLabel = "work item has been released";
             statusIcon = <StatusReleasedIcon />;
             break;
         }
     }
-    const statusIconElts = statusIcon !== null ? <div className={css.status}>{statusIcon}</div> : null;
+    const statusIconElts =
+        statusIcon !== null ? (
+            <div className={css.status} title={hoverText} aria-label={ariaLabel}>
+                {statusIcon}
+            </div>
+        ) : null;
     const isSplitBacklogItem = props.totalParts > 1;
     const splitTextContent =
         props.cardType === BacklogItemCardType.ProductBacklogCard

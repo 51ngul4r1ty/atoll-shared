@@ -4,15 +4,17 @@ import "jest";
 // externals
 import produce from "immer";
 
-// code under test
-import { rebuildAllItems, sprintsReducerInitialState, SprintsState } from "../sprintsReducer";
-
 // utils
 import { DateOnly } from "../../types/dateTypes";
 
+// consts/enums
+import { Source } from "../enums";
+
+// code under test
+import { rebuildAllItems, sprintsReducerInitialState, SprintsState } from "../sprintsReducer";
+
 // test utils
 import { buildSprintForTesting } from "../../__tests__/objectBuilders";
-import { Source } from "../types";
 
 describe("Sprints Reducer", () => {
     describe("rebuildAllItems", () => {

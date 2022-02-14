@@ -216,6 +216,7 @@ storiesOf("Organisms/Panels/SprintPlanningPanel", module).add("SprintPlanningPan
             <SprintPlanningPanel
                 editMode={EditMode.View}
                 openedDetailMenuInfo={undefined}
+                openingDetailMenuInfo={undefined}
                 selectedProductBacklogItemCount={0}
                 sprints={[
                     {

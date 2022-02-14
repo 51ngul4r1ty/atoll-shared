@@ -1,5 +1,5 @@
 // externals
-import { Action } from "redux";
+import type { Action } from "redux";
 import { push } from "connected-react-router";
 
 // consts/enums

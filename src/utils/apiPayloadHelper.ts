@@ -5,25 +5,27 @@ import { SprintModel } from "../types/sprintTypes";
 
 export const convertToBacklogItemModel = (backlogItem: BacklogItem): BacklogItemModel => ({
     acceptanceCriteria: backlogItem.acceptanceCriteria,
+    acceptedAt: backlogItem.acceptedAt,
     createdAt: backlogItem.createdAt,
     estimate: backlogItem.estimate,
     externalId: backlogItem.externalId,
+    finishedAt: backlogItem.finishedAt,
     friendlyId: backlogItem.friendlyId,
     id: backlogItem.id,
+    partIndex: backlogItem.partIndex,
     projectId: backlogItem.projectId,
     reasonPhrase: backlogItem.reasonPhrase,
-    rolePhrase: backlogItem.rolePhrase,
-    status: backlogItem.status,
-    storyPhrase: backlogItem.storyPhrase,
-    type: backlogItem.type,
-    updatedAt: backlogItem.updatedAt,
-    startedAt: backlogItem.startedAt,
-    finishedAt: backlogItem.finishedAt,
-    acceptedAt: backlogItem.acceptedAt,
     releasedAt: backlogItem.releasedAt,
-    partIndex: backlogItem.partIndex,
+    rolePhrase: backlogItem.rolePhrase,
+    startedAt: backlogItem.startedAt,
+    status: backlogItem.status,
+    storyEstimate: backlogItem.storyEstimate,
+    storyPhrase: backlogItem.storyPhrase,
     totalParts: backlogItem.totalParts,
-    unallocatedParts: backlogItem.unallocatedParts
+    type: backlogItem.type,
+    unallocatedParts: backlogItem.unallocatedParts,
+    unallocatedPoints: backlogItem.unallocatedPoints,
+    updatedAt: backlogItem.updatedAt
 });
 
 export const convertToSprintModel = (sprint: Sprint): SprintModel => ({

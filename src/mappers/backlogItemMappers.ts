@@ -1,6 +1,11 @@
+// consts/enums
+import { BacklogItemStatus } from "../types/backlogItemEnums";
+
 // interfaces/types
-import { ApiBacklogItem, ApiBacklogItemInSprint, ApiBacklogItemPart, ApiBacklogItemStatus } from "../apiModelTypes";
-import { BacklogItem, BacklogItemPart, BacklogItemInSprint, BacklogItemStatus } from "../types/backlogItemTypes";
+import type { ApiBacklogItem, ApiBacklogItemInSprint, ApiBacklogItemPart, ApiBacklogItemStatus } from "../apiModelTypes";
+import type { BacklogItem, BacklogItemPart, BacklogItemInSprint } from "../types/backlogItemTypes";
+
+// utils
 import { dateToIsoDateString, isoDateStringToDate } from "../utils/apiPayloadConverters";
 
 export const mapApiStatusToBacklogItem = (status: string | null): BacklogItemStatus => {

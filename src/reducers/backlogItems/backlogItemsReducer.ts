@@ -3,10 +3,11 @@ import { Draft, produce } from "immer";
 
 // consts/enums
 import * as ActionTypes from "../../actions/actionTypes";
+import { PushOperationType } from "../../enums";
+import { PushState } from "../enums";
 
 // interfaces/types
 import { AnyFSA } from "../../types/reactHelperTypes";
-import { PushOperationType } from "../../types";
 import {
     ApiPostBacklogItemSuccessAction,
     ApiGetBacklogItemsSuccessAction,
@@ -31,7 +32,6 @@ import {
 import { AppClickAction, AppKeyUpAction } from "../../actions/appActions";
 import { BacklogItemsState, BacklogItemWithSource, SaveableBacklogItem } from "./backlogItemsReducerTypes";
 import { MoveBacklogItemToSprintAction } from "../../actions/sprintBacklogActions";
-import { PushState } from "../types";
 
 // utils
 import {
@@ -49,6 +49,7 @@ import { BacklogItemInstanceEditableFields } from "../../components/organisms/fo
 import { isoDateStringToDate } from "../../utils/apiPayloadConverters";
 import { shouldHideDetailMenu } from "../../components/utils/itemDetailMenuUtils";
 
+// TODO: consider renaming this to use standard constant naming (all uppercase)
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
     allItems: [],
