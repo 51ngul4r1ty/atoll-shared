@@ -9,11 +9,12 @@ import { Action, Dispatch, Store } from "redux";
 import * as HttpStatus from "http-status-codes";
 
 // consts/enums
+import { API } from "./apiConsts";
 import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
 import { StateTree } from "../reducers/rootReducer";
-import { ApiActionType, ApiActionMeta, ApiActionSuccessPayload, API, ApiAction } from "./apiTypes";
+import { ApiActionType, ApiActionMeta, ApiActionSuccessPayload, ApiAction } from "./apiTypes";
 
 // selectors
 import { getAuthToken } from "../selectors/appSelectors";

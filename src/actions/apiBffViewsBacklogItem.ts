@@ -8,10 +8,11 @@ import * as ApiActionNames from "./apiActionNames";
 import { getApiBaseUrl } from "../config";
 
 // consts/enums
+import { API } from "../middleware/apiConsts";
 import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
-import { API, NoDataApiAction, ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
+import type { NoDataApiAction, ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
 
 // utils
 import { buildActionTypes } from "./utils/apiActionUtils";

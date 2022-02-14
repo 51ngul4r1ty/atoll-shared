@@ -1,11 +1,12 @@
 // interfaces/types
-import { API, NoDataApiAction, ApiActionMetaDataRequestBody, ApiActionSuccessPayloadForItem } from "../middleware/apiTypes";
+import { NoDataApiAction, ApiActionMetaDataRequestBody, ApiActionSuccessPayloadForItem } from "../middleware/apiTypes";
 
 // actions
 import * as ActionTypes from "./actionTypes";
 import * as ApiActionNames from "./apiActionNames";
 
 // consts/enums
+import { API } from "../middleware/apiConsts";
 import { APPLICATION_JSON } from "../constants";
 
 // utils

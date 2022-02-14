@@ -1,8 +1,6 @@
 // externals
 import type { Action } from "redux";
 
-export const API = "API";
-
 export interface ApiHeaders {
     [name: string]: string;
 }
