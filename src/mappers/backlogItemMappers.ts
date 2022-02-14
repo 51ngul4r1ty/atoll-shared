@@ -4,7 +4,9 @@ import { BacklogItemStatus } from "../types/backlogItemEnums";
 // interfaces/types
 import type { ApiBacklogItem, ApiBacklogItemInSprint, ApiBacklogItemPart, ApiBacklogItemStatus } from "../apiModelTypes";
 import type { BacklogItem, BacklogItemPart, BacklogItemInSprint } from "../types/backlogItemTypes";
-import type { dateToIsoDateString, isoDateStringToDate } from "../utils/apiPayloadConverters";
+
+// utils
+import { dateToIsoDateString, isoDateStringToDate } from "../utils/apiPayloadConverters";
 
 export const mapApiStatusToBacklogItem = (status: string | null): BacklogItemStatus => {
     switch (status) {
