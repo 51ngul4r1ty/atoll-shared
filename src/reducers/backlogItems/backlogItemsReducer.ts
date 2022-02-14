@@ -3,7 +3,7 @@ import { Draft, produce } from "immer";
 
 // consts/enums
 import * as ActionTypes from "../../actions/actionTypes";
-import { PushOperationType } from "../../types";
+import { PushOperationType } from "../../enums";
 import { PushState } from "../enums";
 
 // interfaces/types
