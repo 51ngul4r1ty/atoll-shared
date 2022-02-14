@@ -8,10 +8,10 @@ import { render } from "@testing-library/react";
 // consts/enums
 import { EditMode } from "../../../common/componentEnums";
 import { Source } from "../../../../reducers/enums";
+import { BacklogItemStatus } from "../../../../types/backlogItemEnums";
 
 // interfaces/types
 import type { BacklogItemWithSource } from "../../../../reducers/backlogItems/backlogItemsReducerTypes";
-import type { BacklogItemStatus } from "../../../../types/backlogItemTypes";
 
 // code under test
 import { BacklogItemPlanningPanel } from "../backlogItemPlanning/BacklogItemPlanningPanel";

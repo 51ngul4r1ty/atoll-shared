@@ -15,7 +15,7 @@ import type { PushBacklogItemModel } from "../../middleware/wsMiddleware";
 import type { backlogItemsReducer } from "../backlogItems/backlogItemsReducer";
 
 // consts/enums
-import { BacklogItemStatus } from "../../types/backlogItemTypes";
+import { BacklogItemStatus } from "../../types/backlogItemEnums";
 import { PushOperationType } from "../../enums";
 import { Source } from "../enums";
 

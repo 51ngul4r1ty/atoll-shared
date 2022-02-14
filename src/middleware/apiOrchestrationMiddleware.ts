@@ -10,7 +10,7 @@ import * as HttpStatus from "http-status-codes";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
-import { BacklogItemStatus } from "../types/backlogItemTypes";
+import { BacklogItemStatus } from "../types/backlogItemEnums";
 import { EditMode } from "../components/common/componentEnums";
 
 // selectors

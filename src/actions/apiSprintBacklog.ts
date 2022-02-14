@@ -10,9 +10,10 @@ import { getApiBaseUrl } from "../config";
 
 // consts/enums
 import { APPLICATION_JSON } from "../constants";
+import { BacklogItemStatus } from "../types/backlogItemEnums";
 
 // interfaces/types
-import {
+import type {
     API,
     NoDataApiAction,
     ApiActionSuccessPayloadForCollection,
@@ -21,7 +22,7 @@ import {
     ApiActionFailurePayload,
     ApiActionFailurePayloadForCollection
 } from "../middleware/apiTypes";
-import {
+import type {
     ApiBacklogItem,
     ApiBacklogItemInSprint,
     ApiBacklogItemPart,
@@ -29,13 +30,12 @@ import {
     ApiSprintBacklogItem,
     ApiSprintStats
 } from "../apiModelTypes";
-import { ApiBatchAction } from "../middleware/apiBatchTypes";
+import type { ApiBatchAction } from "../middleware/apiBatchTypes";
+import type { ApiItemDetailMenuActionFlowSuccessMeta } from "../actionFlows/itemDetailMenuActionFlow";
 
 // utils
-import { buildActionTypes, buildStandardMeta } from "./utils/apiActionUtils";
-import { BacklogItemStatus } from "../types/backlogItemTypes";
-import { mapBacklogItemStatusToApi } from "../mappers/backlogItemMappers";
-import { ApiItemDetailMenuActionFlowSuccessMeta } from "../actionFlows/itemDetailMenuActionFlow";
+import type { buildActionTypes, buildStandardMeta } from "./utils/apiActionUtils";
+import type { mapBacklogItemStatusToApi } from "../mappers/backlogItemMappers";
 
 export type ApiGetSprintBacklogItemsSuccessActionParams = {
     sprintId: string;

@@ -9,7 +9,7 @@ import { getApiBaseUrl } from "../config";
 import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
-import { BacklogItemModel, BacklogItem } from "../types/backlogItemTypes";
+import { BacklogItemModel } from "../types/backlogItemTypes";
 import { PushBacklogItemModel } from "../middleware/wsMiddleware";
 import {
     API,

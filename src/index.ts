@@ -4,6 +4,7 @@ export { FEATURE_TOGGLE_LIST } from "./constants/defaultFeatureToggles";
 export { PushState } from "./reducers/enums";
 export { rootReducerInitialState } from "./reducers/rootReducer";
 export { PushNotificationType } from "./enums";
+export { BacklogItemStatus } from "./types/backlogItemEnums";
 
 // types
 export * from "./types/index";
@@ -54,7 +55,7 @@ export { AppState } from "./reducers/appReducer";
 export { UserState } from "./reducers/userReducer";
 export { BacklogItemWithSource, BacklogItemsState } from "./reducers/backlogItems/backlogItemsReducerTypes";
 export { Source } from "./reducers/enums";
-export { BacklogItem, BacklogItemStatus, BacklogItemType } from "./types/backlogItemTypes";
+export { BacklogItem, BacklogItemType } from "./types/backlogItemTypes";
 
 // contexts
 export { AppContext, AppProvider, AppConsumer } from "./contexts/appContextUtil";

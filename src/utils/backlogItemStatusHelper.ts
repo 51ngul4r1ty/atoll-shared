@@ -1,5 +1,5 @@
 // consts/enums
-import { BacklogItemStatus } from "../types/backlogItemTypes";
+import { BacklogItemStatus } from "../types/backlogItemEnums";
 
 export const hasBacklogItemAtLeastBeenReleased = (backlogItemStatus: BacklogItemStatus) =>
     backlogItemStatus === BacklogItemStatus.Released;

@@ -19,7 +19,7 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 import { SaveableBacklogItem } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
 import { PushState } from "../../../reducers/enums";
 import { StatusAcceptedIcon, StatusDoneIcon, StatusInProgressIcon, StatusReleasedIcon } from "../../atoms/icons";
-import { BacklogItemStatus } from "../../../types/backlogItemTypes";
+import { BacklogItemStatus } from "../../../types/backlogItemEnums";
 
 //#region exported functions
 
