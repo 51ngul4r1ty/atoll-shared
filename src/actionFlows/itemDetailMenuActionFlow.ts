@@ -1,3 +1,5 @@
+// TODO: Write this up as a pattern
+
 /**
  * PURPOSE: keep everything related to the sprint backlog item's "item detail menu" opening in one place.
  */
@@ -47,6 +49,8 @@ export const handleSprintBacklogItemDetailClick = (
         })
     );
 };
+
+// #region middleware - handleGetSprintSuccessForItemDetailClick
 
 export const handleGetSprintSuccessForItemDetailClick = (
     store: Store<StateTree>,
@@ -118,6 +122,10 @@ const processSprintDataForItemDetailClickStep2 = (
     );
 };
 
+// #endregion
+
+// #region middleware - handleGetSprintBacklogItemsSuccessForItemDetailClick
+
 export const handleGetSprintBacklogItemsSuccessForItemDetailClick = (
     store: Store<StateTree>,
     stepName: string,
@@ -134,3 +142,5 @@ export const handleGetSprintBacklogItemsSuccessForItemDetailClick = (
         throw new Error("Unexpected result- ITEM_DETAIL_CLICK_STEP_3_NAME expected as stepName");
     }
 };
+
+// #endregion

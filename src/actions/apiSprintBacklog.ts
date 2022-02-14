@@ -1,5 +1,5 @@
 // externals
-import { Action } from "redux";
+import type { Action } from "redux";
 
 // actions
 import * as ActionTypes from "./actionTypes";
