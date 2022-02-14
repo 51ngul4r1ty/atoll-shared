@@ -5,12 +5,16 @@ import * as React from "react";
 import "jest";
 import { render } from "@testing-library/react";
 
+// consts/enums
+import { EditMode } from "../../../common/componentEnums";
+import { Source } from "../../../../reducers/enums";
+
+// interfaces/types
+import type { BacklogItemWithSource } from "../../../../reducers/backlogItems/backlogItemsReducerTypes";
+import type { BacklogItemStatus } from "../../../../types/backlogItemTypes";
+
 // code under test
 import { BacklogItemPlanningPanel } from "../backlogItemPlanning/BacklogItemPlanningPanel";
-import { EditMode } from "../../../common/componentEnums";
-import { Source } from "../../../../reducers/types";
-import { BacklogItemWithSource } from "../../../../reducers/backlogItems/backlogItemsReducerTypes";
-import { BacklogItemStatus } from "../../../../types/backlogItemTypes";
 
 // mocks
 const mockUseDispatch = jest.fn();

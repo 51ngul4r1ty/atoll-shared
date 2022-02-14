@@ -10,14 +10,17 @@ import { backlogItemsReducerInitialState } from "../backlogItems/backlogItemsRed
 import { BacklogItemWithSource, SaveableBacklogItem } from "../backlogItems/backlogItemsReducerTypes";
 
 // interfaces/types
-import { PushOperationType, WebsocketPushNotificationData } from "../../types";
-import { PushBacklogItemModel } from "../../middleware/wsMiddleware";
-import { backlogItemsReducer } from "../backlogItems/backlogItemsReducer";
-import { Source } from "../types";
+import type { WebsocketPushNotificationData } from "../../types";
+import type { PushBacklogItemModel } from "../../middleware/wsMiddleware";
+import type { backlogItemsReducer } from "../backlogItems/backlogItemsReducer";
 
 // consts/enums
-import { selectProductBacklogItem, unselectProductBacklogItem } from "../../actions/backlogItemActions";
 import { BacklogItemStatus } from "../../types/backlogItemTypes";
+import { PushOperationType } from "../../enums";
+import { Source } from "../enums";
+
+// actions
+import { selectProductBacklogItem, unselectProductBacklogItem } from "../../actions/backlogItemActions";
 
 describe("Backlog Items Reducer", () => {
     describe("rebuildAllItems", () => {
