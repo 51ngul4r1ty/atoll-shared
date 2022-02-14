@@ -47,6 +47,7 @@ import {
     handleGetSprintSuccessForItemDetailClick,
     handleSprintBacklogItemDetailClick
 } from "../actionFlows/itemDetailMenuActionFlow";
+import { getFlowInfoFromAction } from "../utils/actionFlowUtils";
 
 export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA) => {
     next(action);
@@ -217,8 +218,7 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
             const actionTyped = action as ApiGetSprintSuccessAction;
             const payload = actionTyped.payload;
             const meta = actionTyped.meta;
-            const triggerAction = meta?.passthrough?.triggerAction || null;
-            const stepName = meta?.passthrough?.stepName || null;
+            const { triggerAction, stepName } = getFlowInfoFromAction(actionTyped);
             if (triggerAction !== ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK) {
                 throw new Error("Unexpected result- SPRINT_BACKLOG_ITEM_DETAIL_CLICK expected as passthrough.triggerAction");
             } else {
@@ -229,9 +229,8 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
         case ActionTypes.API_GET_SPRINT_BACKLOG_ITEMS_SUCCESS: {
             const actionTyped = action as ApiGetSprintBacklogItemsSuccessAction;
             const meta = actionTyped.meta;
-            const triggerAction = meta?.passthrough?.triggerAction;
+            const { triggerAction, stepName } = getFlowInfoFromAction(actionTyped);
             if (triggerAction === ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK) {
-                const stepName = meta?.passthrough?.stepName || null;
                 const apiBacklogItems = actionTyped.payload.response.data.items;
                 const sprintId = meta.passthrough.sprintId;
                 const backlogItemId = meta?.passthrough?.backlogItemId || null;

@@ -5,15 +5,15 @@ import { Draft, produce } from "immer";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { AnyFSA } from "../types/reactHelperTypes";
-import {
+import type { AnyFSA } from "../types/reactHelperTypes";
+import type {
     ApiGetSprintBacklogItemsFailureAction,
     ApiGetSprintBacklogItemsSuccessAction,
     ApiSprintBacklogItemSetStatusSuccessAction
 } from "../actions/apiSprintBacklog";
-import { BacklogItemInSprint } from "../types/backlogItemTypes";
-import { BacklogItemInSprintWithSource } from "./backlogItems/backlogItemsReducerTypes";
-import {
+import type { BacklogItemInSprint } from "../types/backlogItemTypes";
+import type { BacklogItemInSprintWithSource } from "./backlogItems/backlogItemsReducerTypes";
+import type {
     AddBacklogItemToSprintAction,
     ChangeSprintPlanningArchivedFilterAction,
     MoveBacklogItemToSprintAction,
@@ -22,24 +22,25 @@ import {
     SprintBacklogItemDetailClickAction,
     ToggleSprintBacklogItemDetailAction
 } from "../actions/sprintBacklogActions";
-import { PushState } from "./types";
-import { AppClickAction } from "../actions/appActions";
-import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
-import { ApiBacklogItemInSprint } from "../apiModelTypes";
+import type { PushState } from "./types";
+import type { AppClickAction } from "../actions/appActions";
+import type { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
+import type { ApiBacklogItemInSprint } from "../apiModelTypes";
+import type { ApiGetSprintFailureAction } from "../actions/apiSprints";
 
-// utils
-import { mapApiItemsToSprintBacklogItems, mapApiStatusToBacklogItem } from "../mappers/backlogItemMappers";
-import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
-import { shouldHideDetailMenu } from "../components/utils/itemDetailMenuUtils";
-import { mapApiItemsToSprints } from "../mappers";
-import { ApiGetSprintFailureAction } from "../actions/apiSprints";
+// consts/enums
 import {
     ITEM_DETAIL_CLICK_STEP_1_NAME,
     ITEM_DETAIL_CLICK_STEP_2_NAME,
     ITEM_DETAIL_CLICK_STEP_3_NAME
 } from "../actionFlows/itemDetailMenuActionFlow";
 
-// export type SprintBacklogItem = BacklogItemInSprint;
+// utils
+import { mapApiItemsToSprintBacklogItems, mapApiStatusToBacklogItem } from "../mappers/backlogItemMappers";
+import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
+import { shouldHideDetailMenu } from "../components/utils/itemDetailMenuUtils";
+import { mapApiItemsToSprints } from "../mappers";
+import { getFlowInfoFromAction } from "../utils/actionFlowUtils";
 
 export interface SprintBacklogSprint {
     items: BacklogItemInSprint[];
@@ -146,9 +147,7 @@ export const sprintBacklogReducer = (
             }
             case ActionTypes.API_GET_SPRINT_FAILURE: {
                 const actionTyped = action as ApiGetSprintFailureAction;
-                const meta = actionTyped.meta;
-                const triggerAction = meta?.passthrough?.triggerAction || null;
-                const stepName = meta?.passthrough?.stepName || null;
+                const { triggerAction, stepName } = getFlowInfoFromAction(actionTyped);
                 if (triggerAction !== ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK) {
                     return;
                 } else if (stepName === ITEM_DETAIL_CLICK_STEP_1_NAME || stepName === ITEM_DETAIL_CLICK_STEP_2_NAME) {
@@ -162,9 +161,7 @@ export const sprintBacklogReducer = (
             }
             case ActionTypes.API_GET_SPRINT_BACKLOG_ITEMS_FAILURE: {
                 const actionTyped = action as ApiGetSprintBacklogItemsFailureAction;
-                const meta = actionTyped.meta;
-                const triggerAction = meta?.passthrough?.triggerAction;
-                const stepName = meta?.passthrough?.stepName || null;
+                const { triggerAction, stepName } = getFlowInfoFromAction(actionTyped);
                 if (triggerAction === ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK) {
                     if (stepName === ITEM_DETAIL_CLICK_STEP_3_NAME) {
                         if (draft.openingDetailMenuSprintId === actionTyped.meta.passthrough.sprintId) {
