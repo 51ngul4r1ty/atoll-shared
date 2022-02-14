@@ -29,6 +29,7 @@ import { ApiSprint } from "../apiModelTypes";
 import { buildActionTypes, buildStandardMeta } from "./utils/apiActionUtils";
 import { SprintModel } from "../types/sprintTypes";
 import { Sprint } from "../reducers/sprintsReducer";
+import { ApiItemDetailMenuActionFlowSuccessMeta } from "../actionFlows/itemDetailMenuActionFlow";
 
 // #region Collection
 
@@ -54,15 +55,7 @@ export const apiGetSprints = (projectId: string, includeArchived: boolean): NoDa
 // #endregion
 
 // #region Item
-export const ITEM_DETAIL_CLICK_STEP_1_NAME = "1-GetSprintDetails";
-export const ITEM_DETAIL_CLICK_STEP_2_NAME = "2-GetNextSprintDetails";
-export const ITEM_DETAIL_CLICK_STEP_3_NAME = "3-GetNextSprintBacklogItems";
-export type ApiGetSprintActionMetaPassthrough = {
-    triggerAction: string;
-    stepName: string;
-    sprintId: string;
-    backlogItemId: string;
-};
+export type ApiGetSprintActionMetaPassthrough = ApiItemDetailMenuActionFlowSuccessMeta;
 export type ApiGetSprintMetaActionParams = {
     sprintId: string;
 };
@@ -92,6 +85,12 @@ export type ApiGetSprintOptions = {
     endpointOverride?: string;
 };
 export type ApiGetSprintResult = NoDataApiAction<any, ApiGetSprintSuccessActionMetaPassthrough>;
+/**
+ * Make API call to retrieve a sprint item.
+ * @param sprintId can be null if options.endpointOverride provided (HATEOAS link scenario)
+ * @param options endpointOverride can be provided when using a HATEOAS link to get the sprint.
+ * @returns
+ */
 export const apiGetSprint = (sprintId: string | null, options?: ApiGetSprintOptions): ApiGetSprintResult => {
     if (!sprintId && !options?.endpointOverride) {
         throw new Error("apiGetSprint expects either a sprintId or an endpointOverride to be provided!");

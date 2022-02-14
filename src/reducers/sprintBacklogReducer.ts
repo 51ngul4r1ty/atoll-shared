@@ -32,12 +32,12 @@ import { mapApiItemsToSprintBacklogItems, mapApiStatusToBacklogItem } from "../m
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
 import { shouldHideDetailMenu } from "../components/utils/itemDetailMenuUtils";
 import { mapApiItemsToSprints } from "../mappers";
+import { ApiGetSprintFailureAction } from "../actions/apiSprints";
 import {
-    ApiGetSprintFailureAction,
     ITEM_DETAIL_CLICK_STEP_1_NAME,
     ITEM_DETAIL_CLICK_STEP_2_NAME,
     ITEM_DETAIL_CLICK_STEP_3_NAME
-} from "../actions/apiSprints";
+} from "../actionFlows/itemDetailMenuActionFlow";
 
 // export type SprintBacklogItem = BacklogItemInSprint;
 

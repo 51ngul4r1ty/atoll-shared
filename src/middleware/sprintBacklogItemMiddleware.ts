@@ -4,7 +4,7 @@
  */
 
 // externals
-import { AnyAction, Store } from "redux";
+import type { Store } from "redux";
 
 // selectors
 import { getBacklogItemById } from "../selectors/backlogItemSelectors";
@@ -16,24 +16,21 @@ import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
 import {
-    apiGetSprintBacklogItems,
     ApiGetSprintBacklogItemsSuccessAction,
     ApiPostSprintBacklogItemSuccessAction,
-    ApiSplitSprintItemSuccessAction,
-    ApiSprintBacklogItemSetStatusSuccessAction
+    ApiSplitSprintItemSuccessAction
 } from "../actions/apiSprintBacklog";
 import { SaveableSprint } from "../reducers/sprintsReducer";
 
 // state
-import { StateTree } from "../reducers/rootReducer";
+import type { StateTree } from "../reducers/rootReducer";
 
 // actions
 import {
     addBacklogItemToSprint,
     moveBacklogItemToSprint,
     patchBacklogItemInSprint,
-    SprintBacklogItemDetailClickAction,
-    toggleSprintBacklogItemDetail
+    SprintBacklogItemDetailClickAction
 } from "../actions/sprintBacklogActions";
 import { AddNewSprintFormAction, addSprint, NewSprintPosition, updateSprintStats } from "../actions/sprintActions";
 
@@ -44,19 +41,12 @@ import { BacklogItemInSprint } from "../types/backlogItemTypes";
 import { mapApiItemToBacklogItem, mapApiItemToBacklogItemPart } from "../mappers/backlogItemMappers";
 import { removeProductBacklogItem } from "../actions/backlogItemActions";
 import { AnyFSA } from "../types/reactHelperTypes";
+import { ApiGetSprintSuccessAction } from "../actions/apiSprints";
 import {
-    apiGetSprint,
-    ApiGetSprintFailureAction,
-    ApiGetSprintSuccessAction,
-    ApiGetSprintSuccessActionMeta,
-    ApiGetSprintSuccessActionPayload,
-    ITEM_DETAIL_CLICK_STEP_1_NAME,
-    ITEM_DETAIL_CLICK_STEP_2_NAME,
-    ITEM_DETAIL_CLICK_STEP_3_NAME
-} from "../actions/apiSprints";
-import { buildFullUri, getLinkByRel, LINK_REL_NEXT } from "../utils/apiLinkHelper";
-import { ApiActionSuccessPayloadForItem } from "./apiTypes";
-import { ApiSprint } from "../apiModelTypes";
+    handleGetSprintBacklogItemsSuccessForItemDetailClick,
+    handleGetSprintSuccessForItemDetailClick,
+    handleSprintBacklogItemDetailClick
+} from "../actionFlows/itemDetailMenuActionFlow";
 
 export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA) => {
     next(action);
@@ -217,18 +207,10 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
         }
         case ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK: {
             const actionTyped = action as SprintBacklogItemDetailClickAction;
+            const actionType = action.type;
             const sprintId = actionTyped.payload.sprintId;
-            storeTyped.dispatch(
-                apiGetSprint(sprintId, {
-                    passthroughData: {
-                        triggerAction: action.type,
-                        sprintId: actionTyped.payload.sprintId,
-                        backlogItemId: actionTyped.payload.backlogItemId,
-                        stepName: ITEM_DETAIL_CLICK_STEP_1_NAME
-                    }
-                })
-            );
-
+            const backlogItemId = actionTyped.payload.backlogItemId;
+            handleSprintBacklogItemDetailClick(storeTyped, actionType, sprintId, backlogItemId);
             return;
         }
         case ActionTypes.API_GET_SPRINT_SUCCESS: {
@@ -240,19 +222,7 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
             if (triggerAction !== ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK) {
                 throw new Error("Unexpected result- SPRINT_BACKLOG_ITEM_DETAIL_CLICK expected as passthrough.triggerAction");
             } else {
-                switch (stepName) {
-                    case ITEM_DETAIL_CLICK_STEP_1_NAME: {
-                        processSprintDataForItemDetailClickStep1(payload, meta, storeTyped);
-                        break;
-                    }
-                    case ITEM_DETAIL_CLICK_STEP_2_NAME: {
-                        processSprintDataForItemDetailClickStep2(payload, meta, storeTyped);
-                        break;
-                    }
-                    default: {
-                        throw new Error("NOT IMPLEMENTED!!!!!!!");
-                    }
-                }
+                handleGetSprintSuccessForItemDetailClick(storeTyped, stepName, payload, meta);
             }
             return;
         }
@@ -260,66 +230,20 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
             const actionTyped = action as ApiGetSprintBacklogItemsSuccessAction;
             const meta = actionTyped.meta;
             const triggerAction = meta?.passthrough?.triggerAction;
-            const stepName = meta?.passthrough?.stepName || null;
-            const backlogItemId = meta?.passthrough?.backlogItemId || null;
             if (triggerAction === ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK) {
-                if (stepName === ITEM_DETAIL_CLICK_STEP_3_NAME) {
-                    const matchingItems = actionTyped.payload.response.data.items.filter((item) => item.id === backlogItemId);
-                    const hasBacklogItem = matchingItems.length > 0;
-                    const splitToNextSprintAvailable = !hasBacklogItem;
-                    const sprintId = meta.passthrough.sprintId;
-                    storeTyped.dispatch(toggleSprintBacklogItemDetail(sprintId, backlogItemId, splitToNextSprintAvailable));
-                    // TODO: 7. handle error conditions if either of the API calls fail
-                }
+                const stepName = meta?.passthrough?.stepName || null;
+                const apiBacklogItems = actionTyped.payload.response.data.items;
+                const sprintId = meta.passthrough.sprintId;
+                const backlogItemId = meta?.passthrough?.backlogItemId || null;
+                handleGetSprintBacklogItemsSuccessForItemDetailClick(
+                    storeTyped,
+                    stepName,
+                    apiBacklogItems,
+                    sprintId,
+                    backlogItemId
+                );
             }
             return;
         }
     }
-};
-
-export const processSprintDataForItemDetailClickStep1 = (
-    payload: ApiGetSprintSuccessActionPayload,
-    meta: ApiGetSprintSuccessActionMeta,
-    store: Store<StateTree>
-) => {
-    const sprintId = null;
-    const nextSprintLink = getLinkByRel(payload.response?.data?.item?.links, LINK_REL_NEXT);
-    if (nextSprintLink === null) {
-        // there's no next sprint, so the "split to next sprint" menu item should be disabled
-        // TODO: display menu but disable menu item
-    } else {
-        const nextSprintUri = nextSprintLink?.uri;
-        if (!nextSprintUri) {
-            throw new Error(`'next' link returned for sprint "${payload.response?.data?.item?.id}" but it is empty!`);
-        }
-        const endpointOverride = buildFullUri(meta.requestBody, nextSprintUri);
-        store.dispatch(
-            apiGetSprint(sprintId, {
-                passthroughData: {
-                    ...meta.passthrough,
-                    stepName: ITEM_DETAIL_CLICK_STEP_2_NAME
-                },
-                endpointOverride
-            })
-        );
-    }
-};
-
-export const processSprintDataForItemDetailClickStep2 = (
-    payload: ApiGetSprintSuccessActionPayload,
-    meta: ApiGetSprintSuccessActionMeta,
-    store: Store<StateTree>
-) => {
-    const sprintId = payload.response?.data?.item?.id;
-    if (!sprintId) {
-        throw new Error("Unexpected condition- sprint ID should be returned in payload got item-detail-click step 2");
-    }
-    store.dispatch(
-        apiGetSprintBacklogItems(sprintId, {
-            passthroughData: {
-                ...meta.passthrough,
-                stepName: ITEM_DETAIL_CLICK_STEP_3_NAME
-            }
-        })
-    );
 };

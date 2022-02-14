@@ -35,19 +35,13 @@ import { ApiBatchAction } from "../middleware/apiBatchTypes";
 import { buildActionTypes, buildStandardMeta } from "./utils/apiActionUtils";
 import { BacklogItemStatus } from "../types/backlogItemTypes";
 import { mapBacklogItemStatusToApi } from "../mappers/backlogItemMappers";
+import { ApiItemDetailMenuActionFlowSuccessMeta } from "../actionFlows/itemDetailMenuActionFlow";
 
 export type ApiGetSprintBacklogItemsSuccessActionParams = {
     sprintId: string;
     backlogItemId: string;
 };
-// TODO: Consolidate with ApiGetSprintSuccessActionMetaPassthrough - this is identical and probably will
-//   be useful in other parts of the code in future.
-export type ApiGetSprintBacklogItemsSuccessActionMetaPassthrough = {
-    triggerAction: string;
-    stepName: string;
-    sprintId: string;
-    backlogItemId: string;
-};
+export type ApiGetSprintBacklogItemsSuccessActionMetaPassthrough = ApiItemDetailMenuActionFlowSuccessMeta;
 export type ApiGetSprintBacklogItemsSuccessOrFailureActionMeta = ApiActionMetaDataRequestMeta<
     {},
     ApiGetSprintBacklogItemsSuccessActionParams,
