@@ -1,16 +1,23 @@
 // externals
 import { Draft } from "immer";
 
+// consts/enums
+import { PushOperationType } from "../../enums";
+import { Source, PushState } from "../enums";
+
 // interfaces/types
-import { PushBacklogItemModel } from "../../middleware/wsMiddleware";
-import { BacklogItemsState, BacklogItemWithSource, EditableBacklogItem, SaveableBacklogItem } from "./backlogItemsReducerTypes";
-import { BacklogItem, BacklogItemModel } from "../../types/backlogItemTypes";
-import { PushOperationType } from "../../types";
-import {
+import type { PushBacklogItemModel } from "../../middleware/wsMiddleware";
+import type {
+    BacklogItemsState,
+    BacklogItemWithSource,
+    EditableBacklogItem,
+    SaveableBacklogItem
+} from "./backlogItemsReducerTypes";
+import type { BacklogItem, BacklogItemModel } from "../../types/backlogItemTypes";
+import type {
     BacklogItemEditableFields,
     BacklogItemInstanceEditableFields
 } from "../../components/organisms/forms/backlogItemFormTypes";
-import { Source, PushState } from "../enums";
 
 // utils
 import { LinkedList } from "../../utils/linkedList";
