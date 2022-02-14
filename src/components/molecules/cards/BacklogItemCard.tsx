@@ -17,7 +17,7 @@ import { buildClassName } from "../../../utils/classNameBuilder";
 
 // consts/enums
 import { SaveableBacklogItem } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
-import { PushState } from "../../../reducers/types";
+import { PushState } from "../../../reducers/enums";
 import { StatusAcceptedIcon, StatusDoneIcon, StatusInProgressIcon, StatusReleasedIcon } from "../../atoms/icons";
 import { BacklogItemStatus } from "../../../types/backlogItemTypes";
 

@@ -3,10 +3,11 @@ import { Draft, produce } from "immer";
 
 // consts/enums
 import * as ActionTypes from "../../actions/actionTypes";
+import { PushOperationType } from "../../types";
+import { PushState } from "../enums";
 
 // interfaces/types
 import { AnyFSA } from "../../types/reactHelperTypes";
-import { PushOperationType } from "../../types";
 import {
     ApiPostBacklogItemSuccessAction,
     ApiGetBacklogItemsSuccessAction,
@@ -31,7 +32,6 @@ import {
 import { AppClickAction, AppKeyUpAction } from "../../actions/appActions";
 import { BacklogItemsState, BacklogItemWithSource, SaveableBacklogItem } from "./backlogItemsReducerTypes";
 import { MoveBacklogItemToSprintAction } from "../../actions/sprintBacklogActions";
-import { PushState } from "../types";
 
 // utils
 import {

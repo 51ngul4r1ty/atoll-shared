@@ -5,7 +5,6 @@ import { Draft, produce } from "immer";
 import { AnyFSA } from "../types/reactHelperTypes";
 import { StandardModelItem } from "../types";
 import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
-import { PushState, Source } from "./types";
 import { ApiGetSprintBacklogItemsSuccessAction, ApiSplitSprintItemSuccessAction } from "../actions/apiSprintBacklog";
 import {
     AddSprintAction,
@@ -30,6 +29,7 @@ import { DateOnly } from "../types/dateTypes";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
+import { PushState, Source } from "./enums";
 
 // utils
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";

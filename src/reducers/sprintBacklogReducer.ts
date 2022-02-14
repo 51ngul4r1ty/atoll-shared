@@ -3,6 +3,7 @@ import { Draft, produce } from "immer";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
+import { PushState } from "./enums";
 
 // interfaces/types
 import type { AnyFSA } from "../types/reactHelperTypes";
@@ -22,7 +23,6 @@ import type {
     SprintBacklogItemDetailClickAction,
     ToggleSprintBacklogItemDetailAction
 } from "../actions/sprintBacklogActions";
-import type { PushState } from "./types";
 import type { AppClickAction } from "../actions/appActions";
 import type { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
 import type { ApiBacklogItemInSprint } from "../apiModelTypes";

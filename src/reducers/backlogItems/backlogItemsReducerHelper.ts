@@ -10,7 +10,7 @@ import {
     BacklogItemEditableFields,
     BacklogItemInstanceEditableFields
 } from "../../components/organisms/forms/backlogItemFormTypes";
-import { Source, PushState } from "../types";
+import { Source, PushState } from "../enums";
 
 // utils
 import { LinkedList } from "../../utils/linkedList";

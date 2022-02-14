@@ -1,8 +1,9 @@
 // consts/enums
 export { APPLICATION_JSON } from "./constants";
 export { FEATURE_TOGGLE_LIST } from "./constants/defaultFeatureToggles";
-export { PushState } from "./reducers/types";
+export { PushState } from "./reducers/enums";
 export { rootReducerInitialState } from "./reducers/rootReducer";
+export { PushNotificationType } from "./enums";
 
 // types
 export * from "./types/index";
@@ -46,13 +47,13 @@ export * from "./config";
 
 // interfaces/types
 export * from "./apiModelTypes";
-export { BasePushNotification, WebsocketPushNotification as PushNotification, PushNotificationType } from "./types";
+export { BasePushNotification, WebsocketPushNotification as PushNotification } from "./types";
 export { FeatureToggle, FeatureTogglesState } from "./reducers/featureTogglesReducer";
 export { StateTree } from "./reducers/rootReducer";
 export { AppState } from "./reducers/appReducer";
 export { UserState } from "./reducers/userReducer";
 export { BacklogItemWithSource, BacklogItemsState } from "./reducers/backlogItems/backlogItemsReducerTypes";
-export { Source } from "./reducers/types";
+export { Source } from "./reducers/enums";
 export { BacklogItem, BacklogItemStatus, BacklogItemType } from "./types/backlogItemTypes";
 
 // contexts
