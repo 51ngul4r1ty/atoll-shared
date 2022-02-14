@@ -1,7 +1,7 @@
 // interfaces/types
 import { WebsocketPushNotificationData } from "../../types";
 import { BacklogItem, BacklogItemInSprint } from "../../types/backlogItemTypes";
-import { PushState, Source } from "../types";
+import { PushState, Source } from "../enums";
 
 export type SelectedBacklogItems = string[];
 

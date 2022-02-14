@@ -3,25 +3,27 @@ import { ApiBacklogItem, ApiBacklogItemPart } from "../apiModelTypes";
 
 export const cloneApiBacklogItem = (apiItem: ApiBacklogItem): ApiBacklogItem => ({
     acceptanceCriteria: apiItem.acceptanceCriteria,
+    acceptedAt: apiItem.acceptedAt,
     createdAt: apiItem.createdAt,
     estimate: apiItem.estimate,
     externalId: apiItem.externalId,
+    finishedAt: apiItem.finishedAt,
     friendlyId: apiItem.friendlyId,
     id: apiItem.id,
+    partIndex: apiItem.partIndex,
     projectId: apiItem.projectId,
     reasonPhrase: apiItem.reasonPhrase,
-    rolePhrase: apiItem.rolePhrase,
-    status: apiItem.status,
-    storyPhrase: apiItem.storyPhrase,
-    type: apiItem.type,
-    updatedAt: apiItem.updatedAt,
-    startedAt: apiItem.startedAt,
-    finishedAt: apiItem.finishedAt,
-    acceptedAt: apiItem.acceptedAt,
     releasedAt: apiItem.releasedAt,
-    partIndex: apiItem.partIndex,
+    rolePhrase: apiItem.rolePhrase,
+    startedAt: apiItem.startedAt,
+    status: apiItem.status,
+    storyEstimate: apiItem.storyEstimate,
+    storyPhrase: apiItem.storyPhrase,
     totalParts: apiItem.totalParts,
-    unallocatedParts: apiItem.unallocatedParts
+    type: apiItem.type,
+    unallocatedParts: apiItem.unallocatedParts,
+    unallocatedPoints: apiItem.unallocatedPoints,
+    updatedAt: apiItem.updatedAt
 });
 
 export const cloneApiBacklogItemPart = (apiItemPart: ApiBacklogItemPart): ApiBacklogItemPart => ({

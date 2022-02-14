@@ -23,3 +23,7 @@ export const cloneWithoutNested = <T>(item: T): T => {
     });
     return result;
 };
+
+export const cloneWithNested = <T>(item: T): T => {
+    return JSON.parse(JSON.stringify(item));
+};

@@ -21,6 +21,7 @@ export interface SprintBacklogItemMenuStateProps {
     menuDisabled?: boolean;
     renderMobile?: boolean;
     showDetailMenuToLeft?: boolean;
+    splitToNextSprintAvailable: boolean;
 }
 
 export interface SprintBacklogItemMenuDispatchProps {
@@ -92,7 +93,7 @@ export const InnerSprintBacklogItemMenu: React.FC<InnerSprintBacklogItemMenuProp
             }}
         />
         <SplitToNextSprintButton
-            disabled={props.menuDisabled}
+            disabled={props.menuDisabled || !props.splitToNextSprintAvailable}
             busy={props.busySplittingStory}
             suppressSpacing
             onClick={() => {

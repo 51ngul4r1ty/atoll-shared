@@ -8,7 +8,7 @@ import css from "./SprintCard.module.css";
 // utils
 import { buildClassName } from "../../../../utils/classNameBuilder";
 import { buildSprintPointInfoText, formatDateRange, sprintStatusToString } from "./sprintCardUtils";
-import { getBacklogItemElts } from "./sprintCardJsxUtils";
+import { getBacklogItemElts, ItemMenuBuilderBacklogItem } from "./sprintCardJsxUtils";
 import { ItemMenuBuilder } from "../BacklogItemCard";
 
 // interfaces/types
@@ -34,10 +34,12 @@ export interface SprintCardStateProps extends SprintCardSprint {
     className?: string;
     editMode: EditMode;
     openedDetailMenuBacklogItemId: string;
+    openingDetailMenuBacklogItemId: string;
     renderMobile?: boolean;
     selectedProductBacklogItemCount: number;
     showDetailMenu?: boolean;
     showDetailMenuToLeft?: boolean;
+    splitToNextSprintAvailable: boolean;
 }
 
 export interface SprintCardDispatchProps {
@@ -125,14 +127,22 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
             props.onBacklogItemIdClick(id);
         }
     };
+    const itemMenuBuilderBacklogItems: ItemMenuBuilderBacklogItem[] = !props.backlogItems
+        ? []
+        : props.backlogItems.map((item) => ({
+              ...item,
+              hasPartsInNextSprint: true
+          }));
     const sprintBacklogContents = props.backlogItemsLoaded ? (
         getBacklogItemElts(
             props.editMode,
             props.openedDetailMenuBacklogItemId,
+            props.openingDetailMenuBacklogItemId,
             props.renderMobile || false,
             props.showDetailMenuToLeft,
-            props.backlogItems,
+            itemMenuBuilderBacklogItems,
             props.busySplittingStory,
+            props.splitToNextSprintAvailable,
             handleDetailClick,
             handleBacklogItemIdClick,
             props.onMoveItemToBacklogClick,

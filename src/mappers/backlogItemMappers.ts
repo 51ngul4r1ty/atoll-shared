@@ -1,6 +1,11 @@
+// consts/enums
+import { BacklogItemStatus } from "../types/backlogItemEnums";
+
 // interfaces/types
-import { ApiBacklogItem, ApiBacklogItemInSprint, ApiBacklogItemPart, ApiBacklogItemStatus } from "../apiModelTypes";
-import { BacklogItem, BacklogItemPart, BacklogItemInSprint, BacklogItemStatus } from "../types/backlogItemTypes";
+import type { ApiBacklogItem, ApiBacklogItemInSprint, ApiBacklogItemPart, ApiBacklogItemStatus } from "../apiModelTypes";
+import type { BacklogItem, BacklogItemPart, BacklogItemInSprint } from "../types/backlogItemTypes";
+
+// utils
 import { dateToIsoDateString, isoDateStringToDate } from "../utils/apiPayloadConverters";
 
 export const mapApiStatusToBacklogItem = (status: string | null): BacklogItemStatus => {
@@ -67,11 +72,13 @@ export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem =>
     rolePhrase: apiItem.rolePhrase,
     startedAt: isoDateStringToDate(apiItem.startedAt),
     status: mapApiStatusToBacklogItem(apiItem.status),
+    storyEstimate: apiItem.storyEstimate,
     storyPhrase: apiItem.storyPhrase,
     totalParts: apiItem.totalParts,
     type: apiItem.type,
     updatedAt: isoDateStringToDate(apiItem.updatedAt),
     unallocatedParts: apiItem.unallocatedParts,
+    unallocatedPoints: apiItem.unallocatedPoints,
     version: apiItem.version
 });
 
@@ -118,10 +125,12 @@ export const mapBacklogItemToApiItem = (item: BacklogItem): ApiBacklogItem => ({
     rolePhrase: item.rolePhrase,
     startedAt: dateToIsoDateString(item.startedAt),
     status: mapBacklogItemStatusToApi(item.status),
+    storyEstimate: item.storyEstimate,
     storyPhrase: item.storyPhrase,
     totalParts: item.totalParts,
     type: item.type,
-    unallocatedParts: item.unallocatedParts
+    unallocatedParts: item.unallocatedParts,
+    unallocatedPoints: item.unallocatedPoints
 });
 
 export const mapSprintBacklogItemToApiItem = (item: BacklogItemInSprint): ApiBacklogItemInSprint => {

@@ -22,25 +22,26 @@ export const productBacklogItemMenuBuilder = (eventHandlers: ItemMenuEventHandle
     />
 );
 
-export const sprintBacklogItemMenuBuilder = (eventHandlers: ItemMenuEventHandlers): ItemMenuBuilder => (
-    itemId: string,
-    showMenuToLeft: boolean,
-    menuDisabled: boolean,
-    busyButtonName: string
-) => (
-    <SprintBacklogItemMenu
-        menuDisabled={menuDisabled}
-        showDetailMenuToLeft={showMenuToLeft}
-        busySplittingStory={busyButtonName === "splitStory"}
-        onMoveItemToBacklogClick={() => eventHandlers.handleEvent("onMoveItemToBacklogClick", itemId)}
-        onSplitBacklogItemClick={() => eventHandlers.handleEvent("onSplitBacklogItemClick", itemId)}
-        onBacklogItemAcceptedClick={() => eventHandlers.handleEvent("onBacklogItemAcceptedClick", itemId)}
-        onBacklogItemDoneClick={() => eventHandlers.handleEvent("onBacklogItemDoneClick", itemId)}
-        onBacklogItemInProgressClick={() => eventHandlers.handleEvent("onBacklogItemInProgressClick", itemId)}
-        onBacklogItemNotStartedClick={() => eventHandlers.handleEvent("onBacklogItemNotStartedClick", itemId)}
-        onBacklogItemReleasedClick={() => eventHandlers.handleEvent("onBacklogItemReleasedClick", itemId)}
-    />
-);
+export const sprintBacklogItemMenuBuilder = (
+    eventHandlers: ItemMenuEventHandlers,
+    splitToNextSprintAvailable: boolean
+): ItemMenuBuilder => (itemId: string, showMenuToLeft: boolean, menuDisabled: boolean, busyButtonName: string) => {
+    return (
+        <SprintBacklogItemMenu
+            menuDisabled={menuDisabled}
+            showDetailMenuToLeft={showMenuToLeft}
+            busySplittingStory={busyButtonName === "splitStory"}
+            splitToNextSprintAvailable={splitToNextSprintAvailable}
+            onMoveItemToBacklogClick={() => eventHandlers.handleEvent("onMoveItemToBacklogClick", itemId)}
+            onSplitBacklogItemClick={() => eventHandlers.handleEvent("onSplitBacklogItemClick", itemId)}
+            onBacklogItemAcceptedClick={() => eventHandlers.handleEvent("onBacklogItemAcceptedClick", itemId)}
+            onBacklogItemDoneClick={() => eventHandlers.handleEvent("onBacklogItemDoneClick", itemId)}
+            onBacklogItemInProgressClick={() => eventHandlers.handleEvent("onBacklogItemInProgressClick", itemId)}
+            onBacklogItemNotStartedClick={() => eventHandlers.handleEvent("onBacklogItemNotStartedClick", itemId)}
+            onBacklogItemReleasedClick={() => eventHandlers.handleEvent("onBacklogItemReleasedClick", itemId)}
+        />
+    );
+};
 
 export const sprintMenuBuilder = (eventHandlers: ItemMenuEventHandlers): ItemMenuBuilder => (
     itemId: string,

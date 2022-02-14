@@ -3,10 +3,11 @@ import { Draft, produce } from "immer";
 
 // consts/enums
 import * as ActionTypes from "../../actions/actionTypes";
+import { PushOperationType } from "../../enums";
+import { PushState } from "../enums";
 
 // interfaces/types
 import { AnyFSA } from "../../types/reactHelperTypes";
-import { PushOperationType } from "../../types";
 import {
     ApiPostBacklogItemSuccessAction,
     ApiGetBacklogItemsSuccessAction,
@@ -31,7 +32,6 @@ import {
 import { AppClickAction, AppKeyUpAction } from "../../actions/appActions";
 import { BacklogItemsState, BacklogItemWithSource, SaveableBacklogItem } from "./backlogItemsReducerTypes";
 import { MoveBacklogItemToSprintAction } from "../../actions/sprintBacklogActions";
-import { PushState } from "../types";
 
 // utils
 import {
@@ -49,6 +49,7 @@ import { BacklogItemInstanceEditableFields } from "../../components/organisms/fo
 import { isoDateStringToDate } from "../../utils/apiPayloadConverters";
 import { shouldHideDetailMenu } from "../../components/utils/itemDetailMenuUtils";
 
+// TODO: consider renaming this to use standard constant naming (all uppercase)
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
     allItems: [],
@@ -60,17 +61,47 @@ export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>(
     savedCurrentItem: null
 });
 
-export const removeBacklogItem = (draft: Draft<BacklogItemsState>, backlogItemId: string) => {
-    let result = false;
+export const hasMultipleUnallocatedParts = (backlogItem: SaveableBacklogItem) => {
+    return backlogItem.unallocatedParts > 1;
+};
+
+export type RemoveBacklogItemResult = {
+    itemWasRemoved: boolean;
+    wasUpdated: boolean;
+};
+
+export const removeBacklogItem = (
+    draft: Draft<BacklogItemsState>,
+    backlogItemId: string,
+    unallocatedPoints?: number
+): RemoveBacklogItemResult => {
+    let result: RemoveBacklogItemResult = {
+        itemWasRemoved: false,
+        wasUpdated: false
+    };
     const idx = draft.addedItems.findIndex((item) => item.id === backlogItemId);
     if (idx >= 0) {
-        draft.addedItems.splice(idx, 1);
-        result = true;
+        const backlogItem = draft.addedItems[idx];
+        if (!hasMultipleUnallocatedParts(backlogItem)) {
+            draft.addedItems.splice(idx, 1);
+            result.itemWasRemoved = true;
+        } else {
+            draft.addedItems[idx].unallocatedParts--;
+            draft.addedItems[idx].unallocatedPoints = unallocatedPoints;
+        }
+        result.wasUpdated = true;
     }
     const idx2 = draft.items.findIndex((item) => item.id === backlogItemId);
     if (idx2 >= 0) {
-        draft.items.splice(idx2, 1);
-        result = true;
+        const backlogItem = draft.items[idx2];
+        if (!hasMultipleUnallocatedParts(backlogItem)) {
+            draft.items.splice(idx2, 1);
+            result.itemWasRemoved = true;
+        } else {
+            draft.items[idx2].unallocatedParts--;
+            draft.items[idx2].unallocatedPoints = unallocatedPoints;
+        }
+        result.wasUpdated = true;
     }
     rebuildAllItems(draft);
     return result;
@@ -308,10 +339,14 @@ export const backlogItemsReducer = (
             }
             case ActionTypes.MOVE_BACKLOG_ITEM_TO_SPRINT: {
                 const actionTyped = action as MoveBacklogItemToSprintAction;
-                const backlogItemId = actionTyped.payload.backlogItem.id;
-                removeBacklogItem(draft, backlogItemId);
-                unselectProductBacklogItemId(draft, backlogItemId);
-                rebuildAllItems(draft); // TODO: This wasn't here before- check whether it is really needed
+                const backlogItemId = actionTyped.payload.sprintBacklogItem.id;
+                const productBacklogItem = actionTyped.payload.productBacklogItem;
+                const unallocatedPoints = productBacklogItem.unallocatedPoints;
+                const { itemWasRemoved } = removeBacklogItem(draft, backlogItemId, unallocatedPoints);
+                if (itemWasRemoved) {
+                    unselectProductBacklogItemId(draft, backlogItemId);
+                }
+                rebuildAllItems(draft);
                 return;
             }
             case ActionTypes.REMOVE_PRODUCT_BACKLOG_ITEM: {
@@ -324,11 +359,20 @@ export const backlogItemsReducer = (
             }
             case ActionTypes.ADD_PRODUCT_BACKLOG_ITEM: {
                 const actionTyped = action as AddProductBacklogItemAction;
+                const backlogItem = actionTyped.payload.backlogItem;
                 const newItem: SaveableBacklogItem = {
                     ...actionTyped.payload.backlogItem,
                     saved: true
                 };
-                draft.items = [newItem, ...draft.items];
+                const idxInAddedList = draft.addedItems.findIndex((item) => item.id === backlogItem.id);
+                const idxInItemList = draft.items.findIndex((item) => item.id === backlogItem.id);
+                if (idxInAddedList >= 0) {
+                    draft.addedItems[idxInAddedList] = newItem;
+                } else if (idxInItemList >= 0) {
+                    draft.items[idxInItemList] = newItem;
+                } else {
+                    draft.items = [newItem, ...draft.items];
+                }
                 rebuildAllItems(draft);
                 return;
             }
@@ -360,7 +404,8 @@ export const backlogItemsReducer = (
                         releasedAt: isoDateStringToDate(backlogItem.releasedAt),
                         partIndex: backlogItem.partIndex,
                         totalParts: backlogItem.totalParts,
-                        unallocatedParts: backlogItem.unallocatedParts
+                        unallocatedParts: backlogItem.unallocatedParts,
+                        unallocatedPoints: backlogItem.unallocatedPoints
                     };
                     draft.savedCurrentItem = { ...draft.currentItem };
                 }
