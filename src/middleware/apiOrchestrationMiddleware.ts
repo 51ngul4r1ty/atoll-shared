@@ -10,7 +10,7 @@ import * as HttpStatus from "http-status-codes";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
-import { BacklogItemStatus } from "../types/backlogItemTypes";
+import { BacklogItemStatus } from "../types/backlogItemEnums";
 import { EditMode } from "../components/common/componentEnums";
 
 // selectors
@@ -74,7 +74,7 @@ import { StateTree } from "../reducers/rootReducer";
 import { buildApiPayloadBaseForResource } from "../selectors/apiSelectors";
 import { getCurrentProjectId } from "../selectors/userSelectors";
 import { getSprintById, getSprintByInstanceId } from "../selectors/sprintSelectors";
-import { getSprintBacklogItemById } from "../selectors/sprintBacklogSelectors";
+import { getSprintBacklogItemById, lookupPartIdForBacklogItemInSprint } from "../selectors/sprintBacklogSelectors";
 
 // utils
 import { convertToBacklogItemModel, convertToSprintModel } from "../utils/apiPayloadHelper";
@@ -231,49 +231,60 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             break;
         }
         case ActionTypes.SPRINT_BACKLOG_ITEM_ACCEPTED_CLICK: {
+            const state = storeTyped.getState();
             const actionTyped = action as SprintBacklogItemAcceptedClickAction;
             const sprintId = actionTyped.payload.sprintId;
-            const backlogItemPartId = actionTyped.payload.backlogItemPartId;
+            const backlogItemId = actionTyped.payload.backlogItemId;
+            const backlogItemPartId = lookupPartIdForBacklogItemInSprint(state, sprintId, backlogItemId);
             storeTyped.dispatch(apiSprintBacklogItemSetStatus(sprintId, backlogItemPartId, BacklogItemStatus.Accepted));
             break;
         }
         case ActionTypes.SPRINT_BACKLOG_ITEM_DONE_CLICK: {
+            const state = storeTyped.getState();
             const actionTyped = action as SprintBacklogItemDoneClickAction;
             const sprintId = actionTyped.payload.sprintId;
-            const backlogItemPartId = actionTyped.payload.backlogItemPartId;
+            const backlogItemId = actionTyped.payload.backlogItemId;
+            const backlogItemPartId = lookupPartIdForBacklogItemInSprint(state, sprintId, backlogItemId);
             storeTyped.dispatch(apiSprintBacklogItemSetStatus(sprintId, backlogItemPartId, BacklogItemStatus.Done));
             break;
         }
         case ActionTypes.SPRINT_BACKLOG_ITEM_IN_PROGRESS_CLICK: {
+            const state = storeTyped.getState();
             const actionTyped = action as SprintBacklogItemInProgressClickAction;
             const sprintId = actionTyped.payload.sprintId;
-            const backlogItemPartId = actionTyped.payload.backlogItemPartId;
+            const backlogItemId = actionTyped.payload.backlogItemId;
+            const backlogItemPartId = lookupPartIdForBacklogItemInSprint(state, sprintId, backlogItemId);
             storeTyped.dispatch(apiSprintBacklogItemSetStatus(sprintId, backlogItemPartId, BacklogItemStatus.InProgress));
             break;
         }
         case ActionTypes.SPRINT_BACKLOG_ITEM_NOT_STARTED_CLICK: {
+            const state = storeTyped.getState();
             const actionTyped = action as SprintBacklogItemNotStartedClickAction;
             const sprintId = actionTyped.payload.sprintId;
-            const backlogItemId = actionTyped.payload.backlogItemPartId;
-            storeTyped.dispatch(apiSprintBacklogItemSetStatus(sprintId, backlogItemId, BacklogItemStatus.NotStarted));
+            const backlogItemId = actionTyped.payload.backlogItemId;
+            const backlogItemPartId = lookupPartIdForBacklogItemInSprint(state, sprintId, backlogItemId);
+            storeTyped.dispatch(apiSprintBacklogItemSetStatus(sprintId, backlogItemPartId, BacklogItemStatus.NotStarted));
             break;
         }
         case ActionTypes.SPRINT_BACKLOG_ITEM_RELEASED_CLICK: {
+            const state = storeTyped.getState();
             const actionTyped = action as SprintBacklogItemReleasedClickAction;
             const sprintId = actionTyped.payload.sprintId;
-            const backlogItemId = actionTyped.payload.backlogItemPartId;
-            storeTyped.dispatch(apiSprintBacklogItemSetStatus(sprintId, backlogItemId, BacklogItemStatus.Released));
+            const backlogItemId = actionTyped.payload.backlogItemId;
+            const backlogItemPartId = lookupPartIdForBacklogItemInSprint(state, sprintId, backlogItemId);
+            storeTyped.dispatch(apiSprintBacklogItemSetStatus(sprintId, backlogItemPartId, BacklogItemStatus.Released));
             break;
         }
         case ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS: {
             const actionTyped = action as ApiMoveSprintItemToProductBacklogSuccessAction;
             // default to 1 unallocated part because we're moving this into the backlog - so it can only be 1+
             const unallocatedParts = actionTyped.payload.response.data.extra?.backlogItem?.unallocatedParts || 1;
+            const unallocatedPoints = actionTyped.payload.response.data.extra?.backlogItem?.unallocatedPoints || 1;
             const sprintId = actionTyped.meta.actionParams.sprintId;
             const backlogItemId = actionTyped.meta.actionParams.backlogItemId;
             const state = storeTyped.getState();
             const backlogItem = getSprintBacklogItemById(state, sprintId, backlogItemId);
-            storeTyped.dispatch(addProductBacklogItem({ ...backlogItem, unallocatedParts }));
+            storeTyped.dispatch(addProductBacklogItem({ ...backlogItem, unallocatedParts, unallocatedPoints }));
             const response = actionTyped.payload.response;
             storeTyped.dispatch(removeSprintBacklogItem(sprintId, backlogItemId));
             const sprintStats = response.data.extra?.sprintStats;

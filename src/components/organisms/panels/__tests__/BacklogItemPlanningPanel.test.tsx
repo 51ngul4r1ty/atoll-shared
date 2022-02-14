@@ -5,12 +5,16 @@ import * as React from "react";
 import "jest";
 import { render } from "@testing-library/react";
 
+// consts/enums
+import { EditMode } from "../../../common/componentEnums";
+import { Source } from "../../../../reducers/enums";
+import { BacklogItemStatus } from "../../../../types/backlogItemEnums";
+
+// interfaces/types
+import type { BacklogItemWithSource } from "../../../../reducers/backlogItems/backlogItemsReducerTypes";
+
 // code under test
 import { BacklogItemPlanningPanel } from "../backlogItemPlanning/BacklogItemPlanningPanel";
-import { EditMode } from "../../../common/componentEnums";
-import { Source } from "../../../../reducers/types";
-import { BacklogItemWithSource } from "../../../../reducers/backlogItems/backlogItemsReducerTypes";
-import { BacklogItemStatus } from "../../../../types/backlogItemTypes";
 
 // mocks
 const mockUseDispatch = jest.fn();
@@ -114,7 +118,8 @@ const buildCommonItem = (
     partIndex: 1,
     storyEstimate: estimate,
     totalParts: 1,
-    unallocatedParts: 0
+    unallocatedParts: 0,
+    unallocatedPoints: 0
 });
 
 const buildAddedItem = (itemNumber: number, instanceId: number | null, estimate: number, saved: boolean): BacklogItemWithSource =>
@@ -132,12 +137,13 @@ describe("BacklogItemPlanningPanel", () => {
         const editMode = EditMode.Edit;
         const wrapper = render(
             <BacklogItemPlanningPanel
-                openedDetailMenuBacklogItemId={null}
                 allItems={allItems}
+                busySplittingStory={false}
                 editMode={editMode}
-                renderMobile
                 onAddNewBacklogItemForm={() => {}}
                 onReorderBacklogItems={() => {}}
+                openedDetailMenuBacklogItemId={null}
+                renderMobile
             />
         );
         expect(wrapper.container).toMatchSnapshot();
@@ -150,12 +156,13 @@ describe("BacklogItemPlanningPanel", () => {
         const editMode = EditMode.Edit;
         const wrapper = render(
             <BacklogItemPlanningPanel
-                openedDetailMenuBacklogItemId={null}
                 allItems={allItems}
+                busySplittingStory={false}
                 editMode={editMode}
-                renderMobile
                 onAddNewBacklogItemForm={() => {}}
                 onReorderBacklogItems={() => {}}
+                openedDetailMenuBacklogItemId={null}
+                renderMobile
             />
         );
         expect(wrapper.container).toMatchSnapshot();
@@ -167,12 +174,13 @@ describe("BacklogItemPlanningPanel", () => {
         const editMode = EditMode.Edit;
         const wrapper = render(
             <BacklogItemPlanningPanel
-                openedDetailMenuBacklogItemId={null}
                 allItems={allItems}
+                busySplittingStory={false}
                 editMode={editMode}
-                renderMobile
                 onAddNewBacklogItemForm={() => {}}
                 onReorderBacklogItems={() => {}}
+                openedDetailMenuBacklogItemId={null}
+                renderMobile
             />
         );
         expect(wrapper.container).toMatchSnapshot();
@@ -184,12 +192,13 @@ describe("BacklogItemPlanningPanel", () => {
         const editMode = EditMode.View;
         const wrapper = render(
             <BacklogItemPlanningPanel
-                openedDetailMenuBacklogItemId={null}
                 allItems={allItems}
+                busySplittingStory={false}
                 editMode={editMode}
-                renderMobile
                 onAddNewBacklogItemForm={() => {}}
                 onReorderBacklogItems={() => {}}
+                openedDetailMenuBacklogItemId={null}
+                renderMobile
             />
         );
         expect(wrapper.container).toMatchSnapshot();
@@ -203,12 +212,13 @@ describe("BacklogItemPlanningPanel", () => {
         const editMode = EditMode.Edit;
         const wrapper = render(
             <BacklogItemPlanningPanel
-                openedDetailMenuBacklogItemId={null}
                 allItems={allItems}
+                busySplittingStory={false}
                 editMode={editMode}
-                renderMobile
                 onAddNewBacklogItemForm={() => {}}
                 onReorderBacklogItems={() => {}}
+                openedDetailMenuBacklogItemId={null}
+                renderMobile
             />
         );
         expect(wrapper.container).toMatchSnapshot();

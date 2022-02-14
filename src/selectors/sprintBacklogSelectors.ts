@@ -21,14 +21,19 @@ export const getBacklogItemsForSprint = (state: StateTree, sprintId: string): Ba
     return sprintData.items;
 };
 
-export interface OpenedDetailMenuInfo {
+export interface OpenedOrOpeningDetailMenuInfo {
     backlogItemId: string;
     sprintId: string;
 }
 
-export const getOpenedDetailMenuInfo = (state: StateTree): OpenedDetailMenuInfo => ({
+export const getOpenedDetailMenuInfo = (state: StateTree): OpenedOrOpeningDetailMenuInfo => ({
     backlogItemId: state.sprintBacklog.openedDetailMenuBacklogItemId,
     sprintId: state.sprintBacklog.openedDetailMenuSprintId
+});
+
+export const getOpeningDetailMenuInfo = (state: StateTree): OpenedOrOpeningDetailMenuInfo => ({
+    backlogItemId: state.sprintBacklog.openingDetailMenuBacklogItemId,
+    sprintId: state.sprintBacklog.openingDetailMenuSprintId
 });
 
 export const getSprintBacklogItemById = (state: StateTree, sprintId: string, backlogItemId: string) => {
@@ -44,3 +49,8 @@ export const isSplitInProgress = createSelector(
     [sprintBacklog],
     (sprintBacklog: SprintBacklogState): boolean => sprintBacklog.splitInProgress
 );
+
+export const lookupPartIdForBacklogItemInSprint = (state: StateTree, sprintId: string, backlogItemId: string): string | null => {
+    const sprintBacklogItem = getSprintBacklogItemById(state, sprintId, backlogItemId);
+    return sprintBacklogItem.backlogItemPartId || null;
+};

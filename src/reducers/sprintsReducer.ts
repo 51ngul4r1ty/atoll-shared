@@ -5,7 +5,6 @@ import { Draft, produce } from "immer";
 import { AnyFSA } from "../types/reactHelperTypes";
 import { StandardModelItem } from "../types";
 import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
-import { PushState, Source } from "./types";
 import { ApiGetSprintBacklogItemsSuccessAction, ApiSplitSprintItemSuccessAction } from "../actions/apiSprintBacklog";
 import {
     AddSprintAction,
@@ -30,6 +29,7 @@ import { DateOnly } from "../types/dateTypes";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
+import { PushState, Source } from "./enums";
 
 // utils
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
@@ -46,6 +46,7 @@ import {
 // actions
 import { AppClickAction } from "../actions/appActions";
 import { UpdateSprintStatsAction } from "../actions/sprintActions";
+import { ToggleSprintBacklogItemDetailAction } from "../actions/sprintBacklogActions";
 
 export interface Sprint extends StandardModelItem {
     acceptedPoints: number | null;
@@ -93,6 +94,7 @@ export type SprintsState = Readonly<{
     originalData: OriginalSprintData;
     openedDetailMenuSprintId: string | null;
     openedDatePickerInfo: SprintOpenedDatePickerInfo;
+    splitToNextSprintAvailable: boolean;
 }>;
 
 export const sprintsReducerInitialState = Object.freeze<SprintsState>({
@@ -104,7 +106,8 @@ export const sprintsReducerInitialState = Object.freeze<SprintsState>({
     openedDatePickerInfo: {
         sprintId: null,
         showPicker: SprintDetailShowingPicker.None
-    }
+    },
+    splitToNextSprintAvailable: false
 });
 
 export const rebuildAllItems = (draft: Draft<SprintsState>) => {
@@ -438,6 +441,11 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                     item.plannedPoints = sprintStats.plannedPoints;
                 });
                 rebuildAllItems(draft);
+                return;
+            }
+            case ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL: {
+                const actionTyped = action as ToggleSprintBacklogItemDetailAction;
+                draft.splitToNextSprintAvailable = actionTyped.payload.splitToNextSprintAvailable;
                 return;
             }
         }

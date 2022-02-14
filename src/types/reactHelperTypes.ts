@@ -1,6 +1,6 @@
 // externals
 import { ForwardRefExoticComponent, PropsWithoutRef, PropsWithChildren, RefAttributes } from "react";
-import { Action } from "redux";
+import type { Action } from "redux";
 
 /* Flux Standard Action related */
 

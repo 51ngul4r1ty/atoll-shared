@@ -3,32 +3,44 @@ import { Draft, produce } from "immer";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
+import { PushState } from "./enums";
 
 // interfaces/types
-import { AnyFSA } from "../types/reactHelperTypes";
-import { ApiGetSprintBacklogItemsSuccessAction, ApiSprintBacklogItemSetStatusSuccessAction } from "../actions/apiSprintBacklog";
-import { BacklogItemInSprint } from "../types/backlogItemTypes";
-import { BacklogItemInSprintWithSource } from "./backlogItems/backlogItemsReducerTypes";
-import {
+import type { AnyFSA } from "../types/reactHelperTypes";
+import type {
+    ApiGetSprintBacklogItemsFailureAction,
+    ApiGetSprintBacklogItemsSuccessAction,
+    ApiSprintBacklogItemSetStatusSuccessAction
+} from "../actions/apiSprintBacklog";
+import type { BacklogItemInSprint } from "../types/backlogItemTypes";
+import type { BacklogItemInSprintWithSource } from "./backlogItems/backlogItemsReducerTypes";
+import type {
     AddBacklogItemToSprintAction,
     ChangeSprintPlanningArchivedFilterAction,
     MoveBacklogItemToSprintAction,
     PatchBacklogItemInSprintAction,
     RemoveSprintBacklogItemAction,
+    SprintBacklogItemDetailClickAction,
     ToggleSprintBacklogItemDetailAction
 } from "../actions/sprintBacklogActions";
-import { PushState } from "./types";
-import { AppClickAction } from "../actions/appActions";
-import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
-import { ApiBacklogItemInSprint } from "../apiModelTypes";
+import type { AppClickAction } from "../actions/appActions";
+import type { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
+import type { ApiBacklogItemInSprint } from "../apiModelTypes";
+import type { ApiGetSprintFailureAction } from "../actions/apiSprints";
+
+// consts/enums
+import {
+    ITEM_DETAIL_CLICK_STEP_1_NAME,
+    ITEM_DETAIL_CLICK_STEP_2_NAME,
+    ITEM_DETAIL_CLICK_STEP_3_NAME
+} from "../actionFlows/itemDetailMenuActionFlow";
 
 // utils
 import { mapApiItemsToSprintBacklogItems, mapApiStatusToBacklogItem } from "../mappers/backlogItemMappers";
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
 import { shouldHideDetailMenu } from "../components/utils/itemDetailMenuUtils";
 import { mapApiItemsToSprints } from "../mappers";
-
-// export type SprintBacklogItem = BacklogItemInSprint;
+import { getFlowInfoFromAction } from "../utils/actionFlowUtils";
 
 export interface SprintBacklogSprint {
     items: BacklogItemInSprint[];
@@ -37,7 +49,9 @@ export interface SprintBacklogSprint {
 export type SprintBacklogState = Readonly<{
     includeArchivedSprints: boolean;
     openedDetailMenuBacklogItemId: string | null;
+    openingDetailMenuBacklogItemId: string | null;
     openedDetailMenuSprintId: string | null;
+    openingDetailMenuSprintId: string | null;
     splitInProgress: boolean;
     sprints: { [sprintId: string]: SprintBacklogSprint };
 }>;
@@ -45,7 +59,9 @@ export type SprintBacklogState = Readonly<{
 export const sprintBacklogReducerInitialState = Object.freeze<SprintBacklogState>({
     includeArchivedSprints: false,
     openedDetailMenuBacklogItemId: null,
+    openingDetailMenuBacklogItemId: null,
     openedDetailMenuSprintId: null,
+    openingDetailMenuSprintId: null,
     splitInProgress: false,
     sprints: {}
 });
@@ -107,7 +123,7 @@ export const sprintBacklogReducer = (
                 const actionTyped = action as MoveBacklogItemToSprintAction;
                 const sprintId = actionTyped.payload.sprintId;
                 let sprint = getOrAddSprintById(draft, sprintId);
-                sprint.items.push(actionTyped.payload.backlogItem);
+                sprint.items.push(actionTyped.payload.sprintBacklogItem);
                 return;
             }
             case ActionTypes.ADD_BACKLOG_ITEM_TO_SPRINT: {
@@ -115,6 +131,48 @@ export const sprintBacklogReducer = (
                 const sprintId = actionTyped.payload.sprintId;
                 let sprint = getOrAddSprintById(draft, sprintId);
                 sprint.items.push(actionTyped.payload.backlogItem);
+                return;
+            }
+            case ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK: {
+                const actionTyped = action as SprintBacklogItemDetailClickAction;
+                const sprintId = actionTyped.payload.sprintId;
+                draft.openingDetailMenuBacklogItemId = calcDropDownMenuState(
+                    draft.openingDetailMenuBacklogItemId,
+                    actionTyped.payload.backlogItemId,
+                    (itemId: string) => getSprintBacklogItemById(state, sprintId, itemId),
+                    (item) => item.pushState !== PushState.Removed
+                );
+                draft.openingDetailMenuSprintId = draft.openingDetailMenuBacklogItemId ? sprintId : null;
+                return;
+            }
+            case ActionTypes.API_GET_SPRINT_FAILURE: {
+                const actionTyped = action as ApiGetSprintFailureAction;
+                const { triggerAction, stepName } = getFlowInfoFromAction(actionTyped);
+                if (triggerAction !== ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK) {
+                    return;
+                } else if (stepName === ITEM_DETAIL_CLICK_STEP_1_NAME || stepName === ITEM_DETAIL_CLICK_STEP_2_NAME) {
+                    if (draft.openingDetailMenuSprintId === actionTyped.meta.actionParams.sprintId) {
+                        draft.openingDetailMenuSprintId = null;
+                    }
+                } else {
+                    throw new Error(`Unable to handle API_GET_SPRINT_FAILURE for "${triggerAction}" step "${stepName}"`);
+                }
+                return;
+            }
+            case ActionTypes.API_GET_SPRINT_BACKLOG_ITEMS_FAILURE: {
+                const actionTyped = action as ApiGetSprintBacklogItemsFailureAction;
+                const { triggerAction, stepName } = getFlowInfoFromAction(actionTyped);
+                if (triggerAction === ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK) {
+                    if (stepName === ITEM_DETAIL_CLICK_STEP_3_NAME) {
+                        if (draft.openingDetailMenuSprintId === actionTyped.meta.passthrough.sprintId) {
+                            draft.openingDetailMenuSprintId = null;
+                        }
+                    } else {
+                        throw new Error(
+                            `Unable to handle API_GET_SPRINT_BACKLOG_ITEMS_SUCCESS for "${triggerAction}" step "${stepName}"`
+                        );
+                    }
+                }
                 return;
             }
             case ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL: {
@@ -127,6 +185,10 @@ export const sprintBacklogReducer = (
                     (item) => item.pushState !== PushState.Removed
                 );
                 draft.openedDetailMenuSprintId = draft.openedDetailMenuBacklogItemId ? sprintId : null;
+                const hasItemDetailMenuOpened = !!draft.openedDetailMenuBacklogItemId;
+                if (hasItemDetailMenuOpened) {
+                    draft.openingDetailMenuBacklogItemId = null;
+                }
                 return;
             }
             case ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS: {
@@ -226,6 +288,7 @@ export const sprintBacklogReducer = (
                 draft.splitInProgress = true;
                 return;
             }
+            // TODO: Add something similar for openingDetailMenuBacklogItemId when API calls fail
             case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {
                 draft.splitInProgress = false;
                 draft.openedDetailMenuBacklogItemId = null;
@@ -236,6 +299,8 @@ export const sprintBacklogReducer = (
                 draft.openedDetailMenuBacklogItemId = null;
                 return;
             }
+            // TODO: Add something similar for openingDetailMenuBacklogItemId??? Although I think this will be handled when API call
+            //   returns either successfully or with a failed state.
             case ActionTypes.APP_CLICK: {
                 const actionTyped = action as AppClickAction;
                 const parent = actionTyped.payload.parent;

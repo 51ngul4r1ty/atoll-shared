@@ -3,7 +3,6 @@ import * as ActionTypes from "./actionTypes";
 
 // interfaces/types
 import { BacklogItem, BacklogItemInSprint } from "../types/backlogItemTypes";
-import { ApiBacklogItem } from "../apiModelTypes";
 
 export interface MoveSelectedBacklogItemsToSprintUsingApiActionPayload {
     sprintId: string;
@@ -21,27 +20,38 @@ export const moveSelectedBacklogItemsToSprintUsingApi = (sprintId: string): Move
     }
 });
 
-export interface AddOrMoveBacklogItemToSprintActionPayload {
+export interface AddBacklogItemToSprintActionPayload {
     sprintId: string;
     backlogItem: BacklogItemInSprint;
 }
 
-export interface MoveBacklogItemToSprintAction {
-    type: typeof ActionTypes.MOVE_BACKLOG_ITEM_TO_SPRINT;
-    payload: AddOrMoveBacklogItemToSprintActionPayload;
+export interface MoveBacklogItemToSprintActionPayload {
+    sprintId: string;
+    sprintBacklogItem: BacklogItemInSprint;
+    productBacklogItem: BacklogItem;
 }
 
-export const moveBacklogItemToSprint = (sprintId: string, backlogItem: BacklogItemInSprint): MoveBacklogItemToSprintAction => ({
+export interface MoveBacklogItemToSprintAction {
+    type: typeof ActionTypes.MOVE_BACKLOG_ITEM_TO_SPRINT;
+    payload: MoveBacklogItemToSprintActionPayload;
+}
+
+export const moveBacklogItemToSprint = (
+    sprintId: string,
+    sprintBacklogItem: BacklogItemInSprint,
+    productBacklogItem: BacklogItem
+): MoveBacklogItemToSprintAction => ({
     type: ActionTypes.MOVE_BACKLOG_ITEM_TO_SPRINT,
     payload: {
         sprintId,
-        backlogItem
+        sprintBacklogItem,
+        productBacklogItem
     }
 });
 
 export interface AddBacklogItemToSprintAction {
     type: typeof ActionTypes.ADD_BACKLOG_ITEM_TO_SPRINT;
-    payload: AddOrMoveBacklogItemToSprintActionPayload;
+    payload: AddBacklogItemToSprintActionPayload;
 }
 
 export const addBacklogItemToSprint = (sprintId: string, backlogItem: BacklogItemInSprint): AddBacklogItemToSprintAction => ({
@@ -76,9 +86,28 @@ export const patchBacklogItemInSprint = (
     }
 });
 
+export interface SprintBacklogItemDetailClickPayload {
+    sprintId: string;
+    backlogItemId: string;
+}
+
+export interface SprintBacklogItemDetailClickAction {
+    type: typeof ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK;
+    payload: SprintBacklogItemDetailClickPayload;
+}
+
+export const sprintBacklogItemDetailClick = (sprintId, backlogItemId: string): SprintBacklogItemDetailClickAction => ({
+    type: ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK,
+    payload: {
+        sprintId,
+        backlogItemId
+    }
+});
+
 export interface ToggleSprintBacklogItemDetailPayload {
     sprintId: string;
     backlogItemId: string;
+    splitToNextSprintAvailable: boolean;
 }
 
 export interface ToggleSprintBacklogItemDetailAction {
@@ -86,11 +115,16 @@ export interface ToggleSprintBacklogItemDetailAction {
     payload: ToggleSprintBacklogItemDetailPayload;
 }
 
-export const sprintBacklogItemDetailClick = (sprintId, backlogItemId: string): ToggleSprintBacklogItemDetailAction => ({
+export const toggleSprintBacklogItemDetail = (
+    sprintId,
+    backlogItemId: string,
+    splitToNextSprintAvailable: boolean
+): ToggleSprintBacklogItemDetailAction => ({
     type: ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL,
     payload: {
         sprintId,
-        backlogItemId
+        backlogItemId,
+        splitToNextSprintAvailable
     }
 });
 
@@ -132,7 +166,7 @@ export const sprintSplitBacklogItemClick = (sprintId: string, backlogItemId: str
 
 export interface SprintBacklogItemStatusClickPayload {
     sprintId: string;
-    backlogItemPartId: string;
+    backlogItemId: string;
 }
 
 export interface SprintBacklogItemAcceptedClickAction {
@@ -140,14 +174,11 @@ export interface SprintBacklogItemAcceptedClickAction {
     payload: SprintBacklogItemStatusClickPayload;
 }
 
-export const sprintBacklogItemAcceptedClick = (
-    sprintId: string,
-    backlogItemPartId: string
-): SprintBacklogItemAcceptedClickAction => ({
+export const sprintBacklogItemAcceptedClick = (sprintId: string, backlogItemId: string): SprintBacklogItemAcceptedClickAction => ({
     type: ActionTypes.SPRINT_BACKLOG_ITEM_ACCEPTED_CLICK,
     payload: {
         sprintId,
-        backlogItemPartId
+        backlogItemId
     }
 });
 
@@ -156,11 +187,11 @@ export interface SprintBacklogItemDoneClickAction {
     payload: SprintBacklogItemStatusClickPayload;
 }
 
-export const sprintBacklogItemDoneClick = (sprintId: string, backlogItemPartId: string): SprintBacklogItemDoneClickAction => ({
+export const sprintBacklogItemDoneClick = (sprintId: string, backlogItemId: string): SprintBacklogItemDoneClickAction => ({
     type: ActionTypes.SPRINT_BACKLOG_ITEM_DONE_CLICK,
     payload: {
         sprintId,
-        backlogItemPartId
+        backlogItemId
     }
 });
 
@@ -171,12 +202,12 @@ export interface SprintBacklogItemInProgressClickAction {
 
 export const sprintBacklogItemInProgressClick = (
     sprintId: string,
-    backlogItemPartId: string
+    backlogItemId: string
 ): SprintBacklogItemInProgressClickAction => ({
     type: ActionTypes.SPRINT_BACKLOG_ITEM_IN_PROGRESS_CLICK,
     payload: {
         sprintId,
-        backlogItemPartId
+        backlogItemId
     }
 });
 
@@ -187,12 +218,12 @@ export interface SprintBacklogItemNotStartedClickAction {
 
 export const sprintBacklogItemNotStartedClick = (
     sprintId: string,
-    backlogItemPartId: string
+    backlogItemId: string
 ): SprintBacklogItemNotStartedClickAction => ({
     type: ActionTypes.SPRINT_BACKLOG_ITEM_NOT_STARTED_CLICK,
     payload: {
         sprintId,
-        backlogItemPartId
+        backlogItemId
     }
 });
 
@@ -201,14 +232,11 @@ export interface SprintBacklogItemReleasedClickAction {
     payload: SprintBacklogItemStatusClickPayload;
 }
 
-export const sprintBacklogItemReleasedClick = (
-    sprintId: string,
-    backlogItemPartId: string
-): SprintBacklogItemReleasedClickAction => ({
+export const sprintBacklogItemReleasedClick = (sprintId: string, backlogItemId: string): SprintBacklogItemReleasedClickAction => ({
     type: ActionTypes.SPRINT_BACKLOG_ITEM_RELEASED_CLICK,
     payload: {
         sprintId,
-        backlogItemPartId
+        backlogItemId
     }
 });
 

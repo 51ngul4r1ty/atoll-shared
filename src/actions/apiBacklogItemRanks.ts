@@ -6,11 +6,12 @@ import * as ApiActionNames from "./apiActionNames";
 import { getApiBaseUrl } from "../config";
 
 // consts/enums
+import { API } from "../middleware/apiConsts";
 import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
-import { API, NoDataApiAction, ApiActionSuccessPayloadForCollection, ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
-import { ApiBacklogItemRank } from "../apiModelTypes";
+import type { NoDataApiAction, ApiActionSuccessPayloadForCollection, ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
+import type { ApiBacklogItemRank } from "../apiModelTypes";
 
 // utils
 import { buildActionTypes } from "./utils/apiActionUtils";

@@ -23,7 +23,7 @@ import { EditMode } from "../../../common/componentEnums";
 import { buildClassName } from "../../../../utils/classNameBuilder";
 import { useDispatch } from "react-redux";
 import { SaveableBacklogItem } from "../../../../reducers/backlogItems/backlogItemsReducerTypes";
-import { Source } from "../../../../reducers/types";
+import { Source } from "../../../../reducers/enums";
 
 // actions
 import { apiDeleteBacklogItem } from "../../../../actions/apiBacklogItems";
@@ -47,6 +47,7 @@ import {
     atBottomOfPage,
     atTopOfPage,
     buildSpacerInternalId,
+    computeProductBacklogItemEstimate,
     getDragItemDocumentTop,
     getDragItemId,
     getDragItemIdUnderTarget,
@@ -81,7 +82,7 @@ export const buildDragBacklogItemElt = (
             buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
             busySplittingStory={false}
             cardType={BacklogItemCardType.ProductBacklogCard}
-            estimate={item.estimate}
+            estimate={computeProductBacklogItemEstimate(item.estimate, item.unallocatedPoints)}
             hasDetails={editMode === EditMode.Edit}
             internalId={`${item.id}`}
             isDraggable={editMode === EditMode.Edit}
@@ -96,6 +97,7 @@ export const buildDragBacklogItemElt = (
             roleText={item.rolePhrase}
             showDetailMenu={false}
             status={item.status}
+            storyEstimate={item.storyEstimate}
             titleText={item.storyPhrase}
             totalParts={item.totalParts}
             unallocatedParts={item.unallocatedParts}
@@ -478,6 +480,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         renderMobile={props.renderMobile}
                         roleText={null}
                         status={item.status}
+                        storyEstimate={item.storyEstimate}
                         titleText={null}
                         totalParts={item.totalParts}
                         unallocatedParts={item.unallocatedParts}

@@ -1,5 +1,5 @@
 // consts/enums
-import { BacklogItemStatus } from "../types/backlogItemTypes";
+import { BacklogItemStatus } from "../types/backlogItemEnums";
 
 export const hasBacklogItemAtLeastBeenReleased = (backlogItemStatus: BacklogItemStatus) =>
     backlogItemStatus === BacklogItemStatus.Released;
@@ -12,3 +12,9 @@ export const hasBacklogItemAtLeastBeenFinished = (backlogItemStatus: BacklogItem
 
 export const hasBacklogItemAtLeastBeenStarted = (backlogItemStatus: BacklogItemStatus) =>
     backlogItemStatus === BacklogItemStatus.InProgress || hasBacklogItemAtLeastBeenFinished(backlogItemStatus);
+
+export const hasBacklogItemAtMostBeenNotStarted = (backlogItemStatus: BacklogItemStatus) =>
+    backlogItemStatus === BacklogItemStatus.None || backlogItemStatus === BacklogItemStatus.NotStarted;
+
+export const hasBacklogItemAtMostBeenInProgress = (backlogItemStatus: BacklogItemStatus) =>
+    backlogItemStatus === BacklogItemStatus.InProgress || hasBacklogItemAtMostBeenNotStarted(backlogItemStatus);

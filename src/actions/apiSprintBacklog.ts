@@ -1,3 +1,6 @@
+// externals
+import type { Action } from "redux";
+
 // actions
 import * as ActionTypes from "./actionTypes";
 import * as ApiActionNames from "./apiActionNames";
@@ -6,18 +9,20 @@ import * as ApiActionNames from "./apiActionNames";
 import { getApiBaseUrl } from "../config";
 
 // consts/enums
+import { API } from "../middleware/apiConsts";
 import { APPLICATION_JSON } from "../constants";
+import { BacklogItemStatus } from "../types/backlogItemEnums";
 
 // interfaces/types
-import {
-    API,
+import type {
     NoDataApiAction,
     ApiActionSuccessPayloadForCollection,
     ApiActionMetaDataRequestMeta,
     ApiActionSuccessPayloadForItem,
-    ApiActionFailurePayload
+    ApiActionFailurePayload,
+    ApiActionFailurePayloadForCollection
 } from "../middleware/apiTypes";
-import {
+import type {
     ApiBacklogItem,
     ApiBacklogItemInSprint,
     ApiBacklogItemPart,
@@ -25,26 +30,43 @@ import {
     ApiSprintBacklogItem,
     ApiSprintStats
 } from "../apiModelTypes";
-import { ApiBatchAction } from "../middleware/apiBatchTypes";
+import type { ApiBatchAction } from "../middleware/apiBatchTypes";
+import type { ApiItemDetailMenuActionFlowSuccessMeta } from "../actionFlows/itemDetailMenuActionFlow";
 
 // utils
-import { buildActionTypes } from "./utils/apiActionUtils";
-import { BacklogItemStatus } from "../types/backlogItemTypes";
+import { buildActionTypes, buildStandardMeta } from "./utils/apiActionUtils";
 import { mapBacklogItemStatusToApi } from "../mappers/backlogItemMappers";
 
-export interface MetaActionParams {
+export type ApiGetSprintBacklogItemsSuccessActionParams = {
     sprintId: string;
     backlogItemId: string;
-}
+};
+export type ApiGetSprintBacklogItemsSuccessActionMetaPassthrough = ApiItemDetailMenuActionFlowSuccessMeta;
+export type ApiGetSprintBacklogItemsSuccessOrFailureActionMeta = ApiActionMetaDataRequestMeta<
+    {},
+    ApiGetSprintBacklogItemsSuccessActionParams,
+    undefined,
+    ApiGetSprintBacklogItemsSuccessActionMetaPassthrough
+>;
+export type ApiGetSprintBacklogItemsSuccessActionMeta = ApiGetSprintBacklogItemsSuccessOrFailureActionMeta;
+export type ApiGetSprintBacklogItemsFailureActionMeta = ApiGetSprintBacklogItemsSuccessOrFailureActionMeta;
 
-export interface ApiGetSprintBacklogItemsSuccessAction {
-    type: typeof ActionTypes.API_GET_SPRINT_BACKLOG_ITEMS_SUCCESS;
-    payload: ApiActionSuccessPayloadForCollection<ApiBacklogItemInSprint>;
-    meta: ApiActionMetaDataRequestMeta<{}, MetaActionParams>;
-}
-
-export const apiGetSprintBacklogItems = (sprintId: string): NoDataApiAction => {
-    return {
+export type ApiGetSprintBacklogItemsSuccessActionPayload = ApiActionSuccessPayloadForCollection<ApiBacklogItemInSprint>;
+export type ApiGetSprintBacklogItemsFailureActionPayload = ApiActionFailurePayloadForCollection;
+export type ApiGetSprintBacklogItemsSuccessAction = Action<typeof ActionTypes.API_GET_SPRINT_BACKLOG_ITEMS_SUCCESS> & {
+    payload: ApiGetSprintBacklogItemsSuccessActionPayload;
+    meta: ApiGetSprintBacklogItemsSuccessActionMeta;
+};
+export type ApiGetSprintBacklogItemsFailureAction = Action<typeof ActionTypes.API_GET_SPRINT_BACKLOG_ITEMS_FAILURE> & {
+    payload: ApiGetSprintBacklogItemsFailureActionPayload;
+    meta: ApiGetSprintBacklogItemsFailureActionMeta;
+};
+export type ApiGetSprintBacklogItemsOptions = {
+    passthroughData?: ApiGetSprintBacklogItemsSuccessActionMetaPassthrough;
+};
+// TODO: consider making this "options" a standard pattern (or add a tech story to deal with this in future)
+export const apiGetSprintBacklogItems = (sprintId: string, options?: ApiGetSprintBacklogItemsOptions): NoDataApiAction => {
+    const result: NoDataApiAction = {
         type: API,
         payload: {
             endpoint: `${getApiBaseUrl()}api/v1/sprints/${sprintId}/backlog-items`,
@@ -52,13 +74,9 @@ export const apiGetSprintBacklogItems = (sprintId: string): NoDataApiAction => {
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
             types: buildActionTypes(ApiActionNames.GET_SPRINT_BACKLOG_ITEMS)
         },
-        // TODO: Provide a way to do this automatically with any dispatch API call
-        meta: {
-            actionParams: {
-                sprintId
-            }
-        }
+        meta: buildStandardMeta({ sprintId }, options?.passthroughData)
     };
+    return result;
 };
 
 export interface ApiBatchAddBacklogItemsToSprintBody {
@@ -81,15 +99,18 @@ export type ApiBatchAddBacklogItemsToSprintAction = ApiBatchAction<
     ApiBatchAddBacklogItemsToSprintBatchActionParams
 >;
 
+export type ApiPostSprintBacklogItemSuccessActionMeta = {
+    sprintId: string;
+    backlogItemId: string;
+};
 export type ApiPostSprintBacklogItemSuccessActionPayload = ApiActionSuccessPayloadForItem<
     ApiSprintBacklogItem,
     SprintBacklogItemSuccessPayloadExtra
 >;
-export interface ApiPostSprintBacklogItemSuccessAction {
-    type: typeof ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_SUCCESS;
+export type ApiPostSprintBacklogItemSuccessAction = Action<typeof ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_SUCCESS> & {
     payload: ApiPostSprintBacklogItemSuccessActionPayload;
-    meta: ApiActionMetaDataRequestMeta<{}, MetaActionParams>;
-}
+    meta: ApiActionMetaDataRequestMeta<{}, ApiPostSprintBacklogItemSuccessActionMeta>;
+};
 
 export interface ApiPostSprintBacklogItemFailureAction {
     type: typeof ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_FAILURE;
@@ -211,11 +232,10 @@ export type ApiSplitSprintItemSuccessActionPayload = ApiActionSuccessPayloadForI
     ApiBacklogItemPart,
     ApiSplitSprintItemSuccessActionPayloadExtra
 >;
-export interface ApiSplitSprintItemSuccessAction {
-    type: typeof ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS;
+export type ApiSplitSprintItemSuccessAction = Action<typeof ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS> & {
     payload: ApiSplitSprintItemSuccessActionPayload;
     meta: ApiActionMetaDataRequestMeta<{}, ApiSplitSprintItemActionParams>;
-}
+};
 
 export const apiSplitSprintBacklogItem = (sprintId: string, backlogItemId: string) => {
     const actionParams: ApiMoveSprintItemToProductBacklogActionParams = {
@@ -248,11 +268,10 @@ export interface ApiSprintBacklogItemSetStatusData {
 
 export type ApiSprintBacklogItemSetStatusActionPayload = ApiActionSuccessPayloadForItem<ApiBacklogItem, SprintStats>;
 
-export interface ApiSprintBacklogItemSetStatusSuccessAction {
-    type: typeof ActionTypes.API_PATCH_BACKLOG_ITEM_SUCCESS;
+export type ApiSprintBacklogItemSetStatusSuccessAction = Action<typeof ActionTypes.API_PATCH_BACKLOG_ITEM_SUCCESS> & {
     payload: ApiSprintBacklogItemSetStatusActionPayload;
     meta: ApiActionMetaDataRequestMeta<ApiSprintBacklogItemSetStatusData, ApiSprintBacklogItemSetStatusActionParams>;
-}
+};
 
 export const apiSprintBacklogItemSetStatus = (sprintId: string, backlogItemPartId: string, status: BacklogItemStatus) => {
     const actionParams: ApiSprintBacklogItemSetStatusActionParams = {

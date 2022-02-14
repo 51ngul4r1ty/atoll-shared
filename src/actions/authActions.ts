@@ -1,11 +1,12 @@
 // middleware
-import { API, ApiAction, ApiActionMetaDataRequestBody, ApiActionSuccessPayload, ApiActionMeta } from "../middleware/apiTypes";
+import { ApiAction, ApiActionMetaDataRequestBody, ApiActionSuccessPayload, ApiActionMeta } from "../middleware/apiTypes";
 
 // actions
 import * as ActionTypes from "./actionTypes";
 import * as ApiActionNames from "./apiActionNames";
 
 // consts/enums
+import { API } from "../middleware/apiConsts";
 import { APPLICATION_JSON } from "../constants";
 
 // utils
@@ -43,7 +44,7 @@ export interface ActionPostLoginSuccessActionMeta extends ApiActionMetaDataReque
 }
 
 export interface ActionPostLoginSuccessAction {
-    type: typeof ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS;
+    type: typeof ActionTypes.API_POST_ACTION_LOGIN_SUCCESS;
     payload: ActionPostLoginSuccessActionPayload;
     meta: ActionPostLoginSuccessActionMeta;
 }

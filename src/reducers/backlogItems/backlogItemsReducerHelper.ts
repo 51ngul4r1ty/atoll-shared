@@ -1,16 +1,23 @@
 // externals
 import { Draft } from "immer";
 
+// consts/enums
+import { PushOperationType } from "../../enums";
+import { Source, PushState } from "../enums";
+
 // interfaces/types
-import { PushBacklogItemModel } from "../../middleware/wsMiddleware";
-import { BacklogItemsState, BacklogItemWithSource, EditableBacklogItem, SaveableBacklogItem } from "./backlogItemsReducerTypes";
-import { BacklogItem, BacklogItemModel } from "../../types/backlogItemTypes";
-import { PushOperationType } from "../../types";
-import {
+import type { PushBacklogItemModel } from "../../middleware/wsMiddleware";
+import type {
+    BacklogItemsState,
+    BacklogItemWithSource,
+    EditableBacklogItem,
+    SaveableBacklogItem
+} from "./backlogItemsReducerTypes";
+import type { BacklogItem, BacklogItemModel } from "../../types/backlogItemTypes";
+import type {
     BacklogItemEditableFields,
     BacklogItemInstanceEditableFields
 } from "../../components/organisms/forms/backlogItemFormTypes";
-import { Source, PushState } from "../types";
 
 // utils
 import { LinkedList } from "../../utils/linkedList";
@@ -40,27 +47,29 @@ export const addSourceToPushedItem = (item: Partial<PushBacklogItemModel>, sourc
 
 export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>): BacklogItemWithSource => ({
     acceptanceCriteria: pushedItem.acceptanceCriteria,
+    acceptedAt: pushedItem.acceptedAt,
     createdAt: pushedItem.createdAt,
     estimate: pushedItem.estimate,
     externalId: pushedItem.externalId,
+    finishedAt: pushedItem.finishedAt,
     friendlyId: pushedItem.friendlyId,
     id: pushedItem.id,
     instanceId: undefined,
+    partIndex: pushedItem.partIndex,
     projectId: pushedItem.projectId,
     reasonPhrase: pushedItem.reasonPhrase,
+    releasedAt: pushedItem.releasedAt,
     rolePhrase: pushedItem.rolePhrase,
     source: Source.Pushed,
-    status: pushedItem.status,
-    storyPhrase: pushedItem.storyPhrase,
-    type: pushedItem.type,
-    updatedAt: pushedItem.updatedAt,
     startedAt: pushedItem.startedAt,
-    finishedAt: pushedItem.finishedAt,
-    acceptedAt: pushedItem.acceptedAt,
-    releasedAt: pushedItem.releasedAt,
-    partIndex: pushedItem.partIndex,
+    status: pushedItem.status,
+    storyEstimate: pushedItem.storyEstimate,
+    storyPhrase: pushedItem.storyPhrase,
     totalParts: pushedItem.totalParts,
-    unallocatedParts: pushedItem.unallocatedParts
+    type: pushedItem.type,
+    unallocatedParts: pushedItem.unallocatedParts,
+    unallocatedPoints: pushedItem.unallocatedPoints,
+    updatedAt: pushedItem.updatedAt
 });
 
 export const addPushedAddedItemsToAllItems = (draft: Draft<BacklogItemsState>, allItems: LinkedList<BacklogItemWithSource>) => {

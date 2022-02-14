@@ -6,13 +6,13 @@ import * as ApiActionNames from "./apiActionNames";
 import { getApiBaseUrl } from "../config";
 
 // consts/enums
+import { API } from "../middleware/apiConsts";
 import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
-import { BacklogItemModel, BacklogItem } from "../types/backlogItemTypes";
+import { BacklogItemModel } from "../types/backlogItemTypes";
 import { PushBacklogItemModel } from "../middleware/wsMiddleware";
 import {
-    API,
     ApiAction,
     ApiActionSuccessPayload,
     NoDataApiAction,
