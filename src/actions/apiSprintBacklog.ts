@@ -64,7 +64,7 @@ export type ApiGetSprintBacklogItemsFailureAction = Action<typeof ActionTypes.AP
 export type ApiGetSprintBacklogItemsOptions = {
     passthroughData?: ApiGetSprintBacklogItemsSuccessActionMetaPassthrough;
 };
-// TODO: consider making this "options" a standard pattern (or add a tech story to deal with this in future)
+
 export const apiGetSprintBacklogItems = (sprintId: string, options?: ApiGetSprintBacklogItemsOptions): NoDataApiAction => {
     const result: NoDataApiAction = {
         type: API,
