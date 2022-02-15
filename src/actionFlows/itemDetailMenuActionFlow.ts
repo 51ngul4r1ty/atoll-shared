@@ -30,6 +30,8 @@ export type ApiItemDetailMenuActionFlowSuccessMeta = {
     backlogItemId: string;
 };
 
+// #region middleware - handleSprintBacklogItemDetailClick
+
 export const handleSprintBacklogItemDetailClick = (
     store: Store<StateTree>,
     actionType: string,
@@ -47,6 +49,8 @@ export const handleSprintBacklogItemDetailClick = (
         })
     );
 };
+
+// #endregion
 
 // #region middleware - handleGetSprintSuccessForItemDetailClick
 
