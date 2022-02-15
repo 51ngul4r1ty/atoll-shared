@@ -105,14 +105,6 @@ export const apiGetSprint = (sprintId: string | null, options?: ApiGetSprintOpti
         },
         meta: buildStandardMeta({ sprintId, options }, options?.passthroughData)
     };
-    // TODO: Provide a standard way to add passthrough data as an override with util functions?
-    const passthrough = options?.passthroughData;
-    if (passthrough) {
-        result.meta = {
-            ...result.meta,
-            passthrough
-        };
-    }
     if (options?.endpointOverride) {
         result.payload.endpoint = options.endpointOverride;
     }
