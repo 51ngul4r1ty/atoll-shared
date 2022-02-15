@@ -7,5 +7,5 @@
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
   },
   "extends": "./tsconfig.base.json",
-  "include": ["src/**/*.test.ts*"]
+  "include": ["src/**/*.ts*"]
 }
