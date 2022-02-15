@@ -1,9 +1,18 @@
 // externals
 import * as React from "react";
 
+// consts/enums
+import {
+    QUANTITY_UNKNOWN,
+    SpinnerAction,
+    SpinnerSize,
+    SpinnerTextPosition,
+    TIME_UNKNOWN
+} from "../unique/smartSpinner/smartSpinnerTypes";
+
 // components
-import { QUANTITY_UNKNOWN, SmartSpinner, SpinnerAction, SpinnerSize, SpinnerTextPosition, TIME_UNKNOWN } from "..";
 import { EditDetailIcon } from "../../atoms/icons/EditDetailIcon";
+import { SmartSpinner } from "../unique/smartSpinner/SmartSpinner";
 
 // style
 import css from "./ItemDetailButton.module.css";
