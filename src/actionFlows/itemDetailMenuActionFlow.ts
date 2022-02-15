@@ -1,5 +1,3 @@
-// TODO: Write this up as a pattern
-
 /**
  * PURPOSE: keep everything related to the sprint backlog item's "item detail menu" opening in one place.
  */
