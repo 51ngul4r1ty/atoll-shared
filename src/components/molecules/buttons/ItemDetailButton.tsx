@@ -2,13 +2,8 @@
 import * as React from "react";
 
 // consts/enums
-import {
-    QUANTITY_UNKNOWN,
-    SpinnerAction,
-    SpinnerSize,
-    SpinnerTextPosition,
-    TIME_UNKNOWN
-} from "../unique/smartSpinner/smartSpinnerTypes";
+import { SpinnerAction, SpinnerSize, SpinnerTextPosition } from "../unique/smartSpinner/smartSpinnerEnums";
+import { QUANTITY_UNKNOWN, TIME_UNKNOWN } from "../unique/smartSpinner/smartSpinnerConsts";
 
 // components
 import { EditDetailIcon } from "../../atoms/icons/EditDetailIcon";

@@ -1,5 +1,5 @@
 // components
-import { SpinnerAction } from "./smartSpinnerTypes";
+import { SpinnerAction } from "./smartSpinnerEnums";
 
 // utils
 import { formatFunctionArg, parseTemplateParts, TemplatePartType } from "./spinnerTemplateUtils";

@@ -10,7 +10,7 @@ import { Spinner } from "../../../atoms/unique/Spinner";
 import { PropsWithClassName } from "../../../common/types";
 
 // consts/enums
-import { SpinnerAction, SpinnerSize, SpinnerTextPosition } from "./smartSpinnerTypes";
+import { SpinnerAction, SpinnerSize, SpinnerTextPosition } from "./smartSpinnerEnums";
 
 // style
 import css from "./SmartSpinner.module.css";
