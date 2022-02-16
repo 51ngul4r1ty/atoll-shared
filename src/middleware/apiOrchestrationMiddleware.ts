@@ -168,10 +168,9 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
 
             const backlogItem = getBacklogItemById(state, itemId);
             if (backlogItem) {
-                const model = convertToBacklogItemModel(backlogItem);
-                storeTyped.dispatch(
-                    apiPutBacklogItem(model, buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", itemId))
-                );
+                const backlogItemModel = convertToBacklogItemModel(backlogItem);
+                const payloadOverride = buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", itemId);
+                storeTyped.dispatch(apiPutBacklogItem(backlogItemModel, payloadOverride));
             }
             break;
         }
@@ -181,13 +180,8 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             if (backlogItem) {
                 const model = convertToBacklogItemModel(backlogItem);
                 const apiCallReason = PutBacklogItemCallReason.SaveCurrentBacklogItem;
-                storeTyped.dispatch(
-                    apiPutBacklogItem(
-                        model,
-                        buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", backlogItem.id),
-                        apiCallReason
-                    )
-                );
+                const payloadOverride = buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", backlogItem.id);
+                storeTyped.dispatch(apiPutBacklogItem(model, payloadOverride, apiCallReason));
             }
             break;
         }
