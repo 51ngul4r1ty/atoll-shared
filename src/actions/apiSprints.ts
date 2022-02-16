@@ -84,6 +84,7 @@ export type ApiGetSprintOptions = {
     endpointOverride?: string;
 };
 export type ApiGetSprintResult = NoDataApiAction<any, ApiGetSprintSuccessActionMetaPassthrough>;
+
 /**
  * Make API call to retrieve a sprint item.
  * @param sprintId can be null if options.endpointOverride provided (HATEOAS link scenario)
