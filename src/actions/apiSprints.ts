@@ -13,7 +13,7 @@ import { API } from "../middleware/apiConsts";
 import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
-import {
+import type {
     NoDataApiAction,
     ApiActionSuccessPayloadForCollection,
     ApiActionMetaDataRequestMeta,
@@ -23,13 +23,13 @@ import {
     ApiActionSuccessPayloadForItem,
     ApiActionFailurePayloadForItem
 } from "../middleware/apiTypes";
-import { ApiSprint } from "../apiModelTypes";
+import type { ApiSprint } from "../apiModelTypes";
+import type { ApiItemDetailMenuActionFlowSuccessMeta } from "../actionFlows/itemDetailMenuActionFlow";
+import type { SprintModel } from "../types/sprintTypes";
+import type { Sprint } from "../reducers/sprintsReducer";
 
 // utils
 import { buildActionTypes, buildStandardMeta } from "./utils/apiActionUtils";
-import { SprintModel } from "../types/sprintTypes";
-import { Sprint } from "../reducers/sprintsReducer";
-import { ApiItemDetailMenuActionFlowSuccessMeta } from "../actionFlows/itemDetailMenuActionFlow";
 
 // #region Collection
 
@@ -79,7 +79,6 @@ export type ApiGetSprintFailureAction = Action<typeof ActionTypes.API_GET_SPRINT
     payload: ApiGetSprintFailureActionPayload;
     meta: ApiGetSprintFailureActionMeta;
 };
-// TODO: Document this pattern- if the endpoint needs to be overridden it should be done through an "options.endpointOverride" arg.
 export type ApiGetSprintOptions = {
     passthroughData?: ApiGetSprintSuccessActionMetaPassthrough;
     endpointOverride?: string;

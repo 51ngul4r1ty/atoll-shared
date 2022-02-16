@@ -44,43 +44,45 @@ export interface StandardNamedItem extends StandardItem, ItemWithName {}
  */
 export type ApiBacklogItemStatus = "N" | "P" | "D" | "A" | "R";
 
-export interface ItemWithStatusAndDates {
+export type ItemWithStatusAndDates = {
     acceptedAt: ISODateString | null;
     finishedAt: ISODateString | null;
     releasedAt: ISODateString | null;
     startedAt: ISODateString | null;
     status: ApiBacklogItemStatus | null;
-}
+};
 
-export interface ApiBacklogItem extends StandardItem, StoryPhrases, ItemWithStatusAndDates {
-    /* from BaseItem */
-    id: uuid | null;
+export type ApiBacklogItem = StandardItem &
+    StoryPhrases &
+    ItemWithStatusAndDates & {
+        /* from BaseItem */
+        id: uuid | null;
 
-    /* from StandardItem */
-    createdAt?: string; // sequelize standard field
-    updatedAt?: string; // sequelize standard field
-    version?: number; // sequelize standard field
+        /* from StandardItem */
+        createdAt?: string; // sequelize standard field
+        updatedAt?: string; // sequelize standard field
+        version?: number; // sequelize standard field
 
-    /* from StoryPhrases */
-    rolePhrase: string | null;
-    storyPhrase: string;
-    reasonPhrase: string | null;
+        /* from StoryPhrases */
+        rolePhrase: string | null;
+        storyPhrase: string;
+        reasonPhrase: string | null;
 
-    /* new fields */
-    acceptanceCriteria: string | null;
-    estimate: number | null;
-    storyEstimate: number | null;
-    externalId: string | null;
-    friendlyId: string | null;
-    partIndex: number | null;
-    projectId: string | null;
-    totalParts: number | null;
-    type: BacklogItemType;
-    unallocatedParts: number | null;
-    unallocatedPoints: number | null;
-}
+        /* new fields */
+        acceptanceCriteria: string | null;
+        estimate: number | null;
+        storyEstimate: number | null;
+        externalId: string | null;
+        friendlyId: string | null;
+        partIndex: number | null;
+        projectId: string | null;
+        totalParts: number | null;
+        type: BacklogItemType;
+        unallocatedParts: number | null;
+        unallocatedPoints: number | null;
+    };
 
-export interface ApiBacklogItemWithParts extends ApiBacklogItem {
+export type ApiBacklogItemWithParts = ApiBacklogItem & {
     /* from BaseItem */
     id: uuid | null;
 
@@ -114,9 +116,9 @@ export interface ApiBacklogItemWithParts extends ApiBacklogItem {
 
     /* new fields */
     backlogItemParts: ApiBacklogItemPart[];
-}
+};
 
-export interface ApiBacklogItemPart extends StandardItem {
+export type ApiBacklogItemPart = StandardItem & {
     // TODO: move the status and dates related out of this interface (see ApiBacklogItem)
     externalId: string | null;
     backlogitemId: string | null;
@@ -126,9 +128,9 @@ export interface ApiBacklogItemPart extends StandardItem {
     startedAt: ISODateString | null;
     finishedAt: ISODateString | null;
     status: ApiBacklogItemStatus | null;
-}
+};
 
-export interface ApiBacklogItemInSprint extends ApiBacklogItem {
+export type ApiBacklogItemInSprint = ApiBacklogItem & {
     /* from BaseItem */
     id: uuid | null;
 
@@ -170,7 +172,7 @@ export interface ApiBacklogItemInSprint extends ApiBacklogItem {
     storyFinishedAt: ISODateString | null;
     storyUpdatedAt: ISODateString | null;
     storyVersion: number;
-}
+};
 
 export interface ApiBacklogItemRank extends StandardItem {
     projectId: string | null;
@@ -202,12 +204,13 @@ export interface ApiSprint extends StandardNamedItem, ApiSprintStats {
     velocityPoints: number | null;
 }
 
-export interface ApiSprintBacklogItem extends BaseItem, ItemWithId {
-    storyEstimate: number | null;
-    sprintId: string;
-    backlogitempartId: string;
-    displayindex: number | null;
-}
+export type ApiSprintBacklogItem = BaseItem &
+    ItemWithId & {
+        storyEstimate: number | null;
+        sprintId: string;
+        backlogitempartId: string;
+        displayindex: number | null;
+    };
 
 export interface CounterSettings {
     prefix?: string;

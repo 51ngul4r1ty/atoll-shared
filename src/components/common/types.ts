@@ -1,16 +1,16 @@
-export interface PropsWithClassName {
+export type PropsWithClassName = {
     className?: string;
-}
+};
 
-export interface PropsWithInvertColors {
+export type PropsWithInvertColors = {
     invertColors?: boolean;
-}
+};
 
 export type StandardComponentProps = PropsWithClassName;
 
 export type StandardInvertibleComponentProps = StandardComponentProps & PropsWithInvertColors;
 
-export interface ElementAttribute<T = any> {
+export type ElementAttribute<T = any> = {
     name: string;
     value: T;
-}
+};

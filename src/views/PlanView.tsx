@@ -16,13 +16,8 @@ import css from "./PlanView.module.css";
 
 // consts/enums
 import { NewSprintPosition } from "../actions/sprintActions";
-import {
-    SpinnerAction,
-    SpinnerSize,
-    SpinnerTextPosition,
-    QUANTITY_UNKNOWN,
-    TIME_UNKNOWN
-} from "../components/molecules/unique/smartSpinner/smartSpinnerTypes";
+import { QUANTITY_UNKNOWN, TIME_UNKNOWN } from "../components/molecules/unique/smartSpinner/smartSpinnerConsts";
+import { SpinnerAction, SpinnerSize, SpinnerTextPosition } from "../components/molecules/unique/smartSpinner/smartSpinnerEnums";
 
 // interfaces/types
 import { EditMode } from "../components/common/componentEnums";

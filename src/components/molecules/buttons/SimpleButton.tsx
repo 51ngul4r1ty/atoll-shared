@@ -9,8 +9,10 @@ import css from "./SimpleButton.module.css";
 import { buildClassName } from "../../../utils/classNameBuilder";
 
 // interfaces/types
-import { PropsWithClassName } from "../../common/types";
-import { ComponentWithForwardedRef } from "../../../types/reactHelperTypes";
+import type { PropsWithClassName } from "../../common/types";
+import type { ComponentWithForwardedRef } from "../../../types/reactHelperTypes";
+
+// components
 import { Spinner } from "../../atoms/unique/Spinner";
 import { SpinnerShapePentagon } from "../../atoms/icons/SpinnerShapePentagon";
 

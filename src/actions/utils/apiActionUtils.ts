@@ -1,5 +1,7 @@
 // interfaces/types
 import type { ApiActionMetaData } from "../../middleware/apiTypes";
+
+// utils
 import { cloneWithNested } from "../../utils/cloneUtils";
 
 export type ApiActionStage = "request" | "success" | "failure";
@@ -16,6 +18,11 @@ export const buildActionTypes = (apiAction: string) => [
     buildFailureActionName(apiAction)
 ];
 
+/**
+ * Builds the meta object with actionParams and passthrough included.
+ * @param actionParams object that contains the parameters passed into the action.
+ * @param passthrough optional (if passthrough data is required for this action).
+ */
 export const buildStandardMeta = <P>(actionParams: Record<string, any>, passthrough?: P) => {
     const actionParamsClone = cloneWithNested(actionParams);
     const metaOptions = actionParamsClone.options;

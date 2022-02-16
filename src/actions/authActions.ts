@@ -1,5 +1,5 @@
 // middleware
-import { ApiAction, ApiActionMetaDataRequestBody, ApiActionSuccessPayload, ApiActionMeta } from "../middleware/apiTypes";
+import type { ApiAction, ApiActionMetaDataRequestBody, ApiActionSuccessPayload, ApiActionMeta } from "../middleware/apiTypes";
 
 // actions
 import * as ActionTypes from "./actionTypes";

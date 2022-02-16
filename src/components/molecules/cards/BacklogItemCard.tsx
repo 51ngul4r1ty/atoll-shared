@@ -11,14 +11,16 @@ import { DragIcon } from "../../atoms/icons/DragIcon";
 import { IssueIcon } from "../../atoms/icons/IssueIcon";
 import { StoryIcon } from "../../atoms/icons/StoryIcon";
 import { ItemDetailButton } from "../buttons/ItemDetailButton";
+import { StatusAcceptedIcon, StatusDoneIcon, StatusInProgressIcon, StatusReleasedIcon } from "../../atoms/icons";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
 
-// consts/enums
+// interfaces/types
 import { SaveableBacklogItem } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
+
+// consts/enums
 import { PushState } from "../../../reducers/enums";
-import { StatusAcceptedIcon, StatusDoneIcon, StatusInProgressIcon, StatusReleasedIcon } from "../../atoms/icons";
 import { BacklogItemStatus } from "../../../types/backlogItemEnums";
 
 //#region exported functions

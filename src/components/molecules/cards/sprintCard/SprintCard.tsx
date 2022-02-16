@@ -9,20 +9,21 @@ import css from "./SprintCard.module.css";
 import { buildClassName } from "../../../../utils/classNameBuilder";
 import { buildSprintPointInfoText, formatDateRange, sprintStatusToString } from "./sprintCardUtils";
 import { getBacklogItemElts, ItemMenuBuilderBacklogItem } from "./sprintCardJsxUtils";
-import { ItemMenuBuilder } from "../BacklogItemCard";
 
 // interfaces/types
 import { SprintCardSprint } from "./sprintCardTypes";
 
 // consts/enums
 import { EditMode } from "../../../common/componentEnums";
-import { SpinnerAction, QUANTITY_UNKNOWN, TIME_UNKNOWN } from "../../unique/smartSpinner/smartSpinnerTypes";
+import { SpinnerAction } from "../../unique/smartSpinner/smartSpinnerEnums";
+import { QUANTITY_UNKNOWN, TIME_UNKNOWN } from "../../unique/smartSpinner/smartSpinnerConsts";
 import { SPINNER_METRIC_KEY_SPRINT_BACKLOG_ITEMS } from "../../unique/smartSpinner/spinnerMetrics";
 
 // components
 import { AddButton } from "../../buttons/AddButton";
 import { ArchiveIcon } from "../../../atoms/icons/ArchiveIcon";
 import { ItemDetailButton } from "../../buttons/ItemDetailButton";
+import { ItemMenuBuilder } from "../BacklogItemCard";
 import { SmartSpinner } from "../../unique/smartSpinner/SmartSpinner";
 import { VerticalCollapseIcon } from "../../../atoms/icons/VerticalCollapseIcon";
 import { VerticalExpandIcon } from "../../../atoms/icons/VerticalExpandIcon";
