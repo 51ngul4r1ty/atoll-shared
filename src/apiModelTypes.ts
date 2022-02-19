@@ -204,13 +204,12 @@ export interface ApiSprint extends StandardNamedItem, ApiSprintStats {
     velocityPoints: number | null;
 }
 
-export type ApiSprintBacklogItem = BaseItem &
-    ItemWithId & {
-        storyEstimate: number | null;
-        sprintId: string;
-        backlogitempartId: string;
-        displayindex: number | null;
-    };
+export type ApiSprintBacklogItem = StandardItem & {
+    storyEstimate: number | null;
+    sprintId: string;
+    backlogitempartId: string;
+    displayindex: number | null;
+};
 
 export interface CounterSettings {
     prefix?: string;
