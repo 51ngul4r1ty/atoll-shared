@@ -1,3 +1,7 @@
+/**
+ * Purpose: this is a client-side logging utility.
+ */
+
 // consts/enums
 import * as loggingTags from "../constants/loggingTags";
 
