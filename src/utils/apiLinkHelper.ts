@@ -1,5 +1,5 @@
 /**
- * PURPOSE: To process HATEOAS links sent in the API responses.
+ * Purpose: To process HATEOAS links sent in the API responses.
  */
 
 // externals
