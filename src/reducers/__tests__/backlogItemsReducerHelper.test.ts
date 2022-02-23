@@ -10,12 +10,12 @@ import { rebuildAllItems } from "../backlogItems/backlogItemsReducerHelper";
 // interfaces/types
 import type { BacklogItemWithSource, SaveableBacklogItem } from "../backlogItems/backlogItemsReducerTypes";
 import type { PushBacklogItemModel } from "../../middleware/wsMiddleware";
-import type { WebsocketPushNotificationData } from "../../types";
+import type { WebsocketPushNotificationData } from "../../types/pushTypes";
 
 // consts/enums
 import { backlogItemsReducerInitialState } from "../backlogItems/backlogItemsReducer";
 import { BacklogItemStatus } from "../../types/backlogItemEnums";
-import { PushOperationType } from "../../enums";
+import { PushOperationType } from "../../types/pushEnums";
 import { Source } from "../enums";
 
 describe("Backlog Items Reducer", () => {
