@@ -9,12 +9,13 @@ import type { Store } from "redux";
 import type { StateTree } from "../reducers/rootReducer";
 
 // interfaces/types
-import { apiGetSprint, ApiGetSprintSuccessActionMeta, ApiGetSprintSuccessActionPayload } from "../actions/apiSprints";
+import type { ApiGetSprintSuccessActionMeta, ApiGetSprintSuccessActionPayload } from "../actions/apiSprints";
 
 // utils
 import { buildFullUri, getLinkByRel, LINK_REL_NEXT } from "../utils/apiLinkHelper";
 
 // actions
+import { apiGetSprint } from "../actions/apiSprints";
 import { toggleSprintBacklogItemDetail } from "../actions/sprintBacklogActions";
 import { apiGetSprintBacklogItems } from "../actions/apiSprintBacklog";
 import { ApiBacklogItemInSprint } from "../types/apiModelTypes";
