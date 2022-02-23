@@ -168,11 +168,6 @@ export const updateBacklogItemFields = (backlogItem: BacklogItem, payload: Backl
     backlogItem.finishedAt = payload.finishedAt;
     backlogItem.acceptedAt = payload.acceptedAt;
     backlogItem.releasedAt = payload.releasedAt;
-    // TODO: Check if these fields should be updated here - need to test to see what happens when updating split story
-    // backlogItem.partIndex = payload.partIndex;
-    // backlogItem.storyEstimate = payload.storyEstimate;
-    // backlogItem.totalParts = payload.totalParts;
-    // backlogItem.unallocatedParts = payload.unallocatedParts;
 };
 
 export const getBacklogItemById = (backlogItems: BacklogItemsState, itemId: string): BacklogItemWithSource | null => {
