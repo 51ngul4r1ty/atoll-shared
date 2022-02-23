@@ -6,35 +6,35 @@ export type uuid = string;
 
 export type BacklogItemType = "story" | "issue";
 
-export interface BaseItem {
+export type BaseItem = {
     createdAt?: string; // sequelize standard field
     updatedAt?: string; // sequelize standard field
     version?: number; // sequelize standard field
-}
+};
 
-export interface ItemWithId {
+export type ItemWithId = {
     id: uuid | null;
-}
+};
 
-export interface ItemWithName {
+export type ItemWithName = {
     name: string;
-}
+};
 
 export type Method = "GET" | "POST" | "PUT" | "DELETE";
 
-export interface Link {
+export type Link = {
     type: string;
     rel: string;
     uri: string;
-}
+};
 
-export interface ApiItemWithLinks {
+export type ApiItemWithLinks = {
     links?: Link[];
-}
+};
 
-export interface StandardItem extends BaseItem, ItemWithId, ApiItemWithLinks {}
+export type StandardItem = BaseItem & ItemWithId & ApiItemWithLinks;
 
-export interface StandardNamedItem extends StandardItem, ItemWithName {}
+export type StandardNamedItem = StandardItem & ItemWithName;
 
 /**
  * N: Not Started
@@ -174,35 +174,36 @@ export type ApiBacklogItemInSprint = ApiBacklogItem & {
     storyVersion: number;
 };
 
-export interface ApiBacklogItemRank extends StandardItem {
+export type ApiBacklogItemRank = StandardItem & {
     projectId: string | null;
     backlogitemId: string | null;
     nextbacklogitemId: string | null;
-}
+};
 
-export interface ApiCounter extends StandardItem {
+export type ApiCounter = StandardItem & {
     entity: string | null;
     entityId: string | null;
     entitySubtype: string;
     lastNumber: number | null;
     lastCounterValue: string | null;
-}
+};
 
-export interface ApiSprintStats {
+export type ApiSprintStats = {
     acceptedPoints: number | null;
     plannedPoints: number | null;
     totalPoints: number | null;
-}
+};
 
-export interface ApiSprint extends StandardNamedItem, ApiSprintStats {
-    archived: boolean;
-    finishdate: ISODateString;
-    projectId: string;
-    remainingSplitPoints: number | null;
-    startdate: ISODateString;
-    usedSplitPoints: number | null;
-    velocityPoints: number | null;
-}
+export type ApiSprint = StandardNamedItem &
+    ApiSprintStats & {
+        archived: boolean;
+        finishdate: ISODateString;
+        projectId: string;
+        remainingSplitPoints: number | null;
+        startdate: ISODateString;
+        usedSplitPoints: number | null;
+        velocityPoints: number | null;
+    };
 
 export type ApiSprintBacklogItem = StandardItem & {
     storyEstimate: number | null;
@@ -211,37 +212,37 @@ export type ApiSprintBacklogItem = StandardItem & {
     displayindex: number | null;
 };
 
-export interface CounterSettings {
+export type CounterSettings = {
     prefix?: string;
     suffix?: string;
     totalFixedLength?: number; // if it is a fixed length this includes prefix, suffix and generated number with leading zeros
-}
+};
 
-export interface ProjectSettings {
+export type ProjectSettings = {
     counters?: {
         story: CounterSettings;
         issue: CounterSettings;
     };
-}
+};
 
-export interface ApiProjectSettings extends StandardItem {
+export type ApiProjectSettings = StandardItem & {
     projectId: string | null;
     externalId: string | null;
     settings: ProjectSettings;
-}
+};
 
-export interface UserSettings {
+export type UserSettings = {
     detectBrowserDarkMode: boolean;
     selectedProject: string | null;
     selectedSprint: string | null;
-}
+};
 
-export interface ApiUserSettings extends StandardItem {
+export type ApiUserSettings = StandardItem & {
     appuserId: string | null;
     settings: UserSettings;
-}
+};
 
-export interface ApiProject extends StandardItem {
+export type ApiProject = StandardItem & {
     name: string;
     description: string;
-}
+};
