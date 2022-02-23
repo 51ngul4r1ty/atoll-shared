@@ -80,7 +80,6 @@ const handleFirstItemFromAvailableList = (availableItems: AvailableRankItem[]): 
                 currentItem = itemsFound[0];
                 if (visitedIds.has(currentItem.id)) {
                     // can't find a true "first item", we're looping through the same list, so just return top of list item
-                    // TODO: Probably should "tag" this entry in some way?
                     firstItem = currentItem;
                     removeAvailableItem(availableItems, firstItem);
                 }
