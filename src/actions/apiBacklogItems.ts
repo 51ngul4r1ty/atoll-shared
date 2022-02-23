@@ -21,7 +21,7 @@ import {
     ApiActionSuccessPayloadForItem,
     ApiActionMetaDataRequestBodyWithOriginal
 } from "../middleware/apiTypes";
-import { ApiBacklogItem } from "../apiModelTypes";
+import { ApiBacklogItem } from "../types/apiModelTypes";
 import { ApiPayloadBase } from "../selectors/apiSelectors";
 
 // utils

@@ -11,7 +11,7 @@ import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
 import type { ApiAction, ApiActionMetaDataRequestMeta, NoDataApiAction } from "../middleware/apiTypes";
-import type { ApiProject } from "../apiModelTypes";
+import type { ApiProject } from "../types/apiModelTypes";
 
 // utils
 import { buildActionTypes } from "./utils/apiActionUtils";

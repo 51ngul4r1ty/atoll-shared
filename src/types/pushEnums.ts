@@ -1,7 +1,3 @@
-// TODO: Move these types into files under the ./types folder
-
-/* App state related */
-
 /**
  * The enum values should adhere to the following ranges:
  *   0     = no type specified - this should never be sent, it is used to indicate that notification type has not been set

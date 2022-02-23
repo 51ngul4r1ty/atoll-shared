@@ -1,5 +1,6 @@
 // interfaces/types
-import { ISODateString, StoryPhrases } from "./types";
+import type { StoryPhrases } from "./storyTypes";
+import type { ISODateString } from "./dateTypes";
 
 export type uuid = string;
 
@@ -119,7 +120,6 @@ export type ApiBacklogItemWithParts = ApiBacklogItem & {
 };
 
 export type ApiBacklogItemPart = StandardItem & {
-    // TODO: move the status and dates related out of this interface (see ApiBacklogItem)
     externalId: string | null;
     backlogitemId: string | null;
     partIndex: number;

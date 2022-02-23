@@ -8,7 +8,7 @@ import * as ActionTypes from "../actions/actionTypes";
 import { AnyFSA } from "../types/reactHelperTypes";
 import { ApiGetBacklogItemsSuccessAction } from "../actions/apiBacklogItems";
 import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
-import { ApiItemWithLinks, ItemWithId } from "../apiModelTypes";
+import { ApiItemWithLinks, ItemWithId } from "../types/apiModelTypes";
 import { ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
 import { ApiGetBffViewsBacklogItemSuccessAction } from "../actions/apiBffViewsBacklogItem";
 import { ApiGetSprintsSuccessAction, ApiGetSprintSuccessAction } from "../actions/apiSprints";

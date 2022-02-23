@@ -1,4 +1,5 @@
-import { StoryPhrases } from "../../../types";
+// interfaces/types
+import type { StoryPhrases } from "../../../types/storyTypes";
 
 // e.g. As a user, I can edit a text input in the middle, without the cursor going to the end
 export const STORY_REGEX = RegExp(/as (an?) (.*), I ([a-z]*) ([^,]*)(, .*)?/i);

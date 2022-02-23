@@ -6,7 +6,7 @@
 import urlParse from "url-parse";
 
 // interfaces/types
-import type { Link } from "../apiModelTypes";
+import type { Link } from "../types/apiModelTypes";
 import { ApiActionMetaDataRequestBody } from "../middleware/apiTypes";
 
 export const LINK_REL_SELF = "self";

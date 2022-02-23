@@ -2,11 +2,11 @@
 import { Draft, produce } from "immer";
 
 // interfaces/types
-import { AnyFSA } from "../types/reactHelperTypes";
-import { StandardModelItem } from "../types";
-import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
-import { ApiGetSprintBacklogItemsSuccessAction, ApiSplitSprintItemSuccessAction } from "../actions/apiSprintBacklog";
-import {
+import type { AnyFSA } from "../types/reactHelperTypes";
+import type { StandardModelItem } from "../types/dataModelTypes";
+import type { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
+import type { ApiGetSprintBacklogItemsSuccessAction, ApiSplitSprintItemSuccessAction } from "../actions/apiSprintBacklog";
+import type {
     AddSprintAction,
     CancelEditSprintAction,
     CancelUnsavedSprintAction,
@@ -17,8 +17,7 @@ import {
     ToggleSprintDetailAction,
     UpdateSprintFieldsAction
 } from "../actions/sprintActions";
-import { NewSprintPosition } from "../actions/sprintActions";
-import {
+import type {
     ApiSetSprintArchiveFlagSuccessAction,
     ApiDeleteSprintSuccessAction,
     ApiGetSprintsSuccessAction,
@@ -29,6 +28,7 @@ import { DateOnly } from "../types/dateTypes";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
+import { NewSprintPosition } from "../actions/sprintActions";
 import { PushState, Source } from "./enums";
 
 // utils

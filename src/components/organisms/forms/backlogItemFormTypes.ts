@@ -1,6 +1,6 @@
 // interfaces/types
-import { StoryPhrases } from "../../../types";
-import { BacklogItemType } from "../../../types/backlogItemTypes";
+import type { StoryPhrases } from "../../../types/storyTypes";
+import type { BacklogItemType } from "../../../types/backlogItemTypes";
 
 /**
  * BacklogItemEditableFields can only be used for backlog items that have been persisted.

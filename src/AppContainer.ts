@@ -13,7 +13,7 @@ import { receiveWebSocketMessage } from "./actions/wsActions";
 import { initApp, appClick, appKeyUp } from "./actions/appActions";
 
 // interfaces/types
-import { UserSettings } from "./apiModelTypes";
+import { UserSettings } from "./types/apiModelTypes";
 
 interface AppOwnProps {
     allowTitleBarWindowDragging?: boolean;

@@ -29,7 +29,7 @@ import type {
     ApiBacklogItemWithParts,
     ApiSprintBacklogItem,
     ApiSprintStats
-} from "../apiModelTypes";
+} from "../types/apiModelTypes";
 import type { ApiBatchAction } from "../middleware/apiBatchTypes";
 import type { ApiItemDetailMenuActionFlowSuccessMeta } from "../actionFlows/itemDetailMenuActionFlow";
 

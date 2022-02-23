@@ -23,7 +23,7 @@ import type {
     ApiActionSuccessPayloadForItem,
     ApiActionFailurePayloadForItem
 } from "../middleware/apiTypes";
-import type { ApiSprint } from "../apiModelTypes";
+import type { ApiSprint } from "../types/apiModelTypes";
 import type { ApiItemDetailMenuActionFlowSuccessMeta } from "../actionFlows/itemDetailMenuActionFlow";
 import type { SprintModel } from "../types/sprintTypes";
 import type { Sprint } from "../reducers/sprintsReducer";

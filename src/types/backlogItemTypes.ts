@@ -1,5 +1,5 @@
 // interfaces/types
-import { BaseModelItem } from "../types";
+import type { BaseModelItem } from "../types/dataModelTypes";
 
 // consts/enums
 import { BacklogItemStatus } from "./backlogItemEnums";

@@ -2,7 +2,7 @@
 import { Draft } from "immer";
 
 // consts/enums
-import { PushOperationType } from "../../enums";
+import { PushOperationType } from "../../types/pushEnums";
 import { Source, PushState } from "../enums";
 
 // interfaces/types
@@ -168,7 +168,7 @@ export const updateBacklogItemFields = (backlogItem: BacklogItem, payload: Backl
     backlogItem.finishedAt = payload.finishedAt;
     backlogItem.acceptedAt = payload.acceptedAt;
     backlogItem.releasedAt = payload.releasedAt;
-    // TODO: Check if these fields should be updated here
+    // TODO: Check if these fields should be updated here - need to test to see what happens when updating split story
     // backlogItem.partIndex = payload.partIndex;
     // backlogItem.storyEstimate = payload.storyEstimate;
     // backlogItem.totalParts = payload.totalParts;

@@ -1,5 +1,5 @@
 // interfaces/types
-import { ApiBacklogItem, ApiBacklogItemPart } from "../apiModelTypes";
+import { ApiBacklogItem, ApiBacklogItemPart } from "../types/apiModelTypes";
 
 export const cloneApiBacklogItem = (apiItem: ApiBacklogItem): ApiBacklogItem => ({
     acceptanceCriteria: apiItem.acceptanceCriteria,

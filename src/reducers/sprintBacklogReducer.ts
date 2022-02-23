@@ -25,7 +25,7 @@ import type {
 } from "../actions/sprintBacklogActions";
 import type { AppClickAction } from "../actions/appActions";
 import type { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
-import type { ApiBacklogItemInSprint } from "../apiModelTypes";
+import type { ApiBacklogItemInSprint } from "../types/apiModelTypes";
 import type { ApiGetSprintFailureAction } from "../actions/apiSprints";
 
 // consts/enums

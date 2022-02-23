@@ -1,5 +1,5 @@
 /**
- * PURPOSE: keep everything related to the sprint backlog item's "item detail menu" opening in one place.
+ * Purpose: keep everything related to the sprint backlog item's "item detail menu" opening in one place.
  */
 
 // externals
@@ -17,7 +17,7 @@ import { buildFullUri, getLinkByRel, LINK_REL_NEXT } from "../utils/apiLinkHelpe
 // actions
 import { toggleSprintBacklogItemDetail } from "../actions/sprintBacklogActions";
 import { apiGetSprintBacklogItems } from "../actions/apiSprintBacklog";
-import { ApiBacklogItemInSprint } from "../apiModelTypes";
+import { ApiBacklogItemInSprint } from "../types/apiModelTypes";
 
 export const ITEM_DETAIL_CLICK_STEP_1_NAME = "1-GetSprintDetails";
 export const ITEM_DETAIL_CLICK_STEP_2_NAME = "2-GetNextSprintDetails";
@@ -26,8 +26,8 @@ export const ITEM_DETAIL_CLICK_STEP_3_NAME = "3-GetNextSprintBacklogItems";
 export type ApiItemDetailMenuActionFlowSuccessMeta = {
     triggerAction: string;
     stepName: string;
-    sprintId: string;
-    backlogItemId: string;
+    sprintId: string; // TODO: move to original action params
+    backlogItemId: string; // TODO: move to original action params
 };
 
 // #region middleware - handleSprintBacklogItemDetailClick

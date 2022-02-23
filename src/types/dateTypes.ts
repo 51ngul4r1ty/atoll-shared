@@ -144,3 +144,5 @@ export class DateOnly {
         return date.getDay();
     }
 }
+
+export type ISODateString = string;

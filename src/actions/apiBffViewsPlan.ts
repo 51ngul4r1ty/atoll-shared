@@ -18,7 +18,7 @@ import type { NoDataApiAction, ApiActionMetaDataRequestMeta } from "../middlewar
 import { buildActionTypes } from "./utils/apiActionUtils";
 
 // interfaces/types
-import { ApiBacklogItem, ApiBacklogItemInSprint, ApiSprint, ApiUserSettings } from "../apiModelTypes";
+import { ApiBacklogItem, ApiBacklogItemInSprint, ApiSprint, ApiUserSettings } from "../types/apiModelTypes";
 
 export interface ApiGetBffViewsPlanResponsePayload {
     response: {

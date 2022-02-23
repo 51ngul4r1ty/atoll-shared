@@ -3,22 +3,24 @@ import { Action, Dispatch } from "redux";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
-import { PushNotificationType, PushOperationType } from "../enums";
+import { PushNotificationType, PushOperationType } from "../types/pushEnums";
 
 // utils
 import * as wsClient from "../utils/wsClient";
 import { mapApiItemToBacklogItem } from "../mappers/backlogItemMappers";
 
 // interfaces/types
-import {
+import type {
     ApiPostBacklogItemSuccessAction,
     ApiDeleteBacklogItemSuccessAction,
     ApiPutBacklogItemSuccessAction
 } from "../actions/apiBacklogItems";
+import type { WebsocketPushNotification, WebsocketPushNotificationV0, WebsocketPushNotificationData } from "../types/pushTypes";
+import type { ReceiveWebsocketMessageAction } from "../actions/wsActions";
+import type { BacklogItemModel } from "../types/backlogItemTypes";
+
+// actions
 import { receivePushedBacklogItem } from "../actions/backlogItemActions";
-import { WebsocketPushNotification, WebsocketPushNotificationV0, WebsocketPushNotificationData } from "../types";
-import { ReceiveWebsocketMessageAction } from "../actions/wsActions";
-import { BacklogItemModel } from "../types/backlogItemTypes";
 
 // selectors
 import { getPrevNextAndCurrentById } from "../selectors/backlogItemSelectors";

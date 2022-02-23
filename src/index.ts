@@ -3,7 +3,7 @@ export { APPLICATION_JSON } from "./constants";
 export { FEATURE_TOGGLE_LIST } from "./constants/defaultFeatureToggles";
 export { PushState } from "./reducers/enums";
 export { rootReducerInitialState } from "./reducers/rootReducer";
-export { PushNotificationType } from "./enums";
+export { PushNotificationType } from "./types/pushEnums";
 export { BacklogItemStatus } from "./types/backlogItemEnums";
 
 // types
@@ -47,8 +47,8 @@ export { SprintViewContainer } from "./views/SprintViewContainer";
 export * from "./config";
 
 // interfaces/types
-export * from "./apiModelTypes";
-export { BasePushNotification, WebsocketPushNotification as PushNotification } from "./types";
+export * from "./types/apiModelTypes";
+export { BasePushNotification, WebsocketPushNotification as PushNotification } from "./types/pushTypes";
 export { FeatureToggle, FeatureTogglesState } from "./reducers/featureTogglesReducer";
 export { StateTree } from "./reducers/rootReducer";
 export { AppState } from "./reducers/appReducer";

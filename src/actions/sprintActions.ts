@@ -12,7 +12,7 @@ import {
     SprintDetailFormEditableFieldsWithInstanceId,
     SprintDetailShowingPicker
 } from "../components/organisms/forms/SprintDetailForm";
-import { ApiSprintStats } from "../apiModelTypes";
+import { ApiSprintStats } from "../types/apiModelTypes";
 
 export interface CollapseSprintPanelAction {
     type: typeof ActionTypes.COLLAPSE_SPRINT_PANEL;

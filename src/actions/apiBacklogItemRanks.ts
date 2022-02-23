@@ -11,7 +11,7 @@ import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
 import type { NoDataApiAction, ApiActionSuccessPayloadForCollection, ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
-import type { ApiBacklogItemRank } from "../apiModelTypes";
+import type { ApiBacklogItemRank } from "../types/apiModelTypes";
 
 // utils
 import { buildActionTypes } from "./utils/apiActionUtils";

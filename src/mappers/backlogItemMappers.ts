@@ -2,7 +2,7 @@
 import { BacklogItemStatus } from "../types/backlogItemEnums";
 
 // interfaces/types
-import type { ApiBacklogItem, ApiBacklogItemInSprint, ApiBacklogItemPart, ApiBacklogItemStatus } from "../apiModelTypes";
+import type { ApiBacklogItem, ApiBacklogItemInSprint, ApiBacklogItemPart, ApiBacklogItemStatus } from "../types/apiModelTypes";
 import type { BacklogItem, BacklogItemPart, BacklogItemInSprint } from "../types/backlogItemTypes";
 
 // utils
