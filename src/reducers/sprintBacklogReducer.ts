@@ -153,6 +153,7 @@ export const sprintBacklogReducer = (
                 } else if (stepName === ITEM_DETAIL_CLICK_STEP_1_NAME || stepName === ITEM_DETAIL_CLICK_STEP_2_NAME) {
                     if (draft.openingDetailMenuSprintId === actionTyped.meta.actionParams.sprintId) {
                         draft.openingDetailMenuSprintId = null;
+                        draft.openingDetailMenuBacklogItemId = null;
                     }
                 } else {
                     throw new Error(`Unable to handle API_GET_SPRINT_FAILURE for "${triggerAction}" step "${stepName}"`);
@@ -166,6 +167,7 @@ export const sprintBacklogReducer = (
                     if (stepName === ITEM_DETAIL_CLICK_STEP_3_NAME) {
                         if (draft.openingDetailMenuSprintId === actionTyped.meta.passthrough.sprintId) {
                             draft.openingDetailMenuSprintId = null;
+                            draft.openingDetailMenuBacklogItemId = null;
                         }
                     } else {
                         throw new Error(
@@ -288,7 +290,6 @@ export const sprintBacklogReducer = (
                 draft.splitInProgress = true;
                 return;
             }
-            // TODO: Add something similar for openingDetailMenuBacklogItemId when API calls fail
             case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {
                 draft.splitInProgress = false;
                 draft.openedDetailMenuBacklogItemId = null;
@@ -299,8 +300,6 @@ export const sprintBacklogReducer = (
                 draft.openedDetailMenuBacklogItemId = null;
                 return;
             }
-            // TODO: Add something similar for openingDetailMenuBacklogItemId??? Although I think this will be handled when API call
-            //   returns either successfully or with a failed state.
             case ActionTypes.APP_CLICK: {
                 const actionTyped = action as AppClickAction;
                 const parent = actionTyped.payload.parent;
