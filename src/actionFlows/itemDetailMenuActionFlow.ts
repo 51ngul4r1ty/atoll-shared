@@ -1,5 +1,26 @@
 /**
  * Purpose: keep everything related to the sprint backlog item's "item detail menu" opening in one place.
+ * Notes:
+ *   This flow includes the following sequence of actions:
+ *   1. SPRINT_BACKLOG_ITEM_DETAIL_CLICK (the click to open the detail menu for the sprint backlog item).
+ *   2. API action to get sprint data ("step 1").
+ *   3. API_GET_SPRINT_REQUEST
+ *   4.1. API_GET_SPRINT_SUCCESS
+ *     4.1.1. TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL (if there's no next sprint)
+ *     --- OR ---
+ *     4.1.2. API action to get next sprint data ("step 2").
+ *       4.1.2.1. API_GET_SPRINT_REQUEST
+ *       4.1.2.2. API_GET_SPRINT_SUCCESS
+ *         4.1.2.3.1. API action to get sprint backlog items data
+ *         4.1.2.3.2. API_GET_SPRINT_BACKLOG_ITEMS_REQUEST
+ *         4.1.2.3.3. API_GET_SPRINT_BACKLOG_ITEMS_SUCCESS
+ *           4.1.2.3.3.1. TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL
+ *         --- OR ---
+ *         4.1.2.3.4. API_GET_SPRINT_BACKLOG_ITEMS_FAILURE
+ *       --- OR ---
+ *       4.1.2.3. API_GET_SPRINT_FAILURE
+ *   --- OR ---
+ *   4.2. API_GET_SPRINT_FAILURE
  */
 
 // externals
