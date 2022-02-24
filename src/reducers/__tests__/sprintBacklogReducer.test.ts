@@ -84,5 +84,34 @@ describe("Sprint Backlog Reducer", () => {
                 expect(actual.openingDetailMenuSprintId).not.toBe(null);
             }
         );
+        it("should throw an error if a new step is introduced that this code cannot handle", () => {
+            // arrange
+            const state = {
+                openingDetailMenuSprintId: "A1",
+                openingDetailMenuBacklogItemId: "12345"
+            } as SprintBacklogState;
+            const stepName = "THERE IS NO WAY THERE IS A STEP CALLED THIS!";
+            const action = {
+                type: ActionTypes.API_GET_SPRINT_FAILURE,
+                meta: {
+                    actionParams: {
+                        sprintId: "A1"
+                    },
+                    passthrough: {
+                        triggerAction: ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK,
+                        stepName
+                    }
+                }
+            };
+
+            // act
+            const t = () => sprintBacklogReducer(state, action);
+
+            // assert
+            expect(t).toThrowError(
+                'Unable to handle API_GET_SPRINT_FAILURE for "app/click:sprint-backlog-item-detail" ' +
+                    'step "THERE IS NO WAY THERE IS A STEP CALLED THIS!"'
+            );
+        });
     });
 });
