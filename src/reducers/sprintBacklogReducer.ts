@@ -171,7 +171,7 @@ export const sprintBacklogReducer = (
                         }
                     } else {
                         throw new Error(
-                            `Unable to handle API_GET_SPRINT_BACKLOG_ITEMS_SUCCESS for "${triggerAction}" step "${stepName}"`
+                            `Unable to handle API_GET_SPRINT_BACKLOG_ITEMS_FAILURE for "${triggerAction}" step "${stepName}"`
                         );
                     }
                 }
