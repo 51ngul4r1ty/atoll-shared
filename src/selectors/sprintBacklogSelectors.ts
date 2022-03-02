@@ -54,3 +54,11 @@ export const lookupPartIdForBacklogItemInSprint = (state: StateTree, sprintId: s
     const sprintBacklogItem = getSprintBacklogItemById(state, sprintId, backlogItemId);
     return sprintBacklogItem.backlogItemPartId || null;
 };
+
+export const getSprintsToDisableAddItemsAction = createSelector([sprintBacklog], (sprintBacklog: SprintBacklogState) => {
+    const sprintIds = Object.keys(sprintBacklog.sprints).filter((sprintId) => {
+        const sprintInfo = sprintBacklog.sprints[sprintId];
+        return Object.keys(sprintInfo.backlogItemsInSprint).length > 0;
+    });
+    return sprintIds;
+});

@@ -25,7 +25,7 @@ import { ApiBacklogItem } from "../types/apiModelTypes";
 import { ApiPayloadBase } from "../selectors/apiSelectors";
 
 // utils
-import { buildActionTypes } from "./utils/apiActionUtils";
+import { addStandardMeta, buildActionTypes, buildStandardMeta } from "./utils/apiActionUtils";
 import { mapBacklogItemToApiItem } from "../mappers/backlogItemMappers";
 
 // #region Collection
@@ -51,23 +51,54 @@ export const apiGetBacklogItems = (): NoDataApiAction => {
 
 // #region Item
 
+export type ApiGetBacklogItemSuccessActionExtra = {
+    inProductBacklog: boolean;
+    sprintIds: string[];
+};
+
+export type ApiGetBacklogItemSuccessActionMetaPassthrough = {
+    triggerAction: string | null;
+    backlogItemId: string;
+};
+
+export type ApiGetBacklogItemActionMeta = ApiActionMetaDataRequestMeta<
+    {},
+    {},
+    undefined,
+    ApiGetBacklogItemSuccessActionMetaPassthrough
+>;
+
 export interface ApiGetBacklogItemSuccessAction {
     type: typeof ActionTypes.API_GET_BACKLOG_ITEM_SUCCESS;
-    payload: ApiActionSuccessPayloadForItem<ApiBacklogItem>;
-    meta: ApiActionMetaDataRequestMeta<{}>;
+    payload: ApiActionSuccessPayloadForItem<ApiBacklogItem, ApiGetBacklogItemSuccessActionExtra>;
+    meta: ApiGetBacklogItemActionMeta;
 }
-export const apiGetBacklogItem = (itemId: string, payloadOverride: ApiPayloadBase = {}): NoDataApiAction => ({
-    type: API,
-    payload: {
-        ...{
-            endpoint: `${getApiBaseUrl()}api/v1/backlog-items/${itemId}`,
-            method: "GET",
-            headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
-            types: buildActionTypes(ApiActionNames.GET_BACKLOG_ITEM)
-        },
-        ...payloadOverride
+
+export type ApiGetBacklogItemOptions = {
+    passthroughData?: ApiGetBacklogItemSuccessActionMetaPassthrough;
+    payloadOverride?: ApiPayloadBase;
+    endpointOverride?: string;
+};
+
+export const apiGetBacklogItem = (itemId: string, options: ApiGetBacklogItemOptions = {}): NoDataApiAction => {
+    const result: NoDataApiAction = {
+        type: API,
+        payload: {
+            ...{
+                endpoint: `${getApiBaseUrl()}api/v1/backlog-items/${itemId}`,
+                method: "GET",
+                headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+                types: buildActionTypes(ApiActionNames.GET_BACKLOG_ITEM)
+            },
+            ...options.payloadOverride
+        }
+    };
+    addStandardMeta(result, {}, options?.passthroughData);
+    if (options?.endpointOverride) {
+        result.payload.endpoint = options.endpointOverride;
     }
-});
+    return result;
+};
 
 export interface ApiPostBacklogItemSuccessResponse {
     status: number;

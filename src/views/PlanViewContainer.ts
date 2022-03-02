@@ -64,6 +64,7 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
         splitToNextSprintAvailable: sprintSelectors.getSplitToNextSprintAvailable(state),
         projectId: userSelectors.getCurrentProjectId(state),
         selectedProductBacklogItemCount: backlogItemSelectors.getSelectedBacklogItemCount(state),
+        sprintsToDisableAddItemAction: sprintBacklogSelectors.getSprintsToDisableAddItemsAction(state),
         showWindowTitleBar: !isPlatformWindows(),
         sprints
     };

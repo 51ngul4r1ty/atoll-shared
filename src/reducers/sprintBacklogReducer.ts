@@ -27,6 +27,7 @@ import type { AppClickAction } from "../actions/appActions";
 import type { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
 import type { ApiBacklogItemInSprint } from "../types/apiModelTypes";
 import type { ApiGetSprintFailureAction } from "../actions/apiSprints";
+import type { ApiGetBacklogItemSuccessAction } from "../actions/apiBacklogItems";
 
 // consts/enums
 import {
@@ -46,6 +47,10 @@ export interface SprintBacklogSprint {
     items: BacklogItemInSprint[];
 }
 
+export type SprintBacklogSprintInfo = SprintBacklogSprint & {
+    backlogItemsInSprint: { [backlogItemId: string]: boolean };
+};
+
 export type SprintBacklogState = Readonly<{
     includeArchivedSprints: boolean;
     openedDetailMenuBacklogItemId: string | null;
@@ -53,7 +58,7 @@ export type SprintBacklogState = Readonly<{
     openedDetailMenuSprintId: string | null;
     openingDetailMenuSprintId: string | null;
     splitInProgress: boolean;
-    sprints: { [sprintId: string]: SprintBacklogSprint };
+    sprints: { [sprintId: string]: SprintBacklogSprintInfo };
 }>;
 
 export const sprintBacklogReducerInitialState = Object.freeze<SprintBacklogState>({
@@ -66,10 +71,10 @@ export const sprintBacklogReducerInitialState = Object.freeze<SprintBacklogState
     sprints: {}
 });
 
-export const getOrAddSprintById = (draft: Draft<SprintBacklogState>, sprintId: string) => {
+export const getOrAddSprintById = (draft: Draft<SprintBacklogState>, sprintId: string): SprintBacklogSprintInfo => {
     let sprint = draft.sprints[sprintId];
     if (!sprint) {
-        draft.sprints[sprintId] = { items: [] };
+        draft.sprints[sprintId] = { items: [], backlogItemsInSprint: {} };
         sprint = draft.sprints[sprintId];
     }
     return sprint;
@@ -117,6 +122,31 @@ export const sprintBacklogReducer = (
                 const actionTyped = action as ApiGetSprintBacklogItemsSuccessAction;
                 const sprintId = actionTyped.meta.actionParams.sprintId;
                 addSprintBacklogItems(draft, sprintId, actionTyped.payload.response.data.items);
+                return;
+            }
+            case ActionTypes.API_GET_BACKLOG_ITEM_SUCCESS: {
+                debugger;
+                const actionTyped = action as ApiGetBacklogItemSuccessAction;
+                const triggerAction = actionTyped.meta?.passthrough?.triggerAction;
+                const isSelectAction = triggerAction === ActionTypes.SELECT_PRODUCT_BACKLOG_ITEM;
+                const isUnselectAction = triggerAction === ActionTypes.UNSELECT_PRODUCT_BACKLOG_ITEM;
+                if (isSelectAction || isUnselectAction) {
+                    const backlogItemId = actionTyped.meta?.passthrough?.backlogItemId;
+                    if (!backlogItemId) {
+                        throw new Error(
+                            "Unexpected condition- API_GET_BACKLOG_ITEM_SUCCESS expects backlogItemId in passthrough data"
+                        );
+                    }
+                    const backlogItemSprintIds = actionTyped.payload.response.data.extra?.sprintIds || [];
+                    backlogItemSprintIds.forEach((sprintId) => {
+                        const sprintInfo = getOrAddSprintById(draft, sprintId);
+                        if (isSelectAction) {
+                            sprintInfo.backlogItemsInSprint[backlogItemId] = true;
+                        } else if (sprintInfo.backlogItemsInSprint[backlogItemId]) {
+                            delete sprintInfo.backlogItemsInSprint[backlogItemId];
+                        }
+                    });
+                }
                 return;
             }
             case ActionTypes.MOVE_BACKLOG_ITEM_TO_SPRINT: {

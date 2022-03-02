@@ -33,6 +33,7 @@ export interface SprintCardStateProps extends SprintCardSprint {
     buildItemMenu?: ItemMenuBuilder;
     busySplittingStory?: boolean;
     className?: string;
+    disableAddBacklogItemButton: boolean;
     editMode: EditMode;
     openedDetailMenuBacklogItemId: string;
     openingDetailMenuBacklogItemId: string;
@@ -173,7 +174,7 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
                     itemName={
                         props.selectedProductBacklogItemCount === 1 ? "1 item" : `${props.selectedProductBacklogItemCount} items`
                     }
-                    disabled={!props.selectedProductBacklogItemCount}
+                    disabled={!props.selectedProductBacklogItemCount || props.disableAddBacklogItemButton}
                     onClick={() => {
                         if (props.onAddBacklogItem) {
                             props.onAddBacklogItem();

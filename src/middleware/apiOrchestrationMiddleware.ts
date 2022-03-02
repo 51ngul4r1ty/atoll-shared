@@ -156,8 +156,11 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const actionTyped = action as CancelEditBacklogItemAction;
             const state = storeTyped.getState();
             const itemId = actionTyped.payload.itemId;
+            const payloadOverride = buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", itemId);
             storeTyped.dispatch(
-                apiGetBacklogItem(itemId, buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", itemId))
+                apiGetBacklogItem(itemId, {
+                    payloadOverride
+                })
             );
             break;
         }

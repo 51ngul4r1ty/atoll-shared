@@ -39,7 +39,7 @@ import { DateOnly } from "../types/dateTypes";
 import { timeNow } from "../utils/dateHelper";
 import { BacklogItemInSprint } from "../types/backlogItemTypes";
 import { mapApiItemToBacklogItem, mapApiItemToBacklogItemPart } from "../mappers/backlogItemMappers";
-import { removeProductBacklogItem } from "../actions/backlogItemActions";
+import { removeProductBacklogItem, SelectProductBacklogItemAction } from "../actions/backlogItemActions";
 import { AnyFSA } from "../types/reactHelperTypes";
 import { ApiGetSprintSuccessAction } from "../actions/apiSprints";
 import {
@@ -48,6 +48,7 @@ import {
     handleSprintBacklogItemDetailClick
 } from "../actionFlows/itemDetailMenuActionFlow";
 import { getFlowInfoFromAction } from "../utils/actionFlowUtils";
+import { apiGetBacklogItem } from "../actions/apiBacklogItems";
 
 export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA) => {
     next(action);
@@ -242,6 +243,32 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
                     backlogItemId
                 );
             }
+            return;
+        }
+        case ActionTypes.SELECT_PRODUCT_BACKLOG_ITEM: {
+            const actionTyped = action as SelectProductBacklogItemAction;
+            const backlogItemId = actionTyped.payload.itemId;
+            storeTyped.dispatch(
+                apiGetBacklogItem(backlogItemId, {
+                    passthroughData: {
+                        triggerAction: actionTyped.type,
+                        backlogItemId
+                    }
+                })
+            );
+            return;
+        }
+        case ActionTypes.UNSELECT_PRODUCT_BACKLOG_ITEM: {
+            const actionTyped = action as SelectProductBacklogItemAction;
+            const backlogItemId = actionTyped.payload.itemId;
+            storeTyped.dispatch(
+                apiGetBacklogItem(backlogItemId, {
+                    passthroughData: {
+                        triggerAction: actionTyped.type,
+                        backlogItemId
+                    }
+                })
+            );
             return;
         }
     }

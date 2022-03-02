@@ -53,6 +53,7 @@ export interface SprintPlanningPanelStateProps {
     openingDetailMenuInfo: OpenedOrOpeningDetailMenuInfo;
     openedDetailMenuSprintId: string | null;
     splitToNextSprintAvailable?: boolean;
+    sprintsToDisableAddItemAction: string[];
     renderMobile?: boolean;
     selectedProductBacklogItemCount: number;
     showDetailMenuToLeft?: boolean;
@@ -183,12 +184,14 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                     }
                 }
             };
+            const disableAddBacklogItemButton = props.sprintsToDisableAddItemAction.filter((item) => item === sprint.id).length > 0;
             sprintItemElt = (
                 <div key={buildSprintKey(sprint)}>
                     <SimpleDivider />
                     <SprintCard
                         {...sprint}
                         editMode={props.editMode}
+                        disableAddBacklogItemButton={disableAddBacklogItemButton}
                         busySplittingStory={props.busySplittingStory}
                         showDetailMenuToLeft={props.showDetailMenuToLeft}
                         showDetailMenu={props.openedDetailMenuSprintId === sprint.id}

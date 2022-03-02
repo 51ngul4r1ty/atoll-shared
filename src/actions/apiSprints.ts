@@ -29,7 +29,7 @@ import type { SprintModel } from "../types/sprintTypes";
 import type { Sprint } from "../reducers/sprintsReducer";
 
 // utils
-import { buildActionTypes, buildStandardMeta } from "./utils/apiActionUtils";
+import { addStandardMeta, buildActionTypes } from "./utils/apiActionUtils";
 
 // #region Collection
 
@@ -102,9 +102,9 @@ export const apiGetSprint = (sprintId: string | null, options?: ApiGetSprintOpti
             method: "GET",
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
             types: buildActionTypes(ApiActionNames.GET_SPRINT)
-        },
-        meta: buildStandardMeta({ sprintId, options }, options?.passthroughData)
+        }
     };
+    addStandardMeta(result, { sprintId, options }, options?.passthroughData);
     if (options?.endpointOverride) {
         result.payload.endpoint = options.endpointOverride;
     }

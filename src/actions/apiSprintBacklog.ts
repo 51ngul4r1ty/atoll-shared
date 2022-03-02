@@ -34,7 +34,7 @@ import type { ApiBatchAction } from "../middleware/apiBatchTypes";
 import type { ApiItemDetailMenuActionFlowSuccessMeta } from "../actionFlows/itemDetailMenuActionFlow";
 
 // utils
-import { buildActionTypes, buildStandardMeta } from "./utils/apiActionUtils";
+import { addStandardMeta, buildActionTypes } from "./utils/apiActionUtils";
 import { mapBacklogItemStatusToApi } from "../mappers/backlogItemMappers";
 
 export type ApiGetSprintBacklogItemsSuccessActionParams = {
@@ -73,9 +73,9 @@ export const apiGetSprintBacklogItems = (sprintId: string, options?: ApiGetSprin
             method: "GET",
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
             types: buildActionTypes(ApiActionNames.GET_SPRINT_BACKLOG_ITEMS)
-        },
-        meta: buildStandardMeta({ sprintId }, options?.passthroughData)
+        }
     };
+    addStandardMeta(result, { sprintId }, options?.passthroughData);
     return result;
 };
 
