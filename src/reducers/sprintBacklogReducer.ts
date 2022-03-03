@@ -125,7 +125,6 @@ export const sprintBacklogReducer = (
                 return;
             }
             case ActionTypes.API_GET_BACKLOG_ITEM_SUCCESS: {
-                debugger;
                 const actionTyped = action as ApiGetBacklogItemSuccessAction;
                 const triggerAction = actionTyped.meta?.passthrough?.triggerAction;
                 const isSelectAction = triggerAction === ActionTypes.SELECT_PRODUCT_BACKLOG_ITEM;
