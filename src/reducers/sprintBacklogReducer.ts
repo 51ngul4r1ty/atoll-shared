@@ -10,6 +10,7 @@ import type { AnyFSA } from "../types/reactHelperTypes";
 import type {
     ApiGetSprintBacklogItemsFailureAction,
     ApiGetSprintBacklogItemsSuccessAction,
+    ApiPostSprintBacklogItemSuccessAction,
     ApiSprintBacklogItemSetStatusSuccessAction
 } from "../actions/apiSprintBacklog";
 import type { BacklogItemInSprint } from "../types/backlogItemTypes";
@@ -275,6 +276,13 @@ export const sprintBacklogReducer = (
                 }
                 unlinkBacklogItemFromSprint(draft, sprintId, backlogItemId);
 
+                return;
+            }
+            case ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_SUCCESS: {
+                const actionTyped = action as ApiPostSprintBacklogItemSuccessAction;
+                const sprintId = actionTyped.meta.actionParams.sprintId;
+                const backlogItemId = actionTyped.meta.actionParams.backlogItemId;
+                linkBacklogItemToSprint(draft, sprintId, backlogItemId);
                 return;
             }
             case ActionTypes.PATCH_BACKLOG_ITEM_IN_SPRINT: {
