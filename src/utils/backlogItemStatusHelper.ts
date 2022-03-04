@@ -18,3 +18,6 @@ export const hasBacklogItemAtMostBeenNotStarted = (backlogItemStatus: BacklogIte
 
 export const hasBacklogItemAtMostBeenInProgress = (backlogItemStatus: BacklogItemStatus) =>
     backlogItemStatus === BacklogItemStatus.InProgress || hasBacklogItemAtMostBeenNotStarted(backlogItemStatus);
+
+export const hasBacklogItemAtMostBeenDone = (backlogItemStatus: BacklogItemStatus) =>
+    backlogItemStatus === BacklogItemStatus.Done || hasBacklogItemAtMostBeenInProgress(backlogItemStatus);
