@@ -80,6 +80,18 @@ export const getOrAddSprintById = (draft: Draft<SprintBacklogState>, sprintId: s
     return sprint;
 };
 
+export const linkBacklogItemToSprint = (draft: Draft<SprintBacklogState>, sprintId: string, backlogItemId: string) => {
+    const sprintInfo = getOrAddSprintById(draft, sprintId);
+    sprintInfo.backlogItemsInSprint[backlogItemId] = true;
+};
+
+export const unlinkBacklogItemFromSprint = (draft: Draft<SprintBacklogState>, sprintId: string, backlogItemId: string) => {
+    const sprintInfo = getOrAddSprintById(draft, sprintId);
+    if (sprintInfo.backlogItemsInSprint[backlogItemId]) {
+        delete sprintInfo.backlogItemsInSprint[backlogItemId];
+    }
+};
+
 export const getSprintBacklogItemById = (
     sprintBacklogState: SprintBacklogState,
     sprintId: string,
@@ -137,13 +149,9 @@ export const sprintBacklogReducer = (
                         );
                     }
                     const backlogItemSprintIds = actionTyped.payload.response.data.extra?.sprintIds || [];
+                    const linkOrUnlinkFunction = isSelectAction ? linkBacklogItemToSprint : unlinkBacklogItemFromSprint;
                     backlogItemSprintIds.forEach((sprintId) => {
-                        const sprintInfo = getOrAddSprintById(draft, sprintId);
-                        if (isSelectAction) {
-                            sprintInfo.backlogItemsInSprint[backlogItemId] = true;
-                        } else if (sprintInfo.backlogItemsInSprint[backlogItemId]) {
-                            delete sprintInfo.backlogItemsInSprint[backlogItemId];
-                        }
+                        linkOrUnlinkFunction(draft, sprintId, backlogItemId);
                     });
                 }
                 return;
@@ -265,6 +273,7 @@ export const sprintBacklogReducer = (
                         throw Error(`Unexpected scenario: backlog item ${backlogItemId} does not exist`);
                     }
                 }
+                unlinkBacklogItemFromSprint(draft, sprintId, backlogItemId);
 
                 return;
             }
