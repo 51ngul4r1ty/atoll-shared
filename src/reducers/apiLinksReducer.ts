@@ -115,8 +115,12 @@ export const processItems = <T extends ApiItemWithLinks & ItemWithId>(
     itemTypeLinkName: string,
     items: T[],
     draft: Draft<ApiLinkState>,
-    meta: ApiActionMetaDataRequestMeta
+    meta: ApiActionMetaDataRequestMeta,
+    debugName: string
 ) => {
+    if (!items) {
+        throw new Error(`Unexpected condition- items array is undefined in processItems (${debugName})`);
+    }
     items.forEach((item) => {
         processItem(itemTypeLinkName, item, draft, meta);
     });
@@ -128,13 +132,25 @@ export const apiLinksReducer = (state: ApiLinkState = apiLinksReducerInitialStat
             case ActionTypes.API_GET_BACKLOG_ITEMS_SUCCESS: {
                 const actionTyped = action as ApiGetBacklogItemsSuccessAction;
                 const { payload } = actionTyped;
-                processItems(ResourceTypes.BACKLOG_ITEM, payload.response.data.items, draft, actionTyped.meta);
+                processItems(
+                    ResourceTypes.BACKLOG_ITEM,
+                    payload.response.data.items,
+                    draft,
+                    actionTyped.meta,
+                    "apiLinksReducer - API_GET_BACKLOG_ITEMS_SUCCESS"
+                );
                 return;
             }
             case ActionTypes.API_GET_SPRINTS_SUCCESS: {
                 const actionTyped = action as ApiGetSprintsSuccessAction;
                 const { payload } = actionTyped;
-                processItems(ResourceTypes.SPRINT, payload.response.data.items, draft, actionTyped.meta);
+                processItems(
+                    ResourceTypes.SPRINT,
+                    payload.response.data.items,
+                    draft,
+                    actionTyped.meta,
+                    "apiLinksReducer - API_GET_SPRINTS_SUCCESS"
+                );
                 return;
             }
             case ActionTypes.API_GET_SPRINT_SUCCESS: {
@@ -146,14 +162,32 @@ export const apiLinksReducer = (state: ApiLinkState = apiLinksReducerInitialStat
             case ActionTypes.API_GET_BFF_VIEWS_PLAN_SUCCESS: {
                 const actionTyped = action as ApiGetBffViewsPlanSuccessAction;
                 const { payload } = actionTyped;
-                processItems(ResourceTypes.BACKLOG_ITEM, payload.response.data.backlogItems, draft, actionTyped.meta);
-                processItems(ResourceTypes.SPRINT, payload.response.data.sprints, draft, actionTyped.meta);
+                processItems(
+                    ResourceTypes.BACKLOG_ITEM,
+                    payload.response.data.backlogItems,
+                    draft,
+                    actionTyped.meta,
+                    "apiLinksReducer - API_GET_BFF_VIEWS_PLAN_SUCCESS - BACKLOG_ITEM"
+                );
+                processItems(
+                    ResourceTypes.SPRINT,
+                    payload.response.data.sprints,
+                    draft,
+                    actionTyped.meta,
+                    "apiLinksReducer - API_GET_BFF_VIEWS_PLAN_SUCCESS - SPRINT"
+                );
                 return;
             }
             case ActionTypes.API_GET_BFF_VIEWS_BACKLOG_ITEM_SUCCESS: {
                 const actionTyped = action as ApiGetBffViewsBacklogItemSuccessAction;
                 const { payload } = actionTyped;
-                processItems(ResourceTypes.BACKLOG_ITEM, payload.response.data.backlogItems, draft, actionTyped.meta);
+                processItems(
+                    ResourceTypes.BACKLOG_ITEM,
+                    payload.response.data.backlogItems,
+                    draft,
+                    actionTyped.meta,
+                    "apiLinksReducer - API_GET_BFF_VIEWS_BACKLOG_ITEM_SUCCESS"
+                );
                 return;
             }
         }

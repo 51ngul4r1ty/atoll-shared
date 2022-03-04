@@ -119,6 +119,9 @@ export const addSprintBacklogItems = (
     let sprint = getOrAddSprintById(draft, sprintId);
     sprint.items = [];
     const items = mapApiItemsToSprintBacklogItems(backlogItems);
+    if (!items) {
+        throw new Error("Unexpected condition- addSprintBacklogItems had items undefined");
+    }
     items.forEach((item) => {
         sprint.items.push(item);
     });
