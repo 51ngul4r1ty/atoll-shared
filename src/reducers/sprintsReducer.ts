@@ -175,8 +175,8 @@ export const removeSprint = (draft: Draft<SprintsState>, sprintId: string) => {
 };
 
 export const markBacklogItemsLoaded = (draft: Draft<SprintsState>, sprintId: string) => {
-    const sprintItem = draft.items.filter((item) => item.id === sprintId);
-    sprintItem.forEach((item) => {
+    const sprintItems = draft.items.filter((item) => item.id === sprintId);
+    sprintItems.forEach((item) => {
         item.backlogItemsLoaded = true;
     });
 };
