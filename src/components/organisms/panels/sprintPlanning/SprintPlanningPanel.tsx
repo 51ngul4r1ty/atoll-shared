@@ -184,7 +184,8 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                     }
                 }
             };
-            const disableAddBacklogItemButton = props.sprintsToDisableAddItemAction.filter((item) => item === sprint.id).length > 0;
+            const sprintsToDisableAddItemAction = props.sprintsToDisableAddItemAction || [];
+            const disableAddBacklogItemButton = sprintsToDisableAddItemAction.filter((item) => item === sprint.id).length > 0;
             sprintItemElt = (
                 <div key={buildSprintKey(sprint)}>
                     <SimpleDivider />
