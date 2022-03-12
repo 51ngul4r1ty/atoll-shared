@@ -18,7 +18,6 @@ import { getStoryPhrases, isStoryPaste } from "./pasteFormatUtils";
 
 // interfaces/types
 import { BacklogItemEditableFields } from "./backlogItemFormTypes";
-import { DateInput } from "../../atoms/inputs/DateInput";
 import { DateTimeInput } from "../../atoms/inputs/DateTimeInput";
 
 export interface BacklogItemFullDetailFormStateProps extends BacklogItemEditableFields {
@@ -269,16 +268,25 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                 {actionButtonPanelElts}
             </>
         );
-        const formClassName = buildClassName(
-            commonCss.form,
+        const formClassName = buildClassName(this.props.className, css.pageContent);
+        const storyPanelClassName = buildClassName(
             isReadOnly ? commonCss.readOnly : null,
+            commonCss.form,
             css.form,
             isReadOnly ? css.readOnly : null,
-            this.props.className
+            css.storyPanel
+        );
+        const splitsPanelClassName = buildClassName(
+            isReadOnly ? commonCss.readOnly : null,
+            commonCss.form,
+            css.form,
+            isReadOnly ? css.readOnly : null,
+            css.splitsPanel
         );
         return (
             <form data-item-id={this.props.id} className={formClassName}>
-                {formContent}
+                <div className={storyPanelClassName}>{formContent}</div>
+                <div className={splitsPanelClassName}>SPLIT PANEL</div>
             </form>
         );
     }

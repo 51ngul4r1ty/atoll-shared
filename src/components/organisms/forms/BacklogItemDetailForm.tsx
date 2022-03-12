@@ -18,12 +18,42 @@ import { getStoryPhrases, isStoryPaste } from "./pasteFormatUtils";
 // interfaces/types
 import { BacklogItemType } from "../../../types/backlogItemTypes";
 import { BacklogItemInstanceEditableFields } from "./backlogItemFormTypes";
+import { BacklogItemStatus } from "../../../types/backlogItemEnums";
+
+export type BacklogItemDetailFormSplitItem = {
+    allocatedToSprintId: string | null;
+    allocatedToSprintName: string | null;
+    plannedPoints: number | null;
+    partId: string;
+    percentage: number | null;
+    startedAt: Date | null;
+    finishedAt: Date | null;
+    status: BacklogItemStatus;
+    expanded: boolean;
+};
 
 export interface BacklogItemDetailFormStateProps extends BacklogItemInstanceEditableFields {
-    className?: string;
+    /* from BacklogItemInstanceEditableFields */
+    rolePhrase: string | null;
+    storyPhrase: string;
+    reasonPhrase: string | null;
+    acceptanceCriteria: string;
+    acceptedAt: Date | null;
+    estimate: number | null;
+    externalId: string;
+    finishedAt: Date | null;
+    friendlyId: string;
+    id: string;
+    releasedAt: Date | null;
+    startedAt: Date | null;
     type: BacklogItemType;
+
+    /* new in this interface */
+    className?: string;
     editing: boolean;
     renderMobile?: boolean;
+    status: BacklogItemStatus;
+    splits: BacklogItemDetailFormSplitItem[];
 }
 
 export interface BacklogItemDetailFormDispatchProps {

@@ -12,7 +12,9 @@ import { number, text, select, boolean } from "@storybook/addon-knobs";
 // components
 import {
     BacklogItemDetailForm,
+    BacklogItemFullDetailForm,
     BacklogItemPlanningPanel,
+    BacklogItemStatus,
     BacklogItemWithSource,
     EditMode,
     LoginForm,
@@ -211,10 +213,10 @@ storiesOf("Molecules/Cards/SprintCard", module).add("SprintCard", () => (
 ));
 
 storiesOf("Organisms/Panels/SprintPlanningPanel", module).add("SprintPlanningPanel", () => (
-    <div>
+    <div className="all-devices">
         <Provider store={store}>
             <SprintPlanningPanel
-                editMode={EditMode.View}
+                editMode={select("editMode", { "EditMode.Edit": EditMode.Edit, "EditMode.View": EditMode.View }, EditMode.View)}
                 openedDetailMenuInfo={undefined}
                 openingDetailMenuInfo={undefined}
                 selectedProductBacklogItemCount={0}
@@ -222,10 +224,41 @@ storiesOf("Organisms/Panels/SprintPlanningPanel", module).add("SprintPlanningPan
                     {
                         id: "sprint-1",
                         acceptedPoints: 5,
-                        backlogItems: null,
-                        backlogItemsLoaded: false,
+                        backlogItems: [
+                            {
+                                acceptanceCriteria: "",
+                                acceptedAt: null,
+                                backlogItemPartId: "1",
+                                createdAt: new Date(2019, 0, 1),
+                                displayindex: 1,
+                                estimate: 8,
+                                externalId: "gh-123",
+                                finishedAt: null,
+                                friendlyId: "",
+                                partIndex: number("partIndex", 1),
+                                partPercentage: 0.5,
+                                projectId: "",
+                                reasonPhrase: "",
+                                releasedAt: null,
+                                rolePhrase: "As a user",
+                                startedAt: null,
+                                status: BacklogItemStatus.InProgress,
+                                storyEstimate: 13,
+                                storyFinishedAt: null,
+                                storyPhrase: text("storyPhrase", "I can add a task under a user story"),
+                                storyStartedAt: new Date(2019, 0, 1),
+                                storyStatus: BacklogItemStatus.InProgress,
+                                storyUpdatedAt: null,
+                                totalParts: number("totalParts", 3),
+                                type: "story",
+                                unallocatedParts: 0,
+                                unallocatedPoints: 0,
+                                updatedAt: new Date(2019, 0, 1)
+                            }
+                        ],
+                        backlogItemsLoaded: boolean("sprint[0].backlogItemsLoaded", false),
                         editing: false,
-                        expanded: false,
+                        expanded: boolean("sprint[0].expanded", false),
                         finishDate: new Date(2020, 9, 28),
                         instanceId: 1,
                         name: "sprint name",
@@ -274,3 +307,74 @@ storiesOf("Organisms/Forms/LoginForm", module).add("LoginForm", () => (
         <LoginForm username="username" password="password" />
     </div>
 ));
+
+storiesOf("Organisms/Forms/BacklogItemFullDetailForm", module).add("BacklogItemFullDetailForm (issue)", () => (
+    <div>
+        <BacklogItemFullDetailForm
+            id="1"
+            saved={boolean("saved", false)}
+            type={select("type", ["issue", "story"], "issue")}
+            estimate={number("estimate", 13)}
+            friendlyId={text("friendlyId", "i-42")}
+            externalId={text("externalId", "B1000032")}
+            rolePhrase={text("rolePhrase", null)}
+            storyPhrase={text("storyPhrase", bugStoryPhrase)}
+            reasonPhrase={text("reasonPhrase", null)}
+            editable={boolean("editable", false)}
+            instanceId={number("instanceId", 1)}
+            splits={[
+                {
+                    allocatedToSprintId: text("split[0].allocatedToSprintId", ""),
+                    allocatedToSprintName: text("split[0].allocatedToSprintName", ""),
+                    plannedPoints: number("split[0].plannedPoints", 13),
+                    partId: text("split[0].partId", "1-1"),
+                    percentage: number("split[0].percentage", 0.5),
+                    startedAt: null,
+                    finishedAt: null,
+                    status: select(
+                        "split[0].status",
+                        {
+                            "BacklogItemStatus.NotStarted": BacklogItemStatus.NotStarted,
+                            "BacklogItemStatus.InProgress": BacklogItemStatus.InProgress
+                        },
+                        BacklogItemStatus.NotStarted
+                    ),
+                    expanded: boolean("split[0].expanded", true)
+                }
+            ]}
+        />
+    </div>
+));
+// .add("BacklogItemDetailForm (story)", () => (
+//     <div>
+//         <BacklogItemDetailForm
+//             id="2"
+//             type={select("type", ["issue", "story"], "story")}
+//             estimate={number("estimate", 8)}
+//             friendlyId={text("friendlyId", "s-19")}
+//             externalId={text("externalId", "527")}
+//             rolePhrase={text("rolePhrase", "as a developer")}
+//             storyPhrase={text("storyPhrase", "use the v3 api to sign up a user")}
+//             reasonPhrase={text("reasonPhrase", "to allow for automation or a customized experience")}
+//             editing={boolean("editing", false)}
+//             instanceId={number("instanceId", 2)}
+//         />
+//     </div>
+// ))
+// .add("BacklogItemDetailForm Mobile (story)", () => (
+//     <div>
+//         <BacklogItemDetailForm
+//             id="3"
+//             type={select("type", ["issue", "story"], "story")}
+//             estimate={number("estimate", 8)}
+//             friendlyId={text("friendlyId", "s-19")}
+//             externalId={text("externalId", "527")}
+//             rolePhrase={text("rolePhrase", "as a developer")}
+//             storyPhrase={text("storyPhrase", "use the v3 api to sign up a user")}
+//             reasonPhrase={text("reasonPhrase", "to allow for automation or a customized experience")}
+//             editing={boolean("editing", false)}
+//             instanceId={number("instanceId", 2)}
+//             renderMobile
+//         />
+//     </div>
+// ));
