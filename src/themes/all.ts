@@ -100,6 +100,11 @@ export interface Theme {
     "--medium-font-size": string;
     "--large-font-size": string;
     "--xlarge-font-size": string;
+    "--primary-thin-font-weight": string;
+    "--primary-light-bold-font-weight": string;
+    "--primary-bold-font-weight": string;
+    "--primary-heavy-bold-font-weight": string;
+    "--primary-boldest-font-weight": string;
 }
 
 export const defaultTheme: Theme = {
@@ -139,7 +144,12 @@ export const defaultTheme: Theme = {
     "--small-font-size": "0.75rem",
     "--medium-font-size": "1.0rem",
     "--large-font-size": "1.25rem",
-    "--xlarge-font-size": "1.5rem"
+    "--xlarge-font-size": "1.5rem",
+    "--primary-thin-font-weight": "100",
+    "--primary-light-bold-font-weight": "500",
+    "--primary-bold-font-weight": "600",
+    "--primary-heavy-bold-font-weight": "700",
+    "--primary-boldest-font-weight": "800"
 };
 
 export const darkTheme: Theme = {
@@ -179,7 +189,12 @@ export const darkTheme: Theme = {
     "--small-font-size": "0.75rem",
     "--medium-font-size": "1.0rem",
     "--large-font-size": "1.25rem",
-    "--xlarge-font-size": "1.5rem"
+    "--xlarge-font-size": "1.5rem",
+    "--primary-thin-font-weight": "100",
+    "--primary-light-bold-font-weight": "500",
+    "--primary-bold-font-weight": "600",
+    "--primary-heavy-bold-font-weight": "700",
+    "--primary-boldest-font-weight": "800"
 };
 
 export interface ThemeListItem {

@@ -46,7 +46,7 @@
     position: absolute;
     top: 0;
     color: black;
-    font-weight: 700;
+    font-weight: var(--primary-heavy-bold-font-weight, 700);
     width: 100%;
     display: flex;
     justify-content: center;

@@ -281,12 +281,16 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
             commonCss.form,
             css.form,
             isReadOnly ? css.readOnly : null,
-            css.splitsPanel
+            css.splitPanel
         );
         return (
             <form data-item-id={this.props.id} className={formClassName}>
                 <div className={storyPanelClassName}>{formContent}</div>
-                <div className={splitsPanelClassName}>SPLIT PANEL</div>
+                <div className={css.splitsPanel}>
+                    <div className={splitsPanelClassName}>Split 1/3</div>
+                    <div className={splitsPanelClassName}>Split 2/3</div>
+                    <div className={splitsPanelClassName}>Split 3/3</div>
+                </div>
             </form>
         );
     }
