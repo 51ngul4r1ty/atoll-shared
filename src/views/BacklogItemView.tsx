@@ -78,6 +78,17 @@ export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
                 acceptedAt={props.acceptedAt}
                 releasedAt={props.releasedAt}
                 type={props.type}
+                parts={[
+                    {
+                        assignedSprintName: "Sprint 242"
+                    },
+                    {
+                        assignedSprintName: "Sprint 242"
+                    },
+                    {
+                        assignedSprintName: null
+                    }
+                ]}
                 onDataUpdate={(fields) => {
                     dispatch(updateCurrentBacklogItemFields(fields));
                 }}
