@@ -40,9 +40,15 @@ import { useRecursiveTimeout } from "../../../common/setTimeoutHook";
 import { BacklogItemPlanningItem } from "../../combo/BacklogItemPlanningItem";
 import { buildBacklogDisplayId } from "../../../../utils/backlogItemHelper";
 
+// interfaces/types
+import type { BacklogItemPlanningPanelProps } from "./backlogItemPlanningPanelTypes";
+
 // consts/enums
 import * as loggingTags from "../../../../constants/loggingTags";
-import { BacklogItemPlanningPanelProps, CardPosition } from "./backlogItemPlanningPanelTypes";
+import { CardPosition } from "./backlogItemPlanningPanelTypes";
+import { BELOW_LAST_CARD_ID } from "./backlogItemPlanningPanelConsts";
+
+// utils
 import {
     atBottomOfPage,
     atTopOfPage,
@@ -61,7 +67,6 @@ import {
 } from "./backlogItemPlanningPanelUtils";
 import { addActionButtons } from "./backlogItemPlanningPanelJsxUtils";
 import { productBacklogItemMenuBuilder } from "../../../common/itemMenuBuilders";
-import { BELOW_LAST_CARD_ID } from "./backlogItemPlanningPanelConsts";
 
 /* exported components */
 

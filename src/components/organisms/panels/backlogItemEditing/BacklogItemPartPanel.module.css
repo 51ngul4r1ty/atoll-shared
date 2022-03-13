@@ -1,0 +1,9 @@
+.partPanel {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.splitCaption {
+    font-weight: 600;
+}

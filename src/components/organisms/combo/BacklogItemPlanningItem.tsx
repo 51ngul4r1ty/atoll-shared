@@ -84,7 +84,6 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     storyPhrase={props.storyPhrase}
                     type={props.type}
                     status={props.status}
-                    splits={[]}
                     onDataUpdate={(fields) => {
                         dispatch(updateBacklogItemFields(fields));
                     }}

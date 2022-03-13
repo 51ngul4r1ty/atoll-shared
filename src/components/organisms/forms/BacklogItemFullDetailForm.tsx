@@ -1,29 +1,44 @@
 // externals
 import React, { Component } from "react";
 
-// components
-import { SaveButton } from "../../molecules/buttons/SaveButton";
-import { ResetButton } from "../../molecules/buttons/ResetButton";
-import { StandardInput } from "../../atoms/inputs/StandardInput";
-import { StandardTextArea } from "../../atoms/inputs/StandardTextArea";
-
 // style
 import commonCss from "./common/common.module.css";
 import css from "./BacklogItemFullDetailForm.module.css";
 
+// interfaces/types
+import type { BacklogItemEditableFields } from "./backlogItemFormTypes";
+import type { BacklogItemStatus } from "../../../types/backlogItemEnums";
+
+// components
+import { BacklogItemPartPanel } from "../panels/backlogItemEditing/BacklogItemPartPanel";
+import { DateTimeInput } from "../../atoms/inputs/DateTimeInput";
+import { ResetButton } from "../../molecules/buttons/ResetButton";
+import { SaveButton } from "../../molecules/buttons/SaveButton";
+import { StandardInput } from "../../atoms/inputs/StandardInput";
+import { StandardTextArea } from "../../atoms/inputs/StandardTextArea";
+
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
-import { isNumber } from "../../../utils/validationUtils";
 import { getStoryPhrases, isStoryPaste } from "./pasteFormatUtils";
+import { isNumber } from "../../../utils/validationUtils";
 
-// interfaces/types
-import { BacklogItemEditableFields } from "./backlogItemFormTypes";
-import { DateTimeInput } from "../../atoms/inputs/DateTimeInput";
+export type BacklogItemDetailFormSplitItem = {
+    allocatedToSprintId: string | null;
+    allocatedToSprintName: string | null;
+    plannedPoints: number | null;
+    partId: string;
+    percentage: number | null;
+    startedAt: Date | null;
+    finishedAt: Date | null;
+    status: BacklogItemStatus;
+    expanded: boolean;
+};
 
 export interface BacklogItemFullDetailFormStateProps extends BacklogItemEditableFields {
     saved: boolean;
     className?: string;
     editable?: boolean;
+    splits: BacklogItemDetailFormSplitItem[];
 }
 
 export interface BacklogItemFullDetailFormDispatchProps {
@@ -276,21 +291,23 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
             isReadOnly ? css.readOnly : null,
             css.storyPanel
         );
-        const splitsPanelClassName = buildClassName(
-            isReadOnly ? commonCss.readOnly : null,
-            commonCss.form,
-            css.form,
-            isReadOnly ? css.readOnly : null,
-            css.splitPanel
-        );
+        let partIndex = 0;
+        const totalParts = this.props.splits.length;
+        const backlogItemPartElts = this.props.splits.map((split) => {
+            partIndex++;
+            return (
+                <BacklogItemPartPanel
+                    key={partIndex}
+                    partIndex={partIndex}
+                    totalParts={totalParts}
+                    sprintName={split.allocatedToSprintName}
+                />
+            );
+        });
         return (
             <form data-item-id={this.props.id} className={formClassName}>
                 <div className={storyPanelClassName}>{formContent}</div>
-                <div className={css.splitsPanel}>
-                    <div className={splitsPanelClassName}>Split 1/3</div>
-                    <div className={splitsPanelClassName}>Split 2/3</div>
-                    <div className={splitsPanelClassName}>Split 3/3</div>
-                </div>
+                <div className={css.splitsPanel}>{backlogItemPartElts}</div>
             </form>
         );
     }

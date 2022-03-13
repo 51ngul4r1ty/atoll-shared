@@ -20,18 +20,6 @@ import { BacklogItemType } from "../../../types/backlogItemTypes";
 import { BacklogItemInstanceEditableFields } from "./backlogItemFormTypes";
 import { BacklogItemStatus } from "../../../types/backlogItemEnums";
 
-export type BacklogItemDetailFormSplitItem = {
-    allocatedToSprintId: string | null;
-    allocatedToSprintName: string | null;
-    plannedPoints: number | null;
-    partId: string;
-    percentage: number | null;
-    startedAt: Date | null;
-    finishedAt: Date | null;
-    status: BacklogItemStatus;
-    expanded: boolean;
-};
-
 export interface BacklogItemDetailFormStateProps extends BacklogItemInstanceEditableFields {
     /* from BacklogItemInstanceEditableFields */
     rolePhrase: string | null;
@@ -53,7 +41,6 @@ export interface BacklogItemDetailFormStateProps extends BacklogItemInstanceEdit
     editing: boolean;
     renderMobile?: boolean;
     status: BacklogItemStatus;
-    splits: BacklogItemDetailFormSplitItem[];
 }
 
 export interface BacklogItemDetailFormDispatchProps {
