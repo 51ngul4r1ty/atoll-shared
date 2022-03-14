@@ -1,11 +1,11 @@
 // interfaces/types
-import { BacklogItem, BacklogItemType } from "../types/backlogItemTypes";
+import type { BacklogItem, BacklogItemPart, BacklogItemType } from "../types/backlogItemTypes";
+import type { BacklogItemsState } from "../reducers/backlogItems/backlogItemsReducerTypes";
 
 // utils
 import { getBacklogItemById as reducerGetBacklogItemById } from "../reducers/backlogItems/backlogItemsReducerHelper";
 import { StateTree } from "../reducers/rootReducer";
 import { createSelector } from "reselect";
-import { BacklogItemsState } from "../reducers/backlogItems/backlogItemsReducerTypes";
 
 export const getBacklogItemByInstanceId = (state: StateTree, instanceId: number): BacklogItem | null => {
     const matchingItems = state.backlogItems.addedItems.filter((addedItem) => addedItem.instanceId === instanceId);
@@ -113,6 +113,11 @@ export const backlogItems = (state: { backlogItems: BacklogItemsState }): Backlo
 export const getCurrentBacklogItemId = createSelector(
     [backlogItems],
     (backlogItems: BacklogItemsState): string => backlogItems.currentItem?.id
+);
+
+export const getCurrentBacklogItemParts = createSelector(
+    [backlogItems],
+    (backlogItems: BacklogItemsState): BacklogItemPart[] => []
 );
 
 export const getCurrentBacklogItemFriendlyId = createSelector(

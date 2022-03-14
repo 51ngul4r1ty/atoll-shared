@@ -4,6 +4,9 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Helmet from "react-helmet";
 
+// interfaces/types
+import type { BacklogItemDetailFormSplitItem } from "../components/organisms/forms/BacklogItemFullDetailForm";
+
 // components
 import { TopMenuPanelContainer } from "../containers/TopMenuPanelContainer";
 import { BacklogItemFullDetailForm } from "../components/organisms/forms/BacklogItemFullDetailForm";
@@ -37,6 +40,7 @@ export interface BacklogItemViewStateProps {
     finishedAt: Date | null;
     acceptedAt: Date | null;
     releasedAt: Date | null;
+    splits: BacklogItemDetailFormSplitItem[];
 }
 
 export interface BacklogItemViewDispatchProps {
@@ -78,17 +82,7 @@ export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
                 acceptedAt={props.acceptedAt}
                 releasedAt={props.releasedAt}
                 type={props.type}
-                parts={[
-                    {
-                        assignedSprintName: "Sprint 242"
-                    },
-                    {
-                        assignedSprintName: "Sprint 242"
-                    },
-                    {
-                        assignedSprintName: null
-                    }
-                ]}
+                splits={props.splits}
                 onDataUpdate={(fields) => {
                     dispatch(updateCurrentBacklogItemFields(fields));
                 }}
