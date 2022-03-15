@@ -377,37 +377,34 @@ export const backlogItemsReducer = (
             }
             case ActionTypes.API_GET_BFF_VIEWS_BACKLOG_ITEM_SUCCESS: {
                 const actionTyped = action as ApiGetBffViewsBacklogItemSuccessAction;
-                const backlogItems = actionTyped.payload.response.data.backlogItems;
-                if (backlogItems.length === 1) {
-                    const backlogItem = backlogItems[0];
-                    draft.currentItem = {
-                        acceptanceCriteria: backlogItem.acceptanceCriteria,
-                        createdAt: isoDateStringToDate(backlogItem.createdAt),
-                        editing: false,
-                        estimate: backlogItem.estimate,
-                        externalId: backlogItem.externalId,
-                        friendlyId: backlogItem.friendlyId,
-                        id: backlogItem.id,
-                        instanceId: undefined,
-                        projectId: backlogItem.projectId,
-                        reasonPhrase: backlogItem.reasonPhrase,
-                        rolePhrase: backlogItem.rolePhrase,
-                        saved: true,
-                        status: mapApiStatusToBacklogItem(backlogItem.status),
-                        storyPhrase: backlogItem.storyPhrase,
-                        type: backlogItem.type,
-                        updatedAt: isoDateStringToDate(backlogItem.updatedAt),
-                        startedAt: isoDateStringToDate(backlogItem.startedAt),
-                        finishedAt: isoDateStringToDate(backlogItem.finishedAt),
-                        acceptedAt: isoDateStringToDate(backlogItem.acceptedAt),
-                        releasedAt: isoDateStringToDate(backlogItem.releasedAt),
-                        partIndex: backlogItem.partIndex,
-                        totalParts: backlogItem.totalParts,
-                        unallocatedParts: backlogItem.unallocatedParts,
-                        unallocatedPoints: backlogItem.unallocatedPoints
-                    };
-                    draft.savedCurrentItem = { ...draft.currentItem };
-                }
+                const backlogItem = actionTyped.payload.response.data.backlogItem;
+                draft.currentItem = {
+                    acceptanceCriteria: backlogItem.acceptanceCriteria,
+                    createdAt: isoDateStringToDate(backlogItem.createdAt),
+                    editing: false,
+                    estimate: backlogItem.estimate,
+                    externalId: backlogItem.externalId,
+                    friendlyId: backlogItem.friendlyId,
+                    id: backlogItem.id,
+                    instanceId: undefined,
+                    projectId: backlogItem.projectId,
+                    reasonPhrase: backlogItem.reasonPhrase,
+                    rolePhrase: backlogItem.rolePhrase,
+                    saved: true,
+                    status: mapApiStatusToBacklogItem(backlogItem.status),
+                    storyPhrase: backlogItem.storyPhrase,
+                    type: backlogItem.type,
+                    updatedAt: isoDateStringToDate(backlogItem.updatedAt),
+                    startedAt: isoDateStringToDate(backlogItem.startedAt),
+                    finishedAt: isoDateStringToDate(backlogItem.finishedAt),
+                    acceptedAt: isoDateStringToDate(backlogItem.acceptedAt),
+                    releasedAt: isoDateStringToDate(backlogItem.releasedAt),
+                    partIndex: backlogItem.partIndex,
+                    totalParts: backlogItem.totalParts,
+                    unallocatedParts: backlogItem.unallocatedParts,
+                    unallocatedPoints: backlogItem.unallocatedPoints
+                };
+                draft.savedCurrentItem = { ...draft.currentItem };
                 return;
             }
             case ActionTypes.RESET_CURRENT_BACKLOG_ITEM: {

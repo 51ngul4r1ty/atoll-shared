@@ -18,14 +18,18 @@ import type { NoDataApiAction, ApiActionMetaDataRequestMeta } from "../middlewar
 import { buildActionTypes } from "./utils/apiActionUtils";
 
 // interfaces/types
-import { ApiBacklogItem, ApiUserSettings } from "../types/apiModelTypes";
+import { ApiBacklogItem, ApiBacklogItemPart, ApiSprint, ApiUserSettings } from "../types/apiModelTypes";
 
 export interface ApiGetBffViewsBacklogItemResponsePayload {
     response: {
         status: number;
         data: {
-            backlogItems: ApiBacklogItem[];
-            userPreferences: ApiUserSettings;
+            backlogItem: ApiBacklogItem;
+            backlogItemPartsAndSprints: {
+                part: ApiBacklogItemPart;
+                sprint: ApiSprint;
+            };
+            inProductBacklog: boolean;
         };
     };
 }

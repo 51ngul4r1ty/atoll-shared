@@ -183,7 +183,7 @@ export const apiLinksReducer = (state: ApiLinkState = apiLinksReducerInitialStat
                 const { payload } = actionTyped;
                 processItems(
                     ResourceTypes.BACKLOG_ITEM,
-                    payload.response.data.backlogItems,
+                    [payload.response.data.backlogItem],
                     draft,
                     actionTyped.meta,
                     "apiLinksReducer - API_GET_BFF_VIEWS_BACKLOG_ITEM_SUCCESS"
