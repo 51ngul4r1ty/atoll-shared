@@ -57,6 +57,7 @@ export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>(
     pushedItems: [],
     selectedItemIds: [],
     currentItem: null,
+    currentItemPartsAndSprints: [],
     savedCurrentItem: null
 });
 
@@ -378,6 +379,8 @@ export const backlogItemsReducer = (
             case ActionTypes.API_GET_BFF_VIEWS_BACKLOG_ITEM_SUCCESS: {
                 const actionTyped = action as ApiGetBffViewsBacklogItemSuccessAction;
                 const backlogItem = actionTyped.payload.response.data.backlogItem;
+                const partsAndSprints = actionTyped.payload.response.data.backlogItemPartsAndSprints;
+                draft.currentItemPartsAndSprints = partsAndSprints;
                 draft.currentItem = {
                     acceptanceCriteria: backlogItem.acceptanceCriteria,
                     createdAt: isoDateStringToDate(backlogItem.createdAt),

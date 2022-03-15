@@ -20,15 +20,17 @@ import { buildActionTypes } from "./utils/apiActionUtils";
 // interfaces/types
 import { ApiBacklogItem, ApiBacklogItemPart, ApiSprint, ApiUserSettings } from "../types/apiModelTypes";
 
+export type BacklogItemPartAndSprint = {
+    part: ApiBacklogItemPart;
+    sprint: ApiSprint;
+};
+
 export interface ApiGetBffViewsBacklogItemResponsePayload {
     response: {
         status: number;
         data: {
             backlogItem: ApiBacklogItem;
-            backlogItemPartsAndSprints: {
-                part: ApiBacklogItemPart;
-                sprint: ApiSprint;
-            };
+            backlogItemPartsAndSprints: BacklogItemPartAndSprint[];
             inProductBacklog: boolean;
         };
     };

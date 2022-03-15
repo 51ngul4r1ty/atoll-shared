@@ -1,6 +1,7 @@
 // interfaces/types
 import type { WebsocketPushNotificationData } from "../../types/pushTypes";
 import type { BacklogItem, BacklogItemInSprint } from "../../types/backlogItemTypes";
+import type { BacklogItemPartAndSprint } from "../../actions/apiBffViewsBacklogItem";
 
 // consts/enums
 import { PushState, Source } from "../../reducers/enums";
@@ -14,6 +15,7 @@ export type BacklogItemsState = Readonly<{
     allItems: BacklogItemWithSource[];
     selectedItemIds: SelectedBacklogItems;
     currentItem: SaveableBacklogItem;
+    currentItemPartsAndSprints: BacklogItemPartAndSprint[];
     savedCurrentItem: SaveableBacklogItem;
     openedDetailMenuBacklogItemId: string | null;
 }>;
