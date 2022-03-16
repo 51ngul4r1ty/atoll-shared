@@ -110,23 +110,32 @@ export const hasPushedBacklogItems = (state: StateTree) => state.backlogItems.pu
 
 export const backlogItems = (state: { backlogItems: BacklogItemsState }): BacklogItemsState => state.backlogItems;
 
-// TODO: Refactor this out to make it obvious that it gets the "backlog item part" instead of "backlog item"
-// TODO: Probably need to refactor this whole file in the same way
 export const getCurrentBacklogItemId = createSelector(
     [backlogItems],
     (backlogItems: BacklogItemsState): string => backlogItems.currentItem?.id
 );
 
-export const getCurrentBacklogItemParts = createSelector([backlogItems], (backlogItems: BacklogItemsState): BacklogItemPart[] => {
-    return backlogItems.currentItemPartsAndSprints.map(
-        (partAndSprint) =>
-            ({
+export type BacklogItemPartForSplitForm = BacklogItemPart & {
+    allocatedSprintId: string | null;
+    allocatedSprintName: string | null;
+    expanded: boolean;
+};
+
+export const getCurrentBacklogItemParts = createSelector(
+    [backlogItems],
+    (backlogItems: BacklogItemsState): BacklogItemPartForSplitForm[] => {
+        return backlogItems.currentItemPartsAndSprints.map((partAndSprint) => {
+            return {
                 points: partAndSprint.part.points,
                 id: partAndSprint.part.id,
-                percentage: partAndSprint.part.percentage
-            } as BacklogItemPart)
-    );
-});
+                percentage: partAndSprint.part.percentage,
+                allocatedSprintId: partAndSprint.sprint?.id || null,
+                allocatedSprintName: partAndSprint.sprint?.name || null,
+                expanded: true
+            } as BacklogItemPartForSplitForm;
+        });
+    }
+);
 
 export const getCurrentBacklogItemFriendlyId = createSelector(
     [backlogItems],

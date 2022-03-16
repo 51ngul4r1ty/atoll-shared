@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import Helmet from "react-helmet";
 
 // interfaces/types
-import type { BacklogItemDetailFormSplitItem } from "../components/organisms/forms/BacklogItemFullDetailForm";
+import type { BacklogItemPartForSplitForm } from "../selectors/backlogItemSelectors";
 
 // components
 import { TopMenuPanelContainer } from "../containers/TopMenuPanelContainer";
@@ -40,7 +40,7 @@ export interface BacklogItemViewStateProps {
     finishedAt: Date | null;
     acceptedAt: Date | null;
     releasedAt: Date | null;
-    splits: BacklogItemDetailFormSplitItem[];
+    splits: BacklogItemPartForSplitForm[];
 }
 
 export interface BacklogItemViewDispatchProps {

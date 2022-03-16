@@ -7,7 +7,6 @@ import css from "./BacklogItemFullDetailForm.module.css";
 
 // interfaces/types
 import type { BacklogItemEditableFields } from "./backlogItemFormTypes";
-import type { BacklogItemStatus } from "../../../types/backlogItemEnums";
 
 // components
 import { BacklogItemPartPanel } from "../panels/backlogItemEditing/BacklogItemPartPanel";
@@ -21,24 +20,13 @@ import { StandardTextArea } from "../../atoms/inputs/StandardTextArea";
 import { buildClassName } from "../../../utils/classNameBuilder";
 import { getStoryPhrases, isStoryPaste } from "./pasteFormatUtils";
 import { isNumber } from "../../../utils/validationUtils";
-
-export type BacklogItemDetailFormSplitItem = {
-    allocatedToSprintId: string | null;
-    allocatedToSprintName: string | null;
-    plannedPoints: number | null;
-    partId: string;
-    percentage: number | null;
-    startedAt: Date | null;
-    finishedAt: Date | null;
-    status: BacklogItemStatus;
-    expanded: boolean;
-};
+import { BacklogItemPartForSplitForm } from "../../../selectors/backlogItemSelectors";
 
 export interface BacklogItemFullDetailFormStateProps extends BacklogItemEditableFields {
     saved: boolean;
     className?: string;
     editable?: boolean;
-    splits: BacklogItemDetailFormSplitItem[];
+    splits: BacklogItemPartForSplitForm[];
 }
 
 export interface BacklogItemFullDetailFormDispatchProps {
@@ -298,9 +286,13 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
             return (
                 <BacklogItemPartPanel
                     key={partIndex}
+                    editable={this.props.editable}
+                    expanded={split.expanded}
                     partIndex={partIndex}
                     totalParts={totalParts}
-                    sprintName={split.allocatedToSprintName}
+                    sprintName={split.allocatedSprintName}
+                    points={split.points}
+                    percentage={split.percentage}
                 />
             );
         });

@@ -324,8 +324,8 @@ storiesOf("Organisms/Forms/BacklogItemFullDetailForm", module).add("BacklogItemF
             instanceId={number("instanceId", 1)}
             splits={[
                 {
-                    allocatedToSprintId: text("split[0].allocatedToSprintId", ""),
-                    allocatedToSprintName: text("split[0].allocatedToSprintName", ""),
+                    allocatedSprintId: text("split[0].allocatedSprintId", ""),
+                    allocatedSprintName: text("split[0].allocatedSprintName", ""),
                     plannedPoints: number("split[0].plannedPoints", 13),
                     partId: text("split[0].partId", "1-1"),
                     percentage: number("split[0].percentage", 0.5),
@@ -345,36 +345,3 @@ storiesOf("Organisms/Forms/BacklogItemFullDetailForm", module).add("BacklogItemF
         />
     </div>
 ));
-// .add("BacklogItemDetailForm (story)", () => (
-//     <div>
-//         <BacklogItemDetailForm
-//             id="2"
-//             type={select("type", ["issue", "story"], "story")}
-//             estimate={number("estimate", 8)}
-//             friendlyId={text("friendlyId", "s-19")}
-//             externalId={text("externalId", "527")}
-//             rolePhrase={text("rolePhrase", "as a developer")}
-//             storyPhrase={text("storyPhrase", "use the v3 api to sign up a user")}
-//             reasonPhrase={text("reasonPhrase", "to allow for automation or a customized experience")}
-//             editing={boolean("editing", false)}
-//             instanceId={number("instanceId", 2)}
-//         />
-//     </div>
-// ))
-// .add("BacklogItemDetailForm Mobile (story)", () => (
-//     <div>
-//         <BacklogItemDetailForm
-//             id="3"
-//             type={select("type", ["issue", "story"], "story")}
-//             estimate={number("estimate", 8)}
-//             friendlyId={text("friendlyId", "s-19")}
-//             externalId={text("externalId", "527")}
-//             rolePhrase={text("rolePhrase", "as a developer")}
-//             storyPhrase={text("storyPhrase", "use the v3 api to sign up a user")}
-//             reasonPhrase={text("reasonPhrase", "to allow for automation or a customized experience")}
-//             editing={boolean("editing", false)}
-//             instanceId={number("instanceId", 2)}
-//             renderMobile
-//         />
-//     </div>
-// ));

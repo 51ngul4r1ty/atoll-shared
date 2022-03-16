@@ -12,25 +12,84 @@ import { buildClassName } from "../../../../utils/classNameBuilder";
 
 // interfaces/types
 import { BacklogItemPartPanelProps } from "./backlogItemPartPanelTypes";
+import { StandardInput } from "../../../atoms/inputs/StandardInput";
 
 export const InnerBacklogItemPartPanel: React.FC<BacklogItemPartPanelProps> = (props) => {
-    // logger.info("render(InnerBacklogItemPlanningPanel)", [loggingTags.DRAG_BACKLOGITEM]);
     const isReadOnly = !props.editable;
-    const splitsPanelClassName = buildClassName(
+    const splitsPanelCollapsedClassName = buildClassName(
         isReadOnly ? commonCss.readOnly : null,
         commonCss.form,
-        css.partPanel,
+        css.partPanelCollapsed,
+        isReadOnly ? css.readOnly : null,
+        css.splitPanel
+    );
+    const splitsPanelExpandedClassName = buildClassName(
+        isReadOnly ? commonCss.readOnly : null,
+        commonCss.form,
+        css.partPanelExpanded,
         isReadOnly ? css.readOnly : null,
         css.splitPanel
     );
     const splitCaption = `Split ${props.partIndex}/${props.totalParts}`;
     const assignedSprintName = props.sprintName || "(unallocated)";
-    return (
-        <div className={splitsPanelClassName}>
+    const collapsedElts = (
+        <div className={splitsPanelCollapsedClassName}>
             <div className={css.splitCaption}>{splitCaption}</div>
             <div>{assignedSprintName}</div>
         </div>
     );
+    const sprintNameInput = (
+        <StandardInput
+            inputId="partSprintName"
+            labelText="Sprint"
+            placeHolder=""
+            readOnly={true}
+            disabled={!isReadOnly}
+            inputValue={props.sprintName}
+            // onChange={(value) => {
+            //     this.handleDataUpdate({ ...prevData, storyPhrase: value });
+            // }}
+        />
+    );
+    const pointsInput = (
+        <StandardInput
+            inputId="partPoints"
+            labelText="Points"
+            placeHolder=""
+            readOnly={isReadOnly}
+            inputValue={`${props.points}`}
+            required
+            onChange={(value) => {
+                //                this.handleDataUpdate({ ...prevData, storyPhrase: value });
+            }}
+        />
+    );
+    const percentageInput = (
+        <StandardInput
+            inputId="percentage"
+            labelText="Percentage"
+            placeHolder=""
+            readOnly={true}
+            disabled={!isReadOnly}
+            inputValue={`${props.percentage}`}
+            // onChange={(value) => {
+            //     //                this.handleDataUpdate({ ...prevData, storyPhrase: value });
+            // }}
+        />
+    );
+    const expandedElts = (
+        <div className={splitsPanelExpandedClassName}>
+            <div className={css.partPanelTitleRow}>
+                <div className={css.splitCaption}>{splitCaption}</div>
+            </div>
+            <div className={buildClassName(css.partPanelContentRow, css.threeCellRow)}>
+                {sprintNameInput}
+                {pointsInput}
+                {percentageInput}
+            </div>
+        </div>
+    );
+    return props.expanded ? expandedElts : collapsedElts;
 };
 
 export const BacklogItemPartPanel = withTranslation()(InnerBacklogItemPartPanel);

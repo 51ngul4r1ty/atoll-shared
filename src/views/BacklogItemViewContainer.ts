@@ -30,7 +30,6 @@ import {
 import { getAppEditMode, getElectronClient } from "../selectors/appSelectors";
 import { apiBffViewsBacklogItem } from "../actions/apiBffViewsBacklogItem";
 
-// BUSY: This isn't working... OwnProps not passing in route params
 export interface BacklogItemViewContainerOwnProps {
     match: {
         params: {
@@ -41,18 +40,7 @@ export interface BacklogItemViewContainerOwnProps {
 }
 
 const mapStateToProps = (state: StateTree, ownProps: BacklogItemViewContainerOwnProps): BacklogItemViewStateProps => {
-    const splits = getCurrentBacklogItemParts(state).map((part) => ({
-        allocatedToSprintId: null,
-        allocatedToSprintName: null,
-        plannedPoints: part.points,
-        partId: part.id,
-        percentage: part.percentage,
-        startedAt: part.startedAt,
-        finishedAt: part.finishedAt,
-        status: part.status,
-        expanded: true
-    }));
-    let result: BacklogItemViewStateProps = {
+    const result: BacklogItemViewStateProps = {
         acceptanceCriteria: getCurrentBacklogItemAcceptanceCriteria(state),
         editMode: getAppEditMode(state),
         electronClient: getElectronClient(state),
@@ -73,19 +61,7 @@ const mapStateToProps = (state: StateTree, ownProps: BacklogItemViewContainerOwn
         projectDisplayId: ownProps.match.params.projectDisplayId,
         backlogItemDisplayId: ownProps.match.params.backlogItemDisplayId,
         // TODO: Rename this property to parts?
-        splits
-        // TODO: Get this from state
-        // splits: [
-        // {
-        //     assignedSprintName: "Sprint 242"
-        // },
-        // {
-        //     assignedSprintName: "Sprint 242"
-        // },
-        // {
-        //     assignedSprintName: null
-        // }
-        // ]
+        splits: getCurrentBacklogItemParts(state)
     };
     return result;
 };

@@ -1,7 +1,26 @@
-.partPanel {
+.partPanelCollapsed {
     display: flex;
     flex-direction: row;
     gap: 1rem;
+}
+
+.partPanelExpanded {
+    display: flex;
+    flex-direction: column;
+    gap: ;
+}
+
+.partPanelTitleRow {
+    padding-bottom: 0.7rem;
+}
+
+.partPanelContentRow {
+}
+
+.threeCellRow {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-column-gap: 0.7rem;
 }
 
 .splitCaption {
