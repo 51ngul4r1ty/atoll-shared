@@ -20,7 +20,7 @@
   "scripts": {
     "transpile": "tsc",
     "build": "rollup -c",
-    "XprepublishOnly": "npm run clean && npm run build && npm run test:ci",
+    "prepublishOnly": "npm run clean && npm run build && npm run test:ci",
     "watch": "rollup -cw",
     "clean": "npx --no-install rimraf dist",
     "local-publish": "npx --no-install yalc publish",
