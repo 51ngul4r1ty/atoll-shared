@@ -2,16 +2,19 @@
 import { WithTranslation } from "react-i18next";
 
 export type BacklogItemPartPanelStateProps = {
-    expanded: boolean;
     editable?: boolean;
+    expanded: boolean;
+    hasDetails: boolean;
+    partId: string;
     partIndex: number;
-    totalParts: number;
-    sprintName?: string | null;
-    points?: number | null;
     percentage?: number | null;
+    points?: number | null;
+    sprintName?: string | null;
+    totalParts: number;
 };
 
 export type BacklogItemPartPanelDispatchProps = {
+    onDetailClick: () => void;
     onPointsUpdate: (value: string) => void;
 };
 

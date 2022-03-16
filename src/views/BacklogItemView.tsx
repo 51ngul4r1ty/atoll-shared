@@ -41,7 +41,7 @@ export interface BacklogItemViewStateProps {
     finishedAt: Date | null;
     acceptedAt: Date | null;
     releasedAt: Date | null;
-    splits: BacklogItemPartForSplitForm[];
+    parts: BacklogItemPartForSplitForm[];
 }
 
 export interface BacklogItemViewDispatchProps {
@@ -83,7 +83,7 @@ export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
                 acceptedAt={props.acceptedAt}
                 releasedAt={props.releasedAt}
                 type={props.type}
-                splits={props.splits}
+                parts={props.parts}
                 onDataUpdate={(fields) => {
                     dispatch(updateCurrentBacklogItemFields(fields));
                 }}

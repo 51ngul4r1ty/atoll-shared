@@ -60,8 +60,7 @@ const mapStateToProps = (state: StateTree, ownProps: BacklogItemViewContainerOwn
         type: getCurrentBacklogItemType(state),
         projectDisplayId: ownProps.match.params.projectDisplayId,
         backlogItemDisplayId: ownProps.match.params.backlogItemDisplayId,
-        // TODO: Rename this property to parts?
-        splits: getCurrentBacklogItemParts(state)
+        parts: getCurrentBacklogItemParts(state)
     };
     return result;
 };

@@ -26,7 +26,7 @@ export interface BacklogItemFullDetailFormStateProps extends BacklogItemEditable
     saved: boolean;
     className?: string;
     editable?: boolean;
-    splits: BacklogItemPartForSplitForm[];
+    parts: BacklogItemPartForSplitForm[];
 }
 
 export interface BacklogItemFullDetailFormDispatchProps {
@@ -281,20 +281,23 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
             css.storyPanel
         );
         let partIndex = 0;
-        const totalParts = this.props.splits.length;
-        const backlogItemPartElts = this.props.splits.map((split) => {
+        const totalParts = this.props.parts.length;
+        const backlogItemPartElts = this.props.parts.map((part) => {
             partIndex++;
             return (
                 <BacklogItemPartPanel
                     key={partIndex}
-                    editable={this.props.editable}
-                    expanded={split.expanded}
+                    editable={part.editable}
+                    expanded={part.expanded}
+                    partId={part.id}
                     partIndex={partIndex}
                     totalParts={totalParts}
-                    sprintName={split.allocatedSprintName}
-                    points={split.points}
-                    percentage={split.percentage}
-                    onPointsUpdate={(value: string) => this.props.onPartPointsUpdate(split.id, value)}
+                    sprintName={part.allocatedSprintName}
+                    points={part.points}
+                    percentage={part.percentage}
+                    onPointsUpdate={(value: string) => this.props.onPartPointsUpdate(part.id, value)}
+                    hasDetails={this.props.editable}
+                    onDetailClick={() => null}
                 />
             );
         });

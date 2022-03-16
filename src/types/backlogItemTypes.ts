@@ -50,7 +50,7 @@ export interface BacklogItemInSprint extends BacklogItem {
 export interface BacklogItemPart {
     id: string | null;
     externalId: string | null;
-    backlogitemId: string | null;
+    backlogItemId: string | null;
     partIndex: number;
     percentage: number;
     points: number | null;
