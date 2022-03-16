@@ -20,7 +20,7 @@ export interface StandardInputStateProps {
     disabled?: boolean;
     inputId: string;
     inputName?: string;
-    inputValue?: string;
+    inputValue?: string | number | null;
     labelText: string;
     placeHolder?: string;
     readOnly?: boolean;
@@ -47,7 +47,7 @@ export const InnerStandardInput: React.FC<StandardInputProps & StandardInputInne
     const inputTextStartingEmptyValue = props.readOnly ? "-" : "";
     const propsInputValueToUse = props.inputValue || inputTextStartingEmptyValue;
     const [inputText, setInputText] = useState(propsInputValueToUse);
-    const [validInputText, setValidInputText] = useState(props.inputValue || "");
+    const [validInputText, setValidInputText] = useState(props.inputValue ? `${props.inputValue}` : "");
     const [isValid, setIsValid] = useState(true); // start off "valid", even if starting value is invalid
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         let lastValidInputText = validInputText;

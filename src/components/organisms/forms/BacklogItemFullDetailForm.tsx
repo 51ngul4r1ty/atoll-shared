@@ -19,7 +19,7 @@ import { StandardTextArea } from "../../atoms/inputs/StandardTextArea";
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
 import { getStoryPhrases, isStoryPaste } from "./pasteFormatUtils";
-import { isNumber } from "../../../utils/validationUtils";
+import { isValidStrictStringEstimate } from "../../../utils/validationUtils";
 import { BacklogItemPartForSplitForm } from "../../../selectors/backlogItemSelectors";
 
 export interface BacklogItemFullDetailFormStateProps extends BacklogItemEditableFields {
@@ -33,6 +33,7 @@ export interface BacklogItemFullDetailFormDispatchProps {
     onSaveClick?: { () };
     onCancelClick?: { () };
     onDataUpdate?: { (props: BacklogItemEditableFields) };
+    onPartPointsUpdate: { (partId: string, value: string) };
 }
 
 export type BacklogItemFullDetailFormProps = BacklogItemFullDetailFormStateProps & BacklogItemFullDetailFormDispatchProps;
@@ -139,7 +140,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                     this.handleDataUpdate({ ...prevData, estimate });
                 }}
                 validator={(value) => {
-                    return isNumber(value);
+                    return isValidStrictStringEstimate(value);
                 }}
             />
         );
@@ -293,6 +294,7 @@ export class BacklogItemFullDetailForm extends Component<BacklogItemFullDetailFo
                     sprintName={split.allocatedSprintName}
                     points={split.points}
                     percentage={split.percentage}
+                    onPointsUpdate={(value: string) => this.props.onPartPointsUpdate(split.id, value)}
                 />
             );
         });

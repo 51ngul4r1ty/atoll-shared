@@ -11,6 +11,8 @@ export type BacklogItemPartPanelStateProps = {
     percentage?: number | null;
 };
 
-export type BacklogItemPartPanelDispatchProps = {};
+export type BacklogItemPartPanelDispatchProps = {
+    onPointsUpdate: (value: string) => void;
+};
 
 export type BacklogItemPartPanelProps = BacklogItemPartPanelStateProps & BacklogItemPartPanelDispatchProps & WithTranslation;

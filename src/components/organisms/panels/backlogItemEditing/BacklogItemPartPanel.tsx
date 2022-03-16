@@ -13,6 +13,7 @@ import { buildClassName } from "../../../../utils/classNameBuilder";
 // interfaces/types
 import { BacklogItemPartPanelProps } from "./backlogItemPartPanelTypes";
 import { StandardInput } from "../../../atoms/inputs/StandardInput";
+import { isValidStringEstimate } from "../../../../utils/validationUtils";
 
 export const InnerBacklogItemPartPanel: React.FC<BacklogItemPartPanelProps> = (props) => {
     const isReadOnly = !props.editable;
@@ -46,9 +47,6 @@ export const InnerBacklogItemPartPanel: React.FC<BacklogItemPartPanelProps> = (p
             readOnly={true}
             disabled={!isReadOnly}
             inputValue={props.sprintName}
-            // onChange={(value) => {
-            //     this.handleDataUpdate({ ...prevData, storyPhrase: value });
-            // }}
         />
     );
     const pointsInput = (
@@ -57,10 +55,15 @@ export const InnerBacklogItemPartPanel: React.FC<BacklogItemPartPanelProps> = (p
             labelText="Points"
             placeHolder=""
             readOnly={isReadOnly}
-            inputValue={`${props.points}`}
+            inputValue={props.points}
             required
             onChange={(value) => {
-                //                this.handleDataUpdate({ ...prevData, storyPhrase: value });
+                if (props.onPointsUpdate) {
+                    props.onPointsUpdate(value);
+                }
+            }}
+            validator={(value) => {
+                return isValidStringEstimate(value);
             }}
         />
     );
@@ -72,9 +75,6 @@ export const InnerBacklogItemPartPanel: React.FC<BacklogItemPartPanelProps> = (p
             readOnly={true}
             disabled={!isReadOnly}
             inputValue={`${props.percentage}`}
-            // onChange={(value) => {
-            //     //                this.handleDataUpdate({ ...prevData, storyPhrase: value });
-            // }}
         />
     );
     const expandedElts = (

@@ -12,7 +12,7 @@ import css from "./BacklogItemDetailForm.module.css";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
-import { isNumber } from "../../../utils/validationUtils";
+import { isValidStrictStringEstimate } from "../../../utils/validationUtils";
 import { getStoryPhrases, isStoryPaste } from "./pasteFormatUtils";
 
 // interfaces/types
@@ -161,7 +161,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                     this.handleDataUpdate({ ...prevData, estimate });
                 }}
                 validator={(value) => {
-                    return isNumber(value);
+                    return isValidStrictStringEstimate(value);
                 }}
             />
         );

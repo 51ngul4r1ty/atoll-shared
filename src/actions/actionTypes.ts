@@ -218,3 +218,5 @@ export const REMOVE_PRODUCT_BACKLOG_ITEM = "app/remove:product-backlog-item";
 export const REMOVE_SPRINT_BACKLOG_ITEM = "app/remove:sprint-backlog-item";
 
 export const SET_SPRINT_PLANNING_ARCHIVED_FILTER = "app/set-filter:sprint-planning-archived";
+
+export const UPDATE_BACKLOG_ITEM_PART_FIELD = "app/update:backlog-item-part-field";

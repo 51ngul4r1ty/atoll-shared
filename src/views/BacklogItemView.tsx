@@ -17,6 +17,7 @@ import { BacklogItemType } from "../types/backlogItemTypes";
 import {
     resetCurrentBacklogItem,
     saveCurrentBacklogItem,
+    updateBacklogItemPartPoints,
     updateCurrentBacklogItemFields
 } from "../actions/currentBacklogItemActions";
 
@@ -91,6 +92,9 @@ export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
                 }}
                 onCancelClick={() => {
                     dispatch(resetCurrentBacklogItem());
+                }}
+                onPartPointsUpdate={(partId: string, value: string) => {
+                    dispatch(updateBacklogItemPartPoints(partId, value));
                 }}
             />
         </>

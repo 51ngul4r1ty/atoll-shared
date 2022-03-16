@@ -44,7 +44,7 @@ import {
 import { mapApiItemsToBacklogItems, mapApiItemToBacklogItem, mapApiStatusToBacklogItem } from "../../mappers/backlogItemMappers";
 import { calcDropDownMenuState } from "../../utils/dropdownMenuUtils";
 import { ApiGetBffViewsBacklogItemSuccessAction } from "../../actions/apiBffViewsBacklogItem";
-import { UpdateCurrentBacklogItemFieldsAction } from "../../actions/currentBacklogItemActions";
+import { UpdateBacklogItemPartFieldAction, UpdateCurrentBacklogItemFieldsAction } from "../../actions/currentBacklogItemActions";
 import { BacklogItemInstanceEditableFields } from "../../components/organisms/forms/backlogItemFormTypes";
 import { isoDateStringToDate } from "../../utils/apiPayloadConverters";
 import { shouldHideDetailMenu } from "../../components/utils/itemDetailMenuUtils";
@@ -374,6 +374,27 @@ export const backlogItemsReducer = (
                     draft.items = [newItem, ...draft.items];
                 }
                 rebuildAllItems(draft);
+                return;
+            }
+            case ActionTypes.UPDATE_BACKLOG_ITEM_PART_FIELD: {
+                const actionTyped = action as UpdateBacklogItemPartFieldAction;
+                const partId = actionTyped.payload.partId;
+                const matchingPartAndSprint = draft.currentItemPartsAndSprints.filter(
+                    (partAndSprint) => partAndSprint.part.id === partId
+                );
+                switch (actionTyped.payload.fieldName) {
+                    case "points": {
+                        const fieldValue = actionTyped.payload.fieldValue;
+                        const points = fieldValue ? parseFloat(fieldValue) : null;
+                        matchingPartAndSprint[0].part.points = points;
+                        const totalPoints = draft.currentItem.estimate;
+                        matchingPartAndSprint[0].part.percentage = Math.trunc((points / totalPoints) * 100);
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
                 return;
             }
             case ActionTypes.API_GET_BFF_VIEWS_BACKLOG_ITEM_SUCCESS: {
