@@ -1,7 +1,6 @@
 // externals
 import * as React from "react";
 import { withTranslation } from "react-i18next";
-// import { useState } from "react";
 
 // style
 import css from "./BacklogItemPartPanel.module.css";
