@@ -5,11 +5,14 @@ import { useDispatch } from "react-redux";
 import Helmet from "react-helmet";
 
 // interfaces/types
-import type { BacklogItemPartForSplitForm } from "../selectors/backlogItemSelectors";
+import type { BacklogItemPartForSplitForm } from "../selectors/backlogItemPartSelectors";
 
 // components
 import { TopMenuPanelContainer } from "../containers/TopMenuPanelContainer";
 import { BacklogItemFullDetailForm } from "../components/organisms/forms/BacklogItemFullDetailForm";
+
+// actions
+import { backlogItemPartDetailClick } from "../actions/backlogItemPartActions";
 
 // consts/enums
 import { EditMode } from "../components/common/componentEnums";
@@ -23,25 +26,26 @@ import {
 
 export interface BacklogItemViewStateProps {
     acceptanceCriteria: string;
+    acceptedAt: Date | null;
     backlogItemDisplayId: string;
     editMode: EditMode;
     electronClient: boolean;
     estimate: number;
     externalId: string;
+    finishedAt: Date | null;
     friendlyId: string;
     id: string;
+    openedDetailMenuBacklogItemPartId: string | null;
+    parts: BacklogItemPartForSplitForm[];
     projectDisplayId: string;
     reasonPhrase: string;
+    releasedAt: Date | null;
     rolePhrase: string;
     saved: boolean;
     showWindowTitleBar: boolean;
+    startedAt: Date | null;
     storyPhrase: string;
     type: BacklogItemType;
-    startedAt: Date | null;
-    finishedAt: Date | null;
-    acceptedAt: Date | null;
-    releasedAt: Date | null;
-    parts: BacklogItemPartForSplitForm[];
 }
 
 export interface BacklogItemViewDispatchProps {
@@ -84,6 +88,7 @@ export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
                 releasedAt={props.releasedAt}
                 type={props.type}
                 parts={props.parts}
+                openedDetailMenuBacklogItemPartId={props.openedDetailMenuBacklogItemPartId}
                 onDataUpdate={(fields) => {
                     dispatch(updateCurrentBacklogItemFields(fields));
                 }}
@@ -95,6 +100,9 @@ export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
                 }}
                 onPartPointsUpdate={(partId: string, value: string) => {
                     dispatch(updateBacklogItemPartPoints(partId, value));
+                }}
+                onDetailClick={(partId: string) => {
+                    dispatch(backlogItemPartDetailClick(partId));
                 }}
             />
         </>

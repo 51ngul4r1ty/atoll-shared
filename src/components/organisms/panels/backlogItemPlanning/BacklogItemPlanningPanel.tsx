@@ -13,8 +13,7 @@ import {
     BacklogItemTypeEnum,
     buildBacklogItemKey,
     buildBacklogItemPlanningItemKey,
-    buildDividerKey,
-    ItemMenuEventHandlers
+    buildDividerKey
 } from "../../../molecules/cards/BacklogItemCard";
 import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 
@@ -42,6 +41,7 @@ import { buildBacklogDisplayId } from "../../../../utils/backlogItemHelper";
 
 // interfaces/types
 import type { BacklogItemPlanningPanelProps } from "./backlogItemPlanningPanelTypes";
+import type { ItemMenuEventHandlers } from "../../../molecules/menus/menuBuilderTypes";
 
 // consts/enums
 import * as loggingTags from "../../../../constants/loggingTags";

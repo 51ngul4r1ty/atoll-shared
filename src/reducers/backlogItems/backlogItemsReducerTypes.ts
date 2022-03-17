@@ -18,6 +18,7 @@ export type BacklogItemsState = Readonly<{
     currentItemPartsAndSprints: BacklogItemPartAndSprint[];
     savedCurrentItem: SaveableBacklogItem;
     openedDetailMenuBacklogItemId: string | null;
+    openedDetailMenuBacklogItemPartId: string | null;
 }>;
 
 export interface EditableBacklogItem extends BacklogItem {

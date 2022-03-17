@@ -17,7 +17,8 @@ import { StatusAcceptedIcon, StatusDoneIcon, StatusInProgressIcon, StatusRelease
 import { buildClassName } from "../../../utils/classNameBuilder";
 
 // interfaces/types
-import { SaveableBacklogItem } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
+import type { SaveableBacklogItem } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
+import type { ItemMenuBuilder } from "../menus/menuBuilderTypes";
 
 // consts/enums
 import { PushState } from "../../../reducers/enums";
@@ -103,18 +104,6 @@ export enum BacklogItemTypeEnum {
     None,
     Bug,
     Story
-}
-
-export interface ItemMenuEventHandler {
-    (eventName: string, itemId: string): void;
-}
-
-export interface ItemMenuEventHandlers {
-    handleEvent: ItemMenuEventHandler;
-}
-
-export interface ItemMenuBuilder {
-    (itemId: string, showMenuToLeft: boolean, menuDisabled: boolean, busyButtonName: string): React.ReactElement<any, any>;
 }
 
 export interface BacklogItemCardStateProps {

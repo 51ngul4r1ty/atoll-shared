@@ -1,16 +1,11 @@
 // interfaces/types
-import type { BacklogItem, BacklogItemPart, BacklogItemType } from "../types/backlogItemTypes";
+import type { BacklogItem, BacklogItemType } from "../types/backlogItemTypes";
 import type { BacklogItemsState } from "../reducers/backlogItems/backlogItemsReducerTypes";
 import type { StateTree } from "../reducers/rootReducer";
-
-// consts/enums
-import { BacklogItemStatus } from "../types/backlogItemEnums";
 
 // utils
 import { getBacklogItemById as reducerGetBacklogItemById } from "../reducers/backlogItems/backlogItemsReducerHelper";
 import { createSelector } from "reselect";
-import { isoDateStringToDate } from "../utils/apiPayloadConverters";
-import { mapApiStatusToBacklogItem } from "../mappers/backlogItemMappers";
 
 export const getBacklogItemByInstanceId = (state: StateTree, instanceId: number): BacklogItem | null => {
     const matchingItems = state.backlogItems.addedItems.filter((addedItem) => addedItem.instanceId === instanceId);
@@ -120,49 +115,6 @@ export const backlogItems = (state: { backlogItems: BacklogItemsState }): Backlo
 export const getCurrentBacklogItemId = createSelector(
     [backlogItems],
     (backlogItems: BacklogItemsState): string => backlogItems.currentItem?.id
-);
-
-export type BacklogItemPartForSplitForm = BacklogItemPart & {
-    /* from BacklogItemPart */
-    id: string | null;
-    externalId: string | null;
-    backlogItemId: string | null;
-    partIndex: number;
-    percentage: number;
-    points: number | null;
-    startedAt: Date | null;
-    finishedAt: Date | null;
-    status: BacklogItemStatus | null;
-
-    /* new in this type */
-    allocatedSprintId: string | null;
-    allocatedSprintName: string | null;
-    editable: boolean;
-    expanded: boolean;
-};
-
-export const getCurrentBacklogItemParts = createSelector(
-    [backlogItems],
-    (backlogItems: BacklogItemsState): BacklogItemPartForSplitForm[] => {
-        return backlogItems.currentItemPartsAndSprints.map((partAndSprint) => {
-            const part: BacklogItemPartForSplitForm = {
-                allocatedSprintId: partAndSprint.sprint?.id || null,
-                allocatedSprintName: partAndSprint.sprint?.name || null,
-                editable: false,
-                expanded: true,
-                id: partAndSprint.part.id,
-                externalId: partAndSprint.part.externalId,
-                backlogItemId: partAndSprint.part.backlogitemId,
-                partIndex: partAndSprint.part.partIndex,
-                percentage: partAndSprint.part.percentage,
-                points: partAndSprint.part.points,
-                startedAt: isoDateStringToDate(partAndSprint.part.startedAt),
-                status: mapApiStatusToBacklogItem(partAndSprint.part.status),
-                finishedAt: isoDateStringToDate(partAndSprint.part.finishedAt)
-            };
-            return part;
-        });
-    }
 );
 
 export const getCurrentBacklogItemFriendlyId = createSelector(

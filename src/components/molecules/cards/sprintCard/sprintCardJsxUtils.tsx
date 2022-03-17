@@ -2,24 +2,19 @@
 import * as React from "react";
 
 // components
-import {
-    BacklogItemCard,
-    BacklogItemCardType,
-    BacklogItemTypeEnum,
-    buildBacklogItemKey,
-    ItemMenuEventHandlers
-} from "../BacklogItemCard";
+import { BacklogItemCard, BacklogItemCardType, BacklogItemTypeEnum, buildBacklogItemKey } from "../BacklogItemCard";
 import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 
 // consts/enums
 import { EditMode } from "../../../common/componentEnums";
 
+// interfaces/types
+import type { BacklogItemInSprint } from "../../../../types/backlogItemTypes";
+import type { ItemMenuEventHandlers } from "../../menus/menuBuilderTypes";
+
 // utils
 import { sprintBacklogItemMenuBuilder } from "../../../common/itemMenuBuilders";
 import { buildBacklogDisplayId } from "../../../../utils/backlogItemHelper";
-
-// interfaces/types
-import { BacklogItemInSprint } from "../../../../types/backlogItemTypes";
 
 export type ItemMenuBuilderBacklogItem = BacklogItemInSprint & {
     hasPartsInNextSprint: boolean;

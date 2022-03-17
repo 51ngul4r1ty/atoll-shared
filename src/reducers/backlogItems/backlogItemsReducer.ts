@@ -32,6 +32,10 @@ import {
 import { AppClickAction, AppKeyUpAction } from "../../actions/appActions";
 import { BacklogItemsState, BacklogItemWithSource, SaveableBacklogItem } from "./backlogItemsReducerTypes";
 import { MoveBacklogItemToSprintAction } from "../../actions/sprintBacklogActions";
+import { BacklogItemInstanceEditableFields } from "../../components/organisms/forms/backlogItemFormTypes";
+import { ApiGetBffViewsBacklogItemSuccessAction } from "../../actions/apiBffViewsBacklogItem";
+import { UpdateBacklogItemPartFieldAction, UpdateCurrentBacklogItemFieldsAction } from "../../actions/currentBacklogItemActions";
+import { ToggleBacklogItemPartDetailAction } from "../../actions/backlogItemPartActions";
 
 // utils
 import {
@@ -43,9 +47,6 @@ import {
 } from "./backlogItemsReducerHelper";
 import { mapApiItemsToBacklogItems, mapApiItemToBacklogItem, mapApiStatusToBacklogItem } from "../../mappers/backlogItemMappers";
 import { calcDropDownMenuState } from "../../utils/dropdownMenuUtils";
-import { ApiGetBffViewsBacklogItemSuccessAction } from "../../actions/apiBffViewsBacklogItem";
-import { UpdateBacklogItemPartFieldAction, UpdateCurrentBacklogItemFieldsAction } from "../../actions/currentBacklogItemActions";
-import { BacklogItemInstanceEditableFields } from "../../components/organisms/forms/backlogItemFormTypes";
 import { isoDateStringToDate } from "../../utils/apiPayloadConverters";
 import { shouldHideDetailMenu } from "../../components/utils/itemDetailMenuUtils";
 
@@ -54,6 +55,7 @@ export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>(
     allItems: [],
     items: [],
     openedDetailMenuBacklogItemId: null,
+    openedDetailMenuBacklogItemPartId: null,
     pushedItems: [],
     selectedItemIds: [],
     currentItem: null,
@@ -268,6 +270,14 @@ export const backlogItemsReducer = (
                     actionTyped.payload.itemId,
                     (itemId: string) => getBacklogItemById(state, itemId),
                     (item) => item.pushState !== PushState.Removed
+                );
+                return;
+            }
+            case ActionTypes.TOGGLE_BACKLOG_ITEM_PART_DETAIL: {
+                const actionTyped = action as ToggleBacklogItemPartDetailAction;
+                draft.openedDetailMenuBacklogItemPartId = calcDropDownMenuState(
+                    draft.openedDetailMenuBacklogItemPartId,
+                    actionTyped.payload.partId
                 );
                 return;
             }

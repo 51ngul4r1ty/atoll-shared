@@ -85,7 +85,7 @@ export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem =>
 export const mapApiItemToBacklogItemPart = (apiItem: ApiBacklogItemPart): BacklogItemPart => ({
     id: apiItem.id,
     externalId: apiItem.externalId,
-    backlogitemId: apiItem.backlogitemId,
+    backlogItemId: apiItem.backlogitemId,
     partIndex: apiItem.partIndex,
     percentage: apiItem.percentage,
     points: apiItem.points,

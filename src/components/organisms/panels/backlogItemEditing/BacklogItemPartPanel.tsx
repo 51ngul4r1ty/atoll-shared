@@ -16,7 +16,17 @@ import { buildClassName } from "../../../../utils/classNameBuilder";
 import { isValidStringEstimate } from "../../../../utils/validationUtils";
 
 export const InnerBacklogItemPartPanel: React.FC<BacklogItemPartPanelProps> = (props) => {
-    // logger.info("render(InnerBacklogItemPlanningPanel)", [loggingTags.DRAG_BACKLOGITEM]);
+    const busyButtonName = "";
+    const menuDisabled = false;
+    const showDetailMenu = props.showDetailMenu && props.buildItemMenu;
+    const detailMenu = showDetailMenu
+        ? props.buildItemMenu(props.partId, props.showDetailMenuToLeft, menuDisabled, busyButtonName)
+        : null;
+    const itemDetailMenuElts = !showDetailMenu ? null : (
+        <div className={buildClassName(css.partDetailMenu, props.showDetailMenuToLeft ? css.partMenuToLeft : null)}>
+            {detailMenu}
+        </div>
+    );
     const isReadOnly = !props.editable;
     const splitsPanelCollapsedClassName = buildClassName(
         isReadOnly ? commonCss.readOnly : null,
@@ -95,8 +105,17 @@ export const InnerBacklogItemPartPanel: React.FC<BacklogItemPartPanelProps> = (p
                 className={css.partDetailButton}
                 onDetailClick={() => props.onDetailClick()}
             />
+            {itemDetailMenuElts}
         </div>
     );
+    console.log(`==== showDetailMenu: ${props.showDetailMenu}`);
+    if (itemDetailMenuElts && props.expanded) {
+        console.log(`**** rendering itemDetailMenuElts for part ID: ${props.partId}`);
+    } else if (!itemDetailMenuElts) {
+        console.log(`---- NOT rendering itemDetailMenuElts for part ID: ${props.partId} (!itemDetailMenuElts)`);
+    } else {
+        console.log(`---- NOT rendering itemDetailMenuElts for part ID: ${props.partId}`);
+    }
     return props.expanded ? expandedElts : collapsedElts;
 };
 

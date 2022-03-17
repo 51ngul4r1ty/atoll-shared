@@ -2,9 +2,10 @@
 import * as React from "react";
 
 // interfaces/types
-import { ItemMenuBuilder, ItemMenuEventHandlers } from "../molecules/cards/BacklogItemCard";
+import type { ItemMenuBuilder, ItemMenuEventHandlers } from "../molecules/menus/menuBuilderTypes";
 
 // components
+import { BacklogItemPartMenu } from "../molecules/menus/BacklogItemPartMenu";
 import { ProductBacklogItemMenu } from "../molecules/menus/ProductBacklogItemMenu";
 import { SprintBacklogItemMenu } from "../molecules/menus/SprintBacklogItemMenu";
 import { SprintMenu } from "../molecules/menus/SprintMenu";
@@ -55,5 +56,17 @@ export const sprintMenuBuilder = (eventHandlers: ItemMenuEventHandlers): ItemMen
         onRemoveItemClick={() => eventHandlers.handleEvent("onRemoveItemClick", itemId)}
         onArchiveItemClick={() => eventHandlers.handleEvent("onArchiveItemClick", itemId)}
         onUnarchiveItemClick={() => eventHandlers.handleEvent("onUnarchiveItemClick", itemId)}
+    />
+);
+
+export const backlogItemPartMenuBuilder = (eventHandlers: ItemMenuEventHandlers): ItemMenuBuilder => (
+    itemId: string,
+    showMenuToLeft: boolean,
+    menuDisabled: boolean,
+    busyButtonName: string
+) => (
+    <BacklogItemPartMenu
+        showDetailMenuToLeft={showMenuToLeft}
+        onEditItemClick={() => eventHandlers.handleEvent("onEditItemClick", itemId)}
     />
 );

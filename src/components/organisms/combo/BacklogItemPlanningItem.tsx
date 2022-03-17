@@ -3,23 +3,11 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 
 // interfaces/types
-import { BacklogItemWithSource } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
-import { SimpleDivider } from "../../atoms/dividers/SimpleDivider";
-import { BacklogItemDetailForm } from "../forms/BacklogItemDetailForm";
-import {
-    BacklogItemCard,
-    BacklogItemCardType,
-    BacklogItemTypeEnum,
-    ItemMenuEventHandlers
-} from "../../molecules/cards/BacklogItemCard";
+import type { BacklogItemWithSource } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
+import type { ItemMenuEventHandlers } from "../../molecules/menus/menuBuilderTypes";
 
 // consts/enums
 import { EditMode } from "../../common/componentEnums";
-
-// utils
-import { buildClassName } from "../../../utils/classNameBuilder";
-import { buildBacklogDisplayId } from "../../../utils/backlogItemHelper";
-import { productBacklogItemMenuBuilder } from "../../common/itemMenuBuilders";
 
 // actions
 import { apiDeleteBacklogItem } from "../../../actions/apiBacklogItems";
@@ -36,8 +24,18 @@ import {
     backlogItemIdClick
 } from "../../../actions/backlogItemActions";
 
+// components
+import { SimpleDivider } from "../../atoms/dividers/SimpleDivider";
+import { BacklogItemDetailForm } from "../forms/BacklogItemDetailForm";
+import { BacklogItemCard, BacklogItemCardType, BacklogItemTypeEnum } from "../../molecules/cards/BacklogItemCard";
+
 // style
 import css from "./BacklogItemPlanningItem.module.css";
+
+// utils
+import { buildClassName } from "../../../utils/classNameBuilder";
+import { buildBacklogDisplayId } from "../../../utils/backlogItemHelper";
+import { productBacklogItemMenuBuilder } from "../../common/itemMenuBuilders";
 import { computeProductBacklogItemEstimate } from "../panels/backlogItemPlanning/backlogItemPlanningPanelUtils";
 
 export interface BacklogItemPlanningItemStateProps extends BacklogItemWithSource {

@@ -10,9 +10,9 @@ import css from "./SprintPlanningPanel.module.css";
 import { buildClassName } from "../../../../utils/classNameBuilder";
 
 // interfaces/types
-import { SprintCardSprint } from "../../../molecules/cards/sprintCard/sprintCardTypes";
-import { ItemMenuEventHandlers } from "../../../molecules/cards/BacklogItemCard";
-import { OnAddNewSprint, OnArchivedFilterChange } from "./sprintPlanningPanelTypes";
+import type { SprintCardSprint } from "../../../molecules/cards/sprintCard/sprintCardTypes";
+import type { ItemMenuEventHandlers } from "../../../molecules/menus/menuBuilderTypes";
+import type { OnAddNewSprint, OnArchivedFilterChange } from "./sprintPlanningPanelTypes";
 
 // utils
 import { addBottomActionButtons, addTopActionButtons } from "./sprintPlanningPanelJsxUtils";

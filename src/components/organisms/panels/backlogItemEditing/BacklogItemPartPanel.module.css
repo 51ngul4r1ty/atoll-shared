@@ -32,3 +32,13 @@
     right: 0;
     top: 0.4rem;
 }
+
+.partDetailMenu {
+    position: absolute;
+    right: 1.3rem;
+    top: -0.5rem;
+    z-index: 1;
+}
+
+.partMenuToLeft {
+}

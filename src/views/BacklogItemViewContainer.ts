@@ -10,23 +10,8 @@ import { StateTree } from "../reducers/rootReducer";
 import { isPlatformWindows } from "../utils/osUtils";
 
 // selectors
-import {
-    getCurrentBacklogItemAcceptanceCriteria,
-    getCurrentBacklogItemAcceptedAt,
-    getCurrentBacklogItemEstimate,
-    getCurrentBacklogItemExternalId,
-    getCurrentBacklogItemFinishedAt,
-    getCurrentBacklogItemFriendlyId,
-    getCurrentBacklogItemId,
-    getCurrentBacklogItemParts,
-    getCurrentBacklogItemReasonPhrase,
-    getCurrentBacklogItemReleasedAt,
-    getCurrentBacklogItemRolePhrase,
-    getCurrentBacklogItemSaved,
-    getCurrentBacklogItemStartedAt,
-    getCurrentBacklogItemStoryPhrase,
-    getCurrentBacklogItemType
-} from "../selectors/backlogItemSelectors";
+import * as backlogItemSelectors from "../selectors/backlogItemSelectors";
+import * as backlogItemPartSelectors from "../selectors/backlogItemPartSelectors";
 import { getAppEditMode, getElectronClient } from "../selectors/appSelectors";
 import { apiBffViewsBacklogItem } from "../actions/apiBffViewsBacklogItem";
 
@@ -41,26 +26,27 @@ export interface BacklogItemViewContainerOwnProps {
 
 const mapStateToProps = (state: StateTree, ownProps: BacklogItemViewContainerOwnProps): BacklogItemViewStateProps => {
     const result: BacklogItemViewStateProps = {
-        acceptanceCriteria: getCurrentBacklogItemAcceptanceCriteria(state),
+        acceptanceCriteria: backlogItemSelectors.getCurrentBacklogItemAcceptanceCriteria(state),
+        acceptedAt: backlogItemSelectors.getCurrentBacklogItemAcceptedAt(state),
+        backlogItemDisplayId: ownProps.match.params.backlogItemDisplayId,
         editMode: getAppEditMode(state),
         electronClient: getElectronClient(state),
-        showWindowTitleBar: !isPlatformWindows(),
-        id: getCurrentBacklogItemId(state),
-        friendlyId: getCurrentBacklogItemFriendlyId(state),
-        externalId: getCurrentBacklogItemExternalId(state),
-        saved: getCurrentBacklogItemSaved(state),
-        estimate: getCurrentBacklogItemEstimate(state),
-        rolePhrase: getCurrentBacklogItemRolePhrase(state),
-        storyPhrase: getCurrentBacklogItemStoryPhrase(state),
-        reasonPhrase: getCurrentBacklogItemReasonPhrase(state),
-        startedAt: getCurrentBacklogItemStartedAt(state),
-        finishedAt: getCurrentBacklogItemFinishedAt(state),
-        acceptedAt: getCurrentBacklogItemAcceptedAt(state),
-        releasedAt: getCurrentBacklogItemReleasedAt(state),
-        type: getCurrentBacklogItemType(state),
+        estimate: backlogItemSelectors.getCurrentBacklogItemEstimate(state),
+        externalId: backlogItemSelectors.getCurrentBacklogItemExternalId(state),
+        finishedAt: backlogItemSelectors.getCurrentBacklogItemFinishedAt(state),
+        friendlyId: backlogItemSelectors.getCurrentBacklogItemFriendlyId(state),
+        id: backlogItemSelectors.getCurrentBacklogItemId(state),
+        openedDetailMenuBacklogItemPartId: backlogItemPartSelectors.getOpenedDetailMenuBacklogItemPartId(state),
+        parts: backlogItemPartSelectors.getCurrentBacklogItemParts(state),
         projectDisplayId: ownProps.match.params.projectDisplayId,
-        backlogItemDisplayId: ownProps.match.params.backlogItemDisplayId,
-        parts: getCurrentBacklogItemParts(state)
+        reasonPhrase: backlogItemSelectors.getCurrentBacklogItemReasonPhrase(state),
+        releasedAt: backlogItemSelectors.getCurrentBacklogItemReleasedAt(state),
+        rolePhrase: backlogItemSelectors.getCurrentBacklogItemRolePhrase(state),
+        saved: backlogItemSelectors.getCurrentBacklogItemSaved(state),
+        showWindowTitleBar: !isPlatformWindows(),
+        startedAt: backlogItemSelectors.getCurrentBacklogItemStartedAt(state),
+        storyPhrase: backlogItemSelectors.getCurrentBacklogItemStoryPhrase(state),
+        type: backlogItemSelectors.getCurrentBacklogItemType(state)
     };
     return result;
 };

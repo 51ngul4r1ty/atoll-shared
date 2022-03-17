@@ -11,7 +11,7 @@ import { buildSprintPointInfoText, formatDateRange, sprintStatusToString } from 
 import { getBacklogItemElts, ItemMenuBuilderBacklogItem } from "./sprintCardJsxUtils";
 
 // interfaces/types
-import { SprintCardSprint } from "./sprintCardTypes";
+import type { SprintCardProps, SprintCardSprint } from "./sprintCardTypes";
 
 // consts/enums
 import { EditMode } from "../../../common/componentEnums";
@@ -23,43 +23,9 @@ import { SPINNER_METRIC_KEY_SPRINT_BACKLOG_ITEMS } from "../../unique/smartSpinn
 import { AddButton } from "../../buttons/AddButton";
 import { ArchiveIcon } from "../../../atoms/icons/ArchiveIcon";
 import { ItemDetailButton } from "../../buttons/ItemDetailButton";
-import { ItemMenuBuilder } from "../BacklogItemCard";
 import { SmartSpinner } from "../../unique/smartSpinner/SmartSpinner";
 import { VerticalCollapseIcon } from "../../../atoms/icons/VerticalCollapseIcon";
 import { VerticalExpandIcon } from "../../../atoms/icons/VerticalExpandIcon";
-
-export interface SprintCardStateProps extends SprintCardSprint {
-    archived: boolean;
-    buildItemMenu?: ItemMenuBuilder;
-    busySplittingStory?: boolean;
-    className?: string;
-    disableAddBacklogItemButton: boolean;
-    editMode: EditMode;
-    openedDetailMenuBacklogItemId: string;
-    openingDetailMenuBacklogItemId: string;
-    renderMobile?: boolean;
-    selectedProductBacklogItemCount: number;
-    showDetailMenu?: boolean;
-    showDetailMenuToLeft?: boolean;
-    splitToNextSprintAvailable: boolean;
-}
-
-export interface SprintCardDispatchProps {
-    onAddBacklogItem: { (): void };
-    onBacklogItemAcceptedClick: { (id: string): void };
-    onBacklogItemDetailClick: { (id: string): void };
-    onBacklogItemDoneClick: { (id: string): void };
-    onBacklogItemIdClick: { (id: string): void };
-    onBacklogItemInProgressClick: { (id: string): void };
-    onBacklogItemNotStartedClick: { (id: string): void };
-    onBacklogItemReleasedClick: { (id: string): void };
-    onExpandCollapse: { (id: string, expand: boolean): void };
-    onMoveItemToBacklogClick: { (id: string): void };
-    onSplitBacklogItemClick: { (id: string): void };
-    onSprintDetailClick: { (): void };
-}
-
-export type SprintCardProps = SprintCardStateProps & SprintCardDispatchProps;
 
 export type InnerSprintCardProps = SprintCardProps & WithTranslation;
 
