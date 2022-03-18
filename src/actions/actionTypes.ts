@@ -42,6 +42,10 @@ export const API_GET_BACKLOG_ITEM_REQUEST = buildRequestActionName(Names.GET_BAC
 export const API_GET_BACKLOG_ITEM_SUCCESS = buildSuccessActionName(Names.GET_BACKLOG_ITEM);
 export const API_GET_BACKLOG_ITEM_FAILURE = buildFailureActionName(Names.GET_BACKLOG_ITEM);
 
+export const API_GET_BACKLOG_ITEM_PART_REQUEST = buildSuccessActionName(Names.GET_BACKLOG_ITEM_PART);
+export const API_GET_BACKLOG_ITEM_PART_SUCCESS = buildSuccessActionName(Names.GET_BACKLOG_ITEM_PART);
+export const API_GET_BACKLOG_ITEM_PART_FAILURE = buildSuccessActionName(Names.GET_BACKLOG_ITEM_PART);
+
 export const API_POST_BACKLOG_ITEM_REQUEST = buildRequestActionName(Names.POST_BACKLOG_ITEM);
 export const API_POST_BACKLOG_ITEM_SUCCESS = buildSuccessActionName(Names.POST_BACKLOG_ITEM);
 export const API_POST_BACKLOG_ITEM_FAILURE = buildFailureActionName(Names.POST_BACKLOG_ITEM);

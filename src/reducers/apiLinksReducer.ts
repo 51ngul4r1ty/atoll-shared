@@ -18,6 +18,7 @@ import { buildFullUri } from "../utils/apiLinkHelper";
 
 export const ResourceTypes = {
     BACKLOG_ITEM: "backlogItems",
+    BACKLOG_ITEM_PART: "backlogItemParts",
     SPRINT: "sprints"
 };
 
@@ -41,7 +42,8 @@ export interface ApiLinkState {
 export const apiLinksReducerInitialState = Object.freeze<ApiLinkState>({
     linksByType: {
         backlogItems: {},
-        sprints: {}
+        sprints: {},
+        backlogItemParts: {}
     }
 });
 
@@ -85,6 +87,13 @@ export const getLinkForItem = (state: ApiLinkState, itemType: string, rel: strin
     };
 };
 
+/**
+ * Finds HATEOAS links in the REST API response and stores them for use later.
+ * @param itemTypeLinkName used to catalog the HATEOAS links for later retrieval
+ * @param item object from API response that contains HATEOAS links
+ * @param draft state to be updated with links found
+ * @param meta used to retrieve the REST API request body
+ */
 export const processItem = <T extends ApiItemWithLinks & ItemWithId>(
     itemTypeLinkName: string,
     item: T,
@@ -186,7 +195,25 @@ export const apiLinksReducer = (state: ApiLinkState = apiLinksReducerInitialStat
                     [payload.response.data.backlogItem],
                     draft,
                     actionTyped.meta,
-                    "apiLinksReducer - API_GET_BFF_VIEWS_BACKLOG_ITEM_SUCCESS"
+                    "apiLinksReducer - API_GET_BFF_VIEWS_BACKLOG_ITEM_SUCCESS (backlog item)"
+                );
+                const backlogItemPartItems = payload.response.data.backlogItemPartsAndSprints.map((item) => item.part);
+                processItems(
+                    ResourceTypes.BACKLOG_ITEM_PART,
+                    backlogItemPartItems,
+                    draft,
+                    actionTyped.meta,
+                    "apiLinksReducer - API_GET_BFF_VIEWS_BACKLOG_ITEM_SUCCESS (backlog item parts)"
+                );
+                const sprintItems = payload.response.data.backlogItemPartsAndSprints
+                    .map((partAndSprint) => partAndSprint.sprint)
+                    .filter((sprint) => sprint !== null);
+                processItems(
+                    ResourceTypes.SPRINT,
+                    sprintItems,
+                    draft,
+                    actionTyped.meta,
+                    "apiLinksReducer - API_GET_BFF_VIEWS_BACKLOG_ITEM_SUCCESS (sprints)"
                 );
                 return;
             }

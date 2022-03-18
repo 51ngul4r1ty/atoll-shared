@@ -54,6 +54,7 @@ import { mapApiItemsToBacklogItems, mapApiItemToBacklogItem, mapApiStatusToBackl
 import { calcDropDownMenuState } from "../../utils/dropdownMenuUtils";
 import { isoDateStringToDate } from "../../utils/apiPayloadConverters";
 import { shouldHideDetailMenu } from "../../components/utils/itemDetailMenuUtils";
+import { ApiGetBacklogItemPartSuccessAction } from "../../actions/apiBacklogItemParts";
 
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
@@ -309,6 +310,21 @@ export const backlogItemsReducer = (
                     item.state.editable = false;
                 });
                 draft.openedDetailMenuBacklogItemPartId = null;
+                return;
+            }
+            case ActionTypes.API_GET_BACKLOG_ITEM_PART_SUCCESS: {
+                const actionTyped = action as ApiGetBacklogItemPartSuccessAction;
+                const part = actionTyped.payload.response.data.item;
+                updateCurrentItemPartById(draft, part.id, (item) => {
+                    item.part = {
+                        ...item.part,
+                        externalId: part.externalId,
+                        percentage: part.percentage,
+                        points: part.points,
+                        startedAt: part.startedAt,
+                        finishedAt: part.finishedAt
+                    };
+                });
                 return;
             }
             case ActionTypes.REORDER_BACKLOG_ITEM: {

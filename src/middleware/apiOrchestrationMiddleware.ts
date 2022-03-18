@@ -89,6 +89,8 @@ import { encodeForUrl } from "../utils/urlUtils";
 // interfaces/types
 import { ExpandSprintPanelAction, SaveNewSprintAction, UpdateSprintAction, updateSprintStats } from "../actions/sprintActions";
 import { ResourceTypes } from "../reducers/apiLinksReducer";
+import { CancelEditBacklogItemPartAction } from "../actions/backlogItemPartActions";
+import { apiGetBacklogItemPart } from "../actions/apiBacklogItemParts";
 
 export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
@@ -159,6 +161,18 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const payloadOverride = buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", itemId);
             storeTyped.dispatch(
                 apiGetBacklogItem(itemId, {
+                    payloadOverride
+                })
+            );
+            break;
+        }
+        case ActionTypes.CANCEL_EDIT_BACKLOG_ITEM_PART: {
+            const actionTyped = action as CancelEditBacklogItemPartAction;
+            const state = storeTyped.getState();
+            const itemId = actionTyped.payload.itemId;
+            const payloadOverride = buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM_PART, "item", itemId);
+            storeTyped.dispatch(
+                apiGetBacklogItemPart(itemId, {
                     payloadOverride
                 })
             );
