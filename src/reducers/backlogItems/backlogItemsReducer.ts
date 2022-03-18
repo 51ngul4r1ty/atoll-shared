@@ -35,7 +35,11 @@ import { MoveBacklogItemToSprintAction } from "../../actions/sprintBacklogAction
 import { BacklogItemInstanceEditableFields } from "../../components/organisms/forms/backlogItemFormTypes";
 import { ApiGetBffViewsBacklogItemSuccessAction } from "../../actions/apiBffViewsBacklogItem";
 import { UpdateBacklogItemPartFieldAction, UpdateCurrentBacklogItemFieldsAction } from "../../actions/currentBacklogItemActions";
-import { EditBacklogItemPartAction, ToggleBacklogItemPartDetailAction } from "../../actions/backlogItemPartActions";
+import {
+    CancelEditBacklogItemPartAction,
+    EditBacklogItemPartAction,
+    ToggleBacklogItemPartDetailAction
+} from "../../actions/backlogItemPartActions";
 
 // utils
 import {
@@ -295,6 +299,14 @@ export const backlogItemsReducer = (
                 const actionTyped = action as EditBacklogItemPartAction;
                 updateCurrentItemPartById(draft, actionTyped.payload.itemId, (item) => {
                     item.state.editable = true;
+                });
+                draft.openedDetailMenuBacklogItemPartId = null;
+                return;
+            }
+            case ActionTypes.CANCEL_EDIT_BACKLOG_ITEM_PART: {
+                const actionTyped = action as CancelEditBacklogItemPartAction;
+                updateCurrentItemPartById(draft, actionTyped.payload.itemId, (item) => {
+                    item.state.editable = false;
                 });
                 draft.openedDetailMenuBacklogItemPartId = null;
                 return;

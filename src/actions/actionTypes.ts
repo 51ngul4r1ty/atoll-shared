@@ -166,6 +166,7 @@ export const EDIT_BACKLOG_ITEM = "app/edit:backlog-item";
 
 export const TOGGLE_BACKLOG_ITEM_PART_DETAIL = "app/toggle:backlog-item-part-detail";
 export const EDIT_BACKLOG_ITEM_PART = "app/edit:backlog-item-part";
+export const CANCEL_EDIT_BACKLOG_ITEM_PART = "app/cancel-edit:backlog-item-part";
 
 export const BACKLOG_ITEM_ID_CLICK = "app/click:backlog-item-id";
 

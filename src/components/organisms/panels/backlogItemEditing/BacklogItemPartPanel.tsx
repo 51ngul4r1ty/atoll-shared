@@ -1,5 +1,6 @@
 // externals
 import * as React from "react";
+import { useDispatch } from "react-redux";
 import { withTranslation } from "react-i18next";
 
 // style
@@ -19,7 +20,11 @@ import { DoneButton } from "../../../molecules/buttons/DoneButton";
 import { ItemDetailButton } from "../../../molecules/buttons/ItemDetailButton";
 import { StandardInput } from "../../../atoms/inputs/StandardInput";
 
+// actions
+import { cancelEditBacklogItemPart } from "../../../../actions/backlogItemPartActions";
+
 export const InnerBacklogItemPartPanel: React.FC<BacklogItemPartPanelProps> = (props) => {
+    const dispatch = useDispatch();
     const busyButtonName = "";
     const menuDisabled = false;
     const showDetailMenu = props.showDetailMenu && props.buildItemMenu;
@@ -90,6 +95,9 @@ export const InnerBacklogItemPartPanel: React.FC<BacklogItemPartPanelProps> = (p
         isReadOnly ? css.readOnly : null
     );
     const actionButtonContainerClassName = buildClassName(css.centerCell, css.actionButtonContainer);
+    const handleCancelClick = () => {
+        dispatch(cancelEditBacklogItemPart(props.partId));
+    };
     const actionButtonPanel = (
         <div className={css.actionButtonPanel}>
             <div />
@@ -105,7 +113,7 @@ export const InnerBacklogItemPartPanel: React.FC<BacklogItemPartPanelProps> = (p
                 <CancelButton
                     className={css.actionButton}
                     onClick={() => {
-                        // handleCancelClick();
+                        handleCancelClick();
                     }}
                 />
             </div>
