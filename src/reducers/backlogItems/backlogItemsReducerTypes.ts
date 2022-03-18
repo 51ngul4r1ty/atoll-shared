@@ -5,8 +5,22 @@ import type { BacklogItemPartAndSprint } from "../../actions/apiBffViewsBacklogI
 
 // consts/enums
 import { PushState, Source } from "../../reducers/enums";
+import { ApiBacklogItemPart, ApiSprint } from "../../types/apiModelTypes";
 
 export type SelectedBacklogItems = string[];
+
+export type BacklogItemPartUiState = {
+    editable: boolean;
+};
+
+export type BacklogItemPartAndSprintWithUiState = BacklogItemPartAndSprint & {
+    /* from BacklogItemPartAndSprint */
+    part: ApiBacklogItemPart;
+    sprint: ApiSprint;
+
+    /* new in this type */
+    state: BacklogItemPartUiState;
+};
 
 export type BacklogItemsState = Readonly<{
     addedItems: SaveableBacklogItem[];
@@ -15,7 +29,7 @@ export type BacklogItemsState = Readonly<{
     allItems: BacklogItemWithSource[];
     selectedItemIds: SelectedBacklogItems;
     currentItem: SaveableBacklogItem;
-    currentItemPartsAndSprints: BacklogItemPartAndSprint[];
+    currentItemPartsAndSprints: BacklogItemPartAndSprintWithUiState[];
     savedCurrentItem: SaveableBacklogItem;
     openedDetailMenuBacklogItemId: string | null;
     openedDetailMenuBacklogItemPartId: string | null;

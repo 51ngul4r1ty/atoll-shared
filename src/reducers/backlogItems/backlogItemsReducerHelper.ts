@@ -8,6 +8,7 @@ import { Source, PushState } from "../enums";
 // interfaces/types
 import type { PushBacklogItemModel } from "../../middleware/wsMiddleware";
 import type {
+    BacklogItemPartAndSprintWithUiState,
     BacklogItemsState,
     BacklogItemWithSource,
     EditableBacklogItem,
@@ -188,6 +189,17 @@ export const updateItemById = (draft: Draft<BacklogItemsState>, itemId: string, 
     const idx2 = draft.items.findIndex((item) => item.id === itemId);
     if (idx2 >= 0) {
         updateItem(draft.items[idx2]);
+    }
+};
+
+export const updateCurrentItemPartById = (
+    draft: Draft<BacklogItemsState>,
+    itemId: string,
+    updateItem: { (item: BacklogItemPartAndSprintWithUiState) }
+) => {
+    const idx = draft.currentItemPartsAndSprints.findIndex((item) => item.part.id === itemId);
+    if (idx >= 0) {
+        updateItem(draft.currentItemPartsAndSprints[idx]);
     }
 };
 

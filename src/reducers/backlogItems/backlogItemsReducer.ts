@@ -35,7 +35,7 @@ import { MoveBacklogItemToSprintAction } from "../../actions/sprintBacklogAction
 import { BacklogItemInstanceEditableFields } from "../../components/organisms/forms/backlogItemFormTypes";
 import { ApiGetBffViewsBacklogItemSuccessAction } from "../../actions/apiBffViewsBacklogItem";
 import { UpdateBacklogItemPartFieldAction, UpdateCurrentBacklogItemFieldsAction } from "../../actions/currentBacklogItemActions";
-import { ToggleBacklogItemPartDetailAction } from "../../actions/backlogItemPartActions";
+import { EditBacklogItemPartAction, ToggleBacklogItemPartDetailAction } from "../../actions/backlogItemPartActions";
 
 // utils
 import {
@@ -43,7 +43,8 @@ import {
     updateBacklogItemFieldsInItemsAndAddedItems,
     rebuildAllItems,
     updateBacklogItemFields,
-    updateItemById
+    updateItemById,
+    updateCurrentItemPartById
 } from "./backlogItemsReducerHelper";
 import { mapApiItemsToBacklogItems, mapApiItemToBacklogItem, mapApiStatusToBacklogItem } from "../../mappers/backlogItemMappers";
 import { calcDropDownMenuState } from "../../utils/dropdownMenuUtils";
@@ -290,6 +291,14 @@ export const backlogItemsReducer = (
                 draft.openedDetailMenuBacklogItemId = null;
                 return;
             }
+            case ActionTypes.EDIT_BACKLOG_ITEM_PART: {
+                const actionTyped = action as EditBacklogItemPartAction;
+                updateCurrentItemPartById(draft, actionTyped.payload.itemId, (item) => {
+                    item.state.editable = true;
+                });
+                draft.openedDetailMenuBacklogItemPartId = null;
+                return;
+            }
             case ActionTypes.REORDER_BACKLOG_ITEM: {
                 const actionTyped = action as ReorderBacklogItemAction;
                 let idx = 0;
@@ -411,7 +420,13 @@ export const backlogItemsReducer = (
                 const actionTyped = action as ApiGetBffViewsBacklogItemSuccessAction;
                 const backlogItem = actionTyped.payload.response.data.backlogItem;
                 const partsAndSprints = actionTyped.payload.response.data.backlogItemPartsAndSprints;
-                draft.currentItemPartsAndSprints = partsAndSprints;
+                draft.currentItemPartsAndSprints = partsAndSprints.map((item) => ({
+                    part: item.part,
+                    sprint: item.sprint,
+                    state: {
+                        editable: false
+                    }
+                }));
                 draft.currentItem = {
                     acceptanceCriteria: backlogItem.acceptanceCriteria,
                     createdAt: isoDateStringToDate(backlogItem.createdAt),

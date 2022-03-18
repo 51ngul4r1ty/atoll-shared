@@ -7,13 +7,17 @@ import css from "./BacklogItemPartPanel.module.css";
 import commonCss from "../../forms/common/common.module.css";
 
 // interfaces/types
-import { BacklogItemPartPanelProps } from "./backlogItemPartPanelTypes";
-import { StandardInput } from "../../../atoms/inputs/StandardInput";
-import { ItemDetailButton } from "../../../molecules/buttons/ItemDetailButton";
+import type { BacklogItemPartPanelProps } from "./backlogItemPartPanelTypes";
 
 // utils
 import { buildClassName } from "../../../../utils/classNameBuilder";
 import { isValidStringEstimate } from "../../../../utils/validationUtils";
+
+// components
+import { CancelButton } from "../../../molecules/buttons/CancelButton";
+import { DoneButton } from "../../../molecules/buttons/DoneButton";
+import { ItemDetailButton } from "../../../molecules/buttons/ItemDetailButton";
+import { StandardInput } from "../../../atoms/inputs/StandardInput";
 
 export const InnerBacklogItemPartPanel: React.FC<BacklogItemPartPanelProps> = (props) => {
     const busyButtonName = "";
@@ -85,17 +89,50 @@ export const InnerBacklogItemPartPanel: React.FC<BacklogItemPartPanelProps> = (p
         commonCss.form,
         isReadOnly ? css.readOnly : null
     );
+    const actionButtonContainerClassName = buildClassName(css.centerCell, css.actionButtonContainer);
+    const actionButtonPanel = (
+        <div className={css.actionButtonPanel}>
+            <div />
+            <div className={actionButtonContainerClassName}>
+                <DoneButton
+                    className={css.actionButton}
+                    onClick={() => {
+                        // handleDoneClick();
+                    }}
+                />
+            </div>
+            <div className={actionButtonContainerClassName}>
+                <CancelButton
+                    className={css.actionButton}
+                    onClick={() => {
+                        // handleCancelClick();
+                    }}
+                />
+            </div>
+        </div>
+    );
+    const inputRow = props.editable ? (
+        <div className={buildClassName(css.partPanelContentRow, css.fourCellRow)}>
+            {sprintNameInput}
+            {pointsInput}
+            {percentageInput}
+            {actionButtonPanel}
+        </div>
+    ) : (
+        <div className={buildClassName(css.partPanelContentRow, css.threeCellRow)}>
+            {sprintNameInput}
+            {pointsInput}
+            {percentageInput}
+        </div>
+    );
+
     const expandedElts = (
         <div className={splitsPanelExpandedClassName}>
             <div className={css.partPanelExpanded}>
                 <div className={css.partPanelTitleRow}>
                     <div className={css.splitCaption}>{splitCaption}</div>
                 </div>
-                <div className={buildClassName(css.partPanelContentRow, css.threeCellRow)}>
-                    {sprintNameInput}
-                    {pointsInput}
-                    {percentageInput}
-                </div>
+                {inputRow}
             </div>
             <ItemDetailButton
                 itemId={props.partId}
@@ -108,14 +145,6 @@ export const InnerBacklogItemPartPanel: React.FC<BacklogItemPartPanelProps> = (p
             {itemDetailMenuElts}
         </div>
     );
-    console.log(`==== showDetailMenu: ${props.showDetailMenu}`);
-    if (itemDetailMenuElts && props.expanded) {
-        console.log(`**** rendering itemDetailMenuElts for part ID: ${props.partId}`);
-    } else if (!itemDetailMenuElts) {
-        console.log(`---- NOT rendering itemDetailMenuElts for part ID: ${props.partId} (!itemDetailMenuElts)`);
-    } else {
-        console.log(`---- NOT rendering itemDetailMenuElts for part ID: ${props.partId}`);
-    }
     return props.expanded ? expandedElts : collapsedElts;
 };
 

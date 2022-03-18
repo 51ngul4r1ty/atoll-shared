@@ -23,6 +23,12 @@
     grid-column-gap: 0.7rem;
 }
 
+.fourCellRow {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-column-gap: 0.7rem;
+}
+
 .splitCaption {
     font-weight: 600;
 }
@@ -41,4 +47,30 @@
 }
 
 .partMenuToLeft {
+}
+
+.centerCell {
+    display: flex;
+    align-items: center;
+}
+
+.actionButtonPanelContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+:global(.mobile) .actionButtonPanel {
+    grid-row-gap: 0.4rem;
+    justify-items: right;
+    grid-template-columns: max-content;
+}
+
+.actionButtonPanel {
+    display: grid;
+    grid-template-columns: auto max-content max-content;
+    grid-column-gap: 0.4rem;
+}
+
+:global(.mobile) .actionButtonContainer {
+    width: 100%;
 }
