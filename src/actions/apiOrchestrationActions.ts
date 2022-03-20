@@ -1,5 +1,7 @@
+// consts/enums
+import { API } from "../middleware/apiConsts";
+
 // actions
-import { API } from "../middleware/apiTypes";
 import * as ActionTypes from "./actionTypes";
 
 export interface ApiBatchProcessQueueAction {

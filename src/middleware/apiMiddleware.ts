@@ -9,11 +9,12 @@ import { Action, Dispatch, Store } from "redux";
 import * as HttpStatus from "http-status-codes";
 
 // consts/enums
+import { API } from "./apiConsts";
 import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
 import { StateTree } from "../reducers/rootReducer";
-import { ApiActionType, ApiActionMeta, ApiActionSuccessPayload, API, ApiAction } from "./apiTypes";
+import { ApiActionType, ApiActionMeta, ApiActionSuccessPayload, ApiAction } from "./apiTypes";
 
 // selectors
 import { getAuthToken } from "../selectors/appSelectors";
@@ -107,22 +108,24 @@ const dispatchFailure = (
     requestType: ApiActionType,
     data: any,
     requestBody: any,
-    meta: ApiActionMeta<any>,
+    origMeta: ApiActionMeta<any>,
     error: any
 ) => {
+    const payload = {
+        response: data,
+        error
+    };
+    const meta = {
+        ...{
+            requestBody,
+            apiActionStage: API_ACTION_STAGE_FAILURE
+        },
+        ...origMeta
+    };
     dispatch({
         type: requestType,
-        payload: {
-            response: data,
-            error
-        },
-        meta: {
-            ...{
-                requestBody,
-                apiActionStage: API_ACTION_STAGE_FAILURE
-            },
-            ...meta
-        }
+        payload,
+        meta
     });
 };
 
@@ -170,6 +173,9 @@ export const apiMiddleware = (store) => (next) => (action: Action) => {
                 dispatchSuccess(dispatch, successType, data, requestBody, apiAction.meta);
             } catch (err) {
                 console.error(`Error occurred while dispatching success: ${err}`);
+                if ((err as any)?.stack) {
+                    console.log((err as any).stack);
+                }
             }
         })
         .catch((error) => {

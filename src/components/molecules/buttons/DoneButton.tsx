@@ -2,7 +2,7 @@
 import React, { forwardRef, RefObject, Ref } from "react";
 
 // atoms
-import { SimpleButton, SimpleButtonRefType } from "../../atoms/buttons/SimpleButton";
+import { SimpleButton, SimpleButtonRefType } from "./SimpleButton";
 
 // icons
 import { DoneIcon } from "../../atoms/icons/DoneIcon";

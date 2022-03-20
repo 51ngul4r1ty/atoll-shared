@@ -9,11 +9,11 @@ import css from "./BacklogItemPlanningPanel.module.css";
 // components
 import {
     BacklogItemCard,
+    BacklogItemCardType,
     BacklogItemTypeEnum,
     buildBacklogItemKey,
     buildBacklogItemPlanningItemKey,
-    buildDividerKey,
-    ItemMenuEventHandlers
+    buildDividerKey
 } from "../../../molecules/cards/BacklogItemCard";
 import { SimpleDivider } from "../../../atoms/dividers/SimpleDivider";
 
@@ -22,7 +22,7 @@ import { EditMode } from "../../../common/componentEnums";
 import { buildClassName } from "../../../../utils/classNameBuilder";
 import { useDispatch } from "react-redux";
 import { SaveableBacklogItem } from "../../../../reducers/backlogItems/backlogItemsReducerTypes";
-import { Source } from "../../../../reducers/types";
+import { Source } from "../../../../reducers/enums";
 
 // actions
 import { apiDeleteBacklogItem } from "../../../../actions/apiBacklogItems";
@@ -39,13 +39,21 @@ import { useRecursiveTimeout } from "../../../common/setTimeoutHook";
 import { BacklogItemPlanningItem } from "../../combo/BacklogItemPlanningItem";
 import { buildBacklogDisplayId } from "../../../../utils/backlogItemHelper";
 
+// interfaces/types
+import type { BacklogItemPlanningPanelProps } from "./backlogItemPlanningPanelTypes";
+import type { ItemMenuEventHandlers } from "../../../molecules/menus/menuBuilderTypes";
+
 // consts/enums
 import * as loggingTags from "../../../../constants/loggingTags";
-import { BacklogItemPlanningPanelProps, CardPosition } from "./backlogItemPlanningPanelTypes";
+import { CardPosition } from "./backlogItemPlanningPanelTypes";
+import { BELOW_LAST_CARD_ID } from "./backlogItemPlanningPanelConsts";
+
+// utils
 import {
     atBottomOfPage,
     atTopOfPage,
     buildSpacerInternalId,
+    computeProductBacklogItemEstimate,
     getDragItemDocumentTop,
     getDragItemId,
     getDragItemIdUnderTarget,
@@ -59,7 +67,6 @@ import {
 } from "./backlogItemPlanningPanelUtils";
 import { addActionButtons } from "./backlogItemPlanningPanelJsxUtils";
 import { productBacklogItemMenuBuilder } from "../../../common/itemMenuBuilders";
-import { BELOW_LAST_CARD_ID } from "./backlogItemPlanningPanelConsts";
 
 /* exported components */
 
@@ -78,7 +85,9 @@ export const buildDragBacklogItemElt = (
     return (
         <BacklogItemCard
             buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
-            estimate={item.estimate}
+            busySplittingStory={false}
+            cardType={BacklogItemCardType.ProductBacklogCard}
+            estimate={computeProductBacklogItemEstimate(item.estimate, item.unallocatedPoints)}
             hasDetails={editMode === EditMode.Edit}
             internalId={`${item.id}`}
             isDraggable={editMode === EditMode.Edit}
@@ -93,7 +102,10 @@ export const buildDragBacklogItemElt = (
             roleText={item.rolePhrase}
             showDetailMenu={false}
             status={item.status}
+            storyEstimate={item.storyEstimate}
             titleText={item.storyPhrase}
+            totalParts={item.totalParts}
+            unallocatedParts={item.unallocatedParts}
             width={width}
         />
     );
@@ -458,7 +470,9 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 const dragOverItemBacklogItemCard = (
                     <BacklogItemCard
                         key={cardKey}
+                        busySplittingStory={false}
                         buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
+                        cardType={BacklogItemCardType.ProductBacklogCard}
                         estimate={null}
                         hasDetails={props.editMode === EditMode.Edit}
                         internalId={buildSpacerInternalId(item.id)}
@@ -471,7 +485,10 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                         renderMobile={props.renderMobile}
                         roleText={null}
                         status={item.status}
+                        storyEstimate={item.storyEstimate}
                         titleText={null}
+                        totalParts={item.totalParts}
+                        unallocatedParts={item.unallocatedParts}
                         onDetailClick={() => {
                             dispatch(backlogItemDetailClick(item.id));
                         }}
@@ -494,6 +511,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                     key={buildBacklogItemPlanningItemKey(item)}
                     {...item}
                     editMode={props.editMode}
+                    busySplittingStory={props.busySplittingStory}
                     renderMobile={props.renderMobile}
                     highlightAbove={highlightAbove}
                     suppressTopPadding={suppressTopPadding || lastItemWasUnsaved}

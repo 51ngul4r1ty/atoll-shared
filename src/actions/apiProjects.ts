@@ -6,13 +6,15 @@ import * as ApiActionNames from "./apiActionNames";
 import { getApiBaseUrl } from "../config";
 
 // consts/enums
+import { API } from "../middleware/apiConsts";
 import { APPLICATION_JSON } from "../constants";
-import { ApiBatchAction } from "../middleware/apiBatchTypes";
+
+// interfaces/types
+import type { ApiAction, ApiActionMetaDataRequestMeta, NoDataApiAction } from "../middleware/apiTypes";
+import type { ApiProject } from "../types/apiModelTypes";
 
 // utils
 import { buildActionTypes } from "./utils/apiActionUtils";
-import { ApiProject } from "../apiModelTypes";
-import { API, ApiAction, ApiActionMetaDataRequestMeta, NoDataApiAction } from "../middleware/apiTypes";
 
 export interface ApiGetProjectRouteToBacklogItemViewMeta {
     backlogItemDisplayId: string;

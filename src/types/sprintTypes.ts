@@ -1,5 +1,5 @@
 // interfaces/types
-import { BaseModelItem } from "../types";
+import type { BaseModelItem } from "../types/dataModelTypes";
 
 export interface SprintModel extends BaseModelItem {
     acceptedPoints: number | null;

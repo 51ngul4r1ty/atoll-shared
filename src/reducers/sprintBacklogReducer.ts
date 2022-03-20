@@ -3,63 +3,102 @@ import { Draft, produce } from "immer";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
+import { PushState } from "./enums";
 
 // interfaces/types
-import { AnyFSA } from "../types/reactHelperTypes";
-import { ApiGetSprintBacklogItemsSuccessAction, ApiSprintBacklogItemSetStatusSuccessAction } from "../actions/apiSprintBacklog";
-import { BacklogItem } from "../types/backlogItemTypes";
-import { BacklogItemWithSource } from "./backlogItems/backlogItemsReducerTypes";
-import {
+import type { AnyFSA } from "../types/reactHelperTypes";
+import type {
+    ApiGetSprintBacklogItemsFailureAction,
+    ApiGetSprintBacklogItemsSuccessAction,
+    ApiPostSprintBacklogItemSuccessAction,
+    ApiSprintBacklogItemSetStatusSuccessAction
+} from "../actions/apiSprintBacklog";
+import type { BacklogItemInSprint } from "../types/backlogItemTypes";
+import type { BacklogItemInSprintWithSource } from "./backlogItems/backlogItemsReducerTypes";
+import type {
+    AddBacklogItemToSprintAction,
     ChangeSprintPlanningArchivedFilterAction,
     MoveBacklogItemToSprintAction,
+    PatchBacklogItemInSprintAction,
     RemoveSprintBacklogItemAction,
+    SprintBacklogItemDetailClickAction,
     ToggleSprintBacklogItemDetailAction
 } from "../actions/sprintBacklogActions";
-import { PushState } from "./types";
-import { AppClickAction } from "../actions/appActions";
-import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
-import { ApiBacklogItem } from "../apiModelTypes";
+import type { AppClickAction } from "../actions/appActions";
+import type { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
+import type { ApiBacklogItemInSprint } from "../types/apiModelTypes";
+import type { ApiGetSprintFailureAction } from "../actions/apiSprints";
+import type { ApiGetBacklogItemSuccessAction } from "../actions/apiBacklogItems";
+
+// consts/enums
+import {
+    ITEM_DETAIL_CLICK_STEP_1_NAME,
+    ITEM_DETAIL_CLICK_STEP_2_NAME,
+    ITEM_DETAIL_CLICK_STEP_3_NAME
+} from "../actionFlows/itemDetailMenuActionFlow";
 
 // utils
-import { mapApiItemsToBacklogItems, mapApiStatusToBacklogItem } from "../mappers/backlogItemMappers";
+import { mapApiItemsToSprintBacklogItems } from "../mappers/backlogItemMappers";
+import { mapApiStatusToBacklogItem } from "../mappers/statusMappers";
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
 import { shouldHideDetailMenu } from "../components/utils/itemDetailMenuUtils";
 import { mapApiItemsToSprints } from "../mappers";
-
-export type SprintBacklogItem = BacklogItem;
+import { getFlowInfoFromAction } from "../utils/actionFlowUtils";
 
 export interface SprintBacklogSprint {
-    items: SprintBacklogItem[];
+    items: BacklogItemInSprint[];
 }
+
+export type SprintBacklogSprintInfo = SprintBacklogSprint & {
+    backlogItemsInSprint: { [backlogItemId: string]: boolean };
+};
 
 export type SprintBacklogState = Readonly<{
     includeArchivedSprints: boolean;
     openedDetailMenuBacklogItemId: string | null;
+    openingDetailMenuBacklogItemId: string | null;
     openedDetailMenuSprintId: string | null;
-    sprints: { [sprintId: string]: SprintBacklogSprint };
+    openingDetailMenuSprintId: string | null;
+    splitInProgress: boolean;
+    sprints: { [sprintId: string]: SprintBacklogSprintInfo };
 }>;
 
 export const sprintBacklogReducerInitialState = Object.freeze<SprintBacklogState>({
     includeArchivedSprints: false,
-    sprints: {},
     openedDetailMenuBacklogItemId: null,
-    openedDetailMenuSprintId: null
+    openingDetailMenuBacklogItemId: null,
+    openedDetailMenuSprintId: null,
+    openingDetailMenuSprintId: null,
+    splitInProgress: false,
+    sprints: {}
 });
 
-export const getOrAddSprintById = (draft: Draft<SprintBacklogState>, sprintId: string) => {
+export const getOrAddSprintById = (draft: Draft<SprintBacklogState>, sprintId: string): SprintBacklogSprintInfo => {
     let sprint = draft.sprints[sprintId];
     if (!sprint) {
-        draft.sprints[sprintId] = { items: [] };
+        draft.sprints[sprintId] = { items: [], backlogItemsInSprint: {} };
         sprint = draft.sprints[sprintId];
     }
     return sprint;
+};
+
+export const linkBacklogItemToSprint = (draft: Draft<SprintBacklogState>, sprintId: string, backlogItemId: string) => {
+    const sprintInfo = getOrAddSprintById(draft, sprintId);
+    sprintInfo.backlogItemsInSprint[backlogItemId] = true;
+};
+
+export const unlinkBacklogItemFromSprint = (draft: Draft<SprintBacklogState>, sprintId: string, backlogItemId: string) => {
+    const sprintInfo = getOrAddSprintById(draft, sprintId);
+    if (sprintInfo.backlogItemsInSprint[backlogItemId]) {
+        delete sprintInfo.backlogItemsInSprint[backlogItemId];
+    }
 };
 
 export const getSprintBacklogItemById = (
     sprintBacklogState: SprintBacklogState,
     sprintId: string,
     backlogItemId: string
-): BacklogItemWithSource | null => {
+): BacklogItemInSprintWithSource | null => {
     const sprint = sprintBacklogState.sprints[sprintId];
     if (!sprint) {
         return null;
@@ -67,16 +106,23 @@ export const getSprintBacklogItemById = (
     const matchingItems = sprint.items.filter((item) => item.id === backlogItemId);
     if (matchingItems.length === 1) {
         const matchingItem = matchingItems[0];
-        return matchingItem as BacklogItemWithSource;
+        return matchingItem as BacklogItemInSprintWithSource;
     } else {
         return null;
     }
 };
 
-export const addSprintBacklogItems = (draft: Draft<SprintBacklogState>, sprintId: string, backlogItems: ApiBacklogItem[]) => {
+export const addSprintBacklogItems = (
+    draft: Draft<SprintBacklogState>,
+    sprintId: string,
+    backlogItems: ApiBacklogItemInSprint[]
+) => {
     let sprint = getOrAddSprintById(draft, sprintId);
     sprint.items = [];
-    const items = mapApiItemsToBacklogItems(backlogItems);
+    const items = mapApiItemsToSprintBacklogItems(backlogItems);
+    if (!items) {
+        throw new Error("Unexpected condition- addSprintBacklogItems had items undefined");
+    }
     items.forEach((item) => {
         sprint.items.push(item);
     });
@@ -95,11 +141,82 @@ export const sprintBacklogReducer = (
                 addSprintBacklogItems(draft, sprintId, actionTyped.payload.response.data.items);
                 return;
             }
+            case ActionTypes.API_GET_BACKLOG_ITEM_SUCCESS: {
+                const actionTyped = action as ApiGetBacklogItemSuccessAction;
+                const triggerAction = actionTyped.meta?.passthrough?.triggerAction;
+                const isSelectAction = triggerAction === ActionTypes.SELECT_PRODUCT_BACKLOG_ITEM;
+                const isUnselectAction = triggerAction === ActionTypes.UNSELECT_PRODUCT_BACKLOG_ITEM;
+                if (isSelectAction || isUnselectAction) {
+                    const backlogItemId = actionTyped.meta?.passthrough?.backlogItemId;
+                    if (!backlogItemId) {
+                        throw new Error(
+                            "Unexpected condition- API_GET_BACKLOG_ITEM_SUCCESS expects backlogItemId in passthrough data"
+                        );
+                    }
+                    const backlogItemSprintIds = actionTyped.payload.response.data.extra?.sprintIds || [];
+                    const linkOrUnlinkFunction = isSelectAction ? linkBacklogItemToSprint : unlinkBacklogItemFromSprint;
+                    backlogItemSprintIds.forEach((sprintId) => {
+                        linkOrUnlinkFunction(draft, sprintId, backlogItemId);
+                    });
+                }
+                return;
+            }
             case ActionTypes.MOVE_BACKLOG_ITEM_TO_SPRINT: {
                 const actionTyped = action as MoveBacklogItemToSprintAction;
                 const sprintId = actionTyped.payload.sprintId;
                 let sprint = getOrAddSprintById(draft, sprintId);
+                sprint.items.push(actionTyped.payload.sprintBacklogItem);
+                return;
+            }
+            case ActionTypes.ADD_BACKLOG_ITEM_TO_SPRINT: {
+                const actionTyped = action as AddBacklogItemToSprintAction;
+                const sprintId = actionTyped.payload.sprintId;
+                let sprint = getOrAddSprintById(draft, sprintId);
                 sprint.items.push(actionTyped.payload.backlogItem);
+                return;
+            }
+            case ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK: {
+                const actionTyped = action as SprintBacklogItemDetailClickAction;
+                const sprintId = actionTyped.payload.sprintId;
+                draft.openingDetailMenuBacklogItemId = calcDropDownMenuState(
+                    draft.openingDetailMenuBacklogItemId,
+                    actionTyped.payload.backlogItemId,
+                    (itemId: string) => getSprintBacklogItemById(state, sprintId, itemId),
+                    (item) => item.pushState !== PushState.Removed
+                );
+                draft.openingDetailMenuSprintId = draft.openingDetailMenuBacklogItemId ? sprintId : null;
+                return;
+            }
+            case ActionTypes.API_GET_SPRINT_FAILURE: {
+                const actionTyped = action as ApiGetSprintFailureAction;
+                const { triggerAction, stepName } = getFlowInfoFromAction(actionTyped);
+                if (triggerAction !== ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK) {
+                    return;
+                } else if (stepName === ITEM_DETAIL_CLICK_STEP_1_NAME || stepName === ITEM_DETAIL_CLICK_STEP_2_NAME) {
+                    if (draft.openingDetailMenuSprintId === actionTyped.meta.actionParams.sprintId) {
+                        draft.openingDetailMenuSprintId = null;
+                        draft.openingDetailMenuBacklogItemId = null;
+                    }
+                } else {
+                    throw new Error(`Unable to handle API_GET_SPRINT_FAILURE for "${triggerAction}" step "${stepName}"`);
+                }
+                return;
+            }
+            case ActionTypes.API_GET_SPRINT_BACKLOG_ITEMS_FAILURE: {
+                const actionTyped = action as ApiGetSprintBacklogItemsFailureAction;
+                const { triggerAction, stepName } = getFlowInfoFromAction(actionTyped);
+                if (triggerAction === ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK) {
+                    if (stepName === ITEM_DETAIL_CLICK_STEP_3_NAME) {
+                        if (draft.openingDetailMenuSprintId === actionTyped.meta.passthrough.sprintId) {
+                            draft.openingDetailMenuSprintId = null;
+                            draft.openingDetailMenuBacklogItemId = null;
+                        }
+                    } else {
+                        throw new Error(
+                            `Unable to handle API_GET_SPRINT_BACKLOG_ITEMS_FAILURE for "${triggerAction}" step "${stepName}"`
+                        );
+                    }
+                }
                 return;
             }
             case ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL: {
@@ -112,6 +229,10 @@ export const sprintBacklogReducer = (
                     (item) => item.pushState !== PushState.Removed
                 );
                 draft.openedDetailMenuSprintId = draft.openedDetailMenuBacklogItemId ? sprintId : null;
+                const hasItemDetailMenuOpened = !!draft.openedDetailMenuBacklogItemId;
+                if (hasItemDetailMenuOpened) {
+                    draft.openingDetailMenuBacklogItemId = null;
+                }
                 return;
             }
             case ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS: {
@@ -121,14 +242,14 @@ export const sprintBacklogReducer = (
             case ActionTypes.API_PATCH_BACKLOG_ITEM_SUCCESS: {
                 const actionTyped = action as ApiSprintBacklogItemSetStatusSuccessAction;
                 const sprintId = actionTyped.meta.actionParams.sprintId;
-                const backlogItemId = actionTyped.meta.actionParams.backlogItemId;
+                const backlogItemPartId = actionTyped.meta.actionParams.backlogItemPartId;
 
                 const sprint = draft.sprints[sprintId];
                 if (!sprint) {
                     return;
                 }
                 sprint.items.forEach((item) => {
-                    if (item.id === backlogItemId) {
+                    if (item.backlogItemPartId === backlogItemPartId) {
                         item.status = mapApiStatusToBacklogItem(actionTyped.meta.requestBody.data.status);
                     }
                 });
@@ -157,6 +278,39 @@ export const sprintBacklogReducer = (
                         throw Error(`Unexpected scenario: backlog item ${backlogItemId} does not exist`);
                     }
                 }
+                unlinkBacklogItemFromSprint(draft, sprintId, backlogItemId);
+
+                return;
+            }
+            case ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_SUCCESS: {
+                const actionTyped = action as ApiPostSprintBacklogItemSuccessAction;
+                const sprintId = actionTyped.meta.actionParams.sprintId;
+                const backlogItemId = actionTyped.meta.actionParams.backlogItemId;
+                linkBacklogItemToSprint(draft, sprintId, backlogItemId);
+                return;
+            }
+            case ActionTypes.PATCH_BACKLOG_ITEM_IN_SPRINT: {
+                const actionTyped = action as PatchBacklogItemInSprintAction;
+                const sprintId = actionTyped.payload.sprintId;
+                const backlogItemId = actionTyped.payload.backlogItemId;
+                const sprint = draft.sprints[sprintId];
+                if (!sprint) {
+                    throw Error(`Unexpected scenario: sprint ${sprintId} does not exist`);
+                } else {
+                    const matchingItems = sprint.items.filter((item) => item.id === backlogItemId);
+                    if (matchingItems.length === 1) {
+                        const backlogItem = matchingItems[0];
+                        const patchObj = actionTyped.payload.patchObj;
+                        Object.keys(patchObj).forEach((key) => {
+                            backlogItem[key] = patchObj[key];
+                        });
+                    } else {
+                        throw Error(
+                            `Unexpected scenario: should be a single backlog item matching ${backlogItemId}, ` +
+                                `there were ${matchingItems.length}`
+                        );
+                    }
+                }
 
                 return;
             }
@@ -180,6 +334,20 @@ export const sprintBacklogReducer = (
                     const sprintId = expandedSprint.id;
                     addSprintBacklogItems(draft, sprintId, payload.response.data.sprintBacklogItems);
                 }
+                return;
+            }
+            case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_REQUEST: {
+                draft.splitInProgress = true;
+                return;
+            }
+            case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {
+                draft.splitInProgress = false;
+                draft.openedDetailMenuBacklogItemId = null;
+                return;
+            }
+            case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_FAILURE: {
+                draft.splitInProgress = false;
+                draft.openedDetailMenuBacklogItemId = null;
                 return;
             }
             case ActionTypes.APP_CLICK: {

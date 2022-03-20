@@ -22,6 +22,9 @@ export const apiBatchReducer = (state: ApiBatchState = apiBatchReducerInitialSta
         switch (action.type) {
             case ActionTypes.API_BATCH: {
                 const apiBatchAction = action as ApiBatchAddBacklogItemsToSprintAction;
+                if (!apiBatchAction.calls) {
+                    throw new Error("Unexpected condition- apiBatchAction.calls is undefined processing API_BATCH action");
+                }
                 apiBatchAction.calls.forEach((call) => {
                     draft.remainingApiCalls.push(call);
                 });

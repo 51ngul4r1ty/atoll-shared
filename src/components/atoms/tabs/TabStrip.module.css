@@ -22,7 +22,7 @@
 }
 
 .tab.active {
-    font-weight: bold;
+    font-weight: -var(--primary-bold-font-weight, 600);
     border-bottom: 0.2rem solid var(--normal-pen-color, black);
 }
 

@@ -2,8 +2,8 @@
 import { WithTranslation } from "react-i18next";
 
 // interfaces/types
-import { BacklogItemWithSource } from "../../../../reducers/backlogItems/backlogItemsReducerTypes";
-import { StoryPhrases } from "../../../../types";
+import type { BacklogItemWithSource } from "../../../../reducers/backlogItems/backlogItemsReducerTypes";
+import type { StoryPhrases } from "../../../../types/storyTypes";
 
 // consts/enums
 import { BacklogItemType } from "../../../../types/backlogItemTypes";
@@ -23,6 +23,7 @@ export interface BacklogItemPlanningPanelStateProps {
     className?: string;
     allItems: BacklogItemWithSource[];
     editMode: EditMode;
+    busySplittingStory: boolean;
     renderMobile?: boolean;
     openedDetailMenuBacklogItemId: string | null;
 }

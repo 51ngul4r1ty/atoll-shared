@@ -11,17 +11,20 @@ import { DragIcon } from "../../atoms/icons/DragIcon";
 import { IssueIcon } from "../../atoms/icons/IssueIcon";
 import { StoryIcon } from "../../atoms/icons/StoryIcon";
 import { ItemDetailButton } from "../buttons/ItemDetailButton";
+import { StatusAcceptedIcon, StatusDoneIcon, StatusInProgressIcon, StatusReleasedIcon } from "../../atoms/icons";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
 
-// consts/enums
-import { SaveableBacklogItem } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
-import { PushState } from "../../../reducers/types";
-import { StatusAcceptedIcon, StatusDoneIcon, StatusInProgressIcon, StatusReleasedIcon } from "../../atoms/icons";
-import { BacklogItemStatus } from "../../../types/backlogItemTypes";
+// interfaces/types
+import type { SaveableBacklogItem } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
+import type { ItemMenuBuilder } from "../menus/menuBuilderTypes";
 
-/* exported functions */
+// consts/enums
+import { PushState } from "../../../reducers/enums";
+import { BacklogItemStatus } from "../../../types/backlogItemEnums";
+
+//#region exported functions
 
 export const buildUniqueItemKey = (props: SaveableBacklogItem, componentPrefix: string): string => {
     return props.id ? `${componentPrefix}-id-${props.id}` : `${componentPrefix}-i-${props.instanceId}`;
@@ -92,7 +95,9 @@ export const fullStoryText = (rolePhrase: string, storyPhrase: string, reasonPhr
     }
 };
 
-/* exported interfaces */
+//#endregion
+
+//#region exported interfaces/types
 
 // TODO: See if this is defined elsewhere:
 export enum BacklogItemTypeEnum {
@@ -101,39 +106,34 @@ export enum BacklogItemTypeEnum {
     Story
 }
 
-export interface ItemMenuEventHandler {
-    (eventName: string, itemId: string): void;
-}
-
-export interface ItemMenuEventHandlers {
-    handleEvent: ItemMenuEventHandler;
-}
-
-export interface ItemMenuBuilder {
-    (itemId: string, showMenuToLeft: boolean): React.ReactElement<any, any>;
-}
-
 export interface BacklogItemCardStateProps {
+    buildItemMenu?: ItemMenuBuilder;
+    busySplittingStory?: boolean;
+    cardType?: BacklogItemCardType;
     estimate: number | null;
     hasDetails?: boolean;
-    isSelectable?: boolean;
     hidden?: boolean;
-    isDraggable?: boolean;
     internalId: string;
+    isDraggable?: boolean;
+    isLoadingDetails?: boolean;
+    isSelectable?: boolean;
     itemId: string;
     itemType: BacklogItemTypeEnum;
     marginBelowItem?: boolean;
+    offsetTop?: number;
+    partIndex?: number;
+    pushState?: PushState;
+    reasonText: string;
     renderMobile?: boolean;
     roleText: string;
-    titleText: string;
-    reasonText: string;
-    offsetTop?: number;
-    width?: any;
     showDetailMenu: boolean;
     showDetailMenuToLeft?: boolean;
     status?: BacklogItemStatus;
-    pushState?: PushState;
-    buildItemMenu?: ItemMenuBuilder;
+    storyEstimate?: number | null;
+    titleText: string;
+    totalParts?: number;
+    unallocatedParts?: number;
+    width?: any;
 }
 
 export interface BacklogItemCardDispatchProps {
@@ -148,10 +148,20 @@ export type BacklogItemCardProps = BacklogItemCardStateProps & BacklogItemCardDi
 
 export type InnerBacklogItemCardProps = BacklogItemCardProps & WithTranslation;
 
+export enum BacklogItemCardType {
+    ProductBacklogCard,
+    SprintBacklogCard
+}
+
+//#endregion
+
 /* exported components */
 
 export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props) => {
-    const detailMenu = props.showDetailMenu ? props.buildItemMenu(props.internalId, props.showDetailMenuToLeft) : null;
+    const busyButtonName = props.busySplittingStory ? "splitStory" : "";
+    const detailMenu = props.showDetailMenu
+        ? props.buildItemMenu(props.internalId, props.showDetailMenuToLeft, !!busyButtonName, busyButtonName)
+        : null;
     const classNameToUse = buildClassName(
         css.backlogItemCard,
         props.marginBelowItem ? css.marginBelowItem : null,
@@ -166,6 +176,7 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
             itemId={props.internalId}
             itemType="backlog-item"
             hasDetails={props.hasDetails}
+            isLoading={props.isLoadingDetails}
             className={css.backlogItemDetailButton}
             onDetailClick={() => props.onDetailClick()}
         />
@@ -192,26 +203,67 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
     const styleToUse: React.CSSProperties = props.offsetTop
         ? { top: props.offsetTop, position: "absolute", zIndex: 10 }
         : undefined;
-    let statusIcon: any = null;
+    let statusIcon: React.ReactElement;
+    let hoverText: string;
+    let ariaLabel: string;
     switch (props.status) {
         case BacklogItemStatus.InProgress: {
             statusIcon = <StatusInProgressIcon />;
+            hoverText = "in progress";
+            ariaLabel = "work item is in progress";
             break;
         }
         case BacklogItemStatus.Done: {
             statusIcon = <StatusDoneIcon />;
+            hoverText = "done";
+            ariaLabel = "work item meets definition of done";
             break;
         }
         case BacklogItemStatus.Accepted: {
             statusIcon = <StatusAcceptedIcon />;
+            hoverText = "accepted";
+            ariaLabel = "work item has been accepted";
             break;
         }
         case BacklogItemStatus.Released: {
+            hoverText = "released";
+            ariaLabel = "work item has been released";
             statusIcon = <StatusReleasedIcon />;
             break;
         }
     }
-    const statusIconElts = (props.status === statusIcon) !== null ? <div className={css.status}>{statusIcon}</div> : null;
+    const statusIconElts =
+        statusIcon !== null ? (
+            <div className={css.status} title={hoverText} aria-label={ariaLabel}>
+                {statusIcon}
+            </div>
+        ) : null;
+    const isSplitBacklogItem = props.totalParts > 1;
+    const splitTextContent =
+        props.cardType === BacklogItemCardType.ProductBacklogCard
+            ? `${props.unallocatedParts} of ${props.totalParts} unallocated splits`
+            : `Split ${props.partIndex} of ${props.totalParts}`;
+    const splitTextElts = (
+        <div className={css.backlogItemSplitText} title={splitTextContent}>
+            {splitTextContent}
+        </div>
+    );
+    const storyPointsElts = getEstimateElts(props.estimate);
+    const showSplitEstimate = props.partIndex > 1 || props.cardType === BacklogItemCardType.ProductBacklogCard;
+    const splitBoxElts = showSplitEstimate ? (
+        <>
+            <div className={css.splitStoryPoints}>{formatNumberForDisplay(props.estimate)}</div>
+            <div className={css.splitBottomWedge} />
+            <div className={css.splitTotalPoints}>{formatNumberForDisplay(props.storyEstimate)}</div>
+        </>
+    ) : (
+        storyPointsElts
+    );
+    const estimateElts = isSplitBacklogItem ? splitBoxElts : storyPointsElts;
+    const estimateEltsContainerClass = buildClassName(
+        css.backlogItemEstimate,
+        isSplitBacklogItem && props.partIndex === 1 ? css.splitPartOne : null
+    );
     return (
         <div className={css.backlogItemCardOuter} data-class="backlogitem" data-id={props.internalId} style={styleToUse}>
             <div className={classNameToUse} style={{ width: props.width }} tabIndex={0}>
@@ -247,8 +299,9 @@ export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props)
                         {props.renderMobile ? statusIconElts : null}
                         {props.renderMobile ? editDetailButton : null}
                     </div>
+                    {isSplitBacklogItem ? splitTextElts : null}
                 </div>
-                <div className={css.backlogItemEstimate}>{getEstimateElts(props.estimate)}</div>
+                <div className={estimateEltsContainerClass}>{estimateElts}</div>
                 {!props.renderMobile ? statusIconElts : null}
                 {!props.renderMobile ? editDetailButton : null}
                 {props.isDraggable && !props.renderMobile ? (

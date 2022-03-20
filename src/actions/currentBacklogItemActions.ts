@@ -24,3 +24,20 @@ export interface SaveCurrentBacklogItemAction {
 export const saveCurrentBacklogItem = (): SaveCurrentBacklogItemAction => ({
     type: ActionTypes.SAVE_CURRENT_BACKLOG_ITEM
 });
+
+export type UpdateBacklogItemPartFieldAction = {
+    type: typeof ActionTypes.UPDATE_BACKLOG_ITEM_PART_FIELD;
+    payload: {
+        partId: string;
+        fieldName: string;
+        fieldValue: string;
+    };
+};
+export const updateBacklogItemPartPoints = (partId: string, value: string): UpdateBacklogItemPartFieldAction => ({
+    type: ActionTypes.UPDATE_BACKLOG_ITEM_PART_FIELD,
+    payload: {
+        partId,
+        fieldName: "points",
+        fieldValue: value
+    }
+});

@@ -8,23 +8,30 @@ import * as ApiActionNames from "./apiActionNames";
 import { getApiBaseUrl } from "../config";
 
 // consts/enums
+import { API } from "../middleware/apiConsts";
 import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
-import { API, NoDataApiAction, ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
+import type { NoDataApiAction, ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
 
 // utils
 import { buildActionTypes } from "./utils/apiActionUtils";
 
 // interfaces/types
-import { ApiBacklogItem, ApiUserSettings } from "../apiModelTypes";
+import type { ApiBacklogItem, ApiBacklogItemPart, ApiSprint } from "../types/apiModelTypes";
+
+export type ApiBacklogItemPartAndSprint = {
+    part: ApiBacklogItemPart;
+    sprint: ApiSprint;
+};
 
 export interface ApiGetBffViewsBacklogItemResponsePayload {
     response: {
         status: number;
         data: {
-            backlogItems: ApiBacklogItem[];
-            userPreferences: ApiUserSettings;
+            backlogItem: ApiBacklogItem;
+            backlogItemPartsAndSprints: ApiBacklogItemPartAndSprint[];
+            inProductBacklog: boolean;
         };
     };
 }

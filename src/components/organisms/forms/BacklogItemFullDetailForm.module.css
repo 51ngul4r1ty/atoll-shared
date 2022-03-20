@@ -10,7 +10,6 @@
 .form {
     display: flex;
     flex-direction: column;
-    margin: 0.7rem;
 }
 
 .userStoryDescription {
@@ -89,4 +88,20 @@
 :global(.mobile) .dateFieldsRow {
     grid-template-columns: 1fr;
     grid-row-gap: 0.7rem;
+}
+
+.pageContent {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 0.7rem;
+    margin: 0.7rem;
+}
+
+.storyPanel {
+}
+
+.splitsPanel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
 }

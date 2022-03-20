@@ -59,6 +59,16 @@ export const API_DELETE_BACKLOG_ITEM_SUCCESS = buildSuccessActionName(Names.DELE
 export const API_DELETE_BACKLOG_ITEM_FAILURE = buildFailureActionName(Names.DELETE_BACKLOG_ITEM);
 // #endregion
 
+// #region Backlog Item Part Resource
+export const API_GET_BACKLOG_ITEM_PART_REQUEST = buildSuccessActionName(Names.GET_BACKLOG_ITEM_PART);
+export const API_GET_BACKLOG_ITEM_PART_SUCCESS = buildSuccessActionName(Names.GET_BACKLOG_ITEM_PART);
+export const API_GET_BACKLOG_ITEM_PART_FAILURE = buildSuccessActionName(Names.GET_BACKLOG_ITEM_PART);
+
+export const API_PATCH_BACKLOG_ITEM_PART_REQUEST = buildRequestActionName(Names.PATCH_BACKLOG_ITEM_PART);
+export const API_PATCH_BACKLOG_ITEM_PART_SUCCESS = buildSuccessActionName(Names.PATCH_BACKLOG_ITEM_PART);
+export const API_PATCH_BACKLOG_ITEM_PART_FAILURE = buildFailureActionName(Names.PATCH_BACKLOG_ITEM_PART);
+// #endregion
+
 // #region Backlog Item Ranks Resource Collection
 export const API_GET_BACKLOG_ITEM_RANKS_REQUEST = buildRequestActionName(Names.GET_BACKLOG_ITEM_RANKS);
 export const API_GET_BACKLOG_ITEM_RANKS_SUCCESS = buildSuccessActionName(Names.GET_BACKLOG_ITEM_RANKS);
@@ -80,6 +90,10 @@ export const API_POST_SPRINT_FAILURE = buildFailureActionName(Names.POST_SPRINT)
 // #endregion
 
 // #region Sprint Resource Item
+export const API_GET_SPRINT_REQUEST = buildRequestActionName(Names.GET_SPRINT);
+export const API_GET_SPRINT_SUCCESS = buildSuccessActionName(Names.GET_SPRINT);
+export const API_GET_SPRINT_FAILURE = buildFailureActionName(Names.GET_SPRINT);
+
 export const API_DELETE_SPRINT_REQUEST = buildRequestActionName(Names.DELETE_SPRINT);
 export const API_DELETE_SPRINT_SUCCESS = buildSuccessActionName(Names.DELETE_SPRINT);
 export const API_DELETE_SPRINT_FAILURE = buildFailureActionName(Names.DELETE_SPRINT);
@@ -105,6 +119,12 @@ export const API_POST_SPRINT_BACKLOG_ITEM_FAILURE = buildFailureActionName(Names
 export const API_DELETE_SPRINT_BACKLOG_ITEM_REQUEST = buildRequestActionName(Names.DELETE_SPRINT_BACKLOG_ITEM);
 export const API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS = buildSuccessActionName(Names.DELETE_SPRINT_BACKLOG_ITEM);
 export const API_DELETE_SPRINT_BACKLOG_ITEM_FAILURE = buildFailureActionName(Names.DELETE_SPRINT_BACKLOG_ITEM);
+// #endregion
+
+// #region Sprint Backlog Item Parts Resource
+export const API_ADD_SPRINT_BACKLOG_ITEM_PART_REQUEST = buildRequestActionName(Names.ADD_SPRINT_BACKLOG_ITEM_PART);
+export const API_ADD_SPRINT_BACKLOG_ITEM_PART_SUCCESS = buildSuccessActionName(Names.ADD_SPRINT_BACKLOG_ITEM_PART);
+export const API_ADD_SPRINT_BACKLOG_ITEM_PART_FAILURE = buildFailureActionName(Names.ADD_SPRINT_BACKLOG_ITEM_PART);
 // #endregion
 
 // #region Post Actions
@@ -154,6 +174,12 @@ export const REORDER_BACKLOG_ITEM = "app/reorder:backlog-item";
 export const TOGGLE_BACKLOG_ITEM_DETAIL = "app/toggle:backlog-item-detail";
 export const EDIT_BACKLOG_ITEM = "app/edit:backlog-item";
 
+export const TOGGLE_BACKLOG_ITEM_PART_DETAIL = "app/toggle:backlog-item-part-detail";
+export const EDIT_BACKLOG_ITEM_PART = "app/edit:backlog-item-part";
+
+export const CANCEL_EDIT_BACKLOG_ITEM_PART = "app/cancel-edit:backlog-item-part";
+export const UPDATE_BACKLOG_ITEM_PART = "app/update:backlog-item-part";
+
 export const BACKLOG_ITEM_ID_CLICK = "app/click:backlog-item-id";
 
 export const SELECT_PRODUCT_BACKLOG_ITEM = "app/select:product-backlog-item";
@@ -183,14 +209,19 @@ export const SHOW_SPRINT_RANGE_DATE_PICKER = "app/show:sprint-range-date-picker"
 export const HIDE_SPRINT_RANGE_DATE_PICKER = "app/hide:sprint-range-date-picker";
 
 export const MOVE_SELECTED_BACKLOG_ITEMS_TO_SPRINT = "app/add:selected-sprint-backlog-items";
-export const MOVE_BACKLOG_ITEM_TO_SPRINT = "app/add:sprint-backlog-item";
+export const MOVE_BACKLOG_ITEM_TO_SPRINT = "app/move:sprint-backlog-item";
+export const ADD_BACKLOG_ITEM_TO_SPRINT = "app/add:sprint-backlog-item";
+export const PATCH_BACKLOG_ITEM_IN_SPRINT = "app/patch:sprint-backlog-item";
 
 export const TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL = "app/toggle:sprint-backlog-item";
 export const TOGGLE_SPRINT_ITEM_DETAIL = "app/toggle:sprint";
 
 export const MOVE_SPRINT_ITEM_TO_PRODUCT_BACKLOG_CLICK = "app/move-to-backlog:sprint-backlog-item";
+export const SPLIT_SPRINT_BACKLOG_ITEM_CLICK = "app/split:sprint-backlog-item";
 
 export const SPRINT_BACKLOG_ITEM_ID_CLICK = "app/click:sprint-backlog-item-id";
+
+export const SPRINT_BACKLOG_ITEM_DETAIL_CLICK = "app/click:sprint-backlog-item-detail";
 
 export const SPRINT_BACKLOG_ITEM_ACCEPTED_CLICK = "app/status-accepted:sprint-backlog-item";
 export const SPRINT_BACKLOG_ITEM_DONE_CLICK = "app/status-done:sprint-backlog-item";
@@ -199,6 +230,9 @@ export const SPRINT_BACKLOG_ITEM_NOT_STARTED_CLICK = "app/status-not-started:spr
 export const SPRINT_BACKLOG_ITEM_RELEASED_CLICK = "app/status-released:sprint-backlog-item";
 
 export const ADD_PRODUCT_BACKLOG_ITEM = "app/add:product-backlog-item";
+export const REMOVE_PRODUCT_BACKLOG_ITEM = "app/remove:product-backlog-item";
 export const REMOVE_SPRINT_BACKLOG_ITEM = "app/remove:sprint-backlog-item";
 
 export const SET_SPRINT_PLANNING_ARCHIVED_FILTER = "app/set-filter:sprint-planning-archived";
+
+export const UPDATE_BACKLOG_ITEM_PART_FIELD = "app/update:backlog-item-part-field";

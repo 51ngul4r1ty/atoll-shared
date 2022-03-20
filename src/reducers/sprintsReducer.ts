@@ -2,12 +2,11 @@
 import { Draft, produce } from "immer";
 
 // interfaces/types
-import { AnyFSA } from "../types/reactHelperTypes";
-import { StandardModelItem } from "../types";
-import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
-import { PushState, Source } from "./types";
-import { ApiGetSprintBacklogItemsSuccessAction } from "../actions/apiSprintBacklog";
-import {
+import type { AnyFSA } from "../types/reactHelperTypes";
+import type { StandardModelItem } from "../types/dataModelTypes";
+import type { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
+import type { ApiGetSprintBacklogItemsSuccessAction, ApiSplitSprintItemSuccessAction } from "../actions/apiSprintBacklog";
+import type {
     AddSprintAction,
     CancelEditSprintAction,
     CancelUnsavedSprintAction,
@@ -18,8 +17,7 @@ import {
     ToggleSprintDetailAction,
     UpdateSprintFieldsAction
 } from "../actions/sprintActions";
-import { NewSprintPosition } from "../actions/sprintActions";
-import {
+import type {
     ApiSetSprintArchiveFlagSuccessAction,
     ApiDeleteSprintSuccessAction,
     ApiGetSprintsSuccessAction,
@@ -30,6 +28,8 @@ import { DateOnly } from "../types/dateTypes";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
+import { NewSprintPosition } from "../actions/sprintActions";
+import { PushState, Source } from "./enums";
 
 // utils
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
@@ -46,6 +46,7 @@ import {
 // actions
 import { AppClickAction } from "../actions/appActions";
 import { UpdateSprintStatsAction } from "../actions/sprintActions";
+import { ToggleSprintBacklogItemDetailAction } from "../actions/sprintBacklogActions";
 
 export interface Sprint extends StandardModelItem {
     acceptedPoints: number | null;
@@ -93,6 +94,7 @@ export type SprintsState = Readonly<{
     originalData: OriginalSprintData;
     openedDetailMenuSprintId: string | null;
     openedDatePickerInfo: SprintOpenedDatePickerInfo;
+    splitToNextSprintAvailable: boolean;
 }>;
 
 export const sprintsReducerInitialState = Object.freeze<SprintsState>({
@@ -104,7 +106,8 @@ export const sprintsReducerInitialState = Object.freeze<SprintsState>({
     openedDatePickerInfo: {
         sprintId: null,
         showPicker: SprintDetailShowingPicker.None
-    }
+    },
+    splitToNextSprintAvailable: false
 });
 
 export const rebuildAllItems = (draft: Draft<SprintsState>) => {
@@ -172,8 +175,8 @@ export const removeSprint = (draft: Draft<SprintsState>, sprintId: string) => {
 };
 
 export const markBacklogItemsLoaded = (draft: Draft<SprintsState>, sprintId: string) => {
-    const sprintItem = draft.items.filter((item) => item.id === sprintId);
-    sprintItem.forEach((item) => {
+    const sprintItems = draft.items.filter((item) => item.id === sprintId);
+    sprintItems.forEach((item) => {
         item.backlogItemsLoaded = true;
     });
 };
@@ -425,6 +428,24 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             }
             case ActionTypes.API_PUT_SPRINT_FAILURE: {
                 updateStateToHideDatePicker(draft);
+                return;
+            }
+            case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {
+                const actionTyped = action as ApiSplitSprintItemSuccessAction;
+                const extra = actionTyped.payload.response.data.extra;
+                const sprintStats = extra.sprintStats;
+                const sprintId = extra.sprintBacklogItem.sprintId;
+                updateSprintById(draft, sprintId, (item) => {
+                    item.totalPoints = sprintStats.totalPoints;
+                    item.acceptedPoints = sprintStats.acceptedPoints;
+                    item.plannedPoints = sprintStats.plannedPoints;
+                });
+                rebuildAllItems(draft);
+                return;
+            }
+            case ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL: {
+                const actionTyped = action as ToggleSprintBacklogItemDetailAction;
+                draft.splitToNextSprintAvailable = actionTyped.payload.splitToNextSprintAvailable;
                 return;
             }
         }

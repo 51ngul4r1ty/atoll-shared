@@ -1,4 +1,6 @@
 // consts/enums
+import { PushNotificationType } from "../types/pushEnums";
+
 // externals
 import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 
@@ -6,7 +8,7 @@ import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 import { getApiHostName, getApiPort, requiresSecureProtocol } from "../config";
 
 // interfaces/types
-import { PushNotificationType, BasePushNotification } from "../types";
+import type { BasePushNotification } from "../types/pushTypes";
 
 // utils
 import * as logger from "./logger";

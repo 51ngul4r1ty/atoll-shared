@@ -8,16 +8,17 @@ module.exports = {
     coverageReporters: ["lcov", "text-summary"],
     coverageThreshold: {
         global: {
-            statements: 46.5,
-            branches: 23.45,
-            functions: 20.9,
-            lines: 48.0
+            statements: 50.45,
+            branches: 25.1,
+            functions: 23.0,
+            lines: 47.95
         }
     },
     moduleFileExtensions: ["js", "jsx", "json", "ts", "tsx"],
     globals: {
         "ts-jest": {
-            diagnostics: true
+            diagnostics: true,
+            tsconfig: "tsconfig.test.json"
         }
     }
 };

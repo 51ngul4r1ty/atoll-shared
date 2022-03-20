@@ -52,7 +52,7 @@
 
 .sprintName {
     min-width: 7rem;
-    font-weight: 500;
+    font-weight: var(--primary-light-bold-font-weight, 500);
     display: flex;
 }
 
@@ -65,7 +65,7 @@
 
 :global(.mobile) .sprintName {
     min-width: 4.5rem;
-    font-weight: 800;
+    font-weight: var(--primary-boldest-font-weight, 800);
 }
 
 .sprintHeaderContent {
@@ -102,11 +102,11 @@
 .sprintStatus {
     flex-grow: 1;
     text-align: right;
-    font-weight: 500;
+    font-weight: var(--primary-light-bold-font-weight, 500);
 }
 
 :global(.mobile) .sprintStatus {
-    font-weight: 800;
+    font-weight: var(--primary-boldest-font-weight, 800);
 }
 
 .sprintHeaderContentInfoRow {
@@ -132,7 +132,7 @@
 }
 
 .pointInfoHeading {
-    font-weight: 800;
+    font-weight: var(--primary-boldest-font-weight, 800);
     padding: 0 0 0 0.3rem;
 }
 

@@ -12,18 +12,35 @@ import css from "./BacklogItemDetailForm.module.css";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
-import { isNumber } from "../../../utils/validationUtils";
+import { isValidStrictStringEstimate } from "../../../utils/validationUtils";
 import { getStoryPhrases, isStoryPaste } from "./pasteFormatUtils";
 
 // interfaces/types
 import { BacklogItemType } from "../../../types/backlogItemTypes";
 import { BacklogItemInstanceEditableFields } from "./backlogItemFormTypes";
+import { BacklogItemStatus } from "../../../types/backlogItemEnums";
 
 export interface BacklogItemDetailFormStateProps extends BacklogItemInstanceEditableFields {
-    className?: string;
+    /* from BacklogItemInstanceEditableFields */
+    rolePhrase: string | null;
+    storyPhrase: string;
+    reasonPhrase: string | null;
+    acceptanceCriteria: string;
+    acceptedAt: Date | null;
+    estimate: number | null;
+    externalId: string;
+    finishedAt: Date | null;
+    friendlyId: string;
+    id: string;
+    releasedAt: Date | null;
+    startedAt: Date | null;
     type: BacklogItemType;
+
+    /* new in this interface */
+    className?: string;
     editing: boolean;
     renderMobile?: boolean;
+    status: BacklogItemStatus;
 }
 
 export interface BacklogItemDetailFormDispatchProps {
@@ -144,7 +161,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                     this.handleDataUpdate({ ...prevData, estimate });
                 }}
                 validator={(value) => {
-                    return isNumber(value);
+                    return isValidStrictStringEstimate(value);
                 }}
             />
         );

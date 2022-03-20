@@ -63,6 +63,24 @@ export const getLastSprint = (state: StateTree): Sprint => {
     return lastItem;
 };
 
+export const getNextSprint = (state: StateTree, sprintId: string): Sprint | null => {
+    const sprints = getSprints(state);
+    if (!sprints.length) {
+        return null;
+    }
+    let returnNext = false;
+    let nextSprint: Sprint = null;
+    sprints.forEach((sprint) => {
+        if (returnNext && !nextSprint) {
+            nextSprint = sprint;
+        }
+        if (sprint.id === sprintId) {
+            returnNext = true;
+        }
+    });
+    return nextSprint;
+};
+
 export const getSprintByInstanceId = (state: StateTree, instanceId: number): Sprint | null => {
     const matchingItems = state.sprints.addedItems.filter((addedItem) => addedItem.instanceId === instanceId);
     if (matchingItems.length === 1) {
@@ -76,3 +94,5 @@ export const getSprintByInstanceId = (state: StateTree, instanceId: number): Spr
 export const getOpenedDetailMenuSprintId = (state: StateTree) => state.sprints.openedDetailMenuSprintId;
 
 export const getOpenedDatePickerInfo = (state: StateTree) => state.sprints.openedDatePickerInfo;
+
+export const getSplitToNextSprintAvailable = (state: StateTree) => state.sprints.splitToNextSprintAvailable;

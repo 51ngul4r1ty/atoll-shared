@@ -3,18 +3,11 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 
 // interfaces/types
-import { BacklogItemWithSource } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
-import { SimpleDivider } from "../../atoms/dividers/SimpleDivider";
-import { BacklogItemDetailForm } from "../forms/BacklogItemDetailForm";
-import { BacklogItemCard, BacklogItemTypeEnum, ItemMenuEventHandlers } from "../../molecules/cards/BacklogItemCard";
+import type { BacklogItemWithSource } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
+import type { ItemMenuEventHandlers } from "../../molecules/menus/menuBuilderTypes";
 
 // consts/enums
 import { EditMode } from "../../common/componentEnums";
-
-// utils
-import { buildClassName } from "../../../utils/classNameBuilder";
-import { buildBacklogDisplayId } from "../../../utils/backlogItemHelper";
-import { productBacklogItemMenuBuilder } from "../../common/itemMenuBuilders";
 
 // actions
 import { apiDeleteBacklogItem } from "../../../actions/apiBacklogItems";
@@ -31,11 +24,23 @@ import {
     backlogItemIdClick
 } from "../../../actions/backlogItemActions";
 
+// components
+import { SimpleDivider } from "../../atoms/dividers/SimpleDivider";
+import { BacklogItemDetailForm } from "../forms/BacklogItemDetailForm";
+import { BacklogItemCard, BacklogItemCardType, BacklogItemTypeEnum } from "../../molecules/cards/BacklogItemCard";
+
 // style
 import css from "./BacklogItemPlanningItem.module.css";
 
+// utils
+import { buildClassName } from "../../../utils/classNameBuilder";
+import { buildBacklogDisplayId } from "../../../utils/backlogItemHelper";
+import { productBacklogItemMenuBuilder } from "../../common/itemMenuBuilders";
+import { computeProductBacklogItemEstimate } from "../panels/backlogItemPlanning/backlogItemPlanningPanelUtils";
+
 export interface BacklogItemPlanningItemStateProps extends BacklogItemWithSource {
     editMode: EditMode;
+    busySplittingStory: boolean;
     highlightAbove: boolean;
     renderMobile: boolean;
     showDetailMenu: boolean;
@@ -59,23 +64,24 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                 <SimpleDivider key={`divider-unsaved-form-${props.instanceId}`} />
                 <BacklogItemDetailForm
                     key={`unsaved-form-${props.instanceId}`}
+                    acceptanceCriteria={props.acceptanceCriteria}
+                    acceptedAt={props.acceptedAt}
                     className={classNameToUse}
-                    id={props.id}
-                    instanceId={props.instanceId}
-                    friendlyId={props.friendlyId}
-                    externalId={props.externalId}
                     editing
                     estimate={props.estimate}
-                    rolePhrase={props.rolePhrase}
-                    storyPhrase={props.storyPhrase}
-                    reasonPhrase={props.reasonPhrase}
-                    acceptanceCriteria={props.acceptanceCriteria}
-                    startedAt={props.startedAt}
+                    externalId={props.externalId}
                     finishedAt={props.finishedAt}
-                    acceptedAt={props.acceptedAt}
+                    friendlyId={props.friendlyId}
+                    id={props.id}
+                    instanceId={props.instanceId}
+                    reasonPhrase={props.reasonPhrase}
                     releasedAt={props.releasedAt}
-                    type={props.type}
                     renderMobile={props.renderMobile}
+                    rolePhrase={props.rolePhrase}
+                    startedAt={props.startedAt}
+                    storyPhrase={props.storyPhrase}
+                    type={props.type}
+                    status={props.status}
                     onDataUpdate={(fields) => {
                         dispatch(updateBacklogItemFields(fields));
                     }}
@@ -113,7 +119,9 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                 <SimpleDivider key={`divider-saved-${props.id}`} hidden={props.hidden} highlighted={props.highlightAbove} />
                 <BacklogItemCard
                     buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
-                    estimate={props.estimate}
+                    busySplittingStory={props.busySplittingStory}
+                    cardType={BacklogItemCardType.ProductBacklogCard}
+                    estimate={computeProductBacklogItemEstimate(props.estimate, props.unallocatedPoints)}
                     hasDetails={props.editMode === EditMode.Edit}
                     hidden={props.hidden}
                     internalId={`${props.id}`}
@@ -129,7 +137,10 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     roleText={props.rolePhrase}
                     showDetailMenu={props.showDetailMenu}
                     status={props.status}
+                    storyEstimate={props.storyEstimate}
                     titleText={props.storyPhrase}
+                    totalParts={props.totalParts}
+                    unallocatedParts={props.unallocatedParts}
                     onDetailClick={() => {
                         dispatch(backlogItemDetailClick(props.id));
                     }}

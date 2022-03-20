@@ -28,7 +28,8 @@ import {
     sprintBacklogItemInProgressClick,
     sprintBacklogItemNotStartedClick,
     sprintBacklogItemReleasedClick,
-    sprintMoveItemToBacklogClick
+    sprintMoveItemToBacklogClick,
+    sprintSplitBacklogItemClick
 } from "../actions/sprintBacklogActions";
 
 // interfaces/types
@@ -38,32 +39,32 @@ import { BacklogItemType } from "../types/backlogItemTypes";
 import { isPlatformWindows } from "../utils";
 
 // selectors
-import { getCurrentProjectId } from "../selectors/userSelectors";
-import { getOpenedDatePickerInfo, getOpenedDetailMenuSprintId, getPlanViewSprints } from "../selectors/sprintSelectors";
-import {
-    getAllBacklogItems,
-    getOpenedDetailMenuBacklogItemId,
-    getSelectedBacklogItemCount
-} from "../selectors/backlogItemSelectors";
-import { getAppEditMode, getElectronClient, isPlanViewLoading } from "../selectors/appSelectors";
-import { getIncludeArchivedSprints, getOpenedDetailMenuInfo } from "../selectors/sprintBacklogSelectors";
+import * as userSelectors from "../selectors/userSelectors";
+import * as sprintSelectors from "../selectors/sprintSelectors";
+import * as backlogItemSelectors from "../selectors/backlogItemSelectors";
+import * as appSelectors from "../selectors/appSelectors";
+import * as sprintBacklogSelectors from "../selectors/sprintBacklogSelectors";
 
 const mapStateToProps = (state: StateTree): PlanViewStateProps => {
-    const allItems = getAllBacklogItems(state);
-    const includeArchivedSprints = getIncludeArchivedSprints(state);
-    const sprints = getPlanViewSprints(state, includeArchivedSprints);
+    const allItems = backlogItemSelectors.getAllBacklogItems(state);
+    const includeArchivedSprints = sprintBacklogSelectors.getIncludeArchivedSprints(state);
+    const sprints = sprintSelectors.getPlanViewSprints(state, includeArchivedSprints);
     let result: PlanViewStateProps = {
         allItems,
-        editMode: getAppEditMode(state),
-        electronClient: getElectronClient(state),
+        busySplittingStory: sprintBacklogSelectors.isSplitInProgress(state),
+        editMode: appSelectors.getAppEditMode(state),
+        electronClient: appSelectors.getElectronClient(state),
         includeArchivedSprints,
-        loading: isPlanViewLoading(state),
-        openedDetailMenuBacklogItemId: getOpenedDetailMenuBacklogItemId(state),
-        openedDetailMenuSprintBacklogInfo: getOpenedDetailMenuInfo(state),
-        openedDetailMenuSprintId: getOpenedDetailMenuSprintId(state),
-        openedDatePickerInfo: getOpenedDatePickerInfo(state),
-        projectId: getCurrentProjectId(state),
-        selectedProductBacklogItemCount: getSelectedBacklogItemCount(state),
+        loading: appSelectors.isPlanViewLoading(state),
+        openedDetailMenuBacklogItemId: backlogItemSelectors.getOpenedDetailMenuBacklogItemId(state),
+        openedDetailMenuSprintBacklogInfo: sprintBacklogSelectors.getOpenedDetailMenuInfo(state),
+        openingDetailMenuSprintBacklogInfo: sprintBacklogSelectors.getOpeningDetailMenuInfo(state),
+        openedDetailMenuSprintId: sprintSelectors.getOpenedDetailMenuSprintId(state),
+        openedDatePickerInfo: sprintSelectors.getOpenedDatePickerInfo(state),
+        splitToNextSprintAvailable: sprintSelectors.getSplitToNextSprintAvailable(state),
+        projectId: userSelectors.getCurrentProjectId(state),
+        selectedProductBacklogItemCount: backlogItemSelectors.getSelectedBacklogItemCount(state),
+        sprintsToDisableAddItemAction: sprintBacklogSelectors.getSprintsToDisableAddItemsAction(state),
         showWindowTitleBar: !isPlatformWindows(),
         sprints
     };
@@ -97,6 +98,8 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
             dispatch(sprintBacklogItemIdClick(sprintId, backlogItemId)),
         onMoveItemToBacklogClick: (sprintId: string, backlogItemId: string) =>
             dispatch(sprintMoveItemToBacklogClick(sprintId, backlogItemId)),
+        onSplitBacklogItemClick: (sprintId: string, backlogItemId: string) =>
+            dispatch(sprintSplitBacklogItemClick(sprintId, backlogItemId)),
         onBacklogItemAcceptedClick: (sprintId: string, backlogItemId: string) =>
             dispatch(sprintBacklogItemAcceptedClick(sprintId, backlogItemId)),
         onBacklogItemDoneClick: (sprintId: string, backlogItemId: string) =>

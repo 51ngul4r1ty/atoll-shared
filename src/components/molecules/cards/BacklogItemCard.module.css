@@ -124,6 +124,24 @@
     min-height: 3rem;
 }
 
+.backlogItemSplitText {
+    position: absolute;
+    top: 0;
+    left: 0.25rem;
+    font-size: 0.6rem;
+    line-height: 0.6rem;
+    padding: 0;
+    margin: 0;
+    text-transform: uppercase;
+    font-weight: 900;
+    opacity: 0.75;
+    user-select: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: calc(100% - 0.5rem);
+}
+
 .backlogItemTextTitleText {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -149,6 +167,10 @@
     background-color: var(--inverted-page-color, black);
     color: var(--inverted-pen-color, white);
     user-select: none;
+}
+
+.backlogItemEstimate.splitPartOne {
+    background-color: var(--inverted-page-alt1-color, #666);
 }
 
 :global(.mobile) .backlogItemCardOuter .backlogItemEstimate {
@@ -317,4 +339,27 @@
     top: -0.275rem;
     position: relative;
     left: -0.25rem;
+}
+
+.splitStoryPoints {
+    position: relative;
+    top: -0.25rem;
+    left: -0.25rem;
+}
+
+.splitBottomWedge {
+    position: absolute;
+    width: 0;
+    height: 0;
+    bottom: 0;
+    right: 0;
+    border-bottom: 1.75rem solid var(--inverted-page-alt1-color, #666); /* theme this color */
+    border-left: 1.7rem solid transparent;
+}
+
+.splitTotalPoints {
+    position: absolute;
+    right: 0.25rem;
+    bottom: -0.25rem;
+    font-size: 0.75rem;
 }

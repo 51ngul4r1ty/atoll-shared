@@ -5,10 +5,12 @@ import { produce } from "immer";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import { AnyFSA } from "../types/reactHelperTypes";
-import { BaseModelItem } from "../types";
-import { ApiBacklogItemRank } from "../apiModelTypes";
-import { ApiGetBacklogItemRanksSuccessAction } from "../actions/apiBacklogItemRanks";
+import type { AnyFSA } from "../types/reactHelperTypes";
+import type { BaseModelItem } from "../types/dataModelTypes";
+import type { ApiBacklogItemRank } from "../types/apiModelTypes";
+import type { ApiGetBacklogItemRanksSuccessAction } from "../actions/apiBacklogItemRanks";
+
+// utils
 import { isoDateStringToDate } from "../utils/apiPayloadConverters";
 
 export interface BacklogItemRank extends BaseModelItem {

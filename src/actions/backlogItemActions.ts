@@ -2,13 +2,13 @@
 import * as ActionTypes from "./actionTypes";
 
 // interfaces/types
-import { BacklogItemType } from "../types/backlogItemTypes";
-import { BacklogItemInstanceEditableFields } from "../components/organisms/forms/backlogItemFormTypes";
+import type { BacklogItemInstanceEditableFields } from "../components/organisms/forms/backlogItemFormTypes";
+import type { BacklogItemType } from "../types/backlogItemTypes";
+import type { BacklogItemWithSource } from "../reducers/backlogItems/backlogItemsReducerTypes";
+import type { WebsocketPushNotificationData } from "../types/pushTypes";
 
 // actions
 import { apiGetBacklogItems } from "./apiBacklogItems";
-import { WebsocketPushNotificationData } from "../types";
-import { BacklogItemWithSource } from "../reducers/backlogItems/backlogItemsReducerTypes";
 
 export const refreshBacklogItems = () => apiGetBacklogItems();
 
@@ -209,5 +209,19 @@ export const addProductBacklogItem = (backlogItem: BacklogItemWithSource) => ({
     type: ActionTypes.ADD_PRODUCT_BACKLOG_ITEM,
     payload: {
         backlogItem
+    }
+});
+
+export type RemoveProductBacklogItemPayload = {
+    backlogItemId: string;
+};
+export type RemoveProductBacklogItemAction = {
+    type: typeof ActionTypes.REMOVE_PRODUCT_BACKLOG_ITEM;
+    payload: RemoveProductBacklogItemPayload;
+};
+export const removeProductBacklogItem = (backlogItemId: string): RemoveProductBacklogItemAction => ({
+    type: ActionTypes.REMOVE_PRODUCT_BACKLOG_ITEM,
+    payload: {
+        backlogItemId
     }
 });

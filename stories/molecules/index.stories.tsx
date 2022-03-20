@@ -4,7 +4,7 @@ import { addDecorator, addParameters, storiesOf } from "@storybook/react";
 
 // storybook
 import { action } from "@storybook/addon-actions";
-import { withKnobs, text, select, number } from "@storybook/addon-knobs";
+import { withKnobs, text, select, number, boolean } from "@storybook/addon-knobs";
 import { withRootAttribute } from "storybook-addon-root-attribute";
 
 // components
@@ -21,10 +21,12 @@ import {
     HomeButton,
     RefreshButton,
     RemoveButton,
+    SimpleButton,
     SmartSpinner,
     SpinnerAction,
     SpinnerSize,
     SpinnerTextPosition,
+    SplitButtonIcon,
     SprintDatePicker,
     SprintDatePickerMode
 } from "../../dist/index.es";
@@ -48,6 +50,24 @@ addParameters({
     }
 });
 
+const splitIcon = <SplitButtonIcon />;
+
+storiesOf("Molecules/Buttons", module).add("SimpleButton", () => (
+    <div>
+        <SimpleButton
+            disabled={boolean("disabled", false)}
+            draggable={boolean("draggable", false)}
+            icon={splitIcon}
+            iconOnLeft={boolean("iconOnLeft", true)}
+            noWrap={boolean("noWrap", false)}
+            suppressSpacing={boolean("suppressSpacing", false)}
+            busy={boolean("busy", false)}
+        >
+            {text("children", "Button Caption")}
+        </SimpleButton>
+    </div>
+));
+
 storiesOf("Molecules/Buttons/HomeButton", module)
     .add("HomeButton (default)", () => <HomeButton onClick={action("clicked")} />)
     .add("HomeButton (hover)", () => <HomeButton forceStateHover onClick={action("clicked")} />)
@@ -69,6 +89,8 @@ storiesOf("Molecules/Cards/BacklogItemCard", module)
                 status={BacklogItemStatus.Done}
                 titleText={text("titleText", "Example story")}
                 estimate={number("estimate", 5)}
+                hasDetails={select("hasDetails", { true: true, false: false }, false)}
+                isLoadingDetails={select("isLoadingDetails", { true: true, false: false }, false)}
             />
         </div>
     ))

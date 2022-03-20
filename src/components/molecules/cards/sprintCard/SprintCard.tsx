@@ -8,15 +8,15 @@ import css from "./SprintCard.module.css";
 // utils
 import { buildClassName } from "../../../../utils/classNameBuilder";
 import { buildSprintPointInfoText, formatDateRange, sprintStatusToString } from "./sprintCardUtils";
-import { getBacklogItemElts } from "./sprintCardJsxUtils";
-import { ItemMenuBuilder } from "../BacklogItemCard";
+import { getBacklogItemElts, ItemMenuBuilderBacklogItem } from "./sprintCardJsxUtils";
 
 // interfaces/types
-import { SprintCardSprint } from "./sprintCardTypes";
+import type { SprintCardProps, SprintCardSprint } from "./sprintCardTypes";
 
 // consts/enums
 import { EditMode } from "../../../common/componentEnums";
-import { SpinnerAction, QUANTITY_UNKNOWN, TIME_UNKNOWN } from "../../unique/smartSpinner/smartSpinnerTypes";
+import { SpinnerAction } from "../../unique/smartSpinner/smartSpinnerEnums";
+import { QUANTITY_UNKNOWN, TIME_UNKNOWN } from "../../unique/smartSpinner/smartSpinnerConsts";
 import { SPINNER_METRIC_KEY_SPRINT_BACKLOG_ITEMS } from "../../unique/smartSpinner/spinnerMetrics";
 
 // components
@@ -27,41 +27,16 @@ import { SmartSpinner } from "../../unique/smartSpinner/SmartSpinner";
 import { VerticalCollapseIcon } from "../../../atoms/icons/VerticalCollapseIcon";
 import { VerticalExpandIcon } from "../../../atoms/icons/VerticalExpandIcon";
 
-export interface SprintCardStateProps extends SprintCardSprint {
-    archived: boolean;
-    buildItemMenu?: ItemMenuBuilder;
-    className?: string;
-    editMode: EditMode;
-    openedDetailMenuBacklogItemId: string;
-    renderMobile?: boolean;
-    selectedProductBacklogItemCount: number;
-    showDetailMenu?: boolean;
-    showDetailMenuToLeft?: boolean;
-}
-
-export interface SprintCardDispatchProps {
-    onAddBacklogItem: { (): void };
-    onSprintDetailClick: { (): void };
-    onBacklogItemDetailClick: { (id: string): void };
-    onBacklogItemIdClick: { (id: string): void };
-    onExpandCollapse: { (id: string, expand: boolean): void };
-    onMoveItemToBacklogClick: { (id: string): void };
-    onBacklogItemAcceptedClick: { (id: string): void };
-    onBacklogItemDoneClick: { (id: string): void };
-    onBacklogItemInProgressClick: { (id: string): void };
-    onBacklogItemNotStartedClick: { (id: string): void };
-    onBacklogItemReleasedClick: { (id: string): void };
-}
-
-export type SprintCardProps = SprintCardStateProps & SprintCardDispatchProps;
-
 export type InnerSprintCardProps = SprintCardProps & WithTranslation;
 
 /* exported components */
 
 export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
-    const detailMenu =
-        props.showDetailMenu && props.buildItemMenu ? props.buildItemMenu(props.id, props.showDetailMenuToLeft) : null;
+    const busyButtonName = props.busySplittingStory ? "splitStory" : "";
+    const sprintDetailMenu =
+        props.showDetailMenu && props.buildItemMenu
+            ? props.buildItemMenu(props.id, props.showDetailMenuToLeft, !!busyButtonName, busyButtonName)
+            : null;
     const sprintStatusElts = <div className={css.sprintStatus}>{sprintStatusToString(props.status)}</div>;
     const dateRangeArchiveStatusElts = props.archived ? <ArchiveIcon className={css.dateRangeArchiveIcon} /> : null;
     const sprintDateRangeElts = (
@@ -120,16 +95,26 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
             props.onBacklogItemIdClick(id);
         }
     };
+    const itemMenuBuilderBacklogItems: ItemMenuBuilderBacklogItem[] = !props.backlogItems
+        ? []
+        : props.backlogItems.map((item) => ({
+              ...item,
+              hasPartsInNextSprint: true
+          }));
     const sprintBacklogContents = props.backlogItemsLoaded ? (
         getBacklogItemElts(
             props.editMode,
             props.openedDetailMenuBacklogItemId,
+            props.openingDetailMenuBacklogItemId,
             props.renderMobile || false,
             props.showDetailMenuToLeft,
-            props.backlogItems,
+            itemMenuBuilderBacklogItems,
+            props.busySplittingStory,
+            props.splitToNextSprintAvailable,
             handleDetailClick,
             handleBacklogItemIdClick,
             props.onMoveItemToBacklogClick,
+            props.onSplitBacklogItemClick,
             props.onBacklogItemAcceptedClick,
             props.onBacklogItemDoneClick,
             props.onBacklogItemInProgressClick,
@@ -155,7 +140,7 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
                     itemName={
                         props.selectedProductBacklogItemCount === 1 ? "1 item" : `${props.selectedProductBacklogItemCount} items`
                     }
-                    disabled={!props.selectedProductBacklogItemCount}
+                    disabled={!props.selectedProductBacklogItemCount || props.disableAddBacklogItemButton}
                     onClick={() => {
                         if (props.onAddBacklogItem) {
                             props.onAddBacklogItem();
@@ -165,9 +150,11 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
             </div>
         ) : null;
     const classNameToUse = buildClassName(props.className, css.sprintCard);
-    const itemDetailMenuElts =
+    const sprintItemDetailMenuElts =
         props.editMode === EditMode.View ? null : (
-            <div className={buildClassName(css.detailMenu, props.showDetailMenuToLeft ? css.menuToLeft : null)}>{detailMenu}</div>
+            <div className={buildClassName(css.detailMenu, props.showDetailMenuToLeft ? css.menuToLeft : null)}>
+                {sprintDetailMenu}
+            </div>
         );
     const sprintArchivedStatusElts = props.archived ? <ArchiveIcon className={css.sprintNameArchiveIcon} /> : null;
 
@@ -207,7 +194,7 @@ export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
             >
                 {expandCollapseIcon}
             </div>
-            {itemDetailMenuElts}
+            {sprintItemDetailMenuElts}
         </div>
     );
 };

@@ -64,6 +64,7 @@
 
 export interface Theme {
     "--normal-page-color": string;
+    "--normal-page-alt1-color": string;
     "--normal-pen-color": string;
     "--normal-pen-disabled-color": string;
     "--normal-placeholder-color": string;
@@ -93,15 +94,22 @@ export interface Theme {
     "--inverted-pen-color": string;
     "--inverted-active-page-color": string;
     "--inverted-focus-page-color": string;
+    "--inverted-page-alt1-color": string;
     "--x-small-font-size": string;
     "--small-font-size": string;
     "--medium-font-size": string;
     "--large-font-size": string;
     "--xlarge-font-size": string;
+    "--primary-thin-font-weight": string;
+    "--primary-light-bold-font-weight": string;
+    "--primary-bold-font-weight": string;
+    "--primary-heavy-bold-font-weight": string;
+    "--primary-boldest-font-weight": string;
 }
 
 export const defaultTheme: Theme = {
     "--normal-page-color": "white",
+    "--normal-page-alt1-color": "#eee",
     "--normal-pen-color": "black",
     "--normal-pen-disabled-color": "#999",
     "--normal-placeholder-color": "#777",
@@ -128,6 +136,7 @@ export const defaultTheme: Theme = {
     "--normal-hover-shadow": "rgba(0, 0, 0, 0.4)",
     "--normal-hover-shadow-size": "0.6rem",
     "--inverted-page-color": "black",
+    "--inverted-page-alt1-color": "#777",
     "--inverted-pen-color": "white",
     "--inverted-active-page-color": "#555",
     "--inverted-focus-page-color": "#444",
@@ -135,11 +144,17 @@ export const defaultTheme: Theme = {
     "--small-font-size": "0.75rem",
     "--medium-font-size": "1.0rem",
     "--large-font-size": "1.25rem",
-    "--xlarge-font-size": "1.5rem"
+    "--xlarge-font-size": "1.5rem",
+    "--primary-thin-font-weight": "100",
+    "--primary-light-bold-font-weight": "500",
+    "--primary-bold-font-weight": "600",
+    "--primary-heavy-bold-font-weight": "700",
+    "--primary-boldest-font-weight": "800"
 };
 
 export const darkTheme: Theme = {
     "--normal-page-color": "black",
+    "--normal-page-alt1-color": "#666",
     "--normal-pen-color": "#bbb",
     "--normal-pen-disabled-color": "#888",
     "--normal-placeholder-color": "#999",
@@ -166,6 +181,7 @@ export const darkTheme: Theme = {
     "--normal-hover-shadow": "rgba(255, 255, 255, 1.0)",
     "--normal-hover-shadow-size": "1.0rem",
     "--inverted-page-color": "#444",
+    "--inverted-page-alt1-color": "#777",
     "--inverted-pen-color": "#ddd",
     "--inverted-active-page-color": "#ddd",
     "--inverted-focus-page-color": "#eee",
@@ -173,7 +189,12 @@ export const darkTheme: Theme = {
     "--small-font-size": "0.75rem",
     "--medium-font-size": "1.0rem",
     "--large-font-size": "1.25rem",
-    "--xlarge-font-size": "1.5rem"
+    "--xlarge-font-size": "1.5rem",
+    "--primary-thin-font-weight": "100",
+    "--primary-light-bold-font-weight": "500",
+    "--primary-bold-font-weight": "600",
+    "--primary-heavy-bold-font-weight": "700",
+    "--primary-boldest-font-weight": "800"
 };
 
 export interface ThemeListItem {

@@ -1,6 +1,5 @@
 // externals
 import { Draft, produce } from "immer";
-import urlParse from "url-parse";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
@@ -9,13 +8,17 @@ import * as ActionTypes from "../actions/actionTypes";
 import { AnyFSA } from "../types/reactHelperTypes";
 import { ApiGetBacklogItemsSuccessAction } from "../actions/apiBacklogItems";
 import { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
-import { ApiItemWithLinks, ItemWithId } from "../apiModelTypes";
+import { ApiItemWithLinks, ItemWithId } from "../types/apiModelTypes";
 import { ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
 import { ApiGetBffViewsBacklogItemSuccessAction } from "../actions/apiBffViewsBacklogItem";
-import { ApiGetSprintsSuccessAction } from "../actions/apiSprints";
+import { ApiGetSprintsSuccessAction, ApiGetSprintSuccessAction } from "../actions/apiSprints";
+
+// utils
+import { buildFullUri } from "../utils/apiLinkHelper";
 
 export const ResourceTypes = {
     BACKLOG_ITEM: "backlogItems",
+    BACKLOG_ITEM_PART: "backlogItemParts",
     SPRINT: "sprints"
 };
 
@@ -39,7 +42,8 @@ export interface ApiLinkState {
 export const apiLinksReducerInitialState = Object.freeze<ApiLinkState>({
     linksByType: {
         backlogItems: {},
-        sprints: {}
+        sprints: {},
+        backlogItemParts: {}
     }
 });
 
@@ -83,41 +87,51 @@ export const getLinkForItem = (state: ApiLinkState, itemType: string, rel: strin
     };
 };
 
-export const buildUri = (requestUrl: string, linkUri: string): string => {
-    if (!linkUri.startsWith("/")) {
-        throw new Error(`Unable to handle link URI "${linkUri}" returned by "${requestUrl}"`);
+/**
+ * Finds HATEOAS links in the REST API response and stores them for use later.
+ * @param itemTypeLinkName used to catalog the HATEOAS links for later retrieval
+ * @param item object from API response that contains HATEOAS links
+ * @param draft state to be updated with links found
+ * @param meta used to retrieve the REST API request body
+ */
+export const processItem = <T extends ApiItemWithLinks & ItemWithId>(
+    itemTypeLinkName: string,
+    item: T,
+    draft: Draft<ApiLinkState>,
+    meta: ApiActionMetaDataRequestMeta<any, any, any, any>
+) => {
+    if (item.links?.length) {
+        item.links.forEach((link) => {
+            if (link.rel === "self") {
+                const resourceLinks = draft.linksByType[itemTypeLinkName];
+                if (!resourceLinks) {
+                    throw new Error(`Unable to find linksByType base entry for ${itemTypeLinkName}`);
+                } else {
+                    if (!resourceLinks[item.id]) {
+                        resourceLinks[item.id] = { item: null };
+                    }
+                    resourceLinks[item.id].item = {
+                        type: link.type,
+                        uri: buildFullUri(meta.requestBody, link.uri)
+                    };
+                }
+            }
+        });
     }
-    const parsed = urlParse(requestUrl);
-    const usePort = !!parsed.port && `${parsed.port}` !== "80" && `${parsed.port}` !== "443";
-    const hostAndPort = usePort ? `${parsed.hostname}:${parsed.port}` : parsed.hostname;
-    return `${parsed.protocol}//${hostAndPort}${linkUri}`;
 };
 
 export const processItems = <T extends ApiItemWithLinks & ItemWithId>(
     itemTypeLinkName: string,
     items: T[],
     draft: Draft<ApiLinkState>,
-    meta: ApiActionMetaDataRequestMeta
+    meta: ApiActionMetaDataRequestMeta,
+    debugName: string
 ) => {
+    if (!items) {
+        throw new Error(`Unexpected condition- items array is undefined in processItems (${debugName})`);
+    }
     items.forEach((item) => {
-        if (item.links?.length) {
-            item.links.forEach((link) => {
-                if (link.rel === "self") {
-                    const resourceLinks = draft.linksByType[itemTypeLinkName];
-                    if (!resourceLinks) {
-                        throw new Error(`Unable to find linksByType base entry for ${itemTypeLinkName}`);
-                    } else {
-                        if (!resourceLinks[item.id]) {
-                            resourceLinks[item.id] = { item: null };
-                        }
-                        resourceLinks[item.id].item = {
-                            type: link.type,
-                            uri: buildUri(meta.requestBody.url, link.uri)
-                        };
-                    }
-                }
-            });
-        }
+        processItem(itemTypeLinkName, item, draft, meta);
     });
 };
 
@@ -127,26 +141,80 @@ export const apiLinksReducer = (state: ApiLinkState = apiLinksReducerInitialStat
             case ActionTypes.API_GET_BACKLOG_ITEMS_SUCCESS: {
                 const actionTyped = action as ApiGetBacklogItemsSuccessAction;
                 const { payload } = actionTyped;
-                processItems(ResourceTypes.BACKLOG_ITEM, payload.response.data.items, draft, actionTyped.meta);
+                processItems(
+                    ResourceTypes.BACKLOG_ITEM,
+                    payload.response.data.items,
+                    draft,
+                    actionTyped.meta,
+                    "apiLinksReducer - API_GET_BACKLOG_ITEMS_SUCCESS"
+                );
                 return;
             }
             case ActionTypes.API_GET_SPRINTS_SUCCESS: {
                 const actionTyped = action as ApiGetSprintsSuccessAction;
                 const { payload } = actionTyped;
-                processItems(ResourceTypes.SPRINT, payload.response.data.items, draft, actionTyped.meta);
+                processItems(
+                    ResourceTypes.SPRINT,
+                    payload.response.data.items,
+                    draft,
+                    actionTyped.meta,
+                    "apiLinksReducer - API_GET_SPRINTS_SUCCESS"
+                );
+                return;
+            }
+            case ActionTypes.API_GET_SPRINT_SUCCESS: {
+                const actionTyped = action as ApiGetSprintSuccessAction;
+                const { payload } = actionTyped;
+                processItem(ResourceTypes.SPRINT, payload.response.data.item, draft, actionTyped.meta);
                 return;
             }
             case ActionTypes.API_GET_BFF_VIEWS_PLAN_SUCCESS: {
                 const actionTyped = action as ApiGetBffViewsPlanSuccessAction;
                 const { payload } = actionTyped;
-                processItems(ResourceTypes.BACKLOG_ITEM, payload.response.data.backlogItems, draft, actionTyped.meta);
-                processItems(ResourceTypes.SPRINT, payload.response.data.sprints, draft, actionTyped.meta);
+                processItems(
+                    ResourceTypes.BACKLOG_ITEM,
+                    payload.response.data.backlogItems,
+                    draft,
+                    actionTyped.meta,
+                    "apiLinksReducer - API_GET_BFF_VIEWS_PLAN_SUCCESS - BACKLOG_ITEM"
+                );
+                processItems(
+                    ResourceTypes.SPRINT,
+                    payload.response.data.sprints,
+                    draft,
+                    actionTyped.meta,
+                    "apiLinksReducer - API_GET_BFF_VIEWS_PLAN_SUCCESS - SPRINT"
+                );
                 return;
             }
             case ActionTypes.API_GET_BFF_VIEWS_BACKLOG_ITEM_SUCCESS: {
                 const actionTyped = action as ApiGetBffViewsBacklogItemSuccessAction;
                 const { payload } = actionTyped;
-                processItems(ResourceTypes.BACKLOG_ITEM, payload.response.data.backlogItems, draft, actionTyped.meta);
+                processItems(
+                    ResourceTypes.BACKLOG_ITEM,
+                    [payload.response.data.backlogItem],
+                    draft,
+                    actionTyped.meta,
+                    "apiLinksReducer - API_GET_BFF_VIEWS_BACKLOG_ITEM_SUCCESS (backlog item)"
+                );
+                const backlogItemPartItems = payload.response.data.backlogItemPartsAndSprints.map((item) => item.part);
+                processItems(
+                    ResourceTypes.BACKLOG_ITEM_PART,
+                    backlogItemPartItems,
+                    draft,
+                    actionTyped.meta,
+                    "apiLinksReducer - API_GET_BFF_VIEWS_BACKLOG_ITEM_SUCCESS (backlog item parts)"
+                );
+                const sprintItems = payload.response.data.backlogItemPartsAndSprints
+                    .map((partAndSprint) => partAndSprint.sprint)
+                    .filter((sprint) => sprint !== null);
+                processItems(
+                    ResourceTypes.SPRINT,
+                    sprintItems,
+                    draft,
+                    actionTyped.meta,
+                    "apiLinksReducer - API_GET_BFF_VIEWS_BACKLOG_ITEM_SUCCESS (sprints)"
+                );
                 return;
             }
         }

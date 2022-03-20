@@ -10,7 +10,7 @@ import { Spinner } from "../../../atoms/unique/Spinner";
 import { PropsWithClassName } from "../../../common/types";
 
 // consts/enums
-import { SpinnerAction, SpinnerSize, SpinnerTextPosition } from "./smartSpinnerTypes";
+import { SpinnerAction, SpinnerSize, SpinnerTextPosition } from "./smartSpinnerEnums";
 
 // style
 import css from "./SmartSpinner.module.css";
@@ -27,6 +27,7 @@ export interface SmartSpinnerStateProps extends PropsWithClassName {
     showSpinnerImmediately?: boolean;
     size?: SpinnerSize | null;
     textPosition?: SpinnerTextPosition | null;
+    outerContainerClassName?: string;
 }
 
 export interface SmartSpinnerDispatchProps {}
@@ -45,15 +46,19 @@ export type SmartSpinnerProps = SmartSpinnerStateProps & SmartSpinnerDispatchPro
  *   metricKey is the high level categorization of the api request (e.g. "sprint");
  *   quantity is the number of items being retrieved, QUANTITY_UNKNOWN can be used;
  *   showSpinnerImmediately will prevent the usual half second delay that prevents flicker for very brief delays
- *   size can be either Small or Large;
+ *   size can be either Default, Small, Medium or Large;  Default will not apply CSS styling; Medium & Large show hover text.
  */
 export const SmartSpinner: React.FC<SmartSpinnerProps> = (props) => {
     const hoverText = buildSpinnerHoverText(props.entityNameTemplate, props.action, props.quantity, props.hideActionInMessage);
     const spinnerIcon = <SpinnerShapePentagon className={css.spinnerShape} />;
     let sizeClass: string;
     switch (props.size) {
-        case SpinnerSize.Small: {
+        case SpinnerSize.Default: {
             sizeClass = null;
+            break;
+        }
+        case SpinnerSize.Small: {
+            sizeClass = css.small;
             break;
         }
         case SpinnerSize.Medium: {
@@ -82,8 +87,9 @@ export const SmartSpinner: React.FC<SmartSpinnerProps> = (props) => {
             {text}
         </div>
     ) : null;
+    const animateCssClassName = props.showSpinnerImmediately ? css.animateFastShow : css.animateShow;
     return (
-        <div className={buildClassName(css.outerContainer, props.showSpinnerImmediately ? css.animateFastShow : css.animateShow)}>
+        <div className={buildClassName(css.outerContainer, animateCssClassName, props.outerContainerClassName)}>
             <div className={css.innerContainer}>
                 <div className={css.spinnerContainer}>
                     <Spinner

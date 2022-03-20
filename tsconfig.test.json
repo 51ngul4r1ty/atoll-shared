@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    // NOTE: This was added because jest was reporting this error- "TypeError: url_parse_1.default is not a function"
+    // (the weird thing is that the app seems to work fine- just jest has a problem without this config so I'm keeping it in the
+    //  test specific config for now)
+    // I found the fix mentioned here: https://github.com/auth0/auth0-spa-js/issues/99
+    "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
+  },
+  "extends": "./tsconfig.base.json",
+  "include": ["src/**/*.ts*"]
+}

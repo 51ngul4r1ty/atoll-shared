@@ -1,0 +1,76 @@
+.partPanelCollapsed {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.partPanelExpanded {
+    display: flex;
+    flex-direction: column;
+    gap: ;
+}
+
+.partPanelTitleRow {
+    padding-bottom: 0.7rem;
+}
+
+.partPanelContentRow {
+}
+
+.threeCellRow {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-column-gap: 0.7rem;
+}
+
+.fourCellRow {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-column-gap: 0.7rem;
+}
+
+.splitCaption {
+    font-weight: 600;
+}
+
+.partDetailButton {
+    position: absolute;
+    right: 0;
+    top: 0.4rem;
+}
+
+.partDetailMenu {
+    position: absolute;
+    right: 1.3rem;
+    top: -0.5rem;
+    z-index: 1;
+}
+
+.partMenuToLeft {
+}
+
+.centerCell {
+    display: flex;
+    align-items: center;
+}
+
+.actionButtonPanelContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+:global(.mobile) .actionButtonPanel {
+    grid-row-gap: 0.4rem;
+    justify-items: right;
+    grid-template-columns: max-content;
+}
+
+.actionButtonPanel {
+    display: grid;
+    grid-template-columns: auto max-content max-content;
+    grid-column-gap: 0.4rem;
+}
+
+:global(.mobile) .actionButtonContainer {
+    width: 100%;
+}

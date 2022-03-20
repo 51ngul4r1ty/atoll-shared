@@ -8,16 +8,17 @@ import * as ApiActionNames from "./apiActionNames";
 import { getApiBaseUrl } from "../config";
 
 // consts/enums
+import { API } from "../middleware/apiConsts";
 import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
-import { API, NoDataApiAction, ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
+import type { NoDataApiAction, ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
 
 // utils
 import { buildActionTypes } from "./utils/apiActionUtils";
 
 // interfaces/types
-import { ApiBacklogItem, ApiSprint, ApiUserSettings } from "../apiModelTypes";
+import { ApiBacklogItem, ApiBacklogItemInSprint, ApiSprint, ApiUserSettings } from "../types/apiModelTypes";
 
 export interface ApiGetBffViewsPlanResponsePayload {
     response: {
@@ -25,7 +26,7 @@ export interface ApiGetBffViewsPlanResponsePayload {
         data: {
             backlogItems: ApiBacklogItem[];
             sprints: ApiSprint[];
-            sprintBacklogItems: ApiBacklogItem[] | undefined;
+            sprintBacklogItems: ApiBacklogItemInSprint[] | undefined;
             userPreferences: ApiUserSettings;
         };
     };

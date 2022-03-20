@@ -1,3 +1,6 @@
+// externals
+import type { Action } from "redux";
+
 // actions
 import * as ActionTypes from "./actionTypes";
 import * as ApiActionNames from "./apiActionNames";
@@ -6,24 +9,27 @@ import * as ApiActionNames from "./apiActionNames";
 import { getApiBaseUrl } from "../config";
 
 // consts/enums
+import { API } from "../middleware/apiConsts";
 import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
-import {
-    API,
+import type {
     NoDataApiAction,
     ApiActionSuccessPayloadForCollection,
     ApiActionMetaDataRequestMeta,
     ApiAction,
     ApiActionSuccessPayload,
-    ApiActionMetaDataRequestBodyWithOriginal
+    ApiActionMetaDataRequestBodyWithOriginal,
+    ApiActionSuccessPayloadForItem,
+    ApiActionFailurePayloadForItem
 } from "../middleware/apiTypes";
-import { ApiSprint } from "../apiModelTypes";
+import type { ApiSprint } from "../types/apiModelTypes";
+import type { ApiItemDetailMenuActionFlowSuccessMeta } from "../actionFlows/itemDetailMenuActionFlow";
+import type { SprintModel } from "../types/sprintTypes";
+import type { Sprint } from "../reducers/sprintsReducer";
 
 // utils
-import { buildActionTypes } from "./utils/apiActionUtils";
-import { SprintModel } from "../types/sprintTypes";
-import { Sprint } from "../reducers/sprintsReducer";
+import { addStandardMeta, buildActionTypes } from "./utils/apiActionUtils";
 
 // #region Collection
 
@@ -45,6 +51,65 @@ export const apiGetSprints = (projectId: string, includeArchived: boolean): NoDa
         types: buildActionTypes(ApiActionNames.GET_SPRINTS)
     }
 });
+
+// #endregion
+
+// #region Item
+export type ApiGetSprintActionMetaPassthrough = ApiItemDetailMenuActionFlowSuccessMeta;
+export type ApiGetSprintMetaActionParams = {
+    sprintId: string;
+};
+export type ApiGetSprintSuccessActionMetaPassthrough = ApiGetSprintActionMetaPassthrough;
+export type ApiGetSprintFailureActionMetaPassthrough = ApiGetSprintSuccessActionMetaPassthrough;
+export type ApiGetSprintSuccessActionPayload = ApiActionSuccessPayloadForItem<ApiSprint>;
+export type ApiGetSprintFailureActionPayload = ApiActionFailurePayloadForItem;
+export type ApiGetSprintSuccessActionMeta = ApiGetSprintSuccessOrFailureActionMeta;
+export type ApiGetSprintFailureActionMeta = ApiGetSprintSuccessOrFailureActionMeta;
+export type ApiGetSprintSuccessOrFailureActionMeta = ApiActionMetaDataRequestMeta<
+    {},
+    ApiGetSprintMetaActionParams,
+    undefined,
+    ApiGetSprintSuccessActionMetaPassthrough
+>;
+export type ApiGetSprintSuccessAction = Action<typeof ActionTypes.API_GET_SPRINT_SUCCESS> & {
+    payload: ApiGetSprintSuccessActionPayload;
+    meta: ApiGetSprintSuccessActionMeta;
+};
+export type ApiGetSprintFailureAction = Action<typeof ActionTypes.API_GET_SPRINT_FAILURE> & {
+    payload: ApiGetSprintFailureActionPayload;
+    meta: ApiGetSprintFailureActionMeta;
+};
+export type ApiGetSprintOptions = {
+    passthroughData?: ApiGetSprintSuccessActionMetaPassthrough;
+    endpointOverride?: string;
+};
+export type ApiGetSprintResult = NoDataApiAction<any, ApiGetSprintSuccessActionMetaPassthrough>;
+
+/**
+ * Make API call to retrieve a sprint item.
+ * @param sprintId can be null if options.endpointOverride provided (HATEOAS link scenario)
+ * @param options endpointOverride can be provided when using a HATEOAS link to get the sprint.
+ * @returns
+ */
+export const apiGetSprint = (sprintId: string | null, options?: ApiGetSprintOptions): ApiGetSprintResult => {
+    if (!sprintId && !options?.endpointOverride) {
+        throw new Error("apiGetSprint expects either a sprintId or an endpointOverride to be provided!");
+    }
+    const result: ApiGetSprintResult = {
+        type: API,
+        payload: {
+            endpoint: `${getApiBaseUrl()}api/v1/sprints/${sprintId}`,
+            method: "GET",
+            headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+            types: buildActionTypes(ApiActionNames.GET_SPRINT)
+        }
+    };
+    addStandardMeta(result, { sprintId, options }, options?.passthroughData);
+    if (options?.endpointOverride) {
+        result.payload.endpoint = options.endpointOverride;
+    }
+    return result;
+};
 
 // #endregion
 

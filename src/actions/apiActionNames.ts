@@ -11,14 +11,18 @@ export const GET_BACKLOG_ITEMS = "get-backlog-items";
 export const GET_BACKLOG_ITEM = "get-backlog-item";
 export const GET_BACKLOG_ITEM_RANKS = "get-backlog-item-ranks";
 
+export const GET_BACKLOG_ITEM_PART = "get-backlog-item-part";
+export const PATCH_BACKLOG_ITEM_PART = "patch-backlog-item-part";
+
 export const GET_USER_PREFS = "get-user-prefs";
 export const POST_ACTION_LOGIN = "login";
 export const POST_ACTION_REFRESH_TOKEN = "refresh-token";
 export const POST_ACTION_REORDER_BACKLOG_ITEM = "reorder-backlog-item";
 
 export const GET_SPRINT_BACKLOG_ITEMS = "get-sprint-backlog-items";
-export const POST_SPRINT_BACKLOG_ITEM = "post-sprint-backlog-item";
+export const POST_SPRINT_BACKLOG_ITEM = "add-sprint-backlog-item";
 export const DELETE_SPRINT_BACKLOG_ITEM = "delete-sprint-backlog-item";
+export const ADD_SPRINT_BACKLOG_ITEM_PART = "add-sprint-backlog-item-part";
 
 export const POST_BACKLOG_ITEM = "add-backlog-item";
 export const PUT_BACKLOG_ITEM = "update-backlog-item";

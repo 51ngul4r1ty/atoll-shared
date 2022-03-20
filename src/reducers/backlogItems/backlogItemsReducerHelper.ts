@@ -1,16 +1,25 @@
 // externals
 import { Draft } from "immer";
 
+// consts/enums
+import { PushOperationType } from "../../types/pushEnums";
+import { Source, PushState } from "../enums";
+
 // interfaces/types
-import { PushBacklogItemModel } from "../../middleware/wsMiddleware";
-import { BacklogItemsState, BacklogItemWithSource, EditableBacklogItem, SaveableBacklogItem } from "./backlogItemsReducerTypes";
-import { BacklogItem, BacklogItemModel } from "../../types/backlogItemTypes";
-import { PushOperationType } from "../../types";
-import {
+import type { PushBacklogItemModel } from "../../middleware/wsMiddleware";
+import type {
+    BacklogItemPartAndSprintWithUiState,
+    BacklogItemsState,
+    BacklogItemWithSource,
+    EditableBacklogItem,
+    SaveableBacklogItem
+} from "./backlogItemsReducerTypes";
+import type { BacklogItem, BacklogItemModel } from "../../types/backlogItemTypes";
+import type {
     BacklogItemEditableFields,
     BacklogItemInstanceEditableFields
 } from "../../components/organisms/forms/backlogItemFormTypes";
-import { Source, PushState } from "../types";
+import type { BacklogItemPart } from "../../types/backlogItemPartTypes";
 
 // utils
 import { LinkedList } from "../../utils/linkedList";
@@ -40,24 +49,29 @@ export const addSourceToPushedItem = (item: Partial<PushBacklogItemModel>, sourc
 
 export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>): BacklogItemWithSource => ({
     acceptanceCriteria: pushedItem.acceptanceCriteria,
+    acceptedAt: pushedItem.acceptedAt,
     createdAt: pushedItem.createdAt,
     estimate: pushedItem.estimate,
     externalId: pushedItem.externalId,
+    finishedAt: pushedItem.finishedAt,
     friendlyId: pushedItem.friendlyId,
     id: pushedItem.id,
     instanceId: undefined,
+    partIndex: pushedItem.partIndex,
     projectId: pushedItem.projectId,
     reasonPhrase: pushedItem.reasonPhrase,
+    releasedAt: pushedItem.releasedAt,
     rolePhrase: pushedItem.rolePhrase,
     source: Source.Pushed,
-    status: pushedItem.status,
-    storyPhrase: pushedItem.storyPhrase,
-    type: pushedItem.type,
-    updatedAt: pushedItem.updatedAt,
     startedAt: pushedItem.startedAt,
-    finishedAt: pushedItem.finishedAt,
-    acceptedAt: pushedItem.acceptedAt,
-    releasedAt: pushedItem.releasedAt
+    status: pushedItem.status,
+    storyEstimate: pushedItem.storyEstimate,
+    storyPhrase: pushedItem.storyPhrase,
+    totalParts: pushedItem.totalParts,
+    type: pushedItem.type,
+    unallocatedParts: pushedItem.unallocatedParts,
+    unallocatedPoints: pushedItem.unallocatedPoints,
+    updatedAt: pushedItem.updatedAt
 });
 
 export const addPushedAddedItemsToAllItems = (draft: Draft<BacklogItemsState>, allItems: LinkedList<BacklogItemWithSource>) => {
@@ -179,6 +193,25 @@ export const updateItemById = (draft: Draft<BacklogItemsState>, itemId: string, 
     }
 };
 
+export const getBacklogItemPartById = (backlogItems: BacklogItemsState, itemId: string): BacklogItemPart | null => {
+    const partAndSprint = backlogItems.currentItemPartsAndSprints.find((item) => item.part.id === itemId);
+    if (!partAndSprint) {
+        return null;
+    }
+    return partAndSprint.part;
+};
+
+export const updateCurrentItemPartById = (
+    draft: Draft<BacklogItemsState>,
+    itemId: string,
+    updateItem: { (item: BacklogItemPartAndSprintWithUiState) }
+) => {
+    const idx = draft.currentItemPartsAndSprints.findIndex((item) => item.part.id === itemId);
+    if (idx >= 0) {
+        updateItem(draft.currentItemPartsAndSprints[idx] as BacklogItemPartAndSprintWithUiState);
+    }
+};
+
 export const updateBacklogItemFieldsInItemsAndAddedItems = (
     draft: Draft<BacklogItemsState>,
     payload: BacklogItemInstanceEditableFields
@@ -194,4 +227,11 @@ export const updateBacklogItemFieldsInItemsAndAddedItems = (
         }
     });
     updateItemFieldsInAllItems(draft, payload);
+};
+
+export const turnOffEditModeForBacklogItemPart = (draft: Draft<BacklogItemsState>, id: string) => {
+    updateCurrentItemPartById(draft, id, (item) => {
+        item.state.editable = false;
+    });
+    draft.openedDetailMenuBacklogItemPartId = null;
 };

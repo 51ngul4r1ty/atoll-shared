@@ -1,11 +1,11 @@
 // interfaces/types
-import { BacklogItem, BacklogItemType } from "../types/backlogItemTypes";
+import type { BacklogItem, BacklogItemType } from "../types/backlogItemTypes";
+import type { BacklogItemsState } from "../reducers/backlogItems/backlogItemsReducerTypes";
+import type { StateTree } from "../reducers/rootReducer";
 
 // utils
 import { getBacklogItemById as reducerGetBacklogItemById } from "../reducers/backlogItems/backlogItemsReducerHelper";
-import { StateTree } from "../reducers/rootReducer";
 import { createSelector } from "reselect";
-import { BacklogItemsState } from "../reducers/backlogItems/backlogItemsReducerTypes";
 
 export const getBacklogItemByInstanceId = (state: StateTree, instanceId: number): BacklogItem | null => {
     const matchingItems = state.backlogItems.addedItems.filter((addedItem) => addedItem.instanceId === instanceId);
@@ -110,6 +110,8 @@ export const hasPushedBacklogItems = (state: StateTree) => state.backlogItems.pu
 
 export const backlogItems = (state: { backlogItems: BacklogItemsState }): BacklogItemsState => state.backlogItems;
 
+// TODO: Refactor this out to make it obvious that it gets the "backlog item part" instead of "backlog item"
+// TODO: Probably need to refactor this whole file in the same way
 export const getCurrentBacklogItemId = createSelector(
     [backlogItems],
     (backlogItems: BacklogItemsState): string => backlogItems.currentItem?.id

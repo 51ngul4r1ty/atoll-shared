@@ -19,11 +19,7 @@ const hasPlaceholder = (line) => {
 
 var inputPath = path.resolve(".storybook/preview-head.template.html");
 var outputPath = path.resolve(".storybook/preview-head.html");
-var textByLine = fs
-    .readFileSync(inputPath)
-    .toString()
-    .replace(/\r/g, "")
-    .split("\n");
+var textByLine = fs.readFileSync(inputPath).toString().replace(/\r/g, "").split("\n");
 var newLines = [];
 textByLine.forEach((line) => {
     if (!hasPlaceholder(line)) {
@@ -31,17 +27,29 @@ textByLine.forEach((line) => {
     } else {
         const index = getIndexOfPlaceHolder(line);
         const lineStart = line.substr(0, index);
-        //        const lineEnd = line.substr(index + PLACE_HOLDER.length);
+        let outerLineIdx: number = -1;
         themeList.forEach((themeListItem) => {
+            if (outerLineIdx > 0) {
+                newLines[outerLineIdx] = newLines[outerLineIdx] + ",";
+            }
             newLines.push(lineStart + "{");
-            newLines.push(lineStart + `    name: '${themeListItem.name}',`);
+            newLines.push(lineStart + `    name: "${themeListItem.name}",`);
             newLines.push(lineStart + `    theme: {`);
+            let themeLineIdx = newLines.length;
+            let firstLine = true;
             for (const propName in themeListItem.theme) {
+                if (!firstLine) {
+                    newLines[themeLineIdx - 1] = newLines[themeLineIdx - 1] + ",";
+                } else {
+                    firstLine = false;
+                }
                 const propValue = themeListItem.theme[propName];
-                newLines.push(lineStart + `        '${propName}': '${propValue}',`);
+                newLines.push(lineStart + `        "${propName}": "${propValue}"`);
+                themeLineIdx++;
             }
             newLines.push(lineStart + `    }`);
-            newLines.push(lineStart + "},");
+            newLines.push(lineStart + "}");
+            outerLineIdx = newLines.length - 1;
         });
     }
 });

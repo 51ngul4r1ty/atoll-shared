@@ -10,9 +10,9 @@ import css from "./SprintPlanningPanel.module.css";
 import { buildClassName } from "../../../../utils/classNameBuilder";
 
 // interfaces/types
-import { SprintCardSprint } from "../../../molecules/cards/sprintCard/sprintCardTypes";
-import { ItemMenuEventHandlers } from "../../../molecules/cards/BacklogItemCard";
-import { OnAddNewSprint, OnArchivedFilterChange } from "./sprintPlanningPanelTypes";
+import type { SprintCardSprint } from "../../../molecules/cards/sprintCard/sprintCardTypes";
+import type { ItemMenuEventHandlers } from "../../../molecules/menus/menuBuilderTypes";
+import type { OnAddNewSprint, OnArchivedFilterChange } from "./sprintPlanningPanelTypes";
 
 // utils
 import { addBottomActionButtons, addTopActionButtons } from "./sprintPlanningPanelJsxUtils";
@@ -22,7 +22,7 @@ import { sprintMenuBuilder } from "../../../common/itemMenuBuilders";
 import { EditMode } from "../../../common/componentEnums";
 
 // selectors
-import { OpenedDetailMenuInfo } from "../../../../selectors/sprintBacklogSelectors";
+import { OpenedOrOpeningDetailMenuInfo } from "../../../../selectors/sprintBacklogSelectors";
 
 // components
 import { SprintDetailForm, SprintDetailShowingPicker } from "../../forms/SprintDetailForm";
@@ -44,12 +44,16 @@ import { apiArchiveSprint, apiDeleteSprint, apiUnarchiveSprint } from "../../../
 import { SprintOpenedDatePickerInfo } from "../../../../reducers/sprintsReducer";
 
 export interface SprintPlanningPanelStateProps {
+    busySplittingStory?: boolean;
     className?: string;
     editMode: EditMode;
     includeArchived: boolean;
-    openedDetailMenuInfo: OpenedDetailMenuInfo;
-    openedDetailMenuSprintId: string | null;
     openedDatePickerInfo: SprintOpenedDatePickerInfo;
+    openedDetailMenuInfo: OpenedOrOpeningDetailMenuInfo;
+    openingDetailMenuInfo: OpenedOrOpeningDetailMenuInfo;
+    openedDetailMenuSprintId: string | null;
+    splitToNextSprintAvailable?: boolean;
+    sprintsToDisableAddItemAction: string[];
     renderMobile?: boolean;
     selectedProductBacklogItemCount: number;
     showDetailMenuToLeft?: boolean;
@@ -57,20 +61,21 @@ export interface SprintPlanningPanelStateProps {
 }
 
 export interface SprintPlanningPanelDispatchProps {
-    onExpandCollapse: { (id: string, expand: boolean): void };
+    onAddBacklogItem: { (sprintId: string): void };
+    onAddNewSprintAfter: OnAddNewSprint;
     onAddNewSprintBefore: OnAddNewSprint;
     onArchivedFilterChange: OnArchivedFilterChange;
-    onAddNewSprintAfter: OnAddNewSprint;
-    onAddBacklogItem: { (sprintId: string): void };
-    onDetailClick: { (sprintId: string, backlogItemId: string): void };
-    onBacklogItemIdClick: { (sprintId: string, backlogItemId: string): void };
-    onSprintDetailClick: { (sprintId: string): void };
-    onMoveItemToBacklogClick: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemAcceptedClick: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemDoneClick: { (sprintId: string, backlogItemId: string): void };
+    onBacklogItemIdClick: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemInProgressClick: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemNotStartedClick: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemReleasedClick: { (sprintId: string, backlogItemId: string): void };
+    onDetailClick: { (sprintId: string, backlogItemId: string): void };
+    onExpandCollapse: { (id: string, expand: boolean): void };
+    onMoveItemToBacklogClick: { (sprintId: string, backlogItemId: string): void };
+    onSplitBacklogItemClick: { (sprintId: string, backlogItemId: string): void };
+    onSprintDetailClick: { (sprintId: string): void };
 }
 
 export type SprintPlanningPanelProps = SprintPlanningPanelStateProps & SprintPlanningPanelDispatchProps & WithTranslation;
@@ -109,6 +114,11 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
     const onMoveItemToBacklogClick = (sprintId: string, backlogItemId: string) => {
         if (props.onMoveItemToBacklogClick) {
             props.onMoveItemToBacklogClick(sprintId, backlogItemId);
+        }
+    };
+    const onSplitBacklogItemClick = (sprintId: string, backlogItemId: string) => {
+        if (props.onSplitBacklogItemClick) {
+            props.onSplitBacklogItemClick(sprintId, backlogItemId);
         }
     };
     const onBacklogItemAcceptedClick = (sprintId: string, backlogItemId: string) => {
@@ -150,6 +160,9 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
     props.sprints.forEach((sprint) => {
         const openedDetailMenuBacklogItemId =
             sprint.id && sprint.id === props.openedDetailMenuInfo?.sprintId ? props.openedDetailMenuInfo.backlogItemId : null;
+        const openingDetailMenuBacklogItemId =
+            sprint.id && sprint.id === props.openingDetailMenuInfo?.sprintId ? props.openingDetailMenuInfo.backlogItemId : null;
+        const splitToNextSprintAvailable = props.splitToNextSprintAvailable || false;
         const showPicker: SprintDetailShowingPicker =
             sprint?.id === props.openedDatePickerInfo?.sprintId
                 ? props.openedDatePickerInfo?.showPicker
@@ -171,16 +184,22 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                     }
                 }
             };
+            const sprintsToDisableAddItemAction = props.sprintsToDisableAddItemAction || [];
+            const disableAddBacklogItemButton = sprintsToDisableAddItemAction.filter((item) => item === sprint.id).length > 0;
             sprintItemElt = (
                 <div key={buildSprintKey(sprint)}>
                     <SimpleDivider />
                     <SprintCard
                         {...sprint}
                         editMode={props.editMode}
+                        disableAddBacklogItemButton={disableAddBacklogItemButton}
+                        busySplittingStory={props.busySplittingStory}
                         showDetailMenuToLeft={props.showDetailMenuToLeft}
                         showDetailMenu={props.openedDetailMenuSprintId === sprint.id}
                         buildItemMenu={sprintMenuBuilder(itemEventHandlers)}
                         openedDetailMenuBacklogItemId={openedDetailMenuBacklogItemId}
+                        openingDetailMenuBacklogItemId={openingDetailMenuBacklogItemId}
+                        splitToNextSprintAvailable={splitToNextSprintAvailable}
                         renderMobile={props.renderMobile}
                         selectedProductBacklogItemCount={props.selectedProductBacklogItemCount}
                         onExpandCollapse={(id, expand) => {
@@ -200,6 +219,9 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
                         }}
                         onMoveItemToBacklogClick={(backlogItemId: string) => {
                             onMoveItemToBacklogClick(sprint.id, backlogItemId);
+                        }}
+                        onSplitBacklogItemClick={(backlogItemId: string) => {
+                            onSplitBacklogItemClick(sprint.id, backlogItemId);
                         }}
                         onBacklogItemAcceptedClick={(backlogItemId: string) => {
                             onBacklogItemAcceptedClick(sprint.id, backlogItemId);

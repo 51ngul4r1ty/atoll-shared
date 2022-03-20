@@ -1,3 +1,6 @@
+// externals
+import type { Action } from "redux";
+
 // actions
 import { SaveableSprint } from "../reducers/sprintsReducer";
 
@@ -9,7 +12,7 @@ import {
     SprintDetailFormEditableFieldsWithInstanceId,
     SprintDetailShowingPicker
 } from "../components/organisms/forms/SprintDetailForm";
-import { ApiSprintStats } from "../apiModelTypes";
+import { ApiSprintStats } from "../types/apiModelTypes";
 
 export interface CollapseSprintPanelAction {
     type: typeof ActionTypes.COLLAPSE_SPRINT_PANEL;
@@ -51,10 +54,9 @@ export interface AddNewSprintFormActionPayload {
     instanceId: number;
     position: NewSprintPosition;
 }
-export interface AddNewSprintFormAction {
-    type: typeof ActionTypes.ADD_SPRINT_FORM;
+export type AddNewSprintFormAction = Action<typeof ActionTypes.ADD_SPRINT_FORM> & {
     payload: AddNewSprintFormActionPayload;
-}
+};
 export const addNewSprintForm = (position: NewSprintPosition): AddNewSprintFormAction => ({
     type: ActionTypes.ADD_SPRINT_FORM,
     payload: {
