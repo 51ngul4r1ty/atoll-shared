@@ -173,6 +173,9 @@ export const apiMiddleware = (store) => (next) => (action: Action) => {
                 dispatchSuccess(dispatch, successType, data, requestBody, apiAction.meta);
             } catch (err) {
                 console.error(`Error occurred while dispatching success: ${err}`);
+                if ((err as any)?.stack) {
+                    console.log((err as any).stack);
+                }
             }
         })
         .catch((error) => {
