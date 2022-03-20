@@ -21,7 +21,7 @@ import { ItemDetailButton } from "../../../molecules/buttons/ItemDetailButton";
 import { StandardInput } from "../../../atoms/inputs/StandardInput";
 
 // actions
-import { cancelEditBacklogItemPart } from "../../../../actions/backlogItemPartActions";
+import { cancelEditBacklogItemPart, updateBacklogItemPart } from "../../../../actions/backlogItemPartActions";
 
 export const InnerBacklogItemPartPanel: React.FC<BacklogItemPartPanelProps> = (props) => {
     const dispatch = useDispatch();
@@ -95,6 +95,9 @@ export const InnerBacklogItemPartPanel: React.FC<BacklogItemPartPanelProps> = (p
         isReadOnly ? css.readOnly : null
     );
     const actionButtonContainerClassName = buildClassName(css.centerCell, css.actionButtonContainer);
+    const handleDoneClick = () => {
+        dispatch(updateBacklogItemPart(props.partId));
+    };
     const handleCancelClick = () => {
         dispatch(cancelEditBacklogItemPart(props.partId));
     };
@@ -105,7 +108,7 @@ export const InnerBacklogItemPartPanel: React.FC<BacklogItemPartPanelProps> = (p
                 <DoneButton
                     className={css.actionButton}
                     onClick={() => {
-                        // handleDoneClick();
+                        handleDoneClick();
                     }}
                 />
             </div>

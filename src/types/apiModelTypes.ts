@@ -7,8 +7,8 @@ export type uuid = string;
 export type BacklogItemType = "story" | "issue";
 
 export type BaseItem = {
-    createdAt?: string; // sequelize standard field
-    updatedAt?: string; // sequelize standard field
+    createdAt?: ISODateString; // sequelize standard field
+    updatedAt?: ISODateString; // sequelize standard field
     version?: number; // sequelize standard field
 };
 
@@ -60,8 +60,8 @@ export type ApiBacklogItem = StandardItem &
         id: uuid | null;
 
         /* from StandardItem */
-        createdAt?: string; // sequelize standard field
-        updatedAt?: string; // sequelize standard field
+        createdAt?: ISODateString; // sequelize standard field
+        updatedAt?: ISODateString; // sequelize standard field
         version?: number; // sequelize standard field
 
         /* from StoryPhrases */
@@ -88,8 +88,8 @@ export type ApiBacklogItemWithParts = ApiBacklogItem & {
     id: uuid | null;
 
     /* from StandardItem */
-    createdAt?: string; // sequelize standard field
-    updatedAt?: string; // sequelize standard field
+    createdAt?: ISODateString; // sequelize standard field
+    updatedAt?: ISODateString; // sequelize standard field
     version?: number; // sequelize standard field
 
     /* from StoryPhrases */
@@ -135,8 +135,8 @@ export type ApiBacklogItemInSprint = ApiBacklogItem & {
     id: uuid | null;
 
     /* from StandardItem */
-    createdAt?: string; // sequelize standard field
-    updatedAt?: string; // sequelize standard field
+    createdAt?: ISODateString; // sequelize standard field
+    updatedAt?: ISODateString; // sequelize standard field
     version?: number; // sequelize standard field
 
     /* from StoryPhrases */

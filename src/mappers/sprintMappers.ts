@@ -7,7 +7,10 @@ import { DateOnly } from "../types/dateTypes";
 import { isoDateStringToDate } from "../utils/apiPayloadConverters";
 import { determineSprintExpanded } from "../utils/sprintStatusHelper";
 
-export const mapApiItemToSprint = (apiItem: ApiSprint): Sprint => {
+export const mapApiItemToSprint = (apiItem: ApiSprint | null): Sprint | null => {
+    if (!apiItem) {
+        return null;
+    }
     const startDate = DateOnly.fromISODate(apiItem.startdate);
     const finishDate = DateOnly.fromISODate(apiItem.finishdate);
     return {

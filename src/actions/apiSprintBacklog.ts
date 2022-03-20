@@ -35,7 +35,7 @@ import type { ApiItemDetailMenuActionFlowSuccessMeta } from "../actionFlows/item
 
 // utils
 import { addStandardMeta, buildActionTypes } from "./utils/apiActionUtils";
-import { mapBacklogItemStatusToApi } from "../mappers/backlogItemMappers";
+import { mapBacklogItemStatusToApi } from "../mappers/statusMappers";
 
 export type ApiGetSprintBacklogItemsSuccessActionParams = {
     sprintId: string;

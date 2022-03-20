@@ -42,10 +42,6 @@ export const API_GET_BACKLOG_ITEM_REQUEST = buildRequestActionName(Names.GET_BAC
 export const API_GET_BACKLOG_ITEM_SUCCESS = buildSuccessActionName(Names.GET_BACKLOG_ITEM);
 export const API_GET_BACKLOG_ITEM_FAILURE = buildFailureActionName(Names.GET_BACKLOG_ITEM);
 
-export const API_GET_BACKLOG_ITEM_PART_REQUEST = buildSuccessActionName(Names.GET_BACKLOG_ITEM_PART);
-export const API_GET_BACKLOG_ITEM_PART_SUCCESS = buildSuccessActionName(Names.GET_BACKLOG_ITEM_PART);
-export const API_GET_BACKLOG_ITEM_PART_FAILURE = buildSuccessActionName(Names.GET_BACKLOG_ITEM_PART);
-
 export const API_POST_BACKLOG_ITEM_REQUEST = buildRequestActionName(Names.POST_BACKLOG_ITEM);
 export const API_POST_BACKLOG_ITEM_SUCCESS = buildSuccessActionName(Names.POST_BACKLOG_ITEM);
 export const API_POST_BACKLOG_ITEM_FAILURE = buildFailureActionName(Names.POST_BACKLOG_ITEM);
@@ -61,6 +57,16 @@ export const API_PATCH_BACKLOG_ITEM_FAILURE = buildFailureActionName(Names.PATCH
 export const API_DELETE_BACKLOG_ITEM_REQUEST = buildRequestActionName(Names.DELETE_BACKLOG_ITEM);
 export const API_DELETE_BACKLOG_ITEM_SUCCESS = buildSuccessActionName(Names.DELETE_BACKLOG_ITEM);
 export const API_DELETE_BACKLOG_ITEM_FAILURE = buildFailureActionName(Names.DELETE_BACKLOG_ITEM);
+// #endregion
+
+// #region Backlog Item Part Resource
+export const API_GET_BACKLOG_ITEM_PART_REQUEST = buildSuccessActionName(Names.GET_BACKLOG_ITEM_PART);
+export const API_GET_BACKLOG_ITEM_PART_SUCCESS = buildSuccessActionName(Names.GET_BACKLOG_ITEM_PART);
+export const API_GET_BACKLOG_ITEM_PART_FAILURE = buildSuccessActionName(Names.GET_BACKLOG_ITEM_PART);
+
+export const API_PATCH_BACKLOG_ITEM_PART_REQUEST = buildRequestActionName(Names.PATCH_BACKLOG_ITEM_PART);
+export const API_PATCH_BACKLOG_ITEM_PART_SUCCESS = buildSuccessActionName(Names.PATCH_BACKLOG_ITEM_PART);
+export const API_PATCH_BACKLOG_ITEM_PART_FAILURE = buildFailureActionName(Names.PATCH_BACKLOG_ITEM_PART);
 // #endregion
 
 // #region Backlog Item Ranks Resource Collection
@@ -170,7 +176,9 @@ export const EDIT_BACKLOG_ITEM = "app/edit:backlog-item";
 
 export const TOGGLE_BACKLOG_ITEM_PART_DETAIL = "app/toggle:backlog-item-part-detail";
 export const EDIT_BACKLOG_ITEM_PART = "app/edit:backlog-item-part";
+
 export const CANCEL_EDIT_BACKLOG_ITEM_PART = "app/cancel-edit:backlog-item-part";
+export const UPDATE_BACKLOG_ITEM_PART = "app/update:backlog-item-part";
 
 export const BACKLOG_ITEM_ID_CLICK = "app/click:backlog-item-id";
 

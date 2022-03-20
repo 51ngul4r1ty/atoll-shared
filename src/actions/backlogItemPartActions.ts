@@ -46,3 +46,17 @@ export const cancelEditBacklogItemPart = (itemId: string): CancelEditBacklogItem
         itemId
     }
 });
+
+export interface UpdateBacklogItemPartActionPayload {
+    id: string;
+}
+export interface UpdateBacklogItemPartAction {
+    type: typeof ActionTypes.UPDATE_BACKLOG_ITEM_PART;
+    payload: UpdateBacklogItemPartActionPayload;
+}
+export const updateBacklogItemPart = (id: string): UpdateBacklogItemPartAction => ({
+    type: ActionTypes.UPDATE_BACKLOG_ITEM_PART,
+    payload: {
+        id
+    }
+});

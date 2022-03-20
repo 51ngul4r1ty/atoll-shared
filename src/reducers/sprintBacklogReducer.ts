@@ -38,7 +38,8 @@ import {
 } from "../actionFlows/itemDetailMenuActionFlow";
 
 // utils
-import { mapApiItemsToSprintBacklogItems, mapApiStatusToBacklogItem } from "../mappers/backlogItemMappers";
+import { mapApiItemsToSprintBacklogItems } from "../mappers/backlogItemMappers";
+import { mapApiStatusToBacklogItem } from "../mappers/statusMappers";
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
 import { shouldHideDetailMenu } from "../components/utils/itemDetailMenuUtils";
 import { mapApiItemsToSprints } from "../mappers";

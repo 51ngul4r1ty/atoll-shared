@@ -1,4 +1,5 @@
-import { mapApiStatusToBacklogItem } from "../mappers/backlogItemMappers";
+// utils
+import { mapApiStatusToBacklogItem } from "../mappers/statusMappers";
 
 export const getValidStatuses = (): string[] => {
     return ["null", '"N"', '"P"', '"D"'];

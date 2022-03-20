@@ -1,24 +1,24 @@
 // interfaces/types
-import type { WebsocketPushNotificationData } from "../../types/pushTypes";
 import type { BacklogItem, BacklogItemInSprint } from "../../types/backlogItemTypes";
-import type { BacklogItemPartAndSprint } from "../../actions/apiBffViewsBacklogItem";
+import type { BacklogItemPart } from "../../types/backlogItemPartTypes";
+import type { Sprint } from "../sprintsReducer";
+import type { WebsocketPushNotificationData } from "../../types/pushTypes";
 
 // consts/enums
 import { PushState, Source } from "../../reducers/enums";
-import { ApiBacklogItemPart, ApiSprint } from "../../types/apiModelTypes";
 
 export type SelectedBacklogItems = string[];
+
+export type BacklogItemPartAndSprint = {
+    part: BacklogItemPart;
+    sprint: Sprint;
+};
 
 export type BacklogItemPartUiState = {
     editable: boolean;
 };
 
 export type BacklogItemPartAndSprintWithUiState = BacklogItemPartAndSprint & {
-    /* from BacklogItemPartAndSprint */
-    part: ApiBacklogItemPart;
-    sprint: ApiSprint;
-
-    /* new in this type */
     state: BacklogItemPartUiState;
 };
 

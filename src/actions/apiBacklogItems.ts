@@ -25,7 +25,7 @@ import { ApiBacklogItem } from "../types/apiModelTypes";
 import { ApiPayloadBase } from "../selectors/apiSelectors";
 
 // utils
-import { addStandardMeta, buildActionTypes, buildStandardMeta } from "./utils/apiActionUtils";
+import { addStandardMeta, buildActionTypes } from "./utils/apiActionUtils";
 import { mapBacklogItemToApiItem } from "../mappers/backlogItemMappers";
 
 // #region Collection

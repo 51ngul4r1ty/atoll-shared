@@ -15,12 +15,14 @@ import { getCurrentProjectId } from "../selectors/userSelectors";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import {
+import type { AnyFSA } from "../types/reactHelperTypes";
+import type { ApiGetSprintSuccessAction } from "../actions/apiSprints";
+import type {
     ApiGetSprintBacklogItemsSuccessAction,
     ApiPostSprintBacklogItemSuccessAction,
     ApiSplitSprintItemSuccessAction
 } from "../actions/apiSprintBacklog";
-import { SaveableSprint } from "../reducers/sprintsReducer";
+import type { SaveableSprint } from "../reducers/sprintsReducer";
 
 // state
 import type { StateTree } from "../reducers/rootReducer";
@@ -38,10 +40,9 @@ import { AddNewSprintFormAction, addSprint, NewSprintPosition, updateSprintStats
 import { DateOnly } from "../types/dateTypes";
 import { timeNow } from "../utils/dateHelper";
 import { BacklogItemInSprint } from "../types/backlogItemTypes";
-import { mapApiItemToBacklogItem, mapApiItemToBacklogItemPart } from "../mappers/backlogItemMappers";
+import { mapApiItemToBacklogItem } from "../mappers/backlogItemMappers";
+import { mapApiItemToBacklogItemPart } from "../mappers/backlogItemPartMappers";
 import { removeProductBacklogItem, SelectProductBacklogItemAction } from "../actions/backlogItemActions";
-import { AnyFSA } from "../types/reactHelperTypes";
-import { ApiGetSprintSuccessAction } from "../actions/apiSprints";
 import {
     handleGetSprintBacklogItemsSuccessForItemDetailClick,
     handleGetSprintSuccessForItemDetailClick,

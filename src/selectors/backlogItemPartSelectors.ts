@@ -1,30 +1,16 @@
 // interfaces/types
 import type { StateTree } from "../reducers/rootReducer";
-import type { BacklogItemPart } from "../types/backlogItemTypes";
+import type { BacklogItemPart } from "../types/backlogItemPartTypes";
 import type { BacklogItemsState } from "../reducers/backlogItems/backlogItemsReducerTypes";
-
-// consts/enums
-import { BacklogItemStatus } from "../types/backlogItemEnums";
 
 // utils
 import { createSelector } from "reselect";
-import { isoDateStringToDate } from "../utils/apiPayloadConverters";
-import { mapApiStatusToBacklogItem } from "../mappers/backlogItemMappers";
 import { backlogItems } from "./backlogItemSelectors";
+import { getBacklogItemPartById as reducerGetBacklogItemPartById } from "../reducers/backlogItems/backlogItemsReducerHelper";
+import { isoDateStringToDate } from "../utils/apiPayloadConverters";
+import { mapApiStatusToBacklogItem } from "../mappers/statusMappers";
 
 export type BacklogItemPartForSplitForm = BacklogItemPart & {
-    /* from BacklogItemPart */
-    id: string | null;
-    externalId: string | null;
-    backlogItemId: string | null;
-    partIndex: number;
-    percentage: number;
-    points: number | null;
-    startedAt: Date | null;
-    finishedAt: Date | null;
-    status: BacklogItemStatus | null;
-
-    /* new in this type */
     allocatedSprintId: string | null;
     allocatedSprintName: string | null;
     editable: boolean;
@@ -42,17 +28,21 @@ export const getCurrentBacklogItemParts = createSelector(
                 expanded: true,
                 id: partAndSprint.part.id,
                 externalId: partAndSprint.part.externalId,
-                backlogItemId: partAndSprint.part.backlogitemId,
+                backlogItemId: partAndSprint.part.backlogItemId,
                 partIndex: partAndSprint.part.partIndex,
                 percentage: partAndSprint.part.percentage,
                 points: partAndSprint.part.points,
-                startedAt: isoDateStringToDate(partAndSprint.part.startedAt),
-                status: mapApiStatusToBacklogItem(partAndSprint.part.status),
-                finishedAt: isoDateStringToDate(partAndSprint.part.finishedAt)
+                startedAt: partAndSprint.part.startedAt,
+                status: partAndSprint.part.status,
+                finishedAt: partAndSprint.part.finishedAt
             };
             return part;
         });
     }
 );
+
+export const getBacklogItemPartById = (state: StateTree, itemId: string): BacklogItemPart | null => {
+    return reducerGetBacklogItemPartById(state.backlogItems, itemId);
+};
 
 export const getOpenedDetailMenuBacklogItemPartId = (state: StateTree) => state.backlogItems.openedDetailMenuBacklogItemPartId;

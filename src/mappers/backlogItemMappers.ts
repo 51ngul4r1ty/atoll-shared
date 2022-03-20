@@ -1,60 +1,10 @@
-// consts/enums
-import { BacklogItemStatus } from "../types/backlogItemEnums";
-
 // interfaces/types
-import type { ApiBacklogItem, ApiBacklogItemInSprint, ApiBacklogItemPart, ApiBacklogItemStatus } from "../types/apiModelTypes";
-import type { BacklogItem, BacklogItemPart, BacklogItemInSprint } from "../types/backlogItemTypes";
+import type { ApiBacklogItem, ApiBacklogItemInSprint } from "../types/apiModelTypes";
+import type { BacklogItem, BacklogItemInSprint } from "../types/backlogItemTypes";
 
 // utils
 import { dateToIsoDateString, isoDateStringToDate } from "../utils/apiPayloadConverters";
-
-export const mapApiStatusToBacklogItem = (status: string | null): BacklogItemStatus => {
-    switch (status) {
-        case undefined:
-        case null:
-        case "N": {
-            return BacklogItemStatus.NotStarted;
-        }
-        case "P": {
-            return BacklogItemStatus.InProgress;
-        }
-        case "D": {
-            return BacklogItemStatus.Done;
-        }
-        case "A": {
-            return BacklogItemStatus.Accepted;
-        }
-        case "R": {
-            return BacklogItemStatus.Released;
-        }
-        default: {
-            throw new Error(`Unknown backlog item status "${status}"`);
-        }
-    }
-};
-
-export const mapBacklogItemStatusToApi = (status: BacklogItemStatus): ApiBacklogItemStatus | null => {
-    switch (status) {
-        case BacklogItemStatus.NotStarted: {
-            return "N";
-        }
-        case BacklogItemStatus.InProgress: {
-            return "P";
-        }
-        case BacklogItemStatus.Done: {
-            return "D";
-        }
-        case BacklogItemStatus.Accepted: {
-            return "A";
-        }
-        case BacklogItemStatus.Released: {
-            return "R";
-        }
-        default: {
-            throw new Error(`Unknown backlog item status "${status}"`);
-        }
-    }
-};
+import { mapApiStatusToBacklogItem, mapBacklogItemStatusToApi } from "./statusMappers";
 
 export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem => ({
     acceptanceCriteria: apiItem.acceptanceCriteria,
@@ -82,18 +32,6 @@ export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem =>
     version: apiItem.version
 });
 
-export const mapApiItemToBacklogItemPart = (apiItem: ApiBacklogItemPart): BacklogItemPart => ({
-    id: apiItem.id,
-    externalId: apiItem.externalId,
-    backlogItemId: apiItem.backlogitemId,
-    partIndex: apiItem.partIndex,
-    percentage: apiItem.percentage,
-    points: apiItem.points,
-    startedAt: isoDateStringToDate(apiItem.startedAt),
-    finishedAt: isoDateStringToDate(apiItem.finishedAt),
-    status: mapApiStatusToBacklogItem(apiItem.status)
-});
-
 export const mapApiItemToBacklogItemInSprint = (apiItem: ApiBacklogItemInSprint): BacklogItemInSprint => {
     const result: BacklogItemInSprint = {
         ...mapApiItemToBacklogItem(apiItem),
@@ -112,6 +50,7 @@ export const mapApiItemToBacklogItemInSprint = (apiItem: ApiBacklogItemInSprint)
 
 export const mapBacklogItemToApiItem = (item: BacklogItem): ApiBacklogItem => ({
     acceptanceCriteria: item.acceptanceCriteria,
+    createdAt: dateToIsoDateString(item.createdAt),
     acceptedAt: dateToIsoDateString(item.acceptedAt),
     estimate: item.estimate,
     externalId: item.externalId,
@@ -130,7 +69,9 @@ export const mapBacklogItemToApiItem = (item: BacklogItem): ApiBacklogItem => ({
     totalParts: item.totalParts,
     type: item.type,
     unallocatedParts: item.unallocatedParts,
-    unallocatedPoints: item.unallocatedPoints
+    unallocatedPoints: item.unallocatedPoints,
+    updatedAt: dateToIsoDateString(item.updatedAt),
+    version: item.version
 });
 
 export const mapSprintBacklogItemToApiItem = (item: BacklogItemInSprint): ApiBacklogItemInSprint => {

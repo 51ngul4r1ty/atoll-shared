@@ -38,23 +38,28 @@ import { UpdateBacklogItemPartFieldAction, UpdateCurrentBacklogItemFieldsAction 
 import {
     CancelEditBacklogItemPartAction,
     EditBacklogItemPartAction,
-    ToggleBacklogItemPartDetailAction
+    ToggleBacklogItemPartDetailAction,
+    UpdateBacklogItemPartAction
 } from "../../actions/backlogItemPartActions";
+import { ApiGetBacklogItemPartSuccessAction } from "../../actions/apiBacklogItemParts";
 
 // utils
 import {
     getBacklogItemById,
-    updateBacklogItemFieldsInItemsAndAddedItems,
     rebuildAllItems,
+    turnOffEditModeForBacklogItemPart,
     updateBacklogItemFields,
-    updateItemById,
-    updateCurrentItemPartById
+    updateBacklogItemFieldsInItemsAndAddedItems,
+    updateCurrentItemPartById,
+    updateItemById
 } from "./backlogItemsReducerHelper";
-import { mapApiItemsToBacklogItems, mapApiItemToBacklogItem, mapApiStatusToBacklogItem } from "../../mappers/backlogItemMappers";
+import { mapApiItemsToBacklogItems, mapApiItemToBacklogItem } from "../../mappers/backlogItemMappers";
+import { mapApiStatusToBacklogItem } from "../../mappers/statusMappers";
 import { calcDropDownMenuState } from "../../utils/dropdownMenuUtils";
 import { isoDateStringToDate } from "../../utils/apiPayloadConverters";
 import { shouldHideDetailMenu } from "../../components/utils/itemDetailMenuUtils";
-import { ApiGetBacklogItemPartSuccessAction } from "../../actions/apiBacklogItemParts";
+import { mapApiItemToBacklogItemPart } from "../../mappers/backlogItemPartMappers";
+import { mapApiItemToSprint } from "../../mappers";
 
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
@@ -306,23 +311,26 @@ export const backlogItemsReducer = (
             }
             case ActionTypes.CANCEL_EDIT_BACKLOG_ITEM_PART: {
                 const actionTyped = action as CancelEditBacklogItemPartAction;
-                updateCurrentItemPartById(draft, actionTyped.payload.itemId, (item) => {
-                    item.state.editable = false;
-                });
-                draft.openedDetailMenuBacklogItemPartId = null;
+                turnOffEditModeForBacklogItemPart(draft, actionTyped.payload.itemId);
+                return;
+            }
+            case ActionTypes.UPDATE_BACKLOG_ITEM_PART: {
+                const actionTyped = action as UpdateBacklogItemPartAction;
+                turnOffEditModeForBacklogItemPart(draft, actionTyped.payload.id);
                 return;
             }
             case ActionTypes.API_GET_BACKLOG_ITEM_PART_SUCCESS: {
                 const actionTyped = action as ApiGetBacklogItemPartSuccessAction;
-                const part = actionTyped.payload.response.data.item;
-                updateCurrentItemPartById(draft, part.id, (item) => {
+                const apiBacklogItemPart = actionTyped.payload.response.data.item;
+                const backlogItemPart = mapApiItemToBacklogItemPart(apiBacklogItemPart);
+                updateCurrentItemPartById(draft, apiBacklogItemPart.id, (item) => {
                     item.part = {
                         ...item.part,
-                        externalId: part.externalId,
-                        percentage: part.percentage,
-                        points: part.points,
-                        startedAt: part.startedAt,
-                        finishedAt: part.finishedAt
+                        externalId: backlogItemPart.externalId,
+                        percentage: backlogItemPart.percentage,
+                        points: backlogItemPart.points,
+                        startedAt: backlogItemPart.startedAt,
+                        finishedAt: backlogItemPart.finishedAt
                     };
                 });
                 return;
@@ -449,8 +457,8 @@ export const backlogItemsReducer = (
                 const backlogItem = actionTyped.payload.response.data.backlogItem;
                 const partsAndSprints = actionTyped.payload.response.data.backlogItemPartsAndSprints;
                 draft.currentItemPartsAndSprints = partsAndSprints.map((item) => ({
-                    part: item.part,
-                    sprint: item.sprint,
+                    part: mapApiItemToBacklogItemPart(item.part),
+                    sprint: mapApiItemToSprint(item.sprint),
                     state: {
                         editable: false
                     }

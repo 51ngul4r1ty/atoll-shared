@@ -19,6 +19,7 @@ import type {
     BacklogItemEditableFields,
     BacklogItemInstanceEditableFields
 } from "../../components/organisms/forms/backlogItemFormTypes";
+import type { BacklogItemPart } from "../../types/backlogItemPartTypes";
 
 // utils
 import { LinkedList } from "../../utils/linkedList";
@@ -192,6 +193,14 @@ export const updateItemById = (draft: Draft<BacklogItemsState>, itemId: string, 
     }
 };
 
+export const getBacklogItemPartById = (backlogItems: BacklogItemsState, itemId: string): BacklogItemPart | null => {
+    const partAndSprint = backlogItems.currentItemPartsAndSprints.find((item) => item.part.id === itemId);
+    if (!partAndSprint) {
+        return null;
+    }
+    return partAndSprint.part;
+};
+
 export const updateCurrentItemPartById = (
     draft: Draft<BacklogItemsState>,
     itemId: string,
@@ -199,7 +208,7 @@ export const updateCurrentItemPartById = (
 ) => {
     const idx = draft.currentItemPartsAndSprints.findIndex((item) => item.part.id === itemId);
     if (idx >= 0) {
-        updateItem(draft.currentItemPartsAndSprints[idx]);
+        updateItem(draft.currentItemPartsAndSprints[idx] as BacklogItemPartAndSprintWithUiState);
     }
 };
 
@@ -218,4 +227,11 @@ export const updateBacklogItemFieldsInItemsAndAddedItems = (
         }
     });
     updateItemFieldsInAllItems(draft, payload);
+};
+
+export const turnOffEditModeForBacklogItemPart = (draft: Draft<BacklogItemsState>, id: string) => {
+    updateCurrentItemPartById(draft, id, (item) => {
+        item.state.editable = false;
+    });
+    draft.openedDetailMenuBacklogItemPartId = null;
 };

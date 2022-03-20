@@ -12,6 +12,7 @@ export const GET_BACKLOG_ITEM = "get-backlog-item";
 export const GET_BACKLOG_ITEM_RANKS = "get-backlog-item-ranks";
 
 export const GET_BACKLOG_ITEM_PART = "get-backlog-item-part";
+export const PATCH_BACKLOG_ITEM_PART = "patch-backlog-item-part";
 
 export const GET_USER_PREFS = "get-user-prefs";
 export const POST_ACTION_LOGIN = "login";

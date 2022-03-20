@@ -18,9 +18,9 @@ import type { NoDataApiAction, ApiActionMetaDataRequestMeta } from "../middlewar
 import { buildActionTypes } from "./utils/apiActionUtils";
 
 // interfaces/types
-import { ApiBacklogItem, ApiBacklogItemPart, ApiSprint, ApiUserSettings } from "../types/apiModelTypes";
+import type { ApiBacklogItem, ApiBacklogItemPart, ApiSprint } from "../types/apiModelTypes";
 
-export type BacklogItemPartAndSprint = {
+export type ApiBacklogItemPartAndSprint = {
     part: ApiBacklogItemPart;
     sprint: ApiSprint;
 };
@@ -30,7 +30,7 @@ export interface ApiGetBffViewsBacklogItemResponsePayload {
         status: number;
         data: {
             backlogItem: ApiBacklogItem;
-            backlogItemPartsAndSprints: BacklogItemPartAndSprint[];
+            backlogItemPartsAndSprints: ApiBacklogItemPartAndSprint[];
             inProductBacklog: boolean;
         };
     };

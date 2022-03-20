@@ -46,15 +46,3 @@ export interface BacklogItemInSprint extends BacklogItem {
     storyUpdatedAt: Date | null;
     storyVersion?: number;
 }
-
-export interface BacklogItemPart {
-    id: string | null;
-    externalId: string | null;
-    backlogItemId: string | null;
-    partIndex: number;
-    percentage: number;
-    points: number | null;
-    startedAt: Date | null;
-    finishedAt: Date | null;
-    status: BacklogItemStatus | null;
-}
