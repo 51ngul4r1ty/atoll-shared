@@ -281,7 +281,7 @@ export const backlogItemsReducer = (
                 draft.openedDetailMenuBacklogItemId = calcDropDownMenuState(
                     draft.openedDetailMenuBacklogItemId,
                     actionTyped.payload.itemId,
-                    (itemId: string) => backlogItemsSliceSelectors.getBacklogItemById(state, itemId),
+                    (itemId: string) => backlogItemsSliceSelectors.sliceSelectBacklogItemById(state, itemId),
                     (item) => item.pushState !== PushState.Removed
                 );
                 return;

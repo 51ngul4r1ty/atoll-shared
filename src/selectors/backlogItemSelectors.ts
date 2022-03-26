@@ -19,8 +19,8 @@ export const getBacklogItemByInstanceId = (state: StateTree, instanceId: number)
     }
 };
 
-export const getBacklogItemById = (state: StateTree, itemId: string): BacklogItem | null =>
-    backlogItemsSliceSelectors.getBacklogItemById(state.backlogItems, itemId);
+export const selectBacklogItemById = (state: StateTree, itemId: string): BacklogItem | null =>
+    backlogItemsSliceSelectors.sliceSelectBacklogItemById(state.backlogItems, itemId);
 
 export const getCurrentBacklogItem = (state: StateTree): BacklogItem | null => {
     return state.backlogItems.currentItem;
@@ -86,7 +86,7 @@ export const getPrevNextAndCurrentById = (state: StateTree, id: string): PrevNex
 export const getAllBacklogItems = (state: StateTree) => state.backlogItems.allItems;
 
 export const getSelectedBacklogItemIds = (state: StateTree): string[] =>
-    backlogItemsSliceSelectors.getSelectedBacklogItemIdsFromSlice(state.backlogItems);
+    backlogItemsSliceSelectors.sliceSelectSelectedBacklogItemIds(state.backlogItems);
 
 export const getSelectedBacklogItems = (state: StateTree) => {
     const results = [];

@@ -17,7 +17,7 @@ import { EditMode } from "../components/common/componentEnums";
 import {
     getBacklogItemByInstanceId,
     getPrevSavedBacklogItemByInstanceId,
-    getBacklogItemById,
+    selectBacklogItemById,
     getSelectedBacklogItemIds,
     getCurrentBacklogItem
 } from "../selectors/backlogItemSelectors";
@@ -185,7 +185,7 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const state = storeTyped.getState();
             const itemId = actionTyped.payload.id;
 
-            const backlogItem = getBacklogItemById(state, itemId);
+            const backlogItem = selectBacklogItemById(state, itemId);
             if (backlogItem) {
                 const backlogItemModel = convertToBacklogItemModel(backlogItem);
                 const payloadOverride = buildApiPayloadBaseForResource(state, ResourceTypes.BACKLOG_ITEM, "item", itemId);
@@ -347,7 +347,7 @@ export const apiOrchestrationMiddleware = (store) => (next) => (action: Action) 
             const actionTyped = action as BacklogItemIdClickAction;
             const backlogItemId = actionTyped.payload.backlogItemId;
             const state = storeTyped.getState();
-            const backlogItem = getBacklogItemById(state, backlogItemId);
+            const backlogItem = selectBacklogItemById(state, backlogItemId);
             const projectId = backlogItem.projectId;
             const backlogItemDisplayId = buildBacklogDisplayId(backlogItem.externalId, backlogItem.friendlyId);
             storeTyped.dispatch(

@@ -7,9 +7,9 @@
 import type { Store } from "redux";
 
 // selectors
-import { getBacklogItemById } from "../selectors/backlogItemSelectors";
-import { getFirstSprint, getLastSprint, getNextSprint } from "../selectors/sprintSelectors";
-import { getCurrentProjectId } from "../selectors/userSelectors";
+import * as backlogItemSelectors from "../selectors/backlogItemSelectors";
+import * as sprintSelectors from "../selectors/sprintSelectors";
+import * as userSelectors from "../selectors/userSelectors";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
@@ -84,7 +84,7 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
                 throw Error("Invalid action data - actionParams should contain backlogItemId");
             }
 
-            const backlogItem = getBacklogItemById(state, backlogItemId);
+            const backlogItem = backlogItemSelectors.selectBacklogItemById(state, backlogItemId);
             if (!backlogItem) {
                 throw new Error(`Unable to find backlog item with ID ${backlogItemId}`);
             }
@@ -137,7 +137,7 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
             const actionTyped = action as ApiSplitSprintItemSuccessAction;
             const currentSprintId = actionTyped.meta.actionParams.sprintId;
             const currentBacklogItemId = actionTyped.meta.actionParams.backlogItemId;
-            const nextSprint = getNextSprint(state, currentSprintId);
+            const nextSprint = sprintSelectors.getNextSprint(state, currentSprintId);
             if (nextSprint) {
                 const responseBacklogItem = mapApiItemToBacklogItem(actionTyped.payload.response.data.extra.backlogItem);
                 const responseBacklogItemPart = mapApiItemToBacklogItemPart(actionTyped.payload.response.data.item);
@@ -174,11 +174,11 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
             // TODO: Make this configurable (create a story for this)
             const SPRINT_DAY_LENGTH = 14;
             if (position === NewSprintPosition.Before) {
-                const firstSprint = getFirstSprint(state);
+                const firstSprint = sprintSelectors.getFirstSprint(state);
                 startDate = firstSprint.startDate.addDays(-(SPRINT_DAY_LENGTH - 1));
                 finishDate = firstSprint.startDate;
             } else if (position === NewSprintPosition.After) {
-                const lastSprint = getLastSprint(state);
+                const lastSprint = sprintSelectors.getLastSprint(state);
                 startDate = lastSprint.finishDate.addDays(1);
                 finishDate = lastSprint.finishDate.addDays(SPRINT_DAY_LENGTH);
             } else {
@@ -192,7 +192,7 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
                 startDate,
                 finishDate,
                 instanceId: actionTyped.payload.instanceId,
-                projectId: getCurrentProjectId(state),
+                projectId: userSelectors.getCurrentProjectId(state),
                 plannedPoints: 0,
                 acceptedPoints: 0,
                 velocityPoints: 0,

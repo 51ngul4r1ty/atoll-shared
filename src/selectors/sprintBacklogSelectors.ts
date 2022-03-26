@@ -2,16 +2,19 @@
 import { createSelector } from "reselect";
 
 // interfaces/types
-import { StateTree } from "../reducers/rootReducer";
-import { BacklogItemInSprint } from "../types/backlogItemTypes";
+import type { StateTree } from "../reducers/rootReducer";
+import type { BacklogItemInSprint } from "../types/backlogItemTypes";
+import type { BacklogItemsState } from "../reducers/backlogItems/backlogItemsReducerTypes";
+
+// selectors
+import * as sprintBacklogItemSliceSelectors from "../reducers/sprintBacklog/sprintBacklogSliceSelectors";
+import * as backlogItemSliceSelectors from "../reducers/backlogItems/backlogItemsSliceSelectors";
 
 // reducers
 import {
     getSprintBacklogItemById as getSprintBacklogItemByIdFromReducer,
     SprintBacklogState
 } from "../reducers/sprintBacklogReducer";
-import { getSelectedBacklogItemIdsFromSlice } from "../reducers/backlogItems/backlogItemsSliceSelectors";
-import { BacklogItemsState } from "../reducers/backlogItems/backlogItemsReducerTypes";
 
 export const backlogItems = (state: { backlogItems: BacklogItemsState }): BacklogItemsState => state.backlogItems;
 export const sprintBacklog = (state: { sprintBacklog: SprintBacklogState }): SprintBacklogState => state.sprintBacklog;
@@ -58,19 +61,13 @@ export const lookupPartIdForBacklogItemInSprint = (state: StateTree, sprintId: s
     return sprintBacklogItem.backlogItemPartId || null;
 };
 
-// TODO: Move this to a selector
-export const backlogItemIsInSprint = (sprintBacklog: SprintBacklogState, backlogItemId: string, sprintId: string): boolean => {
-    const sprintInfo = sprintBacklog.sprints[sprintId];
-    return sprintInfo.backlogItemsInSprint[backlogItemId] || false;
-};
-
 export const getSprintsToDisableAddItemsAction = createSelector(
     [backlogItems, sprintBacklog],
     (backlogItems: BacklogItemsState, sprintBacklog: SprintBacklogState) => {
-        const selectedBacklogItemIds = getSelectedBacklogItemIdsFromSlice(backlogItems);
+        const selectedBacklogItemIds = backlogItemSliceSelectors.sliceSelectSelectedBacklogItemIds(backlogItems);
         const sprintIds = Object.keys(sprintBacklog.sprints).filter((sprintId) => {
             const selectedBacklogItemsInSomeSprints = selectedBacklogItemIds.some((backlogItemId) =>
-                backlogItemIsInSprint(sprintBacklog, backlogItemId, sprintId)
+                sprintBacklogItemSliceSelectors.sliceSelectBacklogItemIsInSprint(sprintBacklog, backlogItemId, sprintId)
             );
             return selectedBacklogItemsInSomeSprints;
         });
