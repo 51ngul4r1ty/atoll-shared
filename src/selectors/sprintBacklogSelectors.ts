@@ -10,7 +10,10 @@ import {
     getSprintBacklogItemById as getSprintBacklogItemByIdFromReducer,
     SprintBacklogState
 } from "../reducers/sprintBacklogReducer";
+import { getSelectedBacklogItemIdsFromSlice } from "../reducers/backlogItems/backlogItemsSliceSelectors";
+import { BacklogItemsState } from "../reducers/backlogItems/backlogItemsReducerTypes";
 
+export const backlogItems = (state: { backlogItems: BacklogItemsState }): BacklogItemsState => state.backlogItems;
 export const sprintBacklog = (state: { sprintBacklog: SprintBacklogState }): SprintBacklogState => state.sprintBacklog;
 
 export const getBacklogItemsForSprint = (state: StateTree, sprintId: string): BacklogItemInSprint[] | null => {
@@ -55,10 +58,22 @@ export const lookupPartIdForBacklogItemInSprint = (state: StateTree, sprintId: s
     return sprintBacklogItem.backlogItemPartId || null;
 };
 
-export const getSprintsToDisableAddItemsAction = createSelector([sprintBacklog], (sprintBacklog: SprintBacklogState) => {
-    const sprintIds = Object.keys(sprintBacklog.sprints).filter((sprintId) => {
-        const sprintInfo = sprintBacklog.sprints[sprintId];
-        return Object.keys(sprintInfo.backlogItemsInSprint).length > 0;
-    });
-    return sprintIds;
-});
+// TODO: Move this to a selector
+export const backlogItemIsInSprint = (sprintBacklog: SprintBacklogState, backlogItemId: string, sprintId: string): boolean => {
+    const sprintInfo = sprintBacklog.sprints[sprintId];
+    return sprintInfo.backlogItemsInSprint[backlogItemId] || false;
+};
+
+export const getSprintsToDisableAddItemsAction = createSelector(
+    [backlogItems, sprintBacklog],
+    (backlogItems: BacklogItemsState, sprintBacklog: SprintBacklogState) => {
+        const selectedBacklogItemIds = getSelectedBacklogItemIdsFromSlice(backlogItems);
+        const sprintIds = Object.keys(sprintBacklog.sprints).filter((sprintId) => {
+            const selectedBacklogItemsInSomeSprints = selectedBacklogItemIds.some((backlogItemId) =>
+                backlogItemIsInSprint(sprintBacklog, backlogItemId, sprintId)
+            );
+            return selectedBacklogItemsInSomeSprints;
+        });
+        return sprintIds;
+    }
+);

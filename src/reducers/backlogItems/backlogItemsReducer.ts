@@ -43,9 +43,11 @@ import {
 } from "../../actions/backlogItemPartActions";
 import { ApiGetBacklogItemPartSuccessAction } from "../../actions/apiBacklogItemParts";
 
+// selectors
+import * as backlogItemsSliceSelectors from "./backlogItemsSliceSelectors";
+
 // utils
 import {
-    getBacklogItemById,
     rebuildAllItems,
     turnOffEditModeForBacklogItemPart,
     updateBacklogItemFields,
@@ -120,7 +122,7 @@ export const removeBacklogItem = (
     return result;
 };
 
-export const unselectProductBacklogItemId = (draft: Draft<BacklogItemsState>, backlogItemId) => {
+export const unselectProductBacklogItemId = (draft: Draft<BacklogItemsState>, backlogItemId: string) => {
     const itemIdx = draft.selectedItemIds.indexOf(backlogItemId);
     if (itemIdx >= 0) {
         draft.selectedItemIds.splice(itemIdx, 1);
@@ -279,7 +281,7 @@ export const backlogItemsReducer = (
                 draft.openedDetailMenuBacklogItemId = calcDropDownMenuState(
                     draft.openedDetailMenuBacklogItemId,
                     actionTyped.payload.itemId,
-                    (itemId: string) => getBacklogItemById(state, itemId),
+                    (itemId: string) => backlogItemsSliceSelectors.getBacklogItemById(state, itemId),
                     (item) => item.pushState !== PushState.Removed
                 );
                 return;
