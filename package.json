@@ -57,7 +57,7 @@
     "http-status-codes": "1.4.0",
     "i18next": "19.0.0",
     "immer": "5.3.6",
-    "minimist": ">=1.2.2",
+    "minimist": ">=1.2.6",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-helmet": "5.2.1",
