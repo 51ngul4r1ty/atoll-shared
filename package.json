@@ -1,6 +1,6 @@
 {
   "name": "@atoll/shared",
-  "version": "0.41.6",
+  "version": "0.41.7",
   "author": {
     "name": "Kevin Berry",
     "email": "41717340+51ngul4r1ty@users.noreply.github.com"
@@ -50,14 +50,14 @@
   "dependencies": {
     "@csstools/normalize.css": "10.1.0",
     "@flopflip/react-broadcast": "10.1.11",
-    "axios": "0.19.2",
+    "axios": "0.21.2",
     "connected-react-router": "6.8.0",
     "crypto": "1.0.1",
     "history": "4.10.1",
     "http-status-codes": "1.4.0",
     "i18next": "19.0.0",
-    "immer": "5.3.6",
-    "minimist": ">=1.2.2",
+    "immer": "9.0.6",
+    "minimist": "1.2.6",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-helmet": "5.2.1",
@@ -69,7 +69,7 @@
     "redux-devtools-extension": "2.13.8",
     "redux-thunk": "2.3.0",
     "reselect": "4.0.0",
-    "url-parse": "1.4.7",
+    "url-parse": "1.5.9",
     "websocket": "1.0.31"
   },
   "devDependencies": {
