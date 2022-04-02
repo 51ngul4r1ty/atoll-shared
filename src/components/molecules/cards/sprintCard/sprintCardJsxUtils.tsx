@@ -59,7 +59,7 @@ export const getBacklogItemElts = (
                 throw Error(`${eventName} is not handled`);
             }
         },
-        isEventSupported: () => true,
+        isEventSupported: () => !busySplittingStory,
         isEventHandlerWaiting: (eventName: string) => eventName === "onSplitBacklogItemClick" && busySplittingStory
     };
     if (!backlogItems) {
