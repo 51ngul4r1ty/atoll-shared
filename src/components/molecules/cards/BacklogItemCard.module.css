@@ -133,8 +133,8 @@
     padding: 0;
     margin: 0;
     text-transform: uppercase;
-    font-weight: 900;
-    opacity: 0.75;
+    font-weight: 700;
+    opacity: 0.5;
     user-select: none;
     text-overflow: ellipsis;
     overflow: hidden;
