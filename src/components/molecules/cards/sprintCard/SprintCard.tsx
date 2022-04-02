@@ -32,11 +32,8 @@ export type InnerSprintCardProps = SprintCardProps & WithTranslation;
 /* exported components */
 
 export const InnerSprintCard: React.FC<InnerSprintCardProps> = (props) => {
-    const busyButtonName = props.busySplittingStory ? "splitStory" : "";
     const sprintDetailMenu =
-        props.showDetailMenu && props.buildItemMenu
-            ? props.buildItemMenu(props.id, props.showDetailMenuToLeft, !!busyButtonName, busyButtonName)
-            : null;
+        props.showDetailMenu && props.buildItemMenu ? props.buildItemMenu(props.id, props.showDetailMenuToLeft) : null;
     const sprintStatusElts = <div className={css.sprintStatus}>{sprintStatusToString(props.status)}</div>;
     const dateRangeArchiveStatusElts = props.archived ? <ArchiveIcon className={css.dateRangeArchiveIcon} /> : null;
     const sprintDateRangeElts = (

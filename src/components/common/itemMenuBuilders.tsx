@@ -12,11 +12,10 @@ import { SprintMenu } from "../molecules/menus/SprintMenu";
 
 export const productBacklogItemMenuBuilder = (eventHandlers: ItemMenuEventHandlers): ItemMenuBuilder => (
     itemId: string,
-    showMenuToLeft: boolean,
-    menuDisabled: boolean,
-    busyButtonName: string
+    showMenuToLeft: boolean
 ) => (
     <ProductBacklogItemMenu
+        isJoinItemClickAvailable={() => eventHandlers.isEventSupported("onJoinItemClick")}
         showDetailMenuToLeft={showMenuToLeft}
         onEditItemClick={() => eventHandlers.handleEvent("onEditItemClick", itemId)}
         onRemoveItemClick={() => eventHandlers.handleEvent("onRemoveItemClick", itemId)}
@@ -26,12 +25,14 @@ export const productBacklogItemMenuBuilder = (eventHandlers: ItemMenuEventHandle
 export const sprintBacklogItemMenuBuilder = (
     eventHandlers: ItemMenuEventHandlers,
     splitToNextSprintAvailable: boolean
-): ItemMenuBuilder => (itemId: string, showMenuToLeft: boolean, menuDisabled: boolean, busyButtonName: string) => {
+): ItemMenuBuilder => (itemId: string, showMenuToLeft: boolean) => {
     return (
         <SprintBacklogItemMenu
-            menuDisabled={menuDisabled}
+            menuDisabled={eventHandlers.isEventSupported && !eventHandlers.isEventSupported()}
             showDetailMenuToLeft={showMenuToLeft}
-            busySplittingStory={busyButtonName === "splitStory"}
+            busySplittingStory={
+                eventHandlers.isEventHandlerWaiting && eventHandlers.isEventHandlerWaiting("onSplitBacklogItemClick")
+            }
             splitToNextSprintAvailable={splitToNextSprintAvailable}
             onMoveItemToBacklogClick={() => eventHandlers.handleEvent("onMoveItemToBacklogClick", itemId)}
             onSplitBacklogItemClick={() => eventHandlers.handleEvent("onSplitBacklogItemClick", itemId)}
@@ -46,9 +47,7 @@ export const sprintBacklogItemMenuBuilder = (
 
 export const sprintMenuBuilder = (eventHandlers: ItemMenuEventHandlers): ItemMenuBuilder => (
     itemId: string,
-    showMenuToLeft: boolean,
-    menuDisabled: boolean,
-    busyButtonName: string
+    showMenuToLeft: boolean
 ) => (
     <SprintMenu
         showDetailMenuToLeft={showMenuToLeft}
@@ -61,9 +60,7 @@ export const sprintMenuBuilder = (eventHandlers: ItemMenuEventHandlers): ItemMen
 
 export const backlogItemPartMenuBuilder = (eventHandlers: ItemMenuEventHandlers): ItemMenuBuilder => (
     itemId: string,
-    showMenuToLeft: boolean,
-    menuDisabled: boolean,
-    busyButtonName: string
+    showMenuToLeft: boolean
 ) => (
     <BacklogItemPartMenu
         showDetailMenuToLeft={showMenuToLeft}

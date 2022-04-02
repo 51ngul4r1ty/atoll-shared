@@ -112,14 +112,15 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                 } else {
                     throw Error(`${eventName} is not handled`);
                 }
-            }
+            },
+            isEventHandlerWaiting: (eventName: string) => eventName === "onSplitBacklogItemClick" && props.busySplittingStory,
+            isEventSupported: (eventName: string) => (eventName === "onJoinItemClick" ? props.unallocatedParts > 1 : true)
         };
         return (
             <>
                 <SimpleDivider key={`divider-saved-${props.id}`} hidden={props.hidden} highlighted={props.highlightAbove} />
                 <BacklogItemCard
                     buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
-                    busySplittingStory={props.busySplittingStory}
                     cardType={BacklogItemCardType.ProductBacklogCard}
                     estimate={computeProductBacklogItemEstimate(props.estimate, props.unallocatedPoints)}
                     hasDetails={props.editMode === EditMode.Edit}

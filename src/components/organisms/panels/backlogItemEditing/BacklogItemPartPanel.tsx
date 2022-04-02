@@ -25,12 +25,8 @@ import { cancelEditBacklogItemPart, updateBacklogItemPart } from "../../../../ac
 
 export const InnerBacklogItemPartPanel: React.FC<BacklogItemPartPanelProps> = (props) => {
     const dispatch = useDispatch();
-    const busyButtonName = "";
-    const menuDisabled = false;
     const showDetailMenu = props.showDetailMenu && props.buildItemMenu;
-    const detailMenu = showDetailMenu
-        ? props.buildItemMenu(props.partId, props.showDetailMenuToLeft, menuDisabled, busyButtonName)
-        : null;
+    const detailMenu = showDetailMenu ? props.buildItemMenu(props.partId, props.showDetailMenuToLeft) : null;
     const itemDetailMenuElts = !showDetailMenu ? null : (
         <div className={buildClassName(css.partDetailMenu, props.showDetailMenuToLeft ? css.partMenuToLeft : null)}>
             {detailMenu}
