@@ -9,9 +9,6 @@ import { EditMode } from "../../common/componentEnums";
 import { ItemMenuPanelCaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
 import { EditButton } from "../buttons/EditButton";
 
-// interfaces/types
-import type { ItemMenuBuilder } from "./menuBuilderTypes";
-
 export interface BacklogItemPartMenuStateProps {
     renderMobile?: boolean;
     showDetailMenuToLeft?: boolean;
