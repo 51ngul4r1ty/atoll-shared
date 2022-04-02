@@ -11,6 +11,7 @@ import type {
     ApiGetSprintBacklogItemsFailureAction,
     ApiGetSprintBacklogItemsSuccessAction,
     ApiPostSprintBacklogItemSuccessAction,
+    ApiSplitSprintItemSuccessAction,
     ApiSprintBacklogItemSetStatusSuccessAction
 } from "../actions/apiSprintBacklog";
 import type { BacklogItemInSprint } from "../types/backlogItemTypes";
@@ -124,6 +125,8 @@ export const addSprintBacklogItems = (
         throw new Error("Unexpected condition- addSprintBacklogItems had items undefined");
     }
     items.forEach((item) => {
+        const backlogItemId = item.id;
+        linkBacklogItemToSprint(draft, sprintId, backlogItemId);
         sprint.items.push(item);
     });
 };
@@ -341,6 +344,22 @@ export const sprintBacklogReducer = (
                 return;
             }
             case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {
+                const actionTyped = action as ApiSplitSprintItemSuccessAction;
+                const totalParts = actionTyped.payload.response.data.extra.backlogItem.totalParts;
+                const backlogItemId = actionTyped.payload.response.data.extra.backlogItem.id;
+                Object.keys(draft.sprints).forEach((sprintKey) => {
+                    const sprint = draft.sprints[sprintKey];
+                    const isBacklogItemInSprint = sprint.backlogItemsInSprint[backlogItemId];
+                    if (isBacklogItemInSprint) {
+                        sprint.items.forEach((backlogItem) => {
+                            if (backlogItem.id === backlogItemId) {
+                                backlogItem.totalParts = totalParts;
+                            }
+                        });
+                    }
+                });
+                const sprintId = actionTyped.meta.actionParams.sprintId;
+                linkBacklogItemToSprint(draft, sprintId, backlogItemId);
                 draft.splitInProgress = false;
                 draft.openedDetailMenuBacklogItemId = null;
                 return;

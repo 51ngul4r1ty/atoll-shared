@@ -142,7 +142,7 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
                 const responseBacklogItem = mapApiItemToBacklogItem(actionTyped.payload.response.data.extra.backlogItem);
                 const responseBacklogItemPart = mapApiItemToBacklogItemPart(actionTyped.payload.response.data.item);
                 const storyEstimate = responseBacklogItem.estimate;
-                const totalParts = responseBacklogItem.totalParts + 1;
+                const totalParts = responseBacklogItem.totalParts;
                 const backlogItemWithPartInfo: BacklogItemInSprint = {
                     ...responseBacklogItem,
                     estimate: responseBacklogItemPart.points,
