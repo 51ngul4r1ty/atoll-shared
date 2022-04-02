@@ -4,6 +4,7 @@ export { CancelButton } from "./CancelButton";
 export { DoneButton } from "./DoneButton";
 export { EditButton } from "./EditButton";
 export { FrameCloseButton } from "./FrameCloseButton";
+export { JoinButton } from "./JoinButton";
 export { HomeButton } from "./HomeButton";
 export { RefreshButton } from "./RefreshButton";
 export { RemoveButton } from "./RemoveButton";
