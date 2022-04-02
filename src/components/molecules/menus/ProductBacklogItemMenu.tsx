@@ -3,20 +3,23 @@ import * as React from "react";
 import { WithTranslation, withTranslation } from "react-i18next";
 
 // components
-import { EditButton } from "../buttons/EditButton";
 import { ItemMenuPanelCaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
+import { JoinButton } from "../buttons/JoinButton";
+import { EditButton } from "../buttons/EditButton";
 import { RemoveButton } from "../buttons/RemoveButton";
 
 // consts/enums
 import { EditMode } from "../../common/componentEnums";
 
 export interface BacklogItemMenuStateProps {
+    isJoinItemClickAvailable: () => boolean;
     renderMobile?: boolean;
     showDetailMenuToLeft?: boolean;
 }
 
 export interface BacklogItemMenuDispatchProps {
     onEditItemClick?: { (): void };
+    onJoinItemClick?: { (): void };
     onRemoveItemClick?: { (): void };
 }
 
@@ -32,6 +35,15 @@ export const InnerProductBacklogItemMenu: React.FC<InnerProductBacklogItemMenuPr
                 : ItemMenuPanelCaretPosition.TopCenter
         }
     >
+        <JoinButton
+            suppressSpacing
+            disabled={!props.isJoinItemClickAvailable()}
+            onClick={() => {
+                if (props.onJoinItemClick) {
+                    props.onJoinItemClick();
+                }
+            }}
+        />
         <RemoveButton
             suppressSpacing
             onClick={() => {
