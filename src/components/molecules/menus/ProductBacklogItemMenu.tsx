@@ -35,15 +35,6 @@ export const InnerProductBacklogItemMenu: React.FC<InnerProductBacklogItemMenuPr
                 : ItemMenuPanelCaretPosition.TopCenter
         }
     >
-        <JoinButton
-            suppressSpacing
-            disabled={!props.isJoinItemClickAvailable()}
-            onClick={() => {
-                if (props.onJoinItemClick) {
-                    props.onJoinItemClick();
-                }
-            }}
-        />
         <RemoveButton
             suppressSpacing
             onClick={() => {
@@ -58,6 +49,15 @@ export const InnerProductBacklogItemMenu: React.FC<InnerProductBacklogItemMenuPr
             onClick={() => {
                 if (props.onEditItemClick) {
                     props.onEditItemClick();
+                }
+            }}
+        />
+        <JoinButton
+            suppressSpacing
+            disabled={!props.isJoinItemClickAvailable()}
+            onClick={() => {
+                if (props.onJoinItemClick) {
+                    props.onJoinItemClick();
                 }
             }}
         />
