@@ -46,7 +46,7 @@ import type {
     UpdateBacklogItemPartAction
 } from "../../actions/backlogItemPartActions";
 import type { ApiGetBacklogItemPartSuccessAction } from "../../actions/apiBacklogItemParts";
-import type { ApiBacklogItem, ApiBacklogItemSplitInfo } from "../../types/apiModelTypes";
+import type { ApiBacklogItem } from "../../types/apiModelTypes";
 
 // selectors
 import * as backlogItemsSliceSelectors from "./backlogItemsSliceSelectors";

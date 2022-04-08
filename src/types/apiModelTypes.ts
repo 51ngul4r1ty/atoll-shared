@@ -76,6 +76,11 @@ export type ApiBacklogItem = StandardItem &
         storyPhrase: string;
         reasonPhrase: string | null;
 
+        /* from ApiBacklogItemSplitInfo */
+        totalParts: number | null;
+        unallocatedParts: number | null;
+        unallocatedPoints: number | null;
+
         /* new fields */
         acceptanceCriteria: string | null;
         estimate: number | null;
