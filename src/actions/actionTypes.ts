@@ -1,5 +1,6 @@
 // consts/enums
 import * as Names from "./apiActionNames";
+import { POST_ACTION_JOIN_UNALLOCATED_BACKLOG_ITEM_PARTS } from "./apiActionNames";
 
 // utils
 import { buildFailureActionName, buildRequestActionName, buildSuccessActionName } from "./utils/apiActionUtils";
@@ -139,6 +140,16 @@ export const API_POST_ACTION_LOGIN_FAILURE = buildFailureActionName(Names.POST_A
 export const API_POST_ACTION_RETRY_TOKEN_REQUEST = buildRequestActionName(Names.POST_ACTION_REFRESH_TOKEN);
 export const API_POST_ACTION_RETRY_TOKEN_SUCCESS = buildSuccessActionName(Names.POST_ACTION_REFRESH_TOKEN);
 export const API_POST_ACTION_RETRY_TOKEN_FAILURE = buildFailureActionName(Names.POST_ACTION_REFRESH_TOKEN);
+
+export const API_POST_ACTION_JOIN_UNALLOCATED_BACKLOG_ITEM_PARTS_REQUEST = buildRequestActionName(
+    POST_ACTION_JOIN_UNALLOCATED_BACKLOG_ITEM_PARTS
+);
+export const API_POST_ACTION_JOIN_UNALLOCATED_BACKLOG_ITEM_PARTS_SUCCESS = buildSuccessActionName(
+    POST_ACTION_JOIN_UNALLOCATED_BACKLOG_ITEM_PARTS
+);
+export const API_POST_ACTION_JOIN_UNALLOCATED_BACKLOG_ITEM_PARTS_FAILURE = buildFailureActionName(
+    POST_ACTION_JOIN_UNALLOCATED_BACKLOG_ITEM_PARTS
+);
 // #endregion
 
 // #region API Batch actions

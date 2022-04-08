@@ -510,6 +510,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                     {...item}
                     editMode={props.editMode}
                     busySplittingStory={props.busySplittingStory}
+                    busyJoiningUnallocatedParts={props.busyJoiningUnallocatedParts}
                     renderMobile={props.renderMobile}
                     highlightAbove={highlightAbove}
                     suppressTopPadding={suppressTopPadding || lastItemWasUnsaved}

@@ -24,6 +24,7 @@ export interface BacklogItemPlanningPanelStateProps {
     allItems: BacklogItemWithSource[];
     editMode: EditMode;
     busySplittingStory: boolean;
+    busyJoiningUnallocatedParts: boolean;
     renderMobile?: boolean;
     openedDetailMenuBacklogItemId: string | null;
 }

@@ -17,8 +17,10 @@ export const productBacklogItemMenuBuilder = (eventHandlers: ItemMenuEventHandle
     <ProductBacklogItemMenu
         isJoinItemClickAvailable={() => eventHandlers.isEventSupported("onJoinItemClick")}
         showDetailMenuToLeft={showMenuToLeft}
+        busyJoiningUnallocatedParts={eventHandlers.isEventHandlerWaiting?.("onJoinItemClick")}
         onEditItemClick={() => eventHandlers.handleEvent("onEditItemClick", itemId)}
         onRemoveItemClick={() => eventHandlers.handleEvent("onRemoveItemClick", itemId)}
+        onJoinItemClick={() => eventHandlers.handleEvent("onJoinItemClick", itemId)}
     />
 );
 
@@ -30,9 +32,7 @@ export const sprintBacklogItemMenuBuilder = (
         <SprintBacklogItemMenu
             menuDisabled={eventHandlers.isEventSupported && !eventHandlers.isEventSupported()}
             showDetailMenuToLeft={showMenuToLeft}
-            busySplittingStory={
-                eventHandlers.isEventHandlerWaiting && eventHandlers.isEventHandlerWaiting("onSplitBacklogItemClick")
-            }
+            busySplittingStory={eventHandlers.isEventHandlerWaiting?.("onSplitBacklogItemClick")}
             splitToNextSprintAvailable={splitToNextSprintAvailable}
             onMoveItemToBacklogClick={() => eventHandlers.handleEvent("onMoveItemToBacklogClick", itemId)}
             onSplitBacklogItemClick={() => eventHandlers.handleEvent("onSplitBacklogItemClick", itemId)}

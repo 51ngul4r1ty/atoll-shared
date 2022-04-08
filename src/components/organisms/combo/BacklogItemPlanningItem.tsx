@@ -10,7 +10,7 @@ import type { ItemMenuEventHandlers } from "../../molecules/menus/menuBuilderTyp
 import { EditMode } from "../../common/componentEnums";
 
 // actions
-import { apiDeleteBacklogItem } from "../../../actions/apiBacklogItems";
+import { apiDeleteBacklogItem, apiJoinUnallocatedBacklogItemParts } from "../../../actions/apiBacklogItems";
 import {
     updateBacklogItemFields,
     saveNewBacklogItem,
@@ -41,6 +41,7 @@ import { computeProductBacklogItemEstimate } from "../panels/backlogItemPlanning
 export interface BacklogItemPlanningItemStateProps extends BacklogItemWithSource {
     editMode: EditMode;
     busySplittingStory: boolean;
+    busyJoiningUnallocatedParts: boolean;
     highlightAbove: boolean;
     renderMobile: boolean;
     showDetailMenu: boolean;
@@ -109,11 +110,13 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     dispatch(editBacklogItem(props.id));
                 } else if (eventName === "onRemoveItemClick") {
                     dispatch(apiDeleteBacklogItem(props.id));
+                } else if (eventName === "onJoinItemClick") {
+                    dispatch(apiJoinUnallocatedBacklogItemParts(props.id));
                 } else {
                     throw Error(`${eventName} is not handled`);
                 }
             },
-            isEventHandlerWaiting: (eventName: string) => eventName === "onSplitBacklogItemClick" && props.busySplittingStory,
+            isEventHandlerWaiting: (eventName: string) => eventName === "onJoinItemClick" && props.busyJoiningUnallocatedParts,
             isEventSupported: (eventName: string) => (eventName === "onJoinItemClick" ? props.unallocatedParts > 1 : true)
         };
         return (

@@ -33,6 +33,7 @@ export type BacklogItemsState = Readonly<{
     savedCurrentItem: SaveableBacklogItem;
     openedDetailMenuBacklogItemId: string | null;
     openedDetailMenuBacklogItemPartId: string | null;
+    joinUnallocatedPartsInProgress: boolean;
 }>;
 
 export interface EditableBacklogItem extends BacklogItem {

@@ -220,6 +220,31 @@ export const apiDeleteBacklogItem = (backlogItemId: string): ApiDeleteBacklogIte
     };
 };
 
+export type ApiJoinUnallocatedBacklogItemPartsSuccessAction = {
+    type: typeof ActionTypes.API_POST_ACTION_JOIN_UNALLOCATED_BACKLOG_ITEM_PARTS_SUCCESS;
+    payload: ApiActionSuccessPayloadForItem<ApiBacklogItem>;
+};
+export type ApiJoinUnallocatedBacklogItemPartsAction = ApiAction<ApiBacklogItem>;
+export const apiJoinUnallocatedBacklogItemParts = (
+    backlogItemId: string,
+    payloadOverride: ApiPayloadBase = {}
+): ApiJoinUnallocatedBacklogItemPartsAction => {
+    let result: ApiAction<ApiBacklogItem, {}, ApiPutBacklogItemMetaPassthrough> = {
+        type: API,
+        payload: {
+            ...{
+                endpoint: `${getApiBaseUrl()}api/v1/backlog-items/${backlogItemId}/join-unallocated-parts`,
+                method: "POST",
+                data: undefined,
+                headers: { Accept: APPLICATION_JSON },
+                types: buildActionTypes(ApiActionNames.POST_ACTION_JOIN_UNALLOCATED_BACKLOG_ITEM_PARTS)
+            },
+            ...payloadOverride
+        }
+    };
+    return result;
+};
+
 // #endregion
 
 // #region Actions

@@ -11,17 +11,18 @@ import { RemoveButton } from "../buttons/RemoveButton";
 // consts/enums
 import { EditMode } from "../../common/componentEnums";
 
-export interface BacklogItemMenuStateProps {
-    isJoinItemClickAvailable: () => boolean;
+export type BacklogItemMenuStateProps = {
+    busyJoiningUnallocatedParts: boolean;
     renderMobile?: boolean;
     showDetailMenuToLeft?: boolean;
-}
+    isJoinItemClickAvailable: () => boolean;
+};
 
-export interface BacklogItemMenuDispatchProps {
+export type BacklogItemMenuDispatchProps = {
     onEditItemClick?: { (): void };
     onJoinItemClick?: { (): void };
     onRemoveItemClick?: { (): void };
-}
+};
 
 export type ProductBacklogItemMenuProps = BacklogItemMenuStateProps & BacklogItemMenuDispatchProps;
 
@@ -54,6 +55,7 @@ export const InnerProductBacklogItemMenu: React.FC<InnerProductBacklogItemMenuPr
         />
         <JoinButton
             suppressSpacing
+            busy={props.busyJoiningUnallocatedParts}
             disabled={!props.isJoinItemClickAvailable()}
             onClick={() => {
                 if (props.onJoinItemClick) {
