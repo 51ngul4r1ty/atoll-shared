@@ -53,8 +53,15 @@ export type ItemWithStatusAndDates = {
     status: ApiBacklogItemStatus | null;
 };
 
+export type ApiBacklogItemSplitInfo = {
+    totalParts: number | null;
+    unallocatedParts: number | null;
+    unallocatedPoints: number | null;
+};
+
 export type ApiBacklogItem = StandardItem &
     StoryPhrases &
+    ApiBacklogItemSplitInfo &
     ItemWithStatusAndDates & {
         /* from BaseItem */
         id: uuid | null;
@@ -69,6 +76,11 @@ export type ApiBacklogItem = StandardItem &
         storyPhrase: string;
         reasonPhrase: string | null;
 
+        /* from ApiBacklogItemSplitInfo */
+        totalParts: number | null;
+        unallocatedParts: number | null;
+        unallocatedPoints: number | null;
+
         /* new fields */
         acceptanceCriteria: string | null;
         estimate: number | null;
@@ -77,10 +89,7 @@ export type ApiBacklogItem = StandardItem &
         friendlyId: string | null;
         partIndex: number | null;
         projectId: string | null;
-        totalParts: number | null;
         type: BacklogItemType;
-        unallocatedParts: number | null;
-        unallocatedPoints: number | null;
     };
 
 export type ApiBacklogItemWithParts = ApiBacklogItem & {

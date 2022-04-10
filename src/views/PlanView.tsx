@@ -35,6 +35,7 @@ import { SprintOpenedDatePickerInfo } from "../reducers/sprintsReducer";
 
 export interface PlanViewStateProps {
     allItems: BacklogItemWithSource[];
+    busyJoiningUnallocatedParts: boolean;
     busySplittingStory: boolean;
     editMode: EditMode;
     electronClient: boolean;
@@ -92,6 +93,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     className={css.backlog}
                     allItems={this.props.allItems}
                     editMode={this.props.editMode}
+                    busyJoiningUnallocatedParts={this.props.busyJoiningUnallocatedParts}
                     busySplittingStory={this.props.busySplittingStory}
                     openedDetailMenuBacklogItemId={this.props.openedDetailMenuBacklogItemId}
                     renderMobile={this.context.state?.isMobile}

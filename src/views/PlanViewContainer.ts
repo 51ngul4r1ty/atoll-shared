@@ -51,6 +51,7 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
     const sprints = sprintSelectors.getPlanViewSprints(state, includeArchivedSprints);
     let result: PlanViewStateProps = {
         allItems,
+        busyJoiningUnallocatedParts: backlogItemSelectors.isBusyJoiningUnallocatedParts(state),
         busySplittingStory: sprintBacklogSelectors.isSplitInProgress(state),
         editMode: appSelectors.getAppEditMode(state),
         electronClient: appSelectors.getElectronClient(state),

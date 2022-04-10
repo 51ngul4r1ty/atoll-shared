@@ -108,7 +108,6 @@ export enum BacklogItemTypeEnum {
 
 export interface BacklogItemCardStateProps {
     buildItemMenu?: ItemMenuBuilder;
-    busySplittingStory?: boolean;
     cardType?: BacklogItemCardType;
     estimate: number | null;
     hasDetails?: boolean;
@@ -158,10 +157,7 @@ export enum BacklogItemCardType {
 /* exported components */
 
 export const InnerBacklogItemCard: React.FC<InnerBacklogItemCardProps> = (props) => {
-    const busyButtonName = props.busySplittingStory ? "splitStory" : "";
-    const detailMenu = props.showDetailMenu
-        ? props.buildItemMenu(props.internalId, props.showDetailMenuToLeft, !!busyButtonName, busyButtonName)
-        : null;
+    const detailMenu = props.showDetailMenu ? props.buildItemMenu(props.internalId, props.showDetailMenuToLeft) : null;
     const classNameToUse = buildClassName(
         css.backlogItemCard,
         props.marginBelowItem ? css.marginBelowItem : null,

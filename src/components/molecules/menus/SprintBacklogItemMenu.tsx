@@ -38,80 +38,83 @@ export type SprintBacklogItemMenuProps = SprintBacklogItemMenuStateProps & Sprin
 
 export type InnerSprintBacklogItemMenuProps = SprintBacklogItemMenuProps & WithTranslation;
 
-export const InnerSprintBacklogItemMenu: React.FC<InnerSprintBacklogItemMenuProps> = (props) => (
-    <ItemMenuPanel
-        className={css.sprintBacklogItemMenu}
-        caretPosition={
-            props.showDetailMenuToLeft || props.renderMobile
-                ? ItemMenuPanelCaretPosition.RightTop
-                : ItemMenuPanelCaretPosition.TopCenter
-        }
-    >
-        <BacklogItemNotStartedButton
-            disabled={props.menuDisabled}
-            suppressSpacing
-            onClick={() => {
-                if (props.onBacklogItemNotStartedClick) {
-                    props.onBacklogItemNotStartedClick();
-                }
-            }}
-        />
-        <BacklogItemInProgressButton
-            disabled={props.menuDisabled}
-            suppressSpacing
-            onClick={() => {
-                if (props.onBacklogItemInProgressClick) {
-                    props.onBacklogItemInProgressClick();
-                }
-            }}
-        />
-        <BacklogItemDoneButton
-            disabled={props.menuDisabled}
-            suppressSpacing
-            onClick={() => {
-                if (props.onBacklogItemDoneClick) {
-                    props.onBacklogItemDoneClick();
-                }
-            }}
-        />
-        <BacklogItemAcceptedButton
-            disabled={props.menuDisabled}
-            suppressSpacing
-            onClick={() => {
-                if (props.onBacklogItemAcceptedClick) {
-                    props.onBacklogItemAcceptedClick();
-                }
-            }}
-        />
-        <BacklogItemReleasedButton
-            disabled={props.menuDisabled}
-            suppressSpacing
-            onClick={() => {
-                if (props.onBacklogItemReleasedClick) {
-                    props.onBacklogItemReleasedClick();
-                }
-            }}
-        />
-        <SplitToNextSprintButton
-            disabled={props.menuDisabled || !props.splitToNextSprintAvailable}
-            busy={props.busySplittingStory}
-            suppressSpacing
-            onClick={() => {
-                if (props.onSplitBacklogItemClick) {
-                    props.onSplitBacklogItemClick();
-                }
-            }}
-        />
-        <MoveToBacklogButton
-            disabled={props.menuDisabled}
-            suppressSpacing
-            onClick={() => {
-                if (props.onMoveItemToBacklogClick) {
-                    props.onMoveItemToBacklogClick();
-                }
-            }}
-        />
-    </ItemMenuPanel>
-);
+export const InnerSprintBacklogItemMenu: React.FC<InnerSprintBacklogItemMenuProps> = (props) => {
+    const menuDisabled = props.menuDisabled;
+    return (
+        <ItemMenuPanel
+            className={css.sprintBacklogItemMenu}
+            caretPosition={
+                props.showDetailMenuToLeft || props.renderMobile
+                    ? ItemMenuPanelCaretPosition.RightTop
+                    : ItemMenuPanelCaretPosition.TopCenter
+            }
+        >
+            <BacklogItemNotStartedButton
+                disabled={menuDisabled}
+                suppressSpacing
+                onClick={() => {
+                    if (props.onBacklogItemNotStartedClick) {
+                        props.onBacklogItemNotStartedClick();
+                    }
+                }}
+            />
+            <BacklogItemInProgressButton
+                disabled={menuDisabled}
+                suppressSpacing
+                onClick={() => {
+                    if (props.onBacklogItemInProgressClick) {
+                        props.onBacklogItemInProgressClick();
+                    }
+                }}
+            />
+            <BacklogItemDoneButton
+                disabled={menuDisabled}
+                suppressSpacing
+                onClick={() => {
+                    if (props.onBacklogItemDoneClick) {
+                        props.onBacklogItemDoneClick();
+                    }
+                }}
+            />
+            <BacklogItemAcceptedButton
+                disabled={menuDisabled}
+                suppressSpacing
+                onClick={() => {
+                    if (props.onBacklogItemAcceptedClick) {
+                        props.onBacklogItemAcceptedClick();
+                    }
+                }}
+            />
+            <BacklogItemReleasedButton
+                disabled={menuDisabled}
+                suppressSpacing
+                onClick={() => {
+                    if (props.onBacklogItemReleasedClick) {
+                        props.onBacklogItemReleasedClick();
+                    }
+                }}
+            />
+            <SplitToNextSprintButton
+                disabled={menuDisabled || !props.splitToNextSprintAvailable}
+                busy={props.busySplittingStory}
+                suppressSpacing
+                onClick={() => {
+                    if (props.onSplitBacklogItemClick) {
+                        props.onSplitBacklogItemClick();
+                    }
+                }}
+            />
+            <MoveToBacklogButton
+                disabled={menuDisabled}
+                suppressSpacing
+                onClick={() => {
+                    if (props.onMoveItemToBacklogClick) {
+                        props.onMoveItemToBacklogClick();
+                    }
+                }}
+            />
+        </ItemMenuPanel>
+    );
+};
 
 export const SprintBacklogItemMenu = withTranslation()(InnerSprintBacklogItemMenu);

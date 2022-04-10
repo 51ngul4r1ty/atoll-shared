@@ -58,7 +58,9 @@ export const getBacklogItemElts = (
             } else {
                 throw Error(`${eventName} is not handled`);
             }
-        }
+        },
+        isEventSupported: () => !busySplittingStory,
+        isEventHandlerWaiting: (eventName: string) => eventName === "onSplitBacklogItemClick" && busySplittingStory
     };
     if (!backlogItems) {
         return null;
@@ -73,7 +75,6 @@ export const getBacklogItemElts = (
                 <SimpleDivider />
                 <BacklogItemCard
                     key={buildBacklogItemKey(backlogItem)}
-                    busySplittingStory={busySplittingStory}
                     buildItemMenu={itemMenuBuilder}
                     estimate={backlogItem.estimate}
                     hasDetails={hasDetails}

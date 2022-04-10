@@ -29,7 +29,11 @@ import type { AppClickAction } from "../actions/appActions";
 import type { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
 import type { ApiBacklogItemInSprint } from "../types/apiModelTypes";
 import type { ApiGetSprintFailureAction } from "../actions/apiSprints";
-import type { ApiGetBacklogItemSuccessAction } from "../actions/apiBacklogItems";
+import type {
+    ApiBacklogItemPartWithSprintId,
+    ApiGetBacklogItemSuccessAction,
+    ApiJoinUnallocatedBacklogItemPartsSuccessAction
+} from "../actions/apiBacklogItems";
 
 // consts/enums
 import {
@@ -367,6 +371,33 @@ export const sprintBacklogReducer = (
             case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_FAILURE: {
                 draft.splitInProgress = false;
                 draft.openedDetailMenuBacklogItemId = null;
+                return;
+            }
+            case ActionTypes.API_POST_ACTION_JOIN_UNALLOCATED_BACKLOG_ITEM_PARTS_SUCCESS: {
+                const actionTyped = action as ApiJoinUnallocatedBacklogItemPartsSuccessAction;
+                const apiBacklogItem = actionTyped.payload.response.data.item;
+                const backlogItemId = apiBacklogItem.id;
+                const apiBacklogItemPartsBySprintId: { [sprintId: string]: ApiBacklogItemPartWithSprintId } = {};
+                const apiExtraData = actionTyped.payload.response.data.extra;
+                apiExtraData.backlogItemPartsWithSprintId.forEach((apiBacklogItemPartWithSprintId) => {
+                    const sprintId = apiBacklogItemPartWithSprintId.sprintId;
+                    if (sprintId) {
+                        apiBacklogItemPartsBySprintId[sprintId] = apiBacklogItemPartWithSprintId;
+                    }
+                });
+                Object.keys(draft.sprints).forEach((sprintId) => {
+                    const sprint = draft.sprints[sprintId];
+                    const isBacklogItemInSprint = sprint.backlogItemsInSprint[backlogItemId];
+                    if (isBacklogItemInSprint) {
+                        sprint.items.forEach((sprintBacklogItem) => {
+                            if (sprintBacklogItem.id === backlogItemId) {
+                                const apiBacklogItemPart = apiBacklogItemPartsBySprintId[sprintId];
+                                sprintBacklogItem.partIndex = apiBacklogItemPart.partIndex;
+                                sprintBacklogItem.totalParts = apiBacklogItem.totalParts;
+                            }
+                        });
+                    }
+                });
                 return;
             }
             case ActionTypes.APP_CLICK: {

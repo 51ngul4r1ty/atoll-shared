@@ -7,15 +7,16 @@ import { PushOperationType } from "../../types/pushEnums";
 import { PushState } from "../enums";
 
 // interfaces/types
-import { AnyFSA } from "../../types/reactHelperTypes";
-import {
+import type { AnyFSA } from "../../types/reactHelperTypes";
+import type {
     ApiPostBacklogItemSuccessAction,
     ApiGetBacklogItemsSuccessAction,
     ApiGetBacklogItemSuccessAction,
-    ApiDeleteBacklogItemSuccessAction
+    ApiDeleteBacklogItemSuccessAction,
+    ApiJoinUnallocatedBacklogItemPartsSuccessAction
 } from "../../actions/apiBacklogItems";
-import { ApiGetBffViewsPlanSuccessAction } from "../../actions/apiBffViewsPlan";
-import {
+import type { ApiGetBffViewsPlanSuccessAction } from "../../actions/apiBffViewsPlan";
+import type {
     AddNewBacklogItemFormAction,
     AddProductBacklogItemAction,
     CancelEditBacklogItemAction,
@@ -29,19 +30,23 @@ import {
     UpdateBacklogItemAction,
     UpdateBacklogItemFieldsAction
 } from "../../actions/backlogItemActions";
-import { AppClickAction, AppKeyUpAction } from "../../actions/appActions";
-import { BacklogItemsState, BacklogItemWithSource, SaveableBacklogItem } from "./backlogItemsReducerTypes";
-import { MoveBacklogItemToSprintAction } from "../../actions/sprintBacklogActions";
-import { BacklogItemInstanceEditableFields } from "../../components/organisms/forms/backlogItemFormTypes";
-import { ApiGetBffViewsBacklogItemSuccessAction } from "../../actions/apiBffViewsBacklogItem";
-import { UpdateBacklogItemPartFieldAction, UpdateCurrentBacklogItemFieldsAction } from "../../actions/currentBacklogItemActions";
-import {
+import type { AppClickAction, AppKeyUpAction } from "../../actions/appActions";
+import type { BacklogItemsState, BacklogItemWithSource, SaveableBacklogItem } from "./backlogItemsReducerTypes";
+import type { MoveBacklogItemToSprintAction } from "../../actions/sprintBacklogActions";
+import type { BacklogItemInstanceEditableFields } from "../../components/organisms/forms/backlogItemFormTypes";
+import type { ApiGetBffViewsBacklogItemSuccessAction } from "../../actions/apiBffViewsBacklogItem";
+import type {
+    UpdateBacklogItemPartFieldAction,
+    UpdateCurrentBacklogItemFieldsAction
+} from "../../actions/currentBacklogItemActions";
+import type {
     CancelEditBacklogItemPartAction,
     EditBacklogItemPartAction,
     ToggleBacklogItemPartDetailAction,
     UpdateBacklogItemPartAction
 } from "../../actions/backlogItemPartActions";
-import { ApiGetBacklogItemPartSuccessAction } from "../../actions/apiBacklogItemParts";
+import type { ApiGetBacklogItemPartSuccessAction } from "../../actions/apiBacklogItemParts";
+import type { ApiBacklogItem } from "../../types/apiModelTypes";
 
 // selectors
 import * as backlogItemsSliceSelectors from "./backlogItemsSliceSelectors";
@@ -73,7 +78,8 @@ export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>(
     selectedItemIds: [],
     currentItem: null,
     currentItemPartsAndSprints: [],
-    savedCurrentItem: null
+    savedCurrentItem: null,
+    joinUnallocatedPartsInProgress: false
 });
 
 export const hasMultipleUnallocatedParts = (backlogItem: SaveableBacklogItem) => {
@@ -122,7 +128,7 @@ export const removeBacklogItem = (
     return result;
 };
 
-export const unselectProductBacklogItemId = (draft: Draft<BacklogItemsState>, backlogItemId: string) => {
+export const unselectProductBacklogItemId = (draft: Draft<BacklogItemsState>, backlogItemId: string): boolean => {
     const itemIdx = draft.selectedItemIds.indexOf(backlogItemId);
     if (itemIdx >= 0) {
         draft.selectedItemIds.splice(itemIdx, 1);
@@ -144,8 +150,7 @@ export const backlogItemsReducer = (
                 draft.items = mapApiItemsToBacklogItems(payload.response.data.items);
                 draft.pushedItems = [];
                 draft.addedItems = [];
-                rebuildAllItems(draft);
-                return;
+                return rebuildAllItems(draft);
             }
             case ActionTypes.API_GET_BFF_VIEWS_PLAN_SUCCESS: {
                 const actionTyped = action as ApiGetBffViewsPlanSuccessAction;
@@ -153,23 +158,11 @@ export const backlogItemsReducer = (
                 draft.items = mapApiItemsToBacklogItems(payload.response.data.backlogItems);
                 draft.pushedItems = [];
                 draft.addedItems = [];
-                rebuildAllItems(draft);
-                return;
+                return rebuildAllItems(draft);
             }
             case ActionTypes.API_GET_BACKLOG_ITEM_SUCCESS: {
                 const actionTyped = action as ApiGetBacklogItemSuccessAction;
-                const { payload } = actionTyped;
-                const backlogItem = mapApiItemToBacklogItem(payload.response.data.item);
-                const newItems = [];
-                draft.items.forEach((item) => {
-                    if (item.id === backlogItem.id) {
-                        item = { ...item, ...backlogItem };
-                    }
-                    newItems.push(item);
-                });
-                draft.items = newItems;
-                rebuildAllItems(draft);
-                return;
+                return handleFetchedBacklogItem(draft, actionTyped.payload.response.data.item);
             }
             case ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS: {
                 const actionTyped = action as ApiPostBacklogItemSuccessAction;
@@ -183,8 +176,7 @@ export const backlogItemsReducer = (
                         addedItem.saved = true;
                     }
                 });
-                rebuildAllItems(draft);
-                return;
+                return rebuildAllItems(draft);
             }
             case ActionTypes.ADD_BACKLOG_ITEM_FORM: {
                 const actionTyped = action as AddNewBacklogItemFormAction;
@@ -197,8 +189,7 @@ export const backlogItemsReducer = (
                         saved: false
                     } as SaveableBacklogItem
                 ];
-                rebuildAllItems(draft);
-                return;
+                return rebuildAllItems(draft);
             }
             case ActionTypes.CANCEL_UNSAVED_BACKLOG_ITEM: {
                 const actionTyped = action as CancelUnsavedBacklogItemAction;
@@ -209,24 +200,21 @@ export const backlogItemsReducer = (
                     }
                 });
                 draft.addedItems = newItems;
-                rebuildAllItems(draft);
-                return;
+                return rebuildAllItems(draft);
             }
             case ActionTypes.CANCEL_EDIT_BACKLOG_ITEM: {
                 const actionTyped = action as CancelEditBacklogItemAction;
                 updateItemById(draft, actionTyped.payload.itemId, (item) => {
                     item.editing = false;
                 });
-                rebuildAllItems(draft);
-                return;
+                return rebuildAllItems(draft);
             }
             case ActionTypes.UPDATE_BACKLOG_ITEM: {
                 const actionTyped = action as UpdateBacklogItemAction;
                 updateItemById(draft, actionTyped.payload.id, (item) => {
                     item.editing = false;
                 });
-                rebuildAllItems(draft);
-                return;
+                return rebuildAllItems(draft);
             }
             case ActionTypes.UPDATE_CURRENT_BACKLOG_ITEM_FIELDS:
             case ActionTypes.UPDATE_BACKLOG_ITEM_FIELDS: {
@@ -237,8 +225,7 @@ export const backlogItemsReducer = (
                 }
                 const actionTyped = action as UpdateBacklogItemFieldsAction;
                 const payload = actionTyped.payload;
-                updateBacklogItemFieldsInItemsAndAddedItems(draft, payload);
-                return;
+                return updateBacklogItemFieldsInItemsAndAddedItems(draft, payload);
             }
             case ActionTypes.RECEIVE_PUSHED_BACKLOG_ITEM: {
                 const actionTyped = action as ReceivePushedBacklogItemAction;
@@ -250,8 +237,7 @@ export const backlogItemsReducer = (
                     }
                 }
                 draft.pushedItems.push(actionTyped.payload);
-                rebuildAllItems(draft);
-                return;
+                return rebuildAllItems(draft);
             }
             case ActionTypes.APP_CLICK: {
                 const actionTyped = action as AppClickAction;
@@ -313,19 +299,17 @@ export const backlogItemsReducer = (
             }
             case ActionTypes.CANCEL_EDIT_BACKLOG_ITEM_PART: {
                 const actionTyped = action as CancelEditBacklogItemPartAction;
-                turnOffEditModeForBacklogItemPart(draft, actionTyped.payload.itemId);
-                return;
+                return turnOffEditModeForBacklogItemPart(draft, actionTyped.payload.itemId);
             }
             case ActionTypes.UPDATE_BACKLOG_ITEM_PART: {
                 const actionTyped = action as UpdateBacklogItemPartAction;
-                turnOffEditModeForBacklogItemPart(draft, actionTyped.payload.id);
-                return;
+                return turnOffEditModeForBacklogItemPart(draft, actionTyped.payload.id);
             }
             case ActionTypes.API_GET_BACKLOG_ITEM_PART_SUCCESS: {
                 const actionTyped = action as ApiGetBacklogItemPartSuccessAction;
                 const apiBacklogItemPart = actionTyped.payload.response.data.item;
                 const backlogItemPart = mapApiItemToBacklogItemPart(apiBacklogItemPart);
-                updateCurrentItemPartById(draft, apiBacklogItemPart.id, (item) => {
+                return updateCurrentItemPartById(draft, apiBacklogItemPart.id, (item) => {
                     item.part = {
                         ...item.part,
                         externalId: backlogItemPart.externalId,
@@ -335,7 +319,6 @@ export const backlogItemsReducer = (
                         finishedAt: backlogItemPart.finishedAt
                     };
                 });
-                return;
             }
             case ActionTypes.REORDER_BACKLOG_ITEM: {
                 const actionTyped = action as ReorderBacklogItemAction;
@@ -403,16 +386,14 @@ export const backlogItemsReducer = (
                 if (itemWasRemoved) {
                     unselectProductBacklogItemId(draft, backlogItemId);
                 }
-                rebuildAllItems(draft);
-                return;
+                return rebuildAllItems(draft);
             }
             case ActionTypes.REMOVE_PRODUCT_BACKLOG_ITEM: {
                 const actionTyped = action as RemoveProductBacklogItemAction;
                 const backlogItemId = actionTyped.payload.backlogItemId;
                 removeBacklogItem(draft, backlogItemId);
                 unselectProductBacklogItemId(draft, backlogItemId);
-                rebuildAllItems(draft);
-                return;
+                return rebuildAllItems(draft);
             }
             case ActionTypes.ADD_PRODUCT_BACKLOG_ITEM: {
                 const actionTyped = action as AddProductBacklogItemAction;
@@ -430,8 +411,7 @@ export const backlogItemsReducer = (
                 } else {
                     draft.items = [newItem, ...draft.items];
                 }
-                rebuildAllItems(draft);
-                return;
+                return rebuildAllItems(draft);
             }
             case ActionTypes.UPDATE_BACKLOG_ITEM_PART_FIELD: {
                 const actionTyped = action as UpdateBacklogItemPartFieldAction;
@@ -513,7 +493,21 @@ export const backlogItemsReducer = (
                     acceptedAt: resetItem.acceptedAt,
                     releasedAt: resetItem.releasedAt
                 };
-                updateBacklogItemFieldsInItemsAndAddedItems(draft, item);
+                return updateBacklogItemFieldsInItemsAndAddedItems(draft, item);
+            }
+            case ActionTypes.API_POST_ACTION_JOIN_UNALLOCATED_BACKLOG_ITEM_PARTS_REQUEST: {
+                draft.joinUnallocatedPartsInProgress = true;
+                return;
+            }
+            case ActionTypes.API_POST_ACTION_JOIN_UNALLOCATED_BACKLOG_ITEM_PARTS_FAILURE: {
+                draft.joinUnallocatedPartsInProgress = false;
+                return;
+            }
+            case ActionTypes.API_POST_ACTION_JOIN_UNALLOCATED_BACKLOG_ITEM_PARTS_SUCCESS: {
+                const actionTyped = action as ApiJoinUnallocatedBacklogItemPartsSuccessAction;
+                draft.joinUnallocatedPartsInProgress = false;
+                handleFetchedBacklogItem(draft, actionTyped.payload.response.data.item);
+                draft.openedDetailMenuBacklogItemId = null;
                 return;
             }
             case ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_FAILURE: {
@@ -522,4 +516,17 @@ export const backlogItemsReducer = (
             }
         }
     });
+};
+
+const handleFetchedBacklogItem = (draft: Draft<BacklogItemsState>, payloadBacklogItem: ApiBacklogItem): void => {
+    const backlogItem = mapApiItemToBacklogItem(payloadBacklogItem);
+    const newItems = [];
+    draft.items.forEach((item) => {
+        if (item.id === backlogItem.id) {
+            item = { ...item, ...backlogItem };
+        }
+        newItems.push(item);
+    });
+    draft.items = newItems;
+    rebuildAllItems(draft);
 };

@@ -125,7 +125,7 @@ export const addPushedUpdatedItemsToAllItemsArray = (draft: Draft<BacklogItemsSt
     });
 };
 
-export const rebuildAllItems = (draft: Draft<BacklogItemsState>) => {
+export const rebuildAllItems = (draft: Draft<BacklogItemsState>): void => {
     const allItems = new LinkedList<BacklogItemWithSource>();
 
     const addedItems = draft.addedItems.map((item) => addSource(item, Source.Added));
@@ -195,7 +195,7 @@ export const updateCurrentItemPartById = (
     draft: Draft<BacklogItemsState>,
     itemId: string,
     updateItem: { (item: BacklogItemPartAndSprintWithUiState) }
-) => {
+): void => {
     const idx = draft.currentItemPartsAndSprints.findIndex((item) => item.part.id === itemId);
     if (idx >= 0) {
         updateItem(draft.currentItemPartsAndSprints[idx] as BacklogItemPartAndSprintWithUiState);
@@ -205,7 +205,7 @@ export const updateCurrentItemPartById = (
 export const updateBacklogItemFieldsInItemsAndAddedItems = (
     draft: Draft<BacklogItemsState>,
     payload: BacklogItemInstanceEditableFields
-) => {
+): void => {
     draft.addedItems.forEach((addedItem) => {
         if (idsMatch(addedItem, payload)) {
             updateBacklogItemFields(addedItem, payload);
@@ -219,7 +219,7 @@ export const updateBacklogItemFieldsInItemsAndAddedItems = (
     updateItemFieldsInAllItems(draft, payload);
 };
 
-export const turnOffEditModeForBacklogItemPart = (draft: Draft<BacklogItemsState>, id: string) => {
+export const turnOffEditModeForBacklogItemPart = (draft: Draft<BacklogItemsState>, id: string): void => {
     updateCurrentItemPartById(draft, id, (item) => {
         item.state.editable = false;
     });

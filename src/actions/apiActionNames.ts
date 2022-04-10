@@ -18,6 +18,7 @@ export const GET_USER_PREFS = "get-user-prefs";
 export const POST_ACTION_LOGIN = "login";
 export const POST_ACTION_REFRESH_TOKEN = "refresh-token";
 export const POST_ACTION_REORDER_BACKLOG_ITEM = "reorder-backlog-item";
+export const POST_ACTION_JOIN_UNALLOCATED_BACKLOG_ITEM_PARTS = "join-unallocated-backlog-item-parts";
 
 export const GET_SPRINT_BACKLOG_ITEMS = "get-sprint-backlog-items";
 export const POST_SPRINT_BACKLOG_ITEM = "add-sprint-backlog-item";

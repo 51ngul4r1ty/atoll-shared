@@ -138,6 +138,7 @@ describe("BacklogItemPlanningPanel", () => {
         const wrapper = render(
             <BacklogItemPlanningPanel
                 allItems={allItems}
+                busyJoiningUnallocatedParts={false}
                 busySplittingStory={false}
                 editMode={editMode}
                 onAddNewBacklogItemForm={() => {}}
@@ -157,6 +158,7 @@ describe("BacklogItemPlanningPanel", () => {
         const wrapper = render(
             <BacklogItemPlanningPanel
                 allItems={allItems}
+                busyJoiningUnallocatedParts={false}
                 busySplittingStory={false}
                 editMode={editMode}
                 onAddNewBacklogItemForm={() => {}}
@@ -175,6 +177,7 @@ describe("BacklogItemPlanningPanel", () => {
         const wrapper = render(
             <BacklogItemPlanningPanel
                 allItems={allItems}
+                busyJoiningUnallocatedParts={false}
                 busySplittingStory={false}
                 editMode={editMode}
                 onAddNewBacklogItemForm={() => {}}
@@ -193,6 +196,7 @@ describe("BacklogItemPlanningPanel", () => {
         const wrapper = render(
             <BacklogItemPlanningPanel
                 allItems={allItems}
+                busyJoiningUnallocatedParts={false}
                 busySplittingStory={false}
                 editMode={editMode}
                 onAddNewBacklogItemForm={() => {}}
@@ -213,6 +217,7 @@ describe("BacklogItemPlanningPanel", () => {
         const wrapper = render(
             <BacklogItemPlanningPanel
                 allItems={allItems}
+                busyJoiningUnallocatedParts={false}
                 busySplittingStory={false}
                 editMode={editMode}
                 onAddNewBacklogItemForm={() => {}}

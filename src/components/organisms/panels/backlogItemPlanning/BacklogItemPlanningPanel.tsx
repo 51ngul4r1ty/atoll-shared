@@ -85,7 +85,6 @@ export const buildDragBacklogItemElt = (
     return (
         <BacklogItemCard
             buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
-            busySplittingStory={false}
             cardType={BacklogItemCardType.ProductBacklogCard}
             estimate={computeProductBacklogItemEstimate(item.estimate, item.unallocatedPoints)}
             hasDetails={editMode === EditMode.Edit}
@@ -470,7 +469,6 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                 const dragOverItemBacklogItemCard = (
                     <BacklogItemCard
                         key={cardKey}
-                        busySplittingStory={false}
                         buildItemMenu={productBacklogItemMenuBuilder(itemEventHandlers)}
                         cardType={BacklogItemCardType.ProductBacklogCard}
                         estimate={null}
@@ -512,6 +510,7 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
                     {...item}
                     editMode={props.editMode}
                     busySplittingStory={props.busySplittingStory}
+                    busyJoiningUnallocatedParts={props.busyJoiningUnallocatedParts}
                     renderMobile={props.renderMobile}
                     highlightAbove={highlightAbove}
                     suppressTopPadding={suppressTopPadding || lastItemWasUnsaved}
