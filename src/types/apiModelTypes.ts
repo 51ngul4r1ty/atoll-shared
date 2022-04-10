@@ -59,6 +59,7 @@ export type ApiBacklogItemSplitInfo = {
     unallocatedPoints: number | null;
 };
 
+// TODO: Split out ApiProductBacklogItem and ApiSprintBacklogItem
 export type ApiBacklogItem = StandardItem &
     StoryPhrases &
     ApiBacklogItemSplitInfo &
@@ -87,7 +88,7 @@ export type ApiBacklogItem = StandardItem &
         storyEstimate: number | null;
         externalId: string | null;
         friendlyId: string | null;
-        partIndex: number | null;
+        partIndex: number | null; // TODO: This should probably be provided only for a sprint backlog item?
         projectId: string | null;
         type: BacklogItemType;
     };
