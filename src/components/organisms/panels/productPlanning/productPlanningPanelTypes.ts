@@ -42,7 +42,7 @@ export interface BacklogItemPlanningPanelDispatchProps {
     onReorderBacklogItems: OnReorderBacklogItems;
 }
 
-export type BacklogItemPlanningPanelProps = BacklogItemPlanningPanelStateProps &
+export type ProductPlanningPanelProps = BacklogItemPlanningPanelStateProps &
     BacklogItemPlanningPanelDispatchProps &
     WithTranslation;
 

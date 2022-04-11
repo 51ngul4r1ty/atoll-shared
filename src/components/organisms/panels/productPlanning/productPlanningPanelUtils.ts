@@ -2,14 +2,14 @@
 import * as loggingTags from "../../../../constants/loggingTags";
 
 // interfaces/types
-import { CardPosition } from "./backlogItemPlanningPanelTypes";
+import { CardPosition } from "./productPlanningPanelTypes";
 
 // utils
 import * as logger from "../../../../utils/logger";
 import { getParentWithDataClass } from "../../../common/domUtils";
 
 // costs/enums
-import { BELOW_LAST_CARD_ID, PAGE_EDGE_PERCENTAGE, PAGE_SCROLL_PERCENTAGE, SPACER_PREFIX } from "./backlogItemPlanningPanelConsts";
+import { BELOW_LAST_CARD_ID, PAGE_EDGE_PERCENTAGE, PAGE_SCROLL_PERCENTAGE, SPACER_PREFIX } from "./productPlanningPanelConsts";
 
 const getDragItemIdUnderDocumentTop = (documentTop: number, cardPositions: CardPosition[]) => {
     return getDragItemIdUnderCommon(documentTop, cardPositions);
