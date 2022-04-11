@@ -64,7 +64,7 @@ export interface ApiActionMetaData<U = undefined, P = undefined> {
  * "Success" and "Failure" API actions should have all of this metadata.
  */
 export interface ApiActionMetaDataRequestMeta<T = any, U = undefined, OA = undefined, P = undefined> {
-    // TODO: Document what originalActionArgs is used for
+    // TODO: Deprecate originalActionArgs... it has been superceded by "passthrough" data
     originalActionArgs?: OA;
     requestBody: ApiActionMetaDataRequestBody<T>;
     actionParams?: U;
