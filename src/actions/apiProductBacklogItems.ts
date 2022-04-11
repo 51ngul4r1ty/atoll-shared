@@ -11,25 +11,25 @@ import { APPLICATION_JSON } from "../constants";
 
 // interfaces/types
 import type { NoDataApiAction, ApiActionSuccessPayloadForCollection, ApiActionMetaDataRequestMeta } from "../middleware/apiTypes";
-import type { ApiBacklogItemRank } from "../types/apiModelTypes";
+import type { ApiProductBacklogItem } from "../types/apiModelTypes";
 
 // utils
 import { buildActionTypes } from "./utils/apiActionUtils";
 
 // #region Collection
 
-export interface ApiGetBacklogItemRanksSuccessAction {
+export interface ApiGetProductBacklogItemsSuccessAction {
     type: typeof ActionTypes.API_GET_BACKLOG_ITEM_RANKS_SUCCESS;
-    payload: ApiActionSuccessPayloadForCollection<ApiBacklogItemRank>;
+    payload: ApiActionSuccessPayloadForCollection<ApiProductBacklogItem>;
     meta: ApiActionMetaDataRequestMeta<{}>;
 }
-export const apiGetBacklogItemRanks = (): NoDataApiAction => ({
+export const apiGetProductBacklogItems = (): NoDataApiAction => ({
     type: API,
     payload: {
-        endpoint: `${getApiBaseUrl()}api/v1/backlog-item-ranks`,
+        endpoint: `${getApiBaseUrl()}api/v1/product-backlog-items`,
         method: "GET",
         headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
-        types: buildActionTypes(ApiActionNames.GET_BACKLOG_ITEM_RANKS)
+        types: buildActionTypes(ApiActionNames.GET_PRODUCT_BACKLOG_ITEMS)
     }
 });
 

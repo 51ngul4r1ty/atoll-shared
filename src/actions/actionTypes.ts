@@ -71,9 +71,9 @@ export const API_PATCH_BACKLOG_ITEM_PART_FAILURE = buildFailureActionName(Names.
 // #endregion
 
 // #region Backlog Item Ranks Resource Collection
-export const API_GET_BACKLOG_ITEM_RANKS_REQUEST = buildRequestActionName(Names.GET_BACKLOG_ITEM_RANKS);
-export const API_GET_BACKLOG_ITEM_RANKS_SUCCESS = buildSuccessActionName(Names.GET_BACKLOG_ITEM_RANKS);
-export const API_GET_BACKLOG_ITEM_RANKS_FAILURE = buildFailureActionName(Names.GET_BACKLOG_ITEM_RANKS);
+export const API_GET_BACKLOG_ITEM_RANKS_REQUEST = buildRequestActionName(Names.GET_PRODUCT_BACKLOG_ITEMS);
+export const API_GET_BACKLOG_ITEM_RANKS_SUCCESS = buildSuccessActionName(Names.GET_PRODUCT_BACKLOG_ITEMS);
+export const API_GET_BACKLOG_ITEM_RANKS_FAILURE = buildFailureActionName(Names.GET_PRODUCT_BACKLOG_ITEMS);
 // #endregion
 
 // #region Project Resource Collection

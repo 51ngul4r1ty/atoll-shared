@@ -406,7 +406,7 @@ describe("Linked List", () => {
         });
     });
     describe("addInitialLink + toArray - production issues", () => {
-        it("should be able to process links in any order (backlog item rank example 1)", () => {
+        it("should be able to process links in any order (product backlog item example 1)", () => {
             const list = new LinkedList<number>();
             list.addInitialLink("e522", "e9d6");
             list.addInitialLink("e9d6", "2da6");
@@ -420,7 +420,7 @@ describe("Linked List", () => {
             expect(list.isLastItem("2da6")).toBeTruthy();
             expect(list.toIdArray()).toStrictEqual(["fdd2", "3996", "aa81", "b2ca", "e522", "e9d6", "2da6"]);
         });
-        it("should be able to process links in any order (backlog item rank example 2)", () => {
+        it("should be able to process links in any order (product backlog item example 2)", () => {
             const list = new LinkedList<number>();
             list.addInitialLink("fdd3", null);
             list.addInitialLink("87b0", "4432");
@@ -432,8 +432,8 @@ describe("Linked List", () => {
             expect(list.isLastItem("fdd3")).toBeTruthy();
             expect(list.toIdArray()).toStrictEqual(["0290", "87b0", "4432", "363c", "fdd3"]);
         });
-        it("should be able to process links in any order (backlog item rank example 3)", () => {
-            const backlogItemRankDb = [
+        it("should be able to process links in any order (product backlog item example 3)", () => {
+            const productBacklogItemDb = [
                 { backlogitemId: "87b0ae7bfa0b450680e493e034a21e60", nextbacklogitemId: "4432c293678146669fcc955259e3f997" },
                 { backlogitemId: "4432c293678146669fcc955259e3f997", nextbacklogitemId: "363cf6c8872f4c56a2a2c3a9d4faa623" },
                 { backlogitemId: "fdd3a0a5f2934202b3943f2a5cc049e6", nextbacklogitemId: null },
@@ -446,7 +446,7 @@ describe("Linked List", () => {
                 { backlogitemId: "ff907e488d8c4b2dab9177cb10d56886", nextbacklogitemId: "740c116a3cbb4c5ca15f2a9c1ce158cc" }
             ];
             const list = new LinkedList<string>();
-            backlogItemRankDb.forEach((backlogItem) => {
+            productBacklogItemDb.forEach((backlogItem) => {
                 list.addInitialLink(backlogItem.backlogitemId, backlogItem.nextbacklogitemId);
             });
             const backlogItemDb = [

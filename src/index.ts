@@ -36,7 +36,7 @@ export { default as IntlProvider } from "./i18n/IntlProvider";
 export { AppContainer } from "./AppContainer";
 
 // containers - views
-export { BacklogItemRankViewContainer } from "./containers/debug/BacklogItemRankViewContainer";
+export { ProductBacklogItemViewContainer } from "./containers/debug/ProductBacklogItemViewContainer";
 export { BacklogItemViewContainer } from "./views/BacklogItemViewContainer";
 export { LoginViewContainer } from "./views/LoginViewContainer";
 export { PlanViewContainer } from "./views/PlanViewContainer";

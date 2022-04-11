@@ -183,7 +183,7 @@ export type ApiBacklogItemInSprint = ApiBacklogItem & {
     storyVersion: number;
 };
 
-export type ApiBacklogItemRank = StandardItem & {
+export type ApiProductBacklogItem = StandardItem & {
     projectId: string | null;
     backlogitemId: string | null;
     nextbacklogitemId: string | null;

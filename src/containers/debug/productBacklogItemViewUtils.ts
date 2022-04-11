@@ -1,15 +1,15 @@
 // components
-import { BacklogItemRankGroup, BacklogItemRankItem, RankItemType } from "./BacklogItemRankView";
+import { ProductBacklogItemGroup, ProductBacklogItemItem, RankItemType } from "./ProductBacklogItemView";
 
 // state
 import { StateTree } from "../../reducers/rootReducer";
 
 // selectors
-import { getBacklogItemRanks } from "../../selectors/backlogItemRankSelectors";
+import { getProductBacklogItems } from "../../selectors/productBacklogItemSelectors";
 
 // interfaces/types
-import { BacklogItemRank } from "../../reducers/backlogItemRanksReducer";
-import { AvailableRankItem, removeAvailableItem } from "./availableItemsUtils";
+import { ProductBacklogItem } from "../../reducers/productBacklogItemsReducer";
+import { AvailableProductBacklogItem, removeAvailableItem } from "./availableItemsUtils";
 
 export interface LinkCountObj {
     [id: string]: { linkCount: number; inPrevList: boolean; inNextList: boolean };
@@ -18,10 +18,10 @@ export interface LinkCountObj {
 const getIdLinkCount = (linkCountObj: LinkCountObj, id: string | null) => linkCountObj[`${null}`]?.linkCount || 0;
 
 const handleNewList = (
-    groupItems: BacklogItemRankItem[],
-    availableItems: AvailableRankItem[],
-    firstItem: BacklogItemRank,
-    lastItemAdded: BacklogItemRankItem,
+    groupItems: ProductBacklogItemItem[],
+    availableItems: AvailableProductBacklogItem[],
+    firstItem: ProductBacklogItem,
+    lastItemAdded: ProductBacklogItemItem,
     linkCountObj: LinkCountObj
 ) => {
     let itemsFound = availableItems.filter((item) => item.backlogItemId === firstItem.nextBacklogItemId);
@@ -58,8 +58,8 @@ const handleNewList = (
     }
 };
 
-const handleFirstItemFromAvailableList = (availableItems: AvailableRankItem[]): BacklogItemRank => {
-    let firstItem: BacklogItemRank;
+const handleFirstItemFromAvailableList = (availableItems: AvailableProductBacklogItem[]): ProductBacklogItem => {
+    let firstItem: ProductBacklogItem;
     // there should not be multiple lists, but there are, so we need to find the start of these lists and iterate
     // through them just like we did in handleNewList for the first list
     const listStartItems = availableItems.filter((item) => item.backlogItemId === null);
@@ -94,12 +94,12 @@ const handleFirstItemFromAvailableList = (availableItems: AvailableRankItem[]): 
 };
 
 const handleNewGroup = (
-    groups: BacklogItemRankGroup[],
-    availableItems: AvailableRankItem[],
-    firstItem: BacklogItemRank,
+    groups: ProductBacklogItemGroup[],
+    availableItems: AvailableProductBacklogItem[],
+    firstItem: ProductBacklogItem,
     linkCountObj: LinkCountObj
 ) => {
-    const group: BacklogItemRankGroup = {
+    const group: ProductBacklogItemGroup = {
         items: []
     };
     groups.push(group);
@@ -122,7 +122,7 @@ const handleNewGroup = (
 };
 
 export interface RankInfo {
-    rank: BacklogItemRank;
+    rank: ProductBacklogItem;
     processed: boolean;
 }
 
@@ -130,7 +130,7 @@ export const buildKeyFromId = (id: string | null | undefined) => {
     return !id ? "<<null>>" : `${id}`;
 };
 
-export const findCircularRefs = (ranks: BacklogItemRank[]) => {
+export const findCircularRefs = (ranks: ProductBacklogItem[]) => {
     let hasIssues = false;
     let message = "";
     let repeatedBacklogItemIds: string[] = [];
@@ -192,7 +192,7 @@ export const findCircularRefs = (ranks: BacklogItemRank[]) => {
         if (message) {
             message += "; ";
         }
-        message += `repeated backlog item rank IDs: ${repeatedBacklogItemIds.join(", ")}`;
+        message += `repeated product backlog item IDs: ${repeatedBacklogItemIds.join(", ")}`;
     }
     return {
         hasIssues,
@@ -202,11 +202,11 @@ export const findCircularRefs = (ranks: BacklogItemRank[]) => {
 
 export const buildGroups = (state: StateTree) => {
     const buildNewGroups = () => {
-        const groups: BacklogItemRankGroup[] = [];
+        const groups: ProductBacklogItemGroup[] = [];
         return groups;
     };
     const groups = buildNewGroups();
-    const ranks = getBacklogItemRanks(state);
+    const ranks = getProductBacklogItems(state);
     const circularRefResult = findCircularRefs(ranks);
     if (circularRefResult.hasIssues) {
         throw new Error(circularRefResult.message);
@@ -233,7 +233,7 @@ export const buildGroups = (state: StateTree) => {
             linkCountObj[`${rank.nextBacklogItemId}`].inNextList = true;
         }
     });
-    const availableItems: AvailableRankItem[] = ranks.map((rank) => ({ ...rank, linkCount: -1 }));
+    const availableItems: AvailableProductBacklogItem[] = ranks.map((rank) => ({ ...rank, linkCount: -1 }));
     if (listStartItems.length) {
         let firstItem = listStartItems[0];
         removeAvailableItem(availableItems, firstItem);
