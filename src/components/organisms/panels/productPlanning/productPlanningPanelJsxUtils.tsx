@@ -5,7 +5,7 @@ import * as React from "react";
 import { AddButton } from "../../../molecules/buttons/AddButton";
 
 // interfaces/types
-import { OnAddedNewBacklogItemForm } from "./backlogItemPlanningPanelTypes";
+import { OnAddedNewBacklogItemForm } from "./productPlanningPanelTypes";
 
 // consts/enums
 import { EditMode } from "../../../common/componentEnums";
@@ -14,7 +14,7 @@ import { EditMode } from "../../../common/componentEnums";
 import { buildClassName } from "../../../../utils/classNameBuilder";
 
 // style
-import css from "./BacklogItemPlanningPanel.module.css";
+import css from "./ProductPlanningPanel.module.css";
 
 export const addActionButtons = (
     renderElts: any[],

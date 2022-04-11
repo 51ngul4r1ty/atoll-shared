@@ -3,7 +3,7 @@ import * as React from "react";
 import Helmet from "react-helmet";
 
 // components
-import { BacklogItemPlanningPanel } from "../components/organisms/panels/backlogItemPlanning/BacklogItemPlanningPanel";
+import { ProductPlanningPanel } from "../components/organisms/panels/productPlanning/ProductPlanningPanel";
 import { TopMenuPanelContainer } from "../containers/TopMenuPanelContainer";
 import { SprintPlanningPanel } from "../components/organisms/panels/sprintPlanning/SprintPlanningPanel";
 import { SmartSpinner } from "../components/molecules/unique/smartSpinner/SmartSpinner";
@@ -89,7 +89,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
     render() {
         const pageContentsElts = (
             <div className={css.content}>
-                <BacklogItemPlanningPanel
+                <ProductPlanningPanel
                     className={css.backlog}
                     allItems={this.props.allItems}
                     editMode={this.props.editMode}

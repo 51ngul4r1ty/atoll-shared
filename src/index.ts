@@ -25,7 +25,7 @@ export { SprintDetailForm } from "./components/organisms/forms/SprintDetailForm"
 export { LoginForm } from "./components/organisms/forms/LoginForm";
 
 // components - panels
-export { BacklogItemPlanningPanel } from "./components/organisms/panels/backlogItemPlanning/BacklogItemPlanningPanel";
+export { ProductPlanningPanel } from "./components/organisms/panels/productPlanning/ProductPlanningPanel";
 export { SprintPlanningPanel } from "./components/organisms/panels/sprintPlanning/SprintPlanningPanel";
 
 // components - misc

@@ -13,7 +13,7 @@ import { number, text, select, boolean } from "@storybook/addon-knobs";
 import {
     BacklogItemDetailForm,
     BacklogItemFullDetailForm,
-    BacklogItemPlanningPanel,
+    ProductPlanningPanel,
     BacklogItemStatus,
     BacklogItemWithSource,
     EditMode,
@@ -284,10 +284,10 @@ storiesOf("Organisms/Panels/SprintPlanningPanel", module).add("SprintPlanningPan
     </div>
 ));
 
-storiesOf("Organisms/Panels/BacklogItemPlanningPanel", module).add("BacklogItemPlanningPanel", () => (
+storiesOf("Organisms/Panels/ProductPlanningPanel", module).add("ProductPlanningPanel", () => (
     <div>
         <Provider store={store}>
-            <BacklogItemPlanningPanel
+            <ProductPlanningPanel
                 allItems={allItems}
                 editMode={EditMode.Edit}
                 onAddNewBacklogItemForm={() => {

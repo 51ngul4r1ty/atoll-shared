@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BacklogItemPlanningPanel should handle scenario where 3 unsaved added items shown in sequence 1`] = `
+exports[`ProductPlanningPanel should handle scenario where 3 unsaved added items shown in sequence 1`] = `
 <div>
   <div
     class="backlogItemPlanningPanel"
@@ -25,7 +25,7 @@ exports[`BacklogItemPlanningPanel should handle scenario where 3 unsaved added i
 </div>
 `;
 
-exports[`BacklogItemPlanningPanel should handle scenario where unsaved form visible and user switches from edit to view mode 1`] = `
+exports[`ProductPlanningPanel should handle scenario where unsaved form visible and user switches from edit to view mode 1`] = `
 <div>
   <div
     class="backlogItemPlanningPanel"
@@ -40,7 +40,7 @@ exports[`BacklogItemPlanningPanel should handle scenario where unsaved form visi
 </div>
 `;
 
-exports[`BacklogItemPlanningPanel should include spacing between added items, action buttons and loaded items 1`] = `
+exports[`ProductPlanningPanel should include spacing between added items, action buttons and loaded items 1`] = `
 <div>
   <div
     class="backlogItemPlanningPanel"
@@ -63,7 +63,7 @@ exports[`BacklogItemPlanningPanel should include spacing between added items, ac
 </div>
 `;
 
-exports[`BacklogItemPlanningPanel should include spacing between added saved, added unsaved, and loaded item 1`] = `
+exports[`ProductPlanningPanel should include spacing between added saved, added unsaved, and loaded item 1`] = `
 <div>
   <div
     class="backlogItemPlanningPanel"
@@ -86,7 +86,7 @@ exports[`BacklogItemPlanningPanel should include spacing between added saved, ad
 </div>
 `;
 
-exports[`BacklogItemPlanningPanel should not include double spacing between added saved, added unsaved and action buttons 1`] = `
+exports[`ProductPlanningPanel should not include double spacing between added saved, added unsaved and action buttons 1`] = `
 <div>
   <div
     class="backlogItemPlanningPanel"

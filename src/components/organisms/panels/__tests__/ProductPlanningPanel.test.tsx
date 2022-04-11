@@ -14,7 +14,7 @@ import { BacklogItemStatus } from "../../../../types/backlogItemEnums";
 import type { BacklogItemWithSource } from "../../../../reducers/backlogItems/backlogItemsReducerTypes";
 
 // code under test
-import { BacklogItemPlanningPanel } from "../backlogItemPlanning/BacklogItemPlanningPanel";
+import { ProductPlanningPanel } from "../productPlanning/ProductPlanningPanel";
 
 // mocks
 const mockUseDispatch = jest.fn();
@@ -128,7 +128,7 @@ const buildAddedItem = (itemNumber: number, instanceId: number | null, estimate:
 const buildLoadedItem = (itemNumber: number, estimate: number): BacklogItemWithSource =>
     buildCommonItem(Source.Loaded, itemNumber, null, estimate);
 
-describe("BacklogItemPlanningPanel", () => {
+describe("ProductPlanningPanel", () => {
     it("should include spacing between added items, action buttons and loaded items", () => {
         const allItems = [];
         allItems.push(buildAddedItem(1, 1000, 13, false));
@@ -136,7 +136,7 @@ describe("BacklogItemPlanningPanel", () => {
         allItems.push(buildLoadedItem(3, 3));
         const editMode = EditMode.Edit;
         const wrapper = render(
-            <BacklogItemPlanningPanel
+            <ProductPlanningPanel
                 allItems={allItems}
                 busyJoiningUnallocatedParts={false}
                 busySplittingStory={false}
@@ -156,7 +156,7 @@ describe("BacklogItemPlanningPanel", () => {
         allItems.push(buildLoadedItem(3, 8));
         const editMode = EditMode.Edit;
         const wrapper = render(
-            <BacklogItemPlanningPanel
+            <ProductPlanningPanel
                 allItems={allItems}
                 busyJoiningUnallocatedParts={false}
                 busySplittingStory={false}
@@ -175,7 +175,7 @@ describe("BacklogItemPlanningPanel", () => {
         allItems.push(buildAddedItem(2, 3001, 5, false));
         const editMode = EditMode.Edit;
         const wrapper = render(
-            <BacklogItemPlanningPanel
+            <ProductPlanningPanel
                 allItems={allItems}
                 busyJoiningUnallocatedParts={false}
                 busySplittingStory={false}
@@ -194,7 +194,7 @@ describe("BacklogItemPlanningPanel", () => {
         allItems.push(buildLoadedItem(2, 8));
         const editMode = EditMode.View;
         const wrapper = render(
-            <BacklogItemPlanningPanel
+            <ProductPlanningPanel
                 allItems={allItems}
                 busyJoiningUnallocatedParts={false}
                 busySplittingStory={false}
@@ -215,7 +215,7 @@ describe("BacklogItemPlanningPanel", () => {
         allItems.push(buildLoadedItem(4, 8));
         const editMode = EditMode.Edit;
         const wrapper = render(
-            <BacklogItemPlanningPanel
+            <ProductPlanningPanel
                 allItems={allItems}
                 busyJoiningUnallocatedParts={false}
                 busySplittingStory={false}

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { withTranslation } from "react-i18next";
 
 // style
-import css from "./BacklogItemPlanningPanel.module.css";
+import css from "./ProductPlanningPanel.module.css";
 
 // components
 import {
@@ -40,13 +40,13 @@ import { BacklogItemPlanningItem } from "../../combo/BacklogItemPlanningItem";
 import { buildBacklogDisplayId } from "../../../../utils/backlogItemHelper";
 
 // interfaces/types
-import type { BacklogItemPlanningPanelProps } from "./backlogItemPlanningPanelTypes";
+import type { ProductPlanningPanelProps } from "./productPlanningPanelTypes";
 import type { ItemMenuEventHandlers } from "../../../molecules/menus/menuBuilderTypes";
 
 // consts/enums
 import * as loggingTags from "../../../../constants/loggingTags";
-import { CardPosition } from "./backlogItemPlanningPanelTypes";
-import { BELOW_LAST_CARD_ID } from "./backlogItemPlanningPanelConsts";
+import { CardPosition } from "./productPlanningPanelTypes";
+import { BELOW_LAST_CARD_ID } from "./productPlanningPanelConsts";
 
 // utils
 import {
@@ -64,8 +64,8 @@ import {
     scrollDown,
     scrollUp,
     targetIsDragButton
-} from "./backlogItemPlanningPanelUtils";
-import { addActionButtons } from "./backlogItemPlanningPanelJsxUtils";
+} from "./productPlanningPanelUtils";
+import { addActionButtons } from "./productPlanningPanelJsxUtils";
 import { productBacklogItemMenuBuilder } from "../../../common/itemMenuBuilders";
 
 /* exported components */
@@ -110,7 +110,7 @@ export const buildDragBacklogItemElt = (
     );
 };
 
-export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelProps> = (props) => {
+export const InnerProductPlanningPanel: React.FC<ProductPlanningPanelProps> = (props) => {
     logger.info("render(InnerBacklogItemPlanningPanel)", [loggingTags.DRAG_BACKLOGITEM]);
     // #region state with refs
 
@@ -560,4 +560,4 @@ export const InnerBacklogItemPlanningPanel: React.FC<BacklogItemPlanningPanelPro
     );
 };
 
-export const BacklogItemPlanningPanel = withTranslation()(InnerBacklogItemPlanningPanel);
+export const ProductPlanningPanel = withTranslation()(InnerProductPlanningPanel);

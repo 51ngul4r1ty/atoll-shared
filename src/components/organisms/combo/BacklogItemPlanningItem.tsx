@@ -36,7 +36,7 @@ import css from "./BacklogItemPlanningItem.module.css";
 import { buildClassName } from "../../../utils/classNameBuilder";
 import { buildBacklogDisplayId } from "../../../utils/backlogItemHelper";
 import { productBacklogItemMenuBuilder } from "../../common/itemMenuBuilders";
-import { computeProductBacklogItemEstimate } from "../panels/backlogItemPlanning/backlogItemPlanningPanelUtils";
+import { computeProductBacklogItemEstimate } from "../panels/productPlanning/productPlanningPanelUtils";
 
 export interface BacklogItemPlanningItemStateProps extends BacklogItemWithSource {
     editMode: EditMode;
