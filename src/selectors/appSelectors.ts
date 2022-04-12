@@ -3,11 +3,15 @@ import { createSelector } from "reselect";
 
 // interfaces/types
 import { EditMode } from "../components/common/componentEnums";
+
+// consts/enums
 import { POST_LOGIN_RETURN_ROUTE_TIMEOUT_SECONDS } from "../constants";
 
 // interfaces/types
-import { AppState, Locale } from "../reducers/appReducer";
-import { StateTree } from "../reducers/rootReducer";
+import type { AppState, Locale } from "../reducers/appReducer";
+import type { StateTree } from "../reducers/rootReducer";
+
+// utils
 import { timeoutExpired } from "../utils/dateHelper";
 
 export const app = (state: { app: AppState }): AppState => state.app;
