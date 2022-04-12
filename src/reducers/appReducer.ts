@@ -7,7 +7,11 @@ import { API_ACTION_STAGE_FAILURE, API_ACTION_STAGE_REQUEST, API_ACTION_STAGE_SU
 import { EditMode } from "../components/common/componentEnums";
 
 // interfaces/types
-import { AnyFSA } from "../types/reactHelperTypes";
+import type { AnyFSA } from "../types/reactHelperTypes";
+import type { ApiActionSuccessPayload, ApiStageAction } from "../middleware/apiTypes";
+import type { ApiPostSprintBacklogItemFailureAction } from "../actions/apiSprintBacklog";
+
+// actions
 import {
     SetUsernameAction,
     SetPasswordAction,
@@ -15,9 +19,9 @@ import {
     ActionPostRefreshTokenSuccessAction,
     ActionPostTokenResponseBase
 } from "../actions/authActions";
-import { ApiActionSuccessPayload, ApiStageAction } from "../middleware/apiTypes";
 import { LocalStoreRefreshTokenAction } from "../actions/appActions";
-import { ApiPostSprintBacklogItemFailureAction } from "../actions/apiSprintBacklog";
+
+// utils
 import { timeNow } from "../utils/dateHelper";
 
 export type Locale = "en_US" | "de_DE";
