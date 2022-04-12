@@ -67,6 +67,16 @@ export const daySequenceIs = (date1: Date | null | undefined, date2: Date | null
     return roundedDate2.getTime() > roundedDate1.getTime();
 };
 
+export const timeSequenceIs = (date1: Date, date2: Date): boolean => {
+    if (!date1 && date2) {
+        throw new Error("Unable to determine time sequence when first date provided is null/undefined");
+    }
+    if (date1 && !date2) {
+        throw new Error("Unable to determine time sequence when second date provided is null/undefined");
+    }
+    return date2.getTime() > date1.getTime();
+};
+
 export const MONTH_NAMES = [
     "January",
     "February",
@@ -113,6 +123,12 @@ export const stringToDate = (text: string): Date | null => {
         return null;
     }
     return result;
+};
+
+export const timeoutExpired = (date: Date | undefined, timeoutInSeconds: number): boolean => {
+    const now = timeNow();
+    const expiryDate = addSeconds(date, timeoutInSeconds);
+    return timeSequenceIs(expiryDate, now);
 };
 
 /**

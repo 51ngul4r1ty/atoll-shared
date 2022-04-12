@@ -1,5 +1,6 @@
 // interfaces/types
-import { Locale } from "../reducers/appReducer";
+import type { Locale } from "../reducers/appReducer";
+import type { FSA } from "../types/reactHelperTypes";
 
 // consts/enums
 import * as ActionTypes from "./actionTypes";
@@ -98,4 +99,14 @@ export const localStoreRefreshToken = (refreshToken: string): LocalStoreRefreshT
 
 export const errorPanelClick = () => ({
     type: ActionTypes.ERROR_PANEL_CLICK
+});
+
+export type StorePostLoginReturnRouteAction = FSA<typeof ActionTypes.STORE_RETURN_ROUTE, string>;
+export const storePostLoginReturnRoute = (returnRoute: string): StorePostLoginReturnRouteAction => ({
+    type: ActionTypes.STORE_RETURN_ROUTE,
+    payload: returnRoute
+});
+
+export const clearPostLoginReturnRoute = () => ({
+    type: ActionTypes.CLEAR_RETURN_ROUTE
 });

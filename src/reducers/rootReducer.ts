@@ -1,6 +1,6 @@
 // externals
 import { combineReducers } from "redux";
-import { connectRouter } from "connected-react-router";
+import { connectRouter, RouterState } from "connected-react-router";
 
 // reducers
 import { apiBatchReducer, apiBatchReducerInitialState, ApiBatchState } from "./apiBatchReducer";
@@ -30,6 +30,7 @@ export interface StateTree {
     sprintBacklog: SprintBacklogState;
     sprints: SprintsState;
     user: UserState;
+    router: RouterState;
 }
 
 export const rootReducerInitialState = {
