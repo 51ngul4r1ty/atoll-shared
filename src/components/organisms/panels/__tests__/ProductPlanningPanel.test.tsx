@@ -17,7 +17,7 @@ import type { BacklogItemWithSource } from "../../../../reducers/backlogItems/ba
 import { ProductPlanningPanel } from "../productPlanning/ProductPlanningPanel";
 
 // utils
-import { timeNow } from "../../../../utils";
+import { timeNow } from "../../../../utils/dateHelper";
 
 // mocks
 const mockUseDispatch = jest.fn();
