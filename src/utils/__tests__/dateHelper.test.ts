@@ -3,7 +3,6 @@ import "jest";
 
 // code under test
 import * as dateHelper from "../dateHelper";
-// import { addHours, addMinutes, addSeconds, isValidDate, roundDateToDayBoundary, stringToDate, timeoutExpired } from "../dateHelper";
 
 describe("Date Helper", () => {
     describe("addHours", () => {
