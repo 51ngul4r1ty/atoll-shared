@@ -1,5 +1,7 @@
+// interfaces/types
+import type { FSA } from "../types/reactHelperTypes";
+
 // consts/enums
-import { FSA } from "../types";
 import * as ActionTypes from "./actionTypes";
 
 export const routePlanView = () => ({
