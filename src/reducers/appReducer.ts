@@ -7,7 +7,11 @@ import { API_ACTION_STAGE_FAILURE, API_ACTION_STAGE_REQUEST, API_ACTION_STAGE_SU
 import { EditMode } from "../components/common/componentEnums";
 
 // interfaces/types
-import { AnyFSA } from "../types/reactHelperTypes";
+import type { AnyFSA } from "../types/reactHelperTypes";
+import type { ApiActionSuccessPayload, ApiStageAction } from "../middleware/apiTypes";
+import type { ApiPostSprintBacklogItemFailureAction } from "../actions/apiSprintBacklog";
+
+// actions
 import {
     SetUsernameAction,
     SetPasswordAction,
@@ -15,9 +19,10 @@ import {
     ActionPostRefreshTokenSuccessAction,
     ActionPostTokenResponseBase
 } from "../actions/authActions";
-import { ApiActionSuccessPayload, ApiStageAction } from "../middleware/apiTypes";
 import { LocalStoreRefreshTokenAction } from "../actions/appActions";
-import { ApiPostSprintBacklogItemFailureAction } from "../actions/apiSprintBacklog";
+
+// utils
+import { timeNow } from "../utils/dateHelper";
 
 export type Locale = "en_US" | "de_DE";
 
@@ -30,6 +35,8 @@ export type AppState = Readonly<{
     locale: Locale;
     message: string;
     password: string;
+    postLoginReturnRoute: string;
+    postLoginReturnRouteSetAt: Date | undefined;
     refreshToken: string;
     username: string;
 }>;
@@ -43,6 +50,8 @@ export const appReducerInitialState = Object.freeze<AppState>({
     locale: "en_US",
     message: "",
     password: "",
+    postLoginReturnRoute: "",
+    postLoginReturnRouteSetAt: undefined,
     refreshToken: null,
     username: ""
 });
@@ -119,6 +128,16 @@ export const appReducer = (state: AppState = appReducerInitialState, action: Any
             }
             case ActionTypes.API_GET_BFF_VIEWS_PLAN_FAILURE: {
                 draft.isPlanViewLoading = false;
+                return;
+            }
+            case ActionTypes.STORE_RETURN_ROUTE: {
+                draft.postLoginReturnRoute = action.payload || "";
+                draft.postLoginReturnRouteSetAt = timeNow();
+                return;
+            }
+            case ActionTypes.CLEAR_RETURN_ROUTE: {
+                draft.postLoginReturnRoute = "";
+                draft.postLoginReturnRouteSetAt = timeNow();
                 return;
             }
         }

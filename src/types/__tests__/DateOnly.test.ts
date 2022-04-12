@@ -1,13 +1,16 @@
 // test related
 import "jest";
 
+// utils
+import { timeNow } from "../../utils/dateHelper";
+
 // code under test
 import { DateOnly } from "../dateTypes";
 
 describe("DateOnly", () => {
     describe("constructor", () => {
         it("gets the current date when using constructor without args", () => {
-            const now = new Date();
+            const now = timeNow();
             const actual = new DateOnly();
             expect(actual.getYear()).toEqual(now.getFullYear());
             expect(actual.getMonth()).toEqual(now.getMonth() + 1);

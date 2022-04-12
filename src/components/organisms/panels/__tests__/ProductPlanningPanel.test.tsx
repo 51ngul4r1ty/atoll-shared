@@ -16,6 +16,9 @@ import type { BacklogItemWithSource } from "../../../../reducers/backlogItems/ba
 // code under test
 import { ProductPlanningPanel } from "../productPlanning/ProductPlanningPanel";
 
+// utils
+import { timeNow } from "../../../../utils/dateHelper";
+
 // mocks
 const mockUseDispatch = jest.fn();
 jest.mock("react-redux", () => ({
@@ -96,7 +99,7 @@ const buildCommonItem = (
     saved: boolean = true
 ): BacklogItemWithSource => ({
     acceptanceCriteria: "",
-    createdAt: new Date(),
+    createdAt: timeNow(),
     estimate,
     externalId: buildExternalId(source, itemNumber),
     friendlyId: buildFriendlyId(true, itemNumber),
@@ -109,7 +112,7 @@ const buildCommonItem = (
     source,
     storyPhrase: buildStoryPhrase(source, itemNumber),
     type: "story",
-    updatedAt: new Date(),
+    updatedAt: timeNow(),
     status: BacklogItemStatus.NotStarted,
     startedAt: new Date(2020, 11, 27, 19, 7, 32),
     finishedAt: new Date(2020, 11, 27, 19, 7, 32),

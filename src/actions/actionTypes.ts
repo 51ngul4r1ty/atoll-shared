@@ -163,6 +163,8 @@ export const API_BATCH_COMPLETED = "app/api-batch:completed";
 export const ROUTE_PLAN_VIEW = "app/route:plan-view";
 export const ROUTE_SPRINT_VIEW = "app/route:sprint-view";
 export const ROUTE_REVIEW_VIEW = "app/route:review-view";
+export const ROUTE_LOGIN_PAGE = "app/route:login-page";
+export const ROUTE_TO = "app/route-to";
 
 export const ADD_BACKLOG_ITEM_FORM = "app/add:backlog-item-form";
 export const SAVE_NEW_BACKLOG_ITEM = "app/save:backlog-item";
@@ -198,6 +200,8 @@ export const UNSELECT_PRODUCT_BACKLOG_ITEM = "app/unselect:product-backlog-item"
 
 export const SET_USERNAME = "app/user:set-username";
 export const SET_PASSWORD = "app/user:set-password";
+export const STORE_RETURN_ROUTE = "app/store:return-route";
+export const CLEAR_RETURN_ROUTE = "app/clear:return-route";
 
 export const LOGIN_USER = "app/user:login-user";
 
