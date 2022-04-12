@@ -9,7 +9,7 @@ export const SET_SPRINT_ARCHIVE_FLAG = "set-sprint-archive";
 
 export const GET_BACKLOG_ITEMS = "get-backlog-items";
 export const GET_BACKLOG_ITEM = "get-backlog-item";
-export const GET_BACKLOG_ITEM_RANKS = "get-backlog-item-ranks";
+export const GET_PRODUCT_BACKLOG_ITEMS = "get-product-backlog-items";
 
 export const GET_BACKLOG_ITEM_PART = "get-backlog-item-part";
 export const PATCH_BACKLOG_ITEM_PART = "patch-backlog-item-part";

@@ -1,11 +1,11 @@
 // interfaces/types
-import { BacklogItemRank } from "../../reducers/backlogItemRanksReducer";
+import { ProductBacklogItem } from "../../reducers/productBacklogItemsReducer";
 
-export interface AvailableRankItem extends BacklogItemRank {
+export interface AvailableProductBacklogItem extends ProductBacklogItem {
     linkCount: number;
 }
 
-export const removeAvailableItem = (availableItems: AvailableRankItem[], item: BacklogItemRank) => {
+export const removeAvailableItem = (availableItems: AvailableProductBacklogItem[], item: ProductBacklogItem) => {
     const countBefore = availableItems.length;
     let i = 0;
     let itemCount = availableItems.length;

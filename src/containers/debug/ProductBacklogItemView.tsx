@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // style
-import css from "./BacklogItemRankView.module.css";
+import css from "./ProductBacklogItemView.module.css";
 
 export enum RankItemType {
     None = 0,
@@ -14,36 +14,36 @@ export enum RankItemType {
     OrphanedListStartEnd = 6 // item ID is not null and next ID is not null
 }
 
-export interface BacklogItemRankItem {
+export interface ProductBacklogItemItem {
     itemText: string;
     nextText: string;
     itemType: RankItemType;
     linkCount: number;
 }
 
-export interface BacklogItemRankGroup {
-    items: BacklogItemRankItem[];
+export interface ProductBacklogItemGroup {
+    items: ProductBacklogItemItem[];
 }
 
-export interface BacklogItemRankViewStateProps {
-    groups: BacklogItemRankGroup[];
+export interface ProductBacklogItemViewStateProps {
+    groups: ProductBacklogItemGroup[];
     error: any;
 }
 
-export interface BacklogItemRankViewDispatchProps {
+export interface ProductBacklogItemViewDispatchProps {
     onLoad: { () };
 }
 
-export type BacklogItemRankViewProps = BacklogItemRankViewStateProps & BacklogItemRankViewDispatchProps;
+export type ProductBacklogItemViewProps = ProductBacklogItemViewStateProps & ProductBacklogItemViewDispatchProps;
 
-export const BacklogItemRankView: React.FC<BacklogItemRankViewProps> = (props) => {
+export const ProductBacklogItemView: React.FC<ProductBacklogItemViewProps> = (props) => {
     React.useEffect(() => {
         if (props.onLoad) {
             props.onLoad();
         }
     }, []);
     let groupIndex = 1;
-    const buildGroupItemElts = (items: BacklogItemRankItem[]) => {
+    const buildGroupItemElts = (items: ProductBacklogItemItem[]) => {
         let itemIndex = 1;
         return items.map((item) => (
             <div key={itemIndex++} className={css.row}>

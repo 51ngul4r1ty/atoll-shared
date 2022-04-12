@@ -6,7 +6,11 @@ import { connectRouter } from "connected-react-router";
 import { apiBatchReducer, apiBatchReducerInitialState, ApiBatchState } from "./apiBatchReducer";
 import { apiLinksReducer, apiLinksReducerInitialState, ApiLinkState } from "./apiLinksReducer";
 import { appReducer, appReducerInitialState, AppState } from "./appReducer";
-import { backlogItemRanksReducer, backlogItemRanksReducerInitialState, BacklogItemRanksState } from "./backlogItemRanksReducer";
+import {
+    productBacklogItemsReducer,
+    productBacklogItemsReducerInitialState,
+    ProductBacklogItemsState
+} from "./productBacklogItemsReducer";
 import { backlogItemsReducer, backlogItemsReducerInitialState } from "./backlogItems/backlogItemsReducer";
 import { featureTogglesReducer, featureTogglesReducerInitialState, FeatureTogglesState } from "./featureTogglesReducer";
 import { sprintBacklogReducer, sprintBacklogReducerInitialState, SprintBacklogState } from "./sprintBacklogReducer";
@@ -18,7 +22,7 @@ export interface StateTree {
     apiBatch: ApiBatchState;
     apiLinks: ApiLinkState;
     app: AppState;
-    backlogItemRanks: BacklogItemRanksState;
+    productBacklogItems: ProductBacklogItemsState;
     backlogItems: BacklogItemsState;
     electronClient: boolean;
     executingOnClient: boolean;
@@ -32,7 +36,7 @@ export const rootReducerInitialState = {
     apiBatch: apiBatchReducerInitialState,
     apiLinks: apiLinksReducerInitialState,
     app: appReducerInitialState,
-    backlogItemRanks: backlogItemRanksReducerInitialState,
+    productBacklogItems: productBacklogItemsReducerInitialState,
     backlogItems: backlogItemsReducerInitialState,
     featureToggles: featureTogglesReducerInitialState,
     sprintBacklog: sprintBacklogReducerInitialState,
@@ -46,7 +50,7 @@ const createRootReducer = (history: any) => {
         apiBatch: apiBatchReducer,
         apiLinks: apiLinksReducer,
         app: appReducer,
-        backlogItemRanks: backlogItemRanksReducer,
+        productBacklogItems: productBacklogItemsReducer,
         backlogItems: backlogItemsReducer,
         featureToggles: featureTogglesReducer,
         router,

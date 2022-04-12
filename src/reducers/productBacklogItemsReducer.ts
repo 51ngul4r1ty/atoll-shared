@@ -7,13 +7,13 @@ import * as ActionTypes from "../actions/actionTypes";
 // interfaces/types
 import type { AnyFSA } from "../types/reactHelperTypes";
 import type { BaseModelItem } from "../types/dataModelTypes";
-import type { ApiBacklogItemRank } from "../types/apiModelTypes";
-import type { ApiGetBacklogItemRanksSuccessAction } from "../actions/apiBacklogItemRanks";
+import type { ApiProductBacklogItem } from "../types/apiModelTypes";
+import type { ApiGetProductBacklogItemsSuccessAction } from "../actions/apiProductBacklogItems";
 
 // utils
 import { isoDateStringToDate } from "../utils/apiPayloadConverters";
 
-export interface BacklogItemRank extends BaseModelItem {
+export interface ProductBacklogItem extends BaseModelItem {
     id: string;
     projectId: string | null;
     backlogItemId: string | null;
@@ -23,15 +23,15 @@ export interface BacklogItemRank extends BaseModelItem {
     version: number;
 }
 
-export type BacklogItemRanksState = Readonly<{
-    items: BacklogItemRank[];
+export type ProductBacklogItemsState = Readonly<{
+    items: ProductBacklogItem[];
 }>;
 
-export const backlogItemRanksReducerInitialState = Object.freeze<BacklogItemRanksState>({
+export const productBacklogItemsReducerInitialState = Object.freeze<ProductBacklogItemsState>({
     items: []
 });
 
-export const mapApiItemToBacklogItemRank = (apiItem: ApiBacklogItemRank): BacklogItemRank => ({
+export const mapApiItemToProductBacklogItem = (apiItem: ApiProductBacklogItem): ProductBacklogItem => ({
     id: apiItem.id,
     projectId: apiItem.projectId,
     backlogItemId: apiItem.backlogitemId,
@@ -41,21 +41,21 @@ export const mapApiItemToBacklogItemRank = (apiItem: ApiBacklogItemRank): Backlo
     version: apiItem.version
 });
 
-export const mapApiItemsToBacklogItemRanks = (apiItems: ApiBacklogItemRank[]): BacklogItemRank[] => {
-    return apiItems.map((item) => mapApiItemToBacklogItemRank(item));
+export const mapApiItemsToProductBacklogItems = (apiItems: ApiProductBacklogItem[]): ProductBacklogItem[] => {
+    return apiItems.map((item) => mapApiItemToProductBacklogItem(item));
 };
 
-export const backlogItemRanksReducer = (
-    state: BacklogItemRanksState = backlogItemRanksReducerInitialState,
+export const productBacklogItemsReducer = (
+    state: ProductBacklogItemsState = productBacklogItemsReducerInitialState,
     action: AnyFSA
-): BacklogItemRanksState =>
+): ProductBacklogItemsState =>
     produce(state, (draft) => {
         const { type } = action;
         switch (type) {
             case ActionTypes.API_GET_BACKLOG_ITEM_RANKS_SUCCESS: {
-                const actionTyped = action as ApiGetBacklogItemRanksSuccessAction;
+                const actionTyped = action as ApiGetProductBacklogItemsSuccessAction;
                 const { payload } = actionTyped;
-                draft.items = mapApiItemsToBacklogItemRanks(payload.response.data.items);
+                draft.items = mapApiItemsToProductBacklogItems(payload.response.data.items);
                 return;
             }
         }
