@@ -125,7 +125,18 @@ export const stringToDate = (text: string): Date | null => {
     return result;
 };
 
+/**
+ * Determines whether a timeout has expired since the date provided.  If the date provided is
+ * falsy it will always return true because an undefined date is treated as the earliest possible
+ * date value (negative infinity for all intents and purposes).
+ * @param date Date instance or undefined value
+ * @param timeoutInSeconds for example, 120 means 2 minutes
+ * @returns true if the timeout has expired
+ */
 export const timeoutExpired = (date: Date | undefined, timeoutInSeconds: number): boolean => {
+    if (!date) {
+        return true;
+    }
     const now = timeNow();
     const expiryDate = addSeconds(date, timeoutInSeconds);
     return timeSequenceIs(expiryDate, now);

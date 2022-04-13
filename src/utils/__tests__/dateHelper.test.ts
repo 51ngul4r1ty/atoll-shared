@@ -99,5 +99,17 @@ describe("Date Helper", () => {
             // assert
             expect(actual).toBe(true);
         });
+        it("should return that timeout has expired when time provided is undefined", () => {
+            // arrange
+            const time1 = undefined;
+            const time2 = new Date("5/3/2020 11:56:15.000");
+            jest.spyOn(dateHelper, "timeNow").mockReturnValueOnce(time2);
+
+            // act
+            const actual = dateHelper.timeoutExpired(time1, 120);
+
+            // assert
+            expect(actual).toBe(true);
+        });
     });
 });

@@ -12,6 +12,7 @@ import type { RouteToAction } from "../actions/routeActions";
 // actions
 import { storePostLoginReturnRoute } from "../actions/appActions";
 
+// TODO: copy this pattern to all middleware + figure out type Next should have
 export const routingMiddleware = (store: MiddlewareAPI<Dispatch, StateTree>) => (next) => (action: Action) => {
     next(action);
     const state = store.getState();
