@@ -28,6 +28,7 @@ export interface ApiGetBffViewsPlanResponsePayload {
             sprints: ApiSprint[];
             sprintBacklogItems: ApiBacklogItemInSprint[] | undefined;
             userPreferences: ApiUserSettings;
+            expandedSprintId: string | null;
         };
     };
 }

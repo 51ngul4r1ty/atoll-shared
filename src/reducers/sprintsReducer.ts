@@ -52,7 +52,7 @@ export interface Sprint extends StandardModelItem {
     acceptedPoints: number | null;
     archived: boolean;
     backlogItemsLoaded: boolean;
-    expanded: boolean;
+    expanded?: boolean;
     finishDate: DateOnly;
     name: string;
     plannedPoints: number | null;
@@ -228,14 +228,17 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             case ActionTypes.API_GET_BFF_VIEWS_PLAN_SUCCESS: {
                 const actionTyped = action as ApiGetBffViewsPlanSuccessAction;
                 const { payload } = actionTyped;
-                const sprints = mapApiItemsToSprints(payload.response.data.sprints);
+                const sprintsFromApi = mapApiItemsToSprints(payload.response.data.sprints);
+                const expandedSprintId = payload.response.data.expandedSprintId;
+                const sprints: Sprint[] = [];
+                sprintsFromApi.forEach((sprintFromApi) => {
+                    sprints.push({
+                        ...sprintFromApi,
+                        expanded: sprintFromApi.id === expandedSprintId
+                    });
+                });
                 draft.items = sprints;
-                const expandedSprints = sprints.filter((item) => item.expanded);
-                if (expandedSprints.length) {
-                    const expandedSprint = expandedSprints[0];
-                    const sprintId = expandedSprint.id;
-                    markBacklogItemsLoaded(draft, sprintId);
-                }
+                markBacklogItemsLoaded(draft, expandedSprintId);
                 rebuildAllItems(draft);
                 return;
             }

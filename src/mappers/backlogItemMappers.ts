@@ -94,6 +94,9 @@ export const mapApiItemsToBacklogItems = (apiItems: ApiBacklogItem[]): BacklogIt
     return apiItems.map((item) => mapApiItemToBacklogItem(item));
 };
 
-export const mapApiItemsToSprintBacklogItems = (apiItems: ApiBacklogItemInSprint[]): BacklogItemInSprint[] => {
+export const mapApiItemsToSprintBacklogItems = (apiItems: ApiBacklogItemInSprint[]): BacklogItemInSprint[] | null => {
+    if (!apiItems) {
+        return null;
+    }
     return apiItems.map((item) => mapApiItemToBacklogItemInSprint(item));
 };
