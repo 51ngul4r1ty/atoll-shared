@@ -2,11 +2,6 @@
 import { SprintStatus } from "../components/molecules/cards/sprintCard/sprintCardTypes";
 import { DateOnly } from "../types/dateTypes";
 
-export const determineSprintExpanded = (startDate: DateOnly, finishDate: DateOnly): boolean => {
-    const status = determineSprintStatus(startDate, finishDate);
-    return status === SprintStatus.NotStarted;
-};
-
 export const determineSprintStatus = (startDate: DateOnly, finishDate: DateOnly): SprintStatus => {
     const currentDate = new DateOnly();
     const afterSprintStart = currentDate.gte(startDate);

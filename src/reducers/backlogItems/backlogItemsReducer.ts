@@ -46,7 +46,7 @@ import type {
     UpdateBacklogItemPartAction
 } from "../../actions/backlogItemPartActions";
 import type { ApiGetBacklogItemPartSuccessAction } from "../../actions/apiBacklogItemParts";
-import type { ApiBacklogItem } from "../../types/apiModelTypes";
+import type { ApiBacklogItem, ApiSprint } from "../../types/apiModelTypes";
 
 // selectors
 import * as backlogItemsSliceSelectors from "./backlogItemsSliceSelectors";
@@ -438,9 +438,17 @@ export const backlogItemsReducer = (
                 const actionTyped = action as ApiGetBffViewsBacklogItemSuccessAction;
                 const backlogItem = actionTyped.payload.response.data.backlogItem;
                 const partsAndSprints = actionTyped.payload.response.data.backlogItemPartsAndSprints;
+                const buildSprintFromApiItem = (apiSprint: ApiSprint) => {
+                    const baseSprint = mapApiItemToSprint(apiSprint);
+                    const result = {
+                        ...baseSprint,
+                        expanded: false // don't expand any of them in the backlog item view
+                    };
+                    return result;
+                };
                 draft.currentItemPartsAndSprints = partsAndSprints.map((item) => ({
                     part: mapApiItemToBacklogItemPart(item.part),
-                    sprint: mapApiItemToSprint(item.sprint),
+                    sprint: buildSprintFromApiItem(item.sprint),
                     state: {
                         editable: false
                     }

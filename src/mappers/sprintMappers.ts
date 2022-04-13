@@ -5,7 +5,6 @@ import { DateOnly } from "../types/dateTypes";
 
 // utils
 import { isoDateStringToDate } from "../utils/apiPayloadConverters";
-import { determineSprintExpanded } from "../utils/sprintStatusHelper";
 
 export const mapApiItemToSprint = (apiItem: ApiSprint | null): Sprint | null => {
     if (!apiItem) {
@@ -18,7 +17,6 @@ export const mapApiItemToSprint = (apiItem: ApiSprint | null): Sprint | null => 
         archived: apiItem.archived,
         backlogItemsLoaded: false,
         createdAt: isoDateStringToDate(apiItem.createdAt),
-        expanded: determineSprintExpanded(startDate, finishDate),
         finishDate,
         id: apiItem.id,
         name: apiItem.name,

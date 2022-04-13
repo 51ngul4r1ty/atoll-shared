@@ -47,7 +47,6 @@ import { mapApiItemsToSprintBacklogItems } from "../mappers/backlogItemMappers";
 import { mapApiStatusToBacklogItem } from "../mappers/statusMappers";
 import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
 import { shouldHideDetailMenu } from "../components/utils/itemDetailMenuUtils";
-import { mapApiItemsToSprints } from "../mappers";
 import { getFlowInfoFromAction } from "../utils/actionFlowUtils";
 
 export interface SprintBacklogSprint {
@@ -335,11 +334,10 @@ export const sprintBacklogReducer = (
             case ActionTypes.API_GET_BFF_VIEWS_PLAN_SUCCESS: {
                 const actionTyped = action as ApiGetBffViewsPlanSuccessAction;
                 const { payload } = actionTyped;
-                const expandedSprints = mapApiItemsToSprints(payload.response.data.sprints).filter((item) => item.expanded);
-                if (expandedSprints.length) {
-                    const expandedSprint = expandedSprints[0];
-                    const sprintId = expandedSprint.id;
-                    addSprintBacklogItems(draft, sprintId, payload.response.data.sprintBacklogItems);
+                const sprintBacklogItems = payload.response.data.sprintBacklogItems;
+                const expandedSprintId = payload.response.data.expandedSprintId;
+                if (expandedSprintId) {
+                    addSprintBacklogItems(draft, expandedSprintId, sprintBacklogItems);
                 }
                 return;
             }
