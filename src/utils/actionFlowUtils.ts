@@ -17,8 +17,8 @@ export type FlowActionMeta = {
 
 export const getFlowInfoFromAction = <T extends FlowActionBase>(action: T): ActionFlowInfo => {
     const meta = action.meta;
-    const triggerAction = meta?.passthrough?.triggerAction || null;
-    const stepName = meta?.passthrough?.stepName || null;
+    const triggerAction = meta?.passthrough?.triggerAction ?? null;
+    const stepName = meta?.passthrough?.stepName ?? null;
     return {
         triggerAction,
         stepName

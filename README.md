@@ -31,3 +31,15 @@ Steps after Cloning Repo
 1. `npm ci` to install locked down dependency tree.
 2. `npm run build` to build this library for the first time.
 3. `npm run watch` to build this library and wait for changes to rebuild automatically.
+
+Publishing Atoll Shared Package
+===============================
+
+1. Log in to npm using credentials that will allow you to publish.
+2. `npm publish`
+
+Publishing Storybook to Github
+==============================
+
+1. `npm run publish:storybook`
+2. commit changes in `./docs/storybook` folder

@@ -34,7 +34,7 @@ export const getPostLoginReturnRoute = (state: StateTree): string | null => {
     // "forget" the route that they entered with.
     const expired = timeoutExpired(state.app.postLoginReturnRouteSetAt, POST_LOGIN_RETURN_ROUTE_TIMEOUT_SECONDS);
     if (!expired) {
-        return state.app.postLoginReturnRoute || null;
+        return state.app.postLoginReturnRoute ?? null;
     } else {
         return null;
     }

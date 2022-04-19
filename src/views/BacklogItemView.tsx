@@ -60,10 +60,11 @@ export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
         props.onLoaded(props.projectDisplayId, props.backlogItemDisplayId);
     }, []);
     const classNameToUse = "";
+    const title = `Backlog Item (${props.externalId || props.friendlyId || props.id})`;
     return (
         <>
             <Helmet>
-                <title>Backlog Item View</title>
+                <title>{title}</title>
                 <meta name="description" content="Shows backlog item detailed fields." />
             </Helmet>
             <TopMenuPanelContainer

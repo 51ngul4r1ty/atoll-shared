@@ -235,7 +235,7 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
             if (triggerAction === ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK) {
                 const apiBacklogItems = actionTyped.payload.response.data.items;
                 const sprintId = meta.passthrough.sprintId;
-                const backlogItemId = meta?.passthrough?.backlogItemId || null;
+                const backlogItemId = meta?.passthrough?.backlogItemId ?? null;
                 handleGetSprintBacklogItemsSuccessForItemDetailClick(
                     storeTyped,
                     stepName,

@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><title>Storybook</title><meta name="viewport" content="width=device-width,initial-scale=1"/><style>html, body {
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><title>Webpack App</title><meta name="viewport" content="width=device-width,initial-scale=1"/><style>html, body {
     overflow: hidden;
     height: 100%;
     width: 100%;
@@ -22,25 +22,38 @@
   window.onerror = function onerror(message, source, line, column, err) {
     if (window.CONFIG_TYPE !== 'DEVELOPMENT') return;
     // eslint-disable-next-line no-var, vars-on-top
-    var error = { message: err.message, name: err.name, stack: err.stack };
-    window.fetch('/runtime-error', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message, source, line, column, error, origin: 'manager' }),
-    });
+    var xhr = new window.XMLHttpRequest();
+    xhr.open('POST', '/runtime-error');
+    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    xhr.send(
+      JSON.stringify({
+        /* eslint-disable object-shorthand */
+        message: message,
+        source: source,
+        line: line,
+        column: column,
+        error: err && { message: err.message, name: err.name, stack: err.stack },
+        origin: 'manager',
+        /* eslint-enable object-shorthand */
+      })
+    );
   };</script><style>#root[hidden],
       #docs-root[hidden] {
         display: none !important;
       }</style></head><body><div id="root"></div><div id="docs-root"></div><script>window['CONFIG_TYPE'] = "PRODUCTION";
-            
-        
-            
-              window['LOGLEVEL'] = "info";
-            
-        
-            
-        
-            
-        
-            
-              window['DOCS_MODE'] = false;</script><script src="runtime~main.870e8ee0658e83d05c6b.bundle.js"></script><script src="vendors~main.72589c21b769df021178.bundle.js"></script><script src="main.9f47c2f6c7f4599dbf72.bundle.js"></script></body></html>
+          
+      
+          
+            window['LOGLEVEL'] = "info";
+          
+      
+          
+            window['FEATURES'] = {"postcss":true,"emotionAlias":true,"warnOnLegacyHierarchySeparator":true};
+          
+      
+          
+      
+          
+      
+          
+            window['DOCS_MODE'] = false;</script><script src="runtime~main.01f9d858068e1b7c6473.manager.bundle.js"></script><script src="vendors~main.ec324559ad8a4450ed0d.manager.bundle.js"></script><script src="main.e8f706d54cf0ec7588ed.manager.bundle.js"></script></body></html>
