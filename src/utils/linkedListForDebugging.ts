@@ -31,8 +31,8 @@ export class LinkedListForDebugging<T> extends LinkedList<T> {
                 result += " ] ";
             }
             if (curr.nextId) {
-                const linkToLastCurrId = curr.prevId || null;
-                const lastCurrId = lastCurr?.id || null;
+                const linkToLastCurrId = curr.prevId ?? null;
+                const lastCurrId = lastCurr?.id ?? null;
                 const linkBackGood = linkToLastCurrId === lastCurrId;
                 const linkBackBad = !linkBackGood && linkToLastCurrId !== null;
                 if (linkBackGood) {

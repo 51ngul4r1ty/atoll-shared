@@ -22,8 +22,8 @@ export const getCurrentBacklogItemParts = createSelector(
     (backlogItems: BacklogItemsState): BacklogItemPartForSplitForm[] => {
         return backlogItems.currentItemPartsAndSprints.map((partAndSprint) => {
             const part: BacklogItemPartForSplitForm = {
-                allocatedSprintId: partAndSprint.sprint?.id || null,
-                allocatedSprintName: partAndSprint.sprint?.name || null,
+                allocatedSprintId: partAndSprint.sprint?.id ?? null,
+                allocatedSprintName: partAndSprint.sprint?.name ?? null,
                 editable: partAndSprint.state?.editable || false,
                 expanded: true,
                 id: partAndSprint.part.id,

@@ -77,7 +77,7 @@ export const wsMiddleware = (store) => (next) => (action: Action) => {
             const actionTyped = action as ApiPostBacklogItemSuccessAction;
             const item = actionTyped.payload.response.data?.item;
             const meta = actionTyped.meta;
-            const prevBacklogItemId = meta?.requestBody?.data?.prevBacklogItemId || null;
+            const prevBacklogItemId = meta?.requestBody?.data?.prevBacklogItemId ?? null;
             const prevNextAndCurrent = getPrevNextAndCurrentById(state, item.id);
             const nextBacklogItemId = prevNextAndCurrent.next?.id;
             pushBacklogItemSaved(mapApiItemToBacklogItem(item), prevBacklogItemId, nextBacklogItemId);

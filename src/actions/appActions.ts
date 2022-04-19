@@ -61,9 +61,9 @@ export const appClick = (mouseEvent: MouseEvent): AppClickAction => {
         if (parentElt) {
             payload.parent = {
                 dataClass: getEltDataClass(parentElt),
-                dataId: getEltDataAttribute(parentElt, "id") || null,
-                itemId: getEltDataAttribute(parentElt, "item-id") || null,
-                itemType: getEltDataAttribute(parentElt, "item-type") || null
+                dataId: getEltDataAttribute(parentElt, "id") ?? null,
+                itemId: getEltDataAttribute(parentElt, "item-id") ?? null,
+                itemType: getEltDataAttribute(parentElt, "item-type") ?? null
             };
         }
     }
