@@ -302,13 +302,43 @@
     left: -0.45rem;
 }
 
+.splitStoryPoints .fractionTop {
+    top: -0.4rem;
+    left: -0.45rem;
+}
+
+.splitTotalPoints .fractionTop {
+    top: -1.6rem;
+    left: -0.8rem;
+}
+
 .fractionSlash {
     font-size: 1rem;
+}
+
+.splitStoryPoints .fractionSlash {
+    left: -0.11rem;
+    top: -0.25rem;
+}
+
+.splitTotalPoints .fractionSlash {
+    top: -1.5rem;
+    left: -0.5rem;
 }
 
 .fractionBottom {
     top: 0.66rem;
     left: 0.45rem;
+}
+
+.splitStoryPoints .fractionBottom {
+    top: 0rem;
+    left: 0.2rem;
+}
+
+.splitTotalPoints .fractionBottom {
+    top: -1.3rem;
+    left: -0.2rem;
 }
 
 .checkbox {

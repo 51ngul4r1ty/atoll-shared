@@ -135,6 +135,23 @@ storiesOf("Molecules/Cards/BacklogItemCard", module)
             />
         </div>
     ))
+    .add("BacklogItemCard (split)", () => (
+        <div className="all-devices">
+            <BacklogItemCard
+                itemId="gh-356"
+                itemType={BacklogItemTypeEnum.Bug}
+                roleText="As a developer"
+                titleText="I can work with consistent *Fetcher exported result types"
+                reasonText="so that the pattern is obvious"
+                estimate={5}
+                partIndex={2}
+                totalParts={2}
+                unallocatedParts={0}
+                storyEstimate={13}
+                status={BacklogItemStatus.Released}
+            />
+        </div>
+    ))
     .add("BacklogItemCard (fraction split)", () => (
         <div className="all-devices">
             <BacklogItemCard
