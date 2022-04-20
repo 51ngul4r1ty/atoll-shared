@@ -32,18 +32,19 @@ export interface DateInputStateProps {
     caretPosition?: ItemMenuPanelCaretPosition;
     className?: string;
     disabled?: boolean;
-    rangeAltValue?: DateOnly | null;
     inputId: string;
     inputName?: string;
+    inputValue: DateOnly | null;
     itemType?: string;
     labelText: string;
+    modalPanelEltId?: string;
     pickerMode?: DateInputPickerMode;
     placeHolder?: string;
+    rangeAltValue?: DateOnly | null;
     readOnly?: boolean;
     required?: boolean;
     showPicker?: boolean;
     size?: number;
-    inputValue: DateOnly | null;
     type?: string;
     validator?: { (value: string): boolean };
 }
@@ -73,16 +74,33 @@ export const formatDateAsText = (date: Date | null, showTime?: boolean): string 
     return showTime ? dateTimeString : datePart;
 };
 
-export const getModalPanelElt = () => document.getElementById("atollModalPanel");
+export const getModalPanelElt = (modalPanelId: string = "atollModalPanel") => document.getElementById(modalPanelId);
 
 export const buildModalComponentDivClassName = (relatedComponentId: string) => `ATOLL-TAG-MODAL-${relatedComponentId}`;
 
-export const registerModalComponent = (relatedComponentId: string, modalComponentElt: JSX.Element) => {
+/**
+ *
+ * @param relatedComponentId
+ * @param relatedComponentDescrip Something like "DateInput's props.inputId"
+ * @param modalComponentElt
+ */
+export const registerModalComponent = (
+    relatedComponentId: string,
+    relatedComponentDescrip: string,
+    modalPanelEltId: string,
+    modalComponentElt: JSX.Element
+) => {
     const scrollOffsetY = window.scrollY;
     const scrollOffsetX = window.scrollX;
     const relatedComponent = document.getElementById(relatedComponentId);
+    if (!relatedComponent) {
+        throw new Error(`${relatedComponentDescrip} must reference an existing component - unable to find one!`);
+    }
     const boundingRect = relatedComponent.getBoundingClientRect();
-    const modalElt = getModalPanelElt();
+    const modalElt = getModalPanelElt(modalPanelEltId);
+    if (!modalElt) {
+        throw new Error(`Unable to get the modal panel element by name provided: "${modalPanelEltId}"`);
+    }
     const tagNameKey = buildModalComponentDivClassName(relatedComponentId);
     const elts = modalElt.getElementsByClassName(tagNameKey);
     let parentElt: Element;
@@ -104,8 +122,11 @@ export const registerModalComponent = (relatedComponentId: string, modalComponen
     ReactDOM.render(modalComponentElt, parentElt);
 };
 
-export const unregisterModalComponent = (relatedComponentId: string) => {
-    const modalElt = getModalPanelElt();
+export const unregisterModalComponent = (relatedComponentId: string, modalPanelEltId?: string) => {
+    const modalElt = getModalPanelElt(modalPanelEltId);
+    if (!modalElt) {
+        throw new Error(`Unable to get the modal panel element by name provided: "${modalPanelEltId}"`);
+    }
     const tagNameKey = buildModalComponentDivClassName(relatedComponentId);
     const elts = modalElt.getElementsByClassName(tagNameKey);
     if (elts.length) {
@@ -201,8 +222,14 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
     const finishDateToUse = props.pickerMode === DateInputPickerMode.RangeAltIsFinishDate ? props.rangeAltValue : props.inputValue;
     useEffect(() => {
         const relatedComponentId = props.inputId;
+        const propDescrip = "props.inputId";
+        if (!relatedComponentId) {
+            throw new Error(`${propDescrip} is required for DateInput!`);
+        }
         registerModalComponent(
             relatedComponentId,
+            `DateInput's ${propDescrip}`,
+            props.modalPanelEltId,
             <div
                 data-class="date-picker"
                 className={buildClassName(
@@ -237,7 +264,7 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
             </div>
         );
         return function cleanup() {
-            unregisterModalComponent(relatedComponentId);
+            unregisterModalComponent(relatedComponentId, props.modalPanelEltId);
         };
     }, [showPicker, props.showPicker, startDateToUse, finishDateToUse, pickerMode]);
     return (
