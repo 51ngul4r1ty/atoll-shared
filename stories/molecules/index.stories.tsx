@@ -19,6 +19,7 @@ import {
     EditButton,
     EditMode,
     HomeButton,
+    ItemMenuPanelCaretPosition,
     RefreshButton,
     RemoveButton,
     SimpleButton,
@@ -77,25 +78,51 @@ storiesOf("Molecules/Buttons/HomeButton", module)
 let activeTabId = "plan";
 
 storiesOf("Molecules/Cards/BacklogItemCard", module)
-    .add("BacklogItemCard (story)", () => (
-        <div>
+    .add("BacklogItemCard", () => (
+        <div className="all-devices">
             <BacklogItemCard
-                itemId={text("itemId", "123")}
+                itemId={text("itemId", "456")}
                 itemType={select(
                     "itemType",
                     { Story: BacklogItemTypeEnum.Story, Bug: BacklogItemTypeEnum.Bug },
-                    BacklogItemTypeEnum.Story
+                    BacklogItemTypeEnum.Bug
                 )}
-                status={BacklogItemStatus.Done}
-                titleText={text("titleText", "Example story")}
-                estimate={number("estimate", 5)}
-                hasDetails={select("hasDetails", { true: true, false: false }, false)}
-                isLoadingDetails={select("isLoadingDetails", { true: true, false: false }, false)}
+                status={select(
+                    "status",
+                    {
+                        None: BacklogItemStatus.None,
+                        NotStarted: BacklogItemStatus.NotStarted,
+                        InProgress: BacklogItemStatus.InProgress,
+                        Done: BacklogItemStatus.Done,
+                        Accepted: BacklogItemStatus.Accepted,
+                        Released: BacklogItemStatus.Released
+                    },
+                    BacklogItemStatus.Done
+                )}
+                titleText={text("titleText", 'I can modify a story from "unplanned" to "planned"')}
+                estimate={number("estimate", null)}
+                isDraggable={boolean("isDraggable", false)}
+                hasDetails={boolean("hasDetails", false)}
             />
         </div>
     ))
-    .add("BacklogItemCard (fractions)", () => (
-        <div>
+    .add("BacklogItemCard (story)", () => (
+        <div className="all-devices">
+            <BacklogItemCard
+                itemId="gh-351"
+                itemType={BacklogItemTypeEnum.Story}
+                status={BacklogItemStatus.Done}
+                roleText="As a develoer"
+                titleText="I can see a stack trace in the logs when a server-side error occurs"
+                reasonText="so that I can troubleshoot easier"
+                estimate={2}
+                hasDetails={false}
+                isLoadingDetails={false}
+            />
+        </div>
+    ))
+    .add("BacklogItemCard (fraction)", () => (
+        <div className="all-devices">
             <BacklogItemCard
                 itemId={text("itemId", "123")}
                 itemType={select(
@@ -104,26 +131,39 @@ storiesOf("Molecules/Cards/BacklogItemCard", module)
                     BacklogItemTypeEnum.Story
                 )}
                 titleText={text("titleText", "A really, really small story")}
-                estimate={number("estimate", 0.5)}
+                estimate={0.5}
+            />
+        </div>
+    ))
+    .add("BacklogItemCard (fraction split)", () => (
+        <div className="all-devices">
+            <BacklogItemCard
+                itemId="gh-356"
+                itemType={BacklogItemTypeEnum.Bug}
+                roleText="As a developer"
+                titleText="I can work with consistent *Fetcher exported result types"
+                reasonText="so that the pattern is obvious"
+                estimate={0.25}
+                partIndex={2}
+                totalParts={2}
+                unallocatedParts={0}
+                storyEstimate={0.5}
+                status={BacklogItemStatus.Released}
             />
         </div>
     ))
     .add("BacklogItemCard (bug)", () => (
-        <div>
+        <div className="all-devices">
             <BacklogItemCard
                 itemId={text("itemId", "456")}
-                itemType={select(
-                    "itemType",
-                    { Story: BacklogItemTypeEnum.Story, Bug: BacklogItemTypeEnum.Bug },
-                    BacklogItemTypeEnum.Bug
-                )}
+                itemType={BacklogItemTypeEnum.Bug}
                 titleText={text("titleText", "Example bug")}
                 estimate={number("estimate", null)}
             />
         </div>
     ))
     .add("BacklogItemCard (draggable)", () => (
-        <div>
+        <div className="all-devices">
             <BacklogItemCard
                 itemId={text("itemId", "456")}
                 itemType={select(
@@ -139,7 +179,7 @@ storiesOf("Molecules/Cards/BacklogItemCard", module)
         </div>
     ))
     .add("BacklogItemCard Mobile (draggable)", () => (
-        <div>
+        <div className="all-devices mobile">
             <BacklogItemCard
                 itemId={text("itemId", "456")}
                 itemType={select(
@@ -156,7 +196,7 @@ storiesOf("Molecules/Cards/BacklogItemCard", module)
         </div>
     ))
     .add("BacklogItemCard Mobile (all elts)", () => (
-        <div>
+        <div className="all-devices mobile">
             <BacklogItemCard
                 itemId={text("itemId", "456")}
                 itemType={select(
@@ -312,20 +352,40 @@ storiesOf("Molecules/Pickers/SprintDatePicker", module).add("SprintDatePicker", 
     </div>
 ));
 
+const buildDateOnlyFromIsoString = (val: string): DateOnly => {
+    const date = new Date(val);
+    return new DateOnly(date.getFullYear(), date.getMonth() + 1, date.getDate());
+};
+
 storiesOf("Molecules/Inputs/DateInput", module).add("DateInput", () => (
-    <div className="storybook-form-background">
+    <div id="dateinput-container" className="storybook-form-background">
         <div className="storybook-flex-flow">
             <DateInput
-                inputValue={new DateOnly(2021, 1, 5)}
+                className="dateinput-startDate"
+                inputId="dateinput-container"
+                itemType="startDate"
+                caretPosition={ItemMenuPanelCaretPosition.TopLeft}
+                labelText="Start"
+                modalPanelEltId="dateinput-modal-panel"
+                inputValue={buildDateOnlyFromIsoString(text("from.date", new DateOnly(2021, 1, 5).toISODateTime()))}
                 pickerMode={DateInputPickerMode.RangeAltIsFinishDate}
-                rangeAltValue={new DateOnly(2021, 1, 18)}
+                showPicker={boolean("from.showPicker", false)}
+                rangeAltValue={buildDateOnlyFromIsoString(text("to.date", new DateOnly(2021, 1, 18).toISODateTime()))}
             />
             to
             <DateInput
-                inputValue={new DateOnly(2021, 1, 18)}
+                className="dateinput-startDate"
+                inputId="dateinput-container"
+                itemType="finishDate"
+                caretPosition={ItemMenuPanelCaretPosition.TopRight}
+                labelText="Finish"
+                modalPanelEltId="dateinput-modal-panel"
+                inputValue={buildDateOnlyFromIsoString(text("to.date", new DateOnly(2021, 1, 18).toISODateTime()))}
                 pickerMode={DateInputPickerMode.RangeAltIsStartDate}
-                rangeAltValue={new DateOnly(2021, 1, 5)}
+                showPicker={boolean("to.showPicker", true)}
+                rangeAltValue={buildDateOnlyFromIsoString(text("from.date", new DateOnly(2021, 1, 5).toISODateTime()))}
             />
         </div>
+        <div id="dateinput-modal-panel"></div>
     </div>
 ));

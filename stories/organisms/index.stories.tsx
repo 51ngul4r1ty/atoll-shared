@@ -9,6 +9,9 @@ import configureStore from "redux-mock-store";
 import { storiesOf } from "@storybook/react";
 import { number, text, select, boolean } from "@storybook/addon-knobs";
 
+// interfaces/types
+import type { BacklogItemPartForSplitForm } from "../../src/selectors/backlogItemPartSelectors";
+
 // components
 import {
     BacklogItemDetailForm,
@@ -285,7 +288,7 @@ storiesOf("Organisms/Panels/SprintPlanningPanel", module).add("SprintPlanningPan
 ));
 
 storiesOf("Organisms/Panels/ProductPlanningPanel", module).add("ProductPlanningPanel", () => (
-    <div>
+    <div className="all-devices">
         <Provider store={store}>
             <ProductPlanningPanel
                 allItems={allItems}
@@ -308,40 +311,69 @@ storiesOf("Organisms/Forms/LoginForm", module).add("LoginForm", () => (
     </div>
 ));
 
-storiesOf("Organisms/Forms/BacklogItemFullDetailForm", module).add("BacklogItemFullDetailForm (issue)", () => (
-    <div>
-        <BacklogItemFullDetailForm
-            id="1"
-            saved={boolean("saved", false)}
-            type={select("type", ["issue", "story"], "issue")}
-            estimate={number("estimate", 13)}
-            friendlyId={text("friendlyId", "i-42")}
-            externalId={text("externalId", "B1000032")}
-            rolePhrase={text("rolePhrase", null)}
-            storyPhrase={text("storyPhrase", bugStoryPhrase)}
-            reasonPhrase={text("reasonPhrase", null)}
-            editable={boolean("editable", false)}
-            instanceId={number("instanceId", 1)}
-            splits={[
-                {
-                    allocatedSprintId: text("split[0].allocatedSprintId", ""),
-                    allocatedSprintName: text("split[0].allocatedSprintName", ""),
-                    plannedPoints: number("split[0].plannedPoints", 13),
-                    partId: text("split[0].partId", "1-1"),
-                    percentage: number("split[0].percentage", 0.5),
-                    startedAt: null,
-                    finishedAt: null,
-                    status: select(
-                        "split[0].status",
-                        {
-                            "BacklogItemStatus.NotStarted": BacklogItemStatus.NotStarted,
-                            "BacklogItemStatus.InProgress": BacklogItemStatus.InProgress
-                        },
-                        BacklogItemStatus.NotStarted
-                    ),
-                    expanded: boolean("split[0].expanded", true)
-                }
-            ]}
-        />
-    </div>
-));
+storiesOf("Organisms/Forms/BacklogItemFullDetailForm", module).add("BacklogItemFullDetailForm (issue)", () => {
+    const part1: BacklogItemPartForSplitForm = {
+        allocatedSprintId: text("split[0].allocatedSprintId", "123"),
+        allocatedSprintName: text("split[0].allocatedSprintName", "Sprint 123"),
+        externalId: text("split[0].externalId", "i-42-1"),
+        backlogItemId: text("split[0].backlogItemId", "i-42-1"),
+        partIndex: number("split[0].partIndex", 1),
+        percentage: number("split[0].percentage", 75),
+        points: number("split[0].plannedPoints", 10),
+        id: text("split[0].partId", "1-1"),
+        startedAt: null,
+        finishedAt: null,
+        status: select(
+            "split[0].status",
+            {
+                "BacklogItemStatus.NotStarted": BacklogItemStatus.NotStarted,
+                "BacklogItemStatus.InProgress": BacklogItemStatus.InProgress
+            },
+            BacklogItemStatus.NotStarted
+        ),
+        editable: boolean("split[0].editable", true),
+        expanded: boolean("split[0].expanded", true)
+    };
+    const part2: BacklogItemPartForSplitForm = {
+        allocatedSprintId: text("split[1].allocatedSprintId", ""),
+        allocatedSprintName: text("split[1].allocatedSprintName", ""),
+        externalId: text("split[1].externalId", "i-42-1"),
+        backlogItemId: text("split[1].backlogItemId", "i-42-1"),
+        partIndex: number("split[1].partIndex", 1),
+        percentage: number("split[1].percentage", 25),
+        points: number("split[1].plannedPoints", 3),
+        id: text("split[1].partId", "1-1"),
+        startedAt: null,
+        finishedAt: null,
+        status: select(
+            "split[1].status",
+            {
+                "BacklogItemStatus.NotStarted": BacklogItemStatus.NotStarted,
+                "BacklogItemStatus.InProgress": BacklogItemStatus.InProgress
+            },
+            BacklogItemStatus.NotStarted
+        ),
+        editable: boolean("split[1].editable", false),
+        expanded: boolean("split[1].expanded", false)
+    };
+    return (
+        <div>
+            <Provider store={store}>
+                <BacklogItemFullDetailForm
+                    id="1"
+                    saved={boolean("saved", false)}
+                    type={select("type", ["issue", "story"], "issue")}
+                    estimate={number("estimate", 13)}
+                    friendlyId={text("friendlyId", "i-42")}
+                    externalId={text("externalId", "B1000032")}
+                    rolePhrase={text("rolePhrase", null)}
+                    storyPhrase={text("storyPhrase", bugStoryPhrase)}
+                    reasonPhrase={text("reasonPhrase", null)}
+                    editable={boolean("editable", false)}
+                    instanceId={number("instanceId", 1)}
+                    parts={[part1, part2]}
+                />
+            </Provider>
+        </div>
+    );
+});
