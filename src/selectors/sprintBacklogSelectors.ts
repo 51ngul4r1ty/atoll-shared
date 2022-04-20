@@ -11,10 +11,7 @@ import * as sprintBacklogItemSliceSelectors from "../reducers/sprintBacklog/spri
 import * as backlogItemSliceSelectors from "../reducers/backlogItems/backlogItemsSliceSelectors";
 
 // reducers
-import {
-    getSprintBacklogItemById as getSprintBacklogItemByIdFromReducer,
-    SprintBacklogState
-} from "../reducers/sprintBacklogReducer";
+import { getSprintBacklogItemByIdFromSlice, SprintBacklogState } from "../reducers/sprintBacklogReducer";
 
 export const backlogItems = (state: { backlogItems: BacklogItemsState }): BacklogItemsState => state.backlogItems;
 export const sprintBacklog = (state: { sprintBacklog: SprintBacklogState }): SprintBacklogState => state.sprintBacklog;
@@ -43,7 +40,7 @@ export const getOpeningDetailMenuInfo = (state: StateTree): OpenedOrOpeningDetai
 });
 
 export const getSprintBacklogItemById = (state: StateTree, sprintId: string, backlogItemId: string) => {
-    return getSprintBacklogItemByIdFromReducer(state.sprintBacklog, sprintId, backlogItemId);
+    return getSprintBacklogItemByIdFromSlice(state.sprintBacklog, sprintId, backlogItemId);
 };
 
 export const getIncludeArchivedSprints = createSelector(

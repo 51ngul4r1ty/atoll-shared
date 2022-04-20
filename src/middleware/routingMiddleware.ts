@@ -6,14 +6,14 @@ import { push } from "connected-react-router";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import type { StateTree } from "../reducers/rootReducer";
 import type { RouteToAction } from "../actions/routeActions";
+import type { StoreTyped } from "../types/reduxHelperTypes";
 
 // actions
 import { storePostLoginReturnRoute } from "../actions/appActions";
 
 // TODO: copy this pattern to all middleware + figure out type Next should have
-export const routingMiddleware = (store: MiddlewareAPI<Dispatch, StateTree>) => (next) => (action: Action) => {
+export const routingMiddleware = (store: StoreTyped) => (next) => (action: Action) => {
     next(action);
     const state = store.getState();
     switch (action.type) {

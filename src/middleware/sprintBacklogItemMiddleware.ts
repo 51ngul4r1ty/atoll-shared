@@ -4,7 +4,7 @@
  */
 
 // externals
-import type { Store } from "redux";
+import type { Action } from "redux";
 
 // selectors
 import * as backlogItemSelectors from "../selectors/backlogItemSelectors";
@@ -15,31 +15,25 @@ import * as userSelectors from "../selectors/userSelectors";
 import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
-import type { AnyFSA } from "../types/reactHelperTypes";
 import type { ApiGetSprintSuccessAction } from "../actions/apiSprints";
 import type {
     ApiGetSprintBacklogItemsSuccessAction,
     ApiPostSprintBacklogItemSuccessAction,
     ApiSplitSprintItemSuccessAction
 } from "../actions/apiSprintBacklog";
+import type { BacklogItemInSprint } from "../types/backlogItemTypes";
 import type { SaveableSprint } from "../reducers/sprintsReducer";
-
-// state
-import type { StateTree } from "../reducers/rootReducer";
+import type { SprintBacklogItemDetailClickAction } from "../actions/sprintBacklogActions";
+import type { StoreTyped } from "../types/reduxHelperTypes";
+import type { AddNewSprintFormAction } from "../actions/sprintActions";
 
 // actions
-import {
-    addBacklogItemToSprint,
-    moveBacklogItemToSprint,
-    patchBacklogItemInSprint,
-    SprintBacklogItemDetailClickAction
-} from "../actions/sprintBacklogActions";
-import { AddNewSprintFormAction, addSprint, NewSprintPosition, updateSprintStats } from "../actions/sprintActions";
+import { addBacklogItemToSprint, moveBacklogItemToSprint, patchBacklogItemInSprint } from "../actions/sprintBacklogActions";
+import { addSprint, NewSprintPosition, updateSprintStats } from "../actions/sprintActions";
 
 // utils
 import { DateOnly } from "../types/dateTypes";
 import { timeNow } from "../utils/dateHelper";
-import { BacklogItemInSprint } from "../types/backlogItemTypes";
 import { mapApiItemToBacklogItem } from "../mappers/backlogItemMappers";
 import { mapApiItemToBacklogItemPart } from "../mappers/backlogItemPartMappers";
 import { removeProductBacklogItem, SelectProductBacklogItemAction } from "../actions/backlogItemActions";
@@ -51,9 +45,8 @@ import {
 import { getFlowInfoFromAction } from "../utils/actionFlowUtils";
 import { apiGetBacklogItem } from "../actions/apiBacklogItems";
 
-export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA) => {
+export const sprintBacklogItemMiddleware = (store: StoreTyped) => (next) => (action: Action) => {
     next(action);
-    const storeTyped = store as Store<StateTree>;
     switch (action.type) {
         case ActionTypes.API_PATCH_BACKLOG_ITEM_SUCCESS: {
             const actionTyped = action as ApiPostSprintBacklogItemSuccessAction;
@@ -61,12 +54,12 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
             const response = actionTyped.payload.response;
             const sprintStats = response.data.extra?.sprintStats;
             if (sprintStats) {
-                storeTyped.dispatch(updateSprintStats(sprintId, sprintStats));
+                store.dispatch(updateSprintStats(sprintId, sprintStats));
             }
             return;
         }
         case ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_SUCCESS: {
-            const state = storeTyped.getState();
+            const state = store.getState();
             const actionTyped = action as ApiPostSprintBacklogItemSuccessAction;
             const payloadData = actionTyped.payload.response?.data;
             const actionParams = actionTyped.meta.actionParams;
@@ -96,12 +89,12 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
             if (!item) {
                 // this will occur when a split item is added back into a sprint at it gets "absorbed" into the
                 // other part that is already present
-                storeTyped.dispatch(
+                store.dispatch(
                     patchBacklogItemInSprint(sprintId, backlogItemId, {
                         totalParts: dataExtraBacklogItem.totalParts
                     })
                 );
-                storeTyped.dispatch(removeProductBacklogItem(backlogItemId));
+                store.dispatch(removeProductBacklogItem(backlogItemId));
             } else {
                 const backlogItemPartId = item?.backlogitempartId;
                 if (!backlogItemPartId) {
@@ -124,16 +117,16 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
                     storyFinishedAt: dataExtraBacklogItem?.finishedAt,
                     storyVersion: dataExtraBacklogItem?.version
                 };
-                storeTyped.dispatch(moveBacklogItemToSprint(sprintId, payloadBacklogItem, dataExtraBacklogItem));
+                store.dispatch(moveBacklogItemToSprint(sprintId, payloadBacklogItem, dataExtraBacklogItem));
                 const sprintStats = response.data.extra?.sprintStats;
                 if (sprintStats) {
-                    storeTyped.dispatch(updateSprintStats(sprintId, sprintStats));
+                    store.dispatch(updateSprintStats(sprintId, sprintStats));
                 }
             }
             return;
         }
         case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {
-            const state = storeTyped.getState();
+            const state = store.getState();
             const actionTyped = action as ApiSplitSprintItemSuccessAction;
             const currentSprintId = actionTyped.meta.actionParams.sprintId;
             const currentBacklogItemId = actionTyped.meta.actionParams.backlogItemId;
@@ -160,13 +153,13 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
                     storyFinishedAt: responseBacklogItem.finishedAt,
                     storyVersion: responseBacklogItem.version
                 };
-                storeTyped.dispatch(addBacklogItemToSprint(nextSprint.id, backlogItemWithPartInfo));
-                storeTyped.dispatch(patchBacklogItemInSprint(currentSprintId, currentBacklogItemId, { storyEstimate, totalParts }));
+                store.dispatch(addBacklogItemToSprint(nextSprint.id, backlogItemWithPartInfo));
+                store.dispatch(patchBacklogItemInSprint(currentSprintId, currentBacklogItemId, { storyEstimate, totalParts }));
             }
             return;
         }
         case ActionTypes.ADD_SPRINT_FORM: {
-            const state = storeTyped.getState();
+            const state = store.getState();
             const actionTyped = action as AddNewSprintFormAction;
             const position = actionTyped.payload.position;
             let startDate: DateOnly;
@@ -205,15 +198,15 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
                 updatedAt: timeNow(),
                 saved: false
             };
-            storeTyped.dispatch(addSprint(newItem, position));
+            store.dispatch(addSprint(newItem, position));
             return;
         }
         case ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK: {
             const actionTyped = action as SprintBacklogItemDetailClickAction;
-            const actionType = action.type;
+            const actionType = actionTyped.type;
             const sprintId = actionTyped.payload.sprintId;
             const backlogItemId = actionTyped.payload.backlogItemId;
-            handleSprintBacklogItemDetailClick(storeTyped, actionType, sprintId, backlogItemId);
+            handleSprintBacklogItemDetailClick(store, actionType, sprintId, backlogItemId);
             return;
         }
         case ActionTypes.API_GET_SPRINT_SUCCESS: {
@@ -224,7 +217,7 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
             if (triggerAction !== ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK) {
                 throw new Error("Unexpected result- SPRINT_BACKLOG_ITEM_DETAIL_CLICK expected as passthrough.triggerAction");
             } else {
-                handleGetSprintSuccessForItemDetailClick(storeTyped, stepName, payload, meta);
+                handleGetSprintSuccessForItemDetailClick(store, stepName, payload, meta);
             }
             return;
         }
@@ -236,20 +229,14 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
                 const apiBacklogItems = actionTyped.payload.response.data.items;
                 const sprintId = meta.passthrough.sprintId;
                 const backlogItemId = meta?.passthrough?.backlogItemId ?? null;
-                handleGetSprintBacklogItemsSuccessForItemDetailClick(
-                    storeTyped,
-                    stepName,
-                    apiBacklogItems,
-                    sprintId,
-                    backlogItemId
-                );
+                handleGetSprintBacklogItemsSuccessForItemDetailClick(store, stepName, apiBacklogItems, sprintId, backlogItemId);
             }
             return;
         }
         case ActionTypes.SELECT_PRODUCT_BACKLOG_ITEM: {
             const actionTyped = action as SelectProductBacklogItemAction;
             const backlogItemId = actionTyped.payload.itemId;
-            storeTyped.dispatch(
+            store.dispatch(
                 apiGetBacklogItem(backlogItemId, {
                     passthroughData: {
                         triggerAction: actionTyped.type,
@@ -262,7 +249,7 @@ export const sprintBacklogItemMiddleware = (store) => (next) => (action: AnyFSA)
         case ActionTypes.UNSELECT_PRODUCT_BACKLOG_ITEM: {
             const actionTyped = action as SelectProductBacklogItemAction;
             const backlogItemId = actionTyped.payload.itemId;
-            storeTyped.dispatch(
+            store.dispatch(
                 apiGetBacklogItem(backlogItemId, {
                     passthroughData: {
                         triggerAction: actionTyped.type,

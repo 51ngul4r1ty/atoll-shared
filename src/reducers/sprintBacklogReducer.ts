@@ -98,7 +98,7 @@ export const unlinkBacklogItemFromSprint = (draft: Draft<SprintBacklogState>, sp
     }
 };
 
-export const getSprintBacklogItemById = (
+export const getSprintBacklogItemByIdFromSlice = (
     sprintBacklogState: SprintBacklogState,
     sprintId: string,
     backlogItemId: string
@@ -187,7 +187,7 @@ export const sprintBacklogReducer = (
                 draft.openingDetailMenuBacklogItemId = calcDropDownMenuState(
                     draft.openingDetailMenuBacklogItemId,
                     actionTyped.payload.backlogItemId,
-                    (itemId: string) => getSprintBacklogItemById(state, sprintId, itemId),
+                    (itemId: string) => getSprintBacklogItemByIdFromSlice(state, sprintId, itemId),
                     (item) => item.pushState !== PushState.Removed
                 );
                 draft.openingDetailMenuSprintId = draft.openingDetailMenuBacklogItemId ? sprintId : null;
@@ -231,7 +231,7 @@ export const sprintBacklogReducer = (
                 draft.openedDetailMenuBacklogItemId = calcDropDownMenuState(
                     draft.openedDetailMenuBacklogItemId,
                     actionTyped.payload.backlogItemId,
-                    (itemId: string) => getSprintBacklogItemById(state, sprintId, itemId),
+                    (itemId: string) => getSprintBacklogItemByIdFromSlice(state, sprintId, itemId),
                     (item) => item.pushState !== PushState.Removed
                 );
                 draft.openedDetailMenuSprintId = draft.openedDetailMenuBacklogItemId ? sprintId : null;
