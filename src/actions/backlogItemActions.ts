@@ -1,5 +1,3 @@
-// TODO: Document "strictMode" and its use in README.md files and wiki
-
 // actions
 import * as ActionTypes from "./actionTypes";
 
