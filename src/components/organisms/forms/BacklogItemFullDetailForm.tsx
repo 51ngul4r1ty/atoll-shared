@@ -26,24 +26,22 @@ import { ItemMenuEventHandlers } from "../../molecules/menus/menuBuilderTypes";
 import { useDispatch } from "react-redux";
 import { editBacklogItemPart } from "../../../actions/backlogItemPartActions";
 
-export interface BacklogItemFullDetailFormStateProps extends BacklogItemEditableFields {
+export type BacklogItemFullDetailFormStateProps = BacklogItemEditableFields & {
     className?: string;
     editable?: boolean;
     openedDetailMenuBacklogItemPartId: string;
     parts: BacklogItemPartForSplitForm[];
     saved: boolean;
     strictMode: boolean;
-}
+};
 
-export interface BacklogItemFullDetailFormDispatchProps {
-    onSaveClick?: { () };
-    onCancelClick?: { () };
-    onDataUpdate?: { (props: BacklogItemEditableFields) };
-    onPartPointsUpdate: { (partId: string, value: string) };
-    // TODO: Add to code standards to switch to doing it this way:
-    // onDetailClick: (partId: string, strictMode: boolean) => void;
-    onDetailClick: { (partId: string, strictMode: boolean): void };
-}
+export type BacklogItemFullDetailFormDispatchProps = {
+    onSaveClick?: () => void;
+    onCancelClick?: () => void;
+    onDataUpdate?: (props: BacklogItemEditableFields) => void;
+    onPartPointsUpdate: (partId: string, value: string) => void;
+    onDetailClick: (partId: string, strictMode: boolean) => void;
+};
 
 export type BacklogItemFullDetailFormProps = BacklogItemFullDetailFormStateProps & BacklogItemFullDetailFormDispatchProps;
 
