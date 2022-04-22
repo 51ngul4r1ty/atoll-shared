@@ -4,7 +4,7 @@
  */
 
 // externals
-import { Action, Dispatch, MiddlewareAPI, Store } from "redux";
+import type { Action } from "redux";
 import { push } from "connected-react-router";
 import * as HttpStatus from "http-status-codes";
 
@@ -12,6 +12,13 @@ import * as HttpStatus from "http-status-codes";
 import * as ActionTypes from "../actions/actionTypes";
 import { BacklogItemStatus } from "../types/backlogItemEnums";
 import { EditMode } from "../components/common/componentEnums";
+import { ResourceTypes } from "../reducers/apiLinksReducer";
+
+// interfaces/types
+import type { BacklogItemPart } from "../types/backlogItemPartTypes";
+import type { CancelEditBacklogItemPartAction, UpdateBacklogItemPartAction } from "../actions/backlogItemPartActions";
+import type { ExpandSprintPanelAction, SaveNewSprintAction, UpdateSprintAction } from "../actions/sprintActions";
+import type { StoreTyped } from "../types/reduxHelperTypes";
 
 // actions
 import {
@@ -57,9 +64,7 @@ import {
 } from "../actions/sprintBacklogActions";
 import { apiGetSprints, apiPostSprint, apiPutSprint } from "../actions/apiSprints";
 import { clearPostLoginReturnRoute, setEditMode } from "../actions/appActions";
-
-// state
-import { StateTree } from "../reducers/rootReducer";
+import { updateSprintStats } from "../actions/sprintActions";
 
 // selectors
 import * as apiSelectors from "../selectors/apiSelectors";
@@ -67,12 +72,6 @@ import * as backlogItemSelectors from "../selectors/backlogItemSelectors";
 import * as userSelectors from "../selectors/userSelectors";
 import * as sprintSelectors from "../selectors/sprintSelectors";
 import * as sprintBacklogSelectors from "../selectors/sprintBacklogSelectors";
-
-// interfaces/types
-import { BacklogItemPart } from "../types/backlogItemPartTypes";
-import { CancelEditBacklogItemPartAction, UpdateBacklogItemPartAction } from "../actions/backlogItemPartActions";
-import { ExpandSprintPanelAction, SaveNewSprintAction, UpdateSprintAction, updateSprintStats } from "../actions/sprintActions";
-import { ResourceTypes } from "../reducers/apiLinksReducer";
 
 // selectors
 import * as appSelectors from "../selectors/appSelectors";
@@ -89,7 +88,7 @@ import { buildBacklogDisplayId } from "../utils/backlogItemHelper";
 import { convertToBacklogItemModel, convertToSprintModel } from "../utils/apiPayloadHelper";
 import { encodeForUrl } from "../utils/urlUtils";
 
-export const apiOrchestrationMiddleware = (store: MiddlewareAPI<Dispatch, StateTree>) => (next) => (action: Action) => {
+export const apiOrchestrationMiddleware = (store: StoreTyped) => (next) => (action: Action) => {
     next(action);
     const state = store.getState();
     switch (action.type) {

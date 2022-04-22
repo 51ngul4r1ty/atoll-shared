@@ -52,6 +52,7 @@ export interface PlanViewStateProps {
     splitToNextSprintAvailable?: boolean;
     sprints: SprintCardSprint[];
     sprintsToDisableAddItemAction: string[];
+    strictMode: boolean;
 }
 
 export interface PlanViewDispatchProps {
@@ -66,12 +67,12 @@ export interface PlanViewDispatchProps {
     onBacklogItemNotStartedClick: { (sprintId: string, backlogItemId: string): void };
     onBacklogItemReleasedClick: { (sprintId: string, backlogItemId: string): void };
     onExpandCollapse: { (sprintId: string, expand: boolean): void };
-    onItemDetailClick: { (sprintId: string, backlogItemId: string): void };
+    onItemDetailClick: { (sprintId: string, backlogItemId: string, strictMode: boolean): void };
     onLoaded: { (): void };
     onMoveItemToBacklogClick: { (sprintId: string, backlogItemId: string): void };
     onReorderBacklogItems: { (sourceItemId: string, targetItemId: string): void };
     onSplitBacklogItemClick: { (sprintId: string, backlogItemId: string): void };
-    onSprintDetailClick: { (sprintId: string): void };
+    onSprintDetailClick: { (sprintId: string, strictMode: boolean): void };
 }
 
 export type PlanViewProps = PlanViewStateProps & PlanViewDispatchProps;
@@ -87,6 +88,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
         this.props.onLoaded();
     }
     render() {
+        const strictMode = this.props.strictMode;
         const pageContentsElts = (
             <div className={css.content}>
                 <ProductPlanningPanel
@@ -97,6 +99,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     busySplittingStory={this.props.busySplittingStory}
                     openedDetailMenuBacklogItemId={this.props.openedDetailMenuBacklogItemId}
                     renderMobile={this.context.state?.isMobile}
+                    strictMode={this.props.strictMode}
                     onAddNewBacklogItemForm={(type: BacklogItemType) => {
                         this.props.onAddNewBacklogItemForm(type, this.props.projectId);
                     }}
@@ -119,6 +122,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     openedDatePickerInfo={this.props.openedDatePickerInfo}
                     splitToNextSprintAvailable={this.props.splitToNextSprintAvailable}
                     sprintsToDisableAddItemAction={this.props.sprintsToDisableAddItemAction}
+                    strictMode={this.props.strictMode}
                     onAddBacklogItem={(sprintId: string) => {
                         if (this.props.onAddBacklogItemToSprint) {
                             this.props.onAddBacklogItemToSprint(sprintId);
@@ -166,7 +170,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     }}
                     onDetailClick={(sprintId: string, backlogItemId: string) => {
                         if (this.props.onItemDetailClick) {
-                            this.props.onItemDetailClick(sprintId, backlogItemId);
+                            this.props.onItemDetailClick(sprintId, backlogItemId, strictMode);
                         }
                     }}
                     onBacklogItemIdClick={(sprintId: string, backlogItemId: string) => {
@@ -189,9 +193,9 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                             this.props.onSplitBacklogItemClick(sprintId, backlogItemId);
                         }
                     }}
-                    onSprintDetailClick={(sprintId: string) => {
+                    onSprintDetailClick={(sprintId: string, strictMode: boolean) => {
                         if (this.props.onSprintDetailClick) {
-                            this.props.onSprintDetailClick(sprintId);
+                            this.props.onSprintDetailClick(sprintId, strictMode);
                         }
                     }}
                 />

@@ -5,7 +5,7 @@ import "jest";
 import * as appSelectors from "../appSelectors";
 
 // interfaces/types
-import { appReducerInitialState, AppState } from "../../reducers/appReducer";
+import { appReducerInitialState, AppState } from "../../reducers/app/appReducer";
 import { StateTree } from "../../reducers/rootReducer";
 
 // mock related

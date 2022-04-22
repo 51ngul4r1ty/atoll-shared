@@ -228,7 +228,8 @@ export const MOVE_BACKLOG_ITEM_TO_SPRINT = "app/move:sprint-backlog-item";
 export const ADD_BACKLOG_ITEM_TO_SPRINT = "app/add:sprint-backlog-item";
 export const PATCH_BACKLOG_ITEM_IN_SPRINT = "app/patch:sprint-backlog-item";
 
-export const TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL = "app/toggle:sprint-backlog-item";
+export const SHOW_SPRINT_BACKLOG_ITEM_DETAIL = "app/show:sprint-backlog-item";
+export const HIDE_SPRINT_BACKLOG_ITEM_DETAIL = "app/hide:sprint-backlog-item";
 export const TOGGLE_SPRINT_ITEM_DETAIL = "app/toggle:sprint";
 
 export const MOVE_SPRINT_ITEM_TO_PRODUCT_BACKLOG_CLICK = "app/move-to-backlog:sprint-backlog-item";

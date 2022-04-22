@@ -32,7 +32,7 @@ import { NewSprintPosition } from "../actions/sprintActions";
 import { PushState, Source } from "./enums";
 
 // utils
-import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
+import { calcToggledOpenMenuItemId } from "../utils/dropdownMenuUtils";
 import { mapApiItemsToSprints } from "../mappers/sprintMappers";
 import { shouldHideDetailMenu } from "../components/utils/itemDetailMenuUtils";
 
@@ -46,7 +46,7 @@ import {
 // actions
 import { AppClickAction } from "../actions/appActions";
 import { UpdateSprintStatsAction } from "../actions/sprintActions";
-import { ToggleSprintBacklogItemDetailAction } from "../actions/sprintBacklogActions";
+import { HideSprintBacklogItemDetailAction, ShowSprintBacklogItemDetailAction } from "../actions/sprintBacklogActions";
 
 export interface Sprint extends StandardModelItem {
     acceptedPoints: number | null;
@@ -345,7 +345,8 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             case ActionTypes.TOGGLE_SPRINT_ITEM_DETAIL: {
                 const actionTyped = action as ToggleSprintDetailAction;
                 const sprintId = actionTyped.payload.sprintId;
-                draft.openedDetailMenuSprintId = calcDropDownMenuState(draft.openedDetailMenuSprintId, sprintId);
+                const strictMode = actionTyped.payload.strictMode;
+                draft.openedDetailMenuSprintId = calcToggledOpenMenuItemId(draft.openedDetailMenuSprintId, sprintId, strictMode);
                 return;
             }
             case ActionTypes.APP_CLICK: {
@@ -446,9 +447,14 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 rebuildAllItems(draft);
                 return;
             }
-            case ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL: {
-                const actionTyped = action as ToggleSprintBacklogItemDetailAction;
+            case ActionTypes.SHOW_SPRINT_BACKLOG_ITEM_DETAIL: {
+                const actionTyped = action as ShowSprintBacklogItemDetailAction;
                 draft.splitToNextSprintAvailable = actionTyped.payload.splitToNextSprintAvailable;
+                return;
+            }
+            case ActionTypes.HIDE_SPRINT_BACKLOG_ITEM_DETAIL: {
+                // NOTE: although this shouldn't be necessary we reset it back to "factory defaults" to be safe.
+                draft.splitToNextSprintAvailable = sprintsReducerInitialState.splitToNextSprintAvailable;
                 return;
             }
         }

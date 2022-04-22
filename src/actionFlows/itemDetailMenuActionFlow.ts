@@ -23,23 +23,24 @@
  *   4.2. API_GET_SPRINT_FAILURE
  */
 
-// externals
-import type { Store } from "redux";
-
-// state
-import type { StateTree } from "../reducers/rootReducer";
-
 // interfaces/types
 import type { ApiGetSprintSuccessActionMeta, ApiGetSprintSuccessActionPayload } from "../actions/apiSprints";
+import type { ApiBacklogItemInSprint } from "../types/apiModelTypes";
+import type { StoreTyped } from "../types/reduxHelperTypes";
 
 // utils
 import { buildFullUri, getLinkByRel, LINK_REL_NEXT } from "../utils/apiLinkHelper";
 
+// selectors
+import * as sprintBacklogSelectors from "../selectors/sprintBacklogSelectors";
+import * as appSelectors from "../selectors/appSelectors";
+
 // actions
 import { apiGetSprint } from "../actions/apiSprints";
-import { toggleSprintBacklogItemDetail } from "../actions/sprintBacklogActions";
 import { apiGetSprintBacklogItems } from "../actions/apiSprintBacklog";
-import { ApiBacklogItemInSprint } from "../types/apiModelTypes";
+import { hasBacklogItemAtLeastBeenAccepted } from "../utils/backlogItemStatusHelper";
+import { hideSprintBacklogItemDetail, showSprintBacklogItemDetail } from "../actions/sprintBacklogActions";
+import { alreadyShowingMenu } from "../utils/dropdownMenuUtils";
 
 export const ITEM_DETAIL_CLICK_STEP_1_NAME = "1-GetSprintDetails";
 export const ITEM_DETAIL_CLICK_STEP_2_NAME = "2-GetNextSprintDetails";
@@ -55,21 +56,32 @@ export type ApiItemDetailMenuActionFlowSuccessMeta = {
 // #region middleware - handleSprintBacklogItemDetailClick
 
 export const handleSprintBacklogItemDetailClick = (
-    store: Store<StateTree>,
+    store: StoreTyped,
     actionType: string,
     sprintId: string,
-    backlogItemId: string
+    backlogItemId: string,
+    strictMode: boolean
 ) => {
-    store.dispatch(
-        apiGetSprint(sprintId, {
-            passthroughData: {
-                triggerAction: actionType,
-                sprintId: sprintId,
-                backlogItemId: backlogItemId,
-                stepName: ITEM_DETAIL_CLICK_STEP_1_NAME
-            }
-        })
-    );
+    const state = store.getState();
+    const backlogItem = sprintBacklogSelectors.getSprintBacklogItemById(state, sprintId, backlogItemId);
+    const openedDetailMenuBacklogItemId = sprintBacklogSelectors.getSprintBacklogOpenedDetailMenuItemId(state);
+    if (alreadyShowingMenu(openedDetailMenuBacklogItemId, backlogItemId)) {
+        store.dispatch(hideSprintBacklogItemDetail(sprintId, backlogItemId));
+    } else if (hasBacklogItemAtLeastBeenAccepted(backlogItem.status)) {
+        const splitToNextSprintAvailable = false;
+        store.dispatch(showSprintBacklogItemDetail(sprintId, backlogItemId, splitToNextSprintAvailable, strictMode));
+    } else {
+        store.dispatch(
+            apiGetSprint(sprintId, {
+                passthroughData: {
+                    triggerAction: actionType,
+                    sprintId: sprintId,
+                    backlogItemId: backlogItemId,
+                    stepName: ITEM_DETAIL_CLICK_STEP_1_NAME
+                }
+            })
+        );
+    }
 };
 
 // #endregion
@@ -77,7 +89,7 @@ export const handleSprintBacklogItemDetailClick = (
 // #region middleware - handleGetSprintSuccessForItemDetailClick
 
 export const handleGetSprintSuccessForItemDetailClick = (
-    store: Store<StateTree>,
+    store: StoreTyped,
     stepName: string,
     payload: ApiGetSprintSuccessActionPayload,
     meta: ApiGetSprintSuccessActionMeta
@@ -100,14 +112,16 @@ export const handleGetSprintSuccessForItemDetailClick = (
 const processSprintDataForItemDetailClickStep1 = (
     payload: ApiGetSprintSuccessActionPayload,
     meta: ApiGetSprintSuccessActionMeta,
-    store: Store<StateTree>
+    store: StoreTyped
 ) => {
     const nextSprintLink = getLinkByRel(payload.response?.data?.item?.links, LINK_REL_NEXT);
     if (nextSprintLink === null) {
         const splitToNextSprintAvailable = false;
         const sprintId = meta.passthrough.sprintId;
         const backlogItemId = meta.passthrough.backlogItemId;
-        store.dispatch(toggleSprintBacklogItemDetail(sprintId, backlogItemId, splitToNextSprintAvailable));
+        const state = store.getState();
+        const strictMode = appSelectors.isStrictMode(state);
+        store.dispatch(showSprintBacklogItemDetail(sprintId, backlogItemId, splitToNextSprintAvailable, strictMode));
     } else {
         const nextSprintUri = nextSprintLink?.uri;
         if (!nextSprintUri) {
@@ -130,7 +144,7 @@ const processSprintDataForItemDetailClickStep1 = (
 const processSprintDataForItemDetailClickStep2 = (
     payload: ApiGetSprintSuccessActionPayload,
     meta: ApiGetSprintSuccessActionMeta,
-    store: Store<StateTree>
+    store: StoreTyped
 ) => {
     const sprintId = payload.response?.data?.item?.id;
     if (!sprintId) {
@@ -151,7 +165,7 @@ const processSprintDataForItemDetailClickStep2 = (
 // #region middleware - handleGetSprintBacklogItemsSuccessForItemDetailClick
 
 export const handleGetSprintBacklogItemsSuccessForItemDetailClick = (
-    store: Store<StateTree>,
+    store: StoreTyped,
     stepName: string,
     apiBacklogItems: ApiBacklogItemInSprint[],
     sprintId: string,
@@ -161,7 +175,9 @@ export const handleGetSprintBacklogItemsSuccessForItemDetailClick = (
         const matchingItems = apiBacklogItems.filter((item) => item.id === backlogItemId);
         const hasBacklogItem = matchingItems.length > 0;
         const splitToNextSprintAvailable = !hasBacklogItem;
-        store.dispatch(toggleSprintBacklogItemDetail(sprintId, backlogItemId, splitToNextSprintAvailable));
+        const state = store.getState();
+        const strictMode = appSelectors.isStrictMode(state);
+        store.dispatch(showSprintBacklogItemDetail(sprintId, backlogItemId, splitToNextSprintAvailable, strictMode));
     } else {
         throw new Error("Unexpected result- ITEM_DETAIL_CLICK_STEP_3_NAME expected as stepName");
     }

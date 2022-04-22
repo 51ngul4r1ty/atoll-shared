@@ -2,14 +2,14 @@
 import { produce, Draft } from "immer";
 
 // consts/enums
-import * as ActionTypes from "../actions/actionTypes";
-import { API_ACTION_STAGE_FAILURE, API_ACTION_STAGE_REQUEST, API_ACTION_STAGE_SUCCESS } from "../actions/apiActionStages";
-import { EditMode } from "../components/common/componentEnums";
+import * as ActionTypes from "../../actions/actionTypes";
+import { API_ACTION_STAGE_FAILURE, API_ACTION_STAGE_REQUEST, API_ACTION_STAGE_SUCCESS } from "../../actions/apiActionStages";
+import { EditMode } from "../../components/common/componentEnums";
 
 // interfaces/types
-import type { AnyFSA } from "../types/reactHelperTypes";
-import type { ApiActionSuccessPayload, ApiStageAction } from "../middleware/apiTypes";
-import type { ApiPostSprintBacklogItemFailureAction } from "../actions/apiSprintBacklog";
+import type { AnyFSA } from "../../types/reactHelperTypes";
+import type { ApiActionSuccessPayload, ApiStageAction } from "../../middleware/apiTypes";
+import type { ApiPostSprintBacklogItemFailureAction } from "../../actions/apiSprintBacklog";
 
 // actions
 import {
@@ -18,11 +18,12 @@ import {
     ActionPostLoginSuccessAction,
     ActionPostRefreshTokenSuccessAction,
     ActionPostTokenResponseBase
-} from "../actions/authActions";
-import { LocalStoreRefreshTokenAction } from "../actions/appActions";
+} from "../../actions/authActions";
+import { LocalStoreRefreshTokenAction } from "../../actions/appActions";
 
 // utils
-import { timeNow } from "../utils/dateHelper";
+import { timeNow } from "../../utils/dateHelper";
+import { getStrictModeFromBrowserUrl } from "./appReducerHelper";
 
 export type Locale = "en_US" | "de_DE";
 
@@ -39,6 +40,7 @@ export type AppState = Readonly<{
     postLoginReturnRouteSetAt: Date | undefined;
     refreshToken: string;
     username: string;
+    isStrictMode: boolean; // typically only turned on during development to catch issues
 }>;
 
 export const appReducerInitialState = Object.freeze<AppState>({
@@ -53,7 +55,8 @@ export const appReducerInitialState = Object.freeze<AppState>({
     postLoginReturnRoute: "",
     postLoginReturnRouteSetAt: undefined,
     refreshToken: null,
-    username: ""
+    username: "",
+    isStrictMode: false
 });
 
 const updateDraftWithTokenPayload = (draft: Draft<AppState>, payload: ApiActionSuccessPayload<ActionPostTokenResponseBase>) => {
@@ -79,6 +82,10 @@ export const appReducer = (state: AppState = appReducerInitialState, action: Any
         }
 
         switch (action.type) {
+            case ActionTypes.INIT_APP: {
+                draft.isStrictMode = getStrictModeFromBrowserUrl();
+                return;
+            }
             case ActionTypes.SET_LOCALE: {
                 const { payload } = action;
                 draft.locale = payload;

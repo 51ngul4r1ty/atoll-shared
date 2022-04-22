@@ -3,6 +3,7 @@ import * as ActionTypes from "./actionTypes";
 
 export interface ToggleBacklogItemPartDetailPayload {
     partId: string;
+    strictMode: boolean;
 }
 
 export interface ToggleBacklogItemPartDetailAction {
@@ -10,10 +11,11 @@ export interface ToggleBacklogItemPartDetailAction {
     payload: ToggleBacklogItemPartDetailPayload;
 }
 
-export const backlogItemPartDetailClick = (partId: string): ToggleBacklogItemPartDetailAction => ({
+export const backlogItemPartDetailClick = (partId: string, strictMode: boolean): ToggleBacklogItemPartDetailAction => ({
     type: ActionTypes.TOGGLE_BACKLOG_ITEM_PART_DETAIL,
     payload: {
-        partId
+        partId,
+        strictMode
     }
 });
 

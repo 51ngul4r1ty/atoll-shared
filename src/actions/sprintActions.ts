@@ -148,6 +148,7 @@ export const updateSprint = (id: string): UpdateSprintAction => ({
 
 export interface ToggleSprintDetailPayload {
     sprintId: string;
+    strictMode: boolean;
 }
 
 export interface ToggleSprintDetailAction {
@@ -155,10 +156,11 @@ export interface ToggleSprintDetailAction {
     payload: ToggleSprintDetailPayload;
 }
 
-export const sprintDetailClick = (sprintId: string): ToggleSprintDetailAction => ({
+export const sprintDetailClick = (sprintId: string, strictMode: boolean): ToggleSprintDetailAction => ({
     type: ActionTypes.TOGGLE_SPRINT_ITEM_DETAIL,
     payload: {
-        sprintId
+        sprintId,
+        strictMode
     }
 });
 

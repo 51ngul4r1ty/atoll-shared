@@ -1,5 +1,5 @@
 // interfaces/types
-import type { Locale } from "../reducers/appReducer";
+import type { Locale } from "../reducers/app/appReducer";
 import type { FSA } from "../types/reactHelperTypes";
 
 // consts/enums

@@ -2,7 +2,7 @@
 import "jest";
 
 // code under test
-import { appReducer, appReducerInitialState } from "../appReducer";
+import { appReducer, appReducerInitialState } from "../app/appReducer";
 import * as ActionTypes from "../../actions/actionTypes";
 
 describe("App Reducer", () => {

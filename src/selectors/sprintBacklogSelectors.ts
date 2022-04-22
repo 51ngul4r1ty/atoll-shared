@@ -11,10 +11,7 @@ import * as sprintBacklogItemSliceSelectors from "../reducers/sprintBacklog/spri
 import * as backlogItemSliceSelectors from "../reducers/backlogItems/backlogItemsSliceSelectors";
 
 // reducers
-import {
-    getSprintBacklogItemById as getSprintBacklogItemByIdFromReducer,
-    SprintBacklogState
-} from "../reducers/sprintBacklogReducer";
+import { getSprintBacklogItemByIdFromSlice, SprintBacklogState } from "../reducers/sprintBacklogReducer";
 
 export const backlogItems = (state: { backlogItems: BacklogItemsState }): BacklogItemsState => state.backlogItems;
 export const sprintBacklog = (state: { sprintBacklog: SprintBacklogState }): SprintBacklogState => state.sprintBacklog;
@@ -32,18 +29,24 @@ export interface OpenedOrOpeningDetailMenuInfo {
     sprintId: string;
 }
 
-export const getOpenedDetailMenuInfo = (state: StateTree): OpenedOrOpeningDetailMenuInfo => ({
+export const getSprintBacklogOpenedDetailMenuInfo = (state: StateTree): OpenedOrOpeningDetailMenuInfo => ({
     backlogItemId: state.sprintBacklog.openedDetailMenuBacklogItemId,
     sprintId: state.sprintBacklog.openedDetailMenuSprintId
 });
 
-export const getOpeningDetailMenuInfo = (state: StateTree): OpenedOrOpeningDetailMenuInfo => ({
+export const getSprintBacklogOpeningDetailMenuInfo = (state: StateTree): OpenedOrOpeningDetailMenuInfo => ({
     backlogItemId: state.sprintBacklog.openingDetailMenuBacklogItemId,
     sprintId: state.sprintBacklog.openingDetailMenuSprintId
 });
 
+export const getSprintBacklogOpenedDetailMenuItemId = (state: StateTree): string | null =>
+    state.sprintBacklog.openedDetailMenuBacklogItemId;
+
+export const getSprintBacklogOpeningDetailMenuItemId = (state: StateTree): string | null =>
+    state.sprintBacklog.openingDetailMenuBacklogItemId;
+
 export const getSprintBacklogItemById = (state: StateTree, sprintId: string, backlogItemId: string) => {
-    return getSprintBacklogItemByIdFromReducer(state.sprintBacklog, sprintId, backlogItemId);
+    return getSprintBacklogItemByIdFromSlice(state.sprintBacklog, sprintId, backlogItemId);
 };
 
 export const getIncludeArchivedSprints = createSelector(

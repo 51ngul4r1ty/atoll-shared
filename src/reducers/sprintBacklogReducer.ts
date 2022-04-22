@@ -23,7 +23,8 @@ import type {
     PatchBacklogItemInSprintAction,
     RemoveSprintBacklogItemAction,
     SprintBacklogItemDetailClickAction,
-    ToggleSprintBacklogItemDetailAction
+    ShowSprintBacklogItemDetailAction,
+    HideSprintBacklogItemDetailAction
 } from "../actions/sprintBacklogActions";
 import type { AppClickAction } from "../actions/appActions";
 import type { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
@@ -45,13 +46,14 @@ import {
 // utils
 import { mapApiItemsToSprintBacklogItems } from "../mappers/backlogItemMappers";
 import { mapApiStatusToBacklogItem } from "../mappers/statusMappers";
-import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
+import { alreadyShowingMenu, calcToggledOpenMenuItemId } from "../utils/dropdownMenuUtils";
 import { shouldHideDetailMenu } from "../components/utils/itemDetailMenuUtils";
 import { getFlowInfoFromAction } from "../utils/actionFlowUtils";
+import { isStrictMode } from "../selectors/appSelectors";
 
-export interface SprintBacklogSprint {
+export type SprintBacklogSprint = {
     items: BacklogItemInSprint[];
-}
+};
 
 export type SprintBacklogSprintInfo = SprintBacklogSprint & {
     backlogItemsInSprint: { [backlogItemId: string]: boolean };
@@ -98,7 +100,7 @@ export const unlinkBacklogItemFromSprint = (draft: Draft<SprintBacklogState>, sp
     }
 };
 
-export const getSprintBacklogItemById = (
+export const getSprintBacklogItemByIdFromSlice = (
     sprintBacklogState: SprintBacklogState,
     sprintId: string,
     backlogItemId: string
@@ -184,13 +186,18 @@ export const sprintBacklogReducer = (
             case ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK: {
                 const actionTyped = action as SprintBacklogItemDetailClickAction;
                 const sprintId = actionTyped.payload.sprintId;
-                draft.openingDetailMenuBacklogItemId = calcDropDownMenuState(
-                    draft.openingDetailMenuBacklogItemId,
-                    actionTyped.payload.backlogItemId,
-                    (itemId: string) => getSprintBacklogItemById(state, sprintId, itemId),
-                    (item) => item.pushState !== PushState.Removed
-                );
-                draft.openingDetailMenuSprintId = draft.openingDetailMenuBacklogItemId ? sprintId : null;
+                const backlogItemId = actionTyped.payload.backlogItemId;
+                const strictMode = actionTyped.payload.strictMode;
+                if (!alreadyShowingMenu(draft.openedDetailMenuBacklogItemId, backlogItemId)) {
+                    draft.openingDetailMenuBacklogItemId = calcToggledOpenMenuItemId(
+                        draft.openingDetailMenuBacklogItemId,
+                        backlogItemId,
+                        strictMode,
+                        (itemId: string) => getSprintBacklogItemByIdFromSlice(state, sprintId, itemId),
+                        (item) => item?.pushState !== PushState.Removed
+                    );
+                    draft.openingDetailMenuSprintId = draft.openingDetailMenuBacklogItemId ? sprintId : null;
+                }
                 return;
             }
             case ActionTypes.API_GET_SPRINT_FAILURE: {
@@ -225,24 +232,42 @@ export const sprintBacklogReducer = (
                 }
                 return;
             }
-            case ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL: {
-                const actionTyped = action as ToggleSprintBacklogItemDetailAction;
+            case ActionTypes.SHOW_SPRINT_BACKLOG_ITEM_DETAIL: {
+                const actionTyped = action as ShowSprintBacklogItemDetailAction;
                 const sprintId = actionTyped.payload.sprintId;
-                draft.openedDetailMenuBacklogItemId = calcDropDownMenuState(
+                const getItem = (itemId: string) => getSprintBacklogItemByIdFromSlice(state, sprintId, itemId);
+                const includeItemCheck = (item) => item?.pushState !== PushState.Removed;
+                const strictMode = actionTyped.payload.strictMode;
+                draft.openedDetailMenuBacklogItemId = calcToggledOpenMenuItemId(
                     draft.openedDetailMenuBacklogItemId,
                     actionTyped.payload.backlogItemId,
-                    (itemId: string) => getSprintBacklogItemById(state, sprintId, itemId),
-                    (item) => item.pushState !== PushState.Removed
+                    strictMode,
+                    getItem,
+                    includeItemCheck
                 );
                 draft.openedDetailMenuSprintId = draft.openedDetailMenuBacklogItemId ? sprintId : null;
                 const hasItemDetailMenuOpened = !!draft.openedDetailMenuBacklogItemId;
                 if (hasItemDetailMenuOpened) {
+                    draft.openingDetailMenuSprintId = null;
+                    draft.openingDetailMenuBacklogItemId = null;
+                }
+                return;
+            }
+            case ActionTypes.HIDE_SPRINT_BACKLOG_ITEM_DETAIL: {
+                const actionTyped = action as HideSprintBacklogItemDetailAction;
+                const sprintId = actionTyped.payload.sprintId;
+                const backlogItemId = actionTyped.payload.backlogItemId;
+                if (draft.openedDetailMenuSprintId === sprintId && draft.openedDetailMenuBacklogItemId === backlogItemId) {
+                    draft.openedDetailMenuSprintId = null;
+                    draft.openedDetailMenuBacklogItemId = null;
+                    draft.openingDetailMenuSprintId = null;
                     draft.openingDetailMenuBacklogItemId = null;
                 }
                 return;
             }
             case ActionTypes.API_DELETE_SPRINT_BACKLOG_ITEM_SUCCESS: {
                 draft.openedDetailMenuSprintId = null;
+                draft.openedDetailMenuBacklogItemId = null;
                 return;
             }
             case ActionTypes.API_PATCH_BACKLOG_ITEM_SUCCESS: {
@@ -260,6 +285,7 @@ export const sprintBacklogReducer = (
                     }
                 });
                 draft.openedDetailMenuSprintId = null;
+                draft.openedDetailMenuBacklogItemId = null;
                 return;
             }
             case ActionTypes.REMOVE_SPRINT_BACKLOG_ITEM: {

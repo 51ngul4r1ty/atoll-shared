@@ -27,11 +27,12 @@ import { useDispatch } from "react-redux";
 import { editBacklogItemPart } from "../../../actions/backlogItemPartActions";
 
 export interface BacklogItemFullDetailFormStateProps extends BacklogItemEditableFields {
-    saved: boolean;
     className?: string;
     editable?: boolean;
-    parts: BacklogItemPartForSplitForm[];
     openedDetailMenuBacklogItemPartId: string;
+    parts: BacklogItemPartForSplitForm[];
+    saved: boolean;
+    strictMode: boolean;
 }
 
 export interface BacklogItemFullDetailFormDispatchProps {
@@ -39,7 +40,9 @@ export interface BacklogItemFullDetailFormDispatchProps {
     onCancelClick?: { () };
     onDataUpdate?: { (props: BacklogItemEditableFields) };
     onPartPointsUpdate: { (partId: string, value: string) };
-    onDetailClick: { (partId: string): void };
+    // TODO: Add to code standards to switch to doing it this way:
+    // onDetailClick: (partId: string, strictMode: boolean) => void;
+    onDetailClick: { (partId: string, strictMode: boolean): void };
 }
 
 export type BacklogItemFullDetailFormProps = BacklogItemFullDetailFormStateProps & BacklogItemFullDetailFormDispatchProps;
@@ -313,7 +316,7 @@ export const BacklogItemFullDetailForm: React.FC<BacklogItemFullDetailFormProps>
                 showDetailMenu={showDetailMenu}
                 showDetailMenuToLeft={true}
                 buildItemMenu={backlogItemPartMenuBuilder(itemEventHandlers)}
-                onDetailClick={() => props.onDetailClick(part.id)}
+                onDetailClick={() => props.onDetailClick(part.id, props.strictMode)}
             />
         );
     });

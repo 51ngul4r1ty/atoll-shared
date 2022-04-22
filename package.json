@@ -1,6 +1,6 @@
 {
   "name": "@atoll/shared",
-  "version": "0.51.0",
+  "version": "0.52.1",
   "author": {
     "name": "Kevin Berry",
     "email": "41717340+51ngul4r1ty@users.noreply.github.com"
@@ -58,6 +58,7 @@
     "i18next": "19.0.0",
     "immer": "9.0.6",
     "minimist": "1.2.6",
+    "query-string": "7.1.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-helmet": "5.2.1",

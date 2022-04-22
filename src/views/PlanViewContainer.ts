@@ -57,9 +57,9 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
         electronClient: appSelectors.getElectronClient(state),
         includeArchivedSprints,
         loading: appSelectors.isPlanViewLoading(state),
-        openedDetailMenuBacklogItemId: backlogItemSelectors.getOpenedDetailMenuBacklogItemId(state),
-        openedDetailMenuSprintBacklogInfo: sprintBacklogSelectors.getOpenedDetailMenuInfo(state),
-        openingDetailMenuSprintBacklogInfo: sprintBacklogSelectors.getOpeningDetailMenuInfo(state),
+        openedDetailMenuBacklogItemId: backlogItemSelectors.getProductBacklogOpenedDetailMenuItemId(state),
+        openedDetailMenuSprintBacklogInfo: sprintBacklogSelectors.getSprintBacklogOpenedDetailMenuInfo(state),
+        openingDetailMenuSprintBacklogInfo: sprintBacklogSelectors.getSprintBacklogOpeningDetailMenuInfo(state),
         openedDetailMenuSprintId: sprintSelectors.getOpenedDetailMenuSprintId(state),
         openedDatePickerInfo: sprintSelectors.getOpenedDatePickerInfo(state),
         splitToNextSprintAvailable: sprintSelectors.getSplitToNextSprintAvailable(state),
@@ -67,7 +67,8 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
         selectedProductBacklogItemCount: backlogItemSelectors.getSelectedBacklogItemCount(state),
         sprintsToDisableAddItemAction: sprintBacklogSelectors.getSprintsToDisableAddItemsAction(state),
         showWindowTitleBar: !isPlatformWindows(),
-        sprints
+        sprints,
+        strictMode: appSelectors.isStrictMode(state)
     };
     return result;
 };
@@ -92,9 +93,9 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
                 dispatch(collapseSprintPanel(sprintId));
             }
         },
-        onSprintDetailClick: (sprintId: string) => dispatch(sprintDetailClick(sprintId)),
-        onItemDetailClick: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintBacklogItemDetailClick(sprintId, backlogItemId)),
+        onSprintDetailClick: (sprintId: string, strictMode: boolean) => dispatch(sprintDetailClick(sprintId, strictMode)),
+        onItemDetailClick: (sprintId: string, backlogItemId: string, strictMode: boolean) =>
+            dispatch(sprintBacklogItemDetailClick(sprintId, backlogItemId, strictMode)),
         onBacklogItemIdClick: (sprintId: string, backlogItemId: string) =>
             dispatch(sprintBacklogItemIdClick(sprintId, backlogItemId)),
         onMoveItemToBacklogClick: (sprintId: string, backlogItemId: string) =>

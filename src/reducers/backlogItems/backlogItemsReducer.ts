@@ -50,6 +50,7 @@ import type { ApiBacklogItem, ApiSprint } from "../../types/apiModelTypes";
 
 // selectors
 import * as backlogItemsSliceSelectors from "./backlogItemsSliceSelectors";
+import * as appSelectors from "../../selectors/appSelectors";
 
 // utils
 import {
@@ -62,7 +63,7 @@ import {
 } from "./backlogItemsReducerHelper";
 import { mapApiItemsToBacklogItems, mapApiItemToBacklogItem } from "../../mappers/backlogItemMappers";
 import { mapApiStatusToBacklogItem } from "../../mappers/statusMappers";
-import { calcDropDownMenuState } from "../../utils/dropdownMenuUtils";
+import { calcToggledOpenMenuItemId } from "../../utils/dropdownMenuUtils";
 import { isoDateStringToDate } from "../../utils/apiPayloadConverters";
 import { shouldHideDetailMenu } from "../../components/utils/itemDetailMenuUtils";
 import { mapApiItemToBacklogItemPart } from "../../mappers/backlogItemPartMappers";
@@ -264,19 +265,25 @@ export const backlogItemsReducer = (
             }
             case ActionTypes.TOGGLE_BACKLOG_ITEM_DETAIL: {
                 const actionTyped = action as ToggleBacklogItemDetailAction;
-                draft.openedDetailMenuBacklogItemId = calcDropDownMenuState(
+                const strictMode = actionTyped.payload.strictMode;
+                const getItem = (itemId: string) => backlogItemsSliceSelectors.sliceSelectBacklogItemById(state, itemId);
+                const includeItemCheck = (item) => item.pushState !== PushState.Removed;
+                draft.openedDetailMenuBacklogItemId = calcToggledOpenMenuItemId(
                     draft.openedDetailMenuBacklogItemId,
                     actionTyped.payload.itemId,
-                    (itemId: string) => backlogItemsSliceSelectors.sliceSelectBacklogItemById(state, itemId),
-                    (item) => item.pushState !== PushState.Removed
+                    strictMode,
+                    getItem,
+                    includeItemCheck
                 );
                 return;
             }
             case ActionTypes.TOGGLE_BACKLOG_ITEM_PART_DETAIL: {
                 const actionTyped = action as ToggleBacklogItemPartDetailAction;
-                draft.openedDetailMenuBacklogItemPartId = calcDropDownMenuState(
+                const strictMode = actionTyped.payload.strictMode;
+                draft.openedDetailMenuBacklogItemPartId = calcToggledOpenMenuItemId(
                     draft.openedDetailMenuBacklogItemPartId,
-                    actionTyped.payload.partId
+                    actionTyped.payload.partId,
+                    strictMode
                 );
                 return;
             }

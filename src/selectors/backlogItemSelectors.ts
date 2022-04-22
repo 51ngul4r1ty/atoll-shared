@@ -104,7 +104,7 @@ export const getSelectedBacklogItemCount = (state: StateTree) => {
     return state.backlogItems.selectedItemIds.length;
 };
 
-export const getOpenedDetailMenuBacklogItemId = (state: StateTree) => state.backlogItems.openedDetailMenuBacklogItemId;
+export const getProductBacklogOpenedDetailMenuItemId = (state: StateTree) => state.backlogItems.openedDetailMenuBacklogItemId;
 
 export const isBusyJoiningUnallocatedParts = (state: StateTree) => state.backlogItems.joinUnallocatedPartsInProgress;
 
