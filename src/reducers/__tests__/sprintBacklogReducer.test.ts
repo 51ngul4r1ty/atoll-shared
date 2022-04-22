@@ -13,7 +13,7 @@ import { PushState } from "../enums";
 
 // interfaces/types
 import type { BacklogItemInSprint } from "../../types/backlogItemTypes";
-import type { ToggleSprintBacklogItemDetailAction } from "../../actions/sprintBacklogActions";
+import type { ShowSprintBacklogItemDetailAction } from "../../actions/sprintBacklogActions";
 
 // code under test
 import { sprintBacklogReducer, SprintBacklogSprintInfo, SprintBacklogState } from "../sprintBacklogReducer";
@@ -220,7 +220,7 @@ describe("Sprint Backlog Reducer", () => {
             );
         });
     });
-    describe("TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL", () => {
+    describe("SHOW_SPRINT_BACKLOG_ITEM_DETAIL", () => {
         const buildBacklogItem = (backlogItemId: string) => {
             const backlogItem: BacklogItemInSprint = {
                 id: backlogItemId,
@@ -284,8 +284,8 @@ describe("Sprint Backlog Reducer", () => {
             const sprintId = "fake-sprint-id";
             const sprint = buildSprintInfo(backlogItemId);
             const state = buildState(sprintId, sprint);
-            const action: ToggleSprintBacklogItemDetailAction = {
-                type: ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL,
+            const action: ShowSprintBacklogItemDetailAction = {
+                type: ActionTypes.SHOW_SPRINT_BACKLOG_ITEM_DETAIL,
                 payload: {
                     sprintId: "fake-sprint-id",
                     backlogItemId: "fake-backlog-item-id",
@@ -307,8 +307,8 @@ describe("Sprint Backlog Reducer", () => {
             const sprintId = "fake-sprint-id";
             const sprint = buildSprintInfo(backlogItemId);
             const state: SprintBacklogState = { ...buildState(sprintId, sprint), openedDetailMenuBacklogItemId: backlogItemId };
-            const action: ToggleSprintBacklogItemDetailAction = {
-                type: ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL,
+            const action: ShowSprintBacklogItemDetailAction = {
+                type: ActionTypes.SHOW_SPRINT_BACKLOG_ITEM_DETAIL,
                 payload: {
                     sprintId: "fake-sprint-id",
                     backlogItemId: "fake-backlog-item-id",
@@ -334,8 +334,8 @@ describe("Sprint Backlog Reducer", () => {
                 ...buildState(sprintId, sprint),
                 openedDetailMenuBacklogItemId: otherBacklogItemId
             };
-            const action: ToggleSprintBacklogItemDetailAction = {
-                type: ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL,
+            const action: ShowSprintBacklogItemDetailAction = {
+                type: ActionTypes.SHOW_SPRINT_BACKLOG_ITEM_DETAIL,
                 payload: {
                     sprintId: "fake-sprint-id",
                     backlogItemId: "fake-backlog-item-id",
@@ -359,8 +359,8 @@ describe("Sprint Backlog Reducer", () => {
             const baseSprintInfoItem = baseSprintInfo.items[0];
             const sprint = { ...baseSprintInfo, items: [{ ...baseSprintInfoItem, pushState: PushState.Removed }] };
             const state = buildState(sprintId, sprint);
-            const action: ToggleSprintBacklogItemDetailAction = {
-                type: ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL,
+            const action: ShowSprintBacklogItemDetailAction = {
+                type: ActionTypes.SHOW_SPRINT_BACKLOG_ITEM_DETAIL,
                 payload: {
                     sprintId: "fake-sprint-id",
                     backlogItemId: "fake-backlog-item-id",
@@ -389,8 +389,8 @@ describe("Sprint Backlog Reducer", () => {
                 backlogItemsInSprint: {}
             };
             const state: SprintBacklogState = buildState(sprintId, sprint);
-            const action: ToggleSprintBacklogItemDetailAction = {
-                type: ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL,
+            const action: ShowSprintBacklogItemDetailAction = {
+                type: ActionTypes.SHOW_SPRINT_BACKLOG_ITEM_DETAIL,
                 payload: {
                     sprintId,
                     backlogItemId: backlogItemId,

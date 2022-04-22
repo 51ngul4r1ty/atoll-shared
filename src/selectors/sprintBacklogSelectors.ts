@@ -29,15 +29,21 @@ export interface OpenedOrOpeningDetailMenuInfo {
     sprintId: string;
 }
 
-export const getOpenedDetailMenuInfo = (state: StateTree): OpenedOrOpeningDetailMenuInfo => ({
+export const getSprintBacklogOpenedDetailMenuInfo = (state: StateTree): OpenedOrOpeningDetailMenuInfo => ({
     backlogItemId: state.sprintBacklog.openedDetailMenuBacklogItemId,
     sprintId: state.sprintBacklog.openedDetailMenuSprintId
 });
 
-export const getOpeningDetailMenuInfo = (state: StateTree): OpenedOrOpeningDetailMenuInfo => ({
+export const getSprintBacklogOpeningDetailMenuInfo = (state: StateTree): OpenedOrOpeningDetailMenuInfo => ({
     backlogItemId: state.sprintBacklog.openingDetailMenuBacklogItemId,
     sprintId: state.sprintBacklog.openingDetailMenuSprintId
 });
+
+export const getSprintBacklogOpenedDetailMenuItemId = (state: StateTree): string | null =>
+    state.sprintBacklog.openedDetailMenuBacklogItemId;
+
+export const getSprintBacklogOpeningDetailMenuItemId = (state: StateTree): string | null =>
+    state.sprintBacklog.openingDetailMenuBacklogItemId;
 
 export const getSprintBacklogItemById = (state: StateTree, sprintId: string, backlogItemId: string) => {
     return getSprintBacklogItemByIdFromSlice(state.sprintBacklog, sprintId, backlogItemId);

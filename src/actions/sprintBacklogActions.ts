@@ -117,30 +117,48 @@ export const sprintBacklogItemDetailClick = (
     }
 });
 
-export type ToggleSprintBacklogItemDetailPayload = {
+export type ShowSprintBacklogItemDetailPayload = {
     sprintId: string;
     backlogItemId: string;
     splitToNextSprintAvailable: boolean;
     strictMode: boolean;
 };
 
-export type ToggleSprintBacklogItemDetailAction = {
-    type: typeof ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL;
-    payload: ToggleSprintBacklogItemDetailPayload;
+export type ShowSprintBacklogItemDetailAction = {
+    type: typeof ActionTypes.SHOW_SPRINT_BACKLOG_ITEM_DETAIL;
+    payload: ShowSprintBacklogItemDetailPayload;
 };
 
-export const toggleSprintBacklogItemDetail = (
+export const showSprintBacklogItemDetail = (
     sprintId,
     backlogItemId: string,
     splitToNextSprintAvailable: boolean,
     strictMode: boolean
-): ToggleSprintBacklogItemDetailAction => ({
-    type: ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL,
+): ShowSprintBacklogItemDetailAction => ({
+    type: ActionTypes.SHOW_SPRINT_BACKLOG_ITEM_DETAIL,
     payload: {
         sprintId,
         backlogItemId,
         splitToNextSprintAvailable,
         strictMode
+    }
+});
+
+export type HideSprintBacklogItemDetailPayload = {
+    sprintId: string;
+    backlogItemId: string;
+};
+
+export type HideSprintBacklogItemDetailAction = {
+    type: typeof ActionTypes.HIDE_SPRINT_BACKLOG_ITEM_DETAIL;
+    payload: HideSprintBacklogItemDetailPayload;
+};
+
+export const hideSprintBacklogItemDetail = (sprintId, backlogItemId: string): HideSprintBacklogItemDetailAction => ({
+    type: ActionTypes.HIDE_SPRINT_BACKLOG_ITEM_DETAIL,
+    payload: {
+        sprintId,
+        backlogItemId
     }
 });
 

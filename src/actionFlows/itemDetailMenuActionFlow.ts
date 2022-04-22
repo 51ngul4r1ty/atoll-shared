@@ -39,9 +39,8 @@ import * as appSelectors from "../selectors/appSelectors";
 import { apiGetSprint } from "../actions/apiSprints";
 import { apiGetSprintBacklogItems } from "../actions/apiSprintBacklog";
 import { hasBacklogItemAtLeastBeenAccepted } from "../utils/backlogItemStatusHelper";
-import { toggleSprintBacklogItemDetail } from "../actions/sprintBacklogActions";
+import { hideSprintBacklogItemDetail, showSprintBacklogItemDetail } from "../actions/sprintBacklogActions";
 import { alreadyShowingMenu } from "../utils/dropdownMenuUtils";
-import { getOpenedDetailMenuBacklogItemId } from "../selectors/backlogItemSelectors";
 
 export const ITEM_DETAIL_CLICK_STEP_1_NAME = "1-GetSprintDetails";
 export const ITEM_DETAIL_CLICK_STEP_2_NAME = "2-GetNextSprintDetails";
@@ -65,23 +64,23 @@ export const handleSprintBacklogItemDetailClick = (
 ) => {
     const state = store.getState();
     const backlogItem = sprintBacklogSelectors.getSprintBacklogItemById(state, sprintId, backlogItemId);
-    const openedDetailMenuBacklogItemId = getOpenedDetailMenuBacklogItemId(state);
-    if (!alreadyShowingMenu(openedDetailMenuBacklogItemId, backlogItemId)) {
-        if (hasBacklogItemAtLeastBeenAccepted(backlogItem.status)) {
-            const splitToNextSprintAvailable = false;
-            store.dispatch(toggleSprintBacklogItemDetail(sprintId, backlogItemId, splitToNextSprintAvailable, strictMode));
-        } else {
-            store.dispatch(
-                apiGetSprint(sprintId, {
-                    passthroughData: {
-                        triggerAction: actionType,
-                        sprintId: sprintId,
-                        backlogItemId: backlogItemId,
-                        stepName: ITEM_DETAIL_CLICK_STEP_1_NAME
-                    }
-                })
-            );
-        }
+    const openedDetailMenuBacklogItemId = sprintBacklogSelectors.getSprintBacklogOpenedDetailMenuItemId(state);
+    if (alreadyShowingMenu(openedDetailMenuBacklogItemId, backlogItemId)) {
+        store.dispatch(hideSprintBacklogItemDetail(sprintId, backlogItemId));
+    } else if (hasBacklogItemAtLeastBeenAccepted(backlogItem.status)) {
+        const splitToNextSprintAvailable = false;
+        store.dispatch(showSprintBacklogItemDetail(sprintId, backlogItemId, splitToNextSprintAvailable, strictMode));
+    } else {
+        store.dispatch(
+            apiGetSprint(sprintId, {
+                passthroughData: {
+                    triggerAction: actionType,
+                    sprintId: sprintId,
+                    backlogItemId: backlogItemId,
+                    stepName: ITEM_DETAIL_CLICK_STEP_1_NAME
+                }
+            })
+        );
     }
 };
 
@@ -122,7 +121,7 @@ const processSprintDataForItemDetailClickStep1 = (
         const backlogItemId = meta.passthrough.backlogItemId;
         const state = store.getState();
         const strictMode = appSelectors.isStrictMode(state);
-        store.dispatch(toggleSprintBacklogItemDetail(sprintId, backlogItemId, splitToNextSprintAvailable, strictMode));
+        store.dispatch(showSprintBacklogItemDetail(sprintId, backlogItemId, splitToNextSprintAvailable, strictMode));
     } else {
         const nextSprintUri = nextSprintLink?.uri;
         if (!nextSprintUri) {
@@ -178,7 +177,7 @@ export const handleGetSprintBacklogItemsSuccessForItemDetailClick = (
         const splitToNextSprintAvailable = !hasBacklogItem;
         const state = store.getState();
         const strictMode = appSelectors.isStrictMode(state);
-        store.dispatch(toggleSprintBacklogItemDetail(sprintId, backlogItemId, splitToNextSprintAvailable, strictMode));
+        store.dispatch(showSprintBacklogItemDetail(sprintId, backlogItemId, splitToNextSprintAvailable, strictMode));
     } else {
         throw new Error("Unexpected result- ITEM_DETAIL_CLICK_STEP_3_NAME expected as stepName");
     }

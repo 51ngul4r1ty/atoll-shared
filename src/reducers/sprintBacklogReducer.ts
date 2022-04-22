@@ -23,7 +23,8 @@ import type {
     PatchBacklogItemInSprintAction,
     RemoveSprintBacklogItemAction,
     SprintBacklogItemDetailClickAction,
-    ToggleSprintBacklogItemDetailAction
+    ShowSprintBacklogItemDetailAction,
+    HideSprintBacklogItemDetailAction
 } from "../actions/sprintBacklogActions";
 import type { AppClickAction } from "../actions/appActions";
 import type { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
@@ -231,8 +232,8 @@ export const sprintBacklogReducer = (
                 }
                 return;
             }
-            case ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL: {
-                const actionTyped = action as ToggleSprintBacklogItemDetailAction;
+            case ActionTypes.SHOW_SPRINT_BACKLOG_ITEM_DETAIL: {
+                const actionTyped = action as ShowSprintBacklogItemDetailAction;
                 const sprintId = actionTyped.payload.sprintId;
                 const getItem = (itemId: string) => getSprintBacklogItemByIdFromSlice(state, sprintId, itemId);
                 const includeItemCheck = (item) => item?.pushState !== PushState.Removed;
@@ -247,6 +248,19 @@ export const sprintBacklogReducer = (
                 draft.openedDetailMenuSprintId = draft.openedDetailMenuBacklogItemId ? sprintId : null;
                 const hasItemDetailMenuOpened = !!draft.openedDetailMenuBacklogItemId;
                 if (hasItemDetailMenuOpened) {
+                    draft.openingDetailMenuSprintId = null;
+                    draft.openingDetailMenuBacklogItemId = null;
+                }
+                return;
+            }
+            case ActionTypes.HIDE_SPRINT_BACKLOG_ITEM_DETAIL: {
+                const actionTyped = action as HideSprintBacklogItemDetailAction;
+                const sprintId = actionTyped.payload.sprintId;
+                const backlogItemId = actionTyped.payload.backlogItemId;
+                if (draft.openedDetailMenuSprintId === sprintId && draft.openedDetailMenuBacklogItemId === backlogItemId) {
+                    draft.openedDetailMenuSprintId = null;
+                    draft.openedDetailMenuBacklogItemId = null;
+                    draft.openingDetailMenuSprintId = null;
                     draft.openingDetailMenuBacklogItemId = null;
                 }
                 return;
