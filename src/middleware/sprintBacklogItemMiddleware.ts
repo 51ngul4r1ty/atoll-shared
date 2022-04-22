@@ -206,7 +206,8 @@ export const sprintBacklogItemMiddleware = (store: StoreTyped) => (next) => (act
             const actionType = actionTyped.type;
             const sprintId = actionTyped.payload.sprintId;
             const backlogItemId = actionTyped.payload.backlogItemId;
-            handleSprintBacklogItemDetailClick(store, actionType, sprintId, backlogItemId);
+            const strictMode = actionTyped.payload.strictMode;
+            handleSprintBacklogItemDetailClick(store, actionType, sprintId, backlogItemId, strictMode);
             return;
         }
         case ActionTypes.API_GET_SPRINT_SUCCESS: {

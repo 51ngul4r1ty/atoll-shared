@@ -46,6 +46,7 @@ export interface BacklogItemViewStateProps {
     startedAt: Date | null;
     storyPhrase: string;
     type: BacklogItemType;
+    strictMode: boolean;
 }
 
 export interface BacklogItemViewDispatchProps {
@@ -89,6 +90,7 @@ export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
                 releasedAt={props.releasedAt}
                 type={props.type}
                 parts={props.parts}
+                strictMode={props.strictMode}
                 openedDetailMenuBacklogItemPartId={props.openedDetailMenuBacklogItemPartId}
                 onDataUpdate={(fields) => {
                     dispatch(updateCurrentBacklogItemFields(fields));
@@ -102,8 +104,8 @@ export const BacklogItemView: React.FC<BacklogItemViewProps> = (props) => {
                 onPartPointsUpdate={(partId: string, value: string) => {
                     dispatch(updateBacklogItemPartPoints(partId, value));
                 }}
-                onDetailClick={(partId: string) => {
-                    dispatch(backlogItemPartDetailClick(partId));
+                onDetailClick={(partId: string, strictMode: boolean) => {
+                    dispatch(backlogItemPartDetailClick(partId, strictMode));
                 }}
             />
         </>

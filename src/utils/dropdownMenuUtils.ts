@@ -6,31 +6,41 @@
  * @param includeItemCheck callback to check whether to include this item (optional but must be paired with getItemById)
  * @returns
  */
-export const calcDropDownMenuState = <T>(
+export const calcToggledOpenMenuItemId = <T>(
     openedItemId: string | null,
     actionItemId: string | null,
+    strictMode: boolean,
     getItemById?: { (openItemId: string | null): T },
     includeItemCheck?: { (item: T): boolean }
 ) => {
-    let result: string;
+    let resultItemId: string;
     if (openedItemId === null) {
-        result = actionItemId;
+        resultItemId = actionItemId;
     } else if (openedItemId === actionItemId) {
-        result = null;
+        resultItemId = null;
     } else {
-        result = actionItemId;
+        resultItemId = actionItemId;
     }
-    if (result) {
+    if (resultItemId) {
         if (getItemById) {
             if (!includeItemCheck) {
-                throw new Error("calcDropDownMenuState failed because getItemById provided, but includeItemCheck was not!");
+                throw new Error("calcToggledOpenMenuItemId failed because getItemById provided, but includeItemCheck was not!");
             } else {
-                const item = getItemById(result);
+                const item = getItemById(resultItemId);
+                if (strictMode) {
+                    throw new Error(
+                        `Unexpected condition - calcToggledOpenMenuItemId expects getItemById(${resultItemId}) to return an item`
+                    );
+                }
                 if (!includeItemCheck(item)) {
-                    result = null;
+                    resultItemId = null;
                 }
             }
         }
     }
-    return result;
+    return resultItemId;
+};
+
+export const alreadyShowingMenu = (openedDetailMenuItemId: string, newTargetMenuItemId: string) => {
+    return openedDetailMenuItemId === newTargetMenuItemId;
 };

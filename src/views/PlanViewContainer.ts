@@ -67,7 +67,8 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
         selectedProductBacklogItemCount: backlogItemSelectors.getSelectedBacklogItemCount(state),
         sprintsToDisableAddItemAction: sprintBacklogSelectors.getSprintsToDisableAddItemsAction(state),
         showWindowTitleBar: !isPlatformWindows(),
-        sprints
+        sprints,
+        strictMode: appSelectors.isStrictMode(state)
     };
     return result;
 };
@@ -92,9 +93,9 @@ const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
                 dispatch(collapseSprintPanel(sprintId));
             }
         },
-        onSprintDetailClick: (sprintId: string) => dispatch(sprintDetailClick(sprintId)),
-        onItemDetailClick: (sprintId: string, backlogItemId: string) =>
-            dispatch(sprintBacklogItemDetailClick(sprintId, backlogItemId)),
+        onSprintDetailClick: (sprintId: string, strictMode: boolean) => dispatch(sprintDetailClick(sprintId, strictMode)),
+        onItemDetailClick: (sprintId: string, backlogItemId: string, strictMode: boolean) =>
+            dispatch(sprintBacklogItemDetailClick(sprintId, backlogItemId, strictMode)),
         onBacklogItemIdClick: (sprintId: string, backlogItemId: string) =>
             dispatch(sprintBacklogItemIdClick(sprintId, backlogItemId)),
         onMoveItemToBacklogClick: (sprintId: string, backlogItemId: string) =>

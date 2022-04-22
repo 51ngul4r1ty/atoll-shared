@@ -488,7 +488,7 @@ export const InnerProductPlanningPanel: React.FC<ProductPlanningPanelProps> = (p
                         totalParts={item.totalParts}
                         unallocatedParts={item.unallocatedParts}
                         onDetailClick={() => {
-                            dispatch(backlogItemDetailClick(item.id));
+                            dispatch(backlogItemDetailClick(item.id, props.strictMode));
                         }}
                         onCheckboxChange={(checked) => {
                             if (checked) {
@@ -508,14 +508,15 @@ export const InnerProductPlanningPanel: React.FC<ProductPlanningPanelProps> = (p
                 <BacklogItemPlanningItem
                     key={buildBacklogItemPlanningItemKey(item)}
                     {...item}
-                    editMode={props.editMode}
-                    busySplittingStory={props.busySplittingStory}
                     busyJoiningUnallocatedParts={props.busyJoiningUnallocatedParts}
-                    renderMobile={props.renderMobile}
-                    highlightAbove={highlightAbove}
-                    suppressTopPadding={suppressTopPadding || lastItemWasUnsaved}
-                    showDetailMenu={showDetailMenu}
+                    busySplittingStory={props.busySplittingStory}
+                    editMode={props.editMode}
                     hidden={!showItem}
+                    highlightAbove={highlightAbove}
+                    renderMobile={props.renderMobile}
+                    showDetailMenu={showDetailMenu}
+                    strictMode={props.strictMode}
+                    suppressTopPadding={suppressTopPadding || lastItemWasUnsaved}
                 />
             );
         }

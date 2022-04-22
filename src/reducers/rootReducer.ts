@@ -5,7 +5,7 @@ import { connectRouter, RouterState } from "connected-react-router";
 // reducers
 import { apiBatchReducer, apiBatchReducerInitialState, ApiBatchState } from "./apiBatchReducer";
 import { apiLinksReducer, apiLinksReducerInitialState, ApiLinkState } from "./apiLinksReducer";
-import { appReducer, appReducerInitialState, AppState } from "./appReducer";
+import { appReducer, appReducerInitialState, AppState } from "./app/appReducer";
 import {
     productBacklogItemsReducer,
     productBacklogItemsReducerInitialState,

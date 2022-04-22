@@ -39,14 +39,15 @@ import { productBacklogItemMenuBuilder } from "../../common/itemMenuBuilders";
 import { computeProductBacklogItemEstimate } from "../panels/productPlanning/productPlanningPanelUtils";
 
 export interface BacklogItemPlanningItemStateProps extends BacklogItemWithSource {
-    editMode: EditMode;
-    busySplittingStory: boolean;
     busyJoiningUnallocatedParts: boolean;
+    busySplittingStory: boolean;
+    editMode: EditMode;
+    hidden?: boolean;
     highlightAbove: boolean;
     renderMobile: boolean;
     showDetailMenu: boolean;
+    strictMode: boolean;
     suppressTopPadding: boolean;
-    hidden?: boolean;
 }
 
 export interface BacklogItemPlanningItemDispatchProps {}
@@ -146,7 +147,7 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     totalParts={props.totalParts}
                     unallocatedParts={props.unallocatedParts}
                     onDetailClick={() => {
-                        dispatch(backlogItemDetailClick(props.id));
+                        dispatch(backlogItemDetailClick(props.id, props.strictMode));
                     }}
                     onCheckboxChange={(checked) => {
                         if (checked) {

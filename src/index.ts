@@ -51,7 +51,7 @@ export * from "./types/apiModelTypes";
 export { BasePushNotification, WebsocketPushNotification as PushNotification } from "./types/pushTypes";
 export { FeatureToggle, FeatureTogglesState } from "./reducers/featureTogglesReducer";
 export { StateTree } from "./reducers/rootReducer";
-export { AppState } from "./reducers/appReducer";
+export { AppState } from "./reducers/app/appReducer";
 export { UserState } from "./reducers/userReducer";
 export { BacklogItemWithSource, BacklogItemsState } from "./reducers/backlogItems/backlogItemsReducerTypes";
 export { Source } from "./reducers/enums";

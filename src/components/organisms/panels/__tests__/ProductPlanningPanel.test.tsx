@@ -138,6 +138,7 @@ describe("ProductPlanningPanel", () => {
         allItems.push(buildLoadedItem(2, 8));
         allItems.push(buildLoadedItem(3, 3));
         const editMode = EditMode.Edit;
+        const strictMode = false;
         const wrapper = render(
             <ProductPlanningPanel
                 allItems={allItems}
@@ -148,6 +149,7 @@ describe("ProductPlanningPanel", () => {
                 onReorderBacklogItems={() => {}}
                 openedDetailMenuBacklogItemId={null}
                 renderMobile
+                strictMode
             />
         );
         expect(wrapper.container).toMatchSnapshot();
@@ -158,6 +160,7 @@ describe("ProductPlanningPanel", () => {
         allItems.push(buildAddedItem(2, 2001, 5, false));
         allItems.push(buildLoadedItem(3, 8));
         const editMode = EditMode.Edit;
+        const strictMode = false;
         const wrapper = render(
             <ProductPlanningPanel
                 allItems={allItems}
@@ -168,6 +171,7 @@ describe("ProductPlanningPanel", () => {
                 onReorderBacklogItems={() => {}}
                 openedDetailMenuBacklogItemId={null}
                 renderMobile
+                strictMode
             />
         );
         expect(wrapper.container).toMatchSnapshot();
@@ -177,6 +181,7 @@ describe("ProductPlanningPanel", () => {
         allItems.push(buildAddedItem(1, 3000, 13, true));
         allItems.push(buildAddedItem(2, 3001, 5, false));
         const editMode = EditMode.Edit;
+        const strictMode = false;
         const wrapper = render(
             <ProductPlanningPanel
                 allItems={allItems}
@@ -187,6 +192,7 @@ describe("ProductPlanningPanel", () => {
                 onReorderBacklogItems={() => {}}
                 openedDetailMenuBacklogItemId={null}
                 renderMobile
+                strictMode
             />
         );
         expect(wrapper.container).toMatchSnapshot();
@@ -196,6 +202,7 @@ describe("ProductPlanningPanel", () => {
         allItems.push(buildAddedItem(1, 4000, 13, false));
         allItems.push(buildLoadedItem(2, 8));
         const editMode = EditMode.View;
+        const strictMode = false;
         const wrapper = render(
             <ProductPlanningPanel
                 allItems={allItems}
@@ -206,6 +213,7 @@ describe("ProductPlanningPanel", () => {
                 onReorderBacklogItems={() => {}}
                 openedDetailMenuBacklogItemId={null}
                 renderMobile
+                strictMode
             />
         );
         expect(wrapper.container).toMatchSnapshot();
@@ -217,6 +225,7 @@ describe("ProductPlanningPanel", () => {
         allItems.push(buildAddedItem(3, 5002, 5, false));
         allItems.push(buildLoadedItem(4, 8));
         const editMode = EditMode.Edit;
+        const strictMode = false;
         const wrapper = render(
             <ProductPlanningPanel
                 allItems={allItems}
@@ -227,6 +236,7 @@ describe("ProductPlanningPanel", () => {
                 onReorderBacklogItems={() => {}}
                 openedDetailMenuBacklogItemId={null}
                 renderMobile
+                strictMode
             />
         );
         expect(wrapper.container).toMatchSnapshot();

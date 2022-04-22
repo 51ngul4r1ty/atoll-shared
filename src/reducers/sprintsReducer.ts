@@ -32,7 +32,7 @@ import { NewSprintPosition } from "../actions/sprintActions";
 import { PushState, Source } from "./enums";
 
 // utils
-import { calcDropDownMenuState } from "../utils/dropdownMenuUtils";
+import { calcToggledOpenMenuItemId } from "../utils/dropdownMenuUtils";
 import { mapApiItemsToSprints } from "../mappers/sprintMappers";
 import { shouldHideDetailMenu } from "../components/utils/itemDetailMenuUtils";
 
@@ -345,7 +345,8 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             case ActionTypes.TOGGLE_SPRINT_ITEM_DETAIL: {
                 const actionTyped = action as ToggleSprintDetailAction;
                 const sprintId = actionTyped.payload.sprintId;
-                draft.openedDetailMenuSprintId = calcDropDownMenuState(draft.openedDetailMenuSprintId, sprintId);
+                const strictMode = actionTyped.payload.strictMode;
+                draft.openedDetailMenuSprintId = calcToggledOpenMenuItemId(draft.openedDetailMenuSprintId, sprintId, strictMode);
                 return;
             }
             case ActionTypes.APP_CLICK: {

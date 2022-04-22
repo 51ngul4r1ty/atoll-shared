@@ -12,7 +12,9 @@ import { isPlatformWindows } from "../utils/osUtils";
 // selectors
 import * as backlogItemSelectors from "../selectors/backlogItemSelectors";
 import * as backlogItemPartSelectors from "../selectors/backlogItemPartSelectors";
-import { getAppEditMode, getElectronClient } from "../selectors/appSelectors";
+import * as appSelectors from "../selectors/appSelectors";
+
+// actions
 import { apiBffViewsBacklogItem } from "../actions/apiBffViewsBacklogItem";
 
 export interface BacklogItemViewContainerOwnProps {
@@ -29,8 +31,8 @@ const mapStateToProps = (state: StateTree, ownProps: BacklogItemViewContainerOwn
         acceptanceCriteria: backlogItemSelectors.getCurrentBacklogItemAcceptanceCriteria(state),
         acceptedAt: backlogItemSelectors.getCurrentBacklogItemAcceptedAt(state),
         backlogItemDisplayId: ownProps.match.params.backlogItemDisplayId,
-        editMode: getAppEditMode(state),
-        electronClient: getElectronClient(state),
+        editMode: appSelectors.getAppEditMode(state),
+        electronClient: appSelectors.getElectronClient(state),
         estimate: backlogItemSelectors.getCurrentBacklogItemEstimate(state),
         externalId: backlogItemSelectors.getCurrentBacklogItemExternalId(state),
         finishedAt: backlogItemSelectors.getCurrentBacklogItemFinishedAt(state),
@@ -46,7 +48,8 @@ const mapStateToProps = (state: StateTree, ownProps: BacklogItemViewContainerOwn
         showWindowTitleBar: !isPlatformWindows(),
         startedAt: backlogItemSelectors.getCurrentBacklogItemStartedAt(state),
         storyPhrase: backlogItemSelectors.getCurrentBacklogItemStoryPhrase(state),
-        type: backlogItemSelectors.getCurrentBacklogItemType(state)
+        type: backlogItemSelectors.getCurrentBacklogItemType(state),
+        strictMode: appSelectors.isStrictMode(state)
     };
     return result;
 };

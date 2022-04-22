@@ -8,9 +8,15 @@ import {
     ITEM_DETAIL_CLICK_STEP_2_NAME,
     ITEM_DETAIL_CLICK_STEP_3_NAME
 } from "../../actionFlows/itemDetailMenuActionFlow";
+import { BacklogItemStatus } from "../../types/backlogItemEnums";
+import { PushState } from "../enums";
+
+// interfaces/types
+import type { BacklogItemInSprint } from "../../types/backlogItemTypes";
+import type { ToggleSprintBacklogItemDetailAction } from "../../actions/sprintBacklogActions";
 
 // code under test
-import { sprintBacklogReducer, SprintBacklogState } from "../sprintBacklogReducer";
+import { sprintBacklogReducer, SprintBacklogSprintInfo, SprintBacklogState } from "../sprintBacklogReducer";
 
 describe("Sprint Backlog Reducer", () => {
     describe("API_GET_SPRINT_FAILURE", () => {
@@ -212,6 +218,193 @@ describe("Sprint Backlog Reducer", () => {
                 'Unable to handle API_GET_SPRINT_BACKLOG_ITEMS_FAILURE for "app/click:sprint-backlog-item-detail" ' +
                     'step "THERE IS NO WAY THERE IS A STEP CALLED THIS!"'
             );
+        });
+    });
+    describe("TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL", () => {
+        const buildBacklogItem = (backlogItemId: string) => {
+            const backlogItem: BacklogItemInSprint = {
+                id: backlogItemId,
+                acceptanceCriteria: null,
+                acceptedAt: null,
+                createdAt: new Date(2020, 0, 1),
+                estimate: null,
+                externalId: null,
+                finishedAt: null,
+                friendlyId: "fake-friendly-id",
+                partIndex: 1,
+                projectId: "fake-project-id",
+                reasonPhrase: null,
+                releasedAt: null,
+                rolePhrase: null,
+                startedAt: null,
+                status: BacklogItemStatus.InProgress,
+                storyPhrase: "fake story phrase",
+                totalParts: 2,
+                type: "story",
+                unallocatedParts: 0,
+                unallocatedPoints: 0,
+                updatedAt: new Date(2020, 0, 1),
+
+                backlogItemPartId: "fake-backlog-item-part-id",
+                displayindex: 1,
+                partPercentage: 100,
+                storyStatus: BacklogItemStatus.InProgress,
+                storyStartedAt: null,
+                storyFinishedAt: null,
+                storyUpdatedAt: null
+            };
+            return backlogItem;
+        };
+        const buildState = (sprintId: string, sprint: SprintBacklogSprintInfo) => {
+            const state: SprintBacklogState = {
+                includeArchivedSprints: true,
+                openedDetailMenuBacklogItemId: null,
+                openingDetailMenuBacklogItemId: null,
+                openedDetailMenuSprintId: null,
+                openingDetailMenuSprintId: null,
+                splitInProgress: false,
+                sprints: {
+                    [sprintId]: sprint
+                }
+            };
+            return state;
+        };
+        const buildSprintInfo = (backlogItemId: string) => {
+            const sprint: SprintBacklogSprintInfo = {
+                items: [buildBacklogItem(backlogItemId)],
+                backlogItemsInSprint: {
+                    [backlogItemId]: true
+                }
+            };
+            return sprint;
+        };
+        it("should set opened state when item detail menu was not open yet", () => {
+            // arrange
+            const backlogItemId = "fake-backlog-item-id";
+            const sprintId = "fake-sprint-id";
+            const sprint = buildSprintInfo(backlogItemId);
+            const state = buildState(sprintId, sprint);
+            const action: ToggleSprintBacklogItemDetailAction = {
+                type: ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL,
+                payload: {
+                    sprintId: "fake-sprint-id",
+                    backlogItemId: "fake-backlog-item-id",
+                    splitToNextSprintAvailable: true,
+                    strictMode: false
+                }
+            };
+
+            // act
+            const actual = sprintBacklogReducer(state, action);
+
+            // assert
+            expect(actual.openedDetailMenuBacklogItemId).toBe(backlogItemId);
+            expect(actual.openingDetailMenuBacklogItemId).toBe(null);
+        });
+        it("should clear opened state when item detail menu was open already", () => {
+            // arrange
+            const backlogItemId = "fake-backlog-item-id";
+            const sprintId = "fake-sprint-id";
+            const sprint = buildSprintInfo(backlogItemId);
+            const state: SprintBacklogState = { ...buildState(sprintId, sprint), openedDetailMenuBacklogItemId: backlogItemId };
+            const action: ToggleSprintBacklogItemDetailAction = {
+                type: ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL,
+                payload: {
+                    sprintId: "fake-sprint-id",
+                    backlogItemId: "fake-backlog-item-id",
+                    splitToNextSprintAvailable: true,
+                    strictMode: false
+                }
+            };
+
+            // act
+            const actual = sprintBacklogReducer(state, action);
+
+            // assert
+            expect(actual.openedDetailMenuBacklogItemId).toBe(null);
+            expect(actual.openingDetailMenuBacklogItemId).toBe(null);
+        });
+        it("should switch opened state to new item when different item detail menu was open", () => {
+            // arrange
+            const backlogItemId = "fake-backlog-item-id";
+            const otherBacklogItemId = "fake-different-item-that-was-open-id";
+            const sprintId = "fake-sprint-id";
+            const sprint = buildSprintInfo(backlogItemId);
+            const state: SprintBacklogState = {
+                ...buildState(sprintId, sprint),
+                openedDetailMenuBacklogItemId: otherBacklogItemId
+            };
+            const action: ToggleSprintBacklogItemDetailAction = {
+                type: ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL,
+                payload: {
+                    sprintId: "fake-sprint-id",
+                    backlogItemId: "fake-backlog-item-id",
+                    splitToNextSprintAvailable: true,
+                    strictMode: false
+                }
+            };
+
+            // act
+            const actual = sprintBacklogReducer(state, action);
+
+            // assert
+            expect(actual.openedDetailMenuBacklogItemId).toBe(backlogItemId);
+            expect(actual.openingDetailMenuBacklogItemId).toBe(null);
+        });
+        it("should not set opened state when pushed item is a deletion", () => {
+            // arrange
+            const backlogItemId = "fake-backlog-item-id";
+            const sprintId = "fake-sprint-id";
+            const baseSprintInfo = buildSprintInfo(backlogItemId);
+            const baseSprintInfoItem = baseSprintInfo.items[0];
+            const sprint = { ...baseSprintInfo, items: [{ ...baseSprintInfoItem, pushState: PushState.Removed }] };
+            const state = buildState(sprintId, sprint);
+            const action: ToggleSprintBacklogItemDetailAction = {
+                type: ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL,
+                payload: {
+                    sprintId: "fake-sprint-id",
+                    backlogItemId: "fake-backlog-item-id",
+                    splitToNextSprintAvailable: true,
+                    strictMode: false
+                }
+            };
+
+            // act
+            const actual = sprintBacklogReducer(state, action);
+
+            // assert
+            expect(actual.openedDetailMenuBacklogItemId).toBe(null);
+            expect(actual.openingDetailMenuBacklogItemId).toBe(null);
+        });
+        it("should switch menu to new item regardless of whether backlog item is in sprint backlog item slice", () => {
+            // arrange
+            const backlogItemId = "item-id-to-open-menu-for";
+            const stateBacklogItemId = "previously-opened-menu-item-id";
+            const sprintId = "fake-sprint-id";
+            const baseSprintInfo = buildSprintInfo(stateBacklogItemId);
+            const baseSprintInfoItem = baseSprintInfo.items[0];
+            const sprint = {
+                ...baseSprintInfo,
+                items: [{ ...baseSprintInfoItem, pushState: PushState.Removed }],
+                backlogItemsInSprint: {}
+            };
+            const state: SprintBacklogState = buildState(sprintId, sprint);
+            const action: ToggleSprintBacklogItemDetailAction = {
+                type: ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL,
+                payload: {
+                    sprintId,
+                    backlogItemId: backlogItemId,
+                    splitToNextSprintAvailable: true,
+                    strictMode: false
+                }
+            };
+
+            // act
+            const actual = sprintBacklogReducer(state, action);
+
+            // assert
+            expect(actual.openedDetailMenuBacklogItemId).toBe("item-id-to-open-menu-for");
+            expect(actual.openingDetailMenuBacklogItemId).toBe(null);
         });
     });
 });

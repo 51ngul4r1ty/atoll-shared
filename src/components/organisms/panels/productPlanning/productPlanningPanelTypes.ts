@@ -20,13 +20,14 @@ export interface PlanningPanelBacklogItem extends StoryPhrases {
 }
 
 export interface BacklogItemPlanningPanelStateProps {
-    className?: string;
     allItems: BacklogItemWithSource[];
-    editMode: EditMode;
-    busySplittingStory: boolean;
     busyJoiningUnallocatedParts: boolean;
-    renderMobile?: boolean;
+    busySplittingStory: boolean;
+    className?: string;
+    editMode: EditMode;
     openedDetailMenuBacklogItemId: string | null;
+    renderMobile?: boolean;
+    strictMode: boolean;
 }
 
 export interface OnAddedNewBacklogItemForm {

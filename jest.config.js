@@ -8,10 +8,10 @@ module.exports = {
     coverageReporters: ["lcov", "text-summary"],
     coverageThreshold: {
         global: {
-            statements: 50.57,
-            branches: 26.34,
-            functions: 23.58,
-            lines: 48.02
+            statements: 50.72,
+            branches: 25.91,
+            functions: 22.65,
+            lines: 48.16
         }
     },
     moduleFileExtensions: ["js", "jsx", "json", "ts", "tsx"],

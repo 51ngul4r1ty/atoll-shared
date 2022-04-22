@@ -89,6 +89,7 @@ export const patchBacklogItemInSprint = (
 export type SprintBacklogItemDetailClickPayload = {
     sprintId: string;
     backlogItemId: string;
+    strictMode: boolean;
 };
 
 export type SprintBacklogItemDetailClickAction = {
@@ -96,11 +97,23 @@ export type SprintBacklogItemDetailClickAction = {
     payload: SprintBacklogItemDetailClickPayload;
 };
 
-export const sprintBacklogItemDetailClick = (sprintId, backlogItemId: string): SprintBacklogItemDetailClickAction => ({
+/**
+ * Action that is triggered when the user clicks on the sprint backlog item's detail menu button.
+ * @param sprintId
+ * @param backlogItemId
+ * @param strictMode instead of silently failing it will cause errors to be thrown (to catch issues during dev)
+ * @returns
+ */
+export const sprintBacklogItemDetailClick = (
+    sprintId,
+    backlogItemId: string,
+    strictMode: boolean
+): SprintBacklogItemDetailClickAction => ({
     type: ActionTypes.SPRINT_BACKLOG_ITEM_DETAIL_CLICK,
     payload: {
         sprintId,
-        backlogItemId
+        backlogItemId,
+        strictMode
     }
 });
 
@@ -108,6 +121,7 @@ export type ToggleSprintBacklogItemDetailPayload = {
     sprintId: string;
     backlogItemId: string;
     splitToNextSprintAvailable: boolean;
+    strictMode: boolean;
 };
 
 export type ToggleSprintBacklogItemDetailAction = {
@@ -118,13 +132,15 @@ export type ToggleSprintBacklogItemDetailAction = {
 export const toggleSprintBacklogItemDetail = (
     sprintId,
     backlogItemId: string,
-    splitToNextSprintAvailable: boolean
+    splitToNextSprintAvailable: boolean,
+    strictMode: boolean
 ): ToggleSprintBacklogItemDetailAction => ({
     type: ActionTypes.TOGGLE_SPRINT_BACKLOG_ITEM_DETAIL,
     payload: {
         sprintId,
         backlogItemId,
-        splitToNextSprintAvailable
+        splitToNextSprintAvailable,
+        strictMode
     }
 });
 
