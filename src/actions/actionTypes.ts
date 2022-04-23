@@ -123,9 +123,9 @@ export const API_DELETE_SPRINT_BACKLOG_ITEM_FAILURE = buildFailureActionName(Nam
 // #endregion
 
 // #region Sprint Backlog Item Parts Resource
-export const API_ADD_SPRINT_BACKLOG_ITEM_PART_REQUEST = buildRequestActionName(Names.ADD_SPRINT_BACKLOG_ITEM_PART);
-export const API_ADD_SPRINT_BACKLOG_ITEM_PART_SUCCESS = buildSuccessActionName(Names.ADD_SPRINT_BACKLOG_ITEM_PART);
-export const API_ADD_SPRINT_BACKLOG_ITEM_PART_FAILURE = buildFailureActionName(Names.ADD_SPRINT_BACKLOG_ITEM_PART);
+export const API_POST_SPRINT_BACKLOG_ITEM_PART_REQUEST = buildRequestActionName(Names.POST_SPRINT_BACKLOG_ITEM_PART);
+export const API_POST_SPRINT_BACKLOG_ITEM_PART_SUCCESS = buildSuccessActionName(Names.POST_SPRINT_BACKLOG_ITEM_PART);
+export const API_POST_SPRINT_BACKLOG_ITEM_PART_FAILURE = buildFailureActionName(Names.POST_SPRINT_BACKLOG_ITEM_PART);
 // #endregion
 
 // #region Post Actions

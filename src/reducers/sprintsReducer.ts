@@ -434,7 +434,7 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 updateStateToHideDatePicker(draft);
                 return;
             }
-            case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {
+            case ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {
                 const actionTyped = action as ApiSplitSprintItemSuccessAction;
                 const extra = actionTyped.payload.response.data.extra;
                 const sprintStats = extra.sprintStats;

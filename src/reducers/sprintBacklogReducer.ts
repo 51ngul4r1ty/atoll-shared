@@ -367,11 +367,11 @@ export const sprintBacklogReducer = (
                 }
                 return;
             }
-            case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_REQUEST: {
+            case ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_PART_REQUEST: {
                 draft.splitInProgress = true;
                 return;
             }
-            case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {
+            case ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {
                 const actionTyped = action as ApiSplitSprintItemSuccessAction;
                 const totalParts = actionTyped.payload.response.data.extra.backlogItem.totalParts;
                 const backlogItemId = actionTyped.payload.response.data.extra.backlogItem.id;
@@ -392,7 +392,7 @@ export const sprintBacklogReducer = (
                 draft.openedDetailMenuBacklogItemId = null;
                 return;
             }
-            case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_FAILURE: {
+            case ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_PART_FAILURE: {
                 draft.splitInProgress = false;
                 draft.openedDetailMenuBacklogItemId = null;
                 return;
