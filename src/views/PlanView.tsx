@@ -39,6 +39,7 @@ export interface PlanViewStateProps {
     busySplittingStory: boolean;
     editMode: EditMode;
     electronClient: boolean;
+    errorMessage: string;
     includeArchivedSprints: boolean;
     loading: boolean;
     openedDatePickerInfo: SprintOpenedDatePickerInfo;
@@ -216,6 +217,14 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                 />
             </div>
         );
+        let pageContent;
+        if (this.props.loading) {
+            pageContent = spinnerElts;
+        } else if (this.props.errorMessage) {
+            pageContent = this.props.errorMessage;
+        } else {
+            pageContent = pageContentsElts;
+        }
         return (
             <>
                 <Helmet>
@@ -226,7 +235,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     activeTabId="plan"
                     treatAsElectronTitleBar={this.props.electronClient && !this.props.showWindowTitleBar}
                 />
-                {this.props.loading ? spinnerElts : pageContentsElts}
+                {pageContent}
             </>
         );
     }

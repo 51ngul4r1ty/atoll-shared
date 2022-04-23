@@ -33,6 +33,7 @@ export type AppState = Readonly<{
     electronClient: boolean;
     executingOnClient: boolean;
     isPlanViewLoading: boolean;
+    isPlanViewError: boolean;
     locale: Locale;
     message: string;
     password: string;
@@ -49,6 +50,7 @@ export const appReducerInitialState = Object.freeze<AppState>({
     electronClient: false,
     executingOnClient: false,
     isPlanViewLoading: false,
+    isPlanViewError: false,
     locale: "en_US",
     message: "",
     password: "",
@@ -76,8 +78,8 @@ export const appReducer = (state: AppState = appReducerInitialState, action: Any
         }
         if (actionStage === API_ACTION_STAGE_FAILURE) {
             const actionTyped = action as ApiPostSprintBacklogItemFailureAction;
-            const apiErrorMessage = actionTyped.payload.response.message;
-            const axiosErrorMessage = actionTyped.payload.error.message;
+            const apiErrorMessage = actionTyped.payload.response?.message || null;
+            const axiosErrorMessage = actionTyped.payload.error?.message || "(no error provided by axios)";
             draft.message = apiErrorMessage ? `API Error: ${apiErrorMessage}` : `Error: ${axiosErrorMessage}`;
         }
 
@@ -127,14 +129,17 @@ export const appReducer = (state: AppState = appReducerInitialState, action: Any
             }
             case ActionTypes.API_GET_BFF_VIEWS_PLAN_REQUEST: {
                 draft.isPlanViewLoading = true;
+                draft.isPlanViewError = false;
                 return;
             }
             case ActionTypes.API_GET_BFF_VIEWS_PLAN_SUCCESS: {
                 draft.isPlanViewLoading = false;
+                draft.isPlanViewError = false;
                 return;
             }
             case ActionTypes.API_GET_BFF_VIEWS_PLAN_FAILURE: {
                 draft.isPlanViewLoading = false;
+                draft.isPlanViewError = true;
                 return;
             }
             case ActionTypes.STORE_RETURN_ROUTE: {
