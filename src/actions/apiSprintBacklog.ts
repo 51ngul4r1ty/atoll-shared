@@ -248,7 +248,7 @@ export const apiSplitSprintBacklogItem = (sprintId: string, backlogItemId: strin
             endpoint: `${getApiBaseUrl()}api/v1/sprints/${sprintId}/backlog-items/${backlogItemId}/parts`,
             method: "POST",
             headers: { Accept: APPLICATION_JSON },
-            types: buildActionTypes(ApiActionNames.ADD_SPRINT_BACKLOG_ITEM_PART)
+            types: buildActionTypes(ApiActionNames.POST_SPRINT_BACKLOG_ITEM_PART)
         },
         meta: {
             actionParams

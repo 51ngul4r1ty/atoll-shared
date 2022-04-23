@@ -23,7 +23,7 @@ export const POST_ACTION_JOIN_UNALLOCATED_BACKLOG_ITEM_PARTS = "join-unallocated
 export const GET_SPRINT_BACKLOG_ITEMS = "get-sprint-backlog-items";
 export const POST_SPRINT_BACKLOG_ITEM = "add-sprint-backlog-item";
 export const DELETE_SPRINT_BACKLOG_ITEM = "delete-sprint-backlog-item";
-export const ADD_SPRINT_BACKLOG_ITEM_PART = "add-sprint-backlog-item-part";
+export const POST_SPRINT_BACKLOG_ITEM_PART = "add-sprint-backlog-item-part";
 
 export const POST_BACKLOG_ITEM = "add-backlog-item";
 export const PUT_BACKLOG_ITEM = "update-backlog-item";

@@ -172,15 +172,33 @@ export const updateBacklogItemFields = (backlogItem: BacklogItem, payload: Backl
     backlogItem.releasedAt = payload.releasedAt;
 };
 
-export const updateItemById = (draft: Draft<BacklogItemsState>, itemId: string, updateItem: { (item: EditableBacklogItem) }) => {
+export const updateItemById = (
+    draft: Draft<BacklogItemsState>,
+    itemId: string,
+    updateItem: { (item: EditableBacklogItem) }
+): boolean => {
+    let changed = false;
     const idx = draft.addedItems.findIndex((item) => item.id === itemId);
     if (idx >= 0) {
-        updateItem(draft.addedItems[idx]);
+        const item = draft.addedItems[idx];
+        const itemBefore = JSON.stringify(item);
+        updateItem(item);
+        const itemAfter = JSON.stringify(item);
+        if (itemAfter !== itemBefore) {
+            changed = true;
+        }
     }
     const idx2 = draft.items.findIndex((item) => item.id === itemId);
     if (idx2 >= 0) {
-        updateItem(draft.items[idx2]);
+        const item = draft.items[idx2];
+        const itemBefore = JSON.stringify(item);
+        updateItem(item);
+        const itemAfter = JSON.stringify(item);
+        if (itemAfter !== itemBefore) {
+            changed = true;
+        }
     }
+    return changed;
 };
 
 export const getBacklogItemPartById = (backlogItems: BacklogItemsState, itemId: string): BacklogItemPart | null => {

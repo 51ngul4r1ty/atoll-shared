@@ -68,6 +68,7 @@ import { isoDateStringToDate } from "../../utils/apiPayloadConverters";
 import { shouldHideDetailMenu } from "../../components/utils/itemDetailMenuUtils";
 import { mapApiItemToBacklogItemPart } from "../../mappers/backlogItemPartMappers";
 import { mapApiItemToSprint } from "../../mappers";
+import { ApiSplitSprintItemSuccessAction } from "../../actions/apiSprintBacklog";
 
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
@@ -178,6 +179,18 @@ export const backlogItemsReducer = (
                     }
                 });
                 return rebuildAllItems(draft);
+            }
+            case ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {
+                const actionTyped = action as ApiSplitSprintItemSuccessAction;
+                const totalParts = actionTyped.payload.response.data.extra.backlogItem.totalParts;
+                const backlogItemId = actionTyped.payload.response.data.extra.backlogItem.id;
+                const changed = updateItemById(draft, backlogItemId, (item) => {
+                    item.totalParts = totalParts;
+                });
+                if (changed) {
+                    rebuildAllItems(draft);
+                }
+                return;
             }
             case ActionTypes.ADD_BACKLOG_ITEM_FORM: {
                 const actionTyped = action as AddNewBacklogItemFormAction;

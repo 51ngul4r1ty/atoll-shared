@@ -125,7 +125,7 @@ export const sprintBacklogItemMiddleware = (store: StoreTyped) => (next) => (act
             }
             return;
         }
-        case ActionTypes.API_ADD_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {
+        case ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {
             const state = store.getState();
             const actionTyped = action as ApiSplitSprintItemSuccessAction;
             const currentSprintId = actionTyped.meta.actionParams.sprintId;
