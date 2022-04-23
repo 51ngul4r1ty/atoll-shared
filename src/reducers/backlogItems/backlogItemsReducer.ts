@@ -47,10 +47,10 @@ import type {
 } from "../../actions/backlogItemPartActions";
 import type { ApiGetBacklogItemPartSuccessAction } from "../../actions/apiBacklogItemParts";
 import type { ApiBacklogItem, ApiSprint } from "../../types/apiModelTypes";
+import type { ApiSplitSprintItemSuccessAction } from "../../actions/apiSprintBacklog";
 
 // selectors
 import * as backlogItemsSliceSelectors from "./backlogItemsSliceSelectors";
-import * as appSelectors from "../../selectors/appSelectors";
 
 // utils
 import {
@@ -68,7 +68,6 @@ import { isoDateStringToDate } from "../../utils/apiPayloadConverters";
 import { shouldHideDetailMenu } from "../../components/utils/itemDetailMenuUtils";
 import { mapApiItemToBacklogItemPart } from "../../mappers/backlogItemPartMappers";
 import { mapApiItemToSprint } from "../../mappers";
-import { ApiSplitSprintItemSuccessAction } from "../../actions/apiSprintBacklog";
 
 export const backlogItemsReducerInitialState = Object.freeze<BacklogItemsState>({
     addedItems: [],
