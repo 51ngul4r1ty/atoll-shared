@@ -12,6 +12,7 @@ import { PropsWithClassName } from "../../common/types";
 
 export interface CancelButtonStateProps extends PropsWithClassName {
     itemName?: string;
+    disabled?: boolean;
 }
 
 export interface CancelButtonDispatchProps {
@@ -27,7 +28,7 @@ export const CancelButton: React.FC<CancelButtonProps> = (props) => {
         text += ` ${props.itemName}`;
     }
     return (
-        <SimpleButton className={props.className} iconOnLeft icon={icon} onClick={props.onClick}>
+        <SimpleButton className={props.className} iconOnLeft icon={icon} disabled={props.disabled} onClick={props.onClick}>
             {text}
         </SimpleButton>
     );

@@ -71,7 +71,8 @@ export const mapPushedToBacklogItem = (pushedItem: Partial<PushBacklogItemModel>
     type: pushedItem.type,
     unallocatedParts: pushedItem.unallocatedParts,
     unallocatedPoints: pushedItem.unallocatedPoints,
-    updatedAt: pushedItem.updatedAt
+    updatedAt: pushedItem.updatedAt,
+    saving: false
 });
 
 export const addPushedAddedItemsToAllItems = (draft: Draft<BacklogItemsState>, allItems: LinkedList<BacklogItemWithSource>) => {
@@ -170,6 +171,25 @@ export const updateBacklogItemFields = (backlogItem: BacklogItem, payload: Backl
     backlogItem.finishedAt = payload.finishedAt;
     backlogItem.acceptedAt = payload.acceptedAt;
     backlogItem.releasedAt = payload.releasedAt;
+};
+
+export const updateItemByInstanceId = (
+    draft: Draft<BacklogItemsState>,
+    instanceId: number,
+    updateItem: { (addedItem: SaveableBacklogItem) }
+): boolean => {
+    let changed = false;
+    const idx = draft.addedItems.findIndex((item) => item.instanceId === instanceId);
+    if (idx >= 0) {
+        const item = draft.addedItems[idx];
+        const itemBefore = JSON.stringify(item);
+        updateItem(item);
+        const itemAfter = JSON.stringify(item);
+        if (itemAfter !== itemBefore) {
+            changed = true;
+        }
+    }
+    return changed;
 };
 
 export const updateItemById = (

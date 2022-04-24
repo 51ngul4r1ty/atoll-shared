@@ -100,6 +100,27 @@ export const apiGetBacklogItem = (itemId: string, options: ApiGetBacklogItemOpti
     return result;
 };
 
+// export type ApiPostBacklogItemRequest = {
+//     projectId: string;
+//     status: string;
+//     storyPhrase: string;
+//     type: string;
+//     prevBacklogItemId: string;
+// };
+
+export type ApiPostBacklogItemRequestActionPayload = {
+    request: ApiPostBacklogItemPayload;
+};
+export interface ApiPostBacklogItemRequestActionMeta {
+    instanceId: number;
+    requestBody: ApiActionMetaDataRequestBodyWithOriginal<ApiPostBacklogItemPayload>;
+}
+export type ApiPostBacklogItemRequestAction = {
+    type: typeof ActionTypes.API_POST_BACKLOG_ITEM_REQUEST;
+    payload: ApiPostBacklogItemRequestActionPayload;
+    meta: ApiPostBacklogItemRequestActionMeta;
+};
+
 export interface ApiPostBacklogItemSuccessResponse {
     status: number;
     data: {
@@ -111,11 +132,11 @@ export interface ApiPostBacklogItemSuccessActionMeta {
     instanceId: number;
     requestBody: ApiActionMetaDataRequestBodyWithOriginal<PushBacklogItemModel>;
 }
-export interface ApiPostBacklogItemSuccessAction {
+export type ApiPostBacklogItemSuccessAction = {
     type: typeof ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS;
     payload: ApiPostBacklogItemSuccessActionPayload;
     meta: ApiPostBacklogItemSuccessActionMeta;
-}
+};
 export interface ApiPostBacklogItemPayload extends ApiBacklogItem {
     prevBacklogItemId: string;
 }

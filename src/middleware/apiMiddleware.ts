@@ -67,7 +67,7 @@ const dispatchRequest = (
     dispatch({
         type: requestType,
         payload: {
-            response: data
+            request: data
         },
         meta: {
             ...{

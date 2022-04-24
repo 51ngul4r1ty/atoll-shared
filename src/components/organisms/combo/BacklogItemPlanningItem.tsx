@@ -41,6 +41,7 @@ import { computeProductBacklogItemEstimate } from "../panels/productPlanning/pro
 export interface BacklogItemPlanningItemStateProps extends BacklogItemWithSource {
     busyJoiningUnallocatedParts: boolean;
     busySplittingStory: boolean;
+    saving: boolean;
     editMode: EditMode;
     hidden?: boolean;
     highlightAbove: boolean;
@@ -54,7 +55,7 @@ export interface BacklogItemPlanningItemDispatchProps {}
 
 export type BacklogItemPlanningItemProps = BacklogItemPlanningItemStateProps & BacklogItemPlanningItemDispatchProps;
 
-export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (props) => {
+const InternalBacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (props) => {
     const dispatch = useDispatch();
     if (!props.hidden && props.editMode === EditMode.Edit && (!props.saved || props.editing)) {
         const classNameToUse = buildClassName(
@@ -84,6 +85,7 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
                     storyPhrase={props.storyPhrase}
                     type={props.type}
                     status={props.status}
+                    saving={props.saving}
                     onDataUpdate={(fields) => {
                         dispatch(updateBacklogItemFields(fields));
                     }}
@@ -164,3 +166,5 @@ export const BacklogItemPlanningItem: React.FC<BacklogItemPlanningItemProps> = (
         );
     }
 };
+
+export const BacklogItemPlanningItem = React.memo(InternalBacklogItemPlanningItem);
