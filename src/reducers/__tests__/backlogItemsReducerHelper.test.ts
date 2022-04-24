@@ -45,7 +45,8 @@ describe("Backlog Items Reducer", () => {
                 storyEstimate: undefined,
                 totalParts: undefined,
                 unallocatedParts: undefined,
-                unallocatedPoints: undefined
+                unallocatedPoints: undefined,
+                saving: false
             };
             const addedItem1InAllItems: BacklogItemWithSource = {
                 ...addedItem,
@@ -75,7 +76,8 @@ describe("Backlog Items Reducer", () => {
                 storyEstimate: undefined,
                 totalParts: undefined,
                 unallocatedParts: undefined,
-                unallocatedPoints: undefined
+                unallocatedPoints: undefined,
+                saving: false
             };
             const pushedItem1: WebsocketPushNotificationData<PushBacklogItemModel> = {
                 item: {
@@ -131,7 +133,8 @@ describe("Backlog Items Reducer", () => {
                 storyEstimate: undefined,
                 totalParts: undefined,
                 unallocatedParts: undefined,
-                unallocatedPoints: undefined
+                unallocatedPoints: undefined,
+                saving: false
             };
             produce(
                 { ...backlogItemsReducerInitialState, addedItems: [addedItem], items: [item], pushedItems: [pushedItem1] },

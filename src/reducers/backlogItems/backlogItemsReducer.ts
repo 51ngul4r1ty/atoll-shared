@@ -14,7 +14,9 @@ import type {
     ApiGetBacklogItemSuccessAction,
     ApiDeleteBacklogItemSuccessAction,
     ApiJoinUnallocatedBacklogItemPartsSuccessAction,
-    ApiPostBacklogItemRequestAction
+    ApiPostBacklogItemRequestAction,
+    ApiPutBacklogItemRequestAction,
+    ApiPutBacklogItemSuccessAction
 } from "../../actions/apiBacklogItems";
 import type { ApiGetBffViewsPlanSuccessAction } from "../../actions/apiBffViewsPlan";
 import type {
@@ -257,12 +259,28 @@ export const backlogItemsReducer = (
                 });
                 return rebuildAllItems(draft);
             }
-            case ActionTypes.UPDATE_BACKLOG_ITEM: {
-                const actionTyped = action as UpdateBacklogItemAction;
-                updateItemById(draft, actionTyped.payload.id, (item) => {
-                    item.editing = false;
+            case ActionTypes.API_PUT_BACKLOG_ITEM_REQUEST: {
+                const actionTyped = action as ApiPutBacklogItemRequestAction;
+                const backlogItemId = actionTyped.payload.request.id;
+                const changed = updateItemById(draft, backlogItemId, (item) => {
+                    item.saving = true;
                 });
-                return rebuildAllItems(draft);
+                if (changed) {
+                    rebuildAllItems(draft);
+                }
+                return;
+            }
+            case ActionTypes.API_PUT_BACKLOG_ITEM_SUCCESS: {
+                const actionTyped = action as ApiPutBacklogItemSuccessAction;
+                const backlogItemId = actionTyped.payload.response.data.item.id;
+                const changed = updateItemById(draft, backlogItemId, (item) => {
+                    item.editing = false;
+                    item.saving = false;
+                });
+                if (changed) {
+                    rebuildAllItems(draft);
+                }
+                return;
             }
             case ActionTypes.UPDATE_CURRENT_BACKLOG_ITEM_FIELDS:
             case ActionTypes.UPDATE_BACKLOG_ITEM_FIELDS: {
