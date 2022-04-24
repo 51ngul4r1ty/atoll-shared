@@ -100,14 +100,6 @@ export const apiGetBacklogItem = (itemId: string, options: ApiGetBacklogItemOpti
     return result;
 };
 
-// export type ApiPostBacklogItemRequest = {
-//     projectId: string;
-//     status: string;
-//     storyPhrase: string;
-//     type: string;
-//     prevBacklogItemId: string;
-// };
-
 export type ApiPostBacklogItemRequestActionPayload = {
     request: ApiPostBacklogItemPayload;
 };
