@@ -100,6 +100,7 @@ export const apiGetBacklogItem = (itemId: string, options: ApiGetBacklogItemOpti
     return result;
 };
 
+// TODO: Add a standard "ActionRequest" type that can be used for these interfaces (to automatically include requestBody etc.)
 export type ApiPostBacklogItemRequestActionPayload = {
     request: ApiPostBacklogItemPayload;
 };
