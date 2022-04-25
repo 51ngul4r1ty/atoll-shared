@@ -200,23 +200,6 @@ export const backlogItemsReducer = (
                 }
                 return;
             }
-            // TODO: Implement this!!!
-            // case ActionTypes.API_POST_BACKLOG_ITEM_FAILURE: {
-            //     const actionTyped = action as ApiPostBacklogItemFailureAction;
-            //     const { payload, meta } = actionTyped;
-            //     const updatedBacklogItem = payload.response.data.item;
-            //     const instanceId = meta.instanceId;
-            //     const changed = updateItemByInstanceId(draft, instanceId, (addedItem) => {
-            //         addedItem.id = updatedBacklogItem.id;
-            //         addedItem.friendlyId = updatedBacklogItem.friendlyId;
-            //         addedItem.saved = true;
-            //         addedItem.saving = false;
-            //     });
-            //     if (changed) {
-            //         rebuildAllItems(draft);
-            //     }
-            //     return;
-            // }
             case ActionTypes.API_POST_SPRINT_BACKLOG_ITEM_PART_SUCCESS: {
                 const actionTyped = action as ApiSplitSprintItemSuccessAction;
                 const totalParts = actionTyped.payload.response.data.extra.backlogItem.totalParts;
