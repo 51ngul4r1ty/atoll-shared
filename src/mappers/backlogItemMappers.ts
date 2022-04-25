@@ -1,5 +1,5 @@
 // interfaces/types
-import { EditableBacklogItem } from "../reducers/backlogItems/backlogItemsReducerTypes";
+import type { EditableBacklogItem } from "../reducers/backlogItems/backlogItemsReducerTypes";
 import type { ApiBacklogItem, ApiBacklogItemInSprint } from "../types/apiModelTypes";
 import type { BacklogItem, BacklogItemInSprint } from "../types/backlogItemTypes";
 
