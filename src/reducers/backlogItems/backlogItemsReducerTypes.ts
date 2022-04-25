@@ -38,6 +38,7 @@ export type BacklogItemsState = Readonly<{
 
 export interface EditableBacklogItem extends BacklogItem {
     editing?: boolean;
+    saving: boolean;
 }
 
 export interface SaveableBacklogItem extends EditableBacklogItem {

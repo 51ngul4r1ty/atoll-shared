@@ -1,4 +1,5 @@
 // interfaces/types
+import type { EditableBacklogItem } from "../reducers/backlogItems/backlogItemsReducerTypes";
 import type { ApiBacklogItem, ApiBacklogItemInSprint } from "../types/apiModelTypes";
 import type { BacklogItem, BacklogItemInSprint } from "../types/backlogItemTypes";
 
@@ -30,6 +31,11 @@ export const mapApiItemToBacklogItem = (apiItem: ApiBacklogItem): BacklogItem =>
     unallocatedParts: apiItem.unallocatedParts,
     unallocatedPoints: apiItem.unallocatedPoints,
     version: apiItem.version
+});
+
+export const mapApiItemToEditableBacklogItem = (apiItem: ApiBacklogItem): EditableBacklogItem => ({
+    ...mapApiItemToBacklogItem(apiItem),
+    saving: false
 });
 
 export const mapApiItemToBacklogItemInSprint = (apiItem: ApiBacklogItemInSprint): BacklogItemInSprint => {
@@ -92,6 +98,10 @@ export const mapSprintBacklogItemToApiItem = (item: BacklogItemInSprint): ApiBac
 
 export const mapApiItemsToBacklogItems = (apiItems: ApiBacklogItem[]): BacklogItem[] => {
     return apiItems.map((item) => mapApiItemToBacklogItem(item));
+};
+
+export const mapApiItemsToEditableBacklogItems = (apiItems: ApiBacklogItem[]): EditableBacklogItem[] => {
+    return apiItems.map((item) => mapApiItemToEditableBacklogItem(item));
 };
 
 export const mapApiItemsToSprintBacklogItems = (apiItems: ApiBacklogItemInSprint[]): BacklogItemInSprint[] | null => {

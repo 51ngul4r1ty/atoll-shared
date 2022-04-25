@@ -17,7 +17,7 @@ import { StatusAcceptedIcon, StatusDoneIcon, StatusInProgressIcon, StatusRelease
 import { buildClassName } from "../../../utils/classNameBuilder";
 
 // interfaces/types
-import type { SaveableBacklogItem } from "../../../reducers/backlogItems/backlogItemsReducerTypes";
+import type { BacklogItem } from "../../../types/backlogItemTypes";
 import type { ItemMenuBuilder } from "../menus/menuBuilderTypes";
 
 // consts/enums
@@ -26,19 +26,19 @@ import { BacklogItemStatus } from "../../../types/backlogItemEnums";
 
 //#region exported functions
 
-export const buildUniqueItemKey = (props: SaveableBacklogItem, componentPrefix: string): string => {
+export const buildUniqueItemKey = (props: BacklogItem, componentPrefix: string): string => {
     return props.id ? `${componentPrefix}-id-${props.id}` : `${componentPrefix}-i-${props.instanceId}`;
 };
 
-export const buildBacklogItemKey = (props: SaveableBacklogItem): string => {
+export const buildBacklogItemKey = (props: BacklogItem): string => {
     return buildUniqueItemKey(props, "bic");
 };
 
-export const buildBacklogItemPlanningItemKey = (props: SaveableBacklogItem): string => {
+export const buildBacklogItemPlanningItemKey = (props: BacklogItem): string => {
     return buildUniqueItemKey(props, "bipi");
 };
 
-export const buildDividerKey = (props: SaveableBacklogItem): string => {
+export const buildDividerKey = (props: BacklogItem): string => {
     return buildUniqueItemKey(props, "div-l");
 };
 

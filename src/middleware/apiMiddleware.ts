@@ -67,7 +67,7 @@ const dispatchRequest = (
     dispatch({
         type: requestType,
         payload: {
-            response: data
+            request: data
         },
         meta: {
             ...{
@@ -190,7 +190,7 @@ export const apiMiddleware = (store) => (next) => (action: Action) => {
                 const state = getState();
                 dispatch(refreshTokenAndRetry(state.app.refreshToken, apiAction));
             } else {
-                dispatchFailure(dispatch, getFailureType(types), error.response.data, requestBody, apiAction.meta, error);
+                dispatchFailure(dispatch, getFailureType(types), error.response?.data, requestBody, apiAction.meta, error);
             }
         });
 };

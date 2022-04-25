@@ -100,6 +100,19 @@ export const apiGetBacklogItem = (itemId: string, options: ApiGetBacklogItemOpti
     return result;
 };
 
+export type ApiPostBacklogItemRequestActionPayload = {
+    request: ApiPostBacklogItemPayload;
+};
+export interface ApiPostBacklogItemRequestActionMeta {
+    instanceId: number;
+    requestBody: ApiActionMetaDataRequestBodyWithOriginal<ApiPostBacklogItemPayload>;
+}
+export type ApiPostBacklogItemRequestAction = {
+    type: typeof ActionTypes.API_POST_BACKLOG_ITEM_REQUEST;
+    payload: ApiPostBacklogItemRequestActionPayload;
+    meta: ApiPostBacklogItemRequestActionMeta;
+};
+
 export interface ApiPostBacklogItemSuccessResponse {
     status: number;
     data: {
@@ -111,11 +124,11 @@ export interface ApiPostBacklogItemSuccessActionMeta {
     instanceId: number;
     requestBody: ApiActionMetaDataRequestBodyWithOriginal<PushBacklogItemModel>;
 }
-export interface ApiPostBacklogItemSuccessAction {
+export type ApiPostBacklogItemSuccessAction = {
     type: typeof ActionTypes.API_POST_BACKLOG_ITEM_SUCCESS;
     payload: ApiPostBacklogItemSuccessActionPayload;
     meta: ApiPostBacklogItemSuccessActionMeta;
-}
+};
 export interface ApiPostBacklogItemPayload extends ApiBacklogItem {
     prevBacklogItemId: string;
 }
@@ -137,27 +150,40 @@ export const apiPostBacklogItem = (
     };
 };
 
+export type ApiPutBacklogItemPayload = ApiBacklogItem;
+export type ApiPutBacklogItemRequestActionPayload = {
+    request: ApiPutBacklogItemPayload;
+};
+export interface ApiPutBacklogItemRequestActionMeta {
+    apiActionStage: number;
+    requestBody: ApiActionMetaDataRequestBodyWithOriginal<ApiPutBacklogItemPayload>;
+}
+export type ApiPutBacklogItemRequestAction = {
+    type: typeof ActionTypes.API_PUT_BACKLOG_ITEM_REQUEST;
+    payload: ApiPutBacklogItemRequestActionPayload;
+};
+
 export enum PutBacklogItemCallReason {
     None = 0,
     SaveCurrentBacklogItem = 1
 }
 
-export interface ApiPutBacklogItemMetaPassthrough {
+export type ApiPutBacklogItemMetaPassthrough = {
     apiCallReason: PutBacklogItemCallReason;
-}
+};
 
-export interface ApiPutBacklogItemSuccessAction {
+export type ApiPutBacklogItemSuccessAction = {
     type: typeof ActionTypes.API_PUT_BACKLOG_ITEM_SUCCESS;
     payload: ApiActionSuccessPayloadForItem<ApiBacklogItem>;
     meta: ApiActionMetaDataRequestMeta<{}, undefined, undefined, ApiPutBacklogItemMetaPassthrough>;
-}
+};
 
 export const apiPutBacklogItem = (
     backlogItem: BacklogItemModel,
     payloadOverride: ApiPayloadBase = {},
     apiCallReason: PutBacklogItemCallReason = PutBacklogItemCallReason.None
-): ApiAction<ApiBacklogItem> => {
-    let result: ApiAction<ApiBacklogItem, {}, ApiPutBacklogItemMetaPassthrough> = {
+): ApiAction<ApiPutBacklogItemPayload> => {
+    let result: ApiAction<ApiPutBacklogItemPayload, {}, ApiPutBacklogItemMetaPassthrough> = {
         type: API,
         payload: {
             ...{

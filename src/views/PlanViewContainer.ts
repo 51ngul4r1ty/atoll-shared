@@ -57,6 +57,9 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
         electronClient: appSelectors.getElectronClient(state),
         includeArchivedSprints,
         loading: appSelectors.isPlanViewLoading(state),
+        errorMessage: appSelectors.isPlanViewError(state)
+            ? "An error occurred while loading this view - please refresh browser to retry or contact a support person to assist"
+            : null,
         openedDetailMenuBacklogItemId: backlogItemSelectors.getProductBacklogOpenedDetailMenuItemId(state),
         openedDetailMenuSprintBacklogInfo: sprintBacklogSelectors.getSprintBacklogOpenedDetailMenuInfo(state),
         openingDetailMenuSprintBacklogInfo: sprintBacklogSelectors.getSprintBacklogOpeningDetailMenuInfo(state),

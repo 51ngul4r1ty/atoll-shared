@@ -16,7 +16,9 @@ export type DoneButtonRefType = SimpleButtonRefType;
 export type DoneButtonType = ComponentWithForwardedRef<DoneButtonProps>;
 
 export interface DoneButtonStateProps extends PropsWithClassName {
+    busy?: boolean;
     itemName?: string;
+    disabled?: boolean;
 }
 
 interface DoneButtonInnerStateProps {
@@ -36,7 +38,15 @@ const InnerSimpleButton: React.FC<DoneButtonProps & DoneButtonInnerStateProps> =
         text += ` ${props.itemName}`;
     }
     return (
-        <SimpleButton ref={props.innerRef} className={props.className} iconOnLeft icon={icon} onClick={props.onClick}>
+        <SimpleButton
+            ref={props.innerRef}
+            busy={props.busy}
+            className={props.className}
+            iconOnLeft
+            icon={icon}
+            disabled={props.disabled}
+            onClick={props.onClick}
+        >
             {text}
         </SimpleButton>
     );

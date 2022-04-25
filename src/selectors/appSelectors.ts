@@ -28,6 +28,8 @@ export const getAppMessage = createSelector([app], (app: AppState): string => ap
 
 export const isPlanViewLoading = createSelector([app], (app: AppState): boolean => app.isPlanViewLoading);
 
+export const isPlanViewError = createSelector([app], (app: AppState): boolean => app.isPlanViewError);
+
 export const isStrictMode = createSelector([app], (app: AppState): boolean => app.isStrictMode);
 
 // NOTE: This doesn't use reselect because it must never use cached data

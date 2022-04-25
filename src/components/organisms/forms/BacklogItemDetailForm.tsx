@@ -20,7 +20,7 @@ import { BacklogItemType } from "../../../types/backlogItemTypes";
 import { BacklogItemInstanceEditableFields } from "./backlogItemFormTypes";
 import { BacklogItemStatus } from "../../../types/backlogItemEnums";
 
-export interface BacklogItemDetailFormStateProps extends BacklogItemInstanceEditableFields {
+export type BacklogItemDetailFormStateProps = BacklogItemInstanceEditableFields & {
     /* from BacklogItemInstanceEditableFields */
     rolePhrase: string | null;
     storyPhrase: string;
@@ -36,12 +36,13 @@ export interface BacklogItemDetailFormStateProps extends BacklogItemInstanceEdit
     startedAt: Date | null;
     type: BacklogItemType;
 
-    /* new in this interface */
+    /* new in this type */
     className?: string;
     editing: boolean;
     renderMobile?: boolean;
     status: BacklogItemStatus;
-}
+    saving: boolean;
+};
 
 export interface BacklogItemDetailFormDispatchProps {
     onDoneClick?: { (id: string, instanceId: number) };
@@ -121,6 +122,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                 labelText="Role phrase"
                 placeHolder="As a <role>"
                 inputValue={this.props.rolePhrase}
+                disabled={this.props.saving}
                 onChange={(value) => {
                     this.handleDataUpdate({ ...prevData, rolePhrase: value });
                 }}
@@ -132,6 +134,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                 labelText="Story phrase"
                 placeHolder="I can <something>"
                 inputValue={this.props.storyPhrase}
+                disabled={this.props.saving}
                 required
                 onChange={(value) => {
                     this.handleDataUpdate({ ...prevData, storyPhrase: value });
@@ -144,6 +147,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                 labelText="Reason phrase"
                 placeHolder={placeholderText}
                 inputValue={this.props.reasonPhrase}
+                disabled={this.props.saving}
                 onChange={(value) => {
                     this.handleDataUpdate({ ...prevData, reasonPhrase: value });
                 }}
@@ -155,6 +159,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                 labelText="Estimate"
                 size={3}
                 inputValue={estimateValue}
+                disabled={this.props.saving}
                 onChange={(value) => {
                     const valueToUse = value.trim();
                     const estimate = valueToUse ? parseFloat(valueToUse) : null;
@@ -170,6 +175,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                 inputId="userStoryExternalId"
                 labelText="External ID"
                 inputValue={this.props.externalId}
+                disabled={this.props.saving}
                 onChange={(value) => {
                     this.handleDataUpdate({ ...prevData, externalId: value });
                 }}
@@ -192,7 +198,9 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                 <div />
                 <div className={actionButtonContainerClassName}>
                     <DoneButton
+                        busy={this.props.saving}
                         className={css.actionButton}
+                        disabled={this.props.saving}
                         onClick={() => {
                             this.handleDoneClick();
                         }}
@@ -201,6 +209,7 @@ export class BacklogItemDetailForm extends Component<BacklogItemDetailFormProps>
                 <div className={actionButtonContainerClassName}>
                     <CancelButton
                         className={css.actionButton}
+                        disabled={this.props.saving}
                         onClick={() => {
                             this.handleCancelClick();
                         }}
