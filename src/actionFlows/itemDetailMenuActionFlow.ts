@@ -31,6 +31,13 @@ import type { StoreTyped } from "../types/reduxHelperTypes";
 // utils
 import { buildFullUri, getLinkByRel, LINK_REL_NEXT } from "../utils/apiLinkHelper";
 
+// consts/enums
+import {
+    ITEM_DETAIL_CLICK_STEP_1_NAME,
+    ITEM_DETAIL_CLICK_STEP_2_NAME,
+    ITEM_DETAIL_CLICK_STEP_3_NAME
+} from "./itemDetailMenuActionFlowConsts";
+
 // selectors
 import * as sprintBacklogSelectors from "../selectors/sprintBacklogSelectors";
 import * as appSelectors from "../selectors/appSelectors";
@@ -41,10 +48,6 @@ import { apiGetSprintBacklogItems } from "../actions/apiSprintBacklog";
 import { hasBacklogItemAtLeastBeenAccepted } from "../utils/backlogItemStatusHelper";
 import { hideSprintBacklogItemDetail, showSprintBacklogItemDetail } from "../actions/sprintBacklogActions";
 import { alreadyShowingMenu } from "../utils/dropdownMenuUtils";
-
-export const ITEM_DETAIL_CLICK_STEP_1_NAME = "1-GetSprintDetails";
-export const ITEM_DETAIL_CLICK_STEP_2_NAME = "2-GetNextSprintDetails";
-export const ITEM_DETAIL_CLICK_STEP_3_NAME = "3-GetNextSprintBacklogItems";
 
 export type ApiItemDetailMenuActionFlowSuccessMeta = {
     triggerAction: string;
