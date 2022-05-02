@@ -41,7 +41,7 @@ import {
     ITEM_DETAIL_CLICK_STEP_1_NAME,
     ITEM_DETAIL_CLICK_STEP_2_NAME,
     ITEM_DETAIL_CLICK_STEP_3_NAME
-} from "../actionFlows/itemDetailMenuActionFlow";
+} from "../actionFlows/itemDetailMenuActionFlowConsts";
 
 // utils
 import { mapApiItemsToSprintBacklogItems } from "../mappers/backlogItemMappers";
@@ -49,7 +49,6 @@ import { mapApiStatusToBacklogItem } from "../mappers/statusMappers";
 import { alreadyShowingMenu, calcToggledOpenMenuItemId } from "../utils/dropdownMenuUtils";
 import { shouldHideDetailMenu } from "../components/utils/itemDetailMenuUtils";
 import { getFlowInfoFromAction } from "../utils/actionFlowUtils";
-import { isStrictMode } from "../selectors/appSelectors";
 
 export type SprintBacklogSprint = {
     items: BacklogItemInSprint[];

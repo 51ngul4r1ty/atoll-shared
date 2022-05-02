@@ -7,7 +7,7 @@ import {
     ITEM_DETAIL_CLICK_STEP_1_NAME,
     ITEM_DETAIL_CLICK_STEP_2_NAME,
     ITEM_DETAIL_CLICK_STEP_3_NAME
-} from "../../actionFlows/itemDetailMenuActionFlow";
+} from "../../actionFlows/itemDetailMenuActionFlowConsts";
 import { BacklogItemStatus } from "../../types/backlogItemEnums";
 import { PushState } from "../enums";
 
