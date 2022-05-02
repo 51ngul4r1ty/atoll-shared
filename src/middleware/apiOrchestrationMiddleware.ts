@@ -6,7 +6,7 @@
 // externals
 import type { Action } from "redux";
 import { push } from "connected-react-router";
-import * as HttpStatus from "http-status-codes";
+import { StatusCodes } from "http-status-codes";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
@@ -122,7 +122,7 @@ export const apiOrchestrationMiddleware = (store: StoreTyped) => (next) => (acti
         }
         case ActionTypes.API_POST_ACTION_LOGIN_SUCCESS: {
             const actionTyped = action as ActionPostLoginSuccessAction;
-            if (actionTyped.payload.response.status === HttpStatus.OK) {
+            if (actionTyped.payload.response.status === StatusCodes.OK) {
                 store.dispatch(getUserPreferences(action.type));
             }
             break;
@@ -143,7 +143,7 @@ export const apiOrchestrationMiddleware = (store: StoreTyped) => (next) => (acti
         // TODO: Maybe consider splitting this out to its own middleware, or keeping it here and moving other code out?
         case ActionTypes.API_POST_ACTION_RETRY_TOKEN_SUCCESS: {
             const actionTyped = action as ActionPostRefreshTokenSuccessAction;
-            if (actionTyped.payload.response.status === HttpStatus.OK) {
+            if (actionTyped.payload.response.status === StatusCodes.OK) {
                 const apiAction = actionTyped.meta.passthrough.actionToRetry;
                 store.dispatch(apiAction);
             }

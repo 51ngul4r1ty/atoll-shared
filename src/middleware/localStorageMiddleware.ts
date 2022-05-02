@@ -1,6 +1,6 @@
 // externals
 import { Action, Store } from "redux";
-import * as HttpStatus from "http-status-codes";
+import { StatusCodes } from "http-status-codes";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
@@ -17,7 +17,7 @@ import {
 import { localStoreRefreshToken } from "../actions/appActions";
 
 const storeRefreshTokenIfSuccesful = (action: ActionPostLoginSuccessAction | ActionPostRefreshTokenSuccessAction) => {
-    if (action.payload.response.status === HttpStatus.OK) {
+    if (action.payload.response.status === StatusCodes.OK) {
         localStorage.setItem("refresh-token", action.payload.response.data.item.refreshToken);
     }
 };

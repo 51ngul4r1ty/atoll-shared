@@ -6,7 +6,7 @@
 // externals
 import axios, { AxiosRequestConfig } from "axios";
 import { Action, Dispatch, Store } from "redux";
-import * as HttpStatus from "http-status-codes";
+import { StatusCodes } from "http-status-codes";
 
 // consts/enums
 import { API } from "./apiConsts";
@@ -134,7 +134,7 @@ export interface ApiActionMetaParamsRequestBody<T> extends AxiosRequestConfig {
 }
 
 export const authFailed = (errorResponseStatus: number) => {
-    return errorResponseStatus === HttpStatus.UNAUTHORIZED || errorResponseStatus === HttpStatus.FORBIDDEN;
+    return errorResponseStatus === StatusCodes.UNAUTHORIZED || errorResponseStatus === StatusCodes.FORBIDDEN;
 };
 
 export const apiMiddleware = (store) => (next) => (action: Action) => {
