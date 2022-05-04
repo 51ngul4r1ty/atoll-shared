@@ -43,7 +43,7 @@ export interface ActionGetUserPrefsSuccessAction {
 export const getUserPreferences = (sourceActionType?: string): NoDataApiAction => ({
     type: API,
     payload: {
-        endpoint: `${getApiBaseUrl()}api/v1/users/{self}/preferences`,
+        endpoint: `${getApiBaseUrl()}api/v1/users/--self--/preferences`,
         method: "GET",
         headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
         types: buildActionTypes(ApiActionNames.GET_USER_PREFS)
