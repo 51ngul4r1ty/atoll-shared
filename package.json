@@ -1,6 +1,6 @@
 {
   "name": "@atoll/shared",
-  "version": "0.57.1",
+  "version": "0.57.3",
   "description": "Atoll shared code that is common to electron desktop client and web app",
   "author": {
     "name": "Kevin Berry",

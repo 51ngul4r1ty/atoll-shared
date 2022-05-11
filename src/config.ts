@@ -145,4 +145,10 @@ export const getAuthKey = (): string | null => {
     return process.env.ATOLL_AUTH_KEY ?? null;
 };
 
-export const getAuthTokenExpirationMinutes = () => 5;
+export const getAuthTokenExpirationSeconds = () => {
+    const expirationEnvVal = process.env.ATOLL_AUTH_EXPIRATION_SECONDS;
+    if (expirationEnvVal) {
+        return parseInt(expirationEnvVal);
+    }
+    return 5 * 60; // 5 minutes
+};
