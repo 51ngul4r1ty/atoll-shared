@@ -134,7 +134,7 @@ export interface ApiActionMetaParamsRequestBody<T> extends AxiosRequestConfig {
 }
 
 export const authFailed = (errorResponseStatus: number) => {
-    return errorResponseStatus === StatusCodes.UNAUTHORIZED || errorResponseStatus === StatusCodes.FORBIDDEN;
+    return errorResponseStatus === StatusCodes.UNAUTHORIZED;
 };
 
 export const apiMiddleware = (store) => (next) => (action: Action) => {

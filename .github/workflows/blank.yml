@@ -4,18 +4,17 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Transpile
-      run: |
-        echo tranpiling...
-        npm ci
-        npm run transpile
-    - name: Test
-      run: |
-        echo running unit tests...
-        npm ci
-        npm run test:ci
+      - uses: actions/checkout@v1
+      - name: Transpile
+        run: |
+          echo tranpiling...
+          npm ci
+          npm run transpile
+      - name: Test
+        run: |
+          echo running unit tests...
+          npm ci
+          npm run test:unit
