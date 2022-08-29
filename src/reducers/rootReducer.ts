@@ -17,29 +17,32 @@ import { sprintBacklogReducer, sprintBacklogReducerInitialState, SprintBacklogSt
 import { sprintsReducer, sprintsReducerInitialState, SprintsState } from "./sprintsReducer";
 import { userReducer, userReducerInitialState, UserState } from "./userReducer";
 import { BacklogItemsState } from "./backlogItems/backlogItemsReducerTypes";
+import { projectReducer, projectReducerInitialState, ProjectState } from "./project/projectReducer";
 
 export interface StateTree {
     apiBatch: ApiBatchState;
     apiLinks: ApiLinkState;
     app: AppState;
-    productBacklogItems: ProductBacklogItemsState;
     backlogItems: BacklogItemsState;
     electronClient: boolean;
     executingOnClient: boolean;
     featureToggles: FeatureTogglesState;
+    productBacklogItems: ProductBacklogItemsState;
+    project: ProjectState;
+    router: RouterState;
     sprintBacklog: SprintBacklogState;
     sprints: SprintsState;
     user: UserState;
-    router: RouterState;
 }
 
 export const rootReducerInitialState = {
     apiBatch: apiBatchReducerInitialState,
     apiLinks: apiLinksReducerInitialState,
     app: appReducerInitialState,
-    productBacklogItems: productBacklogItemsReducerInitialState,
     backlogItems: backlogItemsReducerInitialState,
     featureToggles: featureTogglesReducerInitialState,
+    productBacklogItems: productBacklogItemsReducerInitialState,
+    project: projectReducerInitialState,
     sprintBacklog: sprintBacklogReducerInitialState,
     sprints: sprintsReducerInitialState,
     user: userReducerInitialState
@@ -51,9 +54,10 @@ const createRootReducer = (history: any) => {
         apiBatch: apiBatchReducer,
         apiLinks: apiLinksReducer,
         app: appReducer,
-        productBacklogItems: productBacklogItemsReducer,
         backlogItems: backlogItemsReducer,
         featureToggles: featureTogglesReducer,
+        productBacklogItems: productBacklogItemsReducer,
+        project: projectReducer,
         router,
         sprintBacklog: sprintBacklogReducer,
         sprints: sprintsReducer,

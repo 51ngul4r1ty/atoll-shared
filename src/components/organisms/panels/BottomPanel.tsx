@@ -8,7 +8,10 @@ import css from "./BottomPanel.module.css";
 
 /* exported types */
 
-export type BottomPanelStateProps = {};
+export type BottomPanelStateProps = {
+    projectName: string;
+    projectDescription: string;
+};
 
 export type BottomPanelDispatchProps = {};
 
@@ -20,7 +23,7 @@ export const InnerBottomPanel: React.FC<BottomPanelProps> = (props) => {
     return (
         <div className={css.bottomPanel}>
             <div className={css.innerPanel}>
-                <ProjectIcon className={css.projectIcon} /> Atoll
+                <ProjectIcon className={css.projectIcon} /> <span title={props.projectDescription}>{props.projectName}</span>
             </div>
         </div>
     );

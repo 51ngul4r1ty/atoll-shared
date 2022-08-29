@@ -375,6 +375,8 @@ export const apiOrchestrationMiddleware = (store: StoreTyped) => (next) => (acti
             break;
         }
         case ActionTypes.API_GET_PROJECT_SUCCESS: {
+            // TODO: Could probably improve this now that the "init" API call returns project and it will be stored in state
+            // TODO: What to do about other views though- it seems that other views will need to retrieve project anyway...
             const actionTyped = action as ApiGetProjectSuccessRouteToBacklogItemViewAction;
             const metaPassthrough = actionTyped.meta.passthrough as ApiGetProjectRouteToBacklogItemViewMeta;
             if (metaPassthrough.routeToBacklogItemView) {
