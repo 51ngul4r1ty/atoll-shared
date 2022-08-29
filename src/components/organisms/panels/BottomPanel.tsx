@@ -20,13 +20,14 @@ export type BottomPanelProps = BottomPanelStateProps & BottomPanelDispatchProps 
 /* exported components */
 
 export const InnerBottomPanel: React.FC<BottomPanelProps> = (props) => {
-    return (
-        <div className={css.bottomPanel}>
-            <div className={css.innerPanel}>
-                <ProjectIcon className={css.projectIcon} /> <span title={props.projectDescription}>{props.projectName}</span>
-            </div>
+    const showProjectName = !!props.projectName;
+    const content = !showProjectName ? null : (
+        <div className={css.innerPanel}>
+            <ProjectIcon className={css.projectIcon} /> <span title={props.projectDescription}>{props.projectName}</span>
         </div>
     );
+
+    return <div className={css.bottomPanel}>{content}</div>;
 };
 
 export const BottomPanel = withTranslation()(InnerBottomPanel);
