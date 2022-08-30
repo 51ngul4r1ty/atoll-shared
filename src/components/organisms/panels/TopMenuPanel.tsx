@@ -22,23 +22,23 @@ import { routePlanView, routeSprintView, routeReviewView } from "../../../action
 // consts/enums
 import { EditMode } from "../../common/componentEnums";
 
-/* exported interfaces */
+/* exported types */
 
-export interface TopMenuPanelStateProps {
+export type TopMenuPanelStateProps = {
     activeTabId?: string;
     editMode: EditMode;
     message: string;
     showRefreshButton: boolean;
     treatAsElectronTitleBar?: boolean; // necessary to work properly for Electron client on Windows
     hideEditViewButton?: boolean;
-}
+};
 
-export interface TopMenuPanelDispatchProps {
+export type TopMenuPanelDispatchProps = {
     onChangeTab?: { (selectedTabId: string) };
     onErrorPanelClick?: { (): void };
     setEditMode: { (editMode: EditMode): void };
     refreshData: { (): void };
-}
+};
 
 export type TopMenuPanelProps = TopMenuPanelStateProps & TopMenuPanelDispatchProps & WithTranslation;
 

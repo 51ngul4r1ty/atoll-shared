@@ -7,6 +7,8 @@ import { ProductPlanningPanel } from "../components/organisms/panels/productPlan
 import { TopMenuPanelContainer } from "../containers/TopMenuPanelContainer";
 import { SprintPlanningPanel } from "../components/organisms/panels/sprintPlanning/SprintPlanningPanel";
 import { SmartSpinner } from "../components/molecules/unique/smartSpinner/SmartSpinner";
+import { BottomPanelContainer } from "../containers/BottomPanelContainer";
+import { ContentPanel } from "../components/organisms/panels/ContentPanel";
 
 // contexts
 import { AppContext } from "../contexts/appContextUtil";
@@ -18,14 +20,14 @@ import css from "./PlanView.module.css";
 import { NewSprintPosition } from "../actions/sprintActions";
 import { QUANTITY_UNKNOWN, TIME_UNKNOWN } from "../components/molecules/unique/smartSpinner/smartSpinnerConsts";
 import { SpinnerAction, SpinnerSize, SpinnerTextPosition } from "../components/molecules/unique/smartSpinner/smartSpinnerEnums";
+import { EditMode } from "../components/common/componentEnums";
 
 // interfaces/types
-import { EditMode } from "../components/common/componentEnums";
-import { BacklogItemWithSource } from "../reducers/backlogItems/backlogItemsReducerTypes";
-import { BacklogItemType } from "../types/backlogItemTypes";
-import { SprintCardSprint } from "../components/molecules/cards/sprintCard/sprintCardTypes";
-import { OpenedOrOpeningDetailMenuInfo } from "../selectors/sprintBacklogSelectors";
-import { SprintOpenedDatePickerInfo } from "../reducers/sprintsReducer";
+import type { BacklogItemWithSource } from "../reducers/backlogItems/backlogItemsReducerTypes";
+import type { BacklogItemType } from "../types/backlogItemTypes";
+import type { SprintCardSprint } from "../components/molecules/cards/sprintCard/sprintCardTypes";
+import type { OpenedOrOpeningDetailMenuInfo } from "../selectors/sprintBacklogSelectors";
+import type { SprintOpenedDatePickerInfo } from "../reducers/sprintsReducer";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
@@ -235,7 +237,8 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     activeTabId="plan"
                     treatAsElectronTitleBar={this.props.electronClient && !this.props.showWindowTitleBar}
                 />
-                {pageContent}
+                <ContentPanel>{pageContent}</ContentPanel>
+                <BottomPanelContainer />
             </>
         );
     }
