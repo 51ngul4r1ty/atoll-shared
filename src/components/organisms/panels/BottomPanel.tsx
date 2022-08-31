@@ -1,6 +1,7 @@
 // externals
 import * as React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
+import { MenuCaretUpIcon } from "../../atoms";
 import { ProjectIcon } from "../../atoms/icons/ProjectIcon";
 
 // style
@@ -23,7 +24,11 @@ export const InnerBottomPanel: React.FC<BottomPanelProps> = (props) => {
     const showProjectName = !!props.projectName;
     const content = !showProjectName ? null : (
         <div className={css.innerPanel}>
-            <ProjectIcon className={css.projectIcon} /> <span title={props.projectDescription}>{props.projectName}</span>
+            <div className={css.projectPickerPanel}>
+                <ProjectIcon className={css.projectIcon} />
+                <span title={props.projectDescription}>{props.projectName}</span>
+                <MenuCaretUpIcon className={css.menuCaretIcon} />
+            </div>
         </div>
     );
 
