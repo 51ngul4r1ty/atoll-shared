@@ -30,3 +30,9 @@
     width: 1.3rem;
     height: 1.3rem;
 }
+
+.projectPickerMenu {
+    position: absolute;
+    left: 2.55rem;
+    bottom: 1.75rem;
+}

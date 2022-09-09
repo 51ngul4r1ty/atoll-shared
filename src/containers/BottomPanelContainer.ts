@@ -18,6 +18,7 @@ export interface BottomPanelContainerProps {}
 
 const mapStateToProps = (state: StateTree, ownProps: BottomPanelContainerProps): BottomPanelStateProps => {
     let result: BottomPanelStateProps = {
+        projectPickerOpen: false, // TODO: Finish this?
         projectName: projectSelectors.getProjectName(state),
         projectDescription: projectSelectors.getProjectDescription(state)
     };

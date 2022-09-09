@@ -11,7 +11,8 @@ export enum ItemMenuPanelCaretPosition {
     TopLeft,
     TopCenter,
     TopRight,
-    RightTop
+    RightTop,
+    BottomLeft
 }
 
 export enum ItemMenuPanelColor {
@@ -52,8 +53,10 @@ export class ItemMenuPanel extends Component<ItemMenuPanelProps> {
         const classToUse = buildClassName(
             css.component,
             this.props.className,
+            !this.props.caretPosition || this.props.caretPosition === ItemMenuPanelCaretPosition.TopCenter ? css.topCenter : null,
             this.props.caretPosition === ItemMenuPanelCaretPosition.RightTop ? css.rightTopCaret : null,
             this.props.caretPosition === ItemMenuPanelCaretPosition.TopLeft ? css.topLeftCaret : null,
+            this.props.caretPosition === ItemMenuPanelCaretPosition.BottomLeft ? css.bottomLeftCaret : null,
             this.props.caretPosition === ItemMenuPanelCaretPosition.TopRight ? css.topRightCaret : null,
             this.props.panelColor === ItemMenuPanelColor.Dark ? css.dark : css.light
         );
