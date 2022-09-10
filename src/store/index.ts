@@ -13,6 +13,7 @@ import { apiMiddleware } from "../middleware/apiMiddleware";
 import { apiOrchestrationMiddleware } from "../middleware/apiOrchestrationMiddleware";
 import { actionSequencerMiddleware } from "../middleware/actionSequencerMiddleware";
 import { localStorageMiddleware } from "../middleware/localStorageMiddleware";
+import { projectMiddleware } from "../middleware/projectMiddleware";
 import { routingMiddleware } from "../middleware/routingMiddleware";
 import { sprintBacklogItemMiddleware } from "../middleware/sprintBacklogItemMiddleware";
 import { wsMiddleware } from "../middleware/wsMiddleware";
@@ -45,6 +46,7 @@ export const configureStore = ({ initialState, middleware = [], history, windowR
         apiMiddleware,
         apiOrchestrationMiddleware,
         actionSequencerMiddleware,
+        projectMiddleware,
         routingMiddleware,
         sprintBacklogItemMiddleware,
         wsMiddleware

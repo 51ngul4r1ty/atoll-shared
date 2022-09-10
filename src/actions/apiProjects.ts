@@ -21,20 +21,20 @@ export interface ApiGetProjectRouteToBacklogItemViewMeta {
     routeToBacklogItemView: boolean;
 }
 
-export interface ApiGetProjectResponsePayload {
+export type ApiGetProjectResponsePayload = {
     response: {
         status: number;
         data: {
             item: ApiProject;
         };
     };
-}
+};
 
-export interface ApiGetProjectSuccessAction<P> {
+export type ApiGetProjectSuccessAction<P> = {
     type: typeof ActionTypes.API_GET_BACKLOG_ITEMS_SUCCESS;
     payload: ApiGetProjectResponsePayload;
     meta?: ApiActionMetaDataRequestMeta<any, undefined, undefined, P>;
-}
+};
 
 export type ApiGetProjectSuccessRouteToBacklogItemViewAction = ApiGetProjectSuccessAction<ApiGetProjectRouteToBacklogItemViewMeta>;
 
@@ -63,4 +63,34 @@ export const apiGetProject = <P>(projectId: string, metaPassthrough?: P): ApiAct
     } else {
         return result;
     }
+};
+
+export type ApiGetProjectsResponsePayload = {
+    response: {
+        status: number;
+        data: {
+            items: ApiProject[];
+        };
+    };
+};
+
+export interface ApiGetProjectsSuccessAction {
+    type: typeof ActionTypes.API_GET_BACKLOG_ITEMS_SUCCESS;
+    payload: ApiGetProjectsResponsePayload;
+}
+
+/**
+ * Make an API call to retrieve the project collection data.
+ */
+export const apiGetProjects = (): ApiAction<undefined, any> => {
+    const result: NoDataApiAction = {
+        type: API,
+        payload: {
+            endpoint: `${getApiBaseUrl()}api/v1/projects`,
+            method: "GET",
+            headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
+            types: buildActionTypes(ApiActionNames.GET_PROJECTS)
+        }
+    };
+    return result;
 };

@@ -10,17 +10,23 @@ import * as ActionTypes from "../../actions/actionTypes";
 
 // utils
 import { mapApiItemToProject } from "../../mappers/projectMappers";
+import { ApiGetProjectsSuccessAction } from "../../actions/apiProjects";
+import { Project } from "./projectReducerTypes";
 
 export type ProjectState = Readonly<{
     id: string | null;
     name: string | null;
     description: string | null;
+    projects: Project[];
+    projectsLoaded: boolean;
 }>;
 
 export const projectReducerInitialState = Object.freeze<ProjectState>({
     id: null,
     name: null,
-    description: null
+    description: null,
+    projects: [],
+    projectsLoaded: false
 });
 
 export const projectReducer = (state: ProjectState = projectReducerInitialState, action: AnyFSA): ProjectState =>
@@ -34,6 +40,14 @@ export const projectReducer = (state: ProjectState = projectReducerInitialState,
                 draft.id = projectFromApi.id;
                 draft.name = projectFromApi.name;
                 draft.description = projectFromApi.description;
+                return;
+            }
+            case ActionTypes.API_GET_PROJECTS_SUCCESS: {
+                const actionTyped = action as ApiGetProjectsSuccessAction;
+                const payload = actionTyped.payload;
+                const projectsFromApi = payload.response.data.items.map(mapApiItemToProject);
+                draft.projects = projectsFromApi;
+                draft.projectsLoaded = true;
                 return;
             }
         }

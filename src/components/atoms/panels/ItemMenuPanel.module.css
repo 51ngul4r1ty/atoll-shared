@@ -48,6 +48,8 @@
     padding: 0.5rem;
     display: grid;
     grid-gap: 0.4rem;
+    min-width: 7.7rem;
+    min-height: 3.3rem;
 }
 
 .component.topLeftCaret .panel {

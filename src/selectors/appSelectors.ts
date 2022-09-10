@@ -14,7 +14,7 @@ import type { StateTree } from "../reducers/rootReducer";
 // utils
 import { timeoutExpired } from "../utils/dateHelper";
 
-export const app = (state: { app: AppState }): AppState => state.app;
+const app = (state: { app: AppState }): AppState => state.app;
 
 export const getLocale = createSelector([app], (app: AppState): Locale => app.locale);
 

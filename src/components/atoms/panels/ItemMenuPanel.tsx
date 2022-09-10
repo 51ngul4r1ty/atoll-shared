@@ -6,6 +6,7 @@ import css from "./ItemMenuPanel.module.css";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
+import { SmartSpinner, SpinnerAction } from "../../molecules";
 
 export enum ItemMenuPanelCaretPosition {
     TopLeft,
@@ -26,6 +27,7 @@ export interface ItemMenuPanelStateProps {
     itemId?: string;
     itemType?: string;
     panelColor?: ItemMenuPanelColor;
+    loading?: boolean;
 }
 
 export interface ItemMenuPanelDispatchProps {
@@ -60,6 +62,18 @@ export class ItemMenuPanel extends Component<ItemMenuPanelProps> {
             this.props.caretPosition === ItemMenuPanelCaretPosition.TopRight ? css.topRightCaret : null,
             this.props.panelColor === ItemMenuPanelColor.Dark ? css.dark : css.light
         );
+        const content = this.props.loading ? (
+            <SmartSpinner
+                action={SpinnerAction.Loading}
+                entityNameTemplate={""}
+                expectedTime={0}
+                metricEntityKey={""}
+                metricKey={""}
+                quantity={0}
+            />
+        ) : (
+            this.props.children
+        );
         return (
             <div
                 data-class="item-menu-panel"
@@ -68,7 +82,7 @@ export class ItemMenuPanel extends Component<ItemMenuPanelProps> {
                 className={classToUse}
             >
                 <div className={css.triangle}></div>
-                <div className={css.panel}>{this.props.children}</div>
+                <div className={css.panel}>{content}</div>
             </div>
         );
     }

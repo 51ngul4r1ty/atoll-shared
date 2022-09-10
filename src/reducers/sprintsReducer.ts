@@ -48,7 +48,7 @@ import { AppClickAction } from "../actions/appActions";
 import { UpdateSprintStatsAction } from "../actions/sprintActions";
 import { HideSprintBacklogItemDetailAction, ShowSprintBacklogItemDetailAction } from "../actions/sprintBacklogActions";
 
-export interface Sprint extends StandardModelItem {
+export type Sprint = StandardModelItem & {
     acceptedPoints: number | null;
     archived: boolean;
     backlogItemsLoaded: boolean;
@@ -62,30 +62,30 @@ export interface Sprint extends StandardModelItem {
     totalPoints: number | null;
     usedSplitPoints: number | null;
     velocityPoints: number | null;
-}
+};
 
-export interface EditableSprint extends Sprint {
+export type EditableSprint = Sprint & {
     editing?: boolean;
-}
+};
 
-export interface SaveableSprint extends EditableSprint {
+export type SaveableSprint = EditableSprint & {
     instanceId?: number | null;
     saved?: boolean;
-}
+};
 
-export interface SprintWithSource extends SaveableSprint {
+export type SprintWithSource = SaveableSprint & {
     pushState?: PushState;
     source: Source;
-}
+};
 
-export interface OriginalSprintData {
+export type OriginalSprintData = {
     [id: string]: Sprint;
-}
+};
 
-export interface SprintOpenedDatePickerInfo {
+export type SprintOpenedDatePickerInfo = {
     sprintId: string | null;
     showPicker: SprintDetailShowingPicker;
-}
+};
 
 export type SprintsState = Readonly<{
     addedItems: SaveableSprint[];

@@ -77,6 +77,10 @@ export const API_GET_BACKLOG_ITEM_RANKS_FAILURE = buildFailureActionName(Names.G
 // #endregion
 
 // #region Project Resource Collection
+export const API_GET_PROJECTS_SUCCESS = buildSuccessActionName(Names.GET_PROJECTS);
+//#endregion
+
+// #region Project Resource Item
 export const API_GET_PROJECT_SUCCESS = buildSuccessActionName(Names.GET_PROJECT);
 //#endregion
 
@@ -252,3 +256,6 @@ export const REMOVE_SPRINT_BACKLOG_ITEM = "app/remove:sprint-backlog-item";
 export const SET_SPRINT_PLANNING_ARCHIVED_FILTER = "app/set-filter:sprint-planning-archived";
 
 export const UPDATE_BACKLOG_ITEM_PART_FIELD = "app/update:backlog-item-part-field";
+
+export const PROJECT_PICKER_OPENED = "app/open:project-picker";
+export const SWITCH_PROJECT = "app/select:project";
