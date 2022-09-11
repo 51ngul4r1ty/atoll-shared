@@ -261,5 +261,6 @@ export const SET_SPRINT_PLANNING_ARCHIVED_FILTER = "app/set-filter:sprint-planni
 
 export const UPDATE_BACKLOG_ITEM_PART_FIELD = "app/update:backlog-item-part-field";
 
-export const PROJECT_PICKER_OPENED = "app/open:project-picker";
+export const PROJECT_PICKER_OPENED = "app/opened:project-picker";
+export const PROJECT_PICKER_CLOSED = "app/closed:project-picker";
 export const SWITCH_PROJECT = "app/select:project";

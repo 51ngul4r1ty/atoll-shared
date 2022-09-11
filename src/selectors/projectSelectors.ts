@@ -17,3 +17,5 @@ export const getProjectDescription = createSelector([project], (project: Project
 export const getProjectItems = createSelector([project], (project: ProjectState): Project[] => project.projects);
 
 export const isProjectItemsLoading = createSelector([project], (project: ProjectState): boolean => !project.projectsLoaded);
+
+export const selectProjectPickerOpen = createSelector([project], (project: ProjectState): boolean => project.projectPickerOpen);

@@ -22,6 +22,7 @@ export type BottomPanelStateProps = {
 
 export type BottomPanelDispatchProps = {
     onMenuOpened?: () => void;
+    onMenuClosed?: () => void;
     onProjectItemClicked?: (itemId: string) => void;
 };
 
@@ -30,8 +31,8 @@ export type BottomPanelProps = BottomPanelStateProps & BottomPanelDispatchProps 
 /* exported components */
 
 export const InnerBottomPanel: React.FC<BottomPanelProps> = (props) => {
-    const [isOpen, setIsOpen] = useState(props.projectPickerOpen || false);
     const showProjectName = !!props.projectName;
+    const isOpen = props.projectPickerOpen;
     const MenuCaretIcon = isOpen ? MenuCaretDownIcon : MenuCaretUpIcon;
     const projectItems = props.projects.map((project) => ({
         itemId: project.id,
@@ -55,9 +56,14 @@ export const InnerBottomPanel: React.FC<BottomPanelProps> = (props) => {
                 className={css.projectPickerPanel}
                 onClick={() => {
                     const isNowOpen = !isOpen;
-                    setIsOpen(isNowOpen);
+                    // if (isNowOpen && props.openProjectPicker) {
+                    //     props.openProjectPicker();
+                    // }
                     if (isNowOpen && props.onMenuOpened) {
                         props.onMenuOpened();
+                    }
+                    if (!isNowOpen && props.onMenuClosed) {
+                        props.onMenuClosed();
                     }
                 }}
             >

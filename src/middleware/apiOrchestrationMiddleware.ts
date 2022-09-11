@@ -43,7 +43,7 @@ import {
 } from "../actions/backlogItemActions";
 import { postLogin, ActionPostLoginSuccessAction, ActionPostRefreshTokenSuccessAction } from "../actions/authActions";
 import { routeLoginPage, routePlanView, routeTo } from "../actions/routeActions";
-import { apiGetUserPreferences, ActionGetUserPrefsSuccessAction } from "../actions/apiUserActions";
+import { apiGetUserPreferences, ActionGetUserPrefsSuccessAction, GetUserPrefsCallReason } from "../actions/apiUserActions";
 import {
     apiBatchAddBacklogItemsToSprint,
     apiGetSprintBacklogItems,
@@ -71,14 +71,12 @@ import { updateSprintStats } from "../actions/sprintActions";
 
 // selectors
 import * as apiSelectors from "../selectors/apiSelectors";
+import * as appSelectors from "../selectors/appSelectors";
+import * as backlogItemPartSelectors from "../selectors/backlogItemPartSelectors";
 import * as backlogItemSelectors from "../selectors/backlogItemSelectors";
 import * as userSelectors from "../selectors/userSelectors";
 import * as sprintSelectors from "../selectors/sprintSelectors";
 import * as sprintBacklogSelectors from "../selectors/sprintBacklogSelectors";
-
-// selectors
-import * as appSelectors from "../selectors/appSelectors";
-import * as backlogItemPartSelectors from "../selectors/backlogItemPartSelectors";
 
 // utils
 import { apiGetBacklogItemPart, apiPatchBacklogItemPart } from "../actions/apiBacklogItemParts";
@@ -119,20 +117,19 @@ export const apiOrchestrationMiddleware = (store: StoreTyped) => (next) => (acti
             break;
         }
         case ActionTypes.LOGIN_USER: {
-            // TODO: Switch to selectors!!
-            store.dispatch(postLogin(state.app.username, state.app.password));
+            store.dispatch(postLogin(appSelectors.selectUserName(state), appSelectors.selectPassword(state)));
             break;
         }
         case ActionTypes.API_POST_ACTION_LOGIN_SUCCESS: {
             const actionTyped = action as ActionPostLoginSuccessAction;
             if (actionTyped.payload.response.status === StatusCodes.OK) {
-                store.dispatch(apiGetUserPreferences(action.type));
+                store.dispatch(apiGetUserPreferences(GetUserPrefsCallReason.LoginSuccess));
             }
             break;
         }
         case ActionTypes.API_GET_USER_PREFS_SUCCESS: {
             const actionTyped = action as ActionGetUserPrefsSuccessAction;
-            if (actionTyped.meta.sourceActionType === ActionTypes.API_POST_ACTION_LOGIN_SUCCESS) {
+            if (actionTyped.meta.passthrough.apiCallReason === GetUserPrefsCallReason.LoginSuccess) {
                 const returnRoute = appSelectors.getPostLoginReturnRoute(state);
                 if (returnRoute) {
                     store.dispatch(routeTo(returnRoute));
@@ -153,7 +150,7 @@ export const apiOrchestrationMiddleware = (store: StoreTyped) => (next) => (acti
             break;
         }
         case ActionTypes.INIT_APP: {
-            store.dispatch(apiGetUserPreferences());
+            store.dispatch(apiGetUserPreferences(GetUserPrefsCallReason.InitApp));
             break;
         }
         case ActionTypes.CANCEL_EDIT_BACKLOG_ITEM: {

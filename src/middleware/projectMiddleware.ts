@@ -9,8 +9,8 @@ import type { Action } from "redux";
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
 import { apiGetProjects } from "../actions/apiProjects";
-import { apiPatchUserPreferences, ApiPatchUserPrefsSuccessAction } from "../actions/apiUserActions";
-import { ProjectPickerSwitchProjectAction } from "../actions/projectActions";
+import { apiPatchUserPreferences, ApiPatchUserPrefsSuccessAction, PatchUserPrefsCallReason } from "../actions/apiUserActions";
+import { projectPickerClosed, ProjectPickerSwitchProjectAction } from "../actions/projectActions";
 import { getCurrentProjectId } from "../selectors/userSelectors";
 
 import type { StoreTyped } from "../types/reduxHelperTypes";
@@ -25,21 +25,31 @@ export const projectMiddleware = (store: StoreTyped) => (next) => (action: Actio
         case ActionTypes.SWITCH_PROJECT: {
             const actionTyped = action as ProjectPickerSwitchProjectAction;
             store.dispatch(
-                apiPatchUserPreferences({
-                    selectedProject: actionTyped.payload.projectId
-                })
+                apiPatchUserPreferences(
+                    {
+                        selectedProject: actionTyped.payload.projectId
+                    },
+                    PatchUserPrefsCallReason.SwitchProject
+                )
             );
             return;
         }
         case ActionTypes.API_PATCH_USER_PREFS_SUCCESS: {
+            store.dispatch(projectPickerClosed());
             const actionTyped = action as ApiPatchUserPrefsSuccessAction;
-            // TODO: Add a check to ensure that this user pref patch was because of switching project
-            const state = store.getState();
-            const currentProjectId = getCurrentProjectId(state);
-            const newProjectId = actionTyped.payload.response.data.item.settings.selectedProject;
-            if (newProjectId !== currentProjectId) {
-                document.location.reload();
+            const apiCallReason = actionTyped.meta.passthrough.apiCallReason;
+            if (apiCallReason === PatchUserPrefsCallReason.SwitchProject) {
+                const state = store.getState();
+                const currentProjectId = getCurrentProjectId(state);
+                const newProjectId = actionTyped.payload.response.data.item.settings.selectedProject;
+                if (newProjectId !== currentProjectId) {
+                    document.location.reload();
+                }
             }
+        }
+        case ActionTypes.API_PATCH_USER_PREFS_FAILURE: {
+            store.dispatch(projectPickerClosed());
+            break;
         }
     }
 };

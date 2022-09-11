@@ -8,6 +8,14 @@ export const projectPickerOpened = (): ProjectPickerOpenedAction => ({
     type: ActionTypes.PROJECT_PICKER_OPENED
 });
 
+export type ProjectPickerClosedAction = {
+    type: typeof ActionTypes.PROJECT_PICKER_CLOSED;
+};
+
+export const projectPickerClosed = (): ProjectPickerClosedAction => ({
+    type: ActionTypes.PROJECT_PICKER_CLOSED
+});
+
 export type ProjectPickerSwitchProjectAction = {
     type: typeof ActionTypes.SWITCH_PROJECT;
     payload: {

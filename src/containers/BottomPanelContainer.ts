@@ -15,13 +15,13 @@ import { BottomPanelStateProps, BottomPanelDispatchProps } from "../components/o
 import * as projectSelectors from "../selectors/projectSelectors";
 
 // actions
-import { projectPickerOpened, switchProject } from "../actions/projectActions";
+import { projectPickerClosed, projectPickerOpened, switchProject } from "../actions/projectActions";
 
 export type BottomPanelContainerProps = {};
 
 const mapStateToProps = (state: StateTree, ownProps: BottomPanelContainerProps): BottomPanelStateProps => {
     let result: BottomPanelStateProps = {
-        projectPickerOpen: false, // TODO: Finish this?
+        projectPickerOpen: projectSelectors.selectProjectPickerOpen(state),
         projectName: projectSelectors.getProjectName(state),
         projectDescription: projectSelectors.getProjectDescription(state),
         projectItemsLoading: projectSelectors.isProjectItemsLoading(state),
@@ -34,6 +34,9 @@ const mapDispatchToProps = (dispatch: Dispatch): BottomPanelDispatchProps => {
     return {
         onMenuOpened: () => {
             dispatch(projectPickerOpened());
+        },
+        onMenuClosed: () => {
+            dispatch(projectPickerClosed());
         },
         onProjectItemClicked: (itemId: string) => {
             dispatch(switchProject(itemId));

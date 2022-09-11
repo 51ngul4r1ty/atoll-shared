@@ -34,9 +34,16 @@ export type ActionGetUserPrefsSuccessActionPayload = ApiActionSuccessPayloadForI
 
 export type ActionGetUserPrefsPayloadData = {};
 
-export type ActionGetUserPrefsSuccessActionMeta = ApiActionMetaDataRequestBody<ActionGetUserPrefsPayloadData> & {
-    sourceActionType: string;
+export type ActionGetUserPrefsActionMeta = {
+    apiCallReason: GetUserPrefsCallReason;
 };
+
+export type ActionGetUserPrefsActionPassthroughMeta = {
+    passthrough: ActionGetUserPrefsActionMeta;
+};
+
+export type ActionGetUserPrefsSuccessActionMeta = ApiActionMetaDataRequestBody<ActionGetUserPrefsPayloadData> &
+    ActionGetUserPrefsActionPassthroughMeta;
 
 export type ActionGetUserPrefsSuccessAction = {
     type: typeof ActionTypes.API_GET_USER_PREFS_SUCCESS;
@@ -44,8 +51,14 @@ export type ActionGetUserPrefsSuccessAction = {
     meta: ActionGetUserPrefsSuccessActionMeta;
 };
 
-// TODO: Figure out what should be done about sourceActionType
-export const apiGetUserPreferences = (sourceActionType?: string): NoDataApiAction => ({
+export enum GetUserPrefsCallReason {
+    InitApp,
+    LoginSuccess
+}
+
+export const apiGetUserPreferences = (
+    apiCallReason: GetUserPrefsCallReason
+): NoDataApiAction<any, ActionGetUserPrefsActionMeta> => ({
     type: API,
     payload: {
         endpoint: `${getApiBaseUrl()}api/v1/users/--self--/preferences`,
@@ -54,21 +67,32 @@ export const apiGetUserPreferences = (sourceActionType?: string): NoDataApiActio
         types: buildActionTypes(ApiActionNames.GET_USER_PREFS)
     },
     meta: {
-        sourceActionType
+        passthrough: {
+            apiCallReason
+        }
     }
 });
 
-export interface ApiPatchUserPrefsMetaPassthrough {}
+export type ApiPatchUserPrefsMetaPassthrough = {
+    apiCallReason: PatchUserPrefsCallReason;
+};
 
 export type ApiPatchUserPrefs = Partial<ApiUserSettings> & ItemWithId;
 
-export interface ApiPatchUserPrefsSuccessAction {
+export type ApiPatchUserPrefsSuccessAction = {
     type: typeof ActionTypes.API_PATCH_BACKLOG_ITEM_PART_SUCCESS;
     payload: ApiActionSuccessPayloadForItem<ApiPatchUserPrefs>;
     meta: ApiActionMetaDataRequestMeta<{}, undefined, undefined, ApiPatchUserPrefsMetaPassthrough>;
+};
+
+export enum PatchUserPrefsCallReason {
+    SwitchProject
 }
 
-export const apiPatchUserPreferences = (userSettings: Partial<UserSettings>): ApiAction<Partial<ApiUserSettings>> => {
+export const apiPatchUserPreferences = (
+    userSettings: Partial<UserSettings>,
+    apiCallReason: PatchUserPrefsCallReason
+): ApiAction<Partial<ApiUserSettings>> => {
     const data = {
         settings: stripUndefinedForPatchNoId(userSettings)
     } as Partial<ApiUserSettings>;
@@ -80,6 +104,11 @@ export const apiPatchUserPreferences = (userSettings: Partial<UserSettings>): Ap
             data,
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
             types: buildActionTypes(ApiActionNames.PATCH_USER_PREFS)
+        },
+        meta: {
+            passthrough: {
+                apiCallReason
+            }
         }
     };
     return result;

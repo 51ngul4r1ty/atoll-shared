@@ -17,6 +17,7 @@ export type ProjectState = Readonly<{
     id: string | null;
     name: string | null;
     description: string | null;
+    projectPickerOpen: boolean;
     projects: Project[];
     projectsLoaded: boolean;
 }>;
@@ -25,6 +26,7 @@ export const projectReducerInitialState = Object.freeze<ProjectState>({
     id: null,
     name: null,
     description: null,
+    projectPickerOpen: false,
     projects: [],
     projectsLoaded: false
 });
@@ -48,6 +50,14 @@ export const projectReducer = (state: ProjectState = projectReducerInitialState,
                 const projectsFromApi = payload.response.data.items.map(mapApiItemToProject);
                 draft.projects = projectsFromApi;
                 draft.projectsLoaded = true;
+                return;
+            }
+            case ActionTypes.PROJECT_PICKER_OPENED: {
+                draft.projectPickerOpen = true;
+                return;
+            }
+            case ActionTypes.PROJECT_PICKER_CLOSED: {
+                draft.projectPickerOpen = false;
                 return;
             }
         }

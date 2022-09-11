@@ -32,6 +32,10 @@ export const isPlanViewError = createSelector([app], (app: AppState): boolean =>
 
 export const isStrictMode = createSelector([app], (app: AppState): boolean => app.isStrictMode);
 
+export const selectUserName = createSelector([app], (app: AppState): string => app.username);
+
+export const selectPassword = createSelector([app], (app: AppState): string => app.password);
+
 // NOTE: This doesn't use reselect because it must never use cached data
 export const getPostLoginReturnRoute = (state: StateTree): string | null => {
     // give the user 2 minutes to log in - after that the app will automaticaly
