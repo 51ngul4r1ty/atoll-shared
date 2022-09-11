@@ -4,14 +4,16 @@ import { produce } from "immer";
 // interfaces/types
 import type { AnyFSA } from "../../types/reactHelperTypes";
 import type { ApiGetBffViewsPlanSuccessAction } from "../../actions/apiBffViewsPlan";
+import type { Project } from "./projectReducerTypes";
+import type { ApiGetProjectsSuccessAction } from "../../actions/apiProjects";
 
 // consts/enums
 import * as ActionTypes from "../../actions/actionTypes";
+import { ITEM_MENU_OPENER_DATA_CLASS, ITEM_MENU_PANEL_DATA_CLASS } from "../../components/common/consts";
 
 // utils
 import { mapApiItemToProject } from "../../mappers/projectMappers";
-import { ApiGetProjectsSuccessAction } from "../../actions/apiProjects";
-import { Project } from "./projectReducerTypes";
+import { AppClickAction } from "../../actions/appActions";
 
 export type ProjectState = Readonly<{
     id: string | null;
@@ -58,6 +60,24 @@ export const projectReducer = (state: ProjectState = projectReducerInitialState,
             }
             case ActionTypes.PROJECT_PICKER_CLOSED: {
                 draft.projectPickerOpen = false;
+                return;
+            }
+            case ActionTypes.APP_CLICK: {
+                const actionTyped = action as AppClickAction;
+                const parent = actionTyped.payload.parent;
+                console.log("APP_CLICK", {
+                    parentDataClass: parent?.dataClass,
+                    parentItemId: parent?.itemId,
+                    parentItemType: parent?.itemType
+                });
+                const dataClass = parent?.dataClass;
+                if (
+                    draft.projectPickerOpen &&
+                    dataClass !== ITEM_MENU_PANEL_DATA_CLASS &&
+                    dataClass !== ITEM_MENU_OPENER_DATA_CLASS
+                ) {
+                    draft.projectPickerOpen = false;
+                }
                 return;
             }
         }

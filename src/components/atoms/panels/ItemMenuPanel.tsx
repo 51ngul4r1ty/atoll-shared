@@ -8,6 +8,9 @@ import css from "./ItemMenuPanel.module.css";
 import { buildClassName } from "../../../utils/classNameBuilder";
 import { SmartSpinner, SpinnerAction } from "../../molecules";
 
+// consts/enums
+import { ITEM_MENU_PANEL_DATA_CLASS } from "../../common/consts";
+
 export enum ItemMenuPanelCaretPosition {
     TopLeft,
     TopCenter,
@@ -76,7 +79,7 @@ export class ItemMenuPanel extends Component<ItemMenuPanelProps> {
         );
         return (
             <div
-                data-class="item-menu-panel"
+                data-class={ITEM_MENU_PANEL_DATA_CLASS}
                 data-item-id={this.props.itemId}
                 data-item-type={this.props.itemType}
                 className={classToUse}

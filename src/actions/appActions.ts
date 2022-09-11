@@ -7,7 +7,12 @@ import * as ActionTypes from "./actionTypes";
 import { EditMode } from "../components/common/componentEnums";
 
 // utils
-import { getEltDataAttribute, getEltDataClass, getFirstParentWithAnyDataClass } from "../components/common/domUtils";
+import {
+    getEltDataAttribute,
+    getEltDataClass,
+    getFirstElementAtXYWithAnyDataClass,
+    getFirstParentWithAnyDataClass
+} from "../components/common/domUtils";
 
 export interface SetLocaleAction {
     type: typeof ActionTypes.SET_LOCALE;
@@ -57,7 +62,12 @@ export const appClick = (mouseEvent: MouseEvent): AppClickAction => {
         mouseEvent
     };
     if (mouseEvent.button === 0) {
-        const parentElt = getFirstParentWithAnyDataClass(mouseEvent.target as HTMLElement);
+        let parentElt: Element = getFirstParentWithAnyDataClass(mouseEvent.target as HTMLElement);
+        if (!parentElt) {
+            const x = mouseEvent.clientX;
+            const y = mouseEvent.clientY;
+            parentElt = getFirstElementAtXYWithAnyDataClass(x, y);
+        }
         if (parentElt) {
             payload.parent = {
                 dataClass: getEltDataClass(parentElt),

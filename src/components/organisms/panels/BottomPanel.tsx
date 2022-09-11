@@ -1,11 +1,17 @@
 // externals
 import * as React from "react";
-import { useState } from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
-import { Project } from "../../../reducers/project/projectReducerTypes";
+
+// interfaces/types
+import type { Project } from "../../../reducers/project/projectReducerTypes";
+
+// components
 import { MenuCaretDownIcon, MenuCaretUpIcon } from "../../atoms";
 import { ProjectIcon } from "../../atoms/icons/ProjectIcon";
-import { ProjectPickerMenu, ProjectPickerMenuItem } from "../../molecules";
+import { ProjectPickerMenu } from "../../molecules";
+
+// consts/enums
+import { ITEM_MENU_OPENER_DATA_CLASS } from "../../common";
 
 // style
 import css from "./BottomPanel.module.css";
@@ -56,9 +62,6 @@ export const InnerBottomPanel: React.FC<BottomPanelProps> = (props) => {
                 className={css.projectPickerPanel}
                 onClick={() => {
                     const isNowOpen = !isOpen;
-                    // if (isNowOpen && props.openProjectPicker) {
-                    //     props.openProjectPicker();
-                    // }
                     if (isNowOpen && props.onMenuOpened) {
                         props.onMenuOpened();
                     }
@@ -69,7 +72,9 @@ export const InnerBottomPanel: React.FC<BottomPanelProps> = (props) => {
             >
                 <ProjectIcon className={css.projectIcon} />
                 <span title={props.projectDescription}>{props.projectName}</span>
-                <MenuCaretIcon className={css.menuCaretIcon} />
+                <div className={css.menuCaretIcon} data-class={ITEM_MENU_OPENER_DATA_CLASS}>
+                    <MenuCaretIcon />
+                </div>
             </div>
         </div>
     );
