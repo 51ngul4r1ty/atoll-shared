@@ -60,6 +60,7 @@ export const InnerBottomPanel: React.FC<BottomPanelProps> = (props) => {
         <div className={css.innerPanel}>
             <div
                 className={css.projectPickerPanel}
+                data-class={ITEM_MENU_OPENER_DATA_CLASS}
                 onClick={() => {
                     const isNowOpen = !isOpen;
                     if (isNowOpen && props.onMenuOpened) {
@@ -72,9 +73,7 @@ export const InnerBottomPanel: React.FC<BottomPanelProps> = (props) => {
             >
                 <ProjectIcon className={css.projectIcon} />
                 <span title={props.projectDescription}>{props.projectName}</span>
-                <div className={css.menuCaretIcon} data-class={ITEM_MENU_OPENER_DATA_CLASS}>
-                    <MenuCaretIcon />
-                </div>
+                <MenuCaretIcon className={css.menuCaretIcon} />
             </div>
         </div>
     );
