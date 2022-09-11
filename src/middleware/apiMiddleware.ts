@@ -5,7 +5,7 @@
 
 // externals
 import axios, { AxiosRequestConfig } from "axios";
-import { Action, Dispatch, Store } from "redux";
+import { Action, Dispatch, Middleware, Store } from "redux";
 import { StatusCodes } from "http-status-codes";
 
 // consts/enums
@@ -137,7 +137,7 @@ export const authFailed = (errorResponseStatus: number) => {
     return errorResponseStatus === StatusCodes.UNAUTHORIZED;
 };
 
-export const apiMiddleware = (store) => (next) => (action: Action) => {
+export const apiMiddleware: Middleware<{}, StateTree> = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
     next(action);
     if (action.type !== API) {

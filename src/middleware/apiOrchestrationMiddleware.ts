@@ -7,7 +7,7 @@
  */
 
 // externals
-import type { Action } from "redux";
+import type { Action, Middleware } from "redux";
 import { push } from "connected-react-router";
 import { StatusCodes } from "http-status-codes";
 
@@ -21,6 +21,7 @@ import { ResourceTypes } from "../reducers/apiLinksReducer";
 import type { BacklogItemPart } from "../types/backlogItemPartTypes";
 import type { CancelEditBacklogItemPartAction, UpdateBacklogItemPartAction } from "../actions/backlogItemPartActions";
 import type { ExpandSprintPanelAction, SaveNewSprintAction, UpdateSprintAction } from "../actions/sprintActions";
+import type { StateTree } from "../reducers/rootReducer";
 import type { StoreTyped } from "../types/reduxHelperTypes";
 
 // actions
@@ -89,7 +90,7 @@ import { buildBacklogDisplayId } from "../utils/backlogItemHelper";
 import { convertToBacklogItemModel, convertToSprintModel } from "../utils/apiPayloadHelper";
 import { encodeForUrl } from "../utils/urlUtils";
 
-export const apiOrchestrationMiddleware = (store: StoreTyped) => (next) => (action: Action) => {
+export const apiOrchestrationMiddleware: Middleware<{}, StateTree> = (store: StoreTyped) => (next) => (action: Action) => {
     next(action);
     const state = store.getState();
     switch (action.type) {

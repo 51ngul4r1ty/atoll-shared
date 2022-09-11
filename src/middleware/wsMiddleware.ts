@@ -1,5 +1,5 @@
 // externals
-import { Action, Dispatch } from "redux";
+import { Action, Dispatch, Middleware } from "redux";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
@@ -18,6 +18,7 @@ import type {
 import type { WebsocketPushNotification, WebsocketPushNotificationV0, WebsocketPushNotificationData } from "../types/pushTypes";
 import type { ReceiveWebsocketMessageAction } from "../actions/wsActions";
 import type { BacklogItemModel } from "../types/backlogItemTypes";
+import type { StateTree } from "../reducers/rootReducer";
 
 // actions
 import { receivePushedBacklogItem } from "../actions/backlogItemActions";
@@ -68,7 +69,7 @@ const pushBacklogItemUpdated = (item: BacklogItemModel) => {
     wsClient.send(payload);
 };
 
-export const wsMiddleware = (store) => (next) => (action: Action) => {
+export const wsMiddleware: Middleware<{}, StateTree> = (store) => (next) => (action: Action) => {
     const dispatch = store.dispatch as Dispatch<any>;
     next(action);
     switch (action.type) {

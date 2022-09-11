@@ -7,6 +7,7 @@ import { buildFailureActionName, buildRequestActionName, buildSuccessActionName 
 
 export const INIT_APP = "app/init";
 export const APP_CLICK = "app/click";
+export const APP_REFRESH_VIEW = "app/refresh-view";
 export const APP_KEYUP = "app/keyup";
 
 export const LOCAL_STORE_REFRESH_TOKEN = "app/local-store:refresh-token";

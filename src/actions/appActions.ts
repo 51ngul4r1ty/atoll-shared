@@ -120,3 +120,7 @@ export const storePostLoginReturnRoute = (returnRoute: string): StorePostLoginRe
 export const clearPostLoginReturnRoute = () => ({
     type: ActionTypes.CLEAR_RETURN_ROUTE
 });
+
+export const refreshView = () => ({
+    type: ActionTypes.APP_REFRESH_VIEW
+});

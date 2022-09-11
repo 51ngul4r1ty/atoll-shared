@@ -4,7 +4,7 @@
  */
 
 // externals
-import type { Action } from "redux";
+import type { Action, Middleware } from "redux";
 
 // selectors
 import * as backlogItemSelectors from "../selectors/backlogItemSelectors";
@@ -24,6 +24,7 @@ import type {
 import type { BacklogItemInSprint } from "../types/backlogItemTypes";
 import type { SaveableSprint } from "../reducers/sprintsReducer";
 import type { SprintBacklogItemDetailClickAction } from "../actions/sprintBacklogActions";
+import type { StateTree } from "../reducers/rootReducer";
 import type { StoreTyped } from "../types/reduxHelperTypes";
 import type { AddNewSprintFormAction } from "../actions/sprintActions";
 
@@ -45,7 +46,7 @@ import {
 import { getFlowInfoFromAction } from "../utils/actionFlowUtils";
 import { apiGetBacklogItem } from "../actions/apiBacklogItems";
 
-export const sprintBacklogItemMiddleware = (store: StoreTyped) => (next) => (action: Action) => {
+export const sprintBacklogItemMiddleware: Middleware<{}, StateTree> = (store: StoreTyped) => (next) => (action: Action) => {
     next(action);
     switch (action.type) {
         case ActionTypes.API_PATCH_BACKLOG_ITEM_SUCCESS: {
