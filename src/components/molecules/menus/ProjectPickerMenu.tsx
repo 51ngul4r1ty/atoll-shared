@@ -42,6 +42,7 @@ export const InnerProjectPickerMenu: React.FC<InnerProjectPickerMenuProps> = (pr
     const buttons = props.items.map((item) => {
         return (
             <SimpleButton
+                key={item.itemId}
                 iconOnLeft
                 icon={<ProjectIcon />}
                 onClick={() => {
