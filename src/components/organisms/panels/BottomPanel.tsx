@@ -75,15 +75,11 @@ export const InnerBottomPanel: React.FC<BottomPanelProps> = (props) => {
                 <span title={props.projectDescription}>{props.projectName}</span>
                 <MenuCaretIcon className={css.menuCaretIcon} />
             </div>
+            <div>{projectPickerMenu}</div>
         </div>
     );
 
-    return (
-        <div className={css.bottomPanel}>
-            {content}
-            {projectPickerMenu}
-        </div>
-    );
+    return <div className={css.bottomPanel}>{content}</div>;
 };
 
 export const BottomPanel = withTranslation()(InnerBottomPanel);
