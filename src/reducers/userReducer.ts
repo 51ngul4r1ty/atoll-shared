@@ -6,7 +6,7 @@ import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
 import { AnyFSA } from "../types/reactHelperTypes";
-import { ActionGetUserPrefsSuccessAction } from "../actions/userActions";
+import { ActionGetUserPrefsSuccessAction } from "../actions/apiUserActions";
 import { UserSettings } from "../types/apiModelTypes";
 
 export type UserState = Readonly<{

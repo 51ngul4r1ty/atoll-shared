@@ -16,6 +16,8 @@ export const GET_BACKLOG_ITEM_PART = "get-backlog-item-part";
 export const PATCH_BACKLOG_ITEM_PART = "patch-backlog-item-part";
 
 export const GET_USER_PREFS = "get-user-prefs";
+export const PATCH_USER_PREFS = "patch-user-prefs";
+
 export const POST_ACTION_LOGIN = "login";
 export const POST_ACTION_REFRESH_TOKEN = "refresh-token";
 export const POST_ACTION_REORDER_BACKLOG_ITEM = "reorder-backlog-item";

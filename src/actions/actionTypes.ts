@@ -20,6 +20,10 @@ export const ERROR_PANEL_CLICK = "app/error-panel:click";
 export const API_GET_USER_PREFS_REQUEST = buildRequestActionName(Names.GET_USER_PREFS);
 export const API_GET_USER_PREFS_SUCCESS = buildSuccessActionName(Names.GET_USER_PREFS);
 export const API_GET_USER_PREFS_FAILURE = buildFailureActionName(Names.GET_USER_PREFS);
+
+export const API_PATCH_USER_PREFS_REQUEST = buildRequestActionName(Names.PATCH_USER_PREFS);
+export const API_PATCH_USER_PREFS_SUCCESS = buildSuccessActionName(Names.PATCH_USER_PREFS);
+export const API_PATCH_USER_PREFS_FAILURE = buildFailureActionName(Names.PATCH_USER_PREFS);
 // #endregion
 
 // #region Backlog Items Resource Collection

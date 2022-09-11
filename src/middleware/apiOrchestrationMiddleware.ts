@@ -1,3 +1,6 @@
+// TODO: I'm not sure this pattern makes sense... for example, projectMiddleware contains all of the project related orchestration
+//   so it can also have the API orchestration.  This file is becoming too big so it doesn't seem as if it is the right separation.
+
 /**
  * Purpose: To determine when to make RESTful API calls based on actions that occur.
  * Reason to change: When new RESTful API calls are needed.
@@ -40,7 +43,7 @@ import {
 } from "../actions/backlogItemActions";
 import { postLogin, ActionPostLoginSuccessAction, ActionPostRefreshTokenSuccessAction } from "../actions/authActions";
 import { routeLoginPage, routePlanView, routeTo } from "../actions/routeActions";
-import { getUserPreferences, ActionGetUserPrefsSuccessAction } from "../actions/userActions";
+import { apiGetUserPreferences, ActionGetUserPrefsSuccessAction } from "../actions/apiUserActions";
 import {
     apiBatchAddBacklogItemsToSprint,
     apiGetSprintBacklogItems,
@@ -123,7 +126,7 @@ export const apiOrchestrationMiddleware = (store: StoreTyped) => (next) => (acti
         case ActionTypes.API_POST_ACTION_LOGIN_SUCCESS: {
             const actionTyped = action as ActionPostLoginSuccessAction;
             if (actionTyped.payload.response.status === StatusCodes.OK) {
-                store.dispatch(getUserPreferences(action.type));
+                store.dispatch(apiGetUserPreferences(action.type));
             }
             break;
         }
@@ -150,7 +153,7 @@ export const apiOrchestrationMiddleware = (store: StoreTyped) => (next) => (acti
             break;
         }
         case ActionTypes.INIT_APP: {
-            store.dispatch(getUserPreferences());
+            store.dispatch(apiGetUserPreferences());
             break;
         }
         case ActionTypes.CANCEL_EDIT_BACKLOG_ITEM: {

@@ -1,6 +1,6 @@
 import { ItemWithId } from "../../types/apiModelTypes";
 
-export const stripUndefinedForPatch = <T>(obj: T, id: string): Partial<T> & ItemWithId => {
+export const stripUndefinedForPatchNoId = <T>(obj: T): Partial<T> => {
     const buildObjWithPrimativeProp = (obj: any, prop: string, node: any): any => {
         if (obj === undefined) {
             return { [prop]: node[prop] };
@@ -32,5 +32,11 @@ export const stripUndefinedForPatch = <T>(obj: T, id: string): Partial<T> & Item
         return newObj;
     };
     const result = stripUndefinedForNode(obj);
-    return { ...result, id } || { id };
+    return { ...result };
+};
+
+export type StripUndefinedForPatchResult<T> = Partial<T> & ItemWithId;
+export const stripUndefinedForPatch = <T>(obj: T, id: string): StripUndefinedForPatchResult<T> => {
+    const result = stripUndefinedForPatchNoId(obj);
+    return { ...result, id } || ({ id } as StripUndefinedForPatchResult<T>);
 };
