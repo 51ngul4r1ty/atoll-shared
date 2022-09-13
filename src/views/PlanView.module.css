@@ -23,3 +23,20 @@
     height: 100%;
     display: flex;
 }
+
+.noContentMsg {
+    position: absolute;
+    display: grid;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 1.2rem;
+    /* width: 100%;
+    height: 100%; */
+    padding: 1.5rem;
+}
+
+:global(.mobile) .noContentMsg {
+    text-align: center;
+}

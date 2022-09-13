@@ -94,6 +94,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
     }
     render() {
         const strictMode = this.props.strictMode;
+        const hasContent = this.props.allItems.length > 0 || this.props.sprints.length > 0;
         const pageContentsElts = (
             <div className={css.content}>
                 <ProductPlanningPanel
@@ -226,8 +227,10 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
             pageContent = spinnerElts;
         } else if (this.props.errorMessage) {
             pageContent = this.props.errorMessage;
-        } else {
+        } else if (hasContent || this.props.editMode === EditMode.Edit) {
             pageContent = pageContentsElts;
+        } else {
+            pageContent = <div className={css.noContentMsg}>This project is empty. To add content click the Edit button!</div>;
         }
         return (
             <>
