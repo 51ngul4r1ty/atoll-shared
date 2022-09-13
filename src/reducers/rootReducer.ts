@@ -19,6 +19,7 @@ import { sprintsReducer, sprintsReducerInitialState, SprintsState } from "./spri
 import { userReducer, userReducerInitialState, UserState } from "./userReducer";
 import { BacklogItemsState } from "./backlogItems/backlogItemsReducerTypes";
 import { projectReducer, projectReducerInitialState, ProjectState } from "./project/projectReducer";
+import { projectStatsReducer, projectStatsReducerInitialState, ProjectStatsState } from "./projectStatsReducer";
 
 export interface StateTree {
     apiBatch: ApiBatchState;
@@ -30,6 +31,7 @@ export interface StateTree {
     featureToggles: FeatureTogglesState;
     productBacklogItems: ProductBacklogItemsState;
     project: ProjectState;
+    projectStats: ProjectStatsState;
     router: RouterState<LocationState>;
     sprintBacklog: SprintBacklogState;
     sprints: SprintsState;
@@ -44,6 +46,7 @@ export const rootReducerInitialState = {
     featureToggles: featureTogglesReducerInitialState,
     productBacklogItems: productBacklogItemsReducerInitialState,
     project: projectReducerInitialState,
+    projectStats: projectStatsReducerInitialState,
     sprintBacklog: sprintBacklogReducerInitialState,
     sprints: sprintsReducerInitialState,
     user: userReducerInitialState
@@ -59,6 +62,7 @@ const createRootReducer = (history: any) => {
         featureToggles: featureTogglesReducer,
         productBacklogItems: productBacklogItemsReducer,
         project: projectReducer,
+        projectStats: projectStatsReducer,
         router,
         sprintBacklog: sprintBacklogReducer,
         sprints: sprintsReducer,

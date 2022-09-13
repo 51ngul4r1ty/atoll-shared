@@ -30,6 +30,10 @@ export interface ApiGetBffViewsPlanResponsePayload {
             userPreferences: ApiUserSettings;
             project: ApiProject;
             expandedSprintId: string | null;
+            projectStats: {
+                totalSprintCount: number;
+                archivedSprintCount: number;
+            };
         };
     };
 }

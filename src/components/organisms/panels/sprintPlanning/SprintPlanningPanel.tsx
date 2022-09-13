@@ -10,9 +10,10 @@ import css from "./SprintPlanningPanel.module.css";
 import { buildClassName } from "../../../../utils/classNameBuilder";
 
 // interfaces/types
-import type { SprintCardSprint } from "../../../molecules/cards/sprintCard/sprintCardTypes";
 import type { ItemMenuEventHandlers } from "../../../molecules/menus/menuBuilderTypes";
 import type { OnAddNewSprint, OnArchivedFilterChange } from "./sprintPlanningPanelTypes";
+import type { SprintCardSprint } from "../../../molecules/cards/sprintCard/sprintCardTypes";
+import type { SprintOpenedDatePickerInfo } from "../../../../reducers/sprintsReducer";
 
 // utils
 import { addBottomActionButtons, addTopActionButtons } from "./sprintPlanningPanelJsxUtils";
@@ -41,9 +42,9 @@ import {
     updateSprintFields
 } from "../../../../actions/sprintActions";
 import { apiArchiveSprint, apiDeleteSprint, apiUnarchiveSprint } from "../../../../actions/apiSprints";
-import { SprintOpenedDatePickerInfo } from "../../../../reducers/sprintsReducer";
 
-export interface SprintPlanningPanelStateProps {
+export type SprintPlanningPanelStateProps = {
+    archivedSprintCount: number | null;
     busySplittingStory?: boolean;
     className?: string;
     editMode: EditMode;
@@ -59,9 +60,9 @@ export interface SprintPlanningPanelStateProps {
     sprints: SprintCardSprint[];
     sprintsToDisableAddItemAction: string[];
     strictMode: boolean;
-}
+};
 
-export interface SprintPlanningPanelDispatchProps {
+export type SprintPlanningPanelDispatchProps = {
     onAddBacklogItem: { (sprintId: string): void };
     onAddNewSprintAfter: OnAddNewSprint;
     onAddNewSprintBefore: OnAddNewSprint;
@@ -77,7 +78,7 @@ export interface SprintPlanningPanelDispatchProps {
     onMoveItemToBacklogClick: { (sprintId: string, backlogItemId: string): void };
     onSplitBacklogItemClick: { (sprintId: string, backlogItemId: string): void };
     onSprintDetailClick: { (sprintId: string, strictMode: boolean): void };
-}
+};
 
 export type SprintPlanningPanelProps = SprintPlanningPanelStateProps & SprintPlanningPanelDispatchProps & WithTranslation;
 
@@ -149,13 +150,16 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
     };
     const classNameToUse = buildClassName(css.sprintPlanningPanel, css.backlogItemPlanningPanel, props.className);
     let renderElts = [];
+    const totalSprintCount = props.sprints.length + props.archivedSprintCount;
+    const allowAddFirstSprint = totalSprintCount === 0;
     addTopActionButtons(
         renderElts,
         css.topPanel,
         props.editMode,
         props.includeArchived,
         props.onAddNewSprintBefore,
-        props.onArchivedFilterChange
+        props.archivedSprintCount > 0 ? props.onArchivedFilterChange : undefined,
+        allowAddFirstSprint
     );
     let firstElt = true;
     props.sprints.forEach((sprint) => {
@@ -286,7 +290,9 @@ export const InnerSprintPlanningPanel: React.FC<SprintPlanningPanelProps> = (pro
         firstElt = false;
         renderElts.push(sprintItemElt);
     });
-    addBottomActionButtons(renderElts, css.bottomPanel, props.editMode, props.onAddNewSprintAfter);
+    if (props.sprints.length > 0) {
+        addBottomActionButtons(renderElts, css.bottomPanel, props.editMode, props.onAddNewSprintAfter);
+    }
     return <div className={classNameToUse}>{renderElts}</div>;
 };
 

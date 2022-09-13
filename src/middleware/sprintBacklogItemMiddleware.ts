@@ -165,7 +165,6 @@ export const sprintBacklogItemMiddleware: Middleware<{}, StateTree> = (store: St
             const position = actionTyped.payload.position;
             let startDate: DateOnly;
             let finishDate: DateOnly;
-            // TODO: Make this configurable (create a story for this)
             const SPRINT_DAY_LENGTH = 14;
             if (position === NewSprintPosition.Before) {
                 const firstSprint = sprintSelectors.getFirstSprint(state);

@@ -38,6 +38,7 @@ import type { SprintOpenedDatePickerInfo } from "../reducers/sprintsReducer";
 
 export interface PlanViewStateProps {
     allItems: BacklogItemWithSource[];
+    archivedSprintCount: number | null;
     busyJoiningUnallocatedParts: boolean;
     busySplittingStory: boolean;
     editMode: EditMode;
@@ -114,6 +115,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     }}
                 />
                 <SprintPlanningPanel
+                    archivedSprintCount={this.props.archivedSprintCount}
                     className={css.sprints}
                     editMode={this.props.editMode}
                     busySplittingStory={this.props.busySplittingStory}
