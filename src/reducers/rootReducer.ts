@@ -1,6 +1,7 @@
 // externals
 import { combineReducers } from "redux";
 import { connectRouter, RouterState } from "connected-react-router";
+import { LocationState } from "history";
 
 // reducers
 import { apiBatchReducer, apiBatchReducerInitialState, ApiBatchState } from "./apiBatchReducer";
@@ -29,7 +30,7 @@ export interface StateTree {
     featureToggles: FeatureTogglesState;
     productBacklogItems: ProductBacklogItemsState;
     project: ProjectState;
-    router: RouterState;
+    router: RouterState<LocationState>;
     sprintBacklog: SprintBacklogState;
     sprints: SprintsState;
     user: UserState;

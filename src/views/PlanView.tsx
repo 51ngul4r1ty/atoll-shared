@@ -1,5 +1,6 @@
 // externals
 import * as React from "react";
+import { Action } from "redux";
 import Helmet from "react-helmet";
 
 // components
@@ -43,6 +44,7 @@ export interface PlanViewStateProps {
     electronClient: boolean;
     errorMessage: string;
     includeArchivedSprints: boolean;
+    initAction: Action;
     loading: boolean;
     openedDatePickerInfo: SprintOpenedDatePickerInfo;
     openedDetailMenuBacklogItemId: string | null;
@@ -71,7 +73,7 @@ export interface PlanViewDispatchProps {
     onBacklogItemReleasedClick: { (sprintId: string, backlogItemId: string): void };
     onExpandCollapse: { (sprintId: string, expand: boolean): void };
     onItemDetailClick: { (sprintId: string, backlogItemId: string, strictMode: boolean): void };
-    onLoaded: { (): void };
+    onLoaded: { (initAction: Action): void };
     onMoveItemToBacklogClick: { (sprintId: string, backlogItemId: string): void };
     onReorderBacklogItems: { (sourceItemId: string, targetItemId: string): void };
     onSplitBacklogItemClick: { (sprintId: string, backlogItemId: string): void };
@@ -88,7 +90,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
         super(props);
     }
     componentDidMount() {
-        this.props.onLoaded();
+        this.props.onLoaded(this.props.initAction);
     }
     render() {
         const strictMode = this.props.strictMode;

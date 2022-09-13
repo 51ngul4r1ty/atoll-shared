@@ -1,6 +1,6 @@
 // externals
 import { connect } from "react-redux";
-import { Dispatch } from "redux";
+import { Action, Dispatch } from "redux";
 
 // components
 import { PlanView, PlanViewStateProps, PlanViewDispatchProps } from "./PlanView";
@@ -17,7 +17,6 @@ import {
     NewSprintPosition,
     sprintDetailClick
 } from "../actions/sprintActions";
-import { apiBffViewsPlan } from "../actions/apiBffViewsPlan";
 import {
     changeSprintPlanningArchivedFilter,
     moveSelectedBacklogItemsToSprintUsingApi,
@@ -35,9 +34,6 @@ import {
 // interfaces/types
 import { BacklogItemType } from "../types/backlogItemTypes";
 
-// utils
-import { isPlatformWindows } from "../utils";
-
 // selectors
 import * as userSelectors from "../selectors/userSelectors";
 import * as sprintSelectors from "../selectors/sprintSelectors";
@@ -45,11 +41,17 @@ import * as backlogItemSelectors from "../selectors/backlogItemSelectors";
 import * as appSelectors from "../selectors/appSelectors";
 import * as sprintBacklogSelectors from "../selectors/sprintBacklogSelectors";
 
+// utils
+import { isPlatformWindows } from "../utils";
+import { buildCurrentViewInitializationAction } from "../utils/initializer";
+
 const mapStateToProps = (state: StateTree): PlanViewStateProps => {
     const allItems = backlogItemSelectors.getAllBacklogItems(state);
     const includeArchivedSprints = sprintBacklogSelectors.getIncludeArchivedSprints(state);
     const sprints = sprintSelectors.getPlanViewSprints(state, includeArchivedSprints);
+    const initAction = buildCurrentViewInitializationAction(state);
     let result: PlanViewStateProps = {
+        initAction,
         allItems,
         busyJoiningUnallocatedParts: backlogItemSelectors.isBusyJoiningUnallocatedParts(state),
         busySplittingStory: sprintBacklogSelectors.isSplitInProgress(state),
@@ -78,8 +80,8 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
     return {
-        onLoaded: () => {
-            dispatch(apiBffViewsPlan());
+        onLoaded: (initAction: Action) => {
+            dispatch(initAction); // apiBffViewsPlan());
         },
         onAddNewBacklogItemForm: (type: BacklogItemType, projectId: string) => dispatch(addNewBacklogItemForm(type, projectId)),
         onAddBacklogItemToSprint: (sprintId: string) => dispatch(moveSelectedBacklogItemsToSprintUsingApi(sprintId)),

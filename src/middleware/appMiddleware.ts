@@ -12,12 +12,15 @@ import { StateTree } from "../reducers/rootReducer";
 
 // interfaces/types
 import type { StoreTyped } from "../types/reduxHelperTypes";
+import { buildCurrentViewInitializationAction } from "../utils/initializer";
 
 export const appMiddleware: Middleware<{}, StateTree> = (store: StoreTyped) => (next) => (action: Action) => {
     next(action);
     switch (action.type) {
         case ActionTypes.APP_REFRESH_VIEW: {
-            document.location.reload();
+            const state = store.getState();
+            const action = buildCurrentViewInitializationAction(state);
+            store.dispatch(action);
             break;
         }
     }

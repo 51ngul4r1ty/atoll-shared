@@ -21,6 +21,7 @@ import { getCurrentProjectId } from "../selectors/userSelectors";
 // interfaces/types
 import type { StateTree } from "../reducers/rootReducer";
 import type { StoreTyped } from "../types/reduxHelperTypes";
+import { setCurrentProjectId } from "../actions/userPrefsActions";
 
 export const projectMiddleware: Middleware<{}, StateTree> = (store: StoreTyped) => (next) => (action: Action) => {
     next(action);
@@ -51,6 +52,7 @@ export const projectMiddleware: Middleware<{}, StateTree> = (store: StoreTyped) 
                 const newProjectId = actionTyped.payload.response.data.item.settings.selectedProject;
                 if (newProjectId !== currentProjectId) {
                     store.dispatch(refreshView());
+                    store.dispatch(setCurrentProjectId(newProjectId));
                 }
             }
         }

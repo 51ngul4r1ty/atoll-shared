@@ -265,3 +265,5 @@ export const UPDATE_BACKLOG_ITEM_PART_FIELD = "app/update:backlog-item-part-fiel
 export const PROJECT_PICKER_OPENED = "app/opened:project-picker";
 export const PROJECT_PICKER_CLOSED = "app/closed:project-picker";
 export const SWITCH_PROJECT = "app/select:project";
+
+export const SET_CURRENT_PROJECT_ID = "app/set-prefs:current-project-id";
