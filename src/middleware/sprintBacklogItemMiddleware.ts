@@ -168,8 +168,14 @@ export const sprintBacklogItemMiddleware: Middleware<{}, StateTree> = (store: St
             const SPRINT_DAY_LENGTH = 14;
             if (position === NewSprintPosition.Before) {
                 const firstSprint = sprintSelectors.getFirstSprint(state);
-                startDate = firstSprint.startDate.addDays(-(SPRINT_DAY_LENGTH - 1));
-                finishDate = firstSprint.startDate;
+                if (firstSprint) {
+                    startDate = firstSprint.startDate.addDays(-(SPRINT_DAY_LENGTH - 1));
+                    finishDate = firstSprint.startDate;
+                } else {
+                    const today = new DateOnly();
+                    startDate = today.addDays(1); // default to starting tomorrow (planning the day before)
+                    finishDate = startDate.addDays(SPRINT_DAY_LENGTH);
+                }
             } else if (position === NewSprintPosition.After) {
                 const lastSprint = sprintSelectors.getLastSprint(state);
                 startDate = lastSprint.finishDate.addDays(1);
