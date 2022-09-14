@@ -55,10 +55,10 @@ export const ProductBacklogItemView: React.FC<ProductBacklogItemViewProps> = (pr
     const itemElts = props.groups.map((group) => <div key={groupIndex++}>{buildGroupItemElts(group.items)}</div>);
     const errorMessage = props.error ? <span>ERRORS ENCOUNTERED: {`${props.error}`}</span> : null;
     return (
-        <>
+        <div className={css.content}>
             <h1>BACKLOG ITEM RANK DEBUG VIEWER</h1>
             {itemElts}
             {errorMessage}
-        </>
+        </div>
     );
 };
