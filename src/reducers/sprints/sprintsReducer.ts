@@ -352,5 +352,18 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 draft.totalSprintCount += 1;
                 return;
             }
+            case ActionTypes.API_SET_SPRINT_ARCHIVE_FLAG_SUCCESS: {
+                const actionTyped = action as ApiSetSprintArchiveFlagSuccessAction;
+                const isArchivedNow = actionTyped.payload.response.data.item.archived;
+                if (!draft.archivedSprintCount) {
+                    draft.archivedSprintCount = 0;
+                }
+                if (isArchivedNow) {
+                    draft.archivedSprintCount += 1;
+                } else {
+                    draft.archivedSprintCount -= 1;
+                }
+                return;
+            }
         }
     });
