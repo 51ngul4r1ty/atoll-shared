@@ -161,7 +161,6 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 } else {
                     throw Error(`Unexpected ${position}`);
                 }
-                draft.totalSprintCount += 1;
                 rebuildAllItems(draft);
                 return;
             }
@@ -347,6 +346,10 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             case ActionTypes.HIDE_SPRINT_BACKLOG_ITEM_DETAIL: {
                 // NOTE: although this shouldn't be necessary we reset it back to "factory defaults" to be safe.
                 draft.splitToNextSprintAvailable = sprintsReducerInitialState.splitToNextSprintAvailable;
+                return;
+            }
+            case ActionTypes.API_POST_SPRINT_SUCCESS: {
+                draft.totalSprintCount += 1;
                 return;
             }
         }
