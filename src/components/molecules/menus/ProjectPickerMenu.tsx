@@ -7,13 +7,6 @@ import { ProjectIcon } from "../../atoms/icons/ProjectIcon";
 // components
 import { ItemMenuPanelCaretPosition, ItemMenuPanel } from "../../atoms/panels/ItemMenuPanel";
 import { SimpleButton } from "../buttons/SimpleButton";
-// import { BacklogItemAcceptedButton } from "../buttons/BacklogItemAcceptedButton";
-// import { BacklogItemDoneButton } from "../buttons/BacklogItemDoneButton";
-// import { BacklogItemInProgressButton } from "../buttons/BacklogItemInProgressButton";
-// import { BacklogItemNotStartedButton } from "../buttons/BacklogItemNotStartedButton";
-// import { BacklogItemReleasedButton } from "../buttons/BacklogItemReleasedButton";
-// import { MoveToBacklogButton } from "../buttons/MoveToBacklogButton";
-// import { SplitToNextSprintButton } from "../buttons/SplitToNextSprintButton";
 
 // style
 import css from "./ProjectPickerMenu.module.css";
@@ -27,7 +20,6 @@ export type ProjectPickerMenuStateProps = {
     className?: string;
     items: ProjectPickerMenuItem[];
     loading?: boolean;
-    //     renderMobile?: boolean;
 };
 
 export type ProjectPickerMenuDispatchProps = {
