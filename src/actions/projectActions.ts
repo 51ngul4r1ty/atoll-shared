@@ -1,3 +1,4 @@
+// consts/enums
 import * as ActionTypes from "./actionTypes";
 
 export type ProjectPickerOpenedAction = {
