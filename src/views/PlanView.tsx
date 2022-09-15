@@ -28,7 +28,7 @@ import type { BacklogItemWithSource } from "../reducers/backlogItems/backlogItem
 import type { BacklogItemType } from "../types/backlogItemTypes";
 import type { SprintCardSprint } from "../components/molecules/cards/sprintCard/sprintCardTypes";
 import type { OpenedOrOpeningDetailMenuInfo } from "../selectors/sprintBacklogSelectors";
-import type { SprintOpenedDatePickerInfo } from "../reducers/sprintsReducer";
+import type { SprintOpenedDatePickerInfo } from "../reducers/sprints/sprintsReducerTypes";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build

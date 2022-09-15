@@ -16,7 +16,7 @@ import type { BacklogItemInSprint } from "../../types/backlogItemTypes";
 import type { ShowSprintBacklogItemDetailAction } from "../../actions/sprintBacklogActions";
 
 // code under test
-import { sprintBacklogReducer, SprintBacklogSprintInfo, SprintBacklogState } from "../sprintBacklogReducer";
+import { sprintBacklogReducer, SprintBacklogSprintInfo, SprintBacklogState } from "../sprintBacklog/sprintBacklogReducer";
 
 describe("Sprint Backlog Reducer", () => {
     describe("API_GET_SPRINT_FAILURE", () => {

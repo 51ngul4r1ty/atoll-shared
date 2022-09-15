@@ -6,10 +6,13 @@ import css from "./ItemMenuPanel.module.css";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
-import { SmartSpinner, SpinnerAction } from "../../molecules";
+
+// components
+import { SmartSpinner } from "../../molecules/unique/smartSpinner/SmartSpinner";
 
 // consts/enums
 import { ITEM_MENU_PANEL_DATA_CLASS } from "../../common/consts";
+import { SpinnerAction } from "../../molecules/unique/smartSpinner/smartSpinnerEnums";
 
 export enum ItemMenuPanelCaretPosition {
     TopLeft,

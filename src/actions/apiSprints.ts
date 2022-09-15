@@ -26,7 +26,7 @@ import type {
 import type { ApiSprint } from "../types/apiModelTypes";
 import type { ApiItemDetailMenuActionFlowSuccessMeta } from "../actionFlows/itemDetailMenuActionFlow";
 import type { SprintModel } from "../types/sprintTypes";
-import type { Sprint } from "../reducers/sprintsReducer";
+import type { Sprint } from "../reducers/sprints/sprintsReducerTypes";
 
 // utils
 import { addStandardMeta, buildActionTypes } from "./utils/apiActionUtils";

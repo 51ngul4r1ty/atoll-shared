@@ -40,7 +40,6 @@ import * as sprintSelectors from "../selectors/sprintSelectors";
 import * as backlogItemSelectors from "../selectors/backlogItemSelectors";
 import * as appSelectors from "../selectors/appSelectors";
 import * as sprintBacklogSelectors from "../selectors/sprintBacklogSelectors";
-import * as projectStatsSelectors from "../selectors/projectStatsSelectors";
 
 // utils
 import { isPlatformWindows } from "../utils";
@@ -48,7 +47,7 @@ import { buildCurrentViewInitializationAction } from "../utils/initializer";
 
 const mapStateToProps = (state: StateTree): PlanViewStateProps => {
     const allItems = backlogItemSelectors.getAllBacklogItems(state);
-    const archivedSprintCount = projectStatsSelectors.getArchivedSprintCount(state);
+    const archivedSprintCount = sprintSelectors.getArchivedSprintCount(state);
     const includeArchivedSprints = sprintBacklogSelectors.getIncludeArchivedSprints(state);
     const sprints = sprintSelectors.getPlanViewSprints(state, includeArchivedSprints);
     const initAction = buildCurrentViewInitializationAction(state);

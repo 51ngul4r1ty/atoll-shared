@@ -1,6 +1,6 @@
 // interfaces/types
-import { ApiSprint } from "../types/apiModelTypes";
-import { Sprint } from "../reducers/sprintsReducer";
+import type { ApiSprint } from "../types/apiModelTypes";
+import type { Sprint } from "../reducers/sprints/sprintsReducerTypes";
 import { DateOnly } from "../types/dateTypes";
 
 // utils

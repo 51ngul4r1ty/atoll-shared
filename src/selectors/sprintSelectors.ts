@@ -1,14 +1,20 @@
+// externals
+import { createSelector } from "reselect";
+
 // interfaces/types
-import { Sprint } from "../reducers/sprintsReducer";
-import { SprintCardSprint, SprintStatus } from "../components/molecules/cards/sprintCard/sprintCardTypes";
+import type { Sprint } from "../reducers/sprints/sprintsReducerTypes";
+import type { SprintsState } from "../reducers/sprints/sprintsReducer";
+import type { SprintCardSprint } from "../components/molecules/cards/sprintCard/sprintCardTypes";
 
 // state
 import { StateTree } from "../reducers/rootReducer";
 import { getBacklogItemsForSprint } from "./sprintBacklogSelectors";
 
 // utils
-import { getSprintById as getSprintByIdReducer } from "../reducers/sprintsReducer";
+import { getSprintById as getSprintByIdReducer } from "../reducers/sprints/sprintsReducerHelper";
 import { determineSprintStatus } from "../utils/sprintStatusHelper";
+
+const sprints = (state: StateTree): SprintsState => state.sprints;
 
 export const getPlanViewSprints = (state: StateTree, includeArchived: boolean): SprintCardSprint[] => {
     const result = state.sprints.allItems
@@ -96,3 +102,9 @@ export const getOpenedDetailMenuSprintId = (state: StateTree) => state.sprints.o
 export const getOpenedDatePickerInfo = (state: StateTree) => state.sprints.openedDatePickerInfo;
 
 export const getSplitToNextSprintAvailable = (state: StateTree) => state.sprints.splitToNextSprintAvailable;
+
+export const getTotalSprintCount = createSelector([sprints], (sprints: SprintsState): number | null => sprints.totalSprintCount);
+export const getArchivedSprintCount = createSelector(
+    [sprints],
+    (sprints: SprintsState): number | null => sprints.archivedSprintCount
+);

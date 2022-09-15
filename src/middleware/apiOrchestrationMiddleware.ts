@@ -1,3 +1,6 @@
+// TODO: I'm not sure this pattern makes sense... for example, projectMiddleware contains all of the project related orchestration
+//   so it can also have the API orchestration.  This file is becoming too big so it doesn't seem as if it is the right separation.
+
 /**
  * Purpose: To determine when to make RESTful API calls based on actions that occur.
  * Reason to change: When new RESTful API calls are needed.

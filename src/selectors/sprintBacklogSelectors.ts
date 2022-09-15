@@ -11,7 +11,7 @@ import * as sprintBacklogItemSliceSelectors from "../reducers/sprintBacklog/spri
 import * as backlogItemSliceSelectors from "../reducers/backlogItems/backlogItemsSliceSelectors";
 
 // reducers
-import { getSprintBacklogItemByIdFromSlice, SprintBacklogState } from "../reducers/sprintBacklogReducer";
+import { getSprintBacklogItemByIdFromSlice, SprintBacklogState } from "../reducers/sprintBacklog/sprintBacklogReducer";
 
 export const backlogItems = (state: { backlogItems: BacklogItemsState }): BacklogItemsState => state.backlogItems;
 export const sprintBacklog = (state: { sprintBacklog: SprintBacklogState }): SprintBacklogState => state.sprintBacklog;

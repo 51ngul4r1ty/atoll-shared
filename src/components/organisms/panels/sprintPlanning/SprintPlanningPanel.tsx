@@ -13,7 +13,7 @@ import { buildClassName } from "../../../../utils/classNameBuilder";
 import type { ItemMenuEventHandlers } from "../../../molecules/menus/menuBuilderTypes";
 import type { OnAddNewSprint, OnArchivedFilterChange } from "./sprintPlanningPanelTypes";
 import type { SprintCardSprint } from "../../../molecules/cards/sprintCard/sprintCardTypes";
-import type { SprintOpenedDatePickerInfo } from "../../../../reducers/sprintsReducer";
+import type { SprintOpenedDatePickerInfo } from "../../../../reducers/sprints/sprintsReducerTypes";
 
 // utils
 import { addBottomActionButtons, addTopActionButtons } from "./sprintPlanningPanelJsxUtils";

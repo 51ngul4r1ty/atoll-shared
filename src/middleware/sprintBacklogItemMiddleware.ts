@@ -22,7 +22,7 @@ import type {
     ApiSplitSprintItemSuccessAction
 } from "../actions/apiSprintBacklog";
 import type { BacklogItemInSprint } from "../types/backlogItemTypes";
-import type { SaveableSprint } from "../reducers/sprintsReducer";
+import type { SaveableSprint } from "../reducers/sprints/sprintsReducerTypes";
 import type { SprintBacklogItemDetailClickAction } from "../actions/sprintBacklogActions";
 import type { StateTree } from "../reducers/rootReducer";
 import type { StoreTyped } from "../types/reduxHelperTypes";
