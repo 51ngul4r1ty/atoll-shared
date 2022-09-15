@@ -84,7 +84,7 @@ const mapStateToProps = (state: StateTree): PlanViewStateProps => {
 const mapDispatchToProps = (dispatch: Dispatch): PlanViewDispatchProps => {
     return {
         onLoaded: (initAction: Action) => {
-            dispatch(initAction); // apiBffViewsPlan());
+            dispatch(initAction);
         },
         onAddNewBacklogItemForm: (type: BacklogItemType, projectId: string) => dispatch(addNewBacklogItemForm(type, projectId)),
         onAddBacklogItemToSprint: (sprintId: string) => dispatch(moveSelectedBacklogItemsToSprintUsingApi(sprintId)),
