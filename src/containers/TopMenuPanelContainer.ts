@@ -22,6 +22,7 @@ import { TopMenuPanelStateProps, TopMenuPanelDispatchProps } from "../components
 // selectors
 import * as appSelectors from "../selectors/appSelectors";
 import * as backlogItemSelectors from "../selectors/backlogItemSelectors";
+import * as userSelectors from "../selectors/userSelectors";
 
 export interface TopMenuPanelContainerProps {
     activeTabId: string;
@@ -36,6 +37,7 @@ const mapStateToProps = (state: StateTree, ownProps: TopMenuPanelContainerProps)
         showRefreshButton: backlogItemSelectors.hasPushedBacklogItems(state),
         treatAsElectronTitleBar: ownProps.treatAsElectronTitleBar,
         message: appSelectors.getAppMessage(state),
+        projectId: userSelectors.getCurrentProjectId(state),
         hideEditViewButton: ownProps.hideEditViewButton
     };
     return result;
@@ -62,8 +64,8 @@ const mapDispatchToProps = (dispatch: Dispatch): TopMenuPanelDispatchProps => {
         setEditMode: (editMode: EditMode) => {
             dispatch(setEditMode(editMode));
         },
-        refreshData: () => {
-            dispatch(apiGetBacklogItems());
+        refreshData: (projectId: string) => {
+            dispatch(apiGetBacklogItems(projectId));
         }
     };
 };

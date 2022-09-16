@@ -10,7 +10,7 @@ import type { WebsocketPushNotificationData } from "../types/pushTypes";
 // actions
 import { apiGetBacklogItems } from "./apiBacklogItems";
 
-export const refreshBacklogItems = () => apiGetBacklogItems();
+export const refreshBacklogItems = (projectId: string) => apiGetBacklogItems(projectId);
 
 let lastInstanceId = 0;
 

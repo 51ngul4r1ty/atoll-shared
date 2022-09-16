@@ -172,7 +172,7 @@ export const apiMiddleware: Middleware<{}, StateTree> = (store) => (next) => (ac
             try {
                 dispatchSuccess(dispatch, successType, data, requestBody, apiAction.meta);
             } catch (err) {
-                console.error(`Error occurred while dispatching success: ${err}`);
+                console.error(`Error occurred while dispatching success for success type "${successType}": "${err}"`);
                 if ((err as any)?.stack) {
                     console.log((err as any).stack);
                 }

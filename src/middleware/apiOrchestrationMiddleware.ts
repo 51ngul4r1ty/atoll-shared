@@ -111,7 +111,9 @@ export const apiOrchestrationMiddleware: Middleware<{}, StateTree> = (store: Sto
             break;
         }
         case ActionTypes.API_POST_ACTION_REORDER_BACKLOG_ITEM_SUCCESS: {
-            store.dispatch(refreshBacklogItems());
+            const state = store.getState();
+            const projectId = userSelectors.getCurrentProjectId(state);
+            store.dispatch(refreshBacklogItems(projectId));
             break;
         }
         case ActionTypes.LOGIN_USER: {
