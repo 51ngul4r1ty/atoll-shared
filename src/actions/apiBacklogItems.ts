@@ -35,11 +35,14 @@ export interface ApiGetBacklogItemsSuccessAction {
     payload: ApiActionSuccessPayloadForCollection<ApiBacklogItem>;
     meta: ApiActionMetaDataRequestMeta<{}>;
 }
-export const apiGetBacklogItems = (): NoDataApiAction => {
+export const apiGetBacklogItems = (projectId: string): NoDataApiAction => {
+    if (!projectId) {
+        throw new Error("Project ID must be provided when retrieving backlog items!");
+    }
     return {
         type: API,
         payload: {
-            endpoint: `${getApiBaseUrl()}api/v1/backlog-items`,
+            endpoint: `${getApiBaseUrl()}api/v1/backlog-items?projectId=${projectId}`,
             method: "GET",
             headers: { "Content-Type": APPLICATION_JSON, Accept: APPLICATION_JSON },
             types: buildActionTypes(ApiActionNames.GET_BACKLOG_ITEMS)
