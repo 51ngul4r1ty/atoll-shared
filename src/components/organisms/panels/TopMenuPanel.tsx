@@ -27,17 +27,18 @@ import { EditMode } from "../../common/componentEnums";
 export type TopMenuPanelStateProps = {
     activeTabId?: string;
     editMode: EditMode;
+    hideEditViewButton?: boolean;
     message: string;
+    projectId: string;
     showRefreshButton: boolean;
     treatAsElectronTitleBar?: boolean; // necessary to work properly for Electron client on Windows
-    hideEditViewButton?: boolean;
 };
 
 export type TopMenuPanelDispatchProps = {
     onChangeTab?: { (selectedTabId: string) };
     onErrorPanelClick?: { (): void };
     setEditMode: { (editMode: EditMode): void };
-    refreshData: { (): void };
+    refreshData: { (projectId: string): void };
 };
 
 export type TopMenuPanelProps = TopMenuPanelStateProps & TopMenuPanelDispatchProps & WithTranslation;
@@ -54,7 +55,7 @@ export const InnerTopMenuPanel: React.FC<TopMenuPanelProps> = (props) => {
             <RefreshButton
                 key="refresh-button"
                 onClick={() => {
-                    props.refreshData();
+                    props.refreshData(props.projectId);
                 }}
             />
         );
