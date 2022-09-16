@@ -66,7 +66,7 @@ export const getSprintById = (sprintsState: SprintsState, sprintId: string): Spr
     }
 };
 
-export const removeSprint = (draft: Draft<SprintsState>, sprintId: string) => {
+export const removeSprint = (draft: Draft<SprintsState>, sprintId: string, archived: boolean) => {
     let removedSprint = false;
     const idx = draft.addedItems.findIndex((item) => item.id === sprintId);
     if (idx >= 0) {
@@ -80,6 +80,9 @@ export const removeSprint = (draft: Draft<SprintsState>, sprintId: string) => {
     }
     if (removedSprint) {
         draft.totalSprintCount -= 1;
+        if (archived) {
+            draft.archivedSprintCount -= 1;
+        }
     }
     rebuildAllItems(draft);
     return removedSprint;

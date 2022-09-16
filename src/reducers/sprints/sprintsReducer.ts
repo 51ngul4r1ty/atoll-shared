@@ -59,6 +59,7 @@ import {
     updateStateToHideDatePicker,
     updateSprintFromPayload
 } from "./sprintsReducerHelper";
+import * as logger from "../../utils/logger";
 
 export type SprintsState = Readonly<{
     addedItems: SaveableSprint[];
@@ -87,8 +88,9 @@ export const sprintsReducerInitialState = Object.freeze<SprintsState>({
     archivedSprintCount: null
 });
 
-export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState, action: AnyFSA): SprintsState =>
-    produce(state, (draft) => {
+export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState, action: AnyFSA): SprintsState => {
+    const functionTag = "sprintReducer";
+    return produce(state, (draft) => {
         const { type } = action;
         switch (type) {
             case ActionTypes.COLLAPSE_SPRINT_PANEL: {
@@ -136,6 +138,7 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             case ActionTypes.API_GET_SPRINTS_SUCCESS: {
                 const actionTyped = action as ApiGetSprintsSuccessAction;
                 const { payload } = actionTyped;
+                draft.addedItems = [];
                 draft.items = mapApiItemsToSprints(payload.response.data.items);
                 rebuildAllItems(draft);
                 return;
@@ -230,6 +233,7 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                         addedItem.saved = true;
                     }
                 });
+                draft.totalSprintCount += 1;
                 rebuildAllItems(draft);
                 return;
             }
@@ -257,18 +261,42 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             case ActionTypes.API_DELETE_SPRINT_SUCCESS: {
                 const actionTyped = action as ApiDeleteSprintSuccessAction;
                 const id = actionTyped.meta.originalActionArgs.sprintId;
-                removeSprint(draft, id);
+                const archived = actionTyped.payload.response.data.item.archived;
+                removeSprint(draft, id, archived);
                 return;
             }
             case ActionTypes.API_SET_SPRINT_ARCHIVE_FLAG_SUCCESS: {
+                const blockTag = "API_SET_SPRINT_ARCHIVE_FLAG_SUCCESS";
                 const actionTyped = action as ApiSetSprintArchiveFlagSuccessAction;
                 const meta = actionTyped.meta;
                 const id = meta.originalActionArgs.sprintId;
+                let found = false;
                 draft.items.forEach((item) => {
                     if (item.id === id) {
                         item.archived = meta.originalActionArgs.archived;
+                        found = true;
                     }
                 });
+                if (!found) {
+                    draft.addedItems.forEach((item) => {
+                        if (item.id === id) {
+                            item.archived = meta.originalActionArgs.archived;
+                            found = true;
+                        }
+                    });
+                }
+                if (!found) {
+                    logger.warn(`unable to find archived item with ID "${id}" to update archive status`, [functionTag, blockTag]);
+                }
+                const isArchivedNow = actionTyped.payload.response.data.item.archived;
+                if (!draft.archivedSprintCount) {
+                    draft.archivedSprintCount = 0;
+                }
+                if (isArchivedNow) {
+                    draft.archivedSprintCount += 1;
+                } else {
+                    draft.archivedSprintCount -= 1;
+                }
                 rebuildAllItems(draft);
                 draft.openedDetailMenuSprintId = null;
                 return;
@@ -352,18 +380,6 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 draft.totalSprintCount += 1;
                 return;
             }
-            case ActionTypes.API_SET_SPRINT_ARCHIVE_FLAG_SUCCESS: {
-                const actionTyped = action as ApiSetSprintArchiveFlagSuccessAction;
-                const isArchivedNow = actionTyped.payload.response.data.item.archived;
-                if (!draft.archivedSprintCount) {
-                    draft.archivedSprintCount = 0;
-                }
-                if (isArchivedNow) {
-                    draft.archivedSprintCount += 1;
-                } else {
-                    draft.archivedSprintCount -= 1;
-                }
-                return;
-            }
         }
     });
+};
