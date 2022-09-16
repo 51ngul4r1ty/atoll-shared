@@ -130,69 +130,89 @@ export const buildKeyFromId = (id: string | null | undefined) => {
     return !id ? "<<null>>" : `${id}`;
 };
 
-export const findCircularRefs = (ranks: ProductBacklogItem[]) => {
+export const findCircularRefs = (allRanks: ProductBacklogItem[]) => {
     let hasIssues = false;
     let message = "";
-    let repeatedBacklogItemIds: string[] = [];
-
-    if (ranks.length) {
-        const rankInfoByKey: { [id: string]: RankInfo } = {};
-        ranks.forEach((rank) => {
-            const key = buildKeyFromId(rank.backlogItemId);
-            if (!rankInfoByKey[key]) {
-                rankInfoByKey[key] = { rank, processed: false };
-            } else {
-                hasIssues = true;
-                repeatedBacklogItemIds.push(`${rank.id} => ${rank.backlogItemId}`);
-            }
-        });
-        let currentRankInfo = rankInfoByKey[buildKeyFromId(null)];
-        if (!currentRankInfo) {
-            const firstKey = buildKeyFromId(ranks[0].backlogItemId);
-            currentRankInfo = rankInfoByKey[firstKey];
+    const projectIdSet = new Set();
+    allRanks.forEach((rank) => {
+        if (!projectIdSet.has(rank.projectId)) {
+            projectIdSet.add(rank.projectId);
         }
-        let busy = true;
-        while (busy) {
-            if (currentRankInfo.processed) {
-                message = `circular ref found: ${currentRankInfo.rank.backlogItemId}`;
-                busy = false;
-                hasIssues = true;
-                continue;
-            }
-            currentRankInfo.processed = true;
-            const nextId = currentRankInfo.rank.nextBacklogItemId;
-            if (!nextId) {
-                currentRankInfo = null;
-            } else {
-                const key = buildKeyFromId(nextId);
-                currentRankInfo = rankInfoByKey[key];
-            }
+    });
+    let nullProjectIdEntryCount = 0;
+    projectIdSet.forEach((projectId) => {
+        if (!projectId) {
+            nullProjectIdEntryCount++;
+        }
+        const ranks = allRanks.filter((rank) => rank.projectId === projectId);
+
+        let repeatedBacklogItemIds: string[] = [];
+
+        if (ranks.length) {
+            const rankInfoByKey: { [id: string]: RankInfo } = {};
+            ranks.forEach((rank) => {
+                const key = buildKeyFromId(rank.backlogItemId);
+                if (!rankInfoByKey[key]) {
+                    rankInfoByKey[key] = { rank, processed: false };
+                } else {
+                    hasIssues = true;
+                    repeatedBacklogItemIds.push(`${rank.id} => ${rank.backlogItemId}`);
+                }
+            });
+            let currentRankInfo = rankInfoByKey[buildKeyFromId(null)];
             if (!currentRankInfo) {
-                const keys = Object.keys(rankInfoByKey);
-                let idx = 0;
-                let searchingForUnprocessedRank = idx < keys.length;
-                while (searchingForUnprocessedRank) {
-                    const key = keys[idx++];
-                    const rankInfo = rankInfoByKey[key];
-                    if (!rankInfo.processed) {
-                        currentRankInfo = rankInfo;
-                        searchingForUnprocessedRank = false;
-                    } else if (idx >= keys.length) {
-                        searchingForUnprocessedRank = false;
-                    }
+                const firstKey = buildKeyFromId(ranks[0].backlogItemId);
+                currentRankInfo = rankInfoByKey[firstKey];
+            }
+            let busy = true;
+            while (busy) {
+                if (currentRankInfo.processed) {
+                    message = `circular ref found: ${currentRankInfo.rank.backlogItemId}`;
+                    busy = false;
+                    hasIssues = true;
+                    continue;
+                }
+                currentRankInfo.processed = true;
+                const nextId = currentRankInfo.rank.nextBacklogItemId;
+                if (!nextId) {
+                    currentRankInfo = null;
+                } else {
+                    const key = buildKeyFromId(nextId);
+                    currentRankInfo = rankInfoByKey[key];
                 }
                 if (!currentRankInfo) {
-                    busy = false;
+                    const keys = Object.keys(rankInfoByKey);
+                    let idx = 0;
+                    let searchingForUnprocessedRank = idx < keys.length;
+                    while (searchingForUnprocessedRank) {
+                        const key = keys[idx++];
+                        const rankInfo = rankInfoByKey[key];
+                        if (!rankInfo.processed) {
+                            currentRankInfo = rankInfo;
+                            searchingForUnprocessedRank = false;
+                        } else if (idx >= keys.length) {
+                            searchingForUnprocessedRank = false;
+                        }
+                    }
+                    if (!currentRankInfo) {
+                        busy = false;
+                    }
                 }
             }
         }
-    }
 
-    if (repeatedBacklogItemIds.length) {
+        if (repeatedBacklogItemIds.length) {
+            if (message) {
+                message += "; ";
+            }
+            message += `for project ID ${projectId}, repeated product backlog item IDs: ${repeatedBacklogItemIds.join(", ")}`;
+        }
+    });
+    if (nullProjectIdEntryCount > 0) {
         if (message) {
             message += "; ";
         }
-        message += `repeated product backlog item IDs: ${repeatedBacklogItemIds.join(", ")}`;
+        message += `there are ${nullProjectIdEntryCount} null projectId entries!`;
     }
     return {
         hasIssues,

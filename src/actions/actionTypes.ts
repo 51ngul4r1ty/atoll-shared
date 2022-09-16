@@ -7,6 +7,7 @@ import { buildFailureActionName, buildRequestActionName, buildSuccessActionName 
 
 export const INIT_APP = "app/init";
 export const APP_CLICK = "app/click";
+export const APP_REFRESH_VIEW = "app/refresh-view";
 export const APP_KEYUP = "app/keyup";
 
 export const LOCAL_STORE_REFRESH_TOKEN = "app/local-store:refresh-token";
@@ -20,6 +21,10 @@ export const ERROR_PANEL_CLICK = "app/error-panel:click";
 export const API_GET_USER_PREFS_REQUEST = buildRequestActionName(Names.GET_USER_PREFS);
 export const API_GET_USER_PREFS_SUCCESS = buildSuccessActionName(Names.GET_USER_PREFS);
 export const API_GET_USER_PREFS_FAILURE = buildFailureActionName(Names.GET_USER_PREFS);
+
+export const API_PATCH_USER_PREFS_REQUEST = buildRequestActionName(Names.PATCH_USER_PREFS);
+export const API_PATCH_USER_PREFS_SUCCESS = buildSuccessActionName(Names.PATCH_USER_PREFS);
+export const API_PATCH_USER_PREFS_FAILURE = buildFailureActionName(Names.PATCH_USER_PREFS);
 // #endregion
 
 // #region Backlog Items Resource Collection
@@ -77,6 +82,10 @@ export const API_GET_BACKLOG_ITEM_RANKS_FAILURE = buildFailureActionName(Names.G
 // #endregion
 
 // #region Project Resource Collection
+export const API_GET_PROJECTS_SUCCESS = buildSuccessActionName(Names.GET_PROJECTS);
+//#endregion
+
+// #region Project Resource Item
 export const API_GET_PROJECT_SUCCESS = buildSuccessActionName(Names.GET_PROJECT);
 //#endregion
 
@@ -252,3 +261,9 @@ export const REMOVE_SPRINT_BACKLOG_ITEM = "app/remove:sprint-backlog-item";
 export const SET_SPRINT_PLANNING_ARCHIVED_FILTER = "app/set-filter:sprint-planning-archived";
 
 export const UPDATE_BACKLOG_ITEM_PART_FIELD = "app/update:backlog-item-part-field";
+
+export const PROJECT_PICKER_OPENED = "app/opened:project-picker";
+export const PROJECT_PICKER_CLOSED = "app/closed:project-picker";
+export const SWITCH_PROJECT = "app/select:project";
+
+export const SET_CURRENT_PROJECT_ID = "app/set-prefs:current-project-id";

@@ -1,5 +1,5 @@
 // externals
-import { Action, Store } from "redux";
+import { Action, Middleware, Store } from "redux";
 import { StatusCodes } from "http-status-codes";
 
 // consts/enums
@@ -9,11 +9,7 @@ import * as ActionTypes from "../actions/actionTypes";
 import { StateTree } from "../reducers/rootReducer";
 
 // actions
-import {
-    ActionPostLoginSuccessAction,
-    ActionPostRefreshTokenSuccessAction //,
-    // getAuthTokenWithRefreshToken
-} from "../actions/authActions";
+import { ActionPostLoginSuccessAction, ActionPostRefreshTokenSuccessAction } from "../actions/authActions";
 import { localStoreRefreshToken } from "../actions/appActions";
 
 const storeRefreshTokenIfSuccesful = (action: ActionPostLoginSuccessAction | ActionPostRefreshTokenSuccessAction) => {
@@ -22,7 +18,7 @@ const storeRefreshTokenIfSuccesful = (action: ActionPostLoginSuccessAction | Act
     }
 };
 
-export const localStorageMiddleware = (store) => (next) => (action: Action) => {
+export const localStorageMiddleware: Middleware<{}, StateTree> = (store) => (next) => (action: Action) => {
     next(action);
     const storeTyped = store as Store<StateTree>;
     switch (action.type) {

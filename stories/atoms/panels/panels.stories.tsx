@@ -4,6 +4,7 @@ import * as React from "react";
 
 // storybook
 import { storiesOf } from "@storybook/react";
+import { boolean } from "@storybook/addon-knobs";
 
 // components
 import { CalendarPanel, ItemMenuPanelCaretPosition, ItemMenuPanel, RemoveButton, DateOnly } from "../../../dist/index.es";
@@ -16,6 +17,7 @@ storiesOf("Atoms/Panels", module)
         <ItemMenuPanel
             className="item-menu-panel caret-top-center"
             caretPosition={ItemMenuPanelCaretPosition.TopCenter}
+            loading={boolean("loading", false)}
             onClose={() => {
                 alert("close triggered");
             }}
@@ -31,6 +33,7 @@ storiesOf("Atoms/Panels", module)
         <ItemMenuPanel
             className="item-menu-panel caret-right-top"
             caretPosition={ItemMenuPanelCaretPosition.RightTop}
+            loading={boolean("loading", false)}
             onClose={() => {
                 alert("close triggered");
             }}

@@ -4,7 +4,7 @@
  */
 
 // externals
-import { Action, Store } from "redux";
+import { Action, Middleware, Store } from "redux";
 
 // consts/enums
 import * as ActionTypes from "../actions/actionTypes";
@@ -24,7 +24,7 @@ import { getRemainingApiCalls } from "../selectors/apiBatchSelectors";
 import { StateTree } from "../reducers/rootReducer";
 
 // TODO: Define types for "store", "next" etc. - and do this in other files too!
-export const apiBatchMiddleware = (store) => (next) => (action: Action) => {
+export const apiBatchMiddleware: Middleware<{}, StateTree> = (store) => (next) => (action: Action) => {
     const storeTyped = store as Store<StateTree>;
     next(action);
     const actionTyped = action as ApiBatchQueueItemAction<any, any>;

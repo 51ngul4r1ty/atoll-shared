@@ -6,8 +6,9 @@ import * as ActionTypes from "../actions/actionTypes";
 
 // interfaces/types
 import { AnyFSA } from "../types/reactHelperTypes";
-import { ActionGetUserPrefsSuccessAction } from "../actions/userActions";
+import { ActionGetUserPrefsSuccessAction } from "../actions/apiUserActions";
 import { UserSettings } from "../types/apiModelTypes";
+import { SetCurrentProjectIdAction } from "../actions/userPrefsActions";
 
 export type UserState = Readonly<{
     preferences: UserSettings;
@@ -35,6 +36,11 @@ export const userReducer = (state: UserState = userReducerInitialState, action: 
                     selectedSprint: item?.settings?.selectedSprint,
                     detectBrowserDarkMode: item?.settings?.detectBrowserDarkMode
                 };
+                return;
+            }
+            case ActionTypes.SET_CURRENT_PROJECT_ID: {
+                const actionTyped = action as SetCurrentProjectIdAction;
+                draft.preferences.selectedProject = actionTyped.payload.projectId;
                 return;
             }
         }

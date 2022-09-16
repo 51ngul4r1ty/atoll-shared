@@ -20,6 +20,7 @@ import {
     EditMode,
     HomeButton,
     ItemMenuPanelCaretPosition,
+    ProjectPickerMenu,
     RefreshButton,
     RemoveButton,
     SimpleButton,
@@ -404,5 +405,26 @@ storiesOf("Molecules/Inputs/DateInput", module).add("DateInput", () => (
             />
         </div>
         <div id="dateinput-modal-panel"></div>
+    </div>
+));
+
+storiesOf("Molecules/Menus/ProjectPickerMenu", module).add("ProjectPickerMenu", () => (
+    <div>
+        <ProjectPickerMenu
+            items={[
+                {
+                    itemId: "id-1",
+                    itemCaption: "Project #1"
+                },
+                {
+                    itemId: "id-2",
+                    itemCaption: "Project #2"
+                },
+                {
+                    itemId: "id-3",
+                    itemCaption: "Project #3"
+                }
+            ]}
+        />
     </div>
 ));

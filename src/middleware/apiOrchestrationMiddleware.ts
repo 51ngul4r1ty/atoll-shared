@@ -4,7 +4,7 @@
  */
 
 // externals
-import type { Action } from "redux";
+import type { Action, Middleware } from "redux";
 import { push } from "connected-react-router";
 import { StatusCodes } from "http-status-codes";
 
@@ -18,6 +18,7 @@ import { ResourceTypes } from "../reducers/apiLinksReducer";
 import type { BacklogItemPart } from "../types/backlogItemPartTypes";
 import type { CancelEditBacklogItemPartAction, UpdateBacklogItemPartAction } from "../actions/backlogItemPartActions";
 import type { ExpandSprintPanelAction, SaveNewSprintAction, UpdateSprintAction } from "../actions/sprintActions";
+import type { StateTree } from "../reducers/rootReducer";
 import type { StoreTyped } from "../types/reduxHelperTypes";
 
 // actions
@@ -40,7 +41,7 @@ import {
 } from "../actions/backlogItemActions";
 import { postLogin, ActionPostLoginSuccessAction, ActionPostRefreshTokenSuccessAction } from "../actions/authActions";
 import { routeLoginPage, routePlanView, routeTo } from "../actions/routeActions";
-import { getUserPreferences, ActionGetUserPrefsSuccessAction } from "../actions/userActions";
+import { apiGetUserPreferences, ActionGetUserPrefsSuccessAction, GetUserPrefsCallReason } from "../actions/apiUserActions";
 import {
     apiBatchAddBacklogItemsToSprint,
     apiGetSprintBacklogItems,
@@ -68,14 +69,12 @@ import { updateSprintStats } from "../actions/sprintActions";
 
 // selectors
 import * as apiSelectors from "../selectors/apiSelectors";
+import * as appSelectors from "../selectors/appSelectors";
+import * as backlogItemPartSelectors from "../selectors/backlogItemPartSelectors";
 import * as backlogItemSelectors from "../selectors/backlogItemSelectors";
 import * as userSelectors from "../selectors/userSelectors";
 import * as sprintSelectors from "../selectors/sprintSelectors";
 import * as sprintBacklogSelectors from "../selectors/sprintBacklogSelectors";
-
-// selectors
-import * as appSelectors from "../selectors/appSelectors";
-import * as backlogItemPartSelectors from "../selectors/backlogItemPartSelectors";
 
 // utils
 import { apiGetBacklogItemPart, apiPatchBacklogItemPart } from "../actions/apiBacklogItemParts";
@@ -88,7 +87,7 @@ import { buildBacklogDisplayId } from "../utils/backlogItemHelper";
 import { convertToBacklogItemModel, convertToSprintModel } from "../utils/apiPayloadHelper";
 import { encodeForUrl } from "../utils/urlUtils";
 
-export const apiOrchestrationMiddleware = (store: StoreTyped) => (next) => (action: Action) => {
+export const apiOrchestrationMiddleware: Middleware<{}, StateTree> = (store: StoreTyped) => (next) => (action: Action) => {
     next(action);
     const state = store.getState();
     switch (action.type) {
@@ -116,20 +115,19 @@ export const apiOrchestrationMiddleware = (store: StoreTyped) => (next) => (acti
             break;
         }
         case ActionTypes.LOGIN_USER: {
-            // TODO: Switch to selectors!!
-            store.dispatch(postLogin(state.app.username, state.app.password));
+            store.dispatch(postLogin(appSelectors.selectUserName(state), appSelectors.selectPassword(state)));
             break;
         }
         case ActionTypes.API_POST_ACTION_LOGIN_SUCCESS: {
             const actionTyped = action as ActionPostLoginSuccessAction;
             if (actionTyped.payload.response.status === StatusCodes.OK) {
-                store.dispatch(getUserPreferences(action.type));
+                store.dispatch(apiGetUserPreferences(GetUserPrefsCallReason.LoginSuccess));
             }
             break;
         }
         case ActionTypes.API_GET_USER_PREFS_SUCCESS: {
             const actionTyped = action as ActionGetUserPrefsSuccessAction;
-            if (actionTyped.meta.sourceActionType === ActionTypes.API_POST_ACTION_LOGIN_SUCCESS) {
+            if (actionTyped.meta.passthrough.apiCallReason === GetUserPrefsCallReason.LoginSuccess) {
                 const returnRoute = appSelectors.getPostLoginReturnRoute(state);
                 if (returnRoute) {
                     store.dispatch(routeTo(returnRoute));
@@ -150,7 +148,7 @@ export const apiOrchestrationMiddleware = (store: StoreTyped) => (next) => (acti
             break;
         }
         case ActionTypes.INIT_APP: {
-            store.dispatch(getUserPreferences());
+            store.dispatch(apiGetUserPreferences(GetUserPrefsCallReason.InitApp));
             break;
         }
         case ActionTypes.CANCEL_EDIT_BACKLOG_ITEM: {

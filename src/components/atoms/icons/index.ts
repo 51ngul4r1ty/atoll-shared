@@ -1,5 +1,3 @@
-
-
 export * from "./AddIcon";
 export * from "./AppIcon";
 export * from "./ArchiveCancelIcon";
@@ -15,6 +13,9 @@ export * from "./EditDetailIcon";
 export * from "./EditIcon";
 export * from "./HamburgerIcon";
 export * from "./IssueIcon";
+export * from "./MenuCaretDownIcon";
+export * from "./MenuCaretUpIcon";
+export * from "./ProjectIcon";
 export * from "./RefreshIcon";
 export * from "./SpinnerShapePentagon";
 export * from "./SplitButtonIcon";
@@ -29,4 +30,4 @@ export * from "./VerticalCollapseIcon";
 export * from "./VerticalExpandIcon";
 export * from "./WindowsFrameCloseIcon";
 export * from "./WindowsFrameMaximizeIcon";
-export * from "./WindowsFrameMinimizeIcon";export * from "./ProjectIcon";
+export * from "./WindowsFrameMinimizeIcon";

@@ -1,12 +1,11 @@
 // externals
-import { Draft, produce } from "immer";
+import { produce } from "immer";
 
 // interfaces/types
-import type { AnyFSA } from "../types/reactHelperTypes";
-import type { StandardModelItem } from "../types/dataModelTypes";
-import type { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
-import type { ApiGetSprintBacklogItemsSuccessAction, ApiSplitSprintItemSuccessAction } from "../actions/apiSprintBacklog";
-import type {
+import type { AnyFSA } from "../../types/reactHelperTypes";
+import type { ApiGetBffViewsPlanSuccessAction } from "../../actions/apiBffViewsPlan";
+import type { ApiGetSprintBacklogItemsSuccessAction, ApiSplitSprintItemSuccessAction } from "../../actions/apiSprintBacklog";
+import {
     AddSprintAction,
     CancelEditSprintAction,
     CancelUnsavedSprintAction,
@@ -16,85 +15,62 @@ import type {
     ShowSprintRangeDatePickerAction,
     ToggleSprintDetailAction,
     UpdateSprintFieldsAction
-} from "../actions/sprintActions";
+} from "../../actions/sprintActions";
 import type {
     ApiSetSprintArchiveFlagSuccessAction,
     ApiDeleteSprintSuccessAction,
     ApiGetSprintsSuccessAction,
     ApiPostSprintSuccessAction,
     ApiPutSprintSuccessAction
-} from "../actions/apiSprints";
-import { DateOnly } from "../types/dateTypes";
+} from "../../actions/apiSprints";
+import type {
+    EditableSprint,
+    OriginalSprintData,
+    SaveableSprint,
+    Sprint,
+    SprintOpenedDatePickerInfo,
+    SprintWithSource
+} from "./sprintsReducerTypes";
 
 // consts/enums
-import * as ActionTypes from "../actions/actionTypes";
-import { NewSprintPosition } from "../actions/sprintActions";
-import { PushState, Source } from "./enums";
-
-// utils
-import { calcToggledOpenMenuItemId } from "../utils/dropdownMenuUtils";
-import { mapApiItemsToSprints } from "../mappers/sprintMappers";
-import { shouldHideDetailMenu } from "../components/utils/itemDetailMenuUtils";
+import * as ActionTypes from "../../actions/actionTypes";
+import { NewSprintPosition } from "../../actions/sprintActions";
 
 // components
-import {
-    SprintDetailFormEditableFields,
-    SprintDetailFormEditableFieldsWithInstanceId,
-    SprintDetailShowingPicker
-} from "../components/organisms/forms/SprintDetailForm";
+import { SprintDetailShowingPicker } from "../../components/organisms/forms/SprintDetailForm";
 
 // actions
-import { AppClickAction } from "../actions/appActions";
-import { UpdateSprintStatsAction } from "../actions/sprintActions";
-import { HideSprintBacklogItemDetailAction, ShowSprintBacklogItemDetailAction } from "../actions/sprintBacklogActions";
+import { AppClickAction } from "../../actions/appActions";
+import { UpdateSprintStatsAction } from "../../actions/sprintActions";
+import { ShowSprintBacklogItemDetailAction } from "../../actions/sprintBacklogActions";
 
-export interface Sprint extends StandardModelItem {
-    acceptedPoints: number | null;
-    archived: boolean;
-    backlogItemsLoaded: boolean;
-    expanded?: boolean;
-    finishDate: DateOnly;
-    name: string;
-    plannedPoints: number | null;
-    projectId: string;
-    remainingSplitPoints: number | null;
-    startDate: DateOnly;
-    totalPoints: number | null;
-    usedSplitPoints: number | null;
-    velocityPoints: number | null;
-}
-
-export interface EditableSprint extends Sprint {
-    editing?: boolean;
-}
-
-export interface SaveableSprint extends EditableSprint {
-    instanceId?: number | null;
-    saved?: boolean;
-}
-
-export interface SprintWithSource extends SaveableSprint {
-    pushState?: PushState;
-    source: Source;
-}
-
-export interface OriginalSprintData {
-    [id: string]: Sprint;
-}
-
-export interface SprintOpenedDatePickerInfo {
-    sprintId: string | null;
-    showPicker: SprintDetailShowingPicker;
-}
+// utils
+import { calcToggledOpenMenuItemId } from "../../utils/dropdownMenuUtils";
+import { mapApiItemsToSprints } from "../../mappers/sprintMappers";
+import { shouldHideDetailMenu } from "../../components/utils/itemDetailMenuUtils";
+import {
+    rebuildAllItems,
+    markBacklogItemsLoaded,
+    getSprintById,
+    updateSprintById,
+    idsMatch,
+    updateItemFieldsInAllItems,
+    removeSprint,
+    updateStateToHideDatePicker,
+    updateSprintFromPayload
+} from "./sprintsReducerHelper";
+import * as logger from "../../utils/logger";
 
 export type SprintsState = Readonly<{
     addedItems: SaveableSprint[];
     allItems: SprintWithSource[];
+    archivedSprintCount: number | null;
     items: EditableSprint[];
-    originalData: OriginalSprintData;
-    openedDetailMenuSprintId: string | null;
     openedDatePickerInfo: SprintOpenedDatePickerInfo;
+    openedDetailMenuSprintId: string | null;
+    originalData: OriginalSprintData;
     splitToNextSprintAvailable: boolean;
+    totalSprintCount: number | null;
 }>;
 
 export const sprintsReducerInitialState = Object.freeze<SprintsState>({
@@ -107,100 +83,14 @@ export const sprintsReducerInitialState = Object.freeze<SprintsState>({
         sprintId: null,
         showPicker: SprintDetailShowingPicker.None
     },
-    splitToNextSprintAvailable: false
+    splitToNextSprintAvailable: false,
+    totalSprintCount: null,
+    archivedSprintCount: null
 });
 
-export const rebuildAllItems = (draft: Draft<SprintsState>) => {
-    const addedItemsWithSource = draft.addedItems.map((draftItem) => {
-        const item = draftItem as SaveableSprint;
-        const result: SprintWithSource = { ...item, source: Source.Added };
-        return result;
-    });
-    const itemsWithSource = draft.items.map((draftItem) => {
-        const item = draftItem as EditableSprint;
-        const result: SprintWithSource = { ...item, source: Source.Loaded, saved: true };
-        return result;
-    });
-    const allItemsUnsorted = [...addedItemsWithSource, ...itemsWithSource];
-    const allItemsSorted = allItemsUnsorted.sort((a, b) =>
-        DateOnly.dateToSimpleValue(a.startDate) < DateOnly.dateToSimpleValue(b.startDate) ? -1 : 1
-    );
-    draft.allItems = allItemsSorted;
-};
-
-export const idsMatch = (item1: SaveableSprint, item2: SprintDetailFormEditableFieldsWithInstanceId): boolean => {
-    const instanceIdMatch = !!item1.instanceId && item1.instanceId === item2.instanceId;
-    const idMatch = !!item1.id && item1.id === item2.id;
-    return instanceIdMatch || idMatch;
-};
-
-export const updateSprintFields = (sprint: Sprint, payload: SprintDetailFormEditableFields) => {
-    sprint.name = payload.sprintName;
-    sprint.startDate = payload.startDate;
-    sprint.finishDate = payload.finishDate;
-};
-
-export const updateItemFieldsInAllItems = (draft: Draft<SprintsState>, payload: SprintDetailFormEditableFieldsWithInstanceId) => {
-    const item = draft.allItems.filter((item) => idsMatch(item as SprintWithSource, payload));
-    if (item.length === 1) {
-        updateSprintFields(item[0] as SprintWithSource, payload);
-    }
-};
-
-export const getSprintById = (sprintsState: SprintsState, sprintId: string): Sprint | null => {
-    const sprints = sprintsState.items.filter((sprint) => sprint.id === sprintId);
-    if (sprints.length === 1) {
-        return sprints[0];
-    } else if (sprints.length === 0) {
-        return null;
-    } else {
-        throw new Error(`Unexpected condition - ${sprints.length} sprint items have sprint ID = "${sprintId}"`);
-    }
-};
-
-export const removeSprint = (draft: Draft<SprintsState>, sprintId: string) => {
-    let result = false;
-    const idx = draft.addedItems.findIndex((item) => item.id === sprintId);
-    if (idx >= 0) {
-        draft.addedItems.splice(idx, 1);
-        result = true;
-    }
-    const idx2 = draft.items.findIndex((item) => item.id === sprintId);
-    if (idx2 >= 0) {
-        draft.items.splice(idx2, 1);
-        result = true;
-    }
-    rebuildAllItems(draft);
-    return result;
-};
-
-export const markBacklogItemsLoaded = (draft: Draft<SprintsState>, sprintId: string) => {
-    const sprintItems = draft.items.filter((item) => item.id === sprintId);
-    sprintItems.forEach((item) => {
-        item.backlogItemsLoaded = true;
-    });
-};
-
-export const updateSprintById = (draft: Draft<SprintsState>, sprintId: string, updateItem: { (item: SaveableSprint) }) => {
-    const addedItemIdx = draft.addedItems.findIndex((item) => item.id === sprintId);
-    if (addedItemIdx >= 0) {
-        updateItem(draft.items[addedItemIdx] as SaveableSprint);
-    }
-    const idx = draft.items.findIndex((item) => item.id === sprintId);
-    if (idx >= 0) {
-        updateItem(draft.items[idx] as SaveableSprint);
-    }
-};
-
-const updateStateToHideDatePicker = (draft: Draft<SprintsState>) => {
-    draft.openedDatePickerInfo = {
-        sprintId: null,
-        showPicker: SprintDetailShowingPicker.None
-    };
-};
-
-export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState, action: AnyFSA): SprintsState =>
-    produce(state, (draft) => {
+export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState, action: AnyFSA): SprintsState => {
+    const functionTag = "sprintReducer";
+    return produce(state, (draft) => {
         const { type } = action;
         switch (type) {
             case ActionTypes.COLLAPSE_SPRINT_PANEL: {
@@ -227,6 +117,9 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             }
             case ActionTypes.API_GET_BFF_VIEWS_PLAN_SUCCESS: {
                 const actionTyped = action as ApiGetBffViewsPlanSuccessAction;
+                const projectStats = actionTyped.payload.response.data.projectStats;
+                draft.totalSprintCount = projectStats?.totalSprintCount || null;
+                draft.archivedSprintCount = projectStats?.archivedSprintCount || null;
                 const { payload } = actionTyped;
                 const sprintsFromApi = mapApiItemsToSprints(payload.response.data.sprints);
                 const expandedSprintId = payload.response.data.expandedSprintId;
@@ -245,6 +138,7 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             case ActionTypes.API_GET_SPRINTS_SUCCESS: {
                 const actionTyped = action as ApiGetSprintsSuccessAction;
                 const { payload } = actionTyped;
+                draft.addedItems = [];
                 draft.items = mapApiItemsToSprints(payload.response.data.items);
                 rebuildAllItems(draft);
                 return;
@@ -317,12 +211,12 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 const actionTyped = action as UpdateSprintFieldsAction;
                 draft.addedItems.forEach((addedItem) => {
                     if (idsMatch(addedItem as SaveableSprint, actionTyped.payload)) {
-                        updateSprintFields(addedItem as SaveableSprint, actionTyped.payload);
+                        updateSprintFromPayload(addedItem as SaveableSprint, actionTyped.payload);
                     }
                 });
                 draft.items.forEach((item) => {
                     if (idsMatch(item as EditableSprint, actionTyped.payload)) {
-                        updateSprintFields(item as EditableSprint, actionTyped.payload);
+                        updateSprintFromPayload(item as EditableSprint, actionTyped.payload);
                     }
                 });
                 updateItemFieldsInAllItems(draft, actionTyped.payload);
@@ -339,6 +233,7 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                         addedItem.saved = true;
                     }
                 });
+                draft.totalSprintCount += 1;
                 rebuildAllItems(draft);
                 return;
             }
@@ -366,18 +261,42 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
             case ActionTypes.API_DELETE_SPRINT_SUCCESS: {
                 const actionTyped = action as ApiDeleteSprintSuccessAction;
                 const id = actionTyped.meta.originalActionArgs.sprintId;
-                removeSprint(draft, id);
+                const archived = actionTyped.payload.response.data.item.archived;
+                removeSprint(draft, id, archived);
                 return;
             }
             case ActionTypes.API_SET_SPRINT_ARCHIVE_FLAG_SUCCESS: {
+                const blockTag = "API_SET_SPRINT_ARCHIVE_FLAG_SUCCESS";
                 const actionTyped = action as ApiSetSprintArchiveFlagSuccessAction;
                 const meta = actionTyped.meta;
                 const id = meta.originalActionArgs.sprintId;
+                let found = false;
                 draft.items.forEach((item) => {
                     if (item.id === id) {
                         item.archived = meta.originalActionArgs.archived;
+                        found = true;
                     }
                 });
+                if (!found) {
+                    draft.addedItems.forEach((item) => {
+                        if (item.id === id) {
+                            item.archived = meta.originalActionArgs.archived;
+                            found = true;
+                        }
+                    });
+                }
+                if (!found) {
+                    logger.warn(`unable to find archived item with ID "${id}" to update archive status`, [functionTag, blockTag]);
+                }
+                const isArchivedNow = actionTyped.payload.response.data.item.archived;
+                if (!draft.archivedSprintCount) {
+                    draft.archivedSprintCount = 0;
+                }
+                if (isArchivedNow) {
+                    draft.archivedSprintCount += 1;
+                } else {
+                    draft.archivedSprintCount -= 1;
+                }
                 rebuildAllItems(draft);
                 draft.openedDetailMenuSprintId = null;
                 return;
@@ -457,5 +376,10 @@ export const sprintsReducer = (state: SprintsState = sprintsReducerInitialState,
                 draft.splitToNextSprintAvailable = sprintsReducerInitialState.splitToNextSprintAvailable;
                 return;
             }
+            case ActionTypes.API_POST_SPRINT_SUCCESS: {
+                draft.totalSprintCount += 1;
+                return;
+            }
         }
     });
+};

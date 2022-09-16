@@ -1,7 +1,7 @@
 // interfaces/types
-import { Sprint } from "../reducers/sprintsReducer";
-import { BacklogItemModel, BacklogItem } from "../types/backlogItemTypes";
-import { SprintModel } from "../types/sprintTypes";
+import type { Sprint } from "../reducers/sprints/sprintsReducerTypes";
+import type { BacklogItemModel, BacklogItem } from "../types/backlogItemTypes";
+import type { SprintModel } from "../types/sprintTypes";
 
 export const convertToBacklogItemModel = (backlogItem: BacklogItem): BacklogItemModel => ({
     acceptanceCriteria: backlogItem.acceptanceCriteria,

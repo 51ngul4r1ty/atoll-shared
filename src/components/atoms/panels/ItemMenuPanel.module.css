@@ -25,6 +25,12 @@
     top: 0;
 }
 
+.component.bottomLeftCaret .triangle {
+    position: absolute;
+    left: 1rem;
+    bottom: -0.5rem;
+}
+
 .component.topRightCaret .triangle {
     position: absolute;
     right: 1rem;
@@ -42,6 +48,8 @@
     padding: 0.5rem;
     display: grid;
     grid-gap: 0.4rem;
+    min-width: 7.7rem;
+    min-height: 3.3rem;
 }
 
 .component.topLeftCaret .panel {
@@ -49,33 +57,37 @@
     top: 0.5rem;
 }
 
+.component.bottomLeftCaret .panel {
+    position: relative;
+    top: 0;
+}
+
 .component.topRightCaret .panel {
     position: relative;
     top: 0.5rem;
+}
+
+.component.bottomLeftCaret .panel {
+    position: relative;
+    top: 0;
 }
 
 .dark .panel {
     background-color: var(--normal-component-page-color, #ccc);
 }
 
-.component:not(.rightTopCaret) .triangle {
-    order: 1;
+.component.topCenter .triangle,
+.component.topLeftCaret .triangle,
+.component.topRightCaret .triangle {
     border-left: 0.5rem solid transparent;
     border-right: 0.5rem solid transparent;
     border-bottom: 0.5rem solid var(--normal-form-page-color, #ddd);
 }
 
-.component.dark:not(.rightTopCaret) .triangle {
+.component.dark.topCenter .triangle,
+.component.dark.topLeftCaret .triangle,
+.component.dark.topRightCaret .triangle {
     border-bottom: 0.5rem solid var(--normal-component-page-color, #ccc);
-}
-
-.component:not(.rightTopCaret) .panel {
-    order: 2;
-    width: 100%;
-}
-
-.component.rightTopCaret .panel {
-    order: 1;
 }
 
 .component.rightTopCaret .triangle {
@@ -87,6 +99,29 @@
 
 .component.dark.rightTopCaret .triangle {
     border-bottom: 0.5rem solid var(--normal-component-page-color, #ccc);
+}
+
+.component.bottomLeftCaret .triangle {
+    border-left: 0.5rem solid transparent;
+    border-right: 0.5rem solid transparent;
+    border-top: 0.5rem solid var(--normal-form-page-color, #ddd);
+}
+
+.component.bottomLeftCaret.dark .triangle {
+    border-top: 0.5rem solid var(--normal-component-page-color, #ccc);
+}
+
+.component:not(.rightTopCaret) .triangle {
+    order: 1;
+}
+
+.component:not(.rightTopCaret) .panel {
+    order: 2;
+    width: 100%;
+}
+
+.component.rightTopCaret .panel {
+    order: 1;
 }
 
 .light {

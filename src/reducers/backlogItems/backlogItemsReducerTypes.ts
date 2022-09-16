@@ -1,7 +1,7 @@
 // interfaces/types
 import type { BacklogItem, BacklogItemInSprint } from "../../types/backlogItemTypes";
 import type { BacklogItemPart } from "../../types/backlogItemPartTypes";
-import type { Sprint } from "../sprintsReducer";
+import type { Sprint } from "../sprints/sprintsReducerTypes";
 import type { WebsocketPushNotificationData } from "../../types/pushTypes";
 
 // consts/enums

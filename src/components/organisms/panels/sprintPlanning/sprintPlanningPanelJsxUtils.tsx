@@ -61,7 +61,8 @@ export const addTopActionButtons = (
     editMode: EditMode,
     includeArchiveChecked: boolean,
     onAddNewSprint: OnAddNewSprint,
-    onArchivedFilterChanged: OnArchivedFilterChange
+    onArchivedFilterChanged: OnArchivedFilterChange,
+    allowAddFirstSprint: boolean
 ) =>
     addActionButtons(
         renderElts,
@@ -71,8 +72,8 @@ export const addTopActionButtons = (
         includeArchiveChecked,
         onAddNewSprint,
         onArchivedFilterChanged,
-        "before",
-        false
+        allowAddFirstSprint ? "" : "before",
+        allowAddFirstSprint
     );
 
 export const addBottomActionButtons = (

@@ -1,6 +1,5 @@
 // consts/enums
-export { APPLICATION_JSON } from "./constants";
-export { FEATURE_TOGGLE_LIST } from "./constants/defaultFeatureToggles";
+export * from "./constants/index";
 export { PushState } from "./reducers/enums";
 export { rootReducerInitialState } from "./reducers/rootReducer";
 export { PushNotificationType } from "./types/pushEnums";

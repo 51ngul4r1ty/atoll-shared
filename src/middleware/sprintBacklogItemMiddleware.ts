@@ -4,7 +4,7 @@
  */
 
 // externals
-import type { Action } from "redux";
+import type { Action, Middleware } from "redux";
 
 // selectors
 import * as backlogItemSelectors from "../selectors/backlogItemSelectors";
@@ -22,8 +22,9 @@ import type {
     ApiSplitSprintItemSuccessAction
 } from "../actions/apiSprintBacklog";
 import type { BacklogItemInSprint } from "../types/backlogItemTypes";
-import type { SaveableSprint } from "../reducers/sprintsReducer";
+import type { SaveableSprint } from "../reducers/sprints/sprintsReducerTypes";
 import type { SprintBacklogItemDetailClickAction } from "../actions/sprintBacklogActions";
+import type { StateTree } from "../reducers/rootReducer";
 import type { StoreTyped } from "../types/reduxHelperTypes";
 import type { AddNewSprintFormAction } from "../actions/sprintActions";
 
@@ -45,7 +46,7 @@ import {
 import { getFlowInfoFromAction } from "../utils/actionFlowUtils";
 import { apiGetBacklogItem } from "../actions/apiBacklogItems";
 
-export const sprintBacklogItemMiddleware = (store: StoreTyped) => (next) => (action: Action) => {
+export const sprintBacklogItemMiddleware: Middleware<{}, StateTree> = (store: StoreTyped) => (next) => (action: Action) => {
     next(action);
     switch (action.type) {
         case ActionTypes.API_PATCH_BACKLOG_ITEM_SUCCESS: {
@@ -164,12 +165,17 @@ export const sprintBacklogItemMiddleware = (store: StoreTyped) => (next) => (act
             const position = actionTyped.payload.position;
             let startDate: DateOnly;
             let finishDate: DateOnly;
-            // TODO: Make this configurable (create a story for this)
             const SPRINT_DAY_LENGTH = 14;
             if (position === NewSprintPosition.Before) {
                 const firstSprint = sprintSelectors.getFirstSprint(state);
-                startDate = firstSprint.startDate.addDays(-(SPRINT_DAY_LENGTH - 1));
-                finishDate = firstSprint.startDate;
+                if (firstSprint) {
+                    startDate = firstSprint.startDate.addDays(-(SPRINT_DAY_LENGTH - 1));
+                    finishDate = firstSprint.startDate;
+                } else {
+                    const today = new DateOnly();
+                    startDate = today.addDays(1); // default to starting tomorrow (planning the day before)
+                    finishDate = startDate.addDays(SPRINT_DAY_LENGTH);
+                }
             } else if (position === NewSprintPosition.After) {
                 const lastSprint = sprintSelectors.getLastSprint(state);
                 startDate = lastSprint.finishDate.addDays(1);

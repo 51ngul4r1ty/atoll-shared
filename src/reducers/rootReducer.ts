@@ -1,6 +1,7 @@
 // externals
 import { combineReducers } from "redux";
 import { connectRouter, RouterState } from "connected-react-router";
+import { LocationState } from "history";
 
 // reducers
 import { apiBatchReducer, apiBatchReducerInitialState, ApiBatchState } from "./apiBatchReducer";
@@ -13,8 +14,8 @@ import {
 } from "./productBacklogItemsReducer";
 import { backlogItemsReducer, backlogItemsReducerInitialState } from "./backlogItems/backlogItemsReducer";
 import { featureTogglesReducer, featureTogglesReducerInitialState, FeatureTogglesState } from "./featureTogglesReducer";
-import { sprintBacklogReducer, sprintBacklogReducerInitialState, SprintBacklogState } from "./sprintBacklogReducer";
-import { sprintsReducer, sprintsReducerInitialState, SprintsState } from "./sprintsReducer";
+import { sprintBacklogReducer, sprintBacklogReducerInitialState, SprintBacklogState } from "./sprintBacklog/sprintBacklogReducer";
+import { sprintsReducer, sprintsReducerInitialState, SprintsState } from "./sprints/sprintsReducer";
 import { userReducer, userReducerInitialState, UserState } from "./userReducer";
 import { BacklogItemsState } from "./backlogItems/backlogItemsReducerTypes";
 import { projectReducer, projectReducerInitialState, ProjectState } from "./project/projectReducer";
@@ -29,7 +30,7 @@ export interface StateTree {
     featureToggles: FeatureTogglesState;
     productBacklogItems: ProductBacklogItemsState;
     project: ProjectState;
-    router: RouterState;
+    router: RouterState<LocationState>;
     sprintBacklog: SprintBacklogState;
     sprints: SprintsState;
     user: UserState;

@@ -10,8 +10,14 @@ import { DateOnly } from "../../types/dateTypes";
 // consts/enums
 import { Source } from "../enums";
 
+// interfaces/types
+import type { SprintsState } from "../sprints/sprintsReducer";
+
+// consts/enums
+import { sprintsReducerInitialState } from "../sprints/sprintsReducer";
+
 // code under test
-import { rebuildAllItems, sprintsReducerInitialState, SprintsState } from "../sprintsReducer";
+import { rebuildAllItems } from "../sprints/sprintsReducerHelper";
 
 // test utils
 import { buildSprintForTesting } from "../../__tests__/objectBuilders";

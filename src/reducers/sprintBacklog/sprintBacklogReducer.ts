@@ -2,20 +2,20 @@
 import { Draft, produce } from "immer";
 
 // consts/enums
-import * as ActionTypes from "../actions/actionTypes";
-import { PushState } from "./enums";
+import * as ActionTypes from "../../actions/actionTypes";
+import { PushState } from "../enums";
 
 // interfaces/types
-import type { AnyFSA } from "../types/reactHelperTypes";
+import type { AnyFSA } from "../../types/reactHelperTypes";
 import type {
     ApiGetSprintBacklogItemsFailureAction,
     ApiGetSprintBacklogItemsSuccessAction,
     ApiPostSprintBacklogItemSuccessAction,
     ApiSplitSprintItemSuccessAction,
     ApiSprintBacklogItemSetStatusSuccessAction
-} from "../actions/apiSprintBacklog";
-import type { BacklogItemInSprint } from "../types/backlogItemTypes";
-import type { BacklogItemInSprintWithSource } from "./backlogItems/backlogItemsReducerTypes";
+} from "../../actions/apiSprintBacklog";
+import type { BacklogItemInSprint } from "../../types/backlogItemTypes";
+import type { BacklogItemInSprintWithSource } from "../backlogItems/backlogItemsReducerTypes";
 import type {
     AddBacklogItemToSprintAction,
     ChangeSprintPlanningArchivedFilterAction,
@@ -25,30 +25,30 @@ import type {
     SprintBacklogItemDetailClickAction,
     ShowSprintBacklogItemDetailAction,
     HideSprintBacklogItemDetailAction
-} from "../actions/sprintBacklogActions";
-import type { AppClickAction } from "../actions/appActions";
-import type { ApiGetBffViewsPlanSuccessAction } from "../actions/apiBffViewsPlan";
-import type { ApiBacklogItemInSprint } from "../types/apiModelTypes";
-import type { ApiGetSprintFailureAction } from "../actions/apiSprints";
+} from "../../actions/sprintBacklogActions";
+import type { AppClickAction } from "../../actions/appActions";
+import type { ApiGetBffViewsPlanSuccessAction } from "../../actions/apiBffViewsPlan";
+import type { ApiBacklogItemInSprint } from "../../types/apiModelTypes";
+import type { ApiGetSprintFailureAction } from "../../actions/apiSprints";
 import type {
     ApiBacklogItemPartWithSprintId,
     ApiGetBacklogItemSuccessAction,
     ApiJoinUnallocatedBacklogItemPartsSuccessAction
-} from "../actions/apiBacklogItems";
+} from "../../actions/apiBacklogItems";
 
 // consts/enums
 import {
     ITEM_DETAIL_CLICK_STEP_1_NAME,
     ITEM_DETAIL_CLICK_STEP_2_NAME,
     ITEM_DETAIL_CLICK_STEP_3_NAME
-} from "../actionFlows/itemDetailMenuActionFlowConsts";
+} from "../../actionFlows/itemDetailMenuActionFlowConsts";
 
 // utils
-import { mapApiItemsToSprintBacklogItems } from "../mappers/backlogItemMappers";
-import { mapApiStatusToBacklogItem } from "../mappers/statusMappers";
-import { alreadyShowingMenu, calcToggledOpenMenuItemId } from "../utils/dropdownMenuUtils";
-import { shouldHideDetailMenu } from "../components/utils/itemDetailMenuUtils";
-import { getFlowInfoFromAction } from "../utils/actionFlowUtils";
+import { mapApiItemsToSprintBacklogItems } from "../../mappers/backlogItemMappers";
+import { mapApiStatusToBacklogItem } from "../../mappers/statusMappers";
+import { alreadyShowingMenu, calcToggledOpenMenuItemId } from "../../utils/dropdownMenuUtils";
+import { shouldHideDetailMenu } from "../../components/utils/itemDetailMenuUtils";
+import { getFlowInfoFromAction } from "../../utils/actionFlowUtils";
 
 export type SprintBacklogSprint = {
     items: BacklogItemInSprint[];

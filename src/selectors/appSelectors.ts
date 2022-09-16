@@ -14,7 +14,7 @@ import type { StateTree } from "../reducers/rootReducer";
 // utils
 import { timeoutExpired } from "../utils/dateHelper";
 
-export const app = (state: { app: AppState }): AppState => state.app;
+const app = (state: { app: AppState }): AppState => state.app;
 
 export const getLocale = createSelector([app], (app: AppState): Locale => app.locale);
 
@@ -31,6 +31,10 @@ export const isPlanViewLoading = createSelector([app], (app: AppState): boolean 
 export const isPlanViewError = createSelector([app], (app: AppState): boolean => app.isPlanViewError);
 
 export const isStrictMode = createSelector([app], (app: AppState): boolean => app.isStrictMode);
+
+export const selectUserName = createSelector([app], (app: AppState): string => app.username);
+
+export const selectPassword = createSelector([app], (app: AppState): string => app.password);
 
 // NOTE: This doesn't use reselect because it must never use cached data
 export const getPostLoginReturnRoute = (state: StateTree): string | null => {

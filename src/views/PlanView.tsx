@@ -1,5 +1,6 @@
 // externals
 import * as React from "react";
+import { Action } from "redux";
 import Helmet from "react-helmet";
 
 // components
@@ -27,7 +28,7 @@ import type { BacklogItemWithSource } from "../reducers/backlogItems/backlogItem
 import type { BacklogItemType } from "../types/backlogItemTypes";
 import type { SprintCardSprint } from "../components/molecules/cards/sprintCard/sprintCardTypes";
 import type { OpenedOrOpeningDetailMenuInfo } from "../selectors/sprintBacklogSelectors";
-import type { SprintOpenedDatePickerInfo } from "../reducers/sprintsReducer";
+import type { SprintOpenedDatePickerInfo } from "../reducers/sprints/sprintsReducerTypes";
 
 // images
 // TODO: Fix this issue - getting "Image is not defined" for SSR webpack build
@@ -37,12 +38,14 @@ import type { SprintOpenedDatePickerInfo } from "../reducers/sprintsReducer";
 
 export interface PlanViewStateProps {
     allItems: BacklogItemWithSource[];
+    archivedSprintCount: number | null;
     busyJoiningUnallocatedParts: boolean;
     busySplittingStory: boolean;
     editMode: EditMode;
     electronClient: boolean;
     errorMessage: string;
     includeArchivedSprints: boolean;
+    initAction: Action;
     loading: boolean;
     openedDatePickerInfo: SprintOpenedDatePickerInfo;
     openedDetailMenuBacklogItemId: string | null;
@@ -71,7 +74,7 @@ export interface PlanViewDispatchProps {
     onBacklogItemReleasedClick: { (sprintId: string, backlogItemId: string): void };
     onExpandCollapse: { (sprintId: string, expand: boolean): void };
     onItemDetailClick: { (sprintId: string, backlogItemId: string, strictMode: boolean): void };
-    onLoaded: { (): void };
+    onLoaded: { (initAction: Action): void };
     onMoveItemToBacklogClick: { (sprintId: string, backlogItemId: string): void };
     onReorderBacklogItems: { (sourceItemId: string, targetItemId: string): void };
     onSplitBacklogItemClick: { (sprintId: string, backlogItemId: string): void };
@@ -88,10 +91,11 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
         super(props);
     }
     componentDidMount() {
-        this.props.onLoaded();
+        this.props.onLoaded(this.props.initAction);
     }
     render() {
         const strictMode = this.props.strictMode;
+        const hasContent = this.props.allItems.length > 0 || this.props.sprints.length > 0;
         const pageContentsElts = (
             <div className={css.content}>
                 <ProductPlanningPanel
@@ -111,6 +115,7 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
                     }}
                 />
                 <SprintPlanningPanel
+                    archivedSprintCount={this.props.archivedSprintCount}
                     className={css.sprints}
                     editMode={this.props.editMode}
                     busySplittingStory={this.props.busySplittingStory}
@@ -224,8 +229,10 @@ export class PlanView extends React.Component<PlanViewProps, {}> {
             pageContent = spinnerElts;
         } else if (this.props.errorMessage) {
             pageContent = this.props.errorMessage;
-        } else {
+        } else if (hasContent || this.props.editMode === EditMode.Edit) {
             pageContent = pageContentsElts;
+        } else {
+            pageContent = <div className={css.noContentMsg}>This project is empty. To add content click the Edit button!</div>;
         }
         return (
             <>
