@@ -40,13 +40,16 @@ export const formatTags = (tags: string[]): string => {
     return result ? ` [${result}]` : "";
 };
 
-export const formatMessage = (msg: string, loggingNestLevel: number | null): string => {
+export const formatMessage = (msg: string, loggingNestLevel: number | null, errorStack?: string): string => {
     const nestLevel = loggingNestLevel || 0;
     let result = "";
     for (let i = 0; i < nestLevel; i++) {
         result += "  ";
     }
     result += msg;
+    if (errorStack) {
+        result += `; stack=${errorStack}`;
+    }
     return result;
 };
 
@@ -54,23 +57,40 @@ export interface LoggingContext {
     nestLevel: number;
 }
 
-export const info = (msg: string, tags: string[], logContext: LoggingContext = { nestLevel: 1 }): LoggingContext => {
+export const LOGGING_CONTEXT_DEFAULT = { nestLevel: 1 } as LoggingContext;
+
+export const info = (
+    msg: string,
+    tags: string[],
+    logContext: LoggingContext = LOGGING_CONTEXT_DEFAULT,
+    errorStack?: string
+): LoggingContext => {
     if (shouldLogThis(tags, "info")) {
-        console.log(formatMessage(msg, logContext.nestLevel) + formatTags(tags));
+        console.log(formatMessage(msg, logContext.nestLevel, errorStack) + formatTags(tags));
     }
     return { nestLevel: getNextLoggingNestLevel(logContext.nestLevel) };
 };
 
-export const warn = (msg: string, tags: string[], logContext: LoggingContext = { nestLevel: 1 }): LoggingContext => {
+export const warn = (
+    msg: string,
+    tags: string[],
+    logContext: LoggingContext = LOGGING_CONTEXT_DEFAULT,
+    errorStack?: string
+): LoggingContext => {
     if (shouldLogThis(tags, "warn")) {
-        console.warn(formatMessage(msg, logContext.nestLevel) + formatTags(tags));
+        console.warn(formatMessage(msg, logContext.nestLevel, errorStack) + formatTags(tags));
     }
     return { nestLevel: getNextLoggingNestLevel(logContext.nestLevel) };
 };
 
-export const error = (msg: string, tags: string[], logContext: LoggingContext = { nestLevel: 1 }): LoggingContext => {
+export const error = (
+    msg: string,
+    tags: string[],
+    logContext: LoggingContext = LOGGING_CONTEXT_DEFAULT,
+    errorStack?: string
+): LoggingContext => {
     if (shouldLogThis(tags, "error")) {
-        console.warn(formatMessage(msg, logContext.nestLevel) + formatTags(tags));
+        console.warn(formatMessage(msg, logContext.nestLevel, errorStack) + formatTags(tags));
     }
     return { nestLevel: getNextLoggingNestLevel(logContext.nestLevel) };
 };
