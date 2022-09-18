@@ -112,6 +112,9 @@ export const buildDragBacklogItemElt = (
 
 export const InnerProductPlanningPanel: React.FC<ProductPlanningPanelProps> = (props) => {
     logger.info("render(InnerBacklogItemPlanningPanel)", [loggingTags.DRAG_BACKLOGITEM]);
+
+    const ref = React.useRef<HTMLDivElement>();
+
     // #region state with refs
 
     // 1. Refs that are not used for re-rendering
@@ -215,8 +218,8 @@ export const InnerProductPlanningPanel: React.FC<ProductPlanningPanelProps> = (p
         }
     }, 500);
 
-    const onMouseDown = (e: React.BaseSyntheticEvent<HTMLDivElement>, clientY: number) => {
-        setCardPositionsAndWidth();
+    const onMouseDown = React.useCallback((e: React.BaseSyntheticEvent<HTMLDivElement>, clientY: number) => {
+        setCardPositionsAndWidth(ref.current);
         const logContainer = logger.info(`onMouseDown:${clientY}`, [loggingTags.DRAG_BACKLOGITEM]);
         if (targetIsDragButton(e)) {
             logger.info("target is drag button", [loggingTags.DRAG_BACKLOGITEM], logContainer);
@@ -240,7 +243,7 @@ export const InnerProductPlanningPanel: React.FC<ProductPlanningPanelProps> = (p
         }
         logger.info("target is NOT drag button", [loggingTags.DRAG_BACKLOGITEM], logContainer);
         return true;
-    };
+    }, []);
 
     const getMouseDragDistance = (clientY: number) => {
         const dragStartClientY = dragStartClientYRef.current;
@@ -343,7 +346,6 @@ export const InnerProductPlanningPanel: React.FC<ProductPlanningPanelProps> = (p
         return true;
     };
 
-    const ref = React.createRef<HTMLDivElement>();
     React.useEffect(() => {
         logger.info("setting up event listeners for touchstart, touchmove, touchend", [loggingTags.DRAG_BACKLOGITEM]);
         const listenerHost = window;
@@ -394,11 +396,11 @@ export const InnerProductPlanningPanel: React.FC<ProductPlanningPanelProps> = (p
         };
         return cleanup;
     }, []);
-    const getCardPositionsAndWidth = () => {
+    const getCardPositionsAndWidth = (refCurrent: HTMLDivElement) => {
         const newCardPositions: CardPosition[] = [];
-        const computedStyle = getComputedStyle(ref.current);
-        const width = ref.current?.offsetWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight);
-        const elts = ref.current.querySelectorAll(`[data-class='backlogitem']`);
+        const computedStyle = getComputedStyle(refCurrent);
+        const width = refCurrent?.offsetWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight);
+        const elts = refCurrent.querySelectorAll(`[data-class='backlogitem']`);
         elts.forEach((elt) => {
             const id = elt.getAttribute("data-id");
             const rect = elt.getBoundingClientRect();
@@ -406,13 +408,22 @@ export const InnerProductPlanningPanel: React.FC<ProductPlanningPanelProps> = (p
         });
         return { width, newCardPositions };
     };
-    const setCardPositionsAndWidth = () => {
-        const { newCardPositions, width } = getCardPositionsAndWidth();
-        setCardPositions(newCardPositions);
-        setItemCardWidth(width);
+    const setCardPositionsAndWidth = (refCurrent: HTMLDivElement) => {
+        try {
+            const { newCardPositions, width } = getCardPositionsAndWidth(refCurrent);
+            setCardPositions(newCardPositions);
+            setItemCardWidth(width);
+        } catch (err) {
+            logger.warn(
+                `Unable to setCardPositionsAndWidth "${err}"`,
+                [loggingTags.DRAG_BACKLOGITEM],
+                logger.LOGGING_CONTEXT_DEFAULT,
+                (err as Error).stack
+            );
+        }
     };
     React.useEffect(() => {
-        setCardPositionsAndWidth();
+        setCardPositionsAndWidth(ref.current);
     }, [props.allItems, props.editMode, props.renderMobile]);
     const dispatch = useDispatch();
     let inLoadedSection = false;
