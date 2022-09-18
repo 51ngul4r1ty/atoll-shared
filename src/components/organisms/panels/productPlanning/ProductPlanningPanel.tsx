@@ -216,6 +216,7 @@ export const InnerProductPlanningPanel: React.FC<ProductPlanningPanelProps> = (p
     }, 500);
 
     const onMouseDown = (e: React.BaseSyntheticEvent<HTMLDivElement>, clientY: number) => {
+        setCardPositionsAndWidth();
         const logContainer = logger.info(`onMouseDown:${clientY}`, [loggingTags.DRAG_BACKLOGITEM]);
         if (targetIsDragButton(e)) {
             logger.info("target is drag button", [loggingTags.DRAG_BACKLOGITEM], logContainer);
@@ -393,7 +394,7 @@ export const InnerProductPlanningPanel: React.FC<ProductPlanningPanelProps> = (p
         };
         return cleanup;
     }, []);
-    React.useEffect(() => {
+    const getCardPositionsAndWidth = () => {
         const newCardPositions: CardPosition[] = [];
         const computedStyle = getComputedStyle(ref.current);
         const width = ref.current?.offsetWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight);
@@ -403,8 +404,15 @@ export const InnerProductPlanningPanel: React.FC<ProductPlanningPanelProps> = (p
             const rect = elt.getBoundingClientRect();
             newCardPositions.push({ id, documentTop: rect.top + window.scrollY, documentBottom: rect.bottom + window.scrollY });
         });
+        return { width, newCardPositions };
+    };
+    const setCardPositionsAndWidth = () => {
+        const { newCardPositions, width } = getCardPositionsAndWidth();
         setCardPositions(newCardPositions);
         setItemCardWidth(width);
+    };
+    React.useEffect(() => {
+        setCardPositionsAndWidth();
     }, [props.allItems, props.editMode, props.renderMobile]);
     const dispatch = useDispatch();
     let inLoadedSection = false;
