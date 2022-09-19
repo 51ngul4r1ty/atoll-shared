@@ -79,7 +79,7 @@
     "@flopflip/types": "2.5.2",
     "@modular-css/rollup": "28.2.3",
     "@storybook/addon-actions": "6.5.12",
-    "@storybook/addon-knobs": "6.1.15",
+    "@storybook/addon-knobs": "6.4.0",
     "@storybook/addon-links": "6.5.12",
     "@storybook/addons": "6.5.12",
     "@storybook/cli": "6.5.12",
