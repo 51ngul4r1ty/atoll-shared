@@ -1,5 +1,5 @@
 import resolve from "rollup-plugin-node-resolve";
-import postcss from "rollup-plugin-postcss-modules";
+import postcss from "rollup-plugin-postcss";
 import typescript from "rollup-plugin-typescript2";
 import autoprefixer from "autoprefixer";
 import jsx from "rollup-plugin-jsx";
@@ -29,7 +29,8 @@ export default {
             dedupe: ["react", "react-dom"],
             customResolveOptions: {
                 moduleDirectory: "node_modules"
-            }
+            },
+            preferBuiltins: true
         }),
         postcss({
             extract: true,
@@ -39,7 +40,7 @@ export default {
         typescript({
             typescript: require("typescript"),
             tsconfig: "tsconfig.json",
-            objectHashIgnoreUnknownHack: true
+            objectHashIgnoreUnknownHack: false
         }),
         json({
             compact: true
