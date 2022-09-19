@@ -108,6 +108,7 @@
     "jest": "27.5.1",
     "jest-cli": "27.5.1",
     "jest-css-modules-transform": "4.3.0",
+    "launchdarkly-js-client-sdk": "2.22.1",
     "opener": "1.5.2",
     "postcss": "8.4.16",
     "postcss-assets": "6.0.0",
