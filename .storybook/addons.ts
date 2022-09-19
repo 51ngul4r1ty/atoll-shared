@@ -15,4 +15,4 @@ import "@storybook/addon-links/register";
 import "storybook-dark-mode/register";
 
 /* allow tweaking of settings with knobs */
-import "@storybook/addon-knobs/register";
+import "@storybook/addon-knobs";
