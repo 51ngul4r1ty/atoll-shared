@@ -15,10 +15,16 @@ import css from "./SprintDetailForm.module.css";
 
 // utils
 import { buildClassName } from "../../../utils/classNameBuilder";
-import { DateInput, DateInputPickerMode } from "../../atoms/inputs/DateInput";
+
+// consts/enums
+import { DateInputPickerMode } from "../../atoms/inputs/dateInput/DateInput";
+
+// components
+import { DateInput } from "../../atoms/inputs/dateInput/DateInput";
 
 // interfaces/types
 import { DateOnly } from "../../../types/dateTypes";
+import { SprintDatePicker, SprintDatePickerMode } from "../../molecules/pickers/SprintDatePicker";
 
 export interface SprintDetailFormEditableFields {
     sprintName: string;
@@ -141,6 +147,21 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
                     labelText="Start"
                     inputValue={props.startDate}
                     pickerMode={DateInputPickerMode.RangeAltIsFinishDate}
+                    buildDatePicker={(
+                        startDate: DateOnly | null | undefined,
+                        finishDate: DateOnly | null | undefined,
+                        pickingStartDate: boolean,
+                        onDateChange: (date: DateOnly) => void
+                    ) => (
+                        <SprintDatePicker
+                            startDate={startDate}
+                            finishDate={finishDate}
+                            pickerMode={pickingStartDate ? SprintDatePickerMode.StartDate : SprintDatePickerMode.FinishDate}
+                            suppressPadding
+                            onStartDateChange={onDateChange}
+                            onFinishDateChange={onDateChange}
+                        />
+                    )}
                     showPicker={props.showPicker === SprintDetailShowingPicker.StartDate}
                     rangeAltValue={props.finishDate}
                     onChange={(value) => {
@@ -166,6 +187,21 @@ export const SprintDetailForm: React.FC<SprintDetailFormProps> = (props) => {
                     labelText="Finish"
                     inputValue={props.finishDate}
                     pickerMode={DateInputPickerMode.RangeAltIsStartDate}
+                    buildDatePicker={(
+                        startDate: DateOnly | null | undefined,
+                        finishDate: DateOnly | null | undefined,
+                        pickingStartDate: boolean,
+                        onDateChange: (date: DateOnly) => void
+                    ) => (
+                        <SprintDatePicker
+                            startDate={startDate}
+                            finishDate={finishDate}
+                            pickerMode={pickingStartDate ? SprintDatePickerMode.StartDate : SprintDatePickerMode.FinishDate}
+                            suppressPadding
+                            onStartDateChange={onDateChange}
+                            onFinishDateChange={onDateChange}
+                        />
+                    )}
                     showPicker={props.showPicker === SprintDetailShowingPicker.FinishDate}
                     rangeAltValue={props.startDate}
                     onChange={(value) => {

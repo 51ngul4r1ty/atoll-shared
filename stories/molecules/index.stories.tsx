@@ -387,6 +387,21 @@ storiesOf("Molecules/Inputs/DateInput", module).add("DateInput", () => (
                 modalPanelEltId="dateinput-modal-panel"
                 inputValue={buildDateOnlyFromIsoString(text("from.date", new DateOnly(2021, 1, 5).toISODateTime()))}
                 pickerMode={DateInputPickerMode.RangeAltIsFinishDate}
+                buildDatePicker={(
+                    startDate: DateOnly | null | undefined,
+                    finishDate: DateOnly | null | undefined,
+                    pickingStartDate: boolean,
+                    onDateChange: (date: DateOnly) => void
+                ) => (
+                    <SprintDatePicker
+                        startDate={startDate}
+                        finishDate={finishDate}
+                        pickerMode={pickingStartDate ? SprintDatePickerMode.StartDate : SprintDatePickerMode.FinishDate}
+                        suppressPadding
+                        onStartDateChange={onDateChange}
+                        onFinishDateChange={onDateChange}
+                    />
+                )}
                 showPicker={boolean("from.showPicker", false)}
                 rangeAltValue={buildDateOnlyFromIsoString(text("to.date", new DateOnly(2021, 1, 18).toISODateTime()))}
             />
@@ -400,6 +415,21 @@ storiesOf("Molecules/Inputs/DateInput", module).add("DateInput", () => (
                 modalPanelEltId="dateinput-modal-panel"
                 inputValue={buildDateOnlyFromIsoString(text("to.date", new DateOnly(2021, 1, 18).toISODateTime()))}
                 pickerMode={DateInputPickerMode.RangeAltIsStartDate}
+                buildDatePicker={(
+                    startDate: DateOnly | null | undefined,
+                    finishDate: DateOnly | null | undefined,
+                    pickingStartDate: boolean,
+                    onDateChange: (date: DateOnly) => void
+                ) => (
+                    <SprintDatePicker
+                        startDate={startDate}
+                        finishDate={finishDate}
+                        pickerMode={pickingStartDate ? SprintDatePickerMode.StartDate : SprintDatePickerMode.FinishDate}
+                        suppressPadding
+                        onStartDateChange={onDateChange}
+                        onFinishDateChange={onDateChange}
+                    />
+                )}
                 showPicker={boolean("to.showPicker", true)}
                 rangeAltValue={buildDateOnlyFromIsoString(text("from.date", new DateOnly(2021, 1, 5).toISODateTime()))}
             />
