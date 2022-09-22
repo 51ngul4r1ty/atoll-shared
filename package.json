@@ -46,7 +46,9 @@
     "deploy:storybook": "npx --no-install cpx \"./storybook-static/*\" \"./docs/storybook/\"",
     "copy-css-to-lib": "npx --no-install cpx \"./dist/index.cjs.css\" ./build/storybook",
     "storybook-serve": "start-storybook -p 6006",
-    "gen:react-svg": "deno run --allow-read --allow-write --unstable ../atoll-scripts/build-svg-component/index.ts"
+    "gen:react-svg": "deno run --allow-read --allow-write --unstable ../atoll-scripts/build-svg-component/index.ts",
+    "depgraph": "npm run build:depgraph && npx --no-install opener dependency-graph.svg",
+    "build:depgraph": "depcruise -c .dependency-cruiser.js --output-type dot src | dot -T svg > dependency-graph.svg"
   },
   "dependencies": {
     "@csstools/normalize.css": "10.1.0",
@@ -105,6 +107,7 @@
     "copy-webpack-plugin": "5.1.1",
     "cpx": "1.5.0",
     "cross-env": "7.0.3",
+    "dependency-cruiser": "9.26.1",
     "jest": "27.5.1",
     "jest-cli": "27.5.1",
     "jest-css-modules-transform": "4.3.0",
