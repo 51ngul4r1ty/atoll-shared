@@ -1,4 +1,4 @@
 export * from "./Checkbox";
-export * from "./DateInput";
+export * from "./dateInput/DateInput";
 export * from "./StandardInput";
 export * from "./StandardTextArea";

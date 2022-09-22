@@ -6,17 +6,15 @@ import ReactDOM from "react-dom";
 import css from "./DateInput.module.css";
 
 // utils
-import { buildClassName } from "../../../utils/classNameBuilder";
-import { usePrevious } from "../../common/usePreviousHook";
-import { ItemMenuPanel, ItemMenuPanelCaretPosition, ItemMenuPanelColor } from "../panels/ItemMenuPanel";
-import { hasParentWithDataClass } from "../../common/domUtils";
-
-// components
-import { SprintDatePicker, SprintDatePickerMode } from "../../molecules/pickers/SprintDatePicker";
+import { buildClassName } from "../../../../utils/classNameBuilder";
+import { usePrevious } from "../../../common/usePreviousHook";
+import { ItemMenuPanel, ItemMenuPanelCaretPosition, ItemMenuPanelColor } from "../../panels/ItemMenuPanel";
+import { hasParentWithDataClass } from "../../../common/domUtils";
 
 // interfaces/types
-import { ComponentWithForwardedRef } from "../../../types/reactHelperTypes";
-import { DateOnly } from "../../../types/dateTypes";
+import type { DatePickerBuilder } from "./dateInputTypes";
+import type { ComponentWithForwardedRef } from "../../../../types/reactHelperTypes";
+import { DateOnly } from "../../../../types/dateTypes";
 
 export type DateInputRefType = HTMLInputElement;
 
@@ -47,6 +45,7 @@ export interface DateInputStateProps {
     size?: number;
     type?: string;
     validator?: { (value: string): boolean };
+    buildDatePicker: DatePickerBuilder;
 }
 
 export interface DateInputDispatchProps {
@@ -140,7 +139,7 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
     const [inputText, setInputText] = useState(propsInputValueToUse);
     const [validInputText, setValidInputText] = useState(props.inputValue ? props.inputValue.formatAsText() : "");
     const [isValid, setIsValid] = useState(true); // start off "valid", even if starting value is invalid
-    const propagateTextChange = (inputText: string, lastValidInputText?: string) => {
+    const propagateTextChange = (inputText: string, lastValidInputText?: string): void => {
         setInputText(inputText);
         if (props.onChange) {
             if (lastValidInputText === undefined) {
@@ -214,10 +213,7 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
     );
     const typeToUse = props.type || "text";
     const showPicker = props.pickerMode && props.pickerMode !== DateInputPickerMode.SingleDateRangeAltUnused;
-    const pickerMode =
-        props.pickerMode === DateInputPickerMode.RangeAltIsFinishDate
-            ? SprintDatePickerMode.StartDate
-            : SprintDatePickerMode.FinishDate;
+    const pickingStartDate = props.pickerMode === DateInputPickerMode.RangeAltIsFinishDate;
     const startDateToUse = props.pickerMode === DateInputPickerMode.RangeAltIsStartDate ? props.rangeAltValue : props.inputValue;
     const finishDateToUse = props.pickerMode === DateInputPickerMode.RangeAltIsFinishDate ? props.rangeAltValue : props.inputValue;
     useEffect(() => {
@@ -248,25 +244,16 @@ export const InnerDateInput: React.FC<DateInputProps & DateInputInnerStateProps>
                     caretPosition={props.caretPosition || ItemMenuPanelCaretPosition.TopLeft}
                     panelColor={ItemMenuPanelColor.Dark}
                 >
-                    <SprintDatePicker
-                        startDate={startDateToUse}
-                        finishDate={finishDateToUse}
-                        pickerMode={pickerMode}
-                        suppressPadding
-                        onStartDateChange={(date: DateOnly) => {
-                            propagateTextChange(date.formatAsText());
-                        }}
-                        onFinishDateChange={(date: DateOnly) => {
-                            propagateTextChange(date.formatAsText());
-                        }}
-                    />
+                    {props.buildDatePicker(startDateToUse, finishDateToUse, pickingStartDate, (date: DateOnly) =>
+                        propagateTextChange(date.formatAsText())
+                    )}
                 </ItemMenuPanel>
             </div>
         );
         return function cleanup() {
             unregisterModalComponent(relatedComponentId, props.modalPanelEltId);
         };
-    }, [showPicker, props.showPicker, startDateToUse, finishDateToUse, pickerMode]);
+    }, [showPicker, props.showPicker, startDateToUse, finishDateToUse, pickingStartDate]);
     return (
         <div className={classToUse}>
             <input
