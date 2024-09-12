@@ -240,6 +240,7 @@ export const sprintBacklogItemMiddleware: Middleware<{}, StateTree> = (store: St
             }
             return;
         }
+        // TODO: Move this to the "product backlog middleware" (needs to be created still)
         case ActionTypes.SELECT_PRODUCT_BACKLOG_ITEM: {
             const actionTyped = action as SelectProductBacklogItemAction;
             const backlogItemId = actionTyped.payload.itemId;
@@ -253,6 +254,7 @@ export const sprintBacklogItemMiddleware: Middleware<{}, StateTree> = (store: St
             );
             return;
         }
+        // TODO: Move this to the "product backlog middleware" (needs to be created still)
         case ActionTypes.UNSELECT_PRODUCT_BACKLOG_ITEM: {
             const actionTyped = action as SelectProductBacklogItemAction;
             const backlogItemId = actionTyped.payload.itemId;
